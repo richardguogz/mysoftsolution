@@ -1,0 +1,345 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D2610145-763C-4C1E-8853-06ACA8FF4C3E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySoft.Web</RootNamespace>
+    <AssemblyName>MySoft.Web</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MySoft.Web.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Binder\ToGuid.cs" />
+    <Compile Include="Binder\ToGuidArray.cs" />
+    <Compile Include="Cache\CacheControlConfigurationSection.cs" />
+    <Compile Include="Cache\CacheControlConfiguration.cs" />
+    <Compile Include="Common\AjaxNamespaceAttribute.cs" />
+    <Compile Include="Common\DynamicCalls.cs" />
+    <Compile Include="Binder\ConverterFactory.cs" />
+    <Compile Include="Binder\IStringConverter.cs" />
+    <Compile Include="Binder\ObjectBuilder.cs" />
+    <Compile Include="Binder\ToArray.cs" />
+    <Compile Include="Binder\ToBool.cs" />
+    <Compile Include="Binder\ToBoolArray.cs" />
+    <Compile Include="Binder\ToByte.cs" />
+    <Compile Include="Binder\ToByteArray.cs" />
+    <Compile Include="Binder\ToChar.cs" />
+    <Compile Include="Binder\ToCharArray.cs" />
+    <Compile Include="Binder\ToDateTime.cs" />
+    <Compile Include="Binder\ToDateTimeArray.cs" />
+    <Compile Include="Binder\ToDecimal.cs" />
+    <Compile Include="Binder\ToDecimalArray.cs" />
+    <Compile Include="Binder\ToDouble.cs" />
+    <Compile Include="Binder\ToDoubleArray.cs" />
+    <Compile Include="Binder\ToFloat.cs" />
+    <Compile Include="Binder\ToFloatArray.cs" />
+    <Compile Include="Binder\ToInt16.cs" />
+    <Compile Include="Binder\ToInt16Array.cs" />
+    <Compile Include="Binder\ToInt32.cs" />
+    <Compile Include="Binder\ToInt32Array.cs" />
+    <Compile Include="Binder\ToLong.cs" />
+    <Compile Include="Binder\ToLongArray.cs" />
+    <Compile Include="Binder\ToSbyte.cs" />
+    <Compile Include="Binder\ToSbyteArray.cs" />
+    <Compile Include="Binder\ToString.cs" />
+    <Compile Include="Binder\ToStringArray.cs" />
+    <Compile Include="Binder\ToUInt16.cs" />
+    <Compile Include="Binder\ToUInt16Array.cs" />
+    <Compile Include="Binder\ToUInt23.cs" />
+    <Compile Include="Binder\ToUInt32Array.cs" />
+    <Compile Include="Binder\ToULong.cs" />
+    <Compile Include="Binder\ToULongArray.cs" />
+    <Compile Include="Binder\PropertyHandler.cs" />
+    <Compile Include="Controls\calendar\DataCalendar.cs" />
+    <Compile Include="Controls\editor\HtmlEditor.cs" />
+    <Compile Include="Controls\editor\HtmlEditorDesigner.cs" />
+    <Compile Include="Controls\repeater\PropertyInfoDelegator.cs" />
+    <Compile Include="Controls\repeater\Repeater.cs" />
+    <Compile Include="Controls\repeater\RepeaterControlBuilder.cs" />
+    <Compile Include="Controls\repeater\RepeaterFakeType.cs" />
+    <Compile Include="Controls\repeater\RepeaterItem.cs" />
+    <Compile Include="Mvp\Presenter\Presenter.cs" />
+    <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
+    <Compile Include="Mvp\Service\ServiceConfigurationSection.cs" />
+    <Compile Include="Mvp\Service\ServiceFactory.cs" />
+    <Compile Include="Static\UpdateDependency.cs" />
+    <Compile Include="Static\StaticPageUtils.cs" />
+    <Compile Include="Static\StaticPageItem.cs" />
+    <Compile Include="Handler\AjaxPageHandler.cs" />
+    <Compile Include="Common\Exception.cs" />
+    <Compile Include="Common\AjaxMethodAttribute.cs" />
+    <Compile Include="Common\AjaxMethodHelper.cs" />
+    <Compile Include="Config\StaticPageConfigSerializerSectionHandler.cs" />
+    <Compile Include="Config\StaticPageConfiguration.cs" />
+    <Compile Include="Config\StaticPageRule.cs" />
+    <Compile Include="Config\StaticPageRuleCollection.cs" />
+    <Compile Include="Handler\PageUtils.cs" />
+    <Compile Include="Handler\StaticPageHandler.cs" />
+    <Compile Include="Handler\PageHandlerFactory.cs" />
+    <Compile Include="Handler\ResponseFilter.cs" />
+    <Compile Include="Common\WebUtils.cs" />
+    <Compile Include="Json\Converters\HtmlColorConverter.cs" />
+    <Compile Include="Json\Converters\XmlNodeConverter.cs" />
+    <Compile Include="Json\Identifier.cs" />
+    <Compile Include="Json\JavaScriptArray.cs" />
+    <Compile Include="Json\JavaScriptConstructor.cs" />
+    <Compile Include="Json\JavaScriptConvert.cs" />
+    <Compile Include="Json\JavaScriptObject.cs" />
+    <Compile Include="Json\JavaScriptParameters.cs" />
+    <Compile Include="Json\JavaScriptUtils.cs" />
+    <Compile Include="Json\JsonConverter.cs" />
+    <Compile Include="Json\JsonConverterCollection.cs" />
+    <Compile Include="Json\JsonHandler.cs" />
+    <Compile Include="Json\JsonReader.cs" />
+    <Compile Include="Json\JsonReaderException.cs" />
+    <Compile Include="Json\JsonSerializationException.cs" />
+    <Compile Include="Json\JsonSerializer.cs" />
+    <Compile Include="Json\JsonToken.cs" />
+    <Compile Include="Json\JsonWriter.cs" />
+    <Compile Include="Json\JsonWriterException.cs" />
+    <Compile Include="Json\StringBuffer.cs" />
+    <Compile Include="Json\Utilities\CollectionUtils.cs" />
+    <Compile Include="Json\Utilities\HandlerBase.cs" />
+    <Compile Include="Json\Utilities\ReflectionUtils.cs" />
+    <Compile Include="Json\Utilities\StringUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebUI\Ajax\AjaxRequest.cs" />
+    <Compile Include="WebUI\Ajax\CallbackParam.cs" />
+    <Compile Include="WebUI\Ajax\MasterAjaxPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUI\FormHtmlTextWriter.cs" />
+    <Compile Include="WebUI\MasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUI\WebHelper.cs" />
+    <Compile Include="WebUI\Ajax\AjaxPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUI\UserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUI\Page.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUI\Ajax\IAjaxProcessEventHandler.cs">
+    </Compile>
+    <Compile Include="WebUI\Ajax\IAjaxInitEventHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ajax.js" />
+    <EmbeddedResource Include="Resources\template.js" />
+    <EmbeddedResource Include="Resources\request.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\datepicker\calendar.js" />
+    <Content Include="Controls\datepicker\config.js" />
+    <Content Include="Controls\datepicker\lang\en.js" />
+    <Content Include="Controls\datepicker\lang\zh-cn.js" />
+    <Content Include="Controls\datepicker\lang\zh-tw.js" />
+    <Content Include="Controls\datepicker\My97DatePicker.htm" />
+    <Content Include="Controls\datepicker\skin\datePicker.gif" />
+    <Content Include="Controls\datepicker\skin\default\datepicker.css" />
+    <Content Include="Controls\datepicker\skin\default\img.gif" />
+    <Content Include="Controls\datepicker\skin\WdatePicker.css" />
+    <Content Include="Controls\datepicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Controls\datepicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Controls\datepicker\skin\whyGreen\img.gif" />
+    <Content Include="Controls\datepicker\WdatePicker.js" />
+    <Content Include="Controls\dialog\dialog.js" />
+    <Content Include="Controls\dialog\images\dialog_bg.jpg" />
+    <Content Include="Controls\dialog\images\dialog_cb.png" />
+    <Content Include="Controls\dialog\images\dialog_closebtn.gif" />
+    <Content Include="Controls\dialog\images\dialog_closebtn.png" />
+    <Content Include="Controls\dialog\images\dialog_closebtn_over.gif" />
+    <Content Include="Controls\dialog\images\dialog_closebtn_over.png" />
+    <Content Include="Controls\dialog\images\dialog_ct.png" />
+    <Content Include="Controls\dialog\images\dialog_footercenter.png" />
+    <Content Include="Controls\dialog\images\dialog_footerleft.png" />
+    <Content Include="Controls\dialog\images\dialog_footerright.png" />
+    <Content Include="Controls\dialog\images\dialog_lb.png" />
+    <Content Include="Controls\dialog\images\dialog_lt.png" />
+    <Content Include="Controls\dialog\images\dialog_mc.gif" />
+    <Content Include="Controls\dialog\images\dialog_mc.png" />
+    <Content Include="Controls\dialog\images\dialog_mlb.png" />
+    <Content Include="Controls\dialog\images\dialog_mlm.png" />
+    <Content Include="Controls\dialog\images\dialog_mlt.png" />
+    <Content Include="Controls\dialog\images\dialog_mrb.png" />
+    <Content Include="Controls\dialog\images\dialog_mrm.png" />
+    <Content Include="Controls\dialog\images\dialog_mrt.png" />
+    <Content Include="Controls\dialog\images\dialog_rb.png" />
+    <Content Include="Controls\dialog\images\dialog_rt.png" />
+    <Content Include="Controls\dialog\images\foot_bg1.gif" />
+    <Content Include="Controls\dialog\images\foot_bg2.gif" />
+    <Content Include="Controls\dialog\images\icons.gif" />
+    <Content Include="Controls\dialog\images\icon_alert.gif" />
+    <Content Include="Controls\dialog\images\icon_dialog.gif" />
+    <Content Include="Controls\dialog\images\icon_query.gif" />
+    <Content Include="Controls\htmleditor\blankpage.htm" />
+    <Content Include="Controls\htmleditor\ColorSelect.htm" />
+    <Content Include="Controls\htmleditor\colorSelect.js" />
+    <Content Include="Controls\htmleditor\editfunc.js" />
+    <Content Include="Controls\htmleditor\editor.css" />
+    <Content Include="Controls\htmleditor\editor.htm" />
+    <Content Include="Controls\htmleditor\editor.js" />
+    <Content Include="Controls\htmleditor\FontFaceSelect.htm" />
+    <Content Include="Controls\htmleditor\FontSizeSelect.htm" />
+    <Content Include="Controls\htmleditor\images\1.gif" />
+    <Content Include="Controls\htmleditor\images\10.gif" />
+    <Content Include="Controls\htmleditor\images\11.gif" />
+    <Content Include="Controls\htmleditor\images\12.gif" />
+    <Content Include="Controls\htmleditor\images\13.gif" />
+    <Content Include="Controls\htmleditor\images\14.gif" />
+    <Content Include="Controls\htmleditor\images\15.gif" />
+    <Content Include="Controls\htmleditor\images\16.gif" />
+    <Content Include="Controls\htmleditor\images\17.gif" />
+    <Content Include="Controls\htmleditor\images\18.gif" />
+    <Content Include="Controls\htmleditor\images\19.gif" />
+    <Content Include="Controls\htmleditor\images\2.gif" />
+    <Content Include="Controls\htmleditor\images\20.gif" />
+    <Content Include="Controls\htmleditor\images\3.gif" />
+    <Content Include="Controls\htmleditor\images\4.gif" />
+    <Content Include="Controls\htmleditor\images\5.gif" />
+    <Content Include="Controls\htmleditor\images\6.gif" />
+    <Content Include="Controls\htmleditor\images\7.gif" />
+    <Content Include="Controls\htmleditor\images\8.gif" />
+    <Content Include="Controls\htmleditor\images\9.gif" />
+    <Content Include="Controls\htmleditor\images\bg.gif" />
+    <Content Include="Controls\htmleditor\images\line.gif" />
+    <Content Include="Controls\htmleditor\portraitSelect.htm" />
+    <Content Include="Controls\htmleditor\portraitSelect.js" />
+    <Content Include="Controls\htmleditor\smile\49.gif" />
+    <Content Include="Controls\htmleditor\smile\50.gif" />
+    <Content Include="Controls\htmleditor\smile\51.gif" />
+    <Content Include="Controls\htmleditor\smile\52.gif" />
+    <Content Include="Controls\htmleditor\smile\53.gif" />
+    <Content Include="Controls\htmleditor\smile\54.gif" />
+    <Content Include="Controls\htmleditor\smile\55.gif" />
+    <Content Include="Controls\htmleditor\smile\56.gif" />
+    <Content Include="Controls\htmleditor\smile\57.gif" />
+    <Content Include="Controls\htmleditor\smile\58.gif" />
+    <Content Include="Controls\htmleditor\smile\59.gif" />
+    <Content Include="Controls\htmleditor\smile\60.gif" />
+    <Content Include="Controls\htmleditor\smile\61.gif" />
+    <Content Include="Controls\htmleditor\smile\62.gif" />
+    <Content Include="Controls\htmleditor\smile\63.gif" />
+    <Content Include="Controls\htmleditor\smile\64.gif" />
+    <Content Include="Controls\htmleditor\smile\65.gif" />
+    <Content Include="Controls\htmleditor\smile\66.gif" />
+    <Content Include="Controls\htmleditor\smile\67.gif" />
+    <Content Include="Controls\htmleditor\smile\68.gif" />
+    <Content Include="Controls\htmleditor\smile\69.gif" />
+    <Content Include="Controls\htmleditor\smile\70.gif" />
+    <Content Include="Controls\htmleditor\smile\71.gif" />
+    <Content Include="Controls\htmleditor\smile\72.gif" />
+    <Content Include="Controls\htmleditor\smile\73.gif" />
+    <Content Include="Controls\htmleditor\smile\74.gif" />
+    <Content Include="Controls\htmleditor\smile\75.gif" />
+    <Content Include="Controls\htmleditor\smile\76.gif" />
+    <Content Include="Controls\htmleditor\smile\77.gif" />
+    <Content Include="Controls\htmleditor\smile\78.gif" />
+    <Content Include="Controls\htmleditor\smile\79.gif" />
+    <Content Include="Controls\htmleditor\smile\80.gif" />
+    <Content Include="Controls\htmleditor\smile\81.gif" />
+    <Content Include="Controls\htmleditor\smile\82.gif" />
+    <Content Include="Controls\htmleditor\smile\83.gif" />
+    <Content Include="Controls\htmleditor\smile\84.gif" />
+    <Content Include="Controls\htmleditor\smile\smile01.gif" />
+    <Content Include="Controls\htmleditor\smile\smile02.gif" />
+    <Content Include="Controls\htmleditor\smile\smile03.gif" />
+    <Content Include="Controls\htmleditor\smile\smile04.gif" />
+    <Content Include="Controls\htmleditor\smile\smile05.gif" />
+    <Content Include="Controls\htmleditor\smile\smile06.gif" />
+    <Content Include="Controls\htmleditor\smile\smile07.gif" />
+    <Content Include="Controls\htmleditor\smile\smile08.gif" />
+    <Content Include="Controls\htmleditor\smile\smile09.gif" />
+    <Content Include="Controls\htmleditor\smile\smile10.gif" />
+    <Content Include="Controls\htmleditor\smile\smile11.gif" />
+    <Content Include="Controls\htmleditor\smile\smile12.gif" />
+    <Content Include="Controls\htmleditor\smile\smile13.gif" />
+    <Content Include="Controls\htmleditor\smile\smile14.gif" />
+    <Content Include="Controls\htmleditor\smile\smile15.gif" />
+    <Content Include="Controls\htmleditor\smile\smile16.gif" />
+    <Content Include="Controls\htmleditor\smile\smile17.gif" />
+    <Content Include="Controls\htmleditor\smile\smile18.gif" />
+    <Content Include="Controls\htmleditor\smile\smile19.gif" />
+    <Content Include="Controls\htmleditor\smile\smile20.gif" />
+    <Content Include="Controls\htmleditor\smile\smile21.gif" />
+    <Content Include="Controls\htmleditor\smile\smile22.gif" />
+    <Content Include="Controls\htmleditor\smile\smile23.gif" />
+    <Content Include="Controls\htmleditor\smile\smile24.gif" />
+    <Content Include="Controls\htmleditor\smile\smile25.gif" />
+    <Content Include="Controls\htmleditor\smile\smile26.gif" />
+    <Content Include="Controls\htmleditor\smile\smile27.gif" />
+    <Content Include="Controls\htmleditor\smile\smile28.gif" />
+    <Content Include="Controls\htmleditor\smile\smile29.gif" />
+    <Content Include="Controls\htmleditor\smile\smile30.gif" />
+    <Content Include="Controls\htmleditor\smile\smile31.gif" />
+    <Content Include="Controls\htmleditor\smile\smile32.gif" />
+    <Content Include="Controls\htmleditor\smile\smile33.gif" />
+    <Content Include="Controls\htmleditor\smile\smile34.gif" />
+    <Content Include="Controls\htmleditor\smile\smile35.gif" />
+    <Content Include="Controls\htmleditor\smile\smile36.gif" />
+    <Content Include="Controls\htmleditor\smile\smile37.gif" />
+    <Content Include="Controls\htmleditor\smile\smile38.gif" />
+    <Content Include="Controls\htmleditor\smile\smile39.gif" />
+    <Content Include="Controls\htmleditor\smile\smile40.gif" />
+    <Content Include="Controls\htmleditor\smile\smile41.gif" />
+    <Content Include="Controls\htmleditor\smile\smile42.gif" />
+    <Content Include="Controls\htmleditor\smile\smile43.gif" />
+    <Content Include="Controls\htmleditor\smile\smile44.gif" />
+    <Content Include="Controls\htmleditor\smile\smile45.gif" />
+    <Content Include="Controls\htmleditor\smile\smile46.gif" />
+    <Content Include="Controls\htmleditor\smile\smile47.gif" />
+    <Content Include="Controls\htmleditor\smile\smile48.gif" />
+    <EmbeddedResource Include="Resources\pager.css" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
