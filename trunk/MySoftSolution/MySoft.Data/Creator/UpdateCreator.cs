@@ -23,7 +23,7 @@ namespace MySoft.Data
         private List<FieldValue> fvlist;
 
         /// <summary>
-        /// 实体化UpdateCreator
+        /// 实例化UpdateCreator
         /// </summary>
         protected UpdateCreator()
         {

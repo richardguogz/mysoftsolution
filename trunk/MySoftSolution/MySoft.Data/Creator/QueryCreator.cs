@@ -36,7 +36,7 @@ namespace MySoft.Data
         private List<Field> fieldList;
 
         /// <summary>
-        /// 实体化QueryCreater
+        /// 实例化QueryCreater
         /// </summary>
         protected QueryCreator()
         {

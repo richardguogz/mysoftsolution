@@ -24,7 +24,7 @@ namespace MySoft.Data
         private List<FieldValue> fvlist;
 
         /// <summary>
-        /// 实体化InsertCreator
+        /// 实例化InsertCreator
         /// </summary>
         protected InsertCreator()
         {
