@@ -22,7 +22,7 @@ namespace MySoft.Data
         private IList<WhereClip> whereList;
 
         /// <summary>
-        /// 实体化DeleteCreator
+        /// 实例化DeleteCreator
         /// </summary>
         protected DeleteCreator()
         {
