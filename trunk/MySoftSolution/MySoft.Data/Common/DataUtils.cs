@@ -136,12 +136,19 @@ namespace MySoft.Data
             if (value == DBNull.Value || value == null)
                 return default(T);
 
-            object obj = ConvertValue(typeof(T), value);
-            if (obj == null)
+            if (value is T)
             {
-                return default(T);
+                return (T)value;
             }
-            return (T)obj;
+            else
+            {
+                object obj = ConvertValue(typeof(T), value);
+                if (obj == null)
+                {
+                    return default(T);
+                }
+                return (T)obj;
+            }
         }
 
         /// <summary>
