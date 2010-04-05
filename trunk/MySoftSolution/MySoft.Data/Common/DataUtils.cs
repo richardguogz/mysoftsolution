@@ -170,11 +170,9 @@ namespace MySoft.Data
             else
             {
                 Type valueType = value.GetType();
-                if (type == valueType)
-                {
-                    return value;
-                }
-                else if (type == typeof(object))
+
+                //如果当前值是从类型Type分配
+                if (type.IsAssignableFrom(valueType))
                 {
                     return value;
                 }
