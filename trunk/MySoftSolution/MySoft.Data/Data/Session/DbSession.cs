@@ -234,6 +234,24 @@ namespace MySoft.Data
             dbProvider.OnLog -= handler;
         }
 
+        /// <summary>
+        /// 注册一个日志事件
+        /// </summary>
+        /// <param name="handler"></param>
+        public void RegisterNoExecuteSqlLogger(LogHandler handler)
+        {
+            dbProvider.OnNoExecuteLog += handler;
+        }
+
+        /// <summary>
+        /// 取消一个日志事件
+        /// </summary>
+        /// <param name="handler"></param>
+        public void UnregisterNoExecuteSqlLogger(LogHandler handler)
+        {
+            dbProvider.OnNoExecuteLog -= handler;
+        }
+
         #endregion
 
         #region 常用操作(指定表名)

@@ -427,7 +427,7 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 											   .LeftJoin<C>(B._.PID == C._.PID);
    DbSession.Default.From<A>(tr).Select(A._.All,B._.Name,C._PName).ToTable();
    
-版本号：2.7.3.1 (2.7.3第一次修正)
+版本号：2.7.3 (2.7.3第一次修正)
 
 1.修正bool字段new出来时不能更新的bug
 	对new出来的对象更新进行处理。
@@ -436,4 +436,9 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 	
 2.将Original对象名更改为Old，修正Old赋值不正确的bug
 	只有当前对象从数据库中读取并且更改时才会对Old对象赋值
+
+3.在Entity对象上增加一个ToRowReader方法，可以按字段名来读取数据
+  Berin-230760
    
+4.修正了SourceList.ToTable()中的一个bug.
+  当List数据项中属性为类或结构时,调用ToTable()会出错！

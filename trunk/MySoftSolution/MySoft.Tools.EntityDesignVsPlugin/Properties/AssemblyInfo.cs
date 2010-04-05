@@ -11,4 +11,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: AssemblyVersion("2.7.3")]
-[assembly: AssemblyFileVersion("2.7.310.0326")]
+[assembly: AssemblyFileVersion("2.7.310.0405")]

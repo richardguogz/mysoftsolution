@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySoft.Data.Design;
+using System.Data;
 
 namespace MySoft.Data
 {
@@ -46,6 +47,27 @@ namespace MySoft.Data
                     return DataUtils.ConvertType<IEntityBase, TEntity>(this);
 
                 return default(TEntity);
+            }
+        }
+
+
+        /// <summary>
+        /// 返回一个行阅读对象
+        /// </summary>
+        public IRowReader ToRowReader()
+        {
+            lock (this)
+            {
+                ISourceList<EntityBase> list = new SourceList<EntityBase>();
+                list.Add(this);
+
+                ISourceTable table = list.ToTable();
+                if (table.RowCount == 0)
+                {
+                    return null;
+                }
+
+                return table[0];
             }
         }
 

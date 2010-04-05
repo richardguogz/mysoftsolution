@@ -20,6 +20,11 @@ namespace MySoft.Data
         TEntity As<TEntity>();
 
         /// <summary>
+        /// 返回一个行阅读对象
+        /// </summary>
+        IRowReader ToRowReader();
+
+        /// <summary>
         /// 克隆一个对象
         /// </summary>
         /// <returns></returns>

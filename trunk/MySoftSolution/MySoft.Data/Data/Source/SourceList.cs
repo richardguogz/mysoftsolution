@@ -176,17 +176,17 @@ namespace MySoft.Data
         /// <returns></returns>
         private DataTable GetDataTable()
         {
+            if (this.Count == 0) return null;
+
             #region 对list进行转换
 
             DataTable dt = new DataTable();
-            dt.TableName = typeof(T).Name;
+            dt.TableName = this[0].GetType().Name;
 
-            T obj = DataUtils.CreateInstance<T>();
-            PropertyInfo[] plist = obj.GetType().GetProperties();
+            PropertyInfo[] plist = this[0].GetType().GetProperties();
             foreach (PropertyInfo p in plist)
             {
                 Type propertyType = p.PropertyType;
-                if (!CanUseType(propertyType)) continue; //shallow only
 
                 //nullables must use underlying types
                 if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -214,14 +214,6 @@ namespace MySoft.Data
             #endregion
 
             return dt;
-        }
-
-        private static bool CanUseType(Type propertyType)
-        {
-            //only strings and value types
-            if (propertyType.IsArray) return false;
-            if (!propertyType.IsValueType && propertyType != typeof(string)) return false;
-            return true;
         }
 
         #endregion

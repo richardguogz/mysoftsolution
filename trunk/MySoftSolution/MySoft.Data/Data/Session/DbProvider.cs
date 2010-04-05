@@ -140,11 +140,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (trans.Connection == null && trans.Transaction == null)
+            if (OnNoExecuteLog != null)
             {
-                return dbHelper.ExecuteNonQuery(cmd);
+                OnNoExecuteLog(GetLog(cmd));
+                return int.MinValue;
             }
-            return dbHelper.ExecuteNonQuery(cmd, trans);
+            else
+            {
+                if (trans.Connection == null && trans.Transaction == null)
+                {
+                    return dbHelper.ExecuteNonQuery(cmd);
+                }
+                return dbHelper.ExecuteNonQuery(cmd, trans);
+            }
         }
 
         public ISourceReader ExecuteReader(DbCommand cmd, DbTrans trans)
@@ -155,16 +163,24 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            IDataReader reader;
-            if (trans.Connection == null && trans.Transaction == null)
+            if (OnNoExecuteLog != null)
             {
-                reader = dbHelper.ExecuteReader(cmd);
+                OnNoExecuteLog(GetLog(cmd));
+                return null;
             }
             else
             {
-                reader = dbHelper.ExecuteReader(cmd, trans);
+                IDataReader reader;
+                if (trans.Connection == null && trans.Transaction == null)
+                {
+                    reader = dbHelper.ExecuteReader(cmd);
+                }
+                else
+                {
+                    reader = dbHelper.ExecuteReader(cmd, trans);
+                }
+                return new SourceReader(reader);
             }
-            return new SourceReader(reader);
         }
 
         public DataSet ExecuteDataSet(DbCommand cmd, DbTrans trans)
@@ -175,11 +191,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (trans.Connection == null && trans.Transaction == null)
+            if (OnNoExecuteLog != null)
             {
-                return dbHelper.ExecuteDataSet(cmd);
+                OnNoExecuteLog(GetLog(cmd));
+                return null;
             }
-            return dbHelper.ExecuteDataSet(cmd, trans);
+            else
+            {
+                if (trans.Connection == null && trans.Transaction == null)
+                {
+                    return dbHelper.ExecuteDataSet(cmd);
+                }
+                return dbHelper.ExecuteDataSet(cmd, trans);
+            }
         }
 
         public DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans)
@@ -190,11 +214,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (trans.Connection == null && trans.Transaction == null)
+            if (OnNoExecuteLog != null)
             {
-                return dbHelper.ExecuteDataTable(cmd);
+                OnNoExecuteLog(GetLog(cmd));
+                return null;
             }
-            return dbHelper.ExecuteDataTable(cmd, trans);
+            else
+            {
+                if (trans.Connection == null && trans.Transaction == null)
+                {
+                    return dbHelper.ExecuteDataTable(cmd);
+                }
+                return dbHelper.ExecuteDataTable(cmd, trans);
+            }
         }
 
         public object ExecuteScalar(DbCommand cmd, DbTrans trans)
@@ -205,11 +237,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (trans.Connection == null && trans.Transaction == null)
+            if (OnNoExecuteLog != null)
             {
-                return dbHelper.ExecuteScalar(cmd);
+                OnNoExecuteLog(GetLog(cmd));
+                return null;
             }
-            return dbHelper.ExecuteScalar(cmd, trans);
+            else
+            {
+                if (trans.Connection == null && trans.Transaction == null)
+                {
+                    return dbHelper.ExecuteScalar(cmd);
+                }
+                return dbHelper.ExecuteScalar(cmd, trans);
+            }
         }
 
         /// <summary>
@@ -592,6 +632,11 @@ namespace MySoft.Data
         /// OnLog event.
         /// </summary>
         public event LogHandler OnLog;
+
+        /// <summary>
+        /// OnLog event.
+        /// </summary>
+        public event LogHandler OnNoExecuteLog;
 
         #endregion
 

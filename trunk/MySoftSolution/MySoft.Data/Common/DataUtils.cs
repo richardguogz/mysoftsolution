@@ -49,8 +49,7 @@ namespace MySoft.Data
             var list = new List<FieldInfo>(fiels);
             foreach (PropertyInfo p in type.GetProperties())
             {
-                if (p.PropertyType.IsClass) continue;
-
+                if (!CanUseType(p.PropertyType)) continue; //shallow only
                 object value = GetPropertyValue(entity, p.Name);
                 if (value == null) continue;
 
@@ -60,6 +59,14 @@ namespace MySoft.Data
             }
 
             return (T)t;
+        }
+
+        private static bool CanUseType(Type propertyType)
+        {
+            //only strings and value types
+            if (propertyType.IsArray) return false;
+            if (!propertyType.IsValueType && propertyType != typeof(string)) return false;
+            return true;
         }
 
         /// <summary>
