@@ -425,9 +425,7 @@ namespace MySoft.Data
             ISourceList<TOutput> list = new SourceList<TOutput>();
             for (int index = 0; index < this.RowCount; index++)
             {
-                //读取数据到实体
-                SourceRow row = new SourceRow(this.Rows[index]);
-                list.Add(handler(row));
+                list.Add(handler(this[index]));
             }
             return list;
         }
