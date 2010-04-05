@@ -413,6 +413,13 @@ namespace MySoft.Data
 
         #endregion
 
+        // 摘要:
+        //     执行与释放或重置非托管资源相关的应用程序定义的任务。
+        public void Dispose()
+        {
+            this.row = null;
+        }
+
         #endregion
     }
 

@@ -10,7 +10,7 @@ namespace MySoft.Data
     /// <summary>
     /// 数据源接口
     /// </summary>
-    public interface ISourceTable : IListConvert<IRowReader>, IListSource
+    public interface ISourceTable : IListConvert<IRowReader>, IListSource, IDisposable
     {
         #region 常用方法
 

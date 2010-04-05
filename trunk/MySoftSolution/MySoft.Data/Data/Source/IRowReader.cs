@@ -7,7 +7,7 @@ namespace MySoft.Data
     /// <summary>
     /// 行数据阅读器
     /// </summary>
-    public interface IRowReader
+    public interface IRowReader : IDisposable
     {
         /// <summary>
         /// 获取当前DataSource
