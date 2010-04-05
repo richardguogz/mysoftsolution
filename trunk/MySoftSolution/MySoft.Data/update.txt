@@ -442,3 +442,5 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
    
 4.修正了SourceList.ToTable()中的一个bug.
   当List数据项中属性为类或结构时,调用ToTable()会出错！
+  
+5.增加了SourceTable释放托管资源的接口Dispose();
