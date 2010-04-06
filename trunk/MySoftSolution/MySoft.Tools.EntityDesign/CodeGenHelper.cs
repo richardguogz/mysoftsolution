@@ -219,6 +219,12 @@ namespace MySoft.Tools.EntityDesign
             }
 
             DescriptionAttribute ca = GetPropertyAttribute<DescriptionAttribute>(item);
+            string typeName = item.PropertyType.Name;
+            if (item.PropertyType.IsGenericType && item.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                typeName = Nullable.GetUnderlyingType(item.PropertyType).Name + "(可空)";
+            }
+
             if (ca != null)
             {
                 //sbProperties.Append("\t\t/// <summary>\r\n");
@@ -226,13 +232,13 @@ namespace MySoft.Tools.EntityDesign
                 //sbProperties.Append(ca.Content.Replace("\n", "\n\t\t/// "));
                 //sbProperties.Append("\r\n\t\t/// </summary>\r\n");
                 memberfield.Comments.Add(new CodeCommentStatement("<summary>", true));
-                memberfield.Comments.Add(new CodeCommentStatement(ca.Description + string.Format(" - 字段名：{0} - 数据类型：{1}", fieldName, item.PropertyType.Name), true));
+                memberfield.Comments.Add(new CodeCommentStatement(ca.Description + string.Format(" - 字段名：{0} - 数据类型：{1}", fieldName, typeName), true));
                 memberfield.Comments.Add(new CodeCommentStatement("</summary>", true));
             }
             else
             {
                 memberfield.Comments.Add(new CodeCommentStatement("<summary>", true));
-                memberfield.Comments.Add(new CodeCommentStatement(string.Format("字段名：{0} - 数据类型：{1}", fieldName, item.PropertyType.Name), true));
+                memberfield.Comments.Add(new CodeCommentStatement(string.Format("字段名：{0} - 数据类型：{1}", fieldName, typeName), true));
                 memberfield.Comments.Add(new CodeCommentStatement("</summary>", true));
             }
 
