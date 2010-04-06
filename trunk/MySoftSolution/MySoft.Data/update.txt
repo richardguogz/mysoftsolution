@@ -429,8 +429,8 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
    
 版本号：2.7.3 (2.7.3第一次修正)
 
-1.修正bool字段new出来时不能更新的bug
-	对new出来的对象更新进行处理。
+1.修正bool字段在new出来的对象时不能更新的bug
+	对new出来的对象更新进行特殊处理。
 	new出来的对象更新时会更新所有提交的值
 	如果从数据库中读出的实体，则只更新被修改过的值
 	
@@ -438,8 +438,7 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 	只有当前对象从数据库中读取并且更改时才会对Old对象赋值
 
 3.在Entity对象上增加一个ToRowReader方法，可以按字段名来读取数据
-  Berin-230760
-   
+
 4.修正了SourceList.ToTable()中的一个bug.
   当List数据项中属性为类或结构时,调用ToTable()会出错！
   
