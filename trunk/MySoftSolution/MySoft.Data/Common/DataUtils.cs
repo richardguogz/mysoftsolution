@@ -451,7 +451,10 @@ namespace MySoft.Data
             }
             catch
             {
-                //出错不做处理
+                if (isAccess)
+                    sql = sql.Replace("{0}", leftToken.ToString()).Replace("{1}", rightToken.ToString()).Replace("{2}", '('.ToString()).Replace("{3}", ')'.ToString());
+                else
+                    sql = sql.Replace("{0}", leftToken.ToString()).Replace("{1}", rightToken.ToString()).Replace("{2}", ' '.ToString()).Replace("{3}", ' '.ToString());
             }
 
             return sql.Trim().Replace(" . ", ".")
