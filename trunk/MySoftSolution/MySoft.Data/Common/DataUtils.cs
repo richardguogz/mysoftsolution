@@ -434,14 +434,7 @@ namespace MySoft.Data
             }
             else
             {
-                string sqlvalue = val.ToString();
-
-                // 去除不合法的字符，防止SQL注入式攻击
-                //sqlvalue = sqlvalue.Replace("'", "''");
-                //sqlvalue = sqlvalue.Replace("--", "");
-                //sqlvalue = sqlvalue.Replace(";", "");
-
-                return string.Format("N'{0}'", sqlvalue);
+                return string.Format("N'{0}'", val.ToString());
             }
         }
 
@@ -449,10 +442,17 @@ namespace MySoft.Data
         {
             if (sql == null) return string.Empty;
 
-            if (isAccess)
-                sql = string.Format(sql, leftToken, rightToken, '(', ')');
-            else
-                sql = string.Format(sql, leftToken, rightToken, ' ', ' ');
+            try
+            {
+                if (isAccess)
+                    sql = string.Format(sql, leftToken, rightToken, '(', ')');
+                else
+                    sql = string.Format(sql, leftToken, rightToken, ' ', ' ');
+            }
+            catch
+            {
+                //出错不做处理
+            }
 
             return sql.Trim().Replace(" . ", ".")
                             .Replace(" , ", ",")
