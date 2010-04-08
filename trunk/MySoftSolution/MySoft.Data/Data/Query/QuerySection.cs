@@ -1242,9 +1242,7 @@ namespace MySoft.Data
 
                 //将表名和key合并,考虑多会有多个数据库存在的因素
                 //一般情况下cacheKey为查询字符串
-
                 cacheKey = string.Concat(prefix, "|", entityName, ",", cacheKey);
-                cacheKey = dbProvider.Serialization(cacheKey);
 
                 lock (dbProvider)
                 {
