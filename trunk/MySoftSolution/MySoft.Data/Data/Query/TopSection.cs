@@ -9,12 +9,12 @@ namespace MySoft.Data
     /// Top对应的Query查询
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TopSection<T> : ITopSection<T>
+    public class TopQuerySection<T> : ITopSection<T>
         where T : Entity
     {
         private QuerySection<T> query;
         private int topSize;
-        internal TopSection(QuerySection<T> query, int topSize)
+        internal TopQuerySection(QuerySection<T> query, int topSize)
         {
             this.query = query;
             this.topSize = topSize;
