@@ -15,6 +15,10 @@ namespace MySoft.Data
         private Entity fromEntity;
         private Table fromTable;
         private QuerySection<T> query;
+        internal QuerySection<T> Query
+        {
+            get { return query; }
+        }
         private List<Entity> entityList = new List<Entity>();
         internal List<Entity> EntityList
         {
@@ -161,6 +165,12 @@ namespace MySoft.Data
 
         #endregion
 
+        //设置查询节
+        internal void SetFromSection(FromSection<T> fromSection)
+        {
+            this.query.FromSection = fromSection;
+        }
+
         #region 排序分组操作
 
         /// <summary>
@@ -304,7 +314,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public IArrayList<object> ToListResult(int startIndex, int endIndex)
+        public ArrayList<object> ToListResult(int startIndex, int endIndex)
         {
             return query.ToListResult(startIndex, endIndex);
         }
@@ -314,7 +324,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public IArrayList<object> ToListResult()
+        public ArrayList<object> ToListResult()
         {
             return query.ToListResult();
         }
@@ -326,7 +336,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>(int startIndex, int endIndex)
+        public ArrayList<TResult> ToListResult<TResult>(int startIndex, int endIndex)
         {
             return query.ToListResult<TResult>(startIndex, endIndex);
         }
@@ -336,7 +346,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>()
+        public ArrayList<TResult> ToListResult<TResult>()
         {
             return query.ToListResult<TResult>();
         }
@@ -349,7 +359,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public ISourceReader ToReader(int startIndex, int endIndex)
+        public SourceReader ToReader(int startIndex, int endIndex)
         {
             return query.ToReader(startIndex, endIndex);
         }
@@ -358,7 +368,7 @@ namespace MySoft.Data
         /// 返回一个DbReader
         /// </summary>
         /// <returns></returns>
-        public ISourceReader ToReader()
+        public SourceReader ToReader()
         {
             return query.ToReader();
         }
@@ -369,7 +379,7 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public ISourceList<T> ToList()
+        public SourceList<T> ToList()
         {
             return query.ToList();
         }
@@ -378,7 +388,7 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public ISourceList<T> ToList(int startIndex, int endIndex)
+        public SourceList<T> ToList(int startIndex, int endIndex)
         {
             return query.ToList(startIndex, endIndex);
         }
@@ -387,7 +397,7 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public ISourceList<TEntity> ToList<TEntity>() where TEntity : Entity
+        public SourceList<TEntity> ToList<TEntity>() where TEntity : Entity
         {
             return query.ToList<TEntity>();
         }
@@ -396,7 +406,7 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public ISourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex) where TEntity : Entity
+        public SourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex) where TEntity : Entity
         {
             return query.ToList<TEntity>(startIndex, endIndex);
         }
@@ -409,7 +419,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public ISourceTable ToTable(int startIndex, int endIndex)
+        public SourceTable ToTable(int startIndex, int endIndex)
         {
             return query.ToTable(startIndex, endIndex);
         }
@@ -418,7 +428,7 @@ namespace MySoft.Data
         /// 返回一个DataTable
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable()
+        public SourceTable ToTable()
         {
             return query.ToTable();
         }
@@ -455,7 +465,7 @@ namespace MySoft.Data
 
         #region 返回分页信息
 
-        public IDataPage<IList<T>> ToListPage(int pageSize, int pageIndex)
+        public DataPage<IList<T>> ToListPage(int pageSize, int pageIndex)
         {
             return query.ToListPage(pageSize, pageIndex);
         }
@@ -466,7 +476,7 @@ namespace MySoft.Data
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IDataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
+        public DataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
         {
             return query.ToTablePage(pageSize, pageIndex);
         }
@@ -620,86 +630,6 @@ namespace MySoft.Data
 
         #endregion
 
-        #region 子连接查询
-
-        public FromSection<T> InnerJoin<TJoin>(QuerySection<TJoin> joinquery, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            return InnerJoin<TJoin>(joinquery, joinquery.FromSection.TableName, onWhere);
-        }
-
-        public FromSection<T> LeftJoin<TJoin>(QuerySection<TJoin> joinquery, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            return LeftJoin<TJoin>(joinquery, joinquery.FromSection.TableName, onWhere);
-        }
-
-        public FromSection<T> RightJoin<TJoin>(QuerySection<TJoin> joinquery, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            return RightJoin<TJoin>(joinquery, joinquery.FromSection.TableName, onWhere);
-        }
-
-        #region 带别名子连接查询
-
-        public FromSection<T> InnerJoin<TJoin>(QuerySection<TJoin> joinquery, string aliasName, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            return Join<TJoin>(joinquery, aliasName, onWhere, JoinType.InnerJoin);
-        }
-
-        public FromSection<T> LeftJoin<TJoin>(QuerySection<TJoin> joinquery, string aliasName, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            return Join<TJoin>(joinquery, aliasName, onWhere, JoinType.LeftJoin);
-        }
-
-        public FromSection<T> RightJoin<TJoin>(QuerySection<TJoin> joinquery, string aliasName, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            return Join<TJoin>(joinquery, aliasName, onWhere, JoinType.RightJoin);
-        }
-
-        #endregion
-
-        private FromSection<T> Join<TJoin>(QuerySection<TJoin> joinquery, string aliasName, WhereClip onWhere, JoinType joinType)
-            where TJoin : Entity
-        {
-            string queryString = joinquery.QueryString;
-            List<Entity> list = joinquery.FromSection.EntityList;
-            foreach (Entity entity in list)
-            {
-                entity.GetTable().As(aliasName);
-            }
-            this.entityList.AddRange(list.ToArray());
-
-            if ((IField)query.PagingField == null)
-            {
-                //标识列和主键优先,包含ID的列被抛弃
-                query.PagingField = joinquery.PagingField;
-
-                if ((IField)query.PagingField != null)
-                    query.PagingField = query.PagingField.At(aliasName);
-            }
-
-            string strJoin = string.Empty;
-            if (onWhere != null)
-            {
-                strJoin = " on " + onWhere.ToString();
-            }
-
-            string join = GetJoinEnumString(joinType);
-
-            if (this.relation != null)
-            {
-                this.tableName = " {2} " + this.tableName;
-                this.relation += " {3} ";
-            }
-            this.relation += join + "(" + queryString + ") {0}" + aliasName + "{1} " + strJoin;
-
-            return this;
-        }
-
         private string GetJoinEnumString(JoinType joinType)
         {
             switch (joinType)
@@ -714,8 +644,6 @@ namespace MySoft.Data
                     return " inner join ";
             }
         }
-
-        #endregion
 
         #region 公有方法
 
@@ -772,6 +700,10 @@ namespace MySoft.Data
             {
                 return tableName;
             }
+            set
+            {
+                tableName = value;
+            }
         }
 
         private string relation;
@@ -783,7 +715,7 @@ namespace MySoft.Data
             }
             set
             {
-                this.relation = value;
+                relation = value;
             }
         }
 

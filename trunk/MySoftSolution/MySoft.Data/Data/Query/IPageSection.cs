@@ -13,12 +13,12 @@ namespace MySoft.Data
 
         T ToSingle(int pageIndex);
 
-        IArrayList<object> ToListResult(int pageIndex);
-        IArrayList<TResult> ToListResult<TResult>(int pageIndex);
+        ArrayList<object> ToListResult(int pageIndex);
+        ArrayList<TResult> ToListResult<TResult>(int pageIndex);
 
-        ISourceTable ToTable(int pageIndex);
-        ISourceList<T> ToList(int pageIndex);
+        SourceTable ToTable(int pageIndex);
+        SourceList<T> ToList(int pageIndex);
 
-        ISourceReader ToReader(int pageIndex);
+        SourceReader ToReader(int pageIndex);
     }
 }

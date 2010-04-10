@@ -15,7 +15,7 @@ namespace MySoft.Data
         public AllField()
             : base()
         {
-            this.tableName = Table.From<T>().OriginalName;
+            this.tableName = Table.GetTable<T>().OriginalName;
         }
     }
 

@@ -130,10 +130,10 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 返回一个DbTable实例
+        /// 返回一个Table实例
         /// </summary>
         /// <returns></returns>
-        public static Table From<T>()
+        public static Table GetTable<T>()
             where T : Entity
         {
             lock (dictTable)
@@ -153,33 +153,56 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 返回一个DbTable实例
+        /// 返回一个Table实例
         /// </summary>
         /// <param name="suffix">后缀名称</param>
         /// <returns></returns>
-        public static Table From<T>(string suffix)
+        public static Table GetTable<T>(string suffix)
             where T : Entity
         {
-            Table table = From<T>();
+            Table table = GetTable<T>();
             table.Suffix = suffix;
 
             return table;
         }
 
         /// <summary>
-        /// 返回一个DbTable实例
+        /// 返回一个Table实例
         /// </summary>
         /// <param name="prefix">前缀名称</param>
         /// <param name="suffix">后缀名称</param>
         /// <returns></returns>
-        public static Table From<T>(string prefix, string suffix)
+        public static Table GetTable<T>(string prefix, string suffix)
             where T : Entity
         {
-            Table table = From<T>();
+            Table table = GetTable<T>();
             table.Prefix = prefix;
             table.Suffix = suffix;
 
             return table;
+        }
+
+        /// <summary>
+        /// 返回一个表关系
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static TableRelation<T> From<T>()
+            where T : Entity
+        {
+            return From<T>(null);
+        }
+
+        /// <summary>
+        /// 返回一个表关系
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        internal static TableRelation<T> From<T>(Table table)
+            where T : Entity
+        {
+            return new TableRelation<T>(table);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace MySoft.Data
         public UpdateCreator From<T>()
             where T : Entity
         {
-            this.table = Table.From<T>();
+            this.table = Table.GetTable<T>();
             return this;
         }
 

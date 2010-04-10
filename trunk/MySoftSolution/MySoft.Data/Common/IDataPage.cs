@@ -7,7 +7,7 @@ namespace MySoft.Data
     /// <summary>
     /// 
     /// </summary>
-    public interface IDataPage
+    interface IDataPage
     {
         /// <summary>
         /// 获取或设置页大小
@@ -52,7 +52,7 @@ namespace MySoft.Data
         object DataSource { get; set; }
     }
 
-    public interface IDataPage<T> : IDataPage
+    interface IDataPage<T> : IDataPage
     {
         /// <summary>
         /// 获取或设置当前页的数据源

@@ -11,11 +11,11 @@ namespace MySoft.Data
         int Execute();
         T ToSingle<T>() where T : Entity;
 
-        ISourceList<T> ToList<T>() where T : Entity;
-        IArrayList<TResult> ToListResult<TResult>();
+        SourceList<T> ToList<T>() where T : Entity;
+        ArrayList<TResult> ToListResult<TResult>();
 
-        ISourceReader ToReader();
-        ISourceTable ToTable();
+        SourceReader ToReader();
+        SourceTable ToTable();
         DataSet ToDataSet();
 
         TResult ToScalar<TResult>();
@@ -27,11 +27,11 @@ namespace MySoft.Data
         int Execute(out IDictionary<string, object> outValues);
         T ToSingle<T>(out IDictionary<string, object> outValues) where T : Entity;
 
-        ISourceList<T> ToList<T>(out IDictionary<string, object> outValues) where T : Entity;
-        IArrayList<TResult> ToListResult<TResult>(out IDictionary<string, object> outValues);
+        SourceList<T> ToList<T>(out IDictionary<string, object> outValues) where T : Entity;
+        ArrayList<TResult> ToListResult<TResult>(out IDictionary<string, object> outValues);
 
-        ISourceReader ToReader(out IDictionary<string, object> outValues);
-        ISourceTable ToTable(out IDictionary<string, object> outValues);
+        SourceReader ToReader(out IDictionary<string, object> outValues);
+        SourceTable ToTable(out IDictionary<string, object> outValues);
         DataSet ToDataSet(out IDictionary<string, object> outValues);
 
         TResult ToScalar<TResult>(out IDictionary<string, object> outValues);

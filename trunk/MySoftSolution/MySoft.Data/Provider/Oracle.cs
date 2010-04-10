@@ -90,7 +90,6 @@ namespace MySoft.Data.Oracle
         protected override DbParameter CreateParameter(string parameterName, object val)
         {
             OracleParameter p = new OracleParameter();
-            p.ParameterName = parameterName.ToUpper();
             if (val == null || val == DBNull.Value)
             {
                 p.Value = DBNull.Value;
@@ -121,6 +120,7 @@ namespace MySoft.Data.Oracle
 
             foreach (OracleParameter p in cmd.Parameters)
             {
+                p.ParameterName = p.ParameterName.ToUpper();
                 if (p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue) continue;
                 if (p.Value == DBNull.Value) continue;
 

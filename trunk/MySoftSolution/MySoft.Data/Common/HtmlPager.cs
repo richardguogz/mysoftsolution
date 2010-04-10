@@ -150,7 +150,7 @@ namespace MySoft.Data
         /// <summary>
         /// 定义一个IDataPage属性
         /// </summary>
-        private IDataPage dataPage;
+        private DataPage dataPage;
         /// <summary>
         /// 翻页时连接字符串
         /// </summary>
@@ -237,7 +237,7 @@ namespace MySoft.Data
         /// <summary>
         /// 获取或设置DataPage
         /// </summary>
-        public IDataPage DataPage
+        public DataPage DataPage
         {
             get { return dataPage; }
             set { dataPage = value; }
@@ -248,7 +248,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="page">对应的数据源</param>
         /// <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
-        public HtmlPager(IDataPage dataPage, string linkFormat)
+        public HtmlPager(DataPage dataPage, string linkFormat)
             : this(dataPage, linkFormat, 10)
         { }
 
@@ -258,7 +258,7 @@ namespace MySoft.Data
         /// <param name="page">对应的数据源</param>
         /// <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
         /// <param name="linkSize">每屏连接条数</param>
-        public HtmlPager(IDataPage dataPage, string linkFormat, int linkSize)
+        public HtmlPager(DataPage dataPage, string linkFormat, int linkSize)
         {
             this.dataPage = dataPage;
             this.linkFormat = linkFormat;

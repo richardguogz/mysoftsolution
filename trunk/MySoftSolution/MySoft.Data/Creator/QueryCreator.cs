@@ -140,7 +140,7 @@ namespace MySoft.Data
         public QueryCreator From<T>()
             where T : Entity
         {
-            this.table = Table.From<T>();
+            this.table = Table.GetTable<T>();
             return this;
         }
 
@@ -266,7 +266,7 @@ namespace MySoft.Data
         public QueryCreator Join<T>(JoinType joinType, string where, params SQLParameter[] parameters)
             where T : Entity
         {
-            return Join(joinType, Table.From<T>().OriginalName, where, parameters);
+            return Join(joinType, Table.GetTable<T>().OriginalName, where, parameters);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace MySoft.Data
         public QueryCreator Join<T>(JoinType joinType, WhereClip where)
               where T : Entity
         {
-            return Join(joinType, Table.From<T>(), where);
+            return Join(joinType, Table.GetTable<T>(), where);
         }
 
         #endregion
@@ -355,7 +355,7 @@ namespace MySoft.Data
         public QueryCreator AddWhere<T>(string fieldName, object value)
             where T : MySoft.Data.Entity
         {
-            string tableName = Table.From<T>().OriginalName;
+            string tableName = Table.GetTable<T>().OriginalName;
             return AddWhere(tableName, fieldName, value);
         }
 
@@ -438,7 +438,7 @@ namespace MySoft.Data
         public QueryCreator AddOrder<T>(string fieldName, bool desc)
             where T : MySoft.Data.Entity
         {
-            string tableName = Table.From<T>().OriginalName;
+            string tableName = Table.GetTable<T>().OriginalName;
             return AddOrder(tableName, fieldName, desc);
         }
 
@@ -493,7 +493,7 @@ namespace MySoft.Data
         public QueryCreator AddField<T>(string fieldName)
             where T : MySoft.Data.Entity
         {
-            string tableName = Table.From<T>().OriginalName;
+            string tableName = Table.GetTable<T>().OriginalName;
             return AddField(tableName, fieldName);
         }
 

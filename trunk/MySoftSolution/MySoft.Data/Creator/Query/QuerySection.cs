@@ -110,7 +110,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public ISourceList<T> ToList<T>()
+        public SourceList<T> ToList<T>()
             where T : Entity
         {
             return query.ToList<T>();
@@ -120,7 +120,7 @@ namespace MySoft.Data
         /// 返回ISourceReader
         /// </summary>
         /// <returns></returns>
-        public ISourceReader ToReader()
+        public SourceReader ToReader()
         {
             return query.ToReader();
         }
@@ -129,7 +129,7 @@ namespace MySoft.Data
         /// 返回DataTable
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable()
+        public SourceTable ToTable()
         {
             return query.ToTable();
         }
@@ -138,7 +138,7 @@ namespace MySoft.Data
         /// 返回ISourceReader
         /// </summary>
         /// <returns></returns>
-        public ISourceReader ToReader(int topSize)
+        public SourceReader ToReader(int topSize)
         {
             return query.GetTop(topSize).ToReader();
         }
@@ -148,7 +148,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public ISourceList<T> ToList<T>(int topSize)
+        public SourceList<T> ToList<T>(int topSize)
             where T : Entity
         {
             return query.GetTop(topSize).ToList<T>();
@@ -158,7 +158,7 @@ namespace MySoft.Data
         /// 返回DataTable
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable(int topSize)
+        public SourceTable ToTable(int topSize)
         {
             return query.GetTop(topSize).ToTable();
         }
@@ -170,10 +170,10 @@ namespace MySoft.Data
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IDataPage<IList<T>> ToListPage<T>(int pageSize, int pageIndex)
+        public DataPage<IList<T>> ToListPage<T>(int pageSize, int pageIndex)
              where T : Entity
         {
-            IDataPage<IList<T>> view = new DataPage<IList<T>>(pageSize);
+            DataPage<IList<T>> view = new DataPage<IList<T>>(pageSize);
             PageSection page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;
@@ -187,9 +187,9 @@ namespace MySoft.Data
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IDataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
+        public DataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
         {
-            IDataPage<DataTable> view = new DataPage<DataTable>(pageSize);
+            DataPage<DataTable> view = new DataPage<DataTable>(pageSize);
             PageSection page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;

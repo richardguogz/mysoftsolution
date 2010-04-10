@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 可以输出Array的接口
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IArrayList<T> : IList<T>
+    interface IArrayList<T> : IList<T>
     {
         /// <summary>
         /// 获取当前索引的对象
@@ -26,13 +26,13 @@ namespace MySoft.Data
     /// <summary>
     /// 数据源接口
     /// </summary>
-    public interface ISourceList<T> : IListConvert<T>, IArrayList<T>
+    interface ISourceList<T> : IListConvert<T>, IArrayList<T>
     {
         /// <summary>
         /// 转换成SourceTable
         /// </summary>
         /// <returns></returns>
-        ISourceTable ToTable();
+        SourceTable ToTable();
 
         /// <summary>
         /// 循环item
@@ -51,7 +51,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="match"></param>
         /// <returns></returns>
-        ISourceList<T> FindAll(Predicate<T> match);
+        SourceList<T> FindAll(Predicate<T> match);
 
         #region 字典操作
 

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data;
 using System.ComponentModel;
+using System.Data;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace MySoft.Data
 {
     /// <summary>
     /// 数据源接口
     /// </summary>
-    public interface ISourceTable : IListConvert<IRowReader>, IListSource, IDisposable
+    interface ISourceTable : IListConvert<IRowReader>, IDisposable
     {
         #region 常用方法
 
@@ -35,28 +35,28 @@ namespace MySoft.Data
         /// 克隆Table
         /// </summary>
         /// <returns></returns>
-        ISourceTable Clone();
+        SourceTable Clone();
 
         /// <summary>
         /// 选择某些列
         /// </summary>
         /// <param name="names"></param>
         /// <returns></returns>
-        ISourceTable Select(params string[] names);
+        SourceTable Select(params string[] names);
 
         /// <summary>
         /// 过虑数据
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        ISourceTable Filter(string expression);
+        SourceTable Filter(string expression);
 
         /// <summary>
         /// 排序数据
         /// </summary>
         /// <param name="sort"></param>
         /// <returns></returns>
-        ISourceTable Sort(string sort);
+        SourceTable Sort(string sort);
 
         /// <summary>
         /// 添加列

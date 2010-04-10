@@ -7,14 +7,14 @@ namespace MySoft.Data
     /// <summary>
     /// 列表转换
     /// </summary>
-    public interface IListConvert<T>
+    interface IListConvert<T>
     {
         /// <summary>
         /// 返回另一类型的列表
         /// </summary>
         /// <typeparam name="TOutput"></typeparam>
         /// <returns></returns>
-        ISourceList<TOutput> ConvertTo<TOutput>();
+        SourceList<TOutput> ConvertTo<TOutput>();
 
         /// <summary>
         /// 返回另一类型的列表(输出为接口)
@@ -22,7 +22,7 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <typeparam name="IOutput"></typeparam>
         /// <returns></returns>
-        ISourceList<IOutput> ConvertTo<TOutput, IOutput>() where TOutput : IOutput;
+        SourceList<IOutput> ConvertTo<TOutput, IOutput>() where TOutput : IOutput;
 
         /// <summary>
         /// 将当前类型转成另一种类型
@@ -30,6 +30,6 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <param name="converter"></param>
         /// <returns></returns>
-        ISourceList<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter);
+        SourceList<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter);
     }
 }

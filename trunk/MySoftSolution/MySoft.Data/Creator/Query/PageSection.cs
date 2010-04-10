@@ -54,7 +54,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public ISourceReader ToReader(int pageIndex)
+        public SourceReader ToReader(int pageIndex)
         {
             return query.GetPage(pageSize).ToReader(pageIndex);
         }
@@ -65,7 +65,7 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public ISourceList<T> ToList<T>(int pageIndex)
+        public SourceList<T> ToList<T>(int pageIndex)
             where T : Entity
         {
             return query.GetPage<T>(pageSize).ToList(pageIndex);
@@ -76,7 +76,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public ISourceTable ToTable(int pageIndex)
+        public SourceTable ToTable(int pageIndex)
         {
             return query.GetPage(pageSize).ToTable(pageIndex);
         }

@@ -423,9 +423,9 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
   
   
 10.增加TableRelation对象，用来保存一组关系，用于多表关联时直接操作使用！
-   TableRelation<A> tr = new TableRelation<A>().LeftJoin<B>(A._.ID == B._.ID)
+   TableRelation<A> tr = Table.From<A>().LeftJoin<B>(A._.ID == B._.ID)
 											   .LeftJoin<C>(B._.PID == C._.PID);
-   DbSession.Default.From<A>(tr).Select(A._.All,B._.Name,C._PName).ToTable();
+   DbSession.Default.From(tr).Select(A._.All,B._.Name,C._PName).ToTable();
    
 版本号：2.7.3 (2.7.3第一次修正)
 
@@ -443,3 +443,18 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
   当List数据项中属性为类或结构时,调用ToTable()会出错！
   
 5.增加了SourceTable释放托管资源的接口Dispose();
+
+版本号：2.7.3 (2.7.3第二次修正)
+
+1.修正数据查询时条件中出现{}这样的符号时出错的bug.
+  由于{}在组件内部有特殊用途，没能对传入的字符串进行特殊处理导致。
+
+2.对TableRelation增加Select,Where,OrderBy等处理
+   TableRelation<A> tr = Table.From<A>().LeftJoin<B>(A._.ID == B._.ID)
+											   .LeftJoin<C>(B._.PID == C._.PID)
+											   .Where(A._.ID == 1)
+											   .OrderBy(A._ID.Desc)
+											   .Select(A._.All,B._.Name,C._PName)
+   DbSession.Default.From(tr).ToTable();
+   
+3.

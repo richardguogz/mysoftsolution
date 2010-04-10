@@ -70,6 +70,15 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 返回下一结果集
+        /// </summary>
+        /// <returns></returns>
+        public bool NextResult()
+        {
+            return reader.NextResult();
+        }
+
+        /// <summary>
         /// 关闭DbReader
         /// </summary>
         public void Close()
@@ -468,7 +477,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<TOutput> ConvertTo<TOutput>()
+        public SourceList<TOutput> ConvertTo<TOutput>()
         {
             return this.ConvertAll<TOutput>(p => DataUtils.ConvertType<IRowReader, TOutput>(p));
         }
@@ -479,7 +488,7 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <typeparam name="IOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<IOutput> ConvertTo<TOutput, IOutput>()
+        public SourceList<IOutput> ConvertTo<TOutput, IOutput>()
             where TOutput : IOutput
         {
             if (!typeof(TOutput).IsClass)
@@ -502,9 +511,9 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <param name="handler"></param>
         /// <returns></returns>
-        public ISourceList<TOutput> ConvertAll<TOutput>(Converter<IRowReader, TOutput> handler)
+        public SourceList<TOutput> ConvertAll<TOutput>(Converter<IRowReader, TOutput> handler)
         {
-            ISourceList<TOutput> list = new SourceList<TOutput>();
+            SourceList<TOutput> list = new SourceList<TOutput>();
             while (this.Read())
             {
                 //读取数据到实体

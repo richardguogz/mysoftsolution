@@ -24,7 +24,7 @@ namespace MySoft.Data
         /// <summary>
         /// 填充用到的数据源
         /// </summary>
-        public ISourceTable DataSource { get; set; }
+        public SourceTable DataSource { get; set; }
 
         /// <summary>
         /// 关联的数据列
@@ -46,7 +46,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="source"></param>
         /// <param name="relationName"></param>
-        public FillRelation(ISourceTable source, string relationName)
+        public FillRelation(SourceTable source, string relationName)
             : this(source, relationName, relationName)
         { }
 
@@ -55,7 +55,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="source"></param>
         /// <param name="relationName"></param>
-        public FillRelation(ISourceTable source, string parentName, string childName)
+        public FillRelation(SourceTable source, string parentName, string childName)
         {
             this.DataSource = source;
             this.ParentName = parentName;
@@ -174,7 +174,7 @@ namespace MySoft.Data
         /// 克隆Table
         /// </summary>
         /// <returns></returns>
-        public new ISourceTable Clone()
+        public new SourceTable Clone()
         {
             DataTable table = base.Copy();
             return new SourceTable(table);
@@ -185,7 +185,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="names"></param>
         /// <returns></returns>
-        public ISourceTable Select(params string[] names)
+        public SourceTable Select(params string[] names)
         {
             SourceTable st = this.Clone() as SourceTable;
             List<string> namelist = new List<string>(names);
@@ -207,7 +207,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public ISourceTable Filter(string expression)
+        public SourceTable Filter(string expression)
         {
             DataRow[] rows = base.Select(expression);
             return new SourceTable(rows);
@@ -218,7 +218,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="sort"></param>
         /// <returns></returns>
-        public ISourceTable Sort(string sort)
+        public SourceTable Sort(string sort)
         {
             DataRow[] rows = base.Select(null, sort);
             return new SourceTable(rows);
@@ -387,7 +387,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<TOutput> ConvertTo<TOutput>()
+        public SourceList<TOutput> ConvertTo<TOutput>()
         {
             return this.ConvertAll<TOutput>(p => DataUtils.ConvertType<IRowReader, TOutput>(p));
         }
@@ -398,7 +398,7 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <typeparam name="IOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<IOutput> ConvertTo<TOutput, IOutput>()
+        public SourceList<IOutput> ConvertTo<TOutput, IOutput>()
             where TOutput : IOutput
         {
             if (!typeof(TOutput).IsClass)
@@ -420,9 +420,9 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<TOutput> ConvertAll<TOutput>(Converter<IRowReader, TOutput> handler)
+        public SourceList<TOutput> ConvertAll<TOutput>(Converter<IRowReader, TOutput> handler)
         {
-            ISourceList<TOutput> list = new SourceList<TOutput>();
+            SourceList<TOutput> list = new SourceList<TOutput>();
             for (int index = 0; index < this.RowCount; index++)
             {
                 list.Add(handler(this[index]));
@@ -432,11 +432,11 @@ namespace MySoft.Data
 
         // 摘要:
         //     执行与释放或重置非托管资源相关的应用程序定义的任务。
-        public void Dispose()
+        public new void Dispose()
         {
             this.Rows.Clear();
             this.Columns.Clear();
-            this.Dispose(true);
+            base.Dispose(true);
         }
     }
 }

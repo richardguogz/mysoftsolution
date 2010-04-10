@@ -712,21 +712,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 返回一个From节
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public FromSection<T> From<T>(TableRelation<T> relation)
-            where T : Entity
-        {
-            FromSection<T> section = From<T>();
-            section.EntityList = relation.Section.EntityList;
-            section.Relation = relation.Section.Relation;
-
-            return section;
-        }
-
-        /// <summary>
         /// 返回一个From节，并可指定其别名
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -736,6 +721,19 @@ namespace MySoft.Data
             where T : Entity
         {
             return new FromSection<T>(dbProvider, this, aliasName);
+        }
+
+        /// <summary>
+        /// 返回一个From节
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public FromSection<T> From<T>(TableRelation<T> relation)
+            where T : Entity
+        {
+            FromSection<T> section = From<T>();
+            section.SetFromSection(relation.Section);
+            return section;
         }
 
         /// <summary>

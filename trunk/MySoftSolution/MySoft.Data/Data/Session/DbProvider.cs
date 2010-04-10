@@ -155,7 +155,7 @@ namespace MySoft.Data
             }
         }
 
-        public ISourceReader ExecuteReader(DbCommand cmd, DbTrans trans)
+        public SourceReader ExecuteReader(DbCommand cmd, DbTrans trans)
         {
             //调整DbCommand;
             PrepareCommand(cmd);
@@ -691,7 +691,7 @@ namespace MySoft.Data
 
                 if ((IField)pagingField == null)
                 {
-                    throw new MySoftException("Sql2000或Access请使用SetPagingField设定分页主键！");
+                    throw new MySoftException("SqlServer2000或Access请使用SetPagingField设定分页主键！");
                 }
 
                 QuerySection<T> jquery = query.CreateQuery<T>();

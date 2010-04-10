@@ -56,7 +56,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IArrayList<object> ToListResult(int pageIndex)
+        public ArrayList<object> ToListResult(int pageIndex)
         {
             int startIndex = pageSize * (pageIndex - 1) + 1;
             int endIndex = pageSize * pageIndex;
@@ -69,7 +69,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>(int pageIndex)
+        public ArrayList<TResult> ToListResult<TResult>(int pageIndex)
         {
             int startIndex = pageSize * (pageIndex - 1) + 1;
             int endIndex = pageSize * pageIndex;
@@ -103,7 +103,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public ISourceReader ToReader(int pageIndex)
+        public SourceReader ToReader(int pageIndex)
         {
             int startIndex = pageSize * (pageIndex - 1) + 1;
             int endIndex = pageSize * pageIndex;
@@ -115,7 +115,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public ISourceTable ToTable(int pageIndex)
+        public SourceTable ToTable(int pageIndex)
         {
             int startIndex = pageSize * (pageIndex - 1) + 1;
             int endIndex = pageSize * pageIndex;
@@ -127,7 +127,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public ISourceList<T> ToList(int pageIndex)
+        public SourceList<T> ToList(int pageIndex)
         {
             int startIndex = pageSize * (pageIndex - 1) + 1;
             int endIndex = pageSize * pageIndex;

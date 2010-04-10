@@ -68,7 +68,7 @@ namespace MySoft.Data
         /// 转换成SourceTable
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable()
+        public SourceTable ToTable()
         {
             return new SourceTable(this.GetDataTable());
         }
@@ -78,18 +78,17 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<TOutput> ConvertTo<TOutput>()
+        public SourceList<TOutput> ConvertTo<TOutput>()
         {
             return this.ConvertAll<TOutput>(p => DataUtils.ConvertType<T, TOutput>(p));
         }
-
 
         /// <summary>
         /// 查找符合条件的对象
         /// </summary>
         /// <param name="match"></param>
         /// <returns></returns>
-        public new ISourceList<T> FindAll(Predicate<T> match)
+        public new SourceList<T> FindAll(Predicate<T> match)
         {
             IList<T> list = base.FindAll(match);
             return new SourceList<T>(list);
@@ -101,7 +100,7 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <param name="converter"></param>
         /// <returns></returns>
-        public new ISourceList<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter)
+        public new SourceList<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter)
         {
             IList<TOutput> list = base.ConvertAll<TOutput>(converter);
             return new SourceList<TOutput>(list);
@@ -113,7 +112,7 @@ namespace MySoft.Data
         /// <typeparam name="TOutput"></typeparam>
         /// <typeparam name="IOutput"></typeparam>
         /// <returns></returns>
-        public ISourceList<IOutput> ConvertTo<TOutput, IOutput>()
+        public SourceList<IOutput> ConvertTo<TOutput, IOutput>()
             where TOutput : IOutput
         {
             if (!typeof(TOutput).IsClass)

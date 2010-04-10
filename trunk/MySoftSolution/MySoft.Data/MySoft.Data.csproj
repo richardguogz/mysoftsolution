@@ -85,8 +85,8 @@
     <Compile Include="Data\Cache\CacheInfo.cs" />
     <Compile Include="Data\Cache\CacheConfigurationSection.cs" />
     <Compile Include="Data\Query\SQLParameter.cs" />
-    <Compile Include="Data\Query\TopSection.cs" />
     <Compile Include="Common\Comparer.cs" />
+    <Compile Include="Data\Query\TopSection.cs" />
     <Compile Include="Data\Session\EntityBase.cs" />
     <Compile Include="Data\Session\TableRelation.cs" />
     <Compile Include="Data\Source\IListConvert.cs" />

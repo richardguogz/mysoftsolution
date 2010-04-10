@@ -160,6 +160,7 @@ namespace MySoft.Data
         {
             lock (this)
             {
+                removeinsertlist.Clear();
                 List<Field> fields = new List<Field>(setFields);
                 List<Field> list = new List<Field>(this.GetFields());
                 list.RemoveAll(f =>
@@ -167,7 +168,6 @@ namespace MySoft.Data
                     if (fields.Contains(f)) return true;
                     return false;
                 });
-                removeinsertlist.Clear();
                 RemoveFieldsToInsert(list);
                 Detach();
             }

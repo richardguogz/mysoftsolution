@@ -40,7 +40,7 @@ namespace MySoft.Data
         /// <param name="entity"></param>
         /// <returns></returns>
         public static T CloneEntity<T>(T entity)
-            where T : IEntityBase
+            where T : EntityBase
         {
             if (entity == null) return default(T);
             Type type = entity.GetType();
@@ -112,6 +112,7 @@ namespace MySoft.Data
                         if (value == null) continue;
                         SetPropertyValue(t, p, value);
                     }
+
                     return t;
                 }
                 catch (MySoftException ex)

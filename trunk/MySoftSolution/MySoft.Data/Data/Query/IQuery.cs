@@ -72,14 +72,14 @@ namespace MySoft.Data
 
         #region ·µ»ØÊý¾Ý
 
-        IArrayList<object> ToListResult();
-        IArrayList<object> ToListResult(int startIndex, int endIndex);
+        ArrayList<object> ToListResult();
+        ArrayList<object> ToListResult(int startIndex, int endIndex);
 
-        IArrayList<TResult> ToListResult<TResult>();
-        IArrayList<TResult> ToListResult<TResult>(int startIndex, int endIndex);
+        ArrayList<TResult> ToListResult<TResult>();
+        ArrayList<TResult> ToListResult<TResult>(int startIndex, int endIndex);
 
-        ISourceReader ToReader();
-        ISourceReader ToReader(int startIndex, int endIndex);
+        SourceReader ToReader();
+        SourceReader ToReader(int startIndex, int endIndex);
 
         TResult ToScalar<TResult>();
         object ToScalar();
@@ -87,8 +87,8 @@ namespace MySoft.Data
 
         #endregion
 
-        IDataPage<IList<T>> ToListPage(int pageSize, int pageIndex);
-        IDataPage<DataTable> ToTablePage(int pageSize, int pageIndex);
+        DataPage<IList<T>> ToListPage(int pageSize, int pageIndex);
+        DataPage<DataTable> ToTablePage(int pageSize, int pageIndex);
     }
 
     interface IQuery<T>
@@ -96,11 +96,11 @@ namespace MySoft.Data
     {
         T ToSingle();
 
-        ISourceTable ToTable();
-        ISourceTable ToTable(int startIndex, int endIndex);
+        SourceTable ToTable();
+        SourceTable ToTable(int startIndex, int endIndex);
 
-        ISourceList<T> ToList();
-        ISourceList<T> ToList(int startIndex, int endIndex);
+        SourceList<T> ToList();
+        SourceList<T> ToList(int startIndex, int endIndex);
 
         QuerySection<T> SetPagingField(Field pagingField);
         QuerySection<T> Distinct();
@@ -112,27 +112,7 @@ namespace MySoft.Data
 
         TEntity ToSingle<TEntity>() where TEntity : Entity;
 
-        ISourceList<TEntity> ToList<TEntity>() where TEntity : Entity;
-        ISourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex) where TEntity : Entity;
-    }
-
-    interface ITopSection<T>
-        where T : Entity
-    {
-        QuerySection<T> SubQuery();
-        QuerySection<T> SubQuery(string aliasName);
-        QuerySection<TSub> SubQuery<TSub>() where TSub : Entity;
-        QuerySection<TSub> SubQuery<TSub>(string aliasName) where TSub : Entity;
-
-        IArrayList<object> ToListResult();
-        IArrayList<TResult> ToListResult<TResult>();
-        ISourceList<T> ToList();
-        ISourceList<TEntity> ToList<TEntity>() where TEntity : Entity;
-        ISourceTable ToTable();
-        ISourceReader ToReader();
-
-        TResult ToScalar<TResult>();
-        object ToScalar();
-        int Count();
+        SourceList<TEntity> ToList<TEntity>() where TEntity : Entity;
+        SourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex) where TEntity : Entity;
     }
 }

@@ -20,7 +20,7 @@ namespace MySoft.Data
         #endregion
 
         int ExecuteNonQuery(DbCommand cmd, DbTrans trans);
-        ISourceReader ExecuteReader(DbCommand cmd, DbTrans trans);
+        SourceReader ExecuteReader(DbCommand cmd, DbTrans trans);
         DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans);
         object ExecuteScalar(DbCommand cmd, DbTrans trans);
 

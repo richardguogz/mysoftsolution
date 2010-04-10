@@ -20,17 +20,17 @@ namespace MySoft.Data
 
         T ToSingle<T>() where T : Entity;
 
-        ISourceReader ToReader();
-        ISourceReader ToReader(int topSize);
+        SourceReader ToReader();
+        SourceReader ToReader(int topSize);
 
-        ISourceList<T> ToList<T>() where T : Entity;
-        ISourceList<T> ToList<T>(int topSize) where T : Entity;
+        SourceList<T> ToList<T>() where T : Entity;
+        SourceList<T> ToList<T>(int topSize) where T : Entity;
 
-        ISourceTable ToTable();
-        ISourceTable ToTable(int topSize);
+        SourceTable ToTable();
+        SourceTable ToTable(int topSize);
 
-        IDataPage<IList<T>> ToListPage<T>(int pageSize, int pageIndex) where T : Entity;
-        IDataPage<DataTable> ToTablePage(int pageSize, int pageIndex);
+        DataPage<IList<T>> ToListPage<T>(int pageSize, int pageIndex) where T : Entity;
+        DataPage<DataTable> ToTablePage(int pageSize, int pageIndex);
     }
 
     interface IPageQuery
@@ -38,8 +38,8 @@ namespace MySoft.Data
         int PageCount { get; }
         int RowCount { get; }
 
-        ISourceReader ToReader(int pageIndex);
-        ISourceList<T> ToList<T>(int pageIndex) where T : Entity;
-        ISourceTable ToTable(int pageIndex);
+        SourceReader ToReader(int pageIndex);
+        SourceList<T> ToList<T>(int pageIndex) where T : Entity;
+        SourceTable ToTable(int pageIndex);
     }
 }

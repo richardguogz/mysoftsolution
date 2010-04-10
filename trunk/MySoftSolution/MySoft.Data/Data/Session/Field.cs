@@ -36,13 +36,13 @@ namespace MySoft.Data
         public Field(string fieldName)
             : base(fieldName)
         {
-            this.tableName = Table.From<T>().OriginalName;
+            this.tableName = Table.GetTable<T>().OriginalName;
         }
 
         public Field(string propertyName, string fieldName)
             : base(propertyName, null, fieldName)
         {
-            this.tableName = Table.From<T>().OriginalName;
+            this.tableName = Table.GetTable<T>().OriginalName;
         }
     }
 
@@ -732,6 +732,19 @@ namespace MySoft.Data
             where T : Entity
         {
             return new WhereClip(this.Name + " in (" + top.QueryString + ") ", top.Parameters);
+        }
+
+        /// <summary>
+        /// 进行In操作,relation为一个关联查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="relation"></param>
+        /// <returns></returns>
+        public WhereClip In<T>(TableRelation<T> relation)
+            where T : Entity
+        {
+            QuerySection<T> q = relation.Section.Query;
+            return new WhereClip(this.Name + " in (" + q.QueryString + ") ", q.Parameters);
         }
 
         /// <summary>

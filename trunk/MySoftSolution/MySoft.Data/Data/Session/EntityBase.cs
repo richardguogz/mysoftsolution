@@ -44,7 +44,7 @@ namespace MySoft.Data
             lock (this)
             {
                 if (this is TEntity)
-                    return DataUtils.ConvertType<IEntityBase, TEntity>(this);
+                    return DataUtils.ConvertType<EntityBase, TEntity>(this);
 
                 return default(TEntity);
             }
@@ -69,6 +69,21 @@ namespace MySoft.Data
 
                 return table[0];
             }
+        }
+
+        /// <summary>
+        /// 返回字典对象
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<string, object> ToDictionary()
+        {
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            foreach (Field f in GetFields())
+            {
+                object value = DataUtils.GetPropertyValue(this, f.PropertyName);
+                dict[f.OriginalName] = value;
+            }
+            return dict;
         }
 
         /// <summary>

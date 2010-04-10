@@ -10,7 +10,7 @@ namespace MySoft.Data
     /// <summary>
     /// 实体基类接口
     /// </summary>
-    public interface IEntityBase
+    interface IEntityBase
     {
         /// <summary>
         /// 转换成另一对象
@@ -23,6 +23,12 @@ namespace MySoft.Data
         /// 返回一个行阅读对象
         /// </summary>
         IRowReader ToRowReader();
+
+        /// <summary>
+        /// 返回字典对象
+        /// </summary>
+        /// <returns></returns>
+        IDictionary<string, object> ToDictionary();
 
         /// <summary>
         /// 克隆一个对象

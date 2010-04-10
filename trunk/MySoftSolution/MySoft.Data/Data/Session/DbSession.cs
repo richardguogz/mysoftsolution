@@ -655,17 +655,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 返回一个From节
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public FromSection<T> From<T>(TableRelation<T> relation)
-            where T : Entity
-        {
-            return dbTrans.From<T>(relation);
-        }
-
-        /// <summary>
         /// 返回一个From节，并可指定其别名
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -675,6 +664,17 @@ namespace MySoft.Data
             where T : Entity
         {
             return dbTrans.From<T>(aliasName);
+        }
+
+        /// <summary>
+        /// 返回一个From节
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public FromSection<T> From<T>(TableRelation<T> relation)
+            where T : Entity
+        {
+            return dbTrans.From<T>(relation);
         }
 
         /// <summary>

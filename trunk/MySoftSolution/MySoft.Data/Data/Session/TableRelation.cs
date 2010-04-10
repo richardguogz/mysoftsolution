@@ -15,10 +15,14 @@ namespace MySoft.Data
         {
             get { return section; }
         }
-
-        public TableRelation()
+        internal TableRelation(Table table)
         {
-            this.section = new FromSection<T>(Table.From<T>());
+            if (table == null)
+                this.section = new FromSection<T>(Table.GetTable<T>());
+            else
+                this.section = new FromSection<T>(table);
+
+            this.section.EntityList.Add(DataUtils.CreateInstance<T>());
         }
 
         #region 不带别名
@@ -146,5 +150,92 @@ namespace MySoft.Data
         }
 
         #endregion
+
+        #region 带别名
+
+        /// <summary>
+        /// 左关联
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="onWhere"></param>
+        /// <returns></returns>
+        internal TableRelation<T> LeftJoin<TJoin>(Table table, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            section.LeftJoin<TJoin>(table, onWhere);
+            return this;
+        }
+
+        /// <summary>
+        /// 右关联
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="onWhere"></param>
+        /// <returns></returns>
+        internal TableRelation<T> RightJoin<TJoin>(Table table, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            section.RightJoin<TJoin>(table, onWhere);
+            return this;
+        }
+
+        /// <summary>
+        /// 内关联
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="onWhere"></param>
+        /// <returns></returns>
+        internal TableRelation<T> InnerJoin<TJoin>(Table table, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            section.InnerJoin<TJoin>(table, onWhere);
+            return this;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 进行条件操作
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public TableRelation<T> Where(WhereClip where)
+        {
+            section.Where(where);
+            return this;
+        }
+
+        /// <summary>
+        /// 进行排序操作
+        /// </summary>
+        /// <param name="orderBy"></param>
+        /// <returns></returns>
+        public TableRelation<T> OrderBy(OrderByClip orderBy)
+        {
+            section.OrderBy(orderBy);
+            return this;
+        }
+
+        /// <summary>
+        /// 进行分组操作
+        /// </summary>
+        /// <param name="groupBy"></param>
+        /// <returns></returns>
+        public TableRelation<T> GroupBy(GroupByClip groupBy)
+        {
+            section.GroupBy(groupBy);
+            return this;
+        }
+
+        /// <summary>
+        /// 进行查询操作
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public TableRelation<T> Select(params Field[] fields)
+        {
+            section.Select(fields);
+            return this;
+        }
     }
 }

@@ -9,164 +9,82 @@ namespace MySoft.Data
     /// Top对应的Query查询
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TopQuerySection<T> : ITopSection<T>
+    public class TopSection<T> : QuerySection<T>
         where T : Entity
     {
-        private QuerySection<T> query;
+        private string topString;
         private int topSize;
-        internal TopQuerySection(QuerySection<T> query, int topSize)
+        internal TopSection(string topString, FromSection<T> fromSection, DbProvider dbProvider, DbTrans dbTran, Field pagingField, int topSize)
+            : base(fromSection, dbProvider, dbTran, pagingField)
         {
-            this.query = query;
+            this.topString = topString;
             this.topSize = topSize;
         }
 
-        internal string QueryString
+        internal new string QueryString
         {
             get
             {
-                return query.QueryString;
+                return topString;
             }
         }
 
-        internal SQLParameter[] Parameters
-        {
-            get
-            {
-                return query.Parameters;
-            }
-        }
-
-        #region SubQuery
+        #region 方法重载
 
         /// <summary>
-        /// 返回一个子查询
+        /// 返回结果列表
         /// </summary>
         /// <returns></returns>
-        public QuerySection<T> SubQuery()
+        public override ArrayList<object> ToListResult()
         {
-            return query.SubQuery();
+            return base.ToListResult(0, topSize);
         }
 
         /// <summary>
-        /// 返回一个子查询
-        /// </summary>
-        /// <param name="aliasName"></param>
-        /// <returns></returns>
-        public QuerySection<T> SubQuery(string aliasName)
-        {
-            return query.SubQuery(aliasName);
-        }
-
-        /// <summary>
-        /// 返回一个子查询
-        /// </summary>
-        /// <typeparam name="TSub"></typeparam>
-        /// <returns></returns>
-        public QuerySection<TSub> SubQuery<TSub>()
-            where TSub : Entity
-        {
-            return query.SubQuery<TSub>();
-        }
-
-        /// <summary>
-        /// 返回一个子查询
-        /// </summary>
-        /// <typeparam name="TSub"></typeparam>
-        /// <param name="aliasName"></param>
-        /// <returns></returns>
-        public QuerySection<TSub> SubQuery<TSub>(string aliasName)
-            where TSub : Entity
-        {
-            return query.SubQuery<TSub>(aliasName);
-        }
-
-        #endregion
-
-        #region ITopSection<T> 成员
-
-        /// <summary>
-        /// 返回Object列表
-        /// </summary>
-        /// <returns></returns>
-        public IArrayList<object> ToListResult()
-        {
-            return query.ToListResult(1, topSize);
-        }
-
-        /// <summary>
-        /// 返回Object列表
+        /// 返回结果列表
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>()
+        public override ArrayList<TResult> ToListResult<TResult>()
         {
-            return query.ToListResult<TResult>(1, topSize);
+            return base.ToListResult<TResult>(0, topSize);
         }
 
         /// <summary>
-        /// 返回T类型列表
+        /// 返回实体列表
         /// </summary>
         /// <returns></returns>
-        public ISourceList<T> ToList()
+        public override SourceList<T> ToList()
         {
-            return query.ToList(1, topSize);
+            return base.ToList(0, topSize);
         }
 
         /// <summary>
-        /// 返回TEntity类型列表
+        /// 返回实体列表
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        public ISourceList<TEntity> ToList<TEntity>()
-            where TEntity : Entity
+        public override SourceList<TEntity> ToList<TEntity>()
         {
-            return query.ToList<TEntity>(1, topSize);
+            return base.ToList<TEntity>(0, topSize);
         }
 
         /// <summary>
-        /// 返回一个DataTable
+        /// 返回阅读器
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable()
+        public override SourceReader ToReader()
         {
-            return query.ToTable(1, topSize);
+            return base.ToReader(0, topSize);
         }
 
         /// <summary>
-        /// 返回一个DataReader
+        /// 返回表数据
         /// </summary>
         /// <returns></returns>
-        public ISourceReader ToReader()
+        public override SourceTable ToTable()
         {
-            return query.ToReader(1, topSize);
-        }
-
-        /// <summary>
-        /// 返回首行首列值
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <returns></returns>
-        public TResult ToScalar<TResult>()
-        {
-            return query.ToScalar<TResult>();
-        }
-
-        /// <summary>
-        /// 返回首行首列值
-        /// </summary>
-        /// <returns></returns>
-        public object ToScalar()
-        {
-            return query.ToScalar();
-        }
-
-        /// <summary>
-        /// 返回首行首列值
-        /// </summary>
-        /// <returns></returns>
-        public int Count()
-        {
-            return query.Count();
+            return base.ToTable(0, topSize);
         }
 
         #endregion

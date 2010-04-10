@@ -216,6 +216,10 @@ namespace MySoft.Data
             {
                 return fromSection;
             }
+            set
+            {
+                fromSection = value;
+            }
         }
 
         #endregion
@@ -360,7 +364,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public ISourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex)
+        public SourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex)
             where TEntity : Entity
         {
             if (startIndex <= 0) startIndex = 1;
@@ -379,7 +383,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public ISourceList<TEntity> ToList<TEntity>()
+        public virtual SourceList<TEntity> ToList<TEntity>()
             where TEntity : Entity
         {
             QuerySection<TEntity> query = CreateQuery<TEntity>();
@@ -552,8 +556,13 @@ namespace MySoft.Data
         {
             if (topSize <= 0) throw new MySoftException("选取前N条数据值不能小于等于0！");
 
-            QuerySection<T> query = dbProvider.CreatePageQuery<T>(this, topSize, 0);
-            return new TopSection<T>(query, topSize);
+            String topString = dbProvider.CreatePageQuery<T>(this, topSize, 0).QueryString;
+            TopSection<T> top = new TopSection<T>(topString, fromSection, dbProvider, dbTran, pagingField, topSize);
+            top.Where(queryWhere).OrderBy(orderBy).GroupBy(groupBy).Having(havingWhere);
+            top.Parameters = this.Parameters;
+
+            if (fieldSelect) top.Select(fieldList.ToArray());
+            return top;
         }
 
         /// <summary>
@@ -733,7 +742,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public IArrayList<object> ToListResult(int startIndex, int endIndex)
+        public ArrayList<object> ToListResult(int startIndex, int endIndex)
         {
             if (startIndex <= 0) startIndex = 1;
             int topItem = endIndex - startIndex + 1;
@@ -745,7 +754,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public IArrayList<object> ToListResult()
+        public virtual ArrayList<object> ToListResult()
         {
             return ExcuteDataListResult<object>(this, true);
         }
@@ -757,7 +766,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>(int startIndex, int endIndex)
+        public ArrayList<TResult> ToListResult<TResult>(int startIndex, int endIndex)
         {
             if (startIndex <= 0) startIndex = 1;
             int topItem = endIndex - startIndex + 1;
@@ -769,7 +778,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>()
+        public virtual ArrayList<TResult> ToListResult<TResult>()
         {
             return ExcuteDataListResult<TResult>(this, true);
         }
@@ -782,7 +791,7 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public ISourceList<T> ToList()
+        public virtual SourceList<T> ToList()
         {
             return ExcuteDataList<T>(this, true);
         }
@@ -791,7 +800,7 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public ISourceList<T> ToList(int startIndex, int endIndex)
+        public SourceList<T> ToList(int startIndex, int endIndex)
         {
             if (startIndex <= 0) startIndex = 1;
             int topItem = endIndex - startIndex + 1;
@@ -806,7 +815,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public ISourceReader ToReader(int startIndex, int endIndex)
+        public SourceReader ToReader(int startIndex, int endIndex)
         {
             if (startIndex <= 0) startIndex = 1;
             int topItem = endIndex - startIndex + 1;
@@ -817,7 +826,7 @@ namespace MySoft.Data
         /// 返回一个DbReader
         /// </summary>
         /// <returns></returns>
-        public ISourceReader ToReader()
+        public virtual SourceReader ToReader()
         {
             return ExcuteDataReader(this, true);
         }
@@ -828,7 +837,7 @@ namespace MySoft.Data
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public ISourceTable ToTable(int startIndex, int endIndex)
+        public SourceTable ToTable(int startIndex, int endIndex)
         {
             if (startIndex <= 0) startIndex = 1;
             int topItem = endIndex - startIndex + 1;
@@ -839,7 +848,7 @@ namespace MySoft.Data
         /// 返回一个DataTable
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable()
+        public virtual SourceTable ToTable()
         {
             return ExcuteDataTable(this, true);
         }
@@ -879,26 +888,26 @@ namespace MySoft.Data
 
         #region 公用的方法
 
-        private ISourceList<TResult> GetList<TResult>(QuerySection<TResult> query, int itemCount, int skipCount)
+        private SourceList<TResult> GetList<TResult>(QuerySection<TResult> query, int itemCount, int skipCount)
             where TResult : Entity
         {
             query = dbProvider.CreatePageQuery<TResult>(query, itemCount, skipCount);
             return ExcuteDataList<TResult>(query, false);
         }
 
-        private IArrayList<TResult> GetListResult<TResult>(QuerySection<T> query, int itemCount, int skipCount)
+        private ArrayList<TResult> GetListResult<TResult>(QuerySection<T> query, int itemCount, int skipCount)
         {
             query = dbProvider.CreatePageQuery<T>(query, itemCount, skipCount);
             return ExcuteDataListResult<TResult>(query, false);
         }
 
-        private ISourceReader GetDataReader(QuerySection<T> query, int itemCount, int skipCount)
+        private SourceReader GetDataReader(QuerySection<T> query, int itemCount, int skipCount)
         {
             query = dbProvider.CreatePageQuery<T>(query, itemCount, skipCount);
             return ExcuteDataReader(query, false);
         }
 
-        private ISourceTable GetDataTable(QuerySection<T> query, int itemCount, int skipCount)
+        private SourceTable GetDataTable(QuerySection<T> query, int itemCount, int skipCount)
         {
             query = dbProvider.CreatePageQuery<T>(query, itemCount, skipCount);
             return ExcuteDataTable(query, false);
@@ -935,7 +944,7 @@ namespace MySoft.Data
 
         #region 私有方法
 
-        private IArrayList<TResult> ExcuteDataListResult<TResult>(QuerySection<T> query, bool all)
+        private ArrayList<TResult> ExcuteDataListResult<TResult>(QuerySection<T> query, bool all)
         {
             try
             {
@@ -949,12 +958,12 @@ namespace MySoft.Data
                 object obj = GetCache<T>("ListObject", cacheKey);
                 if (obj != null)
                 {
-                    return (ISourceList<TResult>)obj;
+                    return (SourceList<TResult>)obj;
                 }
 
-                using (ISourceReader reader = ExcuteDataReader(query, all))
+                using (SourceReader reader = ExcuteDataReader(query, all))
                 {
-                    IArrayList<TResult> list = new ArrayList<TResult>();
+                    ArrayList<TResult> list = new ArrayList<TResult>();
 
                     if (typeof(TResult) == typeof(object[]))
                     {
@@ -991,7 +1000,7 @@ namespace MySoft.Data
             }
         }
 
-        private ISourceList<TResult> ExcuteDataList<TResult>(QuerySection<TResult> query, bool all)
+        private SourceList<TResult> ExcuteDataList<TResult>(QuerySection<TResult> query, bool all)
             where TResult : Entity
         {
             try
@@ -1006,12 +1015,12 @@ namespace MySoft.Data
                 object obj = GetCache<TResult>("ListEntity", cacheKey);
                 if (obj != null)
                 {
-                    return (ISourceList<TResult>)obj;
+                    return (SourceList<TResult>)obj;
                 }
 
-                using (ISourceReader reader = ExcuteDataReader(query, all))
+                using (SourceReader reader = ExcuteDataReader(query, all))
                 {
-                    ISourceList<TResult> list = new SourceList<TResult>();
+                    SourceList<TResult> list = new SourceList<TResult>();
 
                     FastCreateInstanceHandler creator = DataUtils.GetFastInstanceCreator(typeof(TResult));
 
@@ -1036,7 +1045,7 @@ namespace MySoft.Data
             }
         }
 
-        private ISourceReader ExcuteDataReader<TResult>(QuerySection<TResult> query, bool all)
+        private SourceReader ExcuteDataReader<TResult>(QuerySection<TResult> query, bool all)
             where TResult : Entity
         {
             try
@@ -1064,7 +1073,7 @@ namespace MySoft.Data
             }
         }
 
-        private ISourceTable ExcuteDataTable<TResult>(QuerySection<TResult> query, bool all)
+        private SourceTable ExcuteDataTable<TResult>(QuerySection<TResult> query, bool all)
             where TResult : Entity
         {
             try
@@ -1085,7 +1094,7 @@ namespace MySoft.Data
                 object obj = GetCache<TResult>("DataTable", cacheKey);
                 if (obj != null)
                 {
-                    return (ISourceTable)obj;
+                    return (SourceTable)obj;
                 }
 
                 //添加参数到Command中
@@ -1094,7 +1103,7 @@ namespace MySoft.Data
                 using (DataTable dataTable = dbProvider.ExecuteDataTable(queryCommand, dbTran))
                 {
                     dataTable.TableName = typeof(TResult).Name;
-                    ISourceTable table = new SourceTable(dataTable);
+                    SourceTable table = new SourceTable(dataTable);
 
                     SetCache<TResult>("DataTable", cacheKey, table);
 
@@ -1276,9 +1285,9 @@ namespace MySoft.Data
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IDataPage<IList<T>> ToListPage(int pageSize, int pageIndex)
+        public DataPage<IList<T>> ToListPage(int pageSize, int pageIndex)
         {
-            IDataPage<IList<T>> view = new DataPage<IList<T>>(pageSize);
+            DataPage<IList<T>> view = new DataPage<IList<T>>(pageSize);
             PageSection<T> page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;
@@ -1292,9 +1301,9 @@ namespace MySoft.Data
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public IDataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
+        public DataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
         {
-            IDataPage<DataTable> view = new DataPage<DataTable>(pageSize);
+            DataPage<DataTable> view = new DataPage<DataTable>(pageSize);
             PageSection<T> page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;

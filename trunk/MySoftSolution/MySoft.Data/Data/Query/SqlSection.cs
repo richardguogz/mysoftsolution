@@ -96,7 +96,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public ISourceList<T> ToList<T>()
+        public SourceList<T> ToList<T>()
             where T : Entity
         {
             return GetList<T>(dbCommand, dbTran);
@@ -107,7 +107,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public IArrayList<TResult> ToListResult<TResult>()
+        public ArrayList<TResult> ToListResult<TResult>()
         {
             return GetListResult<TResult>(dbCommand, dbTran);
         }
@@ -116,7 +116,7 @@ namespace MySoft.Data
         /// 执行当前Sql命令并返回一个DbReader
         /// </summary>
         /// <returns></returns>
-        public ISourceReader ToReader()
+        public SourceReader ToReader()
         {
             return dbProvider.ExecuteReader(dbCommand, dbTran);
         }
@@ -125,7 +125,7 @@ namespace MySoft.Data
         /// 执行当前Sql命令并返回一个DataTable
         /// </summary>
         /// <returns></returns>
-        public ISourceTable ToTable()
+        public SourceTable ToTable()
         {
             DataTable dt = dbProvider.ExecuteDataTable(dbCommand, dbTran);
             return new SourceTable(dt);
@@ -163,14 +163,14 @@ namespace MySoft.Data
 
         #region 私有方法
 
-        private ISourceList<T> GetList<T>(DbCommand cmd, DbTrans dbTran)
+        private SourceList<T> GetList<T>(DbCommand cmd, DbTrans dbTran)
             where T : Entity
         {
             try
             {
                 using (ISourceReader reader = dbProvider.ExecuteReader(cmd, dbTran))
                 {
-                    ISourceList<T> list = new SourceList<T>();
+                    SourceList<T> list = new SourceList<T>();
                     FastCreateInstanceHandler creator = DataUtils.GetFastInstanceCreator(typeof(T));
 
                     while (reader.Read())
@@ -192,13 +192,13 @@ namespace MySoft.Data
             }
         }
 
-        private IArrayList<TResult> GetListResult<TResult>(DbCommand cmd, DbTrans dbTran)
+        private ArrayList<TResult> GetListResult<TResult>(DbCommand cmd, DbTrans dbTran)
         {
             try
             {
                 using (ISourceReader reader = dbProvider.ExecuteReader(cmd, dbTran))
                 {
-                    IArrayList<TResult> list = new ArrayList<TResult>();
+                    ArrayList<TResult> list = new ArrayList<TResult>();
 
                     if (typeof(TResult) == typeof(object[]))
                     {
