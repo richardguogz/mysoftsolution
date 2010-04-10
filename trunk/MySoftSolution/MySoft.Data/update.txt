@@ -460,4 +460,4 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 3.返回的数据不再返回为接口，这样可以直接使用原始对象，省去转换的麻烦，如：
   ToList()返回的为SourceList，SourceList继承于List
   ToTable()返回的为SourceTable，SourceTable继承于DataTable
-  ToReader()返回的为SourceReader，SourceReader继承于
+  ToReader()返回的为SourceReader，SourceReader通过属性DataSource来访问IDataReader
