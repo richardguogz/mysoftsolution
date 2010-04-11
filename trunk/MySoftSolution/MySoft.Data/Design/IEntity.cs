@@ -10,7 +10,7 @@ namespace MySoft.Data
     /// <summary>
     /// 实体基类接口
     /// </summary>
-    interface IEntityBase
+    public interface IEntityBase
     {
         /// <summary>
         /// 转换成另一对象
@@ -53,7 +53,7 @@ namespace MySoft.Data.Design
     /// <summary>
     /// 实体接口
     /// </summary>
-    public interface IEntity
+    public interface IEntity : IEntityBase
     {
         #region 状态操作
 
