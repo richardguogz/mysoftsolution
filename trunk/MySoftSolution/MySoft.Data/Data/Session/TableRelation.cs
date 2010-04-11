@@ -15,13 +15,9 @@ namespace MySoft.Data
         {
             get { return section; }
         }
-        internal TableRelation(Table table)
+        internal TableRelation()
         {
-            if (table == null)
-                this.section = new FromSection<T>(Table.GetTable<T>());
-            else
-                this.section = new FromSection<T>(table);
-
+            this.section = new FromSection<T>(Table.GetTable<T>());
             this.section.EntityList.Add(DataUtils.CreateInstance<T>());
         }
 
@@ -146,49 +142,6 @@ namespace MySoft.Data
             where TJoin : Entity
         {
             section.InnerJoin<TJoin>(aliasName, onWhere);
-            return this;
-        }
-
-        #endregion
-
-        #region 带别名
-
-        /// <summary>
-        /// 左关联
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="onWhere"></param>
-        /// <returns></returns>
-        internal TableRelation<T> LeftJoin<TJoin>(Table table, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            section.LeftJoin<TJoin>(table, onWhere);
-            return this;
-        }
-
-        /// <summary>
-        /// 右关联
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="onWhere"></param>
-        /// <returns></returns>
-        internal TableRelation<T> RightJoin<TJoin>(Table table, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            section.RightJoin<TJoin>(table, onWhere);
-            return this;
-        }
-
-        /// <summary>
-        /// 内关联
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="onWhere"></param>
-        /// <returns></returns>
-        internal TableRelation<T> InnerJoin<TJoin>(Table table, WhereClip onWhere)
-            where TJoin : Entity
-        {
-            section.InnerJoin<TJoin>(table, onWhere);
             return this;
         }
 
