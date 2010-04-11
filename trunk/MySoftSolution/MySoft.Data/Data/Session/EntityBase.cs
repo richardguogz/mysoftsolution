@@ -54,7 +54,7 @@ namespace MySoft.Data
         /// <summary>
         /// 返回一个行阅读对象
         /// </summary>
-        public IRowReader ToRowReader()
+        IRowReader IEntityBase.ToRowReader()
         {
             lock (this)
             {
@@ -75,7 +75,7 @@ namespace MySoft.Data
         /// 返回字典对象
         /// </summary>
         /// <returns></returns>
-        public IDictionary<string, object> ToDictionary()
+        IDictionary<string, object> IEntityBase.ToDictionary()
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
             foreach (Field f in GetFields())
