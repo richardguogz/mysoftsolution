@@ -102,8 +102,9 @@ namespace MySoft.Data
                         foreach (DbParameter p in cmd.Parameters)
                         {
                             DbParameter newp = (DbParameter)((ICloneable)p).Clone();
-                            if (!(dbProvider is Oracle.OracleProvider))
+                            if (dbProvider.SupportBatch is Oracle.OracleProvider)
                                 newp.ParameterName = string.Format("{0}_{1}", newp.ParameterName, pIndex);
+
                             cmdText = cmdText.Replace(p.ParameterName, newp.ParameterName);
                             mergeCommand.Parameters.Add(newp);
                         }

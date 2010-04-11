@@ -574,8 +574,6 @@ namespace MySoft.Data
             return fvlist;
         }
 
-        private static Random rnd = new Random();
-
         /// <summary>
         /// Makes a unique key.
         /// </summary>
@@ -598,6 +596,8 @@ namespace MySoft.Data
 
             int dupCount = 0;
             int preIndex = 0;
+
+            Random rnd = new Random(Guid.NewGuid().GetHashCode());
             for (int i = 0; i < length - prefixLength; ++i)
             {
                 int index = rnd.Next(0, 35);
@@ -610,7 +610,7 @@ namespace MySoft.Data
             }
             if (dupCount >= length - prefixLength - 2)
             {
-                rnd = new Random();
+                rnd = new Random(Guid.NewGuid().GetHashCode());
                 return MakeUniqueKey(length, prefix);
             }
 
