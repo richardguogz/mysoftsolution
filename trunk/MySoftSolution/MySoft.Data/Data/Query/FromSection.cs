@@ -69,6 +69,7 @@ namespace MySoft.Data
             this.tableName = tableName;
             this.relation = relation;
             this.entityList.AddRange(list);
+            this.query = new QuerySection<T>(this);
         }
 
         internal FromSection(string tableName, string aliasName)
@@ -81,6 +82,7 @@ namespace MySoft.Data
             {
                 this.tableName += " {0}" + aliasName + "{1}";
             }
+            this.query = new QuerySection<T>(this);
         }
 
         internal FromSection(Table table)
@@ -166,9 +168,9 @@ namespace MySoft.Data
         #endregion
 
         //设置查询节
-        internal void SetFromSection(FromSection<T> fromSection)
+        internal void SetQuerySection(QuerySection<T> query)
         {
-            this.query.FromSection = fromSection;
+            this.query = query;
         }
 
         #region 排序分组操作

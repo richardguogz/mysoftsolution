@@ -732,7 +732,11 @@ namespace MySoft.Data
             where T : Entity
         {
             FromSection<T> section = From<T>();
-            section.SetFromSection(relation.Section);
+            section.SetQuerySection(relation.Section.Query);
+
+            //给查询设置驱动与事务
+            section.Query.SetDbProvider(dbProvider, this);
+
             return section;
         }
 

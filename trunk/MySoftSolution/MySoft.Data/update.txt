@@ -461,3 +461,14 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
   ToList()返回的为SourceList，SourceList继承于List
   ToTable()返回的为SourceTable，SourceTable继承于DataTable
   ToReader()返回的为SourceReader，SourceReader通过属性DataSource来访问IDataReader
+  
+
+4.支持内联查询语法，如下：
+  select [Products].*,[CategoryName] = ( select [Categories].[CategoryName] from [Categories] 
+  where [Categories].[CategoryID] = [Products].[CategoryID] ) from [Products]
+  
+  TableRelation<Products> relation = Table.From<Products>()
+    .Select(Products._.All, new SysField<Categories>("CategoryName", Table.From<Categories>()
+    .Select(Categories._.CategoryName).Where(Categories._.CategoryID == Products._.CategoryID)));
+
+  IList<Products> list = DataAccess.DefaultSession.From(relation).ToList();

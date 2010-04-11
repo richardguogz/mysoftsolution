@@ -216,10 +216,12 @@ namespace MySoft.Data
             {
                 return fromSection;
             }
-            set
-            {
-                fromSection = value;
-            }
+        }
+
+        internal void SetDbProvider(DbProvider dbProvider, DbTrans dbTran)
+        {
+            this.dbProvider = dbProvider;
+            this.dbTran = dbTran;
         }
 
         #endregion

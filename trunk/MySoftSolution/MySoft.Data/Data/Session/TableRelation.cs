@@ -15,9 +15,14 @@ namespace MySoft.Data
         {
             get { return section; }
         }
-        internal TableRelation()
+
+        internal TableRelation(Table table)
         {
-            this.section = new FromSection<T>(Table.GetTable<T>());
+            if (table == null)
+                this.section = new FromSection<T>(null, null, Table.GetTable<T>());
+            else
+                this.section = new FromSection<T>(null, null, table);
+
             this.section.EntityList.Add(DataUtils.CreateInstance<T>());
         }
 
@@ -29,9 +34,10 @@ namespace MySoft.Data
         /// <param name="table"></param>
         /// <param name="onWhere"></param>
         /// <returns></returns>
-        public TableRelation<T> LeftJoin(Table table, WhereClip onWhere)
+        public TableRelation<T> LeftJoin<TJoin>(Table table, WhereClip onWhere)
+            where TJoin : Entity
         {
-            section.LeftJoin<TempTable>(table, onWhere);
+            section.LeftJoin<TJoin>(table, onWhere);
             return this;
         }
 
@@ -41,9 +47,10 @@ namespace MySoft.Data
         /// <param name="table"></param>
         /// <param name="onWhere"></param>
         /// <returns></returns>
-        public TableRelation<T> RightJoin(Table table, WhereClip onWhere)
+        public TableRelation<T> RightJoin<TJoin>(Table table, WhereClip onWhere)
+            where TJoin : Entity
         {
-            section.RightJoin<TempTable>(table, onWhere);
+            section.RightJoin<TJoin>(table, onWhere);
             return this;
         }
 
@@ -53,9 +60,10 @@ namespace MySoft.Data
         /// <param name="table"></param>
         /// <param name="onWhere"></param>
         /// <returns></returns>
-        public TableRelation<T> InnerJoin(Table table, WhereClip onWhere)
+        public TableRelation<T> InnerJoin<TJoin>(Table table, WhereClip onWhere)
+            where TJoin : Entity
         {
-            section.InnerJoin<TempTable>(table, onWhere);
+            section.InnerJoin<TJoin>(table, onWhere);
             return this;
         }
 
@@ -143,6 +151,55 @@ namespace MySoft.Data
         {
             section.InnerJoin<TJoin>(aliasName, onWhere);
             return this;
+        }
+
+        #endregion
+
+        #region 创建子查询
+
+        /// <summary>
+        /// 生成一个子查询
+        /// </summary>
+        /// <returns></returns>
+        public TableRelation<T> SubQuery()
+        {
+            section.SetQuerySection(section.SubQuery());
+            return this;
+        }
+
+        /// <summary>
+        /// 生成一个子查询
+        /// </summary>
+        /// <returns></returns>
+        public TableRelation<T> SubQuery(string aliasName)
+        {
+            section.SetQuerySection(section.SubQuery(aliasName));
+            return this;
+        }
+
+        /// <summary>
+        /// 生成一个子查询
+        /// </summary>
+        /// <returns></returns>
+        public TableRelation<TSub> SubQuery<TSub>()
+            where TSub : Entity
+        {
+            TableRelation<TSub> tr = new TableRelation<TSub>(null);
+            tr.section.SetQuerySection(section.SubQuery<TSub>());
+            return tr;
+        }
+
+        /// <summary>
+        /// 生成一个带别名的子查询
+        /// </summary>
+        /// <param name="aliasName"></param>
+        /// <returns></returns>
+        public TableRelation<TSub> SubQuery<TSub>(string aliasName)
+            where TSub : Entity
+        {
+            TableRelation<TSub> tr = new TableRelation<TSub>(null);
+            tr.section.SetQuerySection(section.SubQuery<TSub>(aliasName));
+            return tr;
         }
 
         #endregion

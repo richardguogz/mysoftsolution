@@ -190,7 +190,18 @@ namespace MySoft.Data
         public static TableRelation<T> From<T>()
             where T : Entity
         {
-            return new TableRelation<T>();
+            return From<T>(null);
+        }
+
+        /// <summary>
+        /// 返回一个表关系
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static TableRelation<T> From<T>(Table table)
+            where T : Entity
+        {
+            return new TableRelation<T>(table);
         }
     }
 }

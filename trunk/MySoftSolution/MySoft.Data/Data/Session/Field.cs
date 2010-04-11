@@ -10,11 +10,55 @@ namespace MySoft.Data
     /// 系统字段
     /// </summary>
     [Serializable]
-    internal class SysField : Field
+    public class SysField : Field
     {
-        public SysField(string name)
-            : base(name)
+        internal SysField(string fieldName)
+            : base(fieldName)
         { }
+
+        public SysField(string fieldName, QueryCreator creator)
+            : base(fieldName)
+        {
+            string qString = GetQuery(creator).QueryString;
+            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return base.OriginalName;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 系统字段
+    /// </summary>
+    [Serializable]
+    public class SysField<T> : Field
+        where T : Entity
+    {
+        public SysField(string fieldName, QuerySection<T> query)
+            : base(fieldName)
+        {
+            string qString = query.QueryString;
+            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
+        }
+
+        public SysField(string fieldName, TopSection<T> top)
+            : base(fieldName)
+        {
+            string qString = top.QueryString;
+            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
+        }
+
+        public SysField(string fieldName, TableRelation<T> relation)
+            : base(fieldName)
+        {
+            string qString = relation.Section.Query.QueryString;
+            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
+        }
 
         public override string Name
         {
@@ -56,10 +100,10 @@ namespace MySoft.Data
         /// 字段*
         /// </summary>
         public static readonly AllField All = new AllField();
+        protected string propertyName;
         protected string tableName;
-        private string propertyName;
-        private string fieldName;
-        private string aliasName;
+        protected string fieldName;
+        protected string aliasName;
 
         #region 内联字段
 
@@ -786,6 +830,16 @@ namespace MySoft.Data
         /// <returns></returns>
         public WhereClip In(QueryCreator creator)
         {
+            QuerySection<TempTable> query = GetQuery(creator);
+            return In<TempTable>(query);
+        }
+
+        #endregion
+
+        #region 私有方法
+
+        internal QuerySection<TempTable> GetQuery(QueryCreator creator)
+        {
             if (creator.Table == null)
             {
                 throw new MySoftException("用创建器操作时，表不能为null！");
@@ -807,13 +861,9 @@ namespace MySoft.Data
 
             QuerySection<TempTable> query = f.Select(creator.Fields).Where(creator.Where)
                     .OrderBy(creator.OrderBy);
-
-            return In<TempTable>(query);
+            return query;
         }
 
-        #endregion
-
-        #region 私有方法
 
         /// <summary>
         /// 创建一个参数方式的WhereClip
@@ -822,7 +872,7 @@ namespace MySoft.Data
         /// <param name="join"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static WhereClip CreateWhereClip(Field field, string join, object value)
+        private static WhereClip CreateWhereClip(Field field, string join, object value)
         {
             if (value == null)
             {
