@@ -90,6 +90,7 @@ namespace MySoft.Data.Oracle
         protected override DbParameter CreateParameter(string parameterName, object val)
         {
             OracleParameter p = new OracleParameter();
+            p.ParameterName = parameterName;
             if (val == null || val == DBNull.Value)
             {
                 p.Value = DBNull.Value;
