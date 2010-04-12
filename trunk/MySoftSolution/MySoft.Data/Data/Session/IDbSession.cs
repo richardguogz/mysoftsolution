@@ -21,6 +21,8 @@ namespace MySoft.Data
         DbTransaction BeginTransaction(IsolationLevel isolationLevel);
         DbConnection CreateConnection();
 
+        TParameter CreateParameter<TParameter>(string paramterName) where TParameter : DbParameter;
+
         #endregion
 
         #region ×¢²áLog

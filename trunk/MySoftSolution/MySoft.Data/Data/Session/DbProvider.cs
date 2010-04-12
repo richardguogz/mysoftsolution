@@ -252,20 +252,6 @@ namespace MySoft.Data
             }
         }
 
-        /// <summary>
-        /// 获取CommandText
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        public string GetCommandText(DbCommand cmd)
-        {
-            //调整DbCommand;
-            PrepareCommand(cmd);
-
-            //返回命令日志
-            return GetLog(cmd);
-        }
-
         #endregion
 
         #region 创建DbConnection及DbParameter
@@ -277,6 +263,18 @@ namespace MySoft.Data
         public DbConnection CreateConnection()
         {
             return dbHelper.CreateConnection();
+        }
+
+        /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <returns></returns>
+        public DbParameter CreateParameter(string paramterName)
+        {
+            DbParameter p = dbHelper.CreateParameter();
+            p.ParameterName = paramterName;
+
+            return p;
         }
 
         #endregion

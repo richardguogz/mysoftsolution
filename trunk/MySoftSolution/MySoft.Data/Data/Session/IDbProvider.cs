@@ -17,18 +17,24 @@ namespace MySoft.Data
         void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType);
         DbParameter GetParameter(DbCommand cmd, string parameterName);
 
+
+        /// <summary>
+        /// 创建DbConnection
+        /// </summary>
+        /// <returns></returns>
+        DbConnection CreateConnection();
+
+        /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <returns></returns>
+        DbParameter CreateParameter(string paramterName);
+
         #endregion
 
         int ExecuteNonQuery(DbCommand cmd, DbTrans trans);
         SourceReader ExecuteReader(DbCommand cmd, DbTrans trans);
         DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans);
         object ExecuteScalar(DbCommand cmd, DbTrans trans);
-
-        /// <summary>
-        /// 获取CommandText
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        string GetCommandText(DbCommand cmd);
     }
 }
