@@ -86,10 +86,52 @@ namespace MySoft.Data
             return paramPrefixToken + parameterName;
         }
 
-        public void AddParameter(DbCommand cmd, DbParameter parameter)
+        /// <summary>
+        /// 给命令添加参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameters"></param>
+        public void AddParameter(DbCommand cmd, DbParameter[] parameters)
         {
-            parameter.ParameterName = FormatParameter(parameter.ParameterName);
-            cmd.Parameters.Add(parameter);
+            foreach (DbParameter p in parameters)
+            {
+                string pName = FormatParameter(p.ParameterName);
+                p.ParameterName = pName;
+                cmd.Parameters.Add(p);
+
+                if (!cmd.CommandText.Contains(pName))
+                {
+                    cmd.CommandText = cmd.CommandText.Replace(p.ParameterName, pName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 给命令添加参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public void AddParameter(DbCommand cmd, SQLParameter[] parameters)
+        {
+            if (parameters == null || parameters.Length == 0) return;
+
+            foreach (SQLParameter p in parameters)
+            {
+                string pName = FormatParameter(p.Name);
+                object pValue = p.Value;
+
+                //对枚举进行特殊处理
+                if (pValue.GetType().IsEnum) pValue = Convert.ToInt32(pValue);
+
+                DbParameter dbParameter = CreateParameter(pName, pValue);
+                cmd.Parameters.Add(dbParameter);
+
+                if (!cmd.CommandText.Contains(pName))
+                {
+                    cmd.CommandText = cmd.CommandText.Replace(p.Name, pName);
+                }
+            }
         }
 
         public void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value)
@@ -558,7 +600,7 @@ namespace MySoft.Data
         internal DbCommand CreateSqlCommand(string cmdText, params SQLParameter[] plist)
         {
             DbCommand cmd = dbHelper.CreateSqlStringCommand(cmdText);
-            AddOrmParameter(cmd, plist);
+            AddParameter(cmd, plist);
             return cmd;
         }
 
@@ -570,7 +612,7 @@ namespace MySoft.Data
         internal DbCommand CreateProcCommand(string procName, params SQLParameter[] plist)
         {
             DbCommand cmd = dbHelper.CreateStoredProcCommand(procName);
-            AddOrmParameter(cmd, plist);
+            AddParameter(cmd, plist);
             return cmd;
         }
 
@@ -756,34 +798,6 @@ namespace MySoft.Data
         {
             string pName = DataUtils.MakeUniqueKey(30, "p");
             return new SQLParameter(pName, value);
-        }
-
-        /// <summary>
-        /// 给命令添加参数
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="plist"></param>
-        /// <returns></returns>
-        private void AddOrmParameter(DbCommand cmd, IList<SQLParameter> plist)
-        {
-            if (plist == null || plist.Count == 0) return;
-
-            foreach (SQLParameter p in plist)
-            {
-                string pName = FormatParameter(p.Name);
-                object pValue = p.Value;
-
-                //对枚举进行特殊处理
-                if (pValue.GetType().IsEnum) pValue = Convert.ToInt32(pValue);
-
-                DbParameter dbParameter = CreateParameter(pName, pValue);
-                cmd.Parameters.Add(dbParameter);
-
-                if (!cmd.CommandText.Contains(pName))
-                {
-                    cmd.CommandText = cmd.CommandText.Replace(p.Name, pName);
-                }
-            }
         }
 
         /// <summary>

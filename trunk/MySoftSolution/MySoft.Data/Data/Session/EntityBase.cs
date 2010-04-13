@@ -77,7 +77,7 @@ namespace MySoft.Data
         /// <returns></returns>
         IDictionary<string, object> IEntityBase.ToDictionary()
         {
-            Dictionary<string, object> dict = new Dictionary<string, object>();
+            IDictionary<string, object> dict = new Dictionary<string, object>();
             foreach (Field f in GetFields())
             {
                 object value = DataUtils.GetPropertyValue(this, f.PropertyName);

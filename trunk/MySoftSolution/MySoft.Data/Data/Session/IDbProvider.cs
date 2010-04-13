@@ -10,7 +10,22 @@ namespace MySoft.Data
     {
         #region 参数操作
 
-        void AddParameter(DbCommand cmd, DbParameter parameter);
+        /// <summary>
+        /// 给命令添加参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="plist"></param>
+        /// <returns></returns>
+        void AddParameter(DbCommand cmd, DbParameter[] parameters);
+
+        /// <summary>
+        /// 给命令添加参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="plist"></param>
+        /// <returns></returns>
+        void AddParameter(DbCommand cmd, SQLParameter[] parameters);
+
         void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, object value);
         void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size);
         void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value, int size);

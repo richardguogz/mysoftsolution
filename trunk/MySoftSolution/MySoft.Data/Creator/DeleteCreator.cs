@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 删除创建器
     /// </summary>
     [Serializable]
-    public class DeleteCreator
+    public class DeleteCreator : IDeleteCreator
     {
         /// <summary>
         /// 创建一个新的删除器

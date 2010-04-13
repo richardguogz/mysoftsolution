@@ -70,6 +70,10 @@
     <Compile Include="Common\EnumDescription.cs" />
     <Compile Include="Common\MySoftException.cs" />
     <Compile Include="Creator\DeleteCreator.cs" />
+    <Compile Include="Creator\IDeleteCreator.cs" />
+    <Compile Include="Creator\IInsertCreator.cs" />
+    <Compile Include="Creator\IQueryCreator.cs" />
+    <Compile Include="Creator\IUpdateCreator.cs" />
     <Compile Include="Creator\Query\FieldValue.cs" />
     <Compile Include="Creator\Query\IDataQuery.cs" />
     <Compile Include="Creator\InsertCreator.cs" />

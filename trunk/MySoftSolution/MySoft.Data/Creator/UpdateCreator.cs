@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 更新创建器
     /// </summary>
     [Serializable]
-    public class UpdateCreator
+    public class UpdateCreator : IUpdateCreator
     {
         /// <summary>
         /// 创建一个新的更新器
@@ -221,6 +221,30 @@ namespace MySoft.Data
         public UpdateCreator AddUpdate(string fieldName, object value)
         {
             return AddUpdate(new Field(fieldName), value);
+        }
+
+        /// <summary>
+        /// 添加一个数据字典
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public UpdateCreator AddUpdate(IDictionary<string, object> dict)
+        {
+            string[] fields = new List<string>(dict.Keys).ToArray();
+            object[] values = new List<object>(dict.Values).ToArray();
+            return AddUpdate(fields, values);
+        }
+
+        /// <summary>
+        /// 添加一个数据字典
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public UpdateCreator AddUpdate(IDictionary<Field, object> dict)
+        {
+            Field[] fields = new List<Field>(dict.Keys).ToArray();
+            object[] values = new List<object>(dict.Values).ToArray();
+            return AddUpdate(fields, values);
         }
 
         /// <summary>

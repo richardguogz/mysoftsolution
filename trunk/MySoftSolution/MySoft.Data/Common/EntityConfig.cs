@@ -85,7 +85,7 @@ namespace MySoft.Data
     public class EntityConfig
     {
         public static EntityConfig Instance = new EntityConfig();
-        private Dictionary<TableSetting, List<TableMapping>> _dictTableMapping;
+        private IDictionary<TableSetting, List<TableMapping>> _dictTableMapping;
         private EntityConfig()
         {
             LoadConfig();

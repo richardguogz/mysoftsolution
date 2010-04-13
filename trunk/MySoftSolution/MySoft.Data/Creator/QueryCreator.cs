@@ -19,7 +19,7 @@ namespace MySoft.Data
     /// 查询创建器
     /// </summary>
     [Serializable]
-    public class QueryCreator
+    public class QueryCreator : IQueryCreator
     {
         /// <summary>
         /// 创建一个新的查询器（条件为全部，排序为默认)

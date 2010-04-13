@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 插入创建器
     /// </summary>
     [Serializable]
-    public class InsertCreator
+    public class InsertCreator : IInsertCreator
     {
         /// <summary>
         /// 创建一个新的插入器
@@ -190,7 +190,31 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 添加一个数据
+        /// 添加一个数据字典
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public InsertCreator AddInsert(IDictionary<string, object> dict)
+        {
+            string[] fields = new List<string>(dict.Keys).ToArray();
+            object[] values = new List<object>(dict.Values).ToArray();
+            return AddInsert(fields, values);
+        }
+
+        /// <summary>
+        /// 添加一个数据字典
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        public InsertCreator AddInsert(IDictionary<Field, object> dict)
+        {
+            Field[] fields = new List<Field>(dict.Keys).ToArray();
+            object[] values = new List<object>(dict.Values).ToArray();
+            return AddInsert(fields, values);
+        }
+
+        /// <summary>
+        /// 添加多个数据
         /// </summary>
         /// <param name="fields"></param>
         /// <param name="values"></param>
@@ -217,7 +241,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 添加一个数据
+        /// 添加多个数据
         /// </summary>
         /// <param name="fieldNames"></param>
         /// <param name="values"></param>

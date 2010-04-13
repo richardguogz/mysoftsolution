@@ -10,7 +10,7 @@ namespace MySoft.Data
     /// </summary>
     public static class CacheUtils
     {
-        private static Dictionary<Type, object> mItemCaches = new Dictionary<Type, object>();
+        private static IDictionary<Type, object> mItemCaches = new Dictionary<Type, object>();
 
         static CacheUtils()
         {
@@ -124,7 +124,7 @@ namespace MySoft.Data
 
         private class TypeCache<T> : IDisposable
         {
-            private Dictionary<string, CacheUtils.CacheItem<T>> mCache;
+            private IDictionary<string, CacheUtils.CacheItem<T>> mCache;
 
             public TypeCache()
             {

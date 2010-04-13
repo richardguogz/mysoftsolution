@@ -29,10 +29,34 @@ namespace MySoft.Data
         /// <returns></returns>
         public ProcSection AddParameters(params DbParameter[] parameters)
         {
-            foreach (DbParameter parameter in parameters)
+            dbProvider.AddParameter(dbCommand, parameters);
+            return this;
+        }
+
+        /// <summary>
+        /// 增加多个参数到当前Proc命令
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public ProcSection AddParameters(params SQLParameter[] parameters)
+        {
+            dbProvider.AddParameter(dbCommand, parameters);
+            return this;
+        }
+
+        /// <summary>
+        /// 增加多个参数到当前Sql命令
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public ProcSection AddParameters(IDictionary<string, object> parameters)
+        {
+            List<SQLParameter> list = new List<SQLParameter>();
+            foreach (KeyValuePair<string, object> kv in parameters)
             {
-                dbProvider.AddParameter(dbCommand, parameter);
+                list.Add(new SQLParameter(kv.Key, kv.Value));
             }
+            dbProvider.AddParameter(dbCommand, list.ToArray());
             return this;
         }
 

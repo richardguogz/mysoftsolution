@@ -13,6 +13,10 @@ namespace MySoft.Data.PostgreSQL
     /// </summary>
     public class PostgreSQLProvider : DbProvider
     {
+        /// <summary>
+        /// 实例化
+        /// </summary>
+        /// <param name="connectionString"></param>
         public PostgreSQLProvider(string connectionString)
             : base(connectionString, NpgsqlFactory.Instance, '`', '`', '?')
         {
