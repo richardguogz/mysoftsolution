@@ -2,7 +2,7 @@
 var HTMLEditorPath = '/htmleditor/';
 
 //id为frame对应的iframe对象id
-var HTMLEditor = function(id, height, width) {
+var HTMLEditor = function(id, width, height) {
 
     //把当前frameid赋值给变量id
     this.id = id;
