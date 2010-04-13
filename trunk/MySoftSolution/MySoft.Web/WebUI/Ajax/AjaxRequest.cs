@@ -122,7 +122,7 @@ namespace MySoft.Web.UI
                         }
                     }
                 }
-                catch (HttpException ex)
+                catch (Exception ex)
                 {
                     throw new AjaxException(ex.Message, ex);
                 }
@@ -193,7 +193,7 @@ namespace MySoft.Web.UI
                 }
                 WriteToBuffer(methodInfoList.ToArray());
             }
-            catch (HttpException ex)
+            catch (Exception ex)
             {
                 throw new AjaxException(ex.Message, ex);
             }
@@ -230,7 +230,7 @@ namespace MySoft.Web.UI
                     throw new AjaxException(string.Format("未找到服务器端方法{0}！", MethodName));
                 }
             }
-            catch (HttpException ex)
+            catch (Exception ex)
             {
                 AjaxMethodParam param = new AjaxMethodParam(ex.Message);
                 param.Success = false;
@@ -291,7 +291,7 @@ namespace MySoft.Web.UI
 
                 return new AjaxControlParam(html);
             }
-            catch (HttpException ex)
+            catch (Exception ex)
             {
                 AjaxControlParam param = new AjaxControlParam(ex.Message);
                 param.Success = false;
