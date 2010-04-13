@@ -30,7 +30,7 @@ var HTMLEditor = function(id, height, width) {
                 container = document.getElementById(container);
         }
         else {
-            container = document.getElementsByName('body')[0];
+            container = document.getElementsByTagName('body')[0];
         }
 
         var html = '<iframe id="' + this.id + '___Frame" name="' + this.id + '___Frame" src="' + HTMLEditorPath + 'editor.htm" width="' +
