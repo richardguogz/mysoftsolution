@@ -60,23 +60,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 增加多个参数到当前Sql命令
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        public ProcSection AddParameters(IDictionary<string, KeyValuePair<ParameterDirection, object>> parameters)
-        {
-            List<SQLParameter> list = new List<SQLParameter>();
-            foreach (KeyValuePair<string, KeyValuePair<ParameterDirection, object>> kv in parameters)
-            {
-                SQLParameter p = new SQLParameter(kv.Key, kv.Value);
-                p.Direction = kv.Value.Key;
-                list.Add(p);
-            }
-            return AddParameters(list.ToArray());
-        }
-
-        /// <summary>
         /// 增加一个输入参数到当前Proc命令
         /// </summary>
         /// <param name="parameterName"></param>
