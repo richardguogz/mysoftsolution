@@ -145,7 +145,7 @@ namespace MySoft.Web.UI.Controls
                 if (string.IsNullOrEmpty(_Width))
                     sb.AppendFormat("var {0} = new HTMLEditor('{0}','{1}');", this.ClientID, this.Height);
                 else
-                    sb.AppendFormat("var {0} = new HTMLEditor('{0}','{1}','{2}');", this.ClientID, this.Height, this.Width);
+                    sb.AppendFormat("var {0} = new HTMLEditor('{0}','{1}','{2}');", this.ClientID, this.Width, this.Height);
                 sb.Append(Environment.NewLine);
                 sb.AppendFormat("var source{0} = document.getElementById('{0}');", this.ClientID);
                 sb.Append(Environment.NewLine);
