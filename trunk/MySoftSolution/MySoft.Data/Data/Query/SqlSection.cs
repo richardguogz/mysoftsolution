@@ -56,8 +56,7 @@ namespace MySoft.Data
             {
                 list.Add(new SQLParameter(kv.Key, kv.Value));
             }
-            dbProvider.AddParameter(dbCommand, list.ToArray());
-            return this;
+            return AddParameters(list.ToArray());
         }
 
         /// <summary>

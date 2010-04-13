@@ -125,6 +125,7 @@ namespace MySoft.Data
                 if (pValue.GetType().IsEnum) pValue = Convert.ToInt32(pValue);
 
                 DbParameter dbParameter = CreateParameter(pName, pValue);
+                dbParameter.Direction = p.Direction;
                 cmd.Parameters.Add(dbParameter);
 
                 if (!cmd.CommandText.Contains(pName))

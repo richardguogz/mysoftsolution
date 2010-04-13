@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
 
 namespace MySoft.Data
 {
@@ -21,12 +22,18 @@ namespace MySoft.Data
         public object Value { get; set; }
 
         /// <summary>
+        /// 参数方向
+        /// </summary>
+        public ParameterDirection Direction { get; set; }
+
+        /// <summary>
         /// 初始化OrmParameter
         /// </summary>
         /// <param name="pName"></param>
         public SQLParameter(string pName)
         {
             this.Name = pName;
+            this.Direction = ParameterDirection.Input;
         }
 
         /// <summary>
