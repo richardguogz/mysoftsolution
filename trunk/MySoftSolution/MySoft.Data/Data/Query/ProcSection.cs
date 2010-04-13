@@ -15,11 +15,11 @@ namespace MySoft.Data
         private DbCommand dbCommand;
         private DbTrans dbTran;
 
-        internal ProcSection(string procName, SQLParameter[] parameters, DbProvider dbProvider, DbTrans dbTran)
+        internal ProcSection(string procName, DbProvider dbProvider, DbTrans dbTran)
         {
             this.dbProvider = dbProvider;
             this.dbTran = dbTran;
-            this.dbCommand = dbProvider.CreateProcCommand(procName, parameters);
+            this.dbCommand = dbProvider.CreateProcCommand(procName);
         }
 
         /// <summary>

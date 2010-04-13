@@ -721,6 +721,26 @@ namespace MySoft.Data
             return dbTrans.FromProc(procName, parameters);
         }
 
+        /// <summary>
+        /// 返回一个Sql节
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public SqlSection FromSql(string sql, IDictionary<string, object> parameters)
+        {
+            return dbTrans.FromSql(sql, parameters);
+        }
+
+        /// <summary>
+        /// 返回一个Proc节
+        /// </summary>
+        /// <param name="procName"></param>
+        /// <returns></returns>
+        public ProcSection FromProc(string procName, IDictionary<string, object> parameters)
+        {
+            return dbTrans.FromProc(procName, parameters);
+        }
+
         #endregion
 
         #region 使用创建器操作

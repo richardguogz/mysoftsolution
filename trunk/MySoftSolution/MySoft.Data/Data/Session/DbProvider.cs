@@ -593,15 +593,21 @@ namespace MySoft.Data
             return DataUtils.FormatSQL(sql, leftToken, rightToken, AccessProvider);
         }
 
+        internal DbCommand CreateSqlCommand(string cmdText)
+        {
+            return dbHelper.CreateSqlStringCommand(cmdText);
+        }
+
         /// <summary>
         /// ¥¥Ω®SQL√¸¡Ó
         /// </summary>
         /// <param name="cmdText"></param>
         /// <returns></returns>
-        internal DbCommand CreateSqlCommand(string cmdText, params SQLParameter[] plist)
+        internal DbCommand CreateSqlCommand(string cmdText, SQLParameter[] parameters)
         {
             DbCommand cmd = dbHelper.CreateSqlStringCommand(cmdText);
-            AddParameter(cmd, plist);
+            AddParameter(cmd, parameters);
+
             return cmd;
         }
 
@@ -610,11 +616,9 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="procName"></param>
         /// <returns></returns>
-        internal DbCommand CreateProcCommand(string procName, params SQLParameter[] plist)
+        internal DbCommand CreateProcCommand(string procName)
         {
-            DbCommand cmd = dbHelper.CreateStoredProcCommand(procName);
-            AddParameter(cmd, plist);
-            return cmd;
+            return dbHelper.CreateStoredProcCommand(procName);
         }
 
         /// <summary>

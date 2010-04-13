@@ -747,7 +747,8 @@ namespace MySoft.Data
         /// <returns></returns>
         public SqlSection FromSql(string sql, params SQLParameter[] parameters)
         {
-            return new SqlSection(sql, parameters, dbProvider, this);
+            SqlSection section = new SqlSection(sql, dbProvider, this);
+            return section.AddParameters(parameters);
         }
 
         /// <summary>
@@ -757,7 +758,30 @@ namespace MySoft.Data
         /// <returns></returns>
         public ProcSection FromProc(string procName, params SQLParameter[] parameters)
         {
-            return new ProcSection(procName, parameters, dbProvider, this);
+            ProcSection section = new ProcSection(procName, dbProvider, this);
+            return section.AddParameters(parameters);
+        }
+
+        /// <summary>
+        /// 返回一个Sql节
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public SqlSection FromSql(string sql, IDictionary<string, object> parameters)
+        {
+            SqlSection section = new SqlSection(sql, dbProvider, this);
+            return section.AddParameters(parameters);
+        }
+
+        /// <summary>
+        /// 返回一个Proc节
+        /// </summary>
+        /// <param name="procName"></param>
+        /// <returns></returns>
+        public ProcSection FromProc(string procName, IDictionary<string, object> parameters)
+        {
+            ProcSection section = new ProcSection(procName, dbProvider, this);
+            return section.AddParameters(parameters);
         }
 
         #endregion
