@@ -8,7 +8,7 @@ using System.Reflection;
 
 #endregion
 
-namespace MySoft.Web
+namespace MySoft.Web.UI
 {
     internal class AjaxMethodHelper
     {

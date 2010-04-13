@@ -62,7 +62,7 @@ namespace MySoft.Web
             string query = Encrypt(url, ajaxKey);
             if (urlType != null)
             {
-                AjaxNamespaceAttribute ajaxSpace = GetTypeAttribute<AjaxNamespaceAttribute>(urlType);
+                MySoft.Web.UI.AjaxNamespaceAttribute ajaxSpace = GetTypeAttribute<MySoft.Web.UI.AjaxNamespaceAttribute>(urlType);
                 if (ajaxSpace != null) query += ";" + Encrypt(ajaxSpace.Name ?? urlType.Name, ajaxKey);
             }
 

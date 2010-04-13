@@ -6,7 +6,7 @@ using System.Web;
 
 #endregion
 
-namespace MySoft.Web
+namespace MySoft.Web.UI
 {
     /// <summary>
     /// Ajax调用异常类

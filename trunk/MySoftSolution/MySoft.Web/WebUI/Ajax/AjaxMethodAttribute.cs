@@ -8,7 +8,7 @@ using System.Reflection;
 
 #endregion
 
-namespace MySoft.Web
+namespace MySoft.Web.UI
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class AjaxMethodAttribute : Attribute

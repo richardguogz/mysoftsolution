@@ -57,7 +57,7 @@
     <Compile Include="Binder\ToGuidArray.cs" />
     <Compile Include="Cache\CacheControlConfigurationSection.cs" />
     <Compile Include="Cache\CacheControlConfiguration.cs" />
-    <Compile Include="Common\AjaxNamespaceAttribute.cs" />
+    <Compile Include="WebUI\Ajax\AjaxNamespaceAttribute.cs" />
     <Compile Include="Common\DynamicCalls.cs" />
     <Compile Include="Binder\ConverterFactory.cs" />
     <Compile Include="Binder\IStringConverter.cs" />
@@ -110,9 +110,9 @@
     <Compile Include="Static\StaticPageUtils.cs" />
     <Compile Include="Static\StaticPageItem.cs" />
     <Compile Include="Handler\AjaxPageHandler.cs" />
-    <Compile Include="Common\Exception.cs" />
-    <Compile Include="Common\AjaxMethodAttribute.cs" />
-    <Compile Include="Common\AjaxMethodHelper.cs" />
+    <Compile Include="WebUI\Ajax\Exception.cs" />
+    <Compile Include="WebUI\Ajax\AjaxMethodAttribute.cs" />
+    <Compile Include="WebUI\Ajax\AjaxMethodHelper.cs" />
     <Compile Include="Config\StaticPageConfigSerializerSectionHandler.cs" />
     <Compile Include="Config\StaticPageConfiguration.cs" />
     <Compile Include="Config\StaticPageRule.cs" />

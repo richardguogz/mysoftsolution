@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Web
+namespace MySoft.Web.UI
 {
     /// <summary>
     /// 自定义输出命名空间
