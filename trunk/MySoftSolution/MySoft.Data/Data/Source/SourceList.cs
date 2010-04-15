@@ -175,14 +175,12 @@ namespace MySoft.Data
         /// <returns></returns>
         private DataTable GetDataTable()
         {
-            if (this.Count == 0) return null;
-
             #region 对list进行转换
 
             DataTable dt = new DataTable();
-            dt.TableName = this[0].GetType().Name;
+            dt.TableName = typeof(T).Name;
 
-            PropertyInfo[] plist = this[0].GetType().GetProperties();
+            PropertyInfo[] plist = typeof(T).GetProperties();
             foreach (PropertyInfo p in plist)
             {
                 Type propertyType = p.PropertyType;
@@ -197,6 +195,7 @@ namespace MySoft.Data
                 dt.Columns.Add(p.Name, propertyType);
             }
 
+            //当无数据时直接返回表结构体
             if (this.Count == 0) return dt;
 
             foreach (T t in this)
