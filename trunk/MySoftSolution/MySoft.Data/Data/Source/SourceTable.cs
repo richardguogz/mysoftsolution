@@ -89,29 +89,6 @@ namespace MySoft.Data
         /// 实例化SourceTable
         /// </summary>
         /// <param name="dt"></param>
-        public SourceTable(DataRow[] rows)
-            : this()
-        {
-            if (rows != null && rows.Length > 0)
-            {
-                if (!string.IsNullOrEmpty(rows[0].Table.TableName))
-                    this.TableName = rows[0].Table.TableName;
-
-                foreach (DataColumn column in rows[0].Table.Columns)
-                {
-                    this.Columns.Add(column.ColumnName, column.DataType);
-                }
-                foreach (DataRow row in rows)
-                {
-                    this.ImportRow(row);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 实例化SourceTable
-        /// </summary>
-        /// <param name="dt"></param>
         public SourceTable(DataTable dt)
             : this()
         {
@@ -210,7 +187,15 @@ namespace MySoft.Data
         public SourceTable Filter(string expression)
         {
             DataRow[] rows = base.Select(expression);
-            return new SourceTable(rows);
+            DataTable dt = base.Clone();
+            if (rows != null && rows.Length > 0)
+            {
+                foreach (DataRow row in rows)
+                {
+                    dt.ImportRow(row);
+                }
+            }
+            return new SourceTable(dt);
         }
 
         /// <summary>
@@ -221,7 +206,15 @@ namespace MySoft.Data
         public SourceTable Sort(string sort)
         {
             DataRow[] rows = base.Select(null, sort);
-            return new SourceTable(rows);
+            DataTable dt = base.Clone();
+            if (rows != null && rows.Length > 0)
+            {
+                foreach (DataRow row in rows)
+                {
+                    dt.ImportRow(row);
+                }
+            }
+            return new SourceTable(dt);
         }
 
         /// <summary>

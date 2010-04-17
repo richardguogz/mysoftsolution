@@ -70,7 +70,8 @@ namespace MySoft.Data
         /// <returns></returns>
         public SourceTable ToTable()
         {
-            return new SourceTable(this.GetDataTable());
+            DataTable dt = this.GetDataTable(typeof(T));
+            return new SourceTable(dt);
         }
 
         /// <summary>
@@ -173,14 +174,14 @@ namespace MySoft.Data
         ///  转换成DataTable
         /// </summary>
         /// <returns></returns>
-        private DataTable GetDataTable()
+        internal DataTable GetDataTable(Type currType)
         {
             #region 对list进行转换
 
             DataTable dt = new DataTable();
-            dt.TableName = typeof(T).Name;
+            dt.TableName = currType.Name;
 
-            PropertyInfo[] plist = typeof(T).GetProperties();
+            PropertyInfo[] plist = currType.GetProperties();
             foreach (PropertyInfo p in plist)
             {
                 Type propertyType = p.PropertyType;

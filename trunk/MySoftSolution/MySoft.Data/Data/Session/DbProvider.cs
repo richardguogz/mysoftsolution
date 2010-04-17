@@ -79,7 +79,7 @@ namespace MySoft.Data
 
         #region 增加DbCommand参数
 
-        internal string FormatParameter(string parameterName)
+        private string FormatParameter(string parameterName)
         {
             if (parameterName.IndexOf(paramPrefixToken) == 0) return parameterName;
             if (parameterName.IndexOf('$') == 0) return paramPrefixToken + parameterName.TrimStart('$');
@@ -95,14 +95,14 @@ namespace MySoft.Data
         {
             foreach (DbParameter p in parameters)
             {
-                string pName = FormatParameter(p.ParameterName);
-                p.ParameterName = pName;
-                cmd.Parameters.Add(p);
-
-                if (!cmd.CommandText.Contains(pName))
+                if (p.Value == null) p.Value = DBNull.Value;
+                else if (p.Value.GetType().IsEnum)
                 {
-                    cmd.CommandText = cmd.CommandText.Replace(p.ParameterName, pName);
+                    //对枚举进行特殊处理
+                    p.Value = Convert.ToInt32(p.Value);
                 }
+
+                cmd.Parameters.Add(p);
             }
         }
 
@@ -116,58 +116,45 @@ namespace MySoft.Data
         {
             if (parameters == null || parameters.Length == 0) return;
 
+            List<DbParameter> list = new List<DbParameter>();
             foreach (SQLParameter p in parameters)
             {
-                string pName = FormatParameter(p.Name);
-                object pValue = p.Value;
-
-                //对枚举进行特殊处理
-                if (pValue.GetType().IsEnum) pValue = Convert.ToInt32(pValue);
-
-                DbParameter dbParameter = CreateParameter(pName, pValue);
+                DbParameter dbParameter = CreateParameter(p.Name, p.Value);
                 dbParameter.Direction = p.Direction;
-                cmd.Parameters.Add(dbParameter);
 
-                if (!cmd.CommandText.Contains(pName))
-                {
-                    cmd.CommandText = cmd.CommandText.Replace(p.Name, pName);
-                }
+                list.Add(dbParameter);
             }
+
+            AddParameter(cmd, list.ToArray());
         }
 
         public void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value)
         {
-            parameterName = FormatParameter(parameterName);
             dbHelper.AddInputParameter(cmd, parameterName, dbType, size, value);
         }
 
         public void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, object value)
         {
-            parameterName = FormatParameter(parameterName);
             dbHelper.AddInputParameter(cmd, parameterName, dbType, value);
         }
 
         public void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size)
         {
-            parameterName = FormatParameter(parameterName);
             dbHelper.AddOutputParameter(cmd, parameterName, dbType, size);
         }
 
         public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value, int size)
         {
-            parameterName = FormatParameter(parameterName);
             dbHelper.AddInputOutputParameter(cmd, parameterName, dbType, value, size);
         }
 
         public void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType)
         {
-            parameterName = FormatParameter(parameterName);
             dbHelper.AddReturnValueParameter(cmd, parameterName, dbType);
         }
 
         public DbParameter GetParameter(DbCommand cmd, string parameterName)
         {
-            parameterName = FormatParameter(parameterName);
             return dbHelper.GetParameter(cmd, parameterName);
         }
 
@@ -707,7 +694,16 @@ namespace MySoft.Data
             cmd.CommandText = Serialization(cmd.CommandText);
             foreach (DbParameter p in cmd.Parameters)
             {
+                string oldName = p.ParameterName;
                 p.ParameterName = FormatParameter(p.ParameterName);
+
+                if (cmd.CommandType == CommandType.Text)
+                {
+                    if (cmd.CommandText.Contains(oldName) && !cmd.CommandText.Contains(p.ParameterName))
+                    {
+                        cmd.CommandText = cmd.CommandText.Replace(oldName, p.ParameterName);
+                    }
+                }
             }
             return cmd;
         }
@@ -801,7 +797,7 @@ namespace MySoft.Data
         /// <returns></returns>
         private SQLParameter CreateOrmParameter(object value)
         {
-            string pName = DataUtils.MakeUniqueKey(30, "p");
+            string pName = DataUtils.MakeUniqueKey(30, "$p");
             return new SQLParameter(pName, value);
         }
 

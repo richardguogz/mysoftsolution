@@ -425,14 +425,13 @@ namespace MySoft.Data
             try
             {
                 IDictionary<string, object> returnValues = new Dictionary<string, object>();
-                foreach (DbParameter Parameter in cmd.Parameters)
+                foreach (DbParameter p in cmd.Parameters)
                 {
                     //如果是输出参数直接跳过
-                    if (Parameter.Direction == ParameterDirection.Input) continue;
+                    if (p.Direction == ParameterDirection.Input) continue;
+                    if (p.Value == DBNull.Value) p.Value = null;
 
-                    object value = Parameter.Value;
-                    if (value == DBNull.Value) value = null;
-                    returnValues.Add(Parameter.ParameterName.Substring(1), value);
+                    returnValues.Add(p.ParameterName.Substring(1), p.Value);
                 }
                 outValues = returnValues;
             }

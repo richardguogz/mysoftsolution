@@ -58,16 +58,19 @@ namespace MySoft.Data
         {
             lock (this)
             {
-                ISourceList<EntityBase> list = new SourceList<EntityBase>();
-                list.Add(this);
-
-                ISourceTable table = list.ToTable();
-                if (table.RowCount == 0)
+                try
                 {
-                    return null;
-                }
+                    SourceList<EntityBase> list = new SourceList<EntityBase>();
+                    list.Add(this);
 
-                return table[0];
+                    DataTable dt = list.GetDataTable(this.GetType());
+                    ISourceTable table = new SourceTable(dt);
+                    return table[0];
+                }
+                catch (Exception ex)
+                {
+                    throw new MySoftException("数据转换失败！", ex);
+                }
             }
         }
 
@@ -77,13 +80,20 @@ namespace MySoft.Data
         /// <returns></returns>
         IDictionary<string, object> IEntityBase.ToDictionary()
         {
-            IDictionary<string, object> dict = new Dictionary<string, object>();
-            foreach (Field f in GetFields())
+            try
             {
-                object value = DataUtils.GetPropertyValue(this, f.PropertyName);
-                dict[f.OriginalName] = value;
+                IDictionary<string, object> dict = new Dictionary<string, object>();
+                foreach (Field f in GetFields())
+                {
+                    object value = DataUtils.GetPropertyValue(this, f.PropertyName);
+                    dict[f.OriginalName] = value;
+                }
+                return dict;
             }
-            return dict;
+            catch (Exception ex)
+            {
+                throw new MySoftException("数据转换失败！", ex);
+            }
         }
 
         /// <summary>
