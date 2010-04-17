@@ -376,19 +376,22 @@ Object.extend(AjaxClass.prototype, {
         this.addHeader('X-Ajax-Method', method);
         Ajax.Send(this.url, args, type, async, this.header, function(xmlHttp) {
             json = Ajax.getData(xmlHttp, 'json');
-            if (!json) return;
-            if (async && callback) {
-                if (json.Success)
-                    callback(json.Message);
-                else
-                    alert(json.Message);
+            if (json) {
+                if (async && callback) {
+                    if (json.Success)
+                        callback(json.Message);
+                    else
+                        alert(json.Message);
+                }
             }
         });
         if (!async) {
-            if (json.Success)
-                return json.Message;
-            else
-                alert(json.Message);
+            if (json) {
+                if (json.Success)
+                    return json.Message;
+                else
+                    alert(json.Message);
+            }
         }
     }
 });

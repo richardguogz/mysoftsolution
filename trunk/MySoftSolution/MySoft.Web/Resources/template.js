@@ -99,7 +99,7 @@ var TrimPath;
                              "if (typeof(", listVar, "[", iterVar, "_index]) == 'function') {continue;}", // IE 5.x fix from Igor Poteryaev.
                              "__LENGTH_STACK__[__LENGTH_STACK__.length - 1]++;",
                              "var ", iterVar, " = ", listVar, "[", iterVar, "_index];"].join("");
-            } 
+            }
         },
         "forelse": { delta: 0, prefix: "} } if (__LENGTH_STACK__[__LENGTH_STACK__.length - 1] == 0) { if (", suffix: ") {", paramDefault: "true" },
         "/for": { delta: -1, prefix: "} }; delete __LENGTH_STACK__[__LENGTH_STACK__.length - 1];" }, // Remove the just-finished for-loop from the stack of loop lengths.
@@ -110,7 +110,7 @@ var TrimPath;
                 return ["var ", macroName, " = function",
                                    stmtParts.slice(1).join(' ').substring(macroName.length),
                                    "{ var _OUT_arr = []; var _OUT = { write: function(m) { if (m) _OUT_arr.push(m); } }; "].join('');
-            } 
+            }
         },
         "/macro": { delta: -1, prefix: " return _OUT_arr.join(''); };" }
     }
