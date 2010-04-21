@@ -740,27 +740,31 @@ namespace MySoft.Data
         {
             values = DataUtils.CheckAndReturnValues(values);
 
-            List<SQLParameter> plist = new List<SQLParameter>();
-            StringBuilder sb = new StringBuilder();
-            foreach (object value in values)
+            //如果值只有一个的时候，直接使用相等处理
+            if (values.Length == 1)
             {
-                string pName = DataUtils.MakeUniqueKey(30, "$p");
-                SQLParameter p = new SQLParameter(pName);
-                p.Value = value;
-
-                sb.Append(pName);
-                sb.Append(",");
-
-                plist.Add(p);
+                return this == values[0];
             }
-
-            string where = sb.Remove(sb.Length - 1, 1).ToString().Trim();
-            if (string.IsNullOrEmpty(where))
+            else
             {
-                throw new MySoftException("传入的数据不能正确被解析！");
-            }
+                List<SQLParameter> plist = new List<SQLParameter>();
+                StringBuilder sb = new StringBuilder();
+                foreach (object value in values)
+                {
+                    string pName = DataUtils.MakeUniqueKey(30, "$p");
+                    SQLParameter p = new SQLParameter(pName);
+                    p.Value = value;
 
-            return new WhereClip(this.Name + " in (" + where + ") ", plist.ToArray());
+                    sb.Append(pName);
+                    sb.Append(",");
+
+                    plist.Add(p);
+                }
+
+                string where = sb.Remove(sb.Length - 1, 1).ToString().Trim();
+
+                return new WhereClip(this.Name + " in (" + where + ") ", plist.ToArray());
+            }
         }
 
         /// <summary>

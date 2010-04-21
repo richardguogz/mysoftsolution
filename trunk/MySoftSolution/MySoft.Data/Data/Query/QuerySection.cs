@@ -101,14 +101,14 @@ namespace MySoft.Data
                 {
                     if (DataUtils.IsNullOrEmpty(groupBy) && distinctString == null)
                     {
-                        sql = string.Format(formatString, null, null, "count(*) as r_cnt",
+                        sql = string.Format(formatString, null, null, "count(*) as row_count",
                             null, SqlString, countWhereString, null, null, null, null);
                     }
                     else
                     {
                         sql = string.Format(formatString, distinctString, null, fieldString,
                            null, SqlString, countWhereString, groupString, havingString, null, endString);
-                        sql = string.Format("select count(*) as r_cnt from ({0}) tmp__table", sql);
+                        sql = string.Format("select count(*) as row_count from ({0}) tmp_table", sql);
                     }
                 }
                 return sql;
@@ -920,7 +920,7 @@ namespace MySoft.Data
             string countString = query.CountString;
             if (query.unionQuery)
             {
-                countString = "select sum(r_cnt) as r_count from (" + countString + ") tmp__table";
+                countString = "select sum(row_count) as total_row_count from (" + countString + ") tmp_table";
             }
 
             string cacheKey = GetCacheKey(countString, this.Parameters);
@@ -1298,7 +1298,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 
+        /// ·µ»ØDataPage
         /// </summary>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
@@ -1309,7 +1309,7 @@ namespace MySoft.Data
             PageSection<T> page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;
-            view.DataSource = page.ToTable(pageIndex) as SourceTable;
+            view.DataSource = page.ToTable(pageIndex);
             return view;
         }
 

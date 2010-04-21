@@ -164,7 +164,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 返回IDataView
+        /// 返回DataPage
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="pageSize"></param>
@@ -182,7 +182,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 返回IDataView
+        /// 返回DataPage
         /// </summary>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
@@ -193,7 +193,7 @@ namespace MySoft.Data
             PageSection page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;
-            view.DataSource = page.ToTable(pageIndex) as SourceTable;
+            view.DataSource = page.ToTable(pageIndex);
             return view;
         }
     }

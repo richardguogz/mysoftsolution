@@ -164,7 +164,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public SourceTable Select(params string[] names)
         {
-            SourceTable st = this.Clone() as SourceTable;
+            SourceTable st = this.Clone();
             List<string> namelist = new List<string>(names);
             namelist.ForEach(p => p.ToLower());
             foreach (DataColumn column in this.Columns)
@@ -319,7 +319,7 @@ namespace MySoft.Data
         /// <param name="fillNames"></param>
         public void Fill(FillRelation relation, params string[] fillNames)
         {
-            var source = relation.DataSource as SourceTable;
+            var source = relation.DataSource;
             var parentName = relation.ParentName;
             var childName = relation.ChildName;
 
