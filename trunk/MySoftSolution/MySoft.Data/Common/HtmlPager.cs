@@ -156,9 +156,26 @@ namespace MySoft.Data
         /// </summary>
         private string linkFormat;
         /// <summary>
+        /// 翻页时连接字符串
+        /// </summary>
+        public string LinkFormat
+        {
+            get { return linkFormat; }
+            set { linkFormat = value; }
+        }
+
+        /// <summary>
         /// 每屏连接条数
         /// </summary>
         private int linkSize;
+        /// <summary>
+        /// 每屏连接条数
+        /// </summary>
+        public int LinkSize
+        {
+            get { return linkSize; }
+            set { linkSize = value; }
+        }
 
         private HtmlPagerStyle style = HtmlPagerStyle.Custom;
         /// <summary>
@@ -246,11 +263,24 @@ namespace MySoft.Data
         /// <summary>
         /// 初始化HtmlPager对象
         /// </summary>
+        /// <param name="dataPage"></param>
+        public HtmlPager(DataPage dataPage)
+        {
+            this.dataPage = dataPage;
+            this.linkSize = 10;
+            this.style = HtmlPagerStyle.Custom;
+        }
+
+        /// <summary>
+        /// 初始化HtmlPager对象
+        /// </summary>
         /// <param name="page">对应的数据源</param>
         /// <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
         public HtmlPager(DataPage dataPage, string linkFormat)
-            : this(dataPage, linkFormat, 10)
-        { }
+            : this(dataPage)
+        {
+            this.linkFormat = linkFormat;
+        }
 
         /// <summary>
         /// 初始化HtmlPager对象
@@ -259,11 +289,9 @@ namespace MySoft.Data
         /// <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
         /// <param name="linkSize">每屏连接条数</param>
         public HtmlPager(DataPage dataPage, string linkFormat, int linkSize)
+            : this(dataPage, linkFormat)
         {
-            this.dataPage = dataPage;
-            this.linkFormat = linkFormat;
             this.linkSize = linkSize;
-            this.style = HtmlPagerStyle.Custom;
         }
 
         public override string ToString()

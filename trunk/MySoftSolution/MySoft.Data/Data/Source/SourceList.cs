@@ -96,6 +96,28 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 返回指定数据条数
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public new SourceList<T> GetRange(int index, int size)
+        {
+            if (index < base.Count)
+            {
+                IList<T> list = null;
+                if (index + size <= base.Count)
+                    list = base.GetRange(index, size);
+                else
+                    list = base.GetRange(index, base.Count - index);
+
+                return new SourceList<T>(list);
+            }
+
+            return new SourceList<T>();
+        }
+
+        /// <summary>
         /// 将当前类型转成另一种类型
         /// </summary>
         /// <typeparam name="TOutput"></typeparam>

@@ -27,7 +27,7 @@ namespace MySoft.Data
             this.desc = false;
         }
 
-        private SortProperty(string propertyName, bool desc)
+        internal SortProperty(string propertyName, bool desc)
             : this(propertyName)
         {
             this.desc = desc;
@@ -62,7 +62,7 @@ namespace MySoft.Data
     /// <typeparam name="T"></typeparam>
     public class SortComparer<T> : IComparer<T>
     {
-        private IList<SortProperty> sorts;
+        private List<SortProperty> sorts;
         /// <summary>
         /// 初始化自定义比较类
         /// </summary>
@@ -73,12 +73,42 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 生成一个排序属性
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public SortProperty this[string propertyName]
+        {
+            get
+            {
+                return this[propertyName, false];
+            }
+        }
+
+        /// <summary>
+        /// 生成一个排序属性
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
+        public SortProperty this[string propertyName, bool desc]
+        {
+            get
+            {
+                return new SortProperty(propertyName, desc);
+            }
+        }
+
+        /// <summary>
         /// 添加排序属性
         /// </summary>
-        /// <param name="sort"></param>
-        public void AddProperty(SortProperty sort)
+        /// <param name="sorts"></param>
+        public void AddProperty(params SortProperty[] sorts)
         {
-            this.sorts.Add(sort);
+            if (sorts != null && sorts.Length > 0)
+            {
+                this.sorts.AddRange(sorts);
+            }
         }
 
         /// <summary>

@@ -400,7 +400,7 @@ namespace MySoft.Data
                     {
                         if (fv.IsIdentity)
                         {
-                            fv.Value = new SysField(identityName);
+                            fv.Value = new SysValue(identityName);
                             fv.IsIdentity = false;
                             exist = true;
                         }
@@ -408,7 +408,7 @@ namespace MySoft.Data
 
                     if (!exist)
                     {
-                        Field value = new SysField(identityName);
+                        object value = new SysValue(identityName);
                         FieldValue fv = new FieldValue(identityfield, value);
                         fvlist.Insert(0, fv);
                     }
@@ -423,7 +423,7 @@ namespace MySoft.Data
                 if (fv.IsIdentity) return;
 
                 sbsql.Append(fv.Field.At((string)null).Name);
-                if (CheckNullOrField(fv.Value))
+                if (CheckNullOrSysValue(fv.Value))
                 {
                     sbparam.Append(DataUtils.FormatValue(fv.Value));
                 }
@@ -537,7 +537,7 @@ namespace MySoft.Data
 
                 if (fv.IsChanged)
                 {
-                    if (CheckNullOrField(fv.Value))
+                    if (CheckNullOrSysValue(fv.Value))
                     {
                         sb.Append(fv.Field.At((string)null).Name + " = " + DataUtils.FormatValue(fv.Value));
                     }
@@ -806,9 +806,9 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool CheckNullOrField(object value)
+        private bool CheckNullOrSysValue(object value)
         {
-            if (value == null || value == DBNull.Value || value is Field)
+            if (value == null || value == DBNull.Value || value is SysValue)
             {
                 return true;
             }

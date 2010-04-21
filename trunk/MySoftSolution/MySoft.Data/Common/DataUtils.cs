@@ -419,6 +419,10 @@ namespace MySoft.Data
             {
                 return ((Field)val).Name;
             }
+            else if (val is SysValue)
+            {
+                return ((SysValue)val).Value;
+            }
             else if (type.IsEnum)
             {
                 return Convert.ToInt32(val).ToString();

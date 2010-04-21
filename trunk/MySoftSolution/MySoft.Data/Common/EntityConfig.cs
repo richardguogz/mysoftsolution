@@ -4,80 +4,11 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Configuration;
+using MySoft.Data.Mapping;
 using System.Xml.Serialization;
 
 namespace MySoft.Data
 {
-    /// <summary>
-    /// 表映射设置
-    /// </summary>
-    [Serializable]
-    [XmlRoot("TableSetting")]
-    public class TableSetting
-    {
-        /// <summary>
-        /// 命名空间
-        /// </summary>
-        [XmlAttribute("Namespace")]
-        public string Namespace { get; set; }
-
-        /// <summary>
-        /// 表前缀
-        /// </summary>
-        [XmlAttribute("Prefix")]
-        public string Prefix { get; set; }
-
-        /// <summary>
-        /// 表后缀
-        /// </summary>
-        [XmlAttribute("Suffix")]
-        public string Suffix { get; set; }
-
-        /// <summary>
-        /// 表映射
-        /// </summary>
-        [XmlElement("TableMapping")]
-        public TableMapping[] Mappings { get; set; }
-    }
-
-    /// <summary>
-    /// 表映射节点
-    /// </summary>
-    [Serializable]
-    [XmlRoot("TableMapping")]
-    public class TableMapping
-    {
-        /// <summary>
-        /// 类名称
-        /// </summary>
-        [XmlAttribute("ClassName")]
-        public string ClassName { get; set; }
-
-        /// <summary>
-        /// 使用前缀
-        /// </summary>
-        [XmlAttribute("UsePrefix")]
-        public bool UsePrefix { get; set; }
-
-        /// <summary>
-        /// 使用后缀
-        /// </summary>
-        [XmlAttribute("UseSuffix")]
-        public bool UseSuffix { get; set; }
-
-        /// <summary>
-        /// 映射的表名
-        /// </summary>
-        [XmlText]
-        public string TableName { get; set; }
-
-        public TableMapping()
-        {
-            this.UsePrefix = true;
-            this.UseSuffix = true;
-        }
-    }
-
     /// <summary>
     /// 映像配置类
     /// </summary>
@@ -152,10 +83,8 @@ namespace MySoft.Data
         /// <param name="tableName"></param>
         /// <returns></returns>
         public Table GetMappingTable<T>(string tableName)
+            where T : class
         {
-            if (string.IsNullOrEmpty(tableName))
-                return new Table(tableName);
-
             //通过Namespace与ClassName来获取映射的表名
             string Namespace = typeof(T).Namespace;
             string ClassName = typeof(T).Name;
@@ -168,10 +97,11 @@ namespace MySoft.Data
                 table.Prefix = setting.Prefix;
                 table.Suffix = setting.Suffix;
 
+                //查询mapping的表名
                 if (_dictTableMapping[setting].Exists(p => p.ClassName == ClassName))
                 {
                     TableMapping mapping = _dictTableMapping[setting].Find(p => p.ClassName == ClassName);
-                    table.TableName = mapping.TableName;
+                    table.TableName = mapping.MappingName;
 
                     if (!mapping.UsePrefix) table.Prefix = null;
                     if (!mapping.UseSuffix) table.Suffix = null;
@@ -179,6 +109,48 @@ namespace MySoft.Data
             }
 
             return table;
+        }
+
+        /// <summary>
+        /// 获取映射的字段
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName"></param>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public Field GetMappingField<T>(string propertyName, string fieldName)
+            where T : class
+        {
+            //通过Namespace与ClassName来获取映射的表名
+            string Namespace = typeof(T).Namespace;
+            string ClassName = typeof(T).Name;
+
+            Field field = new Field(fieldName);
+            var list = new List<TableSetting>(_dictTableMapping.Keys);
+            if (list.Exists(p => p.Namespace == Namespace))
+            {
+                TableSetting setting = list.Find(p => p.Namespace == Namespace);
+
+                if (_dictTableMapping[setting].Exists(p => p.ClassName == ClassName))
+                {
+                    TableMapping mapping = _dictTableMapping[setting].Find(p => p.ClassName == ClassName);
+
+                    if (mapping.Mappings != null && mapping.Mappings.Length > 0)
+                    {
+                        //查找mapping的字段名
+                        foreach (FieldMapping f in mapping.Mappings)
+                        {
+                            if (f.PropertyName == propertyName)
+                            {
+                                field = new Field(f.MappingName);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return field;
         }
     }
 }

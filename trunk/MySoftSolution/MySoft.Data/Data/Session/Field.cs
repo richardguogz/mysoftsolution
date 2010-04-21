@@ -7,69 +7,6 @@ using MySoft.Data.Design;
 namespace MySoft.Data
 {
     /// <summary>
-    /// 系统字段
-    /// </summary>
-    [Serializable]
-    public class SysField : Field
-    {
-        internal SysField(string fieldName)
-            : base(fieldName)
-        { }
-
-        public SysField(string fieldName, QueryCreator creator)
-            : base(fieldName)
-        {
-            string qString = GetQuery(creator).QueryString;
-            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return base.OriginalName;
-            }
-        }
-    }
-
-    /// <summary>
-    /// 系统字段
-    /// </summary>
-    [Serializable]
-    public class SysField<T> : Field
-        where T : Entity
-    {
-        public SysField(string fieldName, QuerySection<T> query)
-            : base(fieldName)
-        {
-            string qString = query.QueryString;
-            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
-        }
-
-        public SysField(string fieldName, TopSection<T> top)
-            : base(fieldName)
-        {
-            string qString = top.QueryString;
-            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
-        }
-
-        public SysField(string fieldName, TableRelation<T> relation)
-            : base(fieldName)
-        {
-            string qString = relation.Section.Query.QueryString;
-            base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return base.OriginalName;
-            }
-        }
-    }
-
-    /// <summary>
     /// 用于实体内的Field操作
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -87,6 +24,9 @@ namespace MySoft.Data
             : base(propertyName, null, fieldName)
         {
             this.tableName = Table.GetTable<T>().OriginalName;
+
+            Field field = EntityConfig.Instance.GetMappingField<T>(propertyName, fieldName);
+            this.fieldName = field.OriginalName;
         }
     }
 

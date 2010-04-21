@@ -67,6 +67,7 @@
     <Compile Include="Binder\ToString.cs" />
     <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\EntityConfig.cs" />
+    <Compile Include="Common\EntityMapping.cs" />
     <Compile Include="Common\EnumDescription.cs" />
     <Compile Include="Common\MySoftException.cs" />
     <Compile Include="Creator\DeleteCreator.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="Common\Comparer.cs" />
     <Compile Include="Data\Query\TopSection.cs" />
     <Compile Include="Data\Session\EntityBase.cs" />
+    <Compile Include="Data\Session\SysField.cs" />
+    <Compile Include="Data\Session\SysValue.cs" />
     <Compile Include="Data\Session\TableRelation.cs" />
     <Compile Include="Data\Source\IListConvert.cs" />
     <Compile Include="Data\Source\SourceList.cs" />

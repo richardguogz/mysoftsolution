@@ -53,6 +53,14 @@ namespace MySoft.Data
         /// <returns></returns>
         SourceList<T> FindAll(Predicate<T> match);
 
+        /// <summary>
+        /// 返回指定数据条数
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        SourceList<T> GetRange(int index, int count);
+
         #region 字典操作
 
         /// <summary>

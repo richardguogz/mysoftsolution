@@ -10,6 +10,7 @@ namespace MySoft.Data
     /// <typeparam name="T"></typeparam>
     [Serializable]
     public class Table<T> : Table
+        where T : class
     {
         /// <summary>
         /// 实例化一个表
