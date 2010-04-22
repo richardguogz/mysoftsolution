@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web;
 using System.Collections.Specialized;
 using System.Web.Caching;
+using System.Threading;
 
 namespace MySoft.Web.UI
 {
@@ -122,6 +123,7 @@ namespace MySoft.Web.UI
                         }
                     }
                 }
+                catch (ThreadAbortException) { }
                 catch (Exception ex)
                 {
                     throw new AjaxException(ex.Message, ex);
@@ -173,30 +175,24 @@ namespace MySoft.Web.UI
 
         private void WriteAjaxMethods(Type ajaxType)
         {
-            try
+            Dictionary<string, AsyncMethodInfo> ajaxMethods = AjaxMethodHelper.GetAjaxMethods(ajaxType);
+            List<AjaxMethodInfo> methodInfoList = new List<AjaxMethodInfo>();
+            List<string> paramList = new List<string>();
+            foreach (string key in ajaxMethods.Keys)
             {
-                Dictionary<string, AsyncMethodInfo> ajaxMethods = AjaxMethodHelper.GetAjaxMethods(ajaxType);
-                List<AjaxMethodInfo> methodInfoList = new List<AjaxMethodInfo>();
-                List<string> paramList = new List<string>();
-                foreach (string key in ajaxMethods.Keys)
+                paramList.Clear();
+                AjaxMethodInfo methodInfo = new AjaxMethodInfo();
+                methodInfo.Name = key;
+                foreach (ParameterInfo pi in ajaxMethods[key].MethodInfo.GetParameters())
                 {
-                    paramList.Clear();
-                    AjaxMethodInfo methodInfo = new AjaxMethodInfo();
-                    methodInfo.Name = key;
-                    foreach (ParameterInfo pi in ajaxMethods[key].MethodInfo.GetParameters())
-                    {
-                        paramList.Add(pi.Name);
-                    }
-                    methodInfo.Async = ajaxMethods[key].Async;
-                    methodInfo.Paramters = paramList.ToArray();
-                    methodInfoList.Add(methodInfo);
+                    paramList.Add(pi.Name);
                 }
-                WriteToBuffer(methodInfoList.ToArray());
+                methodInfo.Async = ajaxMethods[key].Async;
+                methodInfo.Paramters = paramList.ToArray();
+                methodInfoList.Add(methodInfo);
             }
-            catch (Exception ex)
-            {
-                throw new AjaxException(ex.Message, ex);
-            }
+
+            WriteToBuffer(methodInfoList.ToArray());
         }
 
         /// <summary>
