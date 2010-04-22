@@ -74,7 +74,7 @@ namespace MySoft.Data.SqlServer
         /// <param name="parameterName"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        internal protected override DbParameter CreateParameter(string parameterName, object val)
+        protected override DbParameter CreateParameter(string parameterName, object val)
         {
             SqlParameter p = new SqlParameter();
             p.ParameterName = parameterName;

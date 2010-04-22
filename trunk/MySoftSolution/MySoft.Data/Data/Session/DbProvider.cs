@@ -299,12 +299,9 @@ namespace MySoft.Data
         /// 创建参数
         /// </summary>
         /// <returns></returns>
-        public DbParameter CreateParameter(string paramterName)
+        public DbParameter CreateParameter()
         {
-            DbParameter p = dbHelper.CreateParameter();
-            p.ParameterName = paramterName;
-
-            return p;
+            return dbHelper.CreateParameter();
         }
 
         #endregion
@@ -787,7 +784,7 @@ namespace MySoft.Data
         /// <param name="parameterName"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        internal protected abstract DbParameter CreateParameter(string parameterName, object val);
+        protected abstract DbParameter CreateParameter(string parameterName, object val);
 
         #endregion
 

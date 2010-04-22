@@ -78,7 +78,7 @@ namespace MySoft.Data.MsAccess
         /// <param name="parameterName"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        internal protected override DbParameter CreateParameter(string parameterName, object val)
+        protected override DbParameter CreateParameter(string parameterName, object val)
         {
             OleDbParameter p = new OleDbParameter();
             p.ParameterName = parameterName;

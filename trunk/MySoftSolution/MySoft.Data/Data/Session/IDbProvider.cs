@@ -43,7 +43,7 @@ namespace MySoft.Data
         /// 创建参数
         /// </summary>
         /// <returns></returns>
-        DbParameter CreateParameter(string paramterName);
+        DbParameter CreateParameter();
 
         #endregion
 

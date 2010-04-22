@@ -162,22 +162,10 @@ namespace MySoft.Data
         /// <summary>
         /// 创建参数
         /// </summary>
-        /// <param name="paramterName"></param>
         /// <returns></returns>
-        public DbParameter CreateParameter(string paramterName)
+        public DbParameter CreateParameter()
         {
-            return dbProvider.CreateParameter(paramterName);
-        }
-
-        /// <summary>
-        /// 创建参数
-        /// </summary>
-        /// <param name="paramterName"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public DbParameter CreateParameter(string paramterName, object value)
-        {
-            return dbProvider.CreateParameter(paramterName, value);
+            return dbProvider.CreateParameter();
         }
 
         /// <summary>

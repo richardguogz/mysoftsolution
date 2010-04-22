@@ -20,9 +20,7 @@ namespace MySoft.Data
         DbTransaction BeginTransaction();
         DbTransaction BeginTransaction(IsolationLevel isolationLevel);
         DbConnection CreateConnection();
-
-        DbParameter CreateParameter(string paramterName);
-        DbParameter CreateParameter(string paramterName, object value);
+        DbParameter CreateParameter();
         #endregion
 
         #region ×¢²áLog

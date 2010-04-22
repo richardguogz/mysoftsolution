@@ -87,7 +87,7 @@ namespace MySoft.Data.Oracle
         /// <param name="parameterName"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        internal protected override DbParameter CreateParameter(string parameterName, object val)
+        protected override DbParameter CreateParameter(string parameterName, object val)
         {
             OracleParameter p = new OracleParameter();
             p.ParameterName = parameterName;
