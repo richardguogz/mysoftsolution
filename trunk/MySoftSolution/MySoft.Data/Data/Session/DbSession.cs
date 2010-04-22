@@ -170,17 +170,14 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 创建参数(可转换成对应类型的参数，TParameter可以是OracleParameter,SqlParameter等)
+        /// 创建参数
         /// </summary>
+        /// <param name="paramterName"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public TParameter CreateParameter<TParameter>(string paramterName)
-            where TParameter : DbParameter
+        public DbParameter CreateParameter(string paramterName, object value)
         {
-            DbParameter p = CreateParameter(paramterName);
-            if (p is TParameter)
-                return (TParameter)p;
-            else
-                return default(TParameter);
+            return dbProvider.CreateParameter(paramterName, value);
         }
 
         /// <summary>

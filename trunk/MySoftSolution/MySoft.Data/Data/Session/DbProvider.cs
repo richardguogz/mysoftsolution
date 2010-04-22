@@ -787,7 +787,7 @@ namespace MySoft.Data
         /// <param name="parameterName"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        protected abstract DbParameter CreateParameter(string parameterName, object val);
+        internal protected abstract DbParameter CreateParameter(string parameterName, object val);
 
         #endregion
 

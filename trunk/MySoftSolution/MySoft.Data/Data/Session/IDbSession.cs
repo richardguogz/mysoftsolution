@@ -22,8 +22,7 @@ namespace MySoft.Data
         DbConnection CreateConnection();
 
         DbParameter CreateParameter(string paramterName);
-        TParameter CreateParameter<TParameter>(string paramterName) where TParameter : DbParameter;
-
+        DbParameter CreateParameter(string paramterName, object value);
         #endregion
 
         #region ×¢²áLog
