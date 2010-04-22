@@ -35,6 +35,14 @@ namespace MySoft.Data.Mapping
         /// </summary>
         [XmlElement("TableMapping")]
         public TableMapping[] Mappings { get; set; }
+
+        /// <summary>
+        /// 初始化TableSetting
+        /// </summary>
+        public TableSetting()
+        {
+            this.Mappings = new TableMapping[0];
+        }
     }
 
     /// <summary>
@@ -75,12 +83,13 @@ namespace MySoft.Data.Mapping
         public FieldMapping[] Mappings { get; set; }
 
         /// <summary>
-        /// 初始化Table
+        /// 初始化TableMapping
         /// </summary>
         public TableMapping()
         {
             this.UsePrefix = true;
             this.UseSuffix = true;
+            this.Mappings = new FieldMapping[0];
         }
     }
 

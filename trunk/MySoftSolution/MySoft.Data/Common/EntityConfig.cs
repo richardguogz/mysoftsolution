@@ -16,7 +16,7 @@ namespace MySoft.Data
     public class EntityConfig
     {
         public static EntityConfig Instance = new EntityConfig();
-        private IDictionary<TableSetting, List<TableMapping>> _dictTableMapping;
+        private TableSetting[] _Settings;
         private EntityConfig()
         {
             LoadConfig();
@@ -24,7 +24,6 @@ namespace MySoft.Data
 
         private void LoadConfig()
         {
-            _dictTableMapping = new Dictionary<TableSetting, List<TableMapping>>();
             string configPath = ConfigurationManager.AppSettings["EntityConfigPath"];
             if (string.IsNullOrEmpty(configPath))
             {
@@ -45,20 +44,7 @@ namespace MySoft.Data
                 try
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(TableSetting[]));
-
-                    TableSetting[] objs;
-                    objs = serializer.Deserialize(reader) as TableSetting[];
-                    List<TableSetting> list = new List<TableSetting>(objs);
-
-                    list.ForEach(p =>
-                    {
-                        List<TableMapping> _mappingList = new List<TableMapping>();
-                        if (p.Mappings != null && p.Mappings.Length > 0)
-                        {
-                            _mappingList.AddRange(p.Mappings);
-                        }
-                        _dictTableMapping[p] = _mappingList;
-                    });
+                    _Settings = serializer.Deserialize(reader) as TableSetting[];
                 }
                 catch { }
                 finally
@@ -85,26 +71,36 @@ namespace MySoft.Data
         public Table GetMappingTable<T>(string tableName)
             where T : class
         {
+            //如果设置为空返回null
+            if (_Settings == null || _Settings.Length == 0)
+            {
+                return new Table(tableName);
+            }
+
             //通过Namespace与ClassName来获取映射的表名
             string Namespace = typeof(T).Namespace;
             string ClassName = typeof(T).Name;
 
             Table table = new Table(tableName);
-            var list = new List<TableSetting>(_dictTableMapping.Keys);
-            if (list.Exists(p => p.Namespace == Namespace))
+            var settings = new List<TableSetting>(_Settings);
+            TableSetting setting = settings.Find(p => p.Namespace == Namespace);
+            if (setting != null)
             {
-                TableSetting setting = list.Find(p => p.Namespace == Namespace);
                 table.Prefix = setting.Prefix;
                 table.Suffix = setting.Suffix;
 
                 //查询mapping的表名
-                if (_dictTableMapping[setting].Exists(p => p.ClassName == ClassName))
+                var mappings = new List<TableMapping>(setting.Mappings);
+                TableMapping mapping = mappings.Find(p => p.ClassName == ClassName);
+                if (mapping != null)
                 {
-                    TableMapping mapping = _dictTableMapping[setting].Find(p => p.ClassName == ClassName);
-                    table.TableName = mapping.MappingName;
+                    if (!string.IsNullOrEmpty(mapping.MappingName))
+                    {
+                        table.TableName = mapping.MappingName;
 
-                    if (!mapping.UsePrefix) table.Prefix = null;
-                    if (!mapping.UseSuffix) table.Suffix = null;
+                        if (!mapping.UsePrefix) table.Prefix = null;
+                        if (!mapping.UseSuffix) table.Suffix = null;
+                    }
                 }
             }
 
@@ -121,31 +117,31 @@ namespace MySoft.Data
         public Field GetMappingField<T>(string propertyName, string fieldName)
             where T : class
         {
+            //如果设置为空返回null
+            if (_Settings == null || _Settings.Length == 0)
+            {
+                return new Field(fieldName);
+            }
+
             //通过Namespace与ClassName来获取映射的表名
             string Namespace = typeof(T).Namespace;
             string ClassName = typeof(T).Name;
 
             Field field = new Field(fieldName);
-            var list = new List<TableSetting>(_dictTableMapping.Keys);
-            if (list.Exists(p => p.Namespace == Namespace))
+            var settings = new List<TableSetting>(_Settings);
+            var setting = settings.Find(p => p.Namespace == Namespace);
+            if (setting != null)
             {
-                TableSetting setting = list.Find(p => p.Namespace == Namespace);
-
-                if (_dictTableMapping[setting].Exists(p => p.ClassName == ClassName))
+                //查询mapping的表名
+                var mappings = new List<TableMapping>(setting.Mappings);
+                var mapping = mappings.Find(p => p.ClassName == ClassName);
+                if (mapping != null)
                 {
-                    TableMapping mapping = _dictTableMapping[setting].Find(p => p.ClassName == ClassName);
-
-                    if (mapping.Mappings != null && mapping.Mappings.Length > 0)
+                    var fmappings = new List<FieldMapping>(mapping.Mappings);
+                    var fmapping = fmappings.Find(p => p.PropertyName == propertyName);
+                    if (fmapping != null)
                     {
-                        //查找mapping的字段名
-                        foreach (FieldMapping f in mapping.Mappings)
-                        {
-                            if (f.PropertyName == propertyName)
-                            {
-                                field = new Field(f.MappingName);
-                                break;
-                            }
-                        }
+                        field = new Field(fmapping.MappingName);
                     }
                 }
             }
