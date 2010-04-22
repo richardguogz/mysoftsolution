@@ -89,17 +89,20 @@ namespace MySoft.Data
                 table.Prefix = setting.Prefix;
                 table.Suffix = setting.Suffix;
 
-                //查询mapping的表名
-                var mappings = new List<TableMapping>(setting.Mappings);
-                TableMapping mapping = mappings.Find(p => p.ClassName == ClassName);
-                if (mapping != null)
+                if (setting.Mappings != null && setting.Mappings.Length > 0)
                 {
-                    if (!string.IsNullOrEmpty(mapping.MappingName))
+                    //查询mapping的表名
+                    var mappings = new List<TableMapping>(setting.Mappings);
+                    TableMapping mapping = mappings.Find(p => p.ClassName == ClassName);
+                    if (mapping != null)
                     {
-                        table.TableName = mapping.MappingName;
+                        if (!string.IsNullOrEmpty(mapping.MappingName))
+                        {
+                            table.TableName = mapping.MappingName;
 
-                        if (!mapping.UsePrefix) table.Prefix = null;
-                        if (!mapping.UseSuffix) table.Suffix = null;
+                            if (!mapping.UsePrefix) table.Prefix = null;
+                            if (!mapping.UseSuffix) table.Suffix = null;
+                        }
                     }
                 }
             }
@@ -132,16 +135,22 @@ namespace MySoft.Data
             var setting = settings.Find(p => p.Namespace == Namespace);
             if (setting != null)
             {
-                //查询mapping的表名
-                var mappings = new List<TableMapping>(setting.Mappings);
-                var mapping = mappings.Find(p => p.ClassName == ClassName);
-                if (mapping != null)
+                if (setting.Mappings != null && setting.Mappings.Length > 0)
                 {
-                    var fmappings = new List<FieldMapping>(mapping.Mappings);
-                    var fmapping = fmappings.Find(p => p.PropertyName == propertyName);
-                    if (fmapping != null)
+                    //查询mapping的表名
+                    var mappings = new List<TableMapping>(setting.Mappings);
+                    var mapping = mappings.Find(p => p.ClassName == ClassName);
+                    if (mapping != null)
                     {
-                        field = new Field(fmapping.MappingName);
+                        if (mapping.Mappings != null && mapping.Mappings.Length > 0)
+                        {
+                            var fmappings = new List<FieldMapping>(mapping.Mappings);
+                            var fmapping = fmappings.Find(p => p.PropertyName == propertyName);
+                            if (fmapping != null)
+                            {
+                                field = new Field(fmapping.MappingName);
+                            }
+                        }
                     }
                 }
             }

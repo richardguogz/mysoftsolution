@@ -15,10 +15,8 @@ namespace MySoft.Data
         where T : Entity
     {
         public Field(string fieldName)
-            : base(fieldName)
-        {
-            this.tableName = Table.GetTable<T>().OriginalName;
-        }
+            : this(fieldName, fieldName)
+        { }
 
         public Field(string propertyName, string fieldName)
             : base(propertyName, null, fieldName)

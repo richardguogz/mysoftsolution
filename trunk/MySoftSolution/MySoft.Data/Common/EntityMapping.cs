@@ -79,7 +79,7 @@ namespace MySoft.Data.Mapping
         /// <summary>
         /// 字段映射
         /// </summary>
-        [XmlAttribute("FieldMapping")]
+        [XmlElement("FieldMapping")]
         public FieldMapping[] Mappings { get; set; }
 
         /// <summary>
