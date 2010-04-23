@@ -33,12 +33,24 @@ namespace MySoft.Data
         public WhereClip(string where, params SQLParameter[] parameters)
         {
             this.where = where;
-            if (parameters != null)
+            if (parameters != null && parameters.Length > 0)
             {
-                if (parameters.Length > 0)
+                this.plist.AddRange(parameters);
+            }
+        }
+        /// <summary>
+        /// 自定义一个Where条件
+        /// </summary>
+        /// <param name="where"></param>
+        /// <param name="parameters"></param>
+        public WhereClip(string where, IDictionary<string, object> parameters)
+            : this(where)
+        {
+            if (parameters != null && parameters.Count > 0)
+            {
+                foreach (KeyValuePair<string, object> kv in parameters)
                 {
-                    this.plist.Clear();
-                    this.plist.AddRange(parameters);
+                    this.plist.Add(new SQLParameter(kv.Key, kv.Value));
                 }
             }
         }

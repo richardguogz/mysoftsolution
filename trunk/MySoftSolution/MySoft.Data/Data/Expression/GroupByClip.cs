@@ -22,6 +22,24 @@ namespace MySoft.Data
             this.groupBy = groupBy;
         }
 
+        /// <summary>
+        /// 自定义一个GroupBy条件
+        /// </summary>
+        /// <param name="fields"></param>
+        public GroupByClip(params Field[] fields)
+        {
+            if (fields != null && fields.Length > 0)
+            {
+                GroupByClip group = GroupByClip.None;
+                foreach (Field field in fields)
+                {
+                    group &= field.Group;
+                }
+
+                this.groupBy = group.ToString();
+            }
+        }
+
         public static GroupByClip operator &(GroupByClip leftGroup, GroupByClip rightGroup)
         {
             if (DataUtils.IsNullOrEmpty(leftGroup) && DataUtils.IsNullOrEmpty(rightGroup))

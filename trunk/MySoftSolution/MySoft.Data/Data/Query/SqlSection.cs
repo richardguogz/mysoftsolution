@@ -51,12 +51,17 @@ namespace MySoft.Data
         /// <returns></returns>
         public SqlSection AddParameters(IDictionary<string, object> parameters)
         {
-            List<SQLParameter> list = new List<SQLParameter>();
-            foreach (KeyValuePair<string, object> kv in parameters)
+            if (parameters != null && parameters.Count > 0)
             {
-                list.Add(new SQLParameter(kv.Key, kv.Value));
+                List<SQLParameter> list = new List<SQLParameter>();
+                foreach (KeyValuePair<string, object> kv in parameters)
+                {
+                    list.Add(new SQLParameter(kv.Key, kv.Value));
+                }
+                return AddParameters(list.ToArray());
             }
-            return AddParameters(list.ToArray());
+
+            return this;
         }
 
         /// <summary>
