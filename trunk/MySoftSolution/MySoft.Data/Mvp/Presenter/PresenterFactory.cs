@@ -4,7 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Configuration;
 
-namespace MySoft.Web.Mvp
+namespace MySoft.Data.Mvp
 {
     /// <summary>
     /// 创建Presenter的接口

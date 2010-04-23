@@ -102,10 +102,6 @@
     <Compile Include="Controls\repeater\RepeaterControlBuilder.cs" />
     <Compile Include="Controls\repeater\RepeaterFakeType.cs" />
     <Compile Include="Controls\repeater\RepeaterItem.cs" />
-    <Compile Include="Mvp\Presenter\Presenter.cs" />
-    <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
-    <Compile Include="Mvp\Service\ServiceConfigurationSection.cs" />
-    <Compile Include="Mvp\Service\ServiceFactory.cs" />
     <Compile Include="Static\UpdateDependency.cs" />
     <Compile Include="Static\StaticPageUtils.cs" />
     <Compile Include="Static\StaticPageItem.cs" />

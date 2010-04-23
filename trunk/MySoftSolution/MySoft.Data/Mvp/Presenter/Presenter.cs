@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Web.Mvp
+namespace MySoft.Data.Mvp
 {
     public interface IPresenterFactory
     {

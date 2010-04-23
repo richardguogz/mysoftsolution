@@ -125,6 +125,10 @@
     <Compile Include="Data\Session\DbProvider.cs" />
     <Compile Include="Data\Cache\DataCache.cs" />
     <Compile Include="Common\IDataPage.cs" />
+    <Compile Include="Mvp\Presenter\Presenter.cs" />
+    <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
+    <Compile Include="Mvp\Service\ServiceConfigurationSection.cs" />
+    <Compile Include="Mvp\Service\ServiceFactory.cs" />
     <Compile Include="Provider\Oracle.cs" />
     <Compile Include="Provider\SqlServer.cs" />
     <Compile Include="Provider\MsAccess.cs" />
