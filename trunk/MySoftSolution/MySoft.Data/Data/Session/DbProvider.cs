@@ -420,7 +420,7 @@ namespace MySoft.Data
                 if (fv.IsIdentity) return;
 
                 sbsql.Append(fv.Field.At((string)null).Name);
-                if (CheckNullOrSysValue(fv.Value))
+                if (CheckValue(fv.Value))
                 {
                     sbparam.Append(DataUtils.FormatValue(fv.Value));
                 }
@@ -534,7 +534,7 @@ namespace MySoft.Data
 
                 if (fv.IsChanged)
                 {
-                    if (CheckNullOrSysValue(fv.Value))
+                    if (CheckValue(fv.Value))
                     {
                         sb.Append(fv.Field.At((string)null).Name + " = " + DataUtils.FormatValue(fv.Value));
                     }
@@ -803,9 +803,9 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        private bool CheckNullOrSysValue(object value)
+        private bool CheckValue(object value)
         {
-            if (value == null || value == DBNull.Value || value is SysValue)
+            if (value == null || value == DBNull.Value || value is Field || value is SysValue)
             {
                 return true;
             }
