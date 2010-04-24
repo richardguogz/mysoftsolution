@@ -327,6 +327,7 @@ namespace MySoft.Data
                 {
                     returnValue = ExecuteNonQuery(cmd, trans);
                     cmd = CreateSqlCommand(string.Format(RowAutoID, identityfield.Name, tableName));
+
                     if (isOutValue) retVal = ExecuteScalar(cmd, trans);
                 }
                 else
