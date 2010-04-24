@@ -826,24 +826,8 @@ namespace MySoft.Data
             }
 
             object retVal;
-            int ret = 0;
-
-            if (!string.IsNullOrEmpty(creator.SequenceName))
-            {
-                ret = dbProvider.Insert<TempTable>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, true, out retVal);
-
-                identityValue = DataUtils.ConvertValue<TResult>(retVal);
-            }
-            else
-            {
-                ret = Excute(creator);
-
-                QueryCreator q = QueryCreator.NewCreator()
-                    .From(creator.Table)
-                    .AddField(creator.IdentityField.Max());
-
-                identityValue = this.From(q).ToScalar<TResult>();
-            }
+            int ret = dbProvider.Insert<TempTable>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, true, out retVal);
+            identityValue = DataUtils.ConvertValue<TResult>(retVal);
 
             return ret;
         }
