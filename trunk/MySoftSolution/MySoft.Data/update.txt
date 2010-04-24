@@ -461,7 +461,6 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
   ToList()返回的为SourceList，SourceList继承于List
   ToTable()返回的为SourceTable，SourceTable继承于DataTable
   ToReader()返回的为SourceReader，SourceReader通过属性DataSource来访问IDataReader
-  
 
 4.支持内联查询语法，如下：
   select [Products].*,[CategoryName] = ( select [Categories].[CategoryName] from [Categories] 
@@ -472,3 +471,23 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
     .Select(Categories._.CategoryName).Where(Categories._.CategoryID == Products._.CategoryID)));
 
   IList<Products> list = DataAccess.DefaultSession.From(relation).ToList();
+
+版本号：2.7.3 (2.7.3第三次修正) stable
+
+1.修正了在操作时字符串中带有 {} 时运行出错的bug.
+
+2.修正了DbSession.Default.Update(Field,Field + 1,Where)方式运行时的错误
+
+3.对SourceList与SourceTable在功能上进一步增强
+
+4.存储过程与SQL语法操作中增加了字典参数传递的方法，如下
+  IDictionary<string, object> parameters = new Dictionary<string, object>();
+  parameters["$UserID"] = 1;
+  DbSession.Default.FromSql("select *from User where UserID = $UserID", parameters);
+  存储过程与之雷同
+  
+5.增加了SysValue的处理，例如
+  将用户ID为1的更新时间修改为当前数据库时间
+  DbSession.Default.Update(User._.UpdateTime,new SysValue("getdate()") User._.UserID == 1);
+  
+6.将原MySoft.Web中的MVP添加到MySoft.Data组件之中，避免在非Web项目中引用MySoft.Web程序集
