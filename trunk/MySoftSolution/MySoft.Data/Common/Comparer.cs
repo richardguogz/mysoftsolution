@@ -27,7 +27,7 @@ namespace MySoft.Data
             this.desc = false;
         }
 
-        internal SortProperty(string propertyName, bool desc)
+        private SortProperty(string propertyName, bool desc)
             : this(propertyName)
         {
             this.desc = desc;
@@ -70,33 +70,6 @@ namespace MySoft.Data
         public SortComparer(params SortProperty[] sorts)
         {
             this.sorts = new List<SortProperty>(sorts);
-        }
-
-        /// <summary>
-        /// 生成一个排序属性
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        public SortProperty this[string propertyName]
-        {
-            get
-            {
-                return this[propertyName, false];
-            }
-        }
-
-        /// <summary>
-        /// 生成一个排序属性
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="desc"></param>
-        /// <returns></returns>
-        public SortProperty this[string propertyName, bool desc]
-        {
-            get
-            {
-                return new SortProperty(propertyName, desc);
-            }
         }
 
         /// <summary>

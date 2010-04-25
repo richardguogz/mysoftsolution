@@ -170,18 +170,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (OnNoExecuteLog != null)
-            {
-                OnNoExecuteLog(GetLog(cmd));
-                return int.MinValue;
-            }
-            else
+            try
             {
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     return dbHelper.ExecuteNonQuery(cmd);
                 }
                 return dbHelper.ExecuteNonQuery(cmd, trans);
+            }
+            catch (Exception ex)
+            {
+                WriteExceptionLog(ex, cmd);
+
+                throw ex;
             }
         }
 
@@ -193,12 +194,7 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (OnNoExecuteLog != null)
-            {
-                OnNoExecuteLog(GetLog(cmd));
-                return null;
-            }
-            else
+            try
             {
                 IDataReader reader;
                 if (trans.Connection == null && trans.Transaction == null)
@@ -211,6 +207,12 @@ namespace MySoft.Data
                 }
                 return new SourceReader(reader);
             }
+            catch (Exception ex)
+            {
+                WriteExceptionLog(ex, cmd);
+
+                throw ex;
+            }
         }
 
         public DataSet ExecuteDataSet(DbCommand cmd, DbTrans trans)
@@ -221,18 +223,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (OnNoExecuteLog != null)
-            {
-                OnNoExecuteLog(GetLog(cmd));
-                return null;
-            }
-            else
+            try
             {
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     return dbHelper.ExecuteDataSet(cmd);
                 }
                 return dbHelper.ExecuteDataSet(cmd, trans);
+            }
+            catch (Exception ex)
+            {
+                WriteExceptionLog(ex, cmd);
+
+                throw ex;
             }
         }
 
@@ -244,18 +247,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (OnNoExecuteLog != null)
-            {
-                OnNoExecuteLog(GetLog(cmd));
-                return null;
-            }
-            else
+            try
             {
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     return dbHelper.ExecuteDataTable(cmd);
                 }
                 return dbHelper.ExecuteDataTable(cmd, trans);
+            }
+            catch (Exception ex)
+            {
+                WriteExceptionLog(ex, cmd);
+
+                throw ex;
             }
         }
 
@@ -267,18 +271,19 @@ namespace MySoft.Data
             //写日志
             WriteLog(cmd);
 
-            if (OnNoExecuteLog != null)
-            {
-                OnNoExecuteLog(GetLog(cmd));
-                return null;
-            }
-            else
+            try
             {
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     return dbHelper.ExecuteScalar(cmd);
                 }
                 return dbHelper.ExecuteScalar(cmd, trans);
+            }
+            catch (Exception ex)
+            {
+                WriteExceptionLog(ex, cmd);
+
+                throw ex;
             }
         }
 
@@ -633,6 +638,19 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// Writes the exception log.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="command"></param>
+        private void WriteExceptionLog(Exception ex, DbCommand command)
+        {
+            if (OnExceptionLog != null)
+            {
+                OnExceptionLog(ex, GetLog(command));
+            }
+        }
+
+        /// <summary>
         /// 获取输出的日志
         /// </summary>
         /// <param name="command"></param>
@@ -664,9 +682,9 @@ namespace MySoft.Data
         public event LogHandler OnLog;
 
         /// <summary>
-        /// OnLog event.
+        /// OnExceptionLog event.
         /// </summary>
-        public event LogHandler OnNoExecuteLog;
+        public event ExceptionLogHandler OnExceptionLog;
 
         #endregion
 

@@ -28,8 +28,8 @@ namespace MySoft.Data
         void RegisterSqlLogger(LogHandler handler);
         void UnregisterSqlLogger(LogHandler handler);
 
-        void RegisterNoExecuteSqlLogger(LogHandler handler);
-        void UnregisterNoExecuteSqlLogger(LogHandler handler);
+        void RegisterSqlExceptionLogger(ExceptionLogHandler handler);
+        void UnregisterSqlExceptionLogger(ExceptionLogHandler handler);
 
         #endregion
 

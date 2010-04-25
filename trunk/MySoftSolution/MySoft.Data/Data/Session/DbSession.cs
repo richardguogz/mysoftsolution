@@ -247,18 +247,18 @@ namespace MySoft.Data
         /// 注册一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterNoExecuteSqlLogger(LogHandler handler)
+        public void RegisterSqlExceptionLogger(ExceptionLogHandler handler)
         {
-            dbProvider.OnNoExecuteLog += handler;
+            dbProvider.OnExceptionLog += handler;
         }
 
         /// <summary>
         /// 取消一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterNoExecuteSqlLogger(LogHandler handler)
+        public void UnregisterSqlExceptionLogger(ExceptionLogHandler handler)
         {
-            dbProvider.OnNoExecuteLog -= handler;
+            dbProvider.OnExceptionLog -= handler;
         }
 
         #endregion
