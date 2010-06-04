@@ -1,0 +1,3 @@
+Server=(local);Database=Northwind;Uid=sa;Pwd=sa
+Server=(local);Database=Northwind;Uid=sa;Pwd=sa;
+Server=(local);Database=Northwind;Uid=sa;Pwd=shumiwang;
