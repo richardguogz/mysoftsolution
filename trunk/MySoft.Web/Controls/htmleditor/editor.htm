@@ -89,7 +89,14 @@
         <a class="n" style="font-size: x-large; line-height: 120%" onclick="format('fontsize',6);this.parentNode.style.display='none'" href="javascript:void(0)">特大</a>
         <a class="n" style="font-size: xx-large; line-height: 140%" onclick="format('fontsize',7);this.parentNode.style.display='none'" href="javascript:void(0)">极大</a>
     </div>
-    <div id="divEditor"><table width="100%" height="89%" border="0" cellspacing="0" cellpadding="0" ><tr><td style="border:1px solid #C5C5C5; border-top:0px;"><IFRAME class="HtmlEditor" ID="HtmlEditor" name="HtmlEditor" style=" height:100%; width:100%" frameBorder="0" marginHeight=0 marginWidth=0 src="blankpage.htm"></IFRAME></td></tr></table></div>
-    <textarea ID="sourceEditor" style="height:89%; width:100%;font-size:12px;display:none"></textarea>
+    <script language="JavaScript" type="text/javascript">
+		<!--
+        var height = document.body.clientHeight - 35; //document.body.clientHeight;
+        document.write('<div style="border:1px solid #C5C5C5; border-top:0;">');
+        document.write('<div id="divEditor"><IFRAME class="HtmlEditor" ID="HtmlEditor" name="HtmlEditor" style=" height:' + height + 'px;width:100%" frameBorder="0" marginHeight=0 marginWidth=0 src="blankpage.htm"></IFRAME></div>');
+        document.write('<textarea ID="sourceEditor" style="height:' + height + 'px;width:100%;font-size:12px;display:none"></textarea>');
+        document.write('</div>')
+        //-->
+    </script>
 </body>
 </html>
