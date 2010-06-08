@@ -38,6 +38,10 @@ var HTMLEditor = function(id, width, height) {
         var div = document.createElement('div');
         div.innerHTML = html;
 
+        if (!container) {
+            alert('传入的容器id不存在，请查证！');
+            return;
+        }
         container.appendChild(div);
     };
 
