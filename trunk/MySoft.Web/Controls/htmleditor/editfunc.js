@@ -114,29 +114,20 @@ function format(type, para){
 	f.focus();
 }
 function setMode(bStatus){
-	var sourceEditor = document.getElementById("sourceEditor");
-	var HtmlEditor = document.getElementById("HtmlEditor");
-	var divEditor = document.getElementById("divEditor");
-	var height = document.body.clientHeight;
-	var f = window.frames["HtmlEditor"];
-	var body = f.document.getElementsByTagName("BODY")[0];
-	if(bStatus){
-		sourceEditor.style.display = "";
-		HtmlEditor.style.height = "0px";
-		divEditor.style.height = "0px";
-		sourceEditor.value = body.innerHTML;
-	}else{
-		sourceEditor.style.display = "none";
-		if(gIsIE){
-			HtmlEditor.style.height = (height-34) + "px";
-			divEditor.style.height = (height-34) + "px";
-		}else{
-			HtmlEditor.style.height = (height-37) + "px";
-			divEditor.style.height = (height-37) + "px";
-		}
-		body.innerHTML = sourceEditor.value;
-		//fSetEditable();
-	}
+    var sourceEditor = document.getElementById("sourceEditor");
+    var divEditor = document.getElementById("divEditor");
+    var f = window.frames["HtmlEditor"];
+    var body = f.document.getElementsByTagName("BODY")[0];
+    if (bStatus) {
+        divEditor.style.display = "none";
+        sourceEditor.style.display = "";
+        sourceEditor.value = body.innerHTML;
+    } else {
+        divEditor.style.display = "";
+        sourceEditor.style.display = "none";
+        body.innerHTML = sourceEditor.value;
+        fSetEditable();
+    }
 }
 
 function fGetEv(e){
