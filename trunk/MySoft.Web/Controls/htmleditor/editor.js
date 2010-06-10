@@ -45,6 +45,18 @@ var HTMLEditor = function(id, width, height) {
         container.appendChild(div);
     };
 
+    //设置焦点
+    this.setFocus = function() {
+        var frameid = this.id + '___Frame';
+        var frame = window.frames[frameid];
+        if (frame) {
+            var htmlframe = frame.window.frames['HtmlEditor'];
+            if (htmlframe) {
+                htmlframe.focus();
+            }
+        }
+    };
+
     //给编辑器赋值
     this.setHTML = function(text) {
         var frameid = this.id + '___Frame';
