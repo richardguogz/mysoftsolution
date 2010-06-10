@@ -8,7 +8,7 @@
     <script src="portraitSelect.js" type="text/javascript"></script>
     <link href="editor.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<body">
     <table style="border-right: #c5c5c5 1px solid; border-top: #c5c5c5 1px solid; border-left: #c5c5c5 1px solid; border-bottom: #c5c5c5 1px solid; font-size: 12px" cellspacing="0" cellpadding="0" width="100%" background="images/bg.gif" border="0">
         <tbody>
             <tr>
@@ -99,7 +99,7 @@
 
         var doc = document.frames.HtmlEditor.document;
         doc.designMode = "On";
-        window.setTimeout('HtmlEditor.focus()', 100);
+        window.setTimeout('document.frames.HtmlEditor.focus()', 100);
         //-->
     </script>
 </body>
