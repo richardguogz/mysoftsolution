@@ -91,11 +91,15 @@
     </div>
     <script language="JavaScript" type="text/javascript">
 		<!--
-        var height = document.body.clientHeight - 35; //document.body.clientHeight;
-        document.write('<div style="border:1px solid #C5C5C5; border-top:0;">');
-        document.write('<div id="divEditor"><IFRAME class="HtmlEditor" ID="HtmlEditor" name="HtmlEditor" style=" height:' + height + 'px;width:100%" frameBorder="0" marginHeight=0 marginWidth=0 src="blankpage.htm"></IFRAME></div>');
-        document.write('<textarea ID="sourceEditor" style="height:' + height + 'px;width:100%;font-size:12px;display:none"></textarea>');
-        document.write('</div>')
+        var height = document.body.clientHeight; //document.body.clientHeight;
+        document.write('<div id="divEditor"><table width="100%" height:287px border="0" cellspacing="0" cellpadding="0" ><tr><td style="border:1px solid #C5C5C5; border-top:0;">');
+        document.write('<IFRAME class="HtmlEditor" ID="HtmlEditor" name="HtmlEditor" style=" height:' + (height - 35) + 'px;width:100%;" frameBorder="0" marginHeight=0 marginWidth=0 src="blankpage.htm"></IFRAME>');
+        document.write('</td></tr></table></div>');
+        document.write('<textarea ID="sourceEditor" style="height:' + (height - 35) + 'px;width:100%;font-size:12px; display:none"></textarea>');
+
+        var doc = document.frames.HtmlEditor.document;
+        doc.designMode = "On";
+        window.setTimeout('HtmlEditor.focus()', 100);
         //-->
     </script>
 </body>
