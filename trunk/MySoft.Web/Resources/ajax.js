@@ -564,9 +564,9 @@ Object.extend(Ajax, {
                 $tag("head")[0].appendChild(script); //把该标签加入<head>
                 
                 //5秒后移除此script标签
-                //setTimeout(function() {
-                //    $tag("head")[0].removeChild(script)
-                //}, 5000);
+                setTimeout(function() {
+                    $tag("head")[0].removeChild(script)
+                }, 5000);
             }
             el.innerHTML = html.replace(reg, ""); //将剩下的html祛除<script>部分，插入模版页
             if (match_onload != null) {
