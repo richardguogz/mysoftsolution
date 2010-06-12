@@ -308,7 +308,7 @@ namespace MySoft.Web
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public static void SaveSessiion(string key, object value)
+        public static void SaveSession(string key, object value)
         {
             HttpContext.Current.Session[key] = value;
         }

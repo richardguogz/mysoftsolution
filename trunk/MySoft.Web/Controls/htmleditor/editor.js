@@ -105,6 +105,18 @@ var HTMLEditor = function(id, width, height) {
 
     //从编辑器取值
     this.getHTML = function() {
+
+        var text = this.getText();
+
+        //text = text.replace(/\&/ig,'&amp;')
+        text = text.replace(/\</ig, '&lt;')
+        text = text.replace(/\>/ig, '&gt;')
+
+        return text;
+    };
+
+    //获取原始内容
+    this.getText = function() {
         var text = "";
         var frameid = this.id + '___Frame';
         var frame = window.frames[frameid];
@@ -123,10 +135,6 @@ var HTMLEditor = function(id, width, height) {
                 }
             }
         }
-
-        //text = text.replace(/\&/ig,'&amp;')
-        text = text.replace(/\</ig, '&lt;')
-        text = text.replace(/\>/ig, '&gt;')
 
         return text;
     };

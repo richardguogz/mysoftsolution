@@ -544,7 +544,7 @@ Object.extend(Ajax, {
         function fillHTML(el, html) {
             if (!el) return;
             //用正则表达式匹配ajax返回的html中是否有<script>，如果存在则取出标签内部的内容。
-            var reg = /<script[^>]*>([\s\S]*)<\/script>/ig;
+            var reg = /<script[^>]*>[\s\S]*?<\/script>/ig;
             if (!html.match(reg)) {
                 el.innerHTML = html;
                 return;
@@ -554,15 +554,19 @@ Object.extend(Ajax, {
             var match_onload = html.match(reg_onload);
             var matchs = html.match(reg);
             if (matchs != null) {
-                var tag = /<script[^>]*>|<\/script>|<!--|-->/ig;
-                myscript = matchs[0].replace(tag, "");
+                var myscript = "";
+                for (var i = 0; i < matchs.length; i++) {
+                    var tag = /<script[^>]*>|<\/script>|<!--|-->/ig;
+                    myscript += matchs[i].replace(tag, "");
+                }
                 var script = $create("script"); //在模版页创建新的<script>标签
                 script.text = myscript; //给新的script标签赋值
                 $tag("head")[0].appendChild(script); //把该标签加入<head>
+                
                 //5秒后移除此script标签
-                setTimeout(function() {
-                    $tag("head")[0].removeChild(script)
-                }, 5000);
+                //setTimeout(function() {
+                //    $tag("head")[0].removeChild(script)
+                //}, 5000);
             }
             el.innerHTML = html.replace(reg, ""); //将剩下的html祛除<script>部分，插入模版页
             if (match_onload != null) {
