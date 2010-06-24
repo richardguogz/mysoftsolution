@@ -33,12 +33,16 @@ namespace MySoft.Web.UI
 
         protected override void OnPreInit(EventArgs e)
         {
-            AjaxInfo info = new AjaxInfo(this);
-            info.EnableAjaxCallback = EnableAjaxCallback;
-            info.EnableAjaxTemplate = EnableAjaxTemplate;
+            //只有启用Ajax才处理
+            if (EnableAjaxCallback)
+            {
+                AjaxInfo info = new AjaxInfo(this);
+                info.EnableAjaxCallback = EnableAjaxCallback;
+                info.EnableAjaxTemplate = EnableAjaxTemplate;
 
-            AjaxRequest request = new AjaxRequest(info);
-            request.SendRequest();
+                AjaxRequest request = new AjaxRequest(info);
+                request.SendRequest();
+            }
 
             base.OnPreInit(e);
         }

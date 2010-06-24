@@ -42,92 +42,79 @@ namespace MySoft.Web.UI
         /// </summary>
         public void SendRequest()
         {
-            if (!info.EnableAjaxCallback)
+            try
             {
-                //只有启用Ajax，才调用初始化方法
-                if (info.CurrentPage is IAjaxInitEventHandler)
-                    (info.CurrentPage as IAjaxInitEventHandler).OnAjaxInit();
-
-                if (info.CurrentPage is IAjaxProcessEventHandler)
-                    (info.CurrentPage as IAjaxProcessEventHandler).OnAjaxProcess(GetCallbackParams());
-
-            }
-            else
-            {
-                try
+                bool AjaxProcess = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Process", false);
+                if (!AjaxProcess)
                 {
-                    bool AjaxProcess = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Process", false);
-                    if (!AjaxProcess)
+                    WebUtils.RegisterPageCssFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.pager.css"));
+
+                    //需要启用模板加载
+                    if (info.EnableAjaxTemplate)
                     {
-                        WebUtils.RegisterPageCssFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.pager.css"));
+                        WebUtils.RegisterPageJsFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.template.js"));
+                    }
 
-                        //需要启用模板加载
-                        if (info.EnableAjaxTemplate)
+                    WebUtils.RegisterPageForAjax(info.CurrentPage, info.CurrentPage.Request.Path);
+                }
+                else
+                {
+                    //只有启用Ajax，才调用初始化方法
+                    if (info.CurrentPage is IAjaxInitEventHandler)
+                        (info.CurrentPage as IAjaxInitEventHandler).OnAjaxInit();
+
+                    if (info.CurrentPage is IAjaxProcessEventHandler)
+                        (info.CurrentPage as IAjaxProcessEventHandler).OnAjaxProcess(GetCallbackParams());
+
+                    bool AjaxLoad = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Load", false);
+                    string AjaxKey = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Key", Guid.NewGuid().ToString());
+
+                    if (AjaxLoad)
+                    {
+                        string AjaxControlPath = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Path", null);
+                        string AjaxTemplatePath = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Template", null);
+
+                        if (CheckHeader(AjaxKey))
                         {
-                            WebUtils.RegisterPageJsFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.template.js"));
-                        }
+                            AjaxControlParam param = LoadAjaxControl(AjaxControlPath, AjaxTemplatePath);
 
-                        WebUtils.RegisterPageForAjax(info.CurrentPage, info.CurrentPage.Request.Path);
+                            //将param写入Response流
+                            WriteToBuffer(param);
+                        }
+                        else
+                        {
+                            throw new AjaxException("Control \"" + AjaxControlPath + "\" Is Load Error！");
+                        }
                     }
                     else
                     {
-                        //只有启用Ajax，才调用初始化方法
-                        if (info.CurrentPage is IAjaxInitEventHandler)
-                            (info.CurrentPage as IAjaxInitEventHandler).OnAjaxInit();
+                        string AjaxMethodName = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Method", null);
 
-                        if (info.CurrentPage is IAjaxProcessEventHandler)
-                            (info.CurrentPage as IAjaxProcessEventHandler).OnAjaxProcess(GetCallbackParams());
-
-                        bool AjaxLoad = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Load", false);
-                        string AjaxKey = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Key", Guid.NewGuid().ToString());
-
-                        if (AjaxLoad)
+                        if (AjaxMethodName != null)
                         {
-                            string AjaxControlPath = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Path", null);
-                            string AjaxTemplatePath = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Template", null);
-
                             if (CheckHeader(AjaxKey))
                             {
-                                AjaxControlParam param = LoadAjaxControl(AjaxControlPath, AjaxTemplatePath);
+                                AjaxMethodParam value = InvokeMethod(info.CurrentPage, AjaxMethodName);
 
-                                //将param写入Response流
-                                WriteToBuffer(param);
+                                //将value写入Response流
+                                WriteToBuffer(value);
                             }
                             else
                             {
-                                throw new AjaxException("Control \"" + AjaxControlPath + "\" Is Load Error！");
+                                throw new AjaxException("Method \"" + AjaxMethodName + "\" Is Invoke Error！");
                             }
                         }
                         else
                         {
-                            string AjaxMethodName = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Method", null);
-
-                            if (AjaxMethodName != null)
-                            {
-                                if (CheckHeader(AjaxKey))
-                                {
-                                    AjaxMethodParam value = InvokeMethod(info.CurrentPage, AjaxMethodName);
-
-                                    //将value写入Response流
-                                    WriteToBuffer(value);
-                                }
-                                else
-                                {
-                                    throw new AjaxException("Method \"" + AjaxMethodName + "\" Is Invoke Error！");
-                                }
-                            }
-                            else
-                            {
-                                WriteAjaxMethods(info.CurrentPage.GetType());
-                            }
+                            WriteAjaxMethods(info.CurrentPage.GetType());
                         }
                     }
                 }
-                catch (ThreadAbortException) { }
-                catch (Exception ex)
-                {
-                    throw new AjaxException(ex.Message, ex);
-                }
+            }
+            catch (ThreadAbortException) { }
+            catch (Exception ex)
+            {
+                throw new AjaxException(ex.Message, ex);
             }
         }
 
