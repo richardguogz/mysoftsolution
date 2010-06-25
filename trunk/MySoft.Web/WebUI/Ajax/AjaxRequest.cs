@@ -76,7 +76,7 @@ namespace MySoft.Web.UI
 
                         if (CheckHeader(AjaxKey))
                         {
-                            AjaxControlParam param = LoadAjaxControl(AjaxControlPath, AjaxTemplatePath);
+                            AjaxCallbackParam param = LoadAjaxControl(AjaxControlPath, AjaxTemplatePath);
 
                             //将param写入Response流
                             WriteToBuffer(param);
@@ -94,7 +94,7 @@ namespace MySoft.Web.UI
                         {
                             if (CheckHeader(AjaxKey))
                             {
-                                AjaxMethodParam value = InvokeMethod(info.CurrentPage, AjaxMethodName);
+                                AjaxCallbackParam value = InvokeMethod(info.CurrentPage, AjaxMethodName);
 
                                 //将value写入Response流
                                 WriteToBuffer(value);
@@ -112,6 +112,13 @@ namespace MySoft.Web.UI
                 }
             }
             catch (ThreadAbortException) { }
+            catch (AjaxException ex)
+            {
+                AjaxCallbackParam param = new AjaxCallbackParam(ex.Message);
+                param.Success = false;
+
+                WriteToBuffer(param);
+            }
             catch (Exception ex)
             {
                 throw new AjaxException(ex.Message, ex);
@@ -188,7 +195,7 @@ namespace MySoft.Web.UI
         /// <param name="invokeObject"></param>
         /// <param name="MethodName"></param>
         /// <returns></returns>
-        private AjaxMethodParam InvokeMethod(object invokeObject, string MethodName)
+        private AjaxCallbackParam InvokeMethod(object invokeObject, string MethodName)
         {
             try
             {
@@ -206,7 +213,7 @@ namespace MySoft.Web.UI
                     MethodInfo method = ajaxMethods[MethodName].MethodInfo;
                     FastInvokeHandler handler = DynamicCalls.GetMethodInvoker(method);
                     object value = handler.Invoke(invokeObject, list.ToArray());
-                    return new AjaxMethodParam(value);
+                    return new AjaxCallbackParam(value);
                 }
                 else
                 {
@@ -215,10 +222,7 @@ namespace MySoft.Web.UI
             }
             catch (Exception ex)
             {
-                AjaxMethodParam param = new AjaxMethodParam(ex.Message);
-                param.Success = false;
-
-                return param;
+                throw new AjaxException(ex.Message, ex);
             }
         }
 
@@ -227,7 +231,7 @@ namespace MySoft.Web.UI
         /// </summary>
         /// <param name="controlPath"></param>
         /// <returns></returns>
-        private AjaxControlParam LoadAjaxControl(string controlPath)
+        private AjaxCallbackParam LoadAjaxControl(string controlPath)
         {
             return LoadAjaxControl(controlPath, null);
         }
@@ -238,7 +242,7 @@ namespace MySoft.Web.UI
         /// <param name="controlPath"></param>
         /// <param name="templatePath"></param>
         /// <returns></returns>
-        private AjaxControlParam LoadAjaxControl(string controlPath, string templatePath)
+        private AjaxCallbackParam LoadAjaxControl(string controlPath, string templatePath)
         {
             try
             {
@@ -272,14 +276,11 @@ namespace MySoft.Web.UI
                     }
                 }
 
-                return new AjaxControlParam(html);
+                return new AjaxCallbackParam(html);
             }
             catch (Exception ex)
             {
-                AjaxControlParam param = new AjaxControlParam(ex.Message);
-                param.Success = false;
-
-                return param;
+                throw new AjaxException(ex.Message, ex);
             }
         }
 
@@ -393,25 +394,7 @@ namespace MySoft.Web.UI
         /// 将数据写入页面流
         /// </summary>
         /// <param name="param"></param>
-        private void WriteToBuffer(AjaxMethodParam param)
-        {
-            info.CurrentPage.Response.Clear();
-
-            if (param != null)
-                info.CurrentPage.Response.Write(WebUtils.Serialize(param));
-            else
-                info.CurrentPage.Response.ContentType = "image/gif";
-
-            info.CurrentPage.Response.Cache.SetNoStore();
-            info.CurrentPage.Response.Flush();
-            info.CurrentPage.Response.End();
-        }
-
-        /// <summary>
-        /// 将数据写入页面流
-        /// </summary>
-        /// <param name="param"></param>
-        private void WriteToBuffer(AjaxControlParam param)
+        private void WriteToBuffer(AjaxCallbackParam param)
         {
             info.CurrentPage.Response.Clear();
 

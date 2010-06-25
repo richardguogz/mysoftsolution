@@ -21,33 +21,17 @@ namespace MySoft.Web.UI
     }
 
     /// <summary>
-    /// AjaxMethod参数
+    /// AjaxCallback参数
     /// </summary>
     [Serializable]
-    internal class AjaxMethodParam
+    internal class AjaxCallbackParam
     {
         public bool Success { get; set; }
         public object Message { get; set; }
 
-        public AjaxMethodParam(object message)
+        public AjaxCallbackParam(object message)
         {
             this.Message = message;
-            this.Success = true;
-        }
-    }
-
-    /// <summary>
-    /// AjaxControl参数
-    /// </summary>
-    [Serializable]
-    internal class AjaxControlParam
-    {
-        public bool Success { get; set; }
-        public string Content { get; set; }
-
-        public AjaxControlParam(string content)
-        {
-            this.Content = content;
             this.Success = true;
         }
     }
