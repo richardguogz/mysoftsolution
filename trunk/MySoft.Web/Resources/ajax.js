@@ -516,11 +516,11 @@ Object.extend(Ajax, {
                 var json = Ajax.getData(xmlHttp, 'json');
                 if (json) {
                     if (json.Success) {
-                        if (op.cache) Ajax.cache[key] = json.Content;
-                        if (typeof (obj) == 'function') obj(json.Content);
-                        else fillElement(obj, json.Content);
+                        if (op.cache) Ajax.cache[key] = json.Message;
+                        if (typeof (obj) == 'function') obj(json.Message);
+                        else fillElement(obj, json.Message);
                     } else {
-                        alert(json.Content);
+                        alert(json.Message);
                     }
                 }
                 if (op.callback) op.callback(xmlHttp);
