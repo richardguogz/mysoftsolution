@@ -112,16 +112,12 @@ namespace MySoft.Web.UI
                 }
             }
             catch (ThreadAbortException) { }
-            catch (AjaxException ex)
+            catch (Exception ex)
             {
                 AjaxCallbackParam param = new AjaxCallbackParam(ex.Message);
                 param.Success = false;
 
                 WriteToBuffer(param);
-            }
-            catch (Exception ex)
-            {
-                throw new AjaxException(ex.Message, ex);
             }
         }
 
