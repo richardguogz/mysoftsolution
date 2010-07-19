@@ -48,7 +48,7 @@ namespace MySoft.Web
                 return errorReturn;
             }
 
-            return WebUtils.ConvertTo<TReturn>(retStr);
+            return WebUtils.ConvertTo<TReturn>(retStr, errorReturn);
         }
 
         /// <summary>

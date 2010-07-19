@@ -10,7 +10,7 @@ namespace MySoft.Web.Config
     public class StaticPageRule
     {
         // private member variables...
-        private string lookFor, sendTo;
+        private string lookFor, sendTo, validateString;
         private int timeSpan;
 
         #region Public Properties
@@ -64,6 +64,21 @@ namespace MySoft.Web.Config
             set
             {
                 timeSpan = value;
+            }
+        }
+
+        /// <summary>
+        /// ÑéÖ¤×Ö·û´®
+        /// </summary>
+        public string ValidateString
+        {
+            get
+            {
+                return validateString;
+            }
+            set
+            {
+                validateString = value;
             }
         }
 

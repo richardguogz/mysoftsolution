@@ -68,10 +68,9 @@ namespace MySoft.Web
                             htmlFile = context.Server.MapPath(htmlUrl);
 
                             //需要生成静态页面
-                            if (!File.Exists(htmlFile))
+                            if (!File.Exists(htmlFile))  //静态页面不存在
                             {
-                                //静态页面不存在
-                                context.Response.Filter = new ResponseFilter(context.Response.Filter, htmlFile);
+                                context.Response.Filter = new ResponseFilter(context.Response.Filter, htmlFile, rules[i].ValidateString);
                                 break;
                             }
                             else
@@ -84,10 +83,9 @@ namespace MySoft.Web
                                 int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
                                 int timeSpan = rules[i].TimeSpan;
 
-                                if (timeSpan > 0 && span >= timeSpan)
+                                if (timeSpan > 0 && span >= timeSpan) //静态页面过期
                                 {
-                                    //过期
-                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, htmlFile);
+                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, htmlFile, rules[i].ValidateString);
                                     break;
                                 }
                                 else
@@ -107,7 +105,7 @@ namespace MySoft.Web
                                 string logFile = PageUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
                                 logFile = context.Server.MapPath(logFile);
                                 string logText = string.Format("{0} => {1}", DateTime.Now.ToString("HH:mm:ss"), ex.ToString());
-                                logText += "\n----------------------------------------------------------------------------------------------------------\n\n";
+                                logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
                                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                                 {
                                     Directory.CreateDirectory(Path.GetDirectoryName(logFile));

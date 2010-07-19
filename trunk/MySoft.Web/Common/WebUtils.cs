@@ -377,20 +377,9 @@ namespace MySoft.Web
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static T ConvertTo<T>(string value)
-        {
-            return ConvertTo<T>(value, default(T));
-        }
-
-        /// <summary>
-        /// 将value转换成对应的类型值
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <param name="defvalue"></param>
-        /// <returns></returns>
-        public static T ConvertTo<T>(string value, T defvalue)
+        public static T ConvertTo<T>(string value, T defaultValue)
         {
             bool isNullable = false;
             Type conversionType = typeof(T);
@@ -404,13 +393,13 @@ namespace MySoft.Web
             if (ConverterFactory.Converters.ContainsKey(conversionType))
             {
                 //如果转换的值为空并且对象可为空时返回默认值
-                if (string.IsNullOrEmpty(value) && isNullable) return defvalue;
+                if (string.IsNullOrEmpty(value) && isNullable) return defaultValue;
 
                 object obj = ConverterFactory.Converters[conversionType].ConvertTo(value, out success);
                 if (success) return (T)obj;
             }
 
-            return defvalue;
+            return defaultValue;
         }
 
         /// <summary>

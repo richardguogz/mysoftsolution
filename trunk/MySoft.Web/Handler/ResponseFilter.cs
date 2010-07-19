@@ -13,22 +13,19 @@ namespace MySoft.Web
     {
         private Stream m_sink;
         private long m_position;
-        private FileStream fs;
         private string filePath = string.Empty;
+        private string validateString = string.Empty;
+        private StringBuilder pageContent = new StringBuilder();
+        private Encoding enc;
 
-        public ResponseFilter(Stream sink, string filePath)
+        public ResponseFilter(Stream sink, string filePath, string validateString)
         {
             this.m_sink = sink;
             this.filePath = filePath;
+            this.validateString = validateString;
 
-            //如果文件夹不存在，则创建
-            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            }
-
-            this.fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
-            this.fs.SetLength(0);
+            //获取当前流的编码
+            enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
         }
 
         // The following members of Stream must be overriden.
@@ -71,10 +68,40 @@ namespace MySoft.Web
         public override void Close()
         {
             this.m_sink.Close();
-            if (fs != null)
+
+            //获取页面的内容
+            string content = pageContent.ToString();
+
+            //如果页面内容中包含指定的验证字符串则生成
+            if (content.Contains(validateString))
             {
-                //关闭流
-                this.fs.Close();
+                //如果文件夹不存在，则创建
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                }
+
+                FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
+                if (fs != null)
+                {
+                    fs.SetLength(0);
+
+                    //能写入时才处理
+                    if (fs.CanWrite)
+                    {
+                        //内容进行编码处理
+                        enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
+
+                        byte[] _buffer = enc.GetBytes(content);
+                        int _count = enc.GetByteCount(content);
+
+                        //将数据写入静态文件.
+                        fs.Write(_buffer, 0, _count);
+                    }
+
+                    //关闭流
+                    fs.Close();
+                }
             }
         }
 
@@ -96,45 +123,14 @@ namespace MySoft.Web
                 //首先判断有没有系统错误
                 if (HttpContext.Current.Error == null)
                 {
-                    try
-                    {
-                        //能写入时才处理
-                        if (fs != null && fs.CanWrite)
-                        {
-                            //内容进行编码处理
-                            Encoding enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
-                            string pageStr = enc.GetString(buffer, offset, count);
-                            byte[] _buffer = enc.GetBytes(pageStr);
-                            int _count = enc.GetByteCount(pageStr);
-
-                            //将数据写入静态文件.
-                            this.fs.Write(_buffer, 0, _count);
-                            this.m_sink.Write(_buffer, 0, _count);
-
-                            //写入流后返回
-                            return;
-                        }
-                    }
-                    catch
-                    {
-                        if (fs != null)
-                        {
-                            //关闭流
-                            this.fs.Close();
-
-                            //删除静态页面
-                            if (File.Exists(filePath))
-                            {
-                                File.Delete(filePath);
-                                return;
-                            }
-                        }
-                    }
+                    //内容进行编码处理
+                    string pageStr = enc.GetString(buffer, offset, count);
+                    pageContent.Append(pageStr);
                 }
             }
 
             //Write out the response to the browser.
-            this.m_sink.Write(buffer, 0, count);
+            this.m_sink.Write(buffer, offset, count);
         }
     }
 }
