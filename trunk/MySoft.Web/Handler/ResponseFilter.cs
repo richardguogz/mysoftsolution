@@ -124,8 +124,9 @@ namespace MySoft.Web
                 if (HttpContext.Current.Error == null)
                 {
                     //内容进行编码处理
-                    string pageStr = enc.GetString(buffer, offset, count);
-                    pageContent.Append(pageStr);
+                    string content = enc.GetString(buffer, offset, count);
+
+                    pageContent.Append(content);
                 }
             }
 
