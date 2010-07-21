@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 
-namespace MySoft.Web.UI.Controls
+namespace MySoft.Web.Controls
 {
     [ToolboxData(@"<{0}:HtmlEditor runat=server></{0}:HtmlEditor>")]
     [Designer("Itfort.WebControls.HtmlEditorDesigner")]

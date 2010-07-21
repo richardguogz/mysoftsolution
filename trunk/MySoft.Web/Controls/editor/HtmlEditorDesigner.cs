@@ -4,7 +4,7 @@ using System.Text;
 using System.Globalization;
 using System.Web.UI.Design;
 
-namespace MySoft.Web.UI.Controls
+namespace MySoft.Web.Controls
 {
     public class HtmlEditorDesigner : ControlDesigner
     {
