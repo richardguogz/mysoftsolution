@@ -79,6 +79,40 @@
             <param name="requestedRawUrl">The RawUrl being requested (includes path and querystring).</param>
             <param name="app">The HttpApplication instance.</param>
         </member>
+        <member name="T:MySoft.URLRewriter.Config.RewriterRuleCollection">
+            <summary>
+            The RewriterRuleCollection models a set of RewriterRules in the Web.config file.
+            </summary>
+            <remarks>
+            The RewriterRuleCollection is expressed in XML as:
+            <code>
+            &lt;RewriterRule&gt;
+              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
+              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
+            &lt;RewriterRule&gt;
+            &lt;RewriterRule&gt;
+              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
+              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
+            &lt;RewriterRule&gt;
+            ...
+            &lt;RewriterRule&gt;
+              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
+              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
+            &lt;RewriterRule&gt;
+            </code>
+            </remarks>
+        </member>
+        <member name="M:MySoft.URLRewriter.Config.RewriterRuleCollection.Add(MySoft.URLRewriter.Config.RewriterRule)">
+            <summary>
+            Adds a new RewriterRule to the collection.
+            </summary>
+            <param name="r">A RewriterRule instance.</param>
+        </member>
+        <member name="P:MySoft.URLRewriter.Config.RewriterRuleCollection.Item(System.Int32)">
+            <summary>
+            Gets or sets a RewriterRule at a specified ordinal index.
+            </summary>
+        </member>
         <member name="T:MySoft.URLRewriter.Config.RewriterRule">
             <summary>
             Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
@@ -124,39 +158,18 @@
             by the <b>PageParser</b> class, which is the same class that the default ASP.NET PageHandlerFactory delegates
             to.</returns>
         </member>
-        <member name="T:MySoft.URLRewriter.Config.RewriterRuleCollection">
+        <member name="T:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler">
             <summary>
-            The RewriterRuleCollection models a set of RewriterRules in the Web.config file.
+            Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
             </summary>
-            <remarks>
-            The RewriterRuleCollection is expressed in XML as:
-            <code>
-            &lt;RewriterRule&gt;
-              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
-              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
-            &lt;RewriterRule&gt;
-            &lt;RewriterRule&gt;
-              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
-              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
-            &lt;RewriterRule&gt;
-            ...
-            &lt;RewriterRule&gt;
-              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
-              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
-            &lt;RewriterRule&gt;
-            </code>
-            </remarks>
         </member>
-        <member name="M:MySoft.URLRewriter.Config.RewriterRuleCollection.Add(MySoft.URLRewriter.Config.RewriterRule)">
+        <member name="M:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
             <summary>
-            Adds a new RewriterRule to the collection.
+            Creates an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
             </summary>
-            <param name="r">A RewriterRule instance.</param>
-        </member>
-        <member name="P:MySoft.URLRewriter.Config.RewriterRuleCollection.Item(System.Int32)">
-            <summary>
-            Gets or sets a RewriterRule at a specified ordinal index.
-            </summary>
+            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
+            <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> instance.</remarks>
+            <returns>An instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.</returns>
         </member>
         <member name="T:MySoft.URLRewriter.Config.RewriterConfiguration">
             <summary>
@@ -212,19 +225,6 @@
             <summary>
             A <see cref="T:MySoft.URLRewriter.Config.RewriterRuleCollection"/> instance that provides access to a set of <see cref="T:MySoft.URLRewriter.Config.RewriterRule"/>s.
             </summary>
-        </member>
-        <member name="T:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler">
-            <summary>
-            Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
-            <summary>
-            Creates an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
-            </summary>
-            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
-            <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> instance.</remarks>
-            <returns>An instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.</returns>
         </member>
     </members>
 </doc>
