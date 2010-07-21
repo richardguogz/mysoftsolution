@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MySoft开发组")]
 [assembly: AssemblyProduct("SetupEntityVsPlugin")]
-[assembly: AssemblyCopyright("版权所有 (C) wzxz 2007")]
+[assembly: AssemblyCopyright("版权所有 (C) MySoft 2010")]
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      内部版本号
 //      修订号
 //
-[assembly: AssemblyVersion("2.7.4")]
-[assembly: AssemblyFileVersion("2.7.410.0612")]
+[assembly: AssemblyVersion("2.7.5.*")]
+[assembly: AssemblyFileVersion("2.7.510.0721")]

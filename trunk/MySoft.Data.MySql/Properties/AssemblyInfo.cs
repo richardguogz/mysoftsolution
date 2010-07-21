@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MySoft开发组")]
 [assembly: AssemblyProduct("MySoft.Data.MySql")]
-[assembly: AssemblyCopyright("版权所有 (C) MySoft 2009")]
+[assembly: AssemblyCopyright("版权所有 (C) MySoft 2010")]
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // 可以指定所有这些值，也可以使用“内部版本号”和“修订号”的默认值，
 // 方法是按如下所示使用“*”:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.7.4")]
-[assembly: AssemblyFileVersion("2.7.410.0612")]
+[assembly: AssemblyVersion("2.7.5.*")]
+[assembly: AssemblyFileVersion("2.7.510.0721")]
