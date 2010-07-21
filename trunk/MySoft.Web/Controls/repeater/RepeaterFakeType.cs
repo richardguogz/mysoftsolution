@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 
-namespace MySoft.Web.UI.Controls
+namespace MySoft.Web.Controls
 {
     internal class RepeaterFakeType : TypeDelegator
     {

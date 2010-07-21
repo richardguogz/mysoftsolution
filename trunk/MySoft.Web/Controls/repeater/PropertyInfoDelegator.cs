@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 
-namespace MySoft.Web.UI.Controls
+namespace MySoft.Web.Controls
 {
     internal class PropertyInfoDelegator : PropertyInfo
     {
