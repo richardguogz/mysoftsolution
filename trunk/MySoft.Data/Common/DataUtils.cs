@@ -90,27 +90,36 @@ namespace MySoft.Data
                 try
                 {
                     TOutput t = CreateInstance<TOutput>();
-                    foreach (PropertyInfo p in typeof(TOutput).GetProperties())
+
+                    //如果当前实体为Entity，数据源为IRowReader的话，可以通过内部方法赋值
+                    if (t is Entity && obj is IRowReader)
                     {
-                        object value = null;
-                        if (obj is IRowReader)
+                        (t as Entity).SetAllValues(obj as IRowReader);
+                    }
+                    else
+                    {
+                        foreach (PropertyInfo p in typeof(TOutput).GetProperties())
                         {
-                            IRowReader reader = obj as IRowReader;
-                            if (reader.IsDBNull(p.Name)) continue;
-                            value = reader[p.Name];
+                            object value = null;
+                            if (obj is IRowReader)
+                            {
+                                IRowReader reader = obj as IRowReader;
+                                if (reader.IsDBNull(p.Name)) continue;
+                                value = reader[p.Name];
+                            }
+                            else if (obj is NameValueCollection)
+                            {
+                                NameValueCollection reader = obj as NameValueCollection;
+                                if (reader[p.Name] == null) continue;
+                                value = reader[p.Name];
+                            }
+                            else
+                            {
+                                value = GetPropertyValue(obj, p.Name);
+                            }
+                            if (value == null) continue;
+                            SetPropertyValue(t, p, value);
                         }
-                        else if (obj is NameValueCollection)
-                        {
-                            NameValueCollection reader = obj as NameValueCollection;
-                            if (reader[p.Name] == null) continue;
-                            value = reader[p.Name];
-                        }
-                        else
-                        {
-                            value = GetPropertyValue(obj, p.Name);
-                        }
-                        if (value == null) continue;
-                        SetPropertyValue(t, p, value);
                     }
 
                     return t;
