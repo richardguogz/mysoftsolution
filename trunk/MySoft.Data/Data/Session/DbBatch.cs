@@ -148,6 +148,14 @@ namespace MySoft.Data
             WhereClip where = null;
             int value = 0;
 
+            //对实体进行验证
+            IEnumerable<string> e = entity.Check(entity.As<IEntityBase>().State);
+            if ((e as IList<string>).Count > 0)
+            {
+                string message = string.Join("\r\n", (e as List<string>).ToArray());
+                throw new MySoftException(message);
+            }
+
             if (entity.IsUpdate)
             {
                 where = DataUtils.GetPkWhere<T>(entity.GetTable(), entity);

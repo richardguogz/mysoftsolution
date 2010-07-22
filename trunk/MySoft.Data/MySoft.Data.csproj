@@ -66,6 +66,7 @@
     <Compile Include="Common\EntityMapping.cs" />
     <Compile Include="Common\EnumDescription.cs" />
     <Compile Include="Common\MySoftException.cs" />
+    <Compile Include="Common\Validator.cs" />
     <Compile Include="Creator\DeleteCreator.cs" />
     <Compile Include="Creator\IDeleteCreator.cs" />
     <Compile Include="Creator\IInsertCreator.cs" />

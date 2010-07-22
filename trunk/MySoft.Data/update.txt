@@ -491,3 +491,10 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
   DbSession.Default.Update(User._.UpdateTime,new SysValue("getdate()") User._.UserID == 1);
   
 6.将原MySoft.Web中的MVP添加到MySoft.Data组件之中，避免在非Web项目中引用MySoft.Web程序集
+
+
+版本号：2.7.4 beta
+
+1.对数据的读取性能进行了一些优化，提高了10%左右的速度
+
+2.

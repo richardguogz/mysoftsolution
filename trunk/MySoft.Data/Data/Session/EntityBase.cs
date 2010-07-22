@@ -192,6 +192,16 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 根据实体状态来验证实体的有效性
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        protected internal virtual IEnumerable<string> Check(EntityState state)
+        {
+            return new List<string>();
+        }
+
+        /// <summary>
         /// 设置属性值
         /// </summary>
         /// <param name="reader"></param>
