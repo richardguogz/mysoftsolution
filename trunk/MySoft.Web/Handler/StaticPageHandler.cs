@@ -118,13 +118,12 @@ namespace MySoft.Web
                 }
             }
 
-            string sendToUrlLessQString;
-            PageUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
-
-            IHttpHandler handler = PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
-
+            //进行错误处理，如果出错，则转到原有的静态页面
             try
             {
+                string sendToUrlLessQString;
+                PageUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
+                IHttpHandler handler = PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
                 handler.ProcessRequest(context);
             }
             catch (HttpException ex)
