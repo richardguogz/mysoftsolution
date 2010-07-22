@@ -104,7 +104,7 @@ namespace MySoft.Web
                             {
                                 string logFile = PageUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
                                 logFile = context.Server.MapPath(logFile);
-                                string logText = string.Format("{0} => 请求路径：{1}\r\n生成路径：{2}\r\n{3}", url, htmlFile, DateTime.Now.ToString("HH:mm:ss"), ex.Message);
+                                string logText = string.Format("{0} => 请求路径：{1}\r\n生成路径：{2}\r\n{3}", DateTime.Now.ToString("HH:mm:ss"), url, htmlFile, ex.Message);
                                 logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
                                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                                 {
