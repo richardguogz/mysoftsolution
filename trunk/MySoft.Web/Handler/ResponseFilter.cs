@@ -73,7 +73,7 @@ namespace MySoft.Web
             string content = pageContent.ToString();
 
             //如果页面内容中包含指定的验证字符串则生成
-            if (content.Contains(validateString))
+            if (content.Contains(validateString) && string.IsNullOrEmpty(validateString))
             {
                 //如果文件夹不存在，则创建
                 if (!Directory.Exists(Path.GetDirectoryName(filePath)))
