@@ -233,6 +233,12 @@
     <Content Include="WebUI\htmleditor\smile\smile47.gif" />
     <Content Include="WebUI\htmleditor\smile\smile48.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySoft.Data\MySoft.Data.csproj">
+      <Project>{7B603EE2-B9F0-445E-817F-F058F43E5F48}</Project>
+      <Name>MySoft.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
