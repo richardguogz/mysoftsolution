@@ -493,8 +493,24 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 6.将原MySoft.Web中的MVP添加到MySoft.Data组件之中，避免在非Web项目中引用MySoft.Web程序集
 
 
-版本号：2.7.4 beta
+版本号：2.7.5 beta
 
 1.对数据的读取性能进行了一些优化，提高了10%左右的速度
 
-2.
+2.增加了实体验证类Validator，但需要自己实现验证的过程，使用如下：
+  
+    public partial class User
+    {
+        protected override IEnumerable<string> Check(EntityState state)
+        {
+            return new Validator<User>(this)
+                    .Validate(p => string.IsNullOrEmpty(p.Name), User._.Name, "用户名不允许为空！")
+                    .Validate(p => p.Age <= 18, User._.Age, "用户年龄必须大于18岁！")
+                    .Messages;
+        }
+    }
+    
+    注意：User._.Name是用于验证此字段是不是需要进行更新或插入
+		  由于本组件支持部分列插入或更新，不参与插入或更新的列不需要参考验证过程
+
+		  EntityState是传出当前实体的状态，以便于区别更新与插入的处理

@@ -4824,6 +4824,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:MySoft.Data.EntityBase.Check(MySoft.Data.EntityState)">
+            <summary>
+            根据实体状态来验证实体的有效性
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
         <member name="M:MySoft.Data.EntityBase.SetValues(MySoft.Data.IRowReader)">
             <summary>
             设置属性值
@@ -6918,6 +6925,44 @@
             </summary>
             <param name="enumType"></param>
             <returns></returns>
+        </member>
+        <member name="T:MySoft.Data.Validator`1">
+            <summary>
+            实体验证类
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Validator`1.#ctor(`0)">
+            <summary>
+            实例化验证类
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:MySoft.Data.Validator`1.Validate(System.Predicate{`0},System.String)">
+            <summary>
+            验证实体属性的有效性并返回错误列表(验证所有的列)
+            </summary>
+            <param name="predicate"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.Validator`1.Validate(System.Predicate{`0},MySoft.Data.Field,System.String)">
+            <summary>
+            验证实体属性的有效性并返回错误列表(只验证需要插入或更新的列)
+            </summary>
+            <param name="predicate"></param>
+            <param name="field"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.Validator`1.Messages">
+            <summary>
+            错误消息队列
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.Validator`1.IsSuccess">
+            <summary>
+            验证是否成功
+            </summary>
         </member>
     </members>
 </doc>

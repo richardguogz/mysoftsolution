@@ -148,22 +148,22 @@ namespace MySoft.Data
             WhereClip where = null;
             int value = 0;
 
+            EntityState state = entity.As<IEntityBase>().State;
+
+            #region 实体验证处理
+
             //对实体进行验证
-            IEnumerable<string> e = entity.Check(entity.As<IEntityBase>().State);
+            IEnumerable<string> e = entity.Check(state);
             if ((e as IList<string>).Count > 0)
             {
                 string message = string.Join("\r\n", (e as List<string>).ToArray());
                 throw new MySoftException(message);
             }
 
-            if (entity.IsUpdate)
-            {
-                where = DataUtils.GetPkWhere<T>(entity.GetTable(), entity);
-                fvlist.RemoveAll(fv => !fv.IsChanged || fv.IsIdentity || fv.IsPrimaryKey);
+            #endregion
 
-                value = Update<T>(table, fvlist, where);
-            }
-            else
+            //判断实体的状态
+            if (state == EntityState.Insert)
             {
                 object retVal;
                 fvlist.RemoveAll(fv => fv.IsChanged);
@@ -175,6 +175,13 @@ namespace MySoft.Data
                 {
                     DataUtils.SetPropertyValue(entity, entity.IdentityField.PropertyName, retVal);
                 }
+            }
+            else
+            {
+                where = DataUtils.GetPkWhere<T>(entity.GetTable(), entity);
+                fvlist.RemoveAll(fv => !fv.IsChanged || fv.IsIdentity || fv.IsPrimaryKey);
+
+                value = Update<T>(table, fvlist, where);
             }
             entity.AttachSet();
 

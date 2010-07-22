@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MySoftProvider", "MySoftPro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Data.PostgreSQL", "MySoft.Data.PostgreSQL\MySoft.Data.PostgreSQL.csproj", "{34A8CA2B-4792-45E0-A00A-F62A85130AA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Web.Controls", "MySoft.Web.Controls\MySoft.Web.Controls.csproj", "{6C894A7C-3425-48B3-91E1-0383A6FC9617}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Controls", "MySoft.Controls\MySoft.Controls.csproj", "{6C894A7C-3425-48B3-91E1-0383A6FC9617}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

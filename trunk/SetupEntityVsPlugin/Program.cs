@@ -60,7 +60,7 @@ namespace SetupNBearVsPlugin
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.ToString());
+                        MessageBox.Show(ex.Message, "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

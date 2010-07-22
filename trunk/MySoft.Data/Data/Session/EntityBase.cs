@@ -216,17 +216,6 @@ namespace MySoft.Data
 
         #region 内部方法
 
-        internal bool IsUpdate
-        {
-            get
-            {
-                lock (this)
-                {
-                    return isUpdate;
-                }
-            }
-        }
-
         /// <summary>
         /// 获取系列的名称
         /// </summary>

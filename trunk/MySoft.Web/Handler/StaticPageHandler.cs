@@ -62,11 +62,11 @@ namespace MySoft.Web
                     {
                         // match found - do any replacement needed
 
+                        string htmlUrl = PageUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
+                        htmlFile = context.Server.MapPath(htmlUrl);
+
                         try
                         {
-                            string htmlUrl = PageUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
-                            htmlFile = context.Server.MapPath(htmlUrl);
-
                             //需要生成静态页面
                             if (!File.Exists(htmlFile))  //静态页面不存在
                             {
@@ -97,14 +97,14 @@ namespace MySoft.Web
                         }
                         catch (Exception ex)
                         {
-                            //当文件正在写还没关闭时
-                            //此时读文件会出错
+                            //当文件正在写还没关闭时，此时读文件会出错
                             //所以当发生此错误时直接跳过
+
                             try
                             {
                                 string logFile = PageUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
                                 logFile = context.Server.MapPath(logFile);
-                                string logText = string.Format("{0} => {1}", DateTime.Now.ToString("HH:mm:ss"), ex.ToString());
+                                string logText = string.Format("{0} => 请求路径：{1}\r\n生成路径：{2}\r\n{3}", url, htmlFile, DateTime.Now.ToString("HH:mm:ss"), ex.Message);
                                 logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
                                 if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                                 {
