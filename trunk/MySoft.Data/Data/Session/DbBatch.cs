@@ -152,12 +152,15 @@ namespace MySoft.Data
 
             #region 实体验证处理
 
-            //对实体进行验证
-            IEnumerable<string> e = entity.Check(state);
-            if ((e as IList<string>).Count > 0)
+            if (entity is IValidator)
             {
-                string message = string.Join("\r\n", (e as List<string>).ToArray());
-                throw new MySoftException(message);
+                //对实体进行验证
+                IEnumerable<string> e = entity.As<IValidator>().Validate(state);
+                if ((e as IList<string>).Count > 0)
+                {
+                    string message = string.Join("\r\n", (e as List<string>).ToArray());
+                    throw new MySoftException(message);
+                }
             }
 
             #endregion

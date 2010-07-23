@@ -58,7 +58,7 @@ namespace MySoft.Data
         /// <param name="predicate"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public Validator<T> Validate(Predicate<T> predicate, string message)
+        public Validator<T> Check(Predicate<T> predicate, string message)
         {
             if (predicate(this.entity))
             {
@@ -74,7 +74,7 @@ namespace MySoft.Data
         /// <param name="field"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public Validator<T> Validate(Predicate<T> predicate, Field field, string message)
+        public Validator<T> Check(Predicate<T> predicate, Field field, string message)
         {
             if (this.vlist.Exists(p => p.Name == field.Name))
             {
