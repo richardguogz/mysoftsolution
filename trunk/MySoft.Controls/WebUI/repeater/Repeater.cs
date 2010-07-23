@@ -30,7 +30,7 @@ namespace MySoft.Web.UI.Controls
         /// <summary>
         /// 分页的HtmlPager(DataSource不用再次赋值)
         /// </summary>
-        public HtmlPager Pager
+        public HtmlPager DataPager
         {
             get { return _htmlPager; }
             set
