@@ -22,7 +22,7 @@ namespace MySoft.Data
     /// </summary>
     public class ValidateResult
     {
-        private IList<string> _messages;
+        private IList<string> messages;
 
         /// <summary>
         /// 实例化ValidateResult
@@ -30,7 +30,7 @@ namespace MySoft.Data
         /// <param name="messages"></param>
         public ValidateResult(IList<string> messages)
         {
-            this._messages = messages;
+            this.messages = messages;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace MySoft.Data
         {
             get
             {
-                return _messages.Count == 0;
+                return messages.Count == 0;
             }
         }
 
@@ -51,11 +51,11 @@ namespace MySoft.Data
         {
             get
             {
-                return _messages;
+                return messages;
             }
             private set
             {
-                _messages = value;
+                messages = value;
             }
         }
     }

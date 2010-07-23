@@ -36,12 +36,16 @@ namespace MySoft.Data
         }
 
         private IList<string> messages;
+
         /// <summary>
-        /// 错误消息队列
+        /// 验证的结果
         /// </summary>
-        public IList<string> Messages
+        public ValidateResult Result
         {
-            get { return messages; }
+            get
+            {
+                return new ValidateResult(messages);
+            }
         }
 
         /// <summary>
