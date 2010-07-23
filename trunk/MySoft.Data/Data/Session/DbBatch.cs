@@ -155,10 +155,16 @@ namespace MySoft.Data
             if (entity is IValidator)
             {
                 //对实体进行验证
-                IEnumerable<string> e = entity.As<IValidator>().Validate(state);
-                if ((e as IList<string>).Count > 0)
+                ValidateResult result = entity.As<IValidator>().Validate(state);
+                if (!result.IsSuccess)
                 {
-                    string message = string.Join("\r\n", (e as List<string>).ToArray());
+                    List<string> msgs = new List<string>();
+                    foreach (string msg in result.Messages)
+                    {
+                        if (string.IsNullOrEmpty(msg)) continue;
+                        msgs.Add(msg.Split('|')[0]);
+                    }
+                    string message = string.Join("\r\n", msgs.ToArray());
                     throw new MySoftException(message);
                 }
             }

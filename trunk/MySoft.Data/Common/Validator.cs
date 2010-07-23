@@ -45,14 +45,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 验证是否成功
-        /// </summary>
-        public bool IsSuccess
-        {
-            get { return messages.Count == 0; }
-        }
-
-        /// <summary>
         /// 验证实体属性的有效性并返回错误列表(验证所有的列)
         /// </summary>
         /// <param name="predicate"></param>
@@ -80,7 +72,7 @@ namespace MySoft.Data
             {
                 if (predicate(this.entity))
                 {
-                    this.messages.Add(message);
+                    this.messages.Add(string.Format("{0}|{1}", message, field.PropertyName));
                 }
             }
             return this;
