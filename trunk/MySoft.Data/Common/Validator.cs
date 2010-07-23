@@ -25,14 +25,11 @@ namespace MySoft.Data
 
             //获取需要处理的字段列表
             if (entity.As<IEntityBase>().State == EntityState.Insert)
-            {
-                this.vlist = entity.GetFieldValues().ConvertAll<Field>(fv => !fv.IsChanged ? fv.Field : null);
-            }
+                this.vlist = entity.GetFieldValues().FindAll(fv => !fv.IsChanged)
+                    .ConvertAll<Field>(fv => fv.Field);
             else
-            {
-                this.vlist = entity.GetFieldValues().ConvertAll<Field>(fv => fv.IsChanged ? fv.Field : null);
-            }
-            this.vlist.RemoveAll(p => (IField)p == null);
+                this.vlist = entity.GetFieldValues().FindAll(fv => fv.IsChanged)
+                    .ConvertAll<Field>(fv => fv.Field);
         }
 
         private IList<string> messages;
