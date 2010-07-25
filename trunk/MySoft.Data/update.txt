@@ -499,14 +499,14 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 
 2.增加了实体验证类Validator，但需要自己实现验证的过程，使用如下：
   
-    public partial class User
+    public partial class User : IValidator
     {
-        protected override IEnumerable<string> Check(EntityState state)
+        public ValidateResult Validate(EntityState state)
         {
             return new Validator<User>(this)
-                    .Validate(p => string.IsNullOrEmpty(p.Name), User._.Name, "用户名不允许为空！")
-                    .Validate(p => p.Age <= 18, User._.Age, "用户年龄必须大于18岁！")
-                    .Messages;
+                    .Check(p => string.IsNullOrEmpty(p.Name), User._.Name, "用户名不允许为空！")
+                    .Check(p => p.Age <= 18, User._.Age, "用户年龄必须大于18岁！")
+                    .Result;
         }
     }
     
