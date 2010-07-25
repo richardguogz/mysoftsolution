@@ -154,11 +154,7 @@ namespace KiShion.Data
         /// <summary>
         /// 按钮
         /// </summary>
-        Button,
-        /// <summary>
-        /// 图片
-        /// </summary>
-        Image
+        Button
     }
 
     /// <summary>
@@ -196,24 +192,24 @@ namespace KiShion.Data
             set { linkSize = value; }
         }
 
-        private LinkStyle style = LinkStyle.Custom;
+        private LinkStyle lstyle;
         /// <summary>
         /// 链接样式
         /// </summary>
-        public LinkStyle PagerStyle
+        public LinkStyle LinkStyle
         {
-            get { return style; }
-            set { style = value; }
+            get { return lstyle; }
+            set { lstyle = value; }
         }
 
-        private ButtonStyle lstyle;
+        private ButtonStyle bstyle;
         /// <summary>
         /// 按钮样式
         /// </summary>
         public ButtonStyle ButtonStyle
         {
-            get { return lstyle; }
-            set { lstyle = value; }
+            get { return bstyle; }
+            set { bstyle = value; }
         }
 
         private string pageID = "$Page";
@@ -297,7 +293,8 @@ namespace KiShion.Data
         {
             this.dataPage = dataPage;
             this.linkSize = 10;
-            this.style = LinkStyle.Custom;
+            this.lstyle = LinkStyle.Custom;
+            this.bstyle = ButtonStyle.Href;
         }
 
         /// <summary>
@@ -336,30 +333,53 @@ namespace KiShion.Data
             string html = string.Empty;
 
             //生成分页的html
-            if (style == LinkStyle.Custom)
+            if (lstyle == LinkStyle.Custom)
             {
-                sb.Append("<div id='htmlPager' class=\"" + (pagerCss ?? EnumDescriptionAttribute.GetDescription(style)) + "\">\n");
+                sb.Append("<div id='htmlPager' class=\"" + (pagerCss ?? EnumDescriptionAttribute.GetDescription(lstyle)) + "\">\n");
             }
             else
             {
-                sb.Append("<div id='htmlPager' class=\"" + EnumDescriptionAttribute.GetDescription(style) + "\">\n");
+                sb.Append("<div id='htmlPager' class=\"" + EnumDescriptionAttribute.GetDescription(lstyle) + "\">\n");
             }
 
             if (dataPage.PageCount == 0)
             {
-                sb.Append("<span class=\"disabled\">上一页</span>\n");
-                sb.Append("<span class=\"current\">1</span>\n");
-                sb.Append("<span class=\"disabled\">下一页</span>\n");
-            }
-            else
-            {
-                if (!dataPage.IsFirstPage)
+                if (bstyle == ButtonStyle.Button)
                 {
-                    sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex - 1) + "\" title=\"上一页\">" + prevPageTitle + "</a>\n");
+                    sb.Append("<input title=\"上一页\" type=\"button\" value=\"" + prevPageTitle + "\" disabled=\"disabled\" />\n");
+                    sb.Append("<span class=\"current\">1</span>\n");
+                    sb.Append("<input title=\"下一页\" type=\"button\" value=\"" + nextPageTitle + "\" disabled=\"disabled\" />\n");
                 }
                 else
                 {
-                    sb.Append("<span class=\"disabled\">" + prevPageTitle + "</span>\n");
+                    sb.Append("<span class=\"disabled\" title=\"上一页\">" + prevPageTitle + "</span>\n");
+                    sb.Append("<span class=\"current\">1</span>\n");
+                    sb.Append("<span class=\"disabled\" title=\"下一页\">" + nextPageTitle + "</span>\n");
+                }
+            }
+            else
+            {
+                if (bstyle == ButtonStyle.Button)
+                {
+                    if (!dataPage.IsFirstPage)
+                    {
+                        sb.Append("<input title=\"上一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex - 1) + "\" value=\"" + prevPageTitle + "\" />\n");
+                    }
+                    else
+                    {
+                        sb.Append("<input title=\"上一页\" type=\"button\" value=\"" + prevPageTitle + "\" disabled=\"disabled\" />\n");
+                    }
+                }
+                else
+                {
+                    if (!dataPage.IsFirstPage)
+                    {
+                        sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex - 1) + "\" title=\"上一页\">" + prevPageTitle + "</a>\n");
+                    }
+                    else
+                    {
+                        sb.Append("<span class=\"disabled\">" + prevPageTitle + "</span>\n");
+                    }
                 }
 
                 int startPage = dataPage.CurrentPageIndex;
@@ -414,13 +434,27 @@ namespace KiShion.Data
                     }
                 }
 
-                if (!dataPage.IsLastPage)
+                if (bstyle == ButtonStyle.Button)
                 {
-                    sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex + 1) + "\" title=\"下一页\">" + nextPageTitle + "</a>\n");
+                    if (!dataPage.IsLastPage)
+                    {
+                        sb.Append("<input title=\"下一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex + 1) + "\" value=\"" + prevPageTitle + "\" />\n");
+                    }
+                    else
+                    {
+                        sb.Append("<input title=\"下一页\" type=\"button\" value=\"" + nextPageTitle + "\" disabled=\"disabled\" />\n");
+                    }
                 }
                 else
                 {
-                    sb.Append("<span class=\"disabled\">" + nextPageTitle + "</span>\n");
+                    if (!dataPage.IsLastPage)
+                    {
+                        sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex + 1) + "\" title=\"下一页\">" + nextPageTitle + "</a>\n");
+                    }
+                    else
+                    {
+                        sb.Append("<span class=\"disabled\">" + nextPageTitle + "</span>\n");
+                    }
                 }
             }
 
@@ -486,6 +520,23 @@ namespace KiShion.Data
             else
             {
                 return string.Concat("javascript:location.href='", linkFormat.Replace(pageID, ("'+" + value + "+'")), "';");
+            }
+        }
+
+        /// <summary>
+        /// 获取按钮事件
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private string GetButtonLink(int value)
+        {
+            if (linkFormat.Contains("javascript:"))
+            {
+                return linkFormat.Replace(pageID, value.ToString());
+            }
+            else
+            {
+                return string.Concat("javascript:location.href='", linkFormat.Replace(pageID, value.ToString()), "';");
             }
         }
     }
