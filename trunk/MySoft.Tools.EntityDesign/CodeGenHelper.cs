@@ -131,11 +131,11 @@ namespace MySoft.Tools.EntityDesign
 
         #region Generate C# Entities
 
-        private void GenPropertyQueryCodeEx(CodeTypeDeclaration entity, Type type, List<string> generatedProperties, bool isReadonly, bool isInherit)
+        private void GenPropertyQueryCodeEx(CodeTypeDeclaration entity, Type type, List<string> generatedProperties, bool isReadonly)
         {
             foreach (Type item in GetContractInterfaceTypes(type))
             {
-                GenPropertyQueryCodeEx(entity, item, generatedProperties, isReadonly, isInherit);
+                GenPropertyQueryCodeEx(entity, item, generatedProperties, isReadonly);
             }
 
             foreach (PropertyInfo item in type.GetProperties())
@@ -147,7 +147,7 @@ namespace MySoft.Tools.EntityDesign
                 {
                     generatedProperties.Add(item.Name);
 
-                    entity.Members.Add(GenMemberFieldEx(type, item, isReadonly, isInherit));
+                    entity.Members.Add(GenMemberFieldEx(type, item, isReadonly));
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace MySoft.Tools.EntityDesign
             return tableName;
         }
 
-        private CodeMemberField GenMemberFieldEx(Type type, PropertyInfo item, bool isReadonly, bool isInherit)
+        private CodeMemberField GenMemberFieldEx(Type type, PropertyInfo item, bool isReadonly)
         {
             string fieldName = null;
             MappingAttribute field = GetPropertyAttribute<MappingAttribute>(item);
@@ -193,30 +193,10 @@ namespace MySoft.Tools.EntityDesign
 
             CodeTypeReference reference = new CodeTypeReference(typeof(Field).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
 
-            if (isReadonly)
-            {
-                if (isInherit)
-                {
-                    if (item.Name == fieldName)
-                        memberfield.InitExpression = new CodeObjectCreateExpression(typeof(Field).Name, new CodeExpression[] { new CodePrimitiveExpression(fieldName) });
-                    else
-                        memberfield.InitExpression = new CodeObjectCreateExpression(typeof(Field).Name, new CodeExpression[] { new CodePrimitiveExpression(item.Name), new CodePrimitiveExpression(fieldName) });
-                }
-                else
-                {
-                    if (item.Name == fieldName)
-                        memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(fieldName) });
-                    else
-                        memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(item.Name), new CodePrimitiveExpression(fieldName) });
-                }
-            }
+            if (item.Name == fieldName)
+                memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(fieldName) });
             else
-            {
-                if (item.Name == fieldName)
-                    memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(fieldName) });
-                else
-                    memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(item.Name), new CodePrimitiveExpression(fieldName) });
-            }
+                memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(item.Name), new CodePrimitiveExpression(fieldName) });
 
             DescriptionAttribute ca = GetPropertyAttribute<DescriptionAttribute>(item);
             string typeName = item.PropertyType.Name;
@@ -508,18 +488,13 @@ namespace MySoft.Tools.EntityDesign
                 entity.Comments.Add(new CodeCommentStatement("</summary>", true));
             }
 
-            bool isReadEntity = false;
             bool isReadonly = false;
             ReadOnlyAttribute read = GetEntityAttribute<ReadOnlyAttribute>(type);
             if (read != null) isReadonly = true;
-            if (isReadonly && read.Type == ReadOnlyType.Entity)
-            {
-                isReadEntity = true;
-            }
 
             //generate properties
             CodeStatementCollection reloadQueryStatements = new CodeStatementCollection();
-            GenPropertiesEx(entity, reloadQueryStatements, type, isReadonly, isReadEntity, outLang);
+            GenPropertiesEx(entity, reloadQueryStatements, type, isReadonly, outLang);
 
             List<string> generatedProperties = new List<string>();
 
@@ -532,37 +507,34 @@ namespace MySoft.Tools.EntityDesign
 
             #region 重载获取表名和只读
 
-            if (!isReadEntity)
-            {
-                //生成重载的方法
-                method = new CodeMemberMethod();
-                method.Name = "GetTable";
-                method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-                method.ReturnType = new CodeTypeReference("Table");
+            //生成重载的方法
+            method = new CodeMemberMethod();
+            method.Name = "GetTable";
+            method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
+            method.ReturnType = new CodeTypeReference("Table");
 
-                //添加注释
-                method.Comments.Add(new CodeCommentStatement("<summary>", true));
-                method.Comments.Add(new CodeCommentStatement("获取实体对应的表名", true));
-                method.Comments.Add(new CodeCommentStatement("</summary>", true));
+            //添加注释
+            method.Comments.Add(new CodeCommentStatement("<summary>", true));
+            method.Comments.Add(new CodeCommentStatement("获取实体对应的表名", true));
+            method.Comments.Add(new CodeCommentStatement("</summary>", true));
 
-                //CodeAssignStatement ass = new CodeAssignStatement();
-                //ass.Left = new CodeSnippetExpression("mappingTable");
-                //ass.Right = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeSnippetExpression("EntityConfig"), "GetTable"), new CodePrimitiveExpression(tableName));
+            //CodeAssignStatement ass = new CodeAssignStatement();
+            //ass.Left = new CodeSnippetExpression("mappingTable");
+            //ass.Right = new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeSnippetExpression("EntityConfig"), "GetTable"), new CodePrimitiveExpression(tableName));
 
-                //CodeConditionStatement condition = new CodeConditionStatement();
-                //condition.Condition = new CodeBinaryOperatorExpression(new CodePrimitiveExpression(null), CodeBinaryOperatorType.IdentityEquality, new CodeSnippetExpression("mappingTable"));
-                //condition.TrueStatements.Add(ass);
+            //CodeConditionStatement condition = new CodeConditionStatement();
+            //condition.Condition = new CodeBinaryOperatorExpression(new CodePrimitiveExpression(null), CodeBinaryOperatorType.IdentityEquality, new CodeSnippetExpression("mappingTable"));
+            //condition.TrueStatements.Add(ass);
 
-                //method.Statements.Add(condition);
-                //method.Statements.Add(new CodeMethodReturnStatement(new CodeSnippetExpression("mappingTable")));
-                //entity.Members.Add(method);
+            //method.Statements.Add(condition);
+            //method.Statements.Add(new CodeMethodReturnStatement(new CodeSnippetExpression("mappingTable")));
+            //entity.Members.Add(method);
 
-                CodeTypeReference reference = new CodeTypeReference(typeof(Table).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
-                CodeExpression codeExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(tableName) });
+            CodeTypeReference reference = new CodeTypeReference(typeof(Table).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
+            CodeExpression codeExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(tableName) });
 
-                method.Statements.Add(new CodeMethodReturnStatement(codeExpression));
-                entity.Members.Add(method);
-            }
+            method.Statements.Add(new CodeMethodReturnStatement(codeExpression));
+            entity.Members.Add(method);
 
             if (isReadonly)
             {
@@ -779,32 +751,29 @@ namespace MySoft.Tools.EntityDesign
 
             generatedProperties.Clear();
 
-            if (!(isReadonly && isReadEntity))
+            #region 添加All字段
+
+            if (interfaces.Length == 0)
             {
-                #region 添加All字段
+                CodeMemberField field = new CodeMemberField();
+                field.Name = "All";
+                field.Attributes = MemberAttributes.Public | MemberAttributes.Static;
+                field.Type = new CodeTypeReference(typeof(AllField).Name);
 
-                if (interfaces.Length == 0)
-                {
-                    CodeMemberField field = new CodeMemberField();
-                    field.Name = "All";
-                    field.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-                    field.Type = new CodeTypeReference(typeof(AllField).Name);
+                reference = new CodeTypeReference(typeof(AllField).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
+                field.InitExpression = new CodeObjectCreateExpression(reference);
 
-                    CodeTypeReference reference = new CodeTypeReference(typeof(AllField).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
-                    field.InitExpression = new CodeObjectCreateExpression(reference);
+                //添加注释
+                field.Comments.Add(new CodeCommentStatement("<summary>", true));
+                field.Comments.Add(new CodeCommentStatement("表示选择所有列，与*等同", true));
+                field.Comments.Add(new CodeCommentStatement("</summary>", true));
 
-                    //添加注释
-                    field.Comments.Add(new CodeCommentStatement("<summary>", true));
-                    field.Comments.Add(new CodeCommentStatement("表示选择所有列，与*等同", true));
-                    field.Comments.Add(new CodeCommentStatement("</summary>", true));
-
-                    queryClass.Members.Add(field);
-                }
-
-                #endregion
+                queryClass.Members.Add(field);
             }
 
-            GenPropertyQueryCodeEx(queryClass, type, generatedProperties, isReadonly, isReadEntity);
+            #endregion
+
+            GenPropertyQueryCodeEx(queryClass, type, generatedProperties, isReadonly);
         }
 
         private void GenSetPropertyValuesFromReaderEx(CodeStatementCollection statements, Type type, List<string> generatedProperties, int outLang)
@@ -922,7 +891,7 @@ namespace MySoft.Tools.EntityDesign
             return new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeArgumentReferenceExpression("reader"), "GetValue", new CodeTypeReference(new CodeTypeParameter(typeName))), new CodeSnippetExpression(name));
         }
 
-        private void GenPropertiesEx(CodeTypeDeclaration entity, CodeStatementCollection reloadQueryStatements, Type type, bool isReadOnly, bool isReadEntity, int outLang)
+        private void GenPropertiesEx(CodeTypeDeclaration entity, CodeStatementCollection reloadQueryStatements, Type type, bool isReadOnly, int outLang)
         {
             List<PropertyInfo> list = new List<PropertyInfo>();
             PropertyInfo[] pis = type.GetProperties();
@@ -964,14 +933,14 @@ namespace MySoft.Tools.EntityDesign
                 if (!generatedPropertyNames.Contains(item.Name))
                 {
                     //GenNormalProperty(sbFields, sbProperties, item);
-                    GenNormalPropertyEx(entity, type, isReadOnly, isReadEntity, item, outLang);
+                    GenNormalPropertyEx(entity, type, isReadOnly, item, outLang);
 
                     generatedPropertyNames.Add(item.Name);
                 }
             }
         }
 
-        private void GenNormalPropertyEx(CodeTypeDeclaration entity, Type type, bool isReadOnly, bool isReadEntity, PropertyInfo item, int outLang)
+        private void GenNormalPropertyEx(CodeTypeDeclaration entity, Type type, bool isReadOnly, PropertyInfo item, int outLang)
         {
             CodeMemberField field = new CodeMemberField();
             field.Name = "_" + item.Name;
@@ -1022,7 +991,7 @@ namespace MySoft.Tools.EntityDesign
 
             property.HasSet = true;
 
-            if (!(isReadOnly || isReadEntity))
+            if (!isReadOnly)
             {
                 if (advOpt.EnabledPropertyValueChange)
                 {
@@ -1034,6 +1003,7 @@ namespace MySoft.Tools.EntityDesign
                         }));
                 }
             }
+
             property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_" + item.Name), new CodePropertySetValueReferenceExpression()));
 
             //sbProperties.Append("\t\t\tset { OnPropertyChanged(\"");
