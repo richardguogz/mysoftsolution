@@ -104,7 +104,7 @@
     <Compile Include="Common\DataPage.cs" />
     <Compile Include="Common\DynamicCalls.cs" />
     <Compile Include="Creator\Query\QuerySection.cs" />
-    <Compile Include="Creator\Query\TempEntity.cs" />
+    <Compile Include="Creator\Query\ViewEntity.cs" />
     <Compile Include="Creator\UpdateCreator.cs" />
     <Compile Include="Data\Cache\CacheInfo.cs" />
     <Compile Include="Data\Cache\CacheConfigurationSection.cs" />
