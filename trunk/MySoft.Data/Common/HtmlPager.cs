@@ -378,7 +378,7 @@ namespace MySoft.Data
                     }
                     else
                     {
-                        sb.Append("<span class=\"disabled\">" + prevPageTitle + "</span>\n");
+                        sb.Append("<span class=\"disabled\" title=\"上一页\">" + prevPageTitle + "</span>\n");
                     }
                 }
 
@@ -453,7 +453,7 @@ namespace MySoft.Data
                     }
                     else
                     {
-                        sb.Append("<span class=\"disabled\">" + nextPageTitle + "</span>\n");
+                        sb.Append("<span class=\"disabled\" title=\"下一页\">" + nextPageTitle + "</span>\n");
                     }
                 }
             }
