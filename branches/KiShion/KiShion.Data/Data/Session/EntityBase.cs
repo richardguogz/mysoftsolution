@@ -188,7 +188,7 @@ namespace KiShion.Data
         /// <returns></returns>
         protected internal virtual Table GetTable()
         {
-            return new Table("TempTable");
+            return new Table("ViewEntity");
         }
 
         /// <summary>

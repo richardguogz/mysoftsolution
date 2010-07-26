@@ -772,36 +772,36 @@ namespace KiShion.Data
         /// <returns></returns>
         public WhereClip In(QueryCreator creator)
         {
-            QuerySection<TempTable> query = GetQuery(creator);
-            return In<TempTable>(query);
+            QuerySection<ViewEntity> query = GetQuery(creator);
+            return In<ViewEntity>(query);
         }
 
         #endregion
 
         #region 私有方法
 
-        internal QuerySection<TempTable> GetQuery(QueryCreator creator)
+        internal QuerySection<ViewEntity> GetQuery(QueryCreator creator)
         {
             if (creator.Table == null)
             {
                 throw new MySoftException("用创建器操作时，表不能为null！");
             }
 
-            FromSection<TempTable> f = new FromSection<TempTable>(creator.Table);
+            FromSection<ViewEntity> f = new FromSection<ViewEntity>(creator.Table);
             if (creator.IsRelation)
             {
                 foreach (TableJoin join in creator.Relations.Values)
                 {
                     if (join.Type == JoinType.LeftJoin)
-                        f.LeftJoin<TempTable>(join.Table, join.Where);
+                        f.LeftJoin<ViewEntity>(join.Table, join.Where);
                     else if (join.Type == JoinType.RightJoin)
-                        f.RightJoin<TempTable>(join.Table, join.Where);
+                        f.RightJoin<ViewEntity>(join.Table, join.Where);
                     else
-                        f.InnerJoin<TempTable>(join.Table, join.Where);
+                        f.InnerJoin<ViewEntity>(join.Table, join.Where);
                 }
             }
 
-            QuerySection<TempTable> query = f.Select(creator.Fields).Where(creator.Where)
+            QuerySection<ViewEntity> query = f.Select(creator.Fields).Where(creator.Where)
                     .OrderBy(creator.OrderBy);
             return query;
         }

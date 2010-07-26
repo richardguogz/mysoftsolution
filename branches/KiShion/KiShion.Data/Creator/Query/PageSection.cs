@@ -10,10 +10,10 @@ namespace KiShion.Data
     /// </summary>
     public class PageSection : IPageQuery
     {
-        private QuerySection<TempTable> query;
+        private QuerySection<ViewEntity> query;
         private int? rowCount;
         private int pageSize;
-        internal PageSection(QuerySection<TempTable> query, int pageSize)
+        internal PageSection(QuerySection<ViewEntity> query, int pageSize)
         {
             this.query = query;
             this.pageSize = pageSize;

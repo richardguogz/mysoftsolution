@@ -10,8 +10,8 @@ namespace KiShion.Data
     /// </summary>
     public class QuerySection : IUserQuery
     {
-        private QuerySection<TempTable> query;
-        internal QuerySection(QuerySection<TempTable> query)
+        private QuerySection<ViewEntity> query;
+        internal QuerySection(QuerySection<ViewEntity> query)
         {
             this.query = query;
         }

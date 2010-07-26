@@ -801,7 +801,7 @@ namespace KiShion.Data
             }
 
             object retVal;
-            return dbProvider.Insert<TempTable>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, false, out retVal);
+            return dbProvider.Insert<ViewEntity>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, false, out retVal);
         }
 
         /// <summary>
@@ -826,7 +826,7 @@ namespace KiShion.Data
             }
 
             object retVal;
-            int ret = dbProvider.Insert<TempTable>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, true, out retVal);
+            int ret = dbProvider.Insert<ViewEntity>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, true, out retVal);
             identityValue = DataUtils.ConvertValue<TResult>(retVal);
 
             return ret;
@@ -849,7 +849,7 @@ namespace KiShion.Data
                 throw new MySoftException("用删除创建器操作时，条件不能为空！");
             }
 
-            return Delete<TempTable>(creator.Table, creator.Where);
+            return Delete<ViewEntity>(creator.Table, creator.Where);
         }
 
         /// <summary>
@@ -869,7 +869,7 @@ namespace KiShion.Data
                 throw new MySoftException("用更新创建器操作时，条件不能为空！");
             }
 
-            return Update<TempTable>(creator.Table, creator.Fields, creator.Values, creator.Where);
+            return Update<ViewEntity>(creator.Table, creator.Fields, creator.Values, creator.Where);
         }
 
         /// <summary>
@@ -883,21 +883,21 @@ namespace KiShion.Data
                 throw new MySoftException("用创建器操作时，表不能为null！");
             }
 
-            FromSection<TempTable> f = this.From<TempTable>(creator.Table);
+            FromSection<ViewEntity> f = this.From<ViewEntity>(creator.Table);
             if (creator.IsRelation)
             {
                 foreach (TableJoin join in creator.Relations.Values)
                 {
                     if (join.Type == JoinType.LeftJoin)
-                        f.LeftJoin<TempTable>(join.Table, join.Where);
+                        f.LeftJoin<ViewEntity>(join.Table, join.Where);
                     else if (join.Type == JoinType.RightJoin)
-                        f.RightJoin<TempTable>(join.Table, join.Where);
+                        f.RightJoin<ViewEntity>(join.Table, join.Where);
                     else
-                        f.InnerJoin<TempTable>(join.Table, join.Where);
+                        f.InnerJoin<ViewEntity>(join.Table, join.Where);
                 }
             }
 
-            QuerySection<TempTable> query = f.Select(creator.Fields).Where(creator.Where)
+            QuerySection<ViewEntity> query = f.Select(creator.Fields).Where(creator.Where)
                     .OrderBy(creator.OrderBy);
 
             return new QuerySection(query);
