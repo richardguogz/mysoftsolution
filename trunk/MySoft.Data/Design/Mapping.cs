@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MySoft.Data.Design
 {
+    /// <summary>
+    /// ×Ö¶ÎÓ³ÉäµÄÃû³Æ
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
     public sealed class MappingAttribute : Attribute
     {

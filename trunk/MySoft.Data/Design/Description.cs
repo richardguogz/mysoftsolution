@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MySoft.Data.Design
 {
+    /// <summary>
+    /// ×Ö¶ÎÃèÊöĞÅÏ¢
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
     public sealed class DescriptionAttribute : Attribute
     {
