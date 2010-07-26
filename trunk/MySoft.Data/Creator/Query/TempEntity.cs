@@ -11,33 +11,28 @@ namespace MySoft.Data
     public class ViewEntity : Entity
     {
         /// <summary>
-        /// 隐藏GetFields()方法
+        /// 重载GetFields
         /// </summary>
         /// <returns></returns>
-        private new Field[] GetFields()
+        internal protected override Field[] GetFields()
         {
             return new Field[] { };
         }
 
         /// <summary>
-        /// 隐藏GetValues()方法
+        /// 重载GetValues
         /// </summary>
         /// <returns></returns>
-        private new object[] GetValues()
+        protected override object[] GetValues()
         {
             return new object[] { };
         }
 
-        protected override void SetValues(IRowReader reader)
-        { }
-
         /// <summary>
-        /// 隐藏SetPropertyValues()方法
+        /// 重载SetValues
         /// </summary>
         /// <param name="reader"></param>
-        private new void SetPropertyValues(IRowReader reader)
-        {
-            base.SetPropertyValues(reader);
-        }
+        protected override void SetValues(IRowReader reader)
+        { }
     }
 }
