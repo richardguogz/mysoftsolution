@@ -95,24 +95,17 @@ namespace KiShion.Web
                                 }
                             }
                         }
-                        catch (Exception ex)
+                        catch (IOException ex)
                         {
-                            //当文件正在写还没关闭时，此时读文件会出错
-                            //所以当发生此错误时直接跳过
-
-                            try
+                            string logFile = PageUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
+                            logFile = context.Server.MapPath(logFile);
+                            string logText = string.Format("{0} => {3}\r\n请求路径：{1}\r\n生成路径：{2}", DateTime.Now.ToString("HH:mm:ss"), context.Request.Url, htmlFile, ex.Message);
+                            logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
+                            if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                             {
-                                string logFile = PageUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
-                                logFile = context.Server.MapPath(logFile);
-                                string logText = string.Format("{0} => {3}\r\n请求路径：{1}\r\n生成路径：{2}", DateTime.Now.ToString("HH:mm:ss"), context.Request.Url, htmlFile, ex.Message);
-                                logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
-                                if (!Directory.Exists(Path.GetDirectoryName(logFile)))
-                                {
-                                    Directory.CreateDirectory(Path.GetDirectoryName(logFile));
-                                }
-                                File.AppendAllText(logFile, logText);
+                                Directory.CreateDirectory(Path.GetDirectoryName(logFile));
                             }
-                            catch { }
+                            File.AppendAllText(logFile, logText);
                         }
                     }
                 }
