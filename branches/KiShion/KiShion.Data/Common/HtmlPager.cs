@@ -438,7 +438,7 @@ namespace KiShion.Data
                 {
                     if (!dataPage.IsLastPage)
                     {
-                        sb.Append("<input title=\"下一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex + 1) + "\" value=\"" + prevPageTitle + "\" />\n");
+                        sb.Append("<input title=\"下一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex + 1) + "\" value=\"" + nextPageTitle + "\" />\n");
                     }
                     else
                     {
