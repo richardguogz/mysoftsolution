@@ -517,8 +517,7 @@ Object.extend(Ajax, {
                 if (json) {
                     if (json.Success) {
                         if (op.cache) Ajax.cache[key] = json.Message;
-                        if (typeof (obj) == 'function') obj(json.Message);
-                        else fillElement(obj, json.Message);
+                        fillElement(obj, json.Message);
                     } else {
                         alert(json.Message);
                     }
@@ -527,32 +526,33 @@ Object.extend(Ajax, {
             });
         };
 
-        function fillElement(obj, html) {
-            var element = obj;
-            if (typeof (obj) == 'string') element = $get(obj);
-            var nn = element.nodeName.toUpperCase();
+        function fillElement(el, html) {
+            if (!el) return;
+
+            //如果使用模板方式，则进行解析
             if (op.template) {
                 try {
                     var json = eval('(' + html + ')');
                     html = json.jst.process(json.data);
                 } catch (e) { }
             }
-            if ("INPUT|TEXTAREA".indexOf(nn) > -1) { element.value = html; }
-            else try { fillHTML(element, html); } catch (e) { };
-        };
 
-        function fillHTML(el, html) {
-            if (!el) return;
             //用正则表达式匹配ajax返回的html中是否有<script>，如果存在则取出标签内部的内容。
             var reg = /<script[^>]*>[\s\S]*?<\/script>/ig;
             if (!html.match(reg)) {
-                el.innerHTML = html;
+                fillHTML(el, html);
                 return;
             }
+
             //用正则表达式匹配ajax返回的html中是否有onload,如果存在则取出内容。 
             var reg_onload = /<body onload="([^<]*)">/ig;
             var match_onload = html.match(reg_onload);
             var matchs = html.match(reg);
+
+            //将剩下的html祛除<script>部分，插入模版页
+            html = html.replace(reg, ""); 
+            fillHTML(el, html);
+            
             if (matchs != null) {
                 var myscript = "";
                 for (var i = 0; i < matchs.length; i++) {
@@ -562,15 +562,25 @@ Object.extend(Ajax, {
                 var script = $create("script"); //在模版页创建新的<script>标签
                 script.text = myscript; //给新的script标签赋值
                 $tag("head")[0].appendChild(script); //把该标签加入<head>
-                
+
                 //5秒后移除此script标签
                 setTimeout(function() {
                     $tag("head")[0].removeChild(script)
                 }, 5000);
             }
-            el.innerHTML = html.replace(reg, ""); //将剩下的html祛除<script>部分，插入模版页
+
             if (match_onload != null) {
                 eval(match_onload[0]); //如果存在onload方法，则调用；
+            }
+        };
+
+        function fillHTML(element, html) {
+            if (typeof (element) == 'function') element(html);
+            else {
+                if (typeof (element) == 'string') element = $get(element);
+                var nn = element.nodeName.toUpperCase();
+                if ("INPUT|TEXTAREA".indexOf(nn) > -1) element.value = html;
+                else element.innerHTML = html;
             }
         };
 
