@@ -12,9 +12,8 @@ namespace KiShion.Data
         /// <summary>
         /// 根据实体状态来验证实体的有效性，返回一组错误信息
         /// </summary>
-        /// <param name="state"></param>
         /// <returns></returns>
-        ValidateResult Validate(EntityState state);
+        ValidateResult Validate();
     }
 
     /// <summary>
@@ -22,15 +21,30 @@ namespace KiShion.Data
     /// </summary>
     public class ValidateResult
     {
+        /// <summary>
+        /// 默认的验证器
+        /// </summary>
+        public static readonly ValidateResult Default = new ValidateResult();
+
         private IList<string> messages;
+
+        /// <summary>
+        /// 实例化ValidateResult
+        /// </summary>
+        private ValidateResult()
+        {
+            this.messages = new List<string>();
+        }
 
         /// <summary>
         /// 实例化ValidateResult
         /// </summary>
         /// <param name="messages"></param>
         public ValidateResult(IList<string> messages)
+            : this()
         {
-            this.messages = messages;
+            if (messages != null)
+                this.messages = messages;
         }
 
         /// <summary>
