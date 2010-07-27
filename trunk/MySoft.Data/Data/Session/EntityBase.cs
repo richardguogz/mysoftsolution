@@ -26,7 +26,7 @@ namespace MySoft.Data
     /// Entity基类
     /// </summary>
     [Serializable]
-    public abstract class EntityBase : IEntityBase
+    public abstract class EntityBase : IEntityBase, IValidator
     {
         protected List<Field> updatelist = new List<Field>();
         protected List<Field> removeinsertlist = new List<Field>();
@@ -326,6 +326,19 @@ namespace MySoft.Data
 
                 return fvlist;
             }
+        }
+
+        #endregion
+
+        #region IValidator 成员
+
+        /// <summary>
+        /// 验证实体的有效性
+        /// </summary>
+        /// <returns></returns>
+        public virtual ValidateResult Validate()
+        {
+            return ValidateResult.Default;
         }
 
         #endregion

@@ -148,28 +148,26 @@ namespace MySoft.Data
             WhereClip where = null;
             int value = 0;
 
-            EntityState state = entity.As<IEntityBase>().State;
-
             #region 实体验证处理
 
-            if (entity is IValidator)
+            //对实体进行验证
+            ValidateResult result = entity.Validate();
+            if (!result.IsSuccess)
             {
-                //对实体进行验证
-                ValidateResult result = entity.As<IValidator>().Validate(state);
-                if (!result.IsSuccess)
+                List<string> msgs = new List<string>();
+                foreach (string msg in result.Messages)
                 {
-                    List<string> msgs = new List<string>();
-                    foreach (string msg in result.Messages)
-                    {
-                        if (string.IsNullOrEmpty(msg)) continue;
-                        msgs.Add(msg.Split('|')[0]);
-                    }
-                    string message = string.Join("\r\n", msgs.ToArray());
-                    throw new MySoftException(message);
+                    if (string.IsNullOrEmpty(msg)) continue;
+                    msgs.Add(msg.Split('|')[0]);
                 }
+                string message = string.Join("\r\n", msgs.ToArray());
+                throw new MySoftException(message);
             }
 
             #endregion
+
+            //获取实体状态
+            EntityState state = entity.As<IEntityBase>().State;
 
             //判断实体的状态
             if (state == EntityState.Insert)
