@@ -6,7 +6,7 @@
 * PostForm form_obj is formid,formelement
 **/
 
-Object.extend = function(dest, source, replace) {
+Object.extend = function (dest, source, replace) {
     for (var prop in source) {
         if (replace == false && dest[prop] != null) { continue; }
         dest[prop] = source[prop];
@@ -15,10 +15,10 @@ Object.extend = function(dest, source, replace) {
 };
 
 Object.extend(Array.prototype, {
-    add: function(o) {
+    add: function (o) {
         this[this.length] = o;
     },
-    addRange: function(items) {
+    addRange: function (items) {
         if (items.length > 0) {
             for (var i = 0; i < items.length; i++) {
                 if (typeof (items[i]) == 'function') continue;
@@ -26,11 +26,11 @@ Object.extend(Array.prototype, {
             }
         }
     },
-    clear: function() {
+    clear: function () {
         this.length = 0;
         return this;
     },
-    remove: function() {
+    remove: function () {
         if (this.length == 0) { return null; }
         var o = this[0];
         for (var i = 0; i < this.length - 1; i++) {
@@ -41,37 +41,37 @@ Object.extend(Array.prototype, {
     }
 }, false);
 
-var StringBuilder = function(s) {
+var StringBuilder = function (s) {
     this.v = [];
     if (s) this.v.add(s);
 };
 
 Object.extend(StringBuilder.prototype, {
-    Append: function(s) {
+    Append: function (s) {
         this.v.add(s);
     },
-    AppendLine: function(s) {
+    AppendLine: function (s) {
         this.v.add(s + "\r\n");
     },
-    Clear: function() {
+    Clear: function () {
         this.v.clear();
     },
-    ToString: function() {
+    ToString: function () {
         return this.v.join("");
     }
 }, true);
 
 Object.extend(window, {
     __Class: {
-        create: function() {
-            return function() {
+        create: function () {
+            return function () {
                 if (typeof this.initialize == "function") {
                     this.initialize.apply(this, arguments);
                 }
             };
         }
     },
-    $: function() {
+    $: function () {
         var elements = [];
         for (var i = 0; i < arguments.length; i++) {
             var e = arguments[i];
@@ -85,19 +85,19 @@ Object.extend(window, {
         }
         return elements;
     },
-    $get: function(id) {
+    $get: function (id) {
         return document.getElementById(id);
     },
-    $name: function(name) {
+    $name: function (name) {
         return document.getElementsByName(name);
     },
-    $tag: function(tagName) {
+    $tag: function (tagName) {
         return document.getElementsByTagName(tagName);
     },
-    $create: function(tagName) {
+    $create: function (tagName) {
         return document.createElement(tagName);
     },
-    $attach: function(element, eventName, eventFunction) {
+    $attach: function (element, eventName, eventFunction) {
         if (typeof (element) == 'string') element = $get(element);
 
         if (document.attachEvent) {
@@ -110,24 +110,24 @@ Object.extend(window, {
 }, false);
 
 Object.extend(String.prototype, {
-    trimLeft: function() {
+    trimLeft: function () {
         return this.replace(/^\s*/, "");
     },
-    trimRight: function() {
+    trimRight: function () {
         return this.replace(/\s*$/, "");
     },
-    trim: function() {
+    trim: function () {
         return this.trimRight().trimLeft();
     },
-    endsWith: function(s) {
+    endsWith: function (s) {
         if (this.length == 0 || this.length < s.length) { return false; }
         return (this.substr(this.length - s.length) == s);
     },
-    startsWith: function(s) {
+    startsWith: function (s) {
         if (this.length == 0 || this.length < s.length) { return false; }
         return (this.substr(0, s.length) == s);
     },
-    split: function(c) {
+    split: function (c) {
         var a = [];
         if (this.length == 0) return a;
         var p = 0;
@@ -143,13 +143,13 @@ Object.extend(String.prototype, {
 }, false);
 
 Object.extend(String, {
-    format: function(s) {
+    format: function (s) {
         for (var i = 1; i < arguments.length; i++) {
             s = s.replace("{" + (i - 1) + "}", arguments[i]);
         }
         return s;
     },
-    isNullOrEmpty: function(s) {
+    isNullOrEmpty: function (s) {
         if (s == null || s.length == 0) {
             return true;
         }
@@ -157,10 +157,10 @@ Object.extend(String, {
     }
 }, false);
 
-var Ajax = new function() {
+var Ajax = new function () {
     this.timeout = 3600000;
     this.cache = {};
-    this.getURL = function(url) {
+    this.getURL = function (url) {
         if (url) return url;
         if (typeof (AjaxInfo) != "undefined") {
             return AjaxInfo.url;
@@ -171,7 +171,7 @@ var Ajax = new function() {
         }
         return url;
     };
-    this.getData = function(xmlHttp, type) {
+    this.getData = function (xmlHttp, type) {
         var ct = xmlHttp.getResponseHeader("Content-Type");
         var data = !type && ct && ct.indexOf("xml") >= 0;
         data = type == "xml" || data ? xmlHttp.responseXML : xmlHttp.responseText;
@@ -184,13 +184,13 @@ var Ajax = new function() {
         }
         return data;
     };
-    this.setRequest = function(ajax) {
+    this.setRequest = function (ajax) {
         ajax.setcallback(Ajax.OnRequestStart, Ajax.OnRequestEnd, Ajax.OnException, Ajax.OnTimeout, this.timeout);
     };
 };
 
 Object.extend(Ajax, {
-    toJSON: function(o) {
+    toJSON: function (o) {
         if (o == null)
             return "null";
         switch (o.constructor) {
@@ -251,7 +251,7 @@ Object.extend(Ajax, {
             return n < 10 ? '0' + n : n;
         }
     },
-    toQueryParams: function(s) {
+    toQueryParams: function (s) {
         var pairs = s.match(/^\??(.*)$/)[1].split('&');
         if (pairs == null) return null;
         var params = [];
@@ -261,7 +261,7 @@ Object.extend(Ajax, {
         }
         return params;
     },
-    toQueryString: function(a) {
+    toQueryString: function (a) {
         var s = [];
 
         if (a == null) return a;
@@ -281,52 +281,52 @@ Object.extend(Ajax, {
 });
 
 Object.extend(Ajax, {
-    OnRequestStart: function() { },
-    OnRequestEnd: function() { },
-    OnException: function() { },
-    OnTimeout: function() { },
-    SetTimeout: function(value) {
+    OnRequestStart: function () { },
+    OnRequestEnd: function () { },
+    OnException: function () { },
+    OnTimeout: function () { },
+    SetTimeout: function (value) {
         this.timeout = value;
     },
-    Get: function(obj, url, header) {
+    Get: function (obj, url, header) {
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
         ajax.get(url, obj);
     },
-    GetData: function(url, dtype, header) {
+    GetData: function (url, dtype, header) {
         var data = null;
         if (!dtype) dtype = 'html';
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
-        ajax.get(url, function(xmlHttp) {
+        ajax.get(url, function (xmlHttp) {
             data = Ajax.getData(xmlHttp, dtype);
         }, false);
         return data;
     },
-    Post: function(obj, url, args, header) {
+    Post: function (obj, url, args, header) {
         var content = Ajax.toQueryString(args);
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
         ajax.post(url, content, obj);
     },
-    PostData: function(url, args, dtype, header) {
+    PostData: function (url, args, dtype, header) {
         var data = null;
         var content = Ajax.toQueryString(args);
         if (!dtype) dtype = 'html';
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
-        ajax.post(url, content, function(xmlHttp) {
+        ajax.post(url, content, function (xmlHttp) {
             data = Ajax.getData(xmlHttp, dtype);
         }, false);
         return data;
     },
-    PostForm: function(form_obj, callback, url, ptype, header) {
+    PostForm: function (form_obj, callback, url, ptype, header) {
         if (typeof (form_obj) == 'string') form_obj = $get(form_obj);
-        var callback1 = function(xmlHttp) {
+        var callback1 = function (xmlHttp) {
             callback(xmlHttp.responseText);
         };
         var ajax = new AJAXRequest();
@@ -336,7 +336,7 @@ Object.extend(Ajax, {
         else if (url) ajax.postf(form_obj, callback1, url);
         else ajax.postf(form_obj, callback1);
     },
-    Send: function(url, args, type, async, header, callback) {
+    Send: function (url, args, type, async, header, callback) {
         var content = Ajax.toQueryString(args);
         var ev = {
             url: url,
@@ -350,7 +350,7 @@ Object.extend(Ajax, {
         ajax.setheader(header);
         ajax.call(ev);
     },
-    Update: function(obj, url, interval, times, header) {
+    Update: function (obj, url, interval, times, header) {
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
@@ -358,23 +358,23 @@ Object.extend(Ajax, {
     }
 });
 
-var AjaxClass = function(url) {
+var AjaxClass = function (url) {
     this.url = url;
     this.header = [];
 };
 
 Object.extend(AjaxClass.prototype, {
-    addHeader: function(type, value) {
+    addHeader: function (type, value) {
         var header = [type, value];
         this.header.add(header);
     },
-    clearHeader: function() {
+    clearHeader: function () {
         this.header.clear();
     },
-    invoke: function(method, args, type, async, callback) {
+    invoke: function (method, args, type, async, callback) {
         var json = null;
         this.addHeader('X-Ajax-Method', method);
-        Ajax.Send(this.url, args, type, async, this.header, function(xmlHttp) {
+        Ajax.Send(this.url, args, type, async, this.header, function (xmlHttp) {
             json = Ajax.getData(xmlHttp, 'json');
             if (json) {
                 if (async && callback) {
@@ -397,7 +397,7 @@ Object.extend(AjaxClass.prototype, {
 });
 
 Object.extend(Ajax, {
-    RegisterPage: function(url) {
+    RegisterPage: function (url) {
         if (typeof (AjaxInfo) == "undefined") return null;
         if (url == window) url = this.getURL();
         var header = [['X-Ajax-Process', 'true']];
@@ -484,7 +484,7 @@ Object.extend(Ajax, {
     * args is control params
     * option is callback,template,interval and cache
     */
-    UpdatePanel: function(obj, path, args, option) {
+    UpdatePanel: function (obj, path, args, option) {
         if (typeof (AjaxInfo) == "undefined") return;
         var url = this.getURL();
         var op = {
@@ -512,13 +512,12 @@ Object.extend(Ajax, {
                 fillElement(obj, Ajax.cache[key]);
                 return;
             }
-            Ajax.Send(url, args, type, true, header, function(xmlHttp) {
+            Ajax.Send(url, args, type, true, header, function (xmlHttp) {
                 var json = Ajax.getData(xmlHttp, 'json');
                 if (json) {
                     if (json.Success) {
                         if (op.cache) Ajax.cache[key] = json.Message;
-                        if (typeof (obj) == 'function') obj(json.Message);
-                        else fillElement(obj, json.Message);
+                        fillElement(obj, json.Message);
                     } else {
                         alert(json.Message);
                     }
@@ -527,32 +526,33 @@ Object.extend(Ajax, {
             });
         };
 
-        function fillElement(obj, html) {
-            var element = obj;
-            if (typeof (obj) == 'string') element = $get(obj);
-            var nn = element.nodeName.toUpperCase();
+        function fillElement(el, html) {
+            if (!el) return;
+
+            //如果使用模板方式，则进行解析
             if (op.template) {
                 try {
                     var json = eval('(' + html + ')');
                     html = json.jst.process(json.data);
                 } catch (e) { }
             }
-            if ("INPUT|TEXTAREA".indexOf(nn) > -1) { element.value = html; }
-            else try { fillHTML(element, html); } catch (e) { };
-        };
 
-        function fillHTML(el, html) {
-            if (!el) return;
             //用正则表达式匹配ajax返回的html中是否有<script>，如果存在则取出标签内部的内容。
             var reg = /<script[^>]*>[\s\S]*?<\/script>/ig;
             if (!html.match(reg)) {
-                el.innerHTML = html;
+                fillHTML(el, html);
                 return;
             }
+
             //用正则表达式匹配ajax返回的html中是否有onload,如果存在则取出内容。 
             var reg_onload = /<body onload="([^<]*)">/ig;
             var match_onload = html.match(reg_onload);
             var matchs = html.match(reg);
+
+            //将剩下的html祛除<script>部分，插入模版页
+            html = html.replace(reg, "");
+            fillHTML(el, html);
+
             if (matchs != null) {
                 var myscript = "";
                 for (var i = 0; i < matchs.length; i++) {
@@ -562,22 +562,31 @@ Object.extend(Ajax, {
                 var script = $create("script"); //在模版页创建新的<script>标签
                 script.text = myscript; //给新的script标签赋值
                 $tag("head")[0].appendChild(script); //把该标签加入<head>
-                
+
                 //5秒后移除此script标签
-                setTimeout(function() {
+                setTimeout(function () {
                     $tag("head")[0].removeChild(script)
                 }, 5000);
             }
-            el.innerHTML = html.replace(reg, ""); //将剩下的html祛除<script>部分，插入模版页
+
             if (match_onload != null) {
                 eval(match_onload[0]); //如果存在onload方法，则调用；
             }
         };
 
+        function fillHTML(element, html) {
+            if (typeof (element) == 'function') element(html);
+            else {
+                if (typeof (element) == 'string') element = $get(element);
+                var nn = element.nodeName.toUpperCase();
+                if ("INPUT|TEXTAREA".indexOf(nn) > -1) element.value = html;
+                else element.innerHTML = html;
+            }
+        };
+
         if (op.interval) {
-            update(); setInterval(function() { update(); }, value);
+            update(); setInterval(function () { update(); }, value);
         }
         else update();
     }
 });
-
