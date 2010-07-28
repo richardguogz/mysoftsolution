@@ -47,16 +47,16 @@ var StringBuilder = function(s) {
 };
 
 Object.extend(StringBuilder.prototype, {
-    Append: function(s) {
+    append: function(s) {
         this.v.add(s);
     },
-    AppendLine: function(s) {
+    appendLine: function(s) {
         this.v.add(s + "\r\n");
     },
-    Clear: function() {
+    clear: function() {
         this.v.clear();
     },
-    ToString: function() {
+    toString: function() {
         return this.v.join("");
     }
 }, true);
