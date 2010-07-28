@@ -47,7 +47,7 @@ namespace MySoft.Web
             sb.Append("\t\turl : '" + url + "',\r\n");
             sb.Append("\t\tkey : '" + WebUtils.MD5Encrypt(ajaxKey) + "'\r\n");
             sb.Append("\t};\r\n\r\n");
-            sb.Append(string.Format("var {0} = Ajax.RegisterPage(this);", space));
+            sb.Append(string.Format("var {0} = Ajax.registerPage(this);", space));
 
             //Ð´Èëjavascript´úÂë
             context.Response.ContentType = "application/x-javascript";

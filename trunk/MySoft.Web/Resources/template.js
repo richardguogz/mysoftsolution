@@ -1,6 +1,6 @@
 ﻿/**
-* TrimPath Template. Release 1.0.38.
-* Copyright (C) 2004, 2005 Metaha.
+* TrimPath Template. Release 1.1.2.
+* Copyright (C) 2004 - 2007 TrimPath.
 * 
 * TrimPath Template is licensed under the GNU General Public License
 * and the Apache License, Version 2.0, as follows:
@@ -30,15 +30,14 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-var TrimPath;
+if (typeof (TrimPath) == 'undefined')
+    TrimPath = {};
 
 // TODO: Debugging mode vs stop-on-error mode - runtime flag.
 // TODO: Handle || (or) characters and backslashes.
 // TODO: Add more modifiers.
 
 (function() {               // Using a closure to keep global namespace clean.
-    if (TrimPath == null)
-        TrimPath = new Object();
     if (TrimPath.evalEx == null)
         TrimPath.evalEx = function(src) { return eval(src); };
 
@@ -62,6 +61,16 @@ var TrimPath;
         if (func != null)
             return new optEtc.Template(optTmplName, tmplContent, funcSrc, func, optEtc);
         return null;
+    }
+
+    var exceptionDetails = function(e) {
+        return (e.toString()) + ";\n " +
+               (e.message) + ";\n " +
+               (e.name) + ";\n " +
+               (e.stack || 'no stack trace') + ";\n " +
+               (e.description || 'no further description') + ";\n " +
+               (e.fileName || 'no file name') + ";\n " +
+               (e.lineNumber || 'no line number');
     }
 
     try {
@@ -99,7 +108,7 @@ var TrimPath;
                              "if (typeof(", listVar, "[", iterVar, "_index]) == 'function') {continue;}", // IE 5.x fix from Igor Poteryaev.
                              "__LENGTH_STACK__[__LENGTH_STACK__.length - 1]++;",
                              "var ", iterVar, " = ", listVar, "[", iterVar, "_index];"].join("");
-            }
+            } 
         },
         "forelse": { delta: 0, prefix: "} } if (__LENGTH_STACK__[__LENGTH_STACK__.length - 1] == 0) { if (", suffix: ") {", paramDefault: "true" },
         "/for": { delta: -1, prefix: "} }; delete __LENGTH_STACK__[__LENGTH_STACK__.length - 1];" }, // Remove the just-finished for-loop from the stack of loop lengths.
@@ -110,7 +119,7 @@ var TrimPath;
                 return ["var ", macroName, " = function",
                                    stmtParts.slice(1).join(' ').substring(macroName.length),
                                    "{ var _OUT_arr = []; var _OUT = { write: function(m) { if (m) _OUT_arr.push(m); } }; "].join('');
-            }
+            } 
         },
         "/macro": { delta: -1, prefix: " return _OUT_arr.join(''); };" }
     }
@@ -143,7 +152,8 @@ var TrimPath;
             } catch (e) {
                 if (flags.throwExceptions == true)
                     throw e;
-                var result = new String(resultArr.join("") + "[ERROR: " + e.toString() + (e.message ? '; ' + e.message : '') + "]");
+                var result = new String(resultArr.join("") +
+                    "[ERROR: template: <pre>" + exceptionDetails(e) + "</pre>]");
                 result["exception"] = e;
                 return result;
             }

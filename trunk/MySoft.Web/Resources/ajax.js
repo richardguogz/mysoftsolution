@@ -1,9 +1,9 @@
 ﻿/**
 * Ajax Release 1.0.0.0.
 * Copyright (C) 2007 Metaha.
-* Get obj is callback,id,element
-* Post obj is callback,id,element
-* PostForm form_obj is formid,formelement
+* get obj is callback,id,element
+* post obj is callback,id,element
+* postForm form_obj is formid,formelement
 **/
 
 Object.extend = function(dest, source, replace) {
@@ -185,7 +185,7 @@ var Ajax = new function() {
         return data;
     };
     this.setRequest = function(ajax) {
-        ajax.setcallback(Ajax.OnRequestStart, Ajax.OnRequestEnd, Ajax.OnException, Ajax.OnTimeout, this.timeout);
+        ajax.setcallback(Ajax.onRequestStart, Ajax.onRequestEnd, Ajax.onException, Ajax.onTimeout, this.timeout);
     };
 };
 
@@ -281,20 +281,20 @@ Object.extend(Ajax, {
 });
 
 Object.extend(Ajax, {
-    OnRequestStart: function() { },
-    OnRequestEnd: function() { },
-    OnException: function() { },
-    OnTimeout: function() { },
-    SetTimeout: function(value) {
+    onRequestStart: function() { },
+    onRequestEnd: function() { },
+    onException: function() { },
+    onTimeout: function() { },
+    setTimeout: function(value) {
         this.timeout = value;
     },
-    Get: function(obj, url, header) {
+    get: function(obj, url, header) {
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
         ajax.get(url, obj);
     },
-    GetData: function(url, dtype, header) {
+    getData: function(url, dtype, header) {
         var data = null;
         if (!dtype) dtype = 'html';
         var ajax = new AJAXRequest();
@@ -305,14 +305,14 @@ Object.extend(Ajax, {
         }, false);
         return data;
     },
-    Post: function(obj, url, args, header) {
+    post: function(obj, url, args, header) {
         var content = Ajax.toQueryString(args);
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
         ajax.post(url, content, obj);
     },
-    PostData: function(url, args, dtype, header) {
+    postData: function(url, args, dtype, header) {
         var data = null;
         var content = Ajax.toQueryString(args);
         if (!dtype) dtype = 'html';
@@ -324,7 +324,7 @@ Object.extend(Ajax, {
         }, false);
         return data;
     },
-    PostForm: function(form_obj, callback, url, ptype, header) {
+    postForm: function(form_obj, callback, url, ptype, header) {
         if (typeof (form_obj) == 'string') form_obj = $get(form_obj);
         var callback1 = function(xmlHttp) {
             callback(xmlHttp.responseText);
@@ -336,7 +336,7 @@ Object.extend(Ajax, {
         else if (url) ajax.postf(form_obj, callback1, url);
         else ajax.postf(form_obj, callback1);
     },
-    Send: function(url, args, type, async, header, callback) {
+    send: function(url, args, type, async, header, callback) {
         var content = Ajax.toQueryString(args);
         var ev = {
             url: url,
@@ -350,7 +350,7 @@ Object.extend(Ajax, {
         ajax.setheader(header);
         ajax.call(ev);
     },
-    Update: function(obj, url, interval, times, header) {
+    update: function(obj, url, interval, times, header) {
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
         ajax.setheader(header);
@@ -374,7 +374,7 @@ Object.extend(AjaxClass.prototype, {
     invoke: function(method, args, type, async, callback) {
         var json = null;
         this.addHeader('X-Ajax-Method', method);
-        Ajax.Send(this.url, args, type, async, this.header, function(xmlHttp) {
+        Ajax.send(this.url, args, type, async, this.header, function(xmlHttp) {
             json = Ajax.getData(xmlHttp, 'json');
             if (json) {
                 if (async && callback) {
@@ -397,11 +397,11 @@ Object.extend(AjaxClass.prototype, {
 });
 
 Object.extend(Ajax, {
-    RegisterPage: function(url) {
+    registerPage: function(url) {
         if (typeof (AjaxInfo) == "undefined") return null;
         if (url == window) url = this.getURL();
         var header = [['X-Ajax-Process', 'true']];
-        var methods = Ajax.GetData(url, 'json', header);
+        var methods = Ajax.getData(url, 'json', header);
         if (methods == null) return null;
         var sb = new StringBuilder("var Ajax_class=__Class.create();\r\n");
         sb.Append("Object.extend(Ajax_class.prototype, ");
@@ -479,12 +479,13 @@ Object.extend(Ajax, {
         }
         catch (e) { return null; }
     },
+    
     /*obj is callback,id,element
     * path is controlpath
     * args is control params
     * option is callback,template,interval and cache
     */
-    UpdatePanel: function(obj, path, args, option) {
+    updatePanel: function(obj, path, args, option) {
         if (typeof (AjaxInfo) == "undefined") return;
         var url = this.getURL();
         var op = {
@@ -512,7 +513,7 @@ Object.extend(Ajax, {
                 fillElement(obj, Ajax.cache[key]);
                 return;
             }
-            Ajax.Send(url, args, type, true, header, function(xmlHttp) {
+            Ajax.send(url, args, type, true, header, function(xmlHttp) {
                 var json = Ajax.getData(xmlHttp, 'json');
                 if (json) {
                     if (json.Success) {
