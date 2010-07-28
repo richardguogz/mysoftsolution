@@ -162,12 +162,18 @@ var Ajax = new function() {
     this.cache = {};
     this.getRequestURL = function(url) {
         if (url) return url;
-        if (typeof (AjaxInfo) != "undefined") {
-            return AjaxInfo.url;
+        if (typeof (ajaxRequestInfo) != "undefined") {
+            return ajaxRequestInfo.url;
         }
         url = location.href;
         if (url.indexOf("#") > 0) {
             url = url.substr(0, url.indexOf("#"));
+        }
+        if (url.indexOf("?") > 0) {
+            url += "&" + Math.random();
+        }
+        else {
+            url += "?" + Math.random();
         }
         return url;
     };
@@ -398,18 +404,18 @@ Object.extend(AjaxClass.prototype, {
 
 Object.extend(Ajax, {
     registerPage: function(url) {
-        if (typeof (AjaxInfo) == "undefined") return null;
+        if (typeof (ajaxRequestInfo) == "undefined") return null;
         if (url == window) url = this.getRequestURL();
         var header = [['X-Ajax-Process', 'true']];
-        var methods = Ajax.getRequestData(url, 'json', header);
+        var methods = Ajax.getData(url, 'json', header);
         if (methods == null) return null;
         var sb = new StringBuilder("var Ajax_class=__Class.create();\r\n");
-        sb.Append("Object.extend(Ajax_class.prototype, ");
-        sb.Append("Object.extend(new AjaxClass(), {\r\n");
-        sb.Append("\turl : '" + url + "',\r\n");
+        sb.append("Object.extend(Ajax_class.prototype, ");
+        sb.append("Object.extend(new AjaxClass(), {\r\n");
+        sb.append("\turl : '" + url + "',\r\n");
         for (var i = 0; i < methods.length; i++) {
             var method = methods[i];
-            sb.Append("\t" + method.Name + " : function(");
+            sb.append("\t" + method.Name + " : function(");
             var sp = new StringBuilder("{\r\n");
             var isContent = false;
             if (method.Paramters.length > 0) {
@@ -417,63 +423,63 @@ Object.extend(Ajax, {
                 for (var p = 0; p < method.Paramters.length; p++) {
                     var paramter = method.Paramters[p];
                     if (p == method.Paramters.length - 1) {
-                        sp.Append("\t\t\t\t" + paramter + " : Ajax.toJSON(param)");
+                        sp.append("\t\t\t\t" + paramter + " : Ajax.toJSON(param)");
                     } else {
-                        sp.Append("\t\t\t\t" + paramter + " : Ajax.toJSON(" + paramter + ")");
+                        sp.append("\t\t\t\t" + paramter + " : Ajax.toJSON(" + paramter + ")");
                     }
-                    sb.Append(paramter);
+                    sb.append(paramter);
                     if (p < method.Paramters.length - 1) {
-                        sp.Append(",\r\n");
-                        sb.Append(",");
+                        sp.append(",\r\n");
+                        sb.append(",");
                     }
                 }
             }
-            sp.Append("\r\n\t\t\t}");
+            sp.append("\r\n\t\t\t}");
             if (method.Async) {
-                if (isContent) sb.Append(",callback){\r\n");
-                else sb.Append("callback)\r\n\t{\r\n");
+                if (isContent) sb.append(",callback){\r\n");
+                else sb.append("callback)\r\n\t{\r\n");
             }
             else {
-                sb.Append(")\r\n\t{\r\n");
+                sb.append(")\r\n\t{\r\n");
             }
             if (isContent) {
-                sb.Append("\t\tvar param=[],pm=[];\r\n");
-                sb.Append("\t\tpm.addRange(arguments);\r\n");
-                sb.Append("\t\t\if(pm.length>" + method.Paramters.length + "){\r\n");
-                sb.Append("\t\t\tparam.addRange(pm);\r\n");
+                sb.append("\t\tvar param=[],pm=[];\r\n");
+                sb.append("\t\tpm.addRange(arguments);\r\n");
+                sb.append("\t\t\if(pm.length>" + method.Paramters.length + "){\r\n");
+                sb.append("\t\t\tparam.addRange(pm);\r\n");
                 if (method.Async) {
-                    sb.Append("\t\t\tif(typeof(arguments[arguments.length-1])=='function')\r\n");
-                    sb.Append("\t\t\t\tcallback=arguments[arguments.length-1];\r\n");
+                    sb.append("\t\t\tif(typeof(arguments[arguments.length-1])=='function')\r\n");
+                    sb.append("\t\t\t\tcallback=arguments[arguments.length-1];\r\n");
                 }
                 if (method.Paramters.length > 1) {
-                    sb.Append("\t\t\tparam.splice(0," + (method.Paramters.length - 1) + ");\r\n");
+                    sb.append("\t\t\tparam.splice(0," + (method.Paramters.length - 1) + ");\r\n");
                 }
-                sb.Append("\t\t} else {\r\n");
-                sb.Append("\t\t\tparam=" + method.Paramters[method.Paramters.length - 1] + ";\r\n");
-                sb.Append("\t\t}\r\n\r\n");
-                sb.Append("\t\tvar args = " + sp.ToString() + ";\r\n");
+                sb.append("\t\t} else {\r\n");
+                sb.append("\t\t\tparam=" + method.Paramters[method.Paramters.length - 1] + ";\r\n");
+                sb.append("\t\t}\r\n\r\n");
+                sb.append("\t\tvar args = " + sp.toString() + ";\r\n");
             }
-            else sb.Append("\t\tvar args = null;\r\n");
-            sb.Append("\r\n\t\tthis.clearHeader();");
+            else sb.append("\t\tvar args = null;\r\n");
+            sb.append("\r\n\t\tthis.clearHeader();");
             if (header) {
                 for (var j = 0; j < header.length; j++) {
-                    sb.Append("\r\n\t\tthis.addHeader('" + header[j][0] + "','" + header[j][1] + "');");
+                    sb.append("\r\n\t\tthis.addHeader('" + header[j][0] + "','" + header[j][1] + "');");
                 }
             }
-            sb.Append("\r\n\t\tthis.addHeader('X-Ajax-Key','" + AjaxInfo.key + "');");
-            sb.Append("\r\n\t\treturn this.invoke('" + method.Name + "'");
-            sb.Append(",args");
-            if (isContent) sb.Append(",'POST'");
-            else sb.Append(",'GET'");
-            if (method.Async) sb.Append(",true");
-            else sb.Append(",false");
-            if (method.Async) sb.Append(",callback");
-            sb.Append(");\r\n\t}");
-            if (i < methods.length - 1) sb.Append(",\r\n");
+            sb.append("\r\n\t\tthis.addHeader('X-Ajax-Key','" + ajaxRequestInfo.key + "');");
+            sb.append("\r\n\t\treturn this.invoke('" + method.Name + "'");
+            sb.append(",args");
+            if (isContent) sb.append(",'POST'");
+            else sb.append(",'GET'");
+            if (method.Async) sb.append(",true");
+            else sb.append(",false");
+            if (method.Async) sb.append(",callback");
+            sb.append(");\r\n\t}");
+            if (i < methods.length - 1) sb.append(",\r\n");
         }
-        sb.Append("\r\n}));\r\n");
+        sb.append("\r\n}));\r\n");
         try {
-            eval(sb.ToString());
+            eval(sb.toString());
             var ajax = new Ajax_class();
             return ajax;
         }
@@ -485,8 +491,8 @@ Object.extend(Ajax, {
     * args is control params
     * option is callback,template,interval and cache
     */
-    UpdatePanel: function(obj, path, args, option) {
-        if (typeof (AjaxInfo) == "undefined") return;
+    updatePanel: function(obj, path, args, option) {
+        if (typeof (ajaxRequestInfo) == "undefined") return;
         var url = this.getRequestURL();
         var op = {
             callback: null,
@@ -499,7 +505,7 @@ Object.extend(Ajax, {
         header.add(['X-Ajax-Process', 'true']);
         header.add(['X-Ajax-Load', 'true']);
         header.add(['X-Ajax-Path', path]);
-        header.add(['X-Ajax-Key', AjaxInfo.key]);
+        header.add(['X-Ajax-Key', ajaxRequestInfo.key]);
         if (op.template) {
             header.add(['X-Ajax-Template', op.template]);
         }

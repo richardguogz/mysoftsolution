@@ -14,13 +14,13 @@ namespace MySoft.Web.UI
     /// <summary>
     /// Ajax相关信息
     /// </summary>
-    public class AjaxInfo
+    public class AjaxRequestPage
     {
         public System.Web.UI.Page CurrentPage { get; private set; }
         public bool EnableAjaxCallback { get; set; }
         public bool EnableAjaxTemplate { get; set; }
 
-        public AjaxInfo(System.Web.UI.Page currentPage)
+        public AjaxRequestPage(System.Web.UI.Page currentPage)
         {
             this.CurrentPage = currentPage;
         }
@@ -31,8 +31,8 @@ namespace MySoft.Web.UI
     /// </summary>
     public class AjaxRequest
     {
-        private AjaxInfo info;
-        public AjaxRequest(AjaxInfo info)
+        private AjaxRequestPage info;
+        public AjaxRequest(AjaxRequestPage info)
         {
             this.info = info;
         }

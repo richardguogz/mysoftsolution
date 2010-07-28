@@ -43,7 +43,7 @@ namespace MySoft.Web
             if (string.IsNullOrEmpty(space)) space = "AjaxMethods";
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("var AjaxInfo = { \r\n");
+            sb.Append("var ajaxRequestInfo = { \r\n");
             sb.Append("\t\turl : '" + url + "',\r\n");
             sb.Append("\t\tkey : '" + WebUtils.MD5Encrypt(ajaxKey) + "'\r\n");
             sb.Append("\t};\r\n\r\n");
