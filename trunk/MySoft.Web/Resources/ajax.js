@@ -76,11 +76,12 @@ Object.extend(StringBuilder.prototype, {
     },
     clear: function() {
         this.v.clear();
-    },
-    toString: function() {
-        return this.v.join("");
     }
 }, false);
+
+StringBuilder.prototype.toString = function() {
+    return this.v.join("");
+};
 
 Object.extend(Array.prototype, {
     add: function(o) {
@@ -168,12 +169,6 @@ var Ajax = new function() {
         url = location.href;
         if (url.indexOf("#") > 0) {
             url = url.substr(0, url.indexOf("#"));
-        }
-        if (url.indexOf("?") > 0) {
-            url += "&" + Math.random();
-        }
-        else {
-            url += "?" + Math.random();
         }
         return url;
     };
@@ -284,7 +279,7 @@ Object.extend(Ajax, {
 
         return s.join("&");
     }
-},false);
+}, false);
 
 Object.extend(Ajax, {
     onRequestStart: function() { },
@@ -362,7 +357,7 @@ Object.extend(Ajax, {
         ajax.setheader(header);
         ajax.update(obj, url, interval, times);
     }
-},false);
+}, false);
 
 var AjaxClass = function(url) {
     this.url = url;
@@ -400,7 +395,7 @@ Object.extend(AjaxClass.prototype, {
             }
         }
     }
-},false);
+}, false);
 
 Object.extend(Ajax, {
     registerPage: function(url) {
@@ -596,5 +591,5 @@ Object.extend(Ajax, {
         }
         else update();
     }
-},false);
+}, false);
 
