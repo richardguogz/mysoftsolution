@@ -217,7 +217,7 @@ namespace MySoft.Data
                     {
                         try
                         {
-                            originalObject = this.As<IEntityBase>().Clone();
+                            originalObject = this.As<IEntityBase>().CloneObject();
                         }
                         catch (Exception ex)
                         {

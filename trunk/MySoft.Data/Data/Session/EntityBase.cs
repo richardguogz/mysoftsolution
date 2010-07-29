@@ -99,7 +99,7 @@ namespace MySoft.Data
         /// <summary>
         /// 获取原始对象
         /// </summary>
-        EntityBase IEntityBase.Old
+        EntityBase IEntityBase.OldObject
         {
             get
             {
@@ -110,7 +110,7 @@ namespace MySoft.Data
         /// <summary>
         /// 获取对象状态
         /// </summary>
-        EntityState IEntityBase.State
+        EntityState IEntityBase.ObjectState
         {
             get
             {
@@ -122,11 +122,11 @@ namespace MySoft.Data
         /// 克隆一个对象
         /// </summary>
         /// <returns></returns>
-        EntityBase IEntityBase.Clone()
+        EntityBase IEntityBase.CloneObject()
         {
             lock (this)
             {
-                return DataUtils.CloneEntity(this);
+                return DataUtils.CloneObject(this);
             }
         }
 

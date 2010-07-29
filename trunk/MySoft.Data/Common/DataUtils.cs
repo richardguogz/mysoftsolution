@@ -35,12 +35,12 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 克隆一个Entity对象
+        /// 克隆一个Object对象
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static T CloneEntity<T>(T entity)
-            where T : EntityBase
+        public static T CloneObject<T>(T entity)
+            where T : class
         {
             if (entity == null) return default(T);
             Type type = entity.GetType();

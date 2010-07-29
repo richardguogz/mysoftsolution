@@ -34,17 +34,17 @@ namespace MySoft.Data
         /// 克隆一个对象
         /// </summary>
         /// <returns></returns>
-        EntityBase Clone();
+        EntityBase CloneObject();
 
         /// <summary>
         /// 获取对象状态
         /// </summary>
-        EntityState State { get; }
+        EntityState ObjectState { get; }
 
         /// <summary>
         /// 获取原始对象
         /// </summary>
-        EntityBase Old { get; }
+        EntityBase OldObject { get; }
     }
 }
 
