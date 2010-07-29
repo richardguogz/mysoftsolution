@@ -14,53 +14,6 @@ Object.extend = function(dest, source, replace) {
     return dest;
 };
 
-Object.extend(Array.prototype, {
-    add: function(o) {
-        this[this.length] = o;
-    },
-    addRange: function(items) {
-        if (items.length > 0) {
-            for (var i = 0; i < items.length; i++) {
-                if (typeof (items[i]) == 'function') continue;
-                this.push(items[i]);
-            }
-        }
-    },
-    clear: function() {
-        this.length = 0;
-        return this;
-    },
-    remove: function() {
-        if (this.length == 0) { return null; }
-        var o = this[0];
-        for (var i = 0; i < this.length - 1; i++) {
-            this[i] = this[i + 1];
-        }
-        this.length--;
-        return o;
-    }
-}, false);
-
-var StringBuilder = function(s) {
-    this.v = [];
-    if (s) this.v.add(s);
-};
-
-Object.extend(StringBuilder.prototype, {
-    append: function(s) {
-        this.v.add(s);
-    },
-    appendLine: function(s) {
-        this.v.add(s + "\r\n");
-    },
-    clear: function() {
-        this.v.clear();
-    },
-    toString: function() {
-        return this.v.join("");
-    }
-}, true);
-
 Object.extend(window, {
     __Class: {
         create: function() {
@@ -109,6 +62,68 @@ Object.extend(window, {
     }
 }, false);
 
+var StringBuilder = function(s) {
+    this.v = [];
+    if (s) this.v.add(s);
+};
+
+Object.extend(StringBuilder.prototype, {
+    append: function(s) {
+        this.v.add(s);
+    },
+    appendLine: function(s) {
+        this.v.add(s + "\r\n");
+    },
+    clear: function() {
+        this.v.clear();
+    },
+    toString: function() {
+        return this.v.join("");
+    }
+}, false);
+
+Object.extend(Array.prototype, {
+    add: function(o) {
+        this[this.length] = o;
+    },
+    addRange: function(items) {
+        if (items.length > 0) {
+            for (var i = 0; i < items.length; i++) {
+                if (typeof (items[i]) == 'function') continue;
+                this.push(items[i]);
+            }
+        }
+    },
+    clear: function() {
+        this.length = 0;
+        return this;
+    },
+    remove: function() {
+        if (this.length == 0) { return null; }
+        var o = this[0];
+        for (var i = 0; i < this.length - 1; i++) {
+            this[i] = this[i + 1];
+        }
+        this.length--;
+        return o;
+    }
+}, false);
+
+Object.extend(String, {
+    format: function(s) {
+        for (var i = 1; i < arguments.length; i++) {
+            s = s.replace("{" + (i - 1) + "}", arguments[i]);
+        }
+        return s;
+    },
+    isNullOrEmpty: function(s) {
+        if (s == null || s.length == 0) {
+            return true;
+        }
+        return false;
+    }
+}, false);
+
 Object.extend(String.prototype, {
     trimLeft: function() {
         return this.replace(/^\s*/, "");
@@ -139,21 +154,6 @@ Object.extend(String.prototype, {
         }
         a.add(s.substr(p));
         return a;
-    }
-}, false);
-
-Object.extend(String, {
-    format: function(s) {
-        for (var i = 1; i < arguments.length; i++) {
-            s = s.replace("{" + (i - 1) + "}", arguments[i]);
-        }
-        return s;
-    },
-    isNullOrEmpty: function(s) {
-        if (s == null || s.length == 0) {
-            return true;
-        }
-        return false;
     }
 }, false);
 
@@ -284,7 +284,7 @@ Object.extend(Ajax, {
 
         return s.join("&");
     }
-});
+},false);
 
 Object.extend(Ajax, {
     onRequestStart: function() { },
@@ -362,7 +362,7 @@ Object.extend(Ajax, {
         ajax.setheader(header);
         ajax.update(obj, url, interval, times);
     }
-});
+},false);
 
 var AjaxClass = function(url) {
     this.url = url;
@@ -400,7 +400,7 @@ Object.extend(AjaxClass.prototype, {
             }
         }
     }
-});
+},false);
 
 Object.extend(Ajax, {
     registerPage: function(url) {
@@ -596,5 +596,5 @@ Object.extend(Ajax, {
         }
         else update();
     }
-});
+},false);
 
