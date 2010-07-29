@@ -118,16 +118,13 @@ namespace MySoft.Web
         // Override the Write method to filter Response to a file.
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (HttpContext.Current.Response.ContentType == "text/html")
+            //首先判断有没有系统错误
+            if (HttpContext.Current.Error == null)
             {
-                //首先判断有没有系统错误
-                if (HttpContext.Current.Error == null)
-                {
-                    //内容进行编码处理
-                    string content = enc.GetString(buffer, offset, count);
+                //内容进行编码处理
+                string content = enc.GetString(buffer, offset, count);
 
-                    pageContent.Append(content);
-                }
+                pageContent.Append(content);
             }
 
             //Write out the response to the browser.
