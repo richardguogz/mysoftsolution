@@ -1008,6 +1008,7 @@ namespace MySoft.Tools.EntityDesign
                 {
                     index++;
                     string description = GetDescription(name, column.ColumnName);
+                    if (description != null) description = description.Replace("\"", "\\\"");
 
                     if (isEntity)
                     {

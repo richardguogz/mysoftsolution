@@ -499,9 +499,9 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 
 2.增加了实体验证类Validator，但需要自己实现验证的过程，使用如下：
   
-    public partial class User : IValidator
+    public partial class User
     {
-        public ValidateResult Validate(EntityState state)
+        public override ValidateResult Validate()
         {
             return new Validator<User>(this)
                     .Check(p => string.IsNullOrEmpty(p.Name), User._.Name, "用户名不允许为空！")
@@ -513,9 +513,9 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
     注意：User._.Name是用于验证此字段是不是需要进行更新或插入
 		  由于本组件支持部分列插入或更新，不参与插入或更新的列不需要参考验证过程
 
-		  EntityState是传出当前实体的状态，以便于区别更新与插入的处理
+3.修正了生成工具在获取字段描述信息时，描述信息中含有双引号的生成时出错的bug
 
-3.将MySoft.Web中的Controls分离出来，暂定为MySoft.Controls
+4.将MySoft.Web中的Controls分离出来，暂定为MySoft.Controls
   
   1、支持Repeater的强类型操作
   
