@@ -7,14 +7,20 @@ namespace MySoft.Data
     /// <summary>
     /// 行数据阅读器
     /// </summary>
-    public interface IRowReader : IDisposable
+    /// <typeparam name="T"></typeparam>
+    public interface IRowReader<T> : IRowReader
     {
         /// <summary>
-        /// 获取当前DataSource
+        /// 数据源
         /// </summary>
-        /// <returns></returns>
-        object DataSource { get; }
+        T DataSource { get; }
+    }
 
+    /// <summary>
+    /// 行数据阅读器
+    /// </summary>
+    public interface IRowReader : IDisposable
+    {
         #region 读取数据
 
         /// <summary>

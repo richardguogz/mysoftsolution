@@ -9,7 +9,7 @@ namespace MySoft.Data
     /// <summary>
     /// 读数据接口
     /// </summary>
-    interface ISourceReader : IListConvert<IRowReader>, IRowReader, IDisposable
+    interface ISourceReader : IListConvert<IRowReader>, IRowReader<IDataReader>, IDisposable
     {
         #region 常用方法
 

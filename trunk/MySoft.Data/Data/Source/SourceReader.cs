@@ -52,7 +52,7 @@ namespace MySoft.Data
         /// 获取当前DataSource
         /// </summary>
         /// <returns></returns>
-        public object DataSource
+        public IDataReader DataSource
         {
             get
             {

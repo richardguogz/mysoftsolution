@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// <summary>
     /// 数据行
     /// </summary>
-    public class SourceRow : IRowReader
+    public class SourceRow : IRowReader<DataRow>
     {
         private DataRow row;
 
@@ -25,7 +25,7 @@ namespace MySoft.Data
         /// 获取当前DataSource
         /// </summary>
         /// <returns></returns>
-        public object DataSource
+        public DataRow DataSource
         {
             get
             {
