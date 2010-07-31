@@ -150,9 +150,9 @@
     <Compile Include="WebUI\Page.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebUI\Ajax\IAjaxProcessEventHandler.cs">
+    <Compile Include="WebUI\Ajax\IAjaxProcessHandler.cs">
     </Compile>
-    <Compile Include="WebUI\Ajax\IAjaxInitEventHandler.cs" />
+    <Compile Include="WebUI\Ajax\IAjaxInitHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ajax.js" />

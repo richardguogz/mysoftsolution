@@ -7,10 +7,10 @@ using System.IO;
 namespace MySoft.Web.UI
 {
     /// <summary>
-    /// 提供异步回调处理的接口
+    /// 提供异步初始化处理的接口
     /// </summary>
-    public interface IAjaxProcessEventHandler
+    public interface IAjaxInitHandler
     {
-        void OnAjaxProcess(CallbackParams callbackParams);
+        void OnAjaxInit();
     }
 }

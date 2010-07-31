@@ -60,11 +60,11 @@ namespace MySoft.Web.UI
                 else
                 {
                     //只有启用Ajax，才调用初始化方法
-                    if (info.CurrentPage is IAjaxInitEventHandler)
-                        (info.CurrentPage as IAjaxInitEventHandler).OnAjaxInit();
+                    if (info.CurrentPage is IAjaxInitHandler)
+                        (info.CurrentPage as IAjaxInitHandler).OnAjaxInit();
 
-                    if (info.CurrentPage is IAjaxProcessEventHandler)
-                        (info.CurrentPage as IAjaxProcessEventHandler).OnAjaxProcess(GetCallbackParams());
+                    if (info.CurrentPage is IAjaxProcessHandler)
+                        (info.CurrentPage as IAjaxProcessHandler).OnAjaxProcess(GetCallbackParams());
 
                     bool AjaxLoad = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Load", false);
                     string AjaxKey = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Key", Guid.NewGuid().ToString());
@@ -139,11 +139,11 @@ namespace MySoft.Web.UI
                     Control control = info.CurrentPage.LoadControl(templatePath.ToLower().EndsWith(".ascx") ? templatePath : templatePath + ".ascx");
                     if (control != null)
                     {
-                        if (control is IAjaxInitEventHandler)
-                            (control as IAjaxInitEventHandler).OnAjaxInit();
+                        if (control is IAjaxInitHandler)
+                            (control as IAjaxInitHandler).OnAjaxInit();
 
-                        if (control is IAjaxProcessEventHandler)
-                            (control as IAjaxProcessEventHandler).OnAjaxProcess(GetCallbackParams());
+                        if (control is IAjaxProcessHandler)
+                            (control as IAjaxProcessHandler).OnAjaxProcess(GetCallbackParams());
 
                         StringBuilder sb = new StringBuilder();
                         control.RenderControl(new HtmlTextWriter(new StringWriter(sb)));
@@ -251,11 +251,11 @@ namespace MySoft.Web.UI
                     Control control = info.CurrentPage.LoadControl(path);
                     if (control != null)
                     {
-                        if (control is IAjaxInitEventHandler)
-                            (control as IAjaxInitEventHandler).OnAjaxInit();
+                        if (control is IAjaxInitHandler)
+                            (control as IAjaxInitHandler).OnAjaxInit();
 
-                        if (control is IAjaxProcessEventHandler)
-                            (control as IAjaxProcessEventHandler).OnAjaxProcess(GetCallbackParams());
+                        if (control is IAjaxProcessHandler)
+                            (control as IAjaxProcessHandler).OnAjaxProcess(GetCallbackParams());
 
                         StringBuilder sb = new StringBuilder();
                         control.RenderControl(new HtmlTextWriter(new StringWriter(sb)));
