@@ -131,7 +131,7 @@
     <Compile Include="Data\Session\IDbBatch.cs" />
     <Compile Include="Data\Session\ITable.cs" />
     <Compile Include="Data\Session\ProviderFactory.cs" />
-    <Compile Include="Data\Session\IDbTran.cs" />
+    <Compile Include="Data\Session\IDbTrans.cs" />
     <Compile Include="Data\Session\Table.cs" />
     <Compile Include="Data\Query\ISection.cs" />
     <Compile Include="Data\Source\ISourceReader.cs" />
