@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace MySoft.IoC.Service.Services.DemoServices
+namespace MySoft.IoC.Service.Services
 {
     /// <summary>
     /// sample math service interface.

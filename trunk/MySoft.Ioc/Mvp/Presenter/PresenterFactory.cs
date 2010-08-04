@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Configuration;
+using MySoft.IoC.Service;
 
 namespace MySoft.IoC.Mvp
 {
     /// <summary>
-    /// 创建Presenter的接口
+    /// Presenter Factory
     /// </summary>
-    public sealed class PresenterFactory : IPresenterFactory
+    public sealed class PresenterFactory
     {
-        private static IPresenterFactory singleton;
-        private Dictionary<string, MethodInfo> methods;
-        private IServiceFactory container;
+        private ServiceFactory container;
+
         private PresenterFactory()
         {
             container = ServiceFactory.Create();
-            methods = new Dictionary<string, MethodInfo>();
         }
 
-        public static IPresenterFactory Create()
+        private static PresenterFactory singleton = null;
+
+        /// <summary>
+        /// Creates this singleton instance.
+        /// </summary>
+        /// <returns></returns>
+        public static PresenterFactory Create()
         {
             if (singleton == null)
             {
@@ -29,55 +34,54 @@ namespace MySoft.IoC.Mvp
             return singleton;
         }
 
-        public TPresenter GetPresenter<TPresenter>(object view)
-            where TPresenter : IPresenter
+        /// <summary>
+        /// Gets the presenter.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
+        public IPresenterType GetPresenter<IPresenterType>(object view)
         {
-            Type controllerType = typeof(TPresenter);
-            TPresenter controller = (TPresenter)CreateObject(controllerType);
-            if (controller != null)
-            {
-                if (controller.TypeOfView.IsAssignableFrom(view.GetType()))
-                {
-                    controller.BindView(view);
-                }
-                if (controller.TypeOfModel != null)
-                {
-                    Type[] types = controller.TypeOfModel;
-                    object[] models = new object[types.Length];
-                    for (int index = 0; index < types.Length; index++)
-                    {
-                        models[index] = CreateObject(types[index]);
-                    }
-                    controller.BindModel(models);
-                }
-            }
-            return controller;
+            return GetPresenter<IPresenterType>(null, view);
         }
 
-        private object CreateObject(Type type)
+        /// <summary>
+        /// Gets the presenter.
+        /// </summary>
+        /// <param name="presenterKey">The presenter key.</param>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
+        public IPresenterType GetPresenter<IPresenterType>(string presenterKey, object view)
         {
-            if (type.IsClass)
+            if (string.IsNullOrEmpty(presenterKey) ? container.ServiceContainer.Kernel.HasComponent(typeof(IPresenterType)) :
+                container.ServiceContainer.Kernel.HasComponent(presenterKey))
             {
-                return Activator.CreateInstance(type);
-            }
-            else if (container != null)
-            {
-                if (container.Services.ContainsKey(type.FullName))
+                IPresenterType _presenter = string.IsNullOrEmpty(presenterKey) ?
+                    (IPresenterType)container.ServiceContainer.Kernel[typeof(IPresenterType)] :
+                    (IPresenterType)container.ServiceContainer.Kernel[presenterKey];
+                if (typeof(IPresenter).IsAssignableFrom(_presenter.GetType()))
                 {
-                    MethodInfo method;
-                    if (methods.ContainsKey(type.FullName))
+                    IPresenter presenter = (IPresenter)_presenter;
+                    object model = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModel).Invoke(container, null); ;
+                    presenter.BindView(view);
+                    presenter.BindModel(model);
+                    return _presenter;
+                }
+                else if (typeof(IPresenter2).IsAssignableFrom(_presenter.GetType()))
+                {
+                    IPresenter2 presenter = (IPresenter2)_presenter;
+                    object[] models = new object[presenter.TypeOfModels.Length];
+                    for (int i = 0; i < models.Length; i++)
                     {
-                        method = methods[type.FullName];
+                        models[i] = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModels[i]).Invoke(container, null); ;
                     }
-                    else
-                    {
-                        method = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(type);
-                        methods.Add(type.FullName, method);
-                    }
-                    return method.Invoke(container, null);
+                    presenter.BindView(view);
+                    presenter.BindModels(models);
+                    return _presenter;
                 }
             }
-            return null;
+
+            return default(IPresenterType);
         }
+
     }
 }

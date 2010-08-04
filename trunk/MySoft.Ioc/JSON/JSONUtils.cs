@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace NBear.Common.JSON
+namespace MySoft.IoC.Json
 {  
   /// <summary>
   ///  Public Domain 2002 JSON.org

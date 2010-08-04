@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace NBear.Common.JSON
+namespace MySoft.IoC.Json
 {
   /// <summary>
   /// <para>

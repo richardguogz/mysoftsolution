@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MySoft.IoC.Emit
+namespace MySoft.IoC
 {
     public sealed class EmitUtils
     {

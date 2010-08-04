@@ -6,7 +6,7 @@ using Castle.Windsor;
 using System.Reflection.Emit;
 using System.Configuration;
 using MySoft.IoC.Remoting;
-using MySoft.IoC.Emit;
+using MySoft.IoC;
 
 namespace MySoft.IoC.Service
 {
@@ -237,14 +237,14 @@ namespace MySoft.IoC.Service
         /// Loads the service factory configuration.
         /// </summary>
         /// <returns>The section.</returns>
-        public static Configuration.ServiceFactoryConfigurationSection LoadServiceFactoryConfiguration()
+        public static ServiceFactoryConfigurationSection LoadServiceFactoryConfiguration()
         {
             object config = ConfigurationManager.GetSection("serviceFactory");
             if (config == null)
             {
-                return new Configuration.ServiceFactoryConfigurationSection();
+                return new ServiceFactoryConfigurationSection();
             }
-            return (Configuration.ServiceFactoryConfigurationSection)config;
+            return (ServiceFactoryConfigurationSection)config;
         }
 
         private static ServiceFactory singleton = null;
@@ -256,9 +256,9 @@ namespace MySoft.IoC.Service
         {
             if (singleton == null)
             {
-                Configuration.ServiceFactoryConfigurationSection config = LoadServiceFactoryConfiguration();
+                ServiceFactoryConfigurationSection config = LoadServiceFactoryConfiguration();
 
-                if (config.Type == MySoft.IoC.Service.Configuration.ServiceFactoryType.Local)
+                if (config.Type == ServiceFactoryType.Local)
                 {
                     singleton = new ServiceFactory(new SimpleServiceContainer());
                 }

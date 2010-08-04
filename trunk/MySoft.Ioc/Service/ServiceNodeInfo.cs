@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.IoC.Service.Services.Configuration
+namespace MySoft.IoC.Service
 {
     /// <summary>
     /// The service node info.

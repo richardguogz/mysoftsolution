@@ -5,8 +5,9 @@ using System.Configuration;
 using System.Xml;
 
 using MySoft.IoC.Remoting;
+using MySoft.IoC.Service;
 
-namespace MySoft.IoC.Service.Configuration
+namespace MySoft.IoC
 {
     /// <summary>
     /// The service factory configuration.

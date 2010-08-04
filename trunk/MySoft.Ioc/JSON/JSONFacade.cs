@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
 
-namespace NBear.Common.JSON
+namespace MySoft.IoC.Json
 {
 	/// <summary>
 	/// Summary description for JsonFacade.

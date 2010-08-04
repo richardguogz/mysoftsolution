@@ -4,390 +4,710 @@ using System.Text;
 
 namespace MySoft.IoC.Mvp
 {
-    public interface IPresenterFactory
-    {
-        TPresenter GetPresenter<TPresenter>(object view) where TPresenter : IPresenter;
-    }
-
-    //控制器
+    /// <summary>
+    /// Interface of all presenters
+    /// </summary>
     public interface IPresenter
     {
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         void BindView(object view);
-        void BindModel(params object[] models);
+        /// <summary>
+        /// Binds the model.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        void BindModel(object model);
+        /// <summary>
+        /// Gets the type of view.
+        /// </summary>
+        /// <value>The type of view.</value>
         Type TypeOfView { get; }
-        Type[] TypeOfModel { get; }
+        /// <summary>
+        /// Gets the type of model.
+        /// </summary>
+        /// <value>The type of model.</value>
+        Type TypeOfModel { get; }
     }
 
-    public abstract class Presenter<TView> : IPresenter
+    /// <summary>
+    /// The extended interface of all presenters
+    /// </summary>
+    public interface IPresenter2
     {
-        private TView _view;
-        protected TView view
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        void BindView(object view);
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        void BindModels(object[] models);
+        /// <summary>
+        /// Gets the type of view.
+        /// </summary>
+        /// <value>The type of view.</value>
+        Type TypeOfView { get; }
+        /// <summary>
+        /// Gets the types of model.
+        /// </summary>
+        /// <value>The types of model.</value>
+        Type[] TypeOfModels { get; }
+    }
+
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    public abstract class Presenter<ViewType> : IPresenter2
+    {
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;ViewType&gt;"/> is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
         {
             get
             {
-                return _view;
+                return view != null;
             }
         }
 
+        #region IPresenter2 Members
+
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void BindView(object view)
         {
-            this._view = (TView)view;
+            this.view = (ViewType)view;
         }
 
-        public void BindModel(params object[] models)
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        public void BindModels(object[] models)
         {
-            //继承此类无model
+            //null is ok
         }
 
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
         public Type TypeOfView
         {
             get
             {
-                return typeof(TView);
+                return typeof(ViewType);
             }
         }
 
-        public Type[] TypeOfModel
+        /// <summary>
+        /// Gets the types of the model.
+        /// </summary>
+        /// <value>The types of the model.</value>
+        public Type[] TypeOfModels
         {
             get
             {
-                return null;
+                return new Type[0];
             }
         }
+
+        #endregion
     }
 
-    public abstract class Presenter<TView, TModel> : IPresenter
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    /// <typeparam name="IModelType"></typeparam>
+    public abstract class Presenter<ViewType, IModelType> : IPresenter
+    //where IModelType : IServiceInterface
     {
-        private TView _view;
-        protected TView view
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// The model
+        /// </summary>
+        protected IModelType model;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;IViewType, IModelType&gt;"/> is initialized.
+        /// Only when both view and model are binded, a presenter is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
         {
             get
             {
-                return _view;
+                return view != null && model != null;
             }
         }
 
-        private TModel _model;
-        protected TModel model
-        {
-            get
-            {
-                return _model;
-            }
-        }
+        #region IPresenter Members
 
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void BindView(object view)
         {
-            this._view = (TView)view;
+            this.view = (ViewType)view;
         }
 
-        public void BindModel(params object[] models)
+        /// <summary>
+        /// Binds the model.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        public void BindModel(object model)
         {
-            this._model = (TModel)models[0];
+            this.model = (IModelType)model;
         }
 
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
         public Type TypeOfView
         {
             get
             {
-                return typeof(TView);
+                return typeof(ViewType);
             }
         }
 
-        public Type[] TypeOfModel
+        /// <summary>
+        /// Gets the type of the model.
+        /// </summary>
+        /// <value>The type of the model.</value>
+        public Type TypeOfModel
         {
             get
             {
-                return new Type[] { typeof(TModel) };
+                return typeof(IModelType);
             }
         }
+
+        #endregion
     }
 
-    public abstract class Presenter<TView, TModel1, TModel2> : IPresenter
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    /// <typeparam name="IModelType1"></typeparam>
+    /// <typeparam name="IModelType2"></typeparam>
+    public abstract class Presenter<ViewType, IModelType1, IModelType2> : IPresenter2
+    //where IModelType1 : IServiceInterface
+    //where IModelType2 : IServiceInterface
     {
-        private TView _view;
-        protected TView view
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// The model 1
+        /// </summary>
+        protected IModelType1 model1;
+
+        /// <summary>
+        /// The model 2
+        /// </summary>
+        protected IModelType2 model2;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;ViewType, IModelType1, IModelType2&gt;"/> is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
         {
             get
             {
-                return _view;
+                return view != null && model1 != null && model2 != null;
             }
         }
 
-        private TModel1 _model1;
-        protected TModel1 model1
-        {
-            get
-            {
-                return _model1;
-            }
-        }
+        #region IPresenter2 Members
 
-        private TModel2 _model2;
-        protected TModel2 model2
-        {
-            get
-            {
-                return _model2;
-            }
-        }
-
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void BindView(object view)
         {
-            this._view = (TView)view;
+            this.view = (ViewType)view;
         }
 
-        public void BindModel(params object[] models)
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        public void BindModels(object[] models)
         {
-            this._model1 = (TModel1)models[0];
-            this._model2 = (TModel2)models[1];
+            this.model1 = (IModelType1)models[0];
+            this.model2 = (IModelType2)models[1];
         }
 
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
         public Type TypeOfView
         {
             get
             {
-                return typeof(TView);
+                return typeof(ViewType);
             }
         }
 
-        public Type[] TypeOfModel
+        /// <summary>
+        /// Gets the types of the model.
+        /// </summary>
+        /// <value>The types of the model.</value>
+        public Type[] TypeOfModels
         {
             get
             {
-                return new Type[] { typeof(TModel1), typeof(TModel2) };
+                return new Type[] { typeof(IModelType1), typeof(IModelType2) };
             }
         }
+
+        #endregion
     }
 
-    public abstract class Presenter<TView, TModel1, TModel2, TModel3> : IPresenter
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    /// <typeparam name="IModelType1"></typeparam>
+    /// <typeparam name="IModelType2"></typeparam>
+    /// <typeparam name="IModelType3"></typeparam>
+    public abstract class Presenter<ViewType, IModelType1, IModelType2, IModelType3> : IPresenter2
+    //where IModelType1 : IServiceInterface
+    //where IModelType2 : IServiceInterface
+    //where IModelType3 : IServiceInterface
     {
-        private TView _view;
-        protected TView view
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// The model 1
+        /// </summary>
+        protected IModelType1 model1;
+
+        /// <summary>
+        /// The model 2
+        /// </summary>
+        protected IModelType2 model2;
+
+        /// <summary>
+        /// The model 3
+        /// </summary>
+        protected IModelType3 model3;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;ViewType, IModelType1, IModelType2, IModelType3&gt;"/> is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
         {
             get
             {
-                return _view;
+                return view != null && model1 != null && model2 != null && model3 != null;
             }
         }
 
-        private TModel1 _model1;
-        protected TModel1 model1
-        {
-            get
-            {
-                return _model1;
-            }
-        }
+        #region IPresenter2 Members
 
-        private TModel2 _model2;
-        protected TModel2 model2
-        {
-            get
-            {
-                return _model2;
-            }
-        }
-
-        private TModel3 _model3;
-        protected TModel3 model3
-        {
-            get
-            {
-                return _model3;
-            }
-        }
-
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void BindView(object view)
         {
-            this._view = (TView)view;
+            this.view = (ViewType)view;
         }
 
-        public void BindModel(params object[] models)
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        public void BindModels(object[] models)
         {
-            this._model1 = (TModel1)models[0];
-            this._model2 = (TModel2)models[1];
-            this._model3 = (TModel3)models[2];
+            this.model1 = (IModelType1)models[0];
+            this.model2 = (IModelType2)models[1];
+            this.model3 = (IModelType3)models[2];
         }
 
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
         public Type TypeOfView
         {
             get
             {
-                return typeof(TView);
+                return typeof(ViewType);
             }
         }
 
-        public Type[] TypeOfModel
+        /// <summary>
+        /// Gets the types of the model.
+        /// </summary>
+        /// <value>The types of the model.</value>
+        public Type[] TypeOfModels
         {
             get
             {
-                return new Type[] { typeof(TModel1), typeof(TModel2), typeof(TModel3) };
+                return new Type[] { typeof(IModelType1), typeof(IModelType2), typeof(IModelType3) };
             }
         }
+
+        #endregion
     }
 
-    public abstract class Presenter<TView, TModel1, TModel2, TModel3, TModel4> : IPresenter
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    /// <typeparam name="IModelType1"></typeparam>
+    /// <typeparam name="IModelType2"></typeparam>
+    /// <typeparam name="IModelType3"></typeparam>
+    /// <typeparam name="IModelType4"></typeparam>
+    public abstract class Presenter<ViewType, IModelType1, IModelType2, IModelType3, IModelType4> : IPresenter2
+    //where IModelType1 : IServiceInterface
+    //where IModelType2 : IServiceInterface
+    //where IModelType3 : IServiceInterface
+    //where IModelType4 : IServiceInterface
     {
-        private TView _view;
-        protected TView view
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// The model 1
+        /// </summary>
+        protected IModelType1 model1;
+
+        /// <summary>
+        /// The model 2
+        /// </summary>
+        protected IModelType2 model2;
+
+        /// <summary>
+        /// The model 3
+        /// </summary>
+        protected IModelType3 model3;
+
+        /// <summary>
+        /// The model 4
+        /// </summary>
+        protected IModelType4 model4;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;ViewType, IModelType1, IModelType2, IModelType3, IModelType4&gt;"/> is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
         {
             get
             {
-                return _view;
+                return view != null && model1 != null && model2 != null && model3 != null && model4 != null;
             }
         }
 
-        private TModel1 _model1;
-        protected TModel1 model1
-        {
-            get
-            {
-                return _model1;
-            }
-        }
+        #region IPresenter2 Members
 
-        private TModel2 _model2;
-        protected TModel2 model2
-        {
-            get
-            {
-                return _model2;
-            }
-        }
-
-        private TModel3 _model3;
-        protected TModel3 model3
-        {
-            get
-            {
-                return _model3;
-            }
-        }
-
-        private TModel4 _model4;
-        protected TModel4 model4
-        {
-            get
-            {
-                return _model4;
-            }
-        }
-
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void BindView(object view)
         {
-            this._view = (TView)view;
+            this.view = (ViewType)view;
         }
 
-        public void BindModel(params object[] models)
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        public void BindModels(object[] models)
         {
-            this._model1 = (TModel1)models[0];
-            this._model2 = (TModel2)models[1];
-            this._model3 = (TModel3)models[2];
-            this._model4 = (TModel4)models[3];
+            this.model1 = (IModelType1)models[0];
+            this.model2 = (IModelType2)models[1];
+            this.model3 = (IModelType3)models[2];
+            this.model4 = (IModelType4)models[3];
         }
 
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
         public Type TypeOfView
         {
             get
             {
-                return typeof(TView);
+                return typeof(ViewType);
             }
         }
 
-        public Type[] TypeOfModel
+        /// <summary>
+        /// Gets the types of the model.
+        /// </summary>
+        /// <value>The types of the model.</value>
+        public Type[] TypeOfModels
         {
             get
             {
-                return new Type[] { typeof(TModel1), typeof(TModel2), typeof(TModel3), typeof(TModel4) };
+                return new Type[] { typeof(IModelType1), typeof(IModelType2), typeof(IModelType3), typeof(IModelType4) };
             }
         }
+
+        #endregion
     }
 
-    public abstract class Presenter<TView, TModel1, TModel2, TModel3, TModel4, TModel5> : IPresenter
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    /// <typeparam name="IModelType1"></typeparam>
+    /// <typeparam name="IModelType2"></typeparam>
+    /// <typeparam name="IModelType3"></typeparam>
+    /// <typeparam name="IModelType4"></typeparam>
+    /// <typeparam name="IModelType5"></typeparam>
+    public abstract class Presenter<ViewType, IModelType1, IModelType2, IModelType3, IModelType4, IModelType5> : IPresenter2
+    //where IModelType1 : IServiceInterface
+    //where IModelType2 : IServiceInterface
+    //where IModelType3 : IServiceInterface
+    //where IModelType4 : IServiceInterface
+    //where IModelType5 : IServiceInterface
     {
-        private TView _view;
-        protected TView view
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// The model 1
+        /// </summary>
+        protected IModelType1 model1;
+
+        /// <summary>
+        /// The model 2
+        /// </summary>
+        protected IModelType2 model2;
+
+        /// <summary>
+        /// The model 3
+        /// </summary>
+        protected IModelType3 model3;
+
+        /// <summary>
+        /// The model 4
+        /// </summary>
+        protected IModelType4 model4;
+
+        /// <summary>
+        /// The model 5
+        /// </summary>
+        protected IModelType5 model5;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;ViewType, IModelType1, IModelType2, IModelType3, IModelType4, IModelType5&gt;"/> is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
         {
             get
             {
-                return _view;
+                return view != null && model1 != null && model2 != null && model3 != null && model4 != null && model5 != null;
             }
         }
 
-        private TModel1 _model1;
-        protected TModel1 model1
-        {
-            get
-            {
-                return _model1;
-            }
-        }
+        #region IPresenter2 Members
 
-        private TModel2 _model2;
-        protected TModel2 model2
-        {
-            get
-            {
-                return _model2;
-            }
-        }
-
-        private TModel3 _model3;
-        protected TModel3 model3
-        {
-            get
-            {
-                return _model3;
-            }
-        }
-
-        private TModel4 _model4;
-        protected TModel4 model4
-        {
-            get
-            {
-                return _model4;
-            }
-        }
-
-        private TModel5 _model5;
-        protected TModel5 model5
-        {
-            get
-            {
-                return _model5;
-            }
-        }
-
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
         public void BindView(object view)
         {
-            this._view = (TView)view;
+            this.view = (ViewType)view;
         }
 
-        public void BindModel(params object[] models)
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        public void BindModels(object[] models)
         {
-            this._model1 = (TModel1)models[0];
-            this._model2 = (TModel2)models[1];
-            this._model3 = (TModel3)models[2];
-            this._model4 = (TModel4)models[3];
-            this._model5 = (TModel5)models[4];
+            this.model1 = (IModelType1)models[0];
+            this.model2 = (IModelType2)models[1];
+            this.model3 = (IModelType3)models[2];
+            this.model4 = (IModelType4)models[3];
+            this.model5 = (IModelType5)models[4];
         }
 
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
         public Type TypeOfView
         {
             get
             {
-                return typeof(TView);
+                return typeof(ViewType);
             }
         }
 
-        public Type[] TypeOfModel
+        /// <summary>
+        /// Gets the types of the model.
+        /// </summary>
+        /// <value>The types of the model.</value>
+        public Type[] TypeOfModels
         {
             get
             {
-                return new Type[] { typeof(TModel1), typeof(TModel2), typeof(TModel3), typeof(TModel4), typeof(TModel5) };
+                return new Type[] { typeof(IModelType1), typeof(IModelType2), typeof(IModelType3), typeof(IModelType4), typeof(IModelType5) };
             }
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Base class of all presenters
+    /// </summary>
+    /// <typeparam name="ViewType"></typeparam>
+    /// <typeparam name="IModelType1"></typeparam>
+    /// <typeparam name="IModelType2"></typeparam>
+    /// <typeparam name="IModelType3"></typeparam>
+    /// <typeparam name="IModelType4"></typeparam>
+    /// <typeparam name="IModelType5"></typeparam>
+    /// <typeparam name="IModelType6"></typeparam>
+    public abstract class Presenter<ViewType, IModelType1, IModelType2, IModelType3, IModelType4, IModelType5, IModelType6> : IPresenter2
+    //where IModelType1 : IServiceInterface
+    //where IModelType2 : IServiceInterface
+    //where IModelType3 : IServiceInterface
+    //where IModelType4 : IServiceInterface
+    //where IModelType5 : IServiceInterface
+    //where IModelType6 : IServiceInterface
+    {
+        /// <summary>
+        /// The view
+        /// </summary>
+        protected ViewType view;
+
+        /// <summary>
+        /// The model 1
+        /// </summary>
+        protected IModelType1 model1;
+
+        /// <summary>
+        /// The model 2
+        /// </summary>
+        protected IModelType2 model2;
+
+        /// <summary>
+        /// The model 3
+        /// </summary>
+        protected IModelType3 model3;
+
+        /// <summary>
+        /// The model 4
+        /// </summary>
+        protected IModelType4 model4;
+
+        /// <summary>
+        /// The model 5
+        /// </summary>
+        protected IModelType5 model5;
+
+        /// <summary>
+        /// The model 6
+        /// </summary>
+        protected IModelType5 model6;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="Presenter&lt;ViewType, IModelType1, IModelType2, IModelType3, IModelType4, IModelType5, IModelType6&gt;"/> is initialized.
+        /// </summary>
+        /// <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        public bool Initialized
+        {
+            get
+            {
+                return view != null && model1 != null && model2 != null && model3 != null && model4 != null && model5 != null && model6 != null;
+            }
+        }
+
+        #region IPresenter2 Members
+
+        /// <summary>
+        /// Binds the view.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        public void BindView(object view)
+        {
+            this.view = (ViewType)view;
+        }
+
+        /// <summary>
+        /// Binds the models.
+        /// </summary>
+        /// <param name="model">The models.</param>
+        public void BindModels(object[] models)
+        {
+            this.model1 = (IModelType1)models[0];
+            this.model2 = (IModelType2)models[1];
+            this.model3 = (IModelType3)models[2];
+            this.model4 = (IModelType4)models[3];
+            this.model5 = (IModelType5)models[4];
+            this.model6 = (IModelType5)models[5];
+        }
+
+        /// <summary>
+        /// Gets the type of the view.
+        /// </summary>
+        /// <value>The type of the view.</value>
+        public Type TypeOfView
+        {
+            get
+            {
+                return typeof(ViewType);
+            }
+        }
+
+        /// <summary>
+        /// Gets the types of the model.
+        /// </summary>
+        /// <value>The types of the model.</value>
+        public Type[] TypeOfModels
+        {
+            get
+            {
+                return new Type[] { typeof(IModelType1), typeof(IModelType2), typeof(IModelType3), typeof(IModelType4), typeof(IModelType5), typeof(IModelType6) };
+            }
+        }
+
+        #endregion
     }
 }

@@ -13,7 +13,6 @@ using Castle.Windsor.Configuration.Interpreters;
 using Castle.Facilities.Startable;
 
 using MySoft.IoC.Service.Services;
-using MySoft.IoC.Service.Services.Configuration;
 
 namespace MySoft.IoC.Service
 {
@@ -303,7 +302,7 @@ namespace MySoft.IoC.Service
         /// Gets the service nodes.
         /// </summary>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo[] GetServiceNodes()
+        public MySoft.IoC.Service.ServiceNodeInfo[] GetServiceNodes()
         {
             return ParseServiceNodes(Kernel.GraphNodes);
         }
@@ -313,7 +312,7 @@ namespace MySoft.IoC.Service
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo[] GetDependerServiceNodes(string key)
+        public MySoft.IoC.Service.ServiceNodeInfo[] GetDependerServiceNodes(string key)
         {
             ComponentModel node = GetComponentModelByKey(key);
             if (node == null)
@@ -328,7 +327,7 @@ namespace MySoft.IoC.Service
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo[] GetDependentServiceNodes(string key)
+        public MySoft.IoC.Service.ServiceNodeInfo[] GetDependentServiceNodes(string key)
         {
             ComponentModel node = GetComponentModelByKey(key);
             if (node == null)

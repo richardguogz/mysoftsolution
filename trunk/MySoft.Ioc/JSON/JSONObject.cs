@@ -47,7 +47,7 @@ using System.Globalization;
  * 4. Add unit testing
  * 5. Add log4net
  */
-namespace NBear.Common.JSON
+namespace MySoft.IoC.Json
 {
   /// <summary>
   /// <para>

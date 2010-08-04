@@ -22,7 +22,7 @@ namespace MySoft.IoC.Service
         {
             get
             {
-                NBear.Common.JSON.JSONObject json = new NBear.Common.JSON.JSONObject();
+                MySoft.IoC.Json.JSONObject json = new MySoft.IoC.Json.JSONObject();
                 foreach (string key in parmValues.Keys)
                 {
                     json.put(key, parmValues[key]);
@@ -32,7 +32,7 @@ namespace MySoft.IoC.Service
             }
             set
             {
-                NBear.Common.JSON.JSONObject json = new NBear.Common.JSON.JSONObject(value);
+                MySoft.IoC.Json.JSONObject json = new MySoft.IoC.Json.JSONObject(value);
                 parmValues.Clear();
                 IEnumerator en = json.keys();
                 while (en.MoveNext())
