@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Data.PostgreSQL", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Controls", "MySoft.Controls\MySoft.Controls.csproj", "{6C894A7C-3425-48B3-91E1-0383A6FC9617}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Ioc", "MySoft.Ioc\MySoft.Ioc.csproj", "{3B83A695-C929-47E8-BCC3-A2F33D8A44B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.IoC", "MySoft.IoC\MySoft.IoC.csproj", "{3B83A695-C929-47E8-BCC3-A2F33D8A44B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoCService", "IoCService", "{5388B4A9-02FF-49DE-BCFE-EE4029D3F245}"
 EndProject
