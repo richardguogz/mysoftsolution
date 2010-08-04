@@ -215,11 +215,6 @@
             默认过期时间为60秒
             </summary>
         </member>
-        <member name="T:MySoft.Web.UI.IAjaxProcessEventHandler">
-            <summary>
-            提供异步回调处理的接口
-            </summary>
-        </member>
         <member name="T:FormFixerHtml32TextWriter">
             <summary>
             FormHtmlTextWriter 的摘要说明
@@ -273,6 +268,16 @@
         <member name="M:MySoft.Web.CacheControlConfiguration.GetSection">
             <summary>
             加载控件缓存配置
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.IAjaxInitHandler">
+            <summary>
+            提供异步初始化处理的接口
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.IAjaxProcessHandler">
+            <summary>
+            提供异步回调处理的接口
             </summary>
         </member>
         <member name="T:MySoft.Web.UI.MasterAjaxPage">
@@ -873,7 +878,7 @@
             <param name="prefix">The attribute name prefix if it has one, otherwise an empty string.</param>
             <returns>True if attribute name is for a namespace attribute, otherwise false.</returns>
         </member>
-        <member name="T:MySoft.Web.UI.AjaxInfo">
+        <member name="T:MySoft.Web.UI.AjaxRequestPage">
             <summary>
             Ajax相关信息
             </summary>
@@ -2252,11 +2257,6 @@
         <member name="P:MySoft.Web.ParamStaticPageItem.IsRemote">
             <summary>
             是否为远程页面
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.IAjaxInitEventHandler">
-            <summary>
-            提供异步初始化处理的接口
             </summary>
         </member>
         <member name="T:MySoft.Web.CookieExpiresType">

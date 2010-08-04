@@ -133,26 +133,15 @@
             MySoft异常类
             </summary>
         </member>
+        <member name="T:MySoft.Data.ValidateException">
+            <summary>
+            MySoft验证异常类
+            </summary>
+        </member>
         <member name="T:MySoft.Data.Design.PrimaryKeyAttribute">
             <summary>
-            
+            表示主键
             </summary>
-        </member>
-        <member name="M:MySoft.Data.IDbProcess.InsertOrUpdate``1(``0)">
-            <summary>
-            插入或更新
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Data.IDbProcess.InsertOrUpdate``1(MySoft.Data.Table,``0)">
-            <summary>
-            插入或更新
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="entity"></param>
-            <returns></returns>
         </member>
         <member name="T:MySoft.Data.IArrayList`1">
             <summary>
@@ -635,6 +624,11 @@
         <member name="P:MySoft.Data.Oracle.OracleProvider.RowAutoID">
             <summary>
             返回自动ID的sql语句
+            </summary>
+        </member>
+        <member name="T:MySoft.Data.Design.DescriptionAttribute">
+            <summary>
+            字段描述信息
             </summary>
         </member>
         <member name="T:MySoft.Data.ISourceTable">
@@ -1377,6 +1371,12 @@
             读数据接口
             </summary>
         </member>
+        <member name="T:MySoft.Data.IRowReader`1">
+            <summary>
+            行数据阅读器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
         <member name="T:MySoft.Data.IRowReader">
             <summary>
             行数据阅读器
@@ -1616,12 +1616,6 @@
             <param name="field"></param>
             <returns></returns>
         </member>
-        <member name="P:MySoft.Data.IRowReader.DataSource">
-            <summary>
-            获取当前DataSource
-            </summary>
-            <returns></returns>
-        </member>
         <member name="P:MySoft.Data.IRowReader.Item(System.Int32)">
             <summary>
             按索引获取值
@@ -1635,6 +1629,11 @@
             </summary>
             <param name="name"></param>
             <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.IRowReader`1.DataSource">
+            <summary>
+            数据源
+            </summary>
         </member>
         <member name="M:MySoft.Data.ISourceReader.Close">
             <summary>
@@ -2308,6 +2307,22 @@
             获取或设置当前页的数据源
             </summary>
         </member>
+        <member name="M:MySoft.Data.IDbProcess.InsertOrUpdate``1(``0)">
+            <summary>
+            插入或更新
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.IDbProcess.InsertOrUpdate``1(MySoft.Data.Table,``0)">
+            <summary>
+            插入或更新
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
         <member name="T:MySoft.Data.SysField">
             <summary>
             系统字段
@@ -2547,6 +2562,48 @@
         <member name="F:MySoft.Data.CacheConfigurationSection.DEFAULT_EXPIRE_SECONDS">
             <summary>
             默认过期时间为60秒
+            </summary>
+        </member>
+        <member name="T:MySoft.Data.IValidator">
+            <summary>
+            实体验证接口
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.IValidator.Validate">
+            <summary>
+            根据实体状态来验证实体的有效性，返回一组错误信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Data.ValidateResult">
+            <summary>
+            验证返回信息
+            </summary>
+        </member>
+        <member name="F:MySoft.Data.ValidateResult.Default">
+            <summary>
+            默认的验证器
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.ValidateResult.#ctor">
+            <summary>
+            实例化ValidateResult
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.ValidateResult.#ctor(System.Collections.Generic.IList{System.String})">
+            <summary>
+            实例化ValidateResult
+            </summary>
+            <param name="messages"></param>
+        </member>
+        <member name="P:MySoft.Data.ValidateResult.IsSuccess">
+            <summary>
+            验证是否成功
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.ValidateResult.Messages">
+            <summary>
+            消息列表
             </summary>
         </member>
         <member name="T:MySoft.Data.SqlSection">
@@ -3953,18 +4010,18 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.IEntityBase.Clone">
+        <member name="M:MySoft.Data.IEntityBase.CloneObject">
             <summary>
             克隆一个对象
             </summary>
             <returns></returns>
         </member>
-        <member name="P:MySoft.Data.IEntityBase.State">
+        <member name="P:MySoft.Data.IEntityBase.ObjectState">
             <summary>
             获取对象状态
             </summary>
         </member>
-        <member name="P:MySoft.Data.IEntityBase.Old">
+        <member name="P:MySoft.Data.IEntityBase.OldObject">
             <summary>
             获取原始对象
             </summary>
@@ -4229,6 +4286,39 @@
         <member name="T:MySoft.Data.CacheInfo">
             <summary>
             缓存信息
+            </summary>
+        </member>
+        <member name="T:MySoft.Data.Validator`1">
+            <summary>
+            实体验证类
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Validator`1.#ctor(`0)">
+            <summary>
+            实例化验证类
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:MySoft.Data.Validator`1.Check(System.Predicate{`0},System.String)">
+            <summary>
+            验证实体属性的有效性并返回错误列表(验证所有的列)
+            </summary>
+            <param name="predicate"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.Validator`1.Check(System.Predicate{`0},MySoft.Data.Field,System.String)">
+            <summary>
+            验证实体属性的有效性并返回错误列表(只验证需要插入或更新的列)
+            </summary>
+            <param name="predicate"></param>
+            <param name="field"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.Validator`1.Result">
+            <summary>
+            验证的结果
             </summary>
         </member>
         <member name="T:MySoft.Data.Mapping.TableSetting">
@@ -4502,139 +4592,154 @@
             </summary>
             <param name="fields"></param>
         </member>
-        <member name="T:MySoft.Data.HtmlPagerStyle">
+        <member name="T:MySoft.Data.LinkStyle">
             <summary>
             分页样式
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Custom">
+        <member name="F:MySoft.Data.LinkStyle.Custom">
             <summary>
             Custom Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Digg">
+        <member name="F:MySoft.Data.LinkStyle.Digg">
             <summary>
             Digg Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Yahoo">
+        <member name="F:MySoft.Data.LinkStyle.Yahoo">
             <summary>
             Yahoo Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Meneame">
+        <member name="F:MySoft.Data.LinkStyle.Meneame">
             <summary>
             Meneame Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Flickr">
+        <member name="F:MySoft.Data.LinkStyle.Flickr">
             <summary>
             Flickr Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Sabrosus">
+        <member name="F:MySoft.Data.LinkStyle.Sabrosus">
             <summary>
             Sabrosus Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Pagination">
+        <member name="F:MySoft.Data.LinkStyle.Pagination">
             <summary>
             Pagination Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Scott">
+        <member name="F:MySoft.Data.LinkStyle.Scott">
             <summary>
             Scott Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Quotes">
+        <member name="F:MySoft.Data.LinkStyle.Quotes">
             <summary>
             Quotes Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Black">
+        <member name="F:MySoft.Data.LinkStyle.Black">
             <summary>
             Black Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Black2">
+        <member name="F:MySoft.Data.LinkStyle.Black2">
             <summary>
             Black2 Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.BlackRed">
+        <member name="F:MySoft.Data.LinkStyle.BlackRed">
             <summary>
             BlackRed Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Grayr">
+        <member name="F:MySoft.Data.LinkStyle.Grayr">
             <summary>
             Grayr Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Yellow">
+        <member name="F:MySoft.Data.LinkStyle.Yellow">
             <summary>
             Yellow Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Jogger">
+        <member name="F:MySoft.Data.LinkStyle.Jogger">
             <summary>
             Jogger Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Starcraft2">
+        <member name="F:MySoft.Data.LinkStyle.Starcraft2">
             <summary>
             Starcraft2 Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Tres">
+        <member name="F:MySoft.Data.LinkStyle.Tres">
             <summary>
             Tres Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Megas512">
+        <member name="F:MySoft.Data.LinkStyle.Megas512">
             <summary>
             Megas512 Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Technorati">
+        <member name="F:MySoft.Data.LinkStyle.Technorati">
             <summary>
             Technorati Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Youtube">
+        <member name="F:MySoft.Data.LinkStyle.Youtube">
             <summary>
             Youtube Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Msdn">
+        <member name="F:MySoft.Data.LinkStyle.Msdn">
             <summary>
             Msdn Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Badoo">
+        <member name="F:MySoft.Data.LinkStyle.Badoo">
             <summary>
             Badoo Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Manu">
+        <member name="F:MySoft.Data.LinkStyle.Manu">
             <summary>
             Manu Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.GreenBlack">
+        <member name="F:MySoft.Data.LinkStyle.GreenBlack">
             <summary>
             GreenBlack Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Viciao">
+        <member name="F:MySoft.Data.LinkStyle.Viciao">
             <summary>
             Viciao Style
             </summary>
         </member>
-        <member name="F:MySoft.Data.HtmlPagerStyle.Yahoo2">
+        <member name="F:MySoft.Data.LinkStyle.Yahoo2">
             <summary>
             Yahoo2 Style
+            </summary>
+        </member>
+        <member name="T:MySoft.Data.ButtonStyle">
+            <summary>
+            链接样式
+            </summary>
+        </member>
+        <member name="F:MySoft.Data.ButtonStyle.Href">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="F:MySoft.Data.ButtonStyle.Button">
+            <summary>
+            按钮
             </summary>
         </member>
         <member name="T:MySoft.Data.HtmlPager">
@@ -4678,6 +4783,13 @@
             <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
             <param name="linkSize">每屏连接条数</param>
         </member>
+        <member name="M:MySoft.Data.HtmlPager.GetButtonLink(System.Int32)">
+            <summary>
+            获取按钮事件
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="P:MySoft.Data.HtmlPager.LinkFormat">
             <summary>
             翻页时连接字符串
@@ -4688,9 +4800,14 @@
             每屏连接条数
             </summary>
         </member>
-        <member name="P:MySoft.Data.HtmlPager.Style">
+        <member name="P:MySoft.Data.HtmlPager.LinkStyle">
             <summary>
-            页面样式
+            链接样式
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.HtmlPager.ButtonStyle">
+            <summary>
+            按钮样式
             </summary>
         </member>
         <member name="P:MySoft.Data.HtmlPager.PageID">
@@ -4776,7 +4893,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#Clone">
+        <member name="M:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#CloneObject">
             <summary>
             克隆一个对象
             </summary>
@@ -4824,13 +4941,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.EntityBase.Check(MySoft.Data.EntityState)">
-            <summary>
-            根据实体状态来验证实体的有效性
-            </summary>
-            <param name="state"></param>
-            <returns></returns>
-        </member>
         <member name="M:MySoft.Data.EntityBase.SetValues(MySoft.Data.IRowReader)">
             <summary>
             设置属性值
@@ -4855,12 +4965,18 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#Old">
+        <member name="M:MySoft.Data.EntityBase.Validate">
+            <summary>
+            验证实体的有效性
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#OldObject">
             <summary>
             获取原始对象
             </summary>
         </member>
-        <member name="P:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#State">
+        <member name="P:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#ObjectState">
             <summary>
             获取对象状态
             </summary>
@@ -5309,9 +5425,9 @@
             <param name="obj"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DataUtils.CloneEntity``1(``0)">
+        <member name="M:MySoft.Data.DataUtils.CloneObject``1(``0)">
             <summary>
-            克隆一个Entity对象
+            克隆一个Object对象
             </summary>
             <param name="entity"></param>
             <returns></returns>
@@ -5488,19 +5604,9 @@
             创建Presenter的接口
             </summary>
         </member>
-        <member name="T:MySoft.Data.Design.ReadOnlyType">
+        <member name="T:MySoft.Data.Design.ReadOnlyAttribute">
             <summary>
-            
-            </summary>
-        </member>
-        <member name="F:MySoft.Data.Design.ReadOnlyType.Entity">
-            <summary>
-            只读实体，只用于输出
-            </summary>
-        </member>
-        <member name="F:MySoft.Data.Design.ReadOnlyType.View">
-            <summary>
-            数据库视图
+            表示只读，一般用于视图
             </summary>
         </member>
         <member name="T:MySoft.Data.Table`1">
@@ -5604,6 +5710,116 @@
             实例化一个表
             </summary>
             <param name="tableName"></param>
+        </member>
+        <member name="T:MySoft.Data.ViewEntity">
+            <summary>
+            只用于显示的实体
+            </summary>
+        </member>
+        <member name="T:MySoft.Data.Entity">
+            <summary>
+            实体基类
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Entity.Attach">
+            <summary>
+            将实体置为修改状态
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Entity.Detach">
+            <summary>
+            将实体置为插入状态
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Entity.Attach(MySoft.Data.Field[])">
+            <summary>
+            将实体置为修改状态并移除指定的列
+            </summary>
+            <param name="removeFields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.Detach(MySoft.Data.Field[])">
+            <summary>
+            将实体置为插入状态并移除指定的列
+            </summary>
+            <param name="removeFields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.AttachAll">
+            <summary>
+            将实体置为修改状态(所有字段)
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Entity.DetachAll">
+            <summary>
+            将实体置为插入状态(所有字段)
+            </summary>
+        </member>
+        <member name="M:MySoft.Data.Entity.AttachAll(MySoft.Data.Field[])">
+            <summary>
+            将实体置为修改状态并移除指定的列(所有字段)
+            </summary>
+            <param name="removeFields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.DetachAll(MySoft.Data.Field[])">
+            <summary>
+            将实体置为插入状态并移除指定的列(所有字段)
+            </summary>
+            <param name="removeFields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.AttachSet(MySoft.Data.Field[])">
+            <summary>
+            将实体置为修改状态并更新指定的列
+            </summary>
+            <param name="setFields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.DetachSet(MySoft.Data.Field[])">
+            <summary>
+            将实体置为插入状态并插入指定的列
+            </summary>
+            <param name="setFields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.OnPropertyValueChange(MySoft.Data.Field,System.Object,System.Object)">
+            <summary>
+            增加单个属性到修改列表
+            </summary>
+            <param name="field"></param>
+            <param name="oldValue"></param>
+            <param name="newValue"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.AddFieldsToUpdate(System.Collections.Generic.IList{MySoft.Data.Field})">
+            <summary>
+            添加字段到修改列表
+            </summary>
+            <param name="fields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.RemoveFieldsToUpdate(System.Collections.Generic.IList{MySoft.Data.Field})">
+            <summary>
+            移除字段到修改列表
+            </summary>
+            <param name="fields"></param>
+        </member>
+        <member name="M:MySoft.Data.Entity.RemoveFieldsToInsert(System.Collections.Generic.IList{MySoft.Data.Field})">
+            <summary>
+            移除字段到修改列表
+            </summary>
+            <param name="fields"></param>
+        </member>
+        <member name="M:MySoft.Data.ViewEntity.GetFields">
+            <summary>
+            重载GetFields
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.ViewEntity.GetValues">
+            <summary>
+            重载GetValues
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.ViewEntity.SetValues(MySoft.Data.IRowReader)">
+            <summary>
+            重载SetValues
+            </summary>
+            <param name="reader"></param>
         </member>
         <member name="T:MySoft.Data.DbTrans">
             <summary>
@@ -6154,6 +6370,11 @@
             <param name="where"></param>
             <returns></returns>
         </member>
+        <member name="T:MySoft.Data.Design.MappingAttribute">
+            <summary>
+            字段映射的名称
+            </summary>
+        </member>
         <member name="T:MySoft.Data.SourceRow">
             <summary>
             数据行
@@ -6419,93 +6640,6 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="T:MySoft.Data.Entity">
-            <summary>
-            实体基类
-            </summary>
-        </member>
-        <member name="M:MySoft.Data.Entity.Attach">
-            <summary>
-            将实体置为修改状态
-            </summary>
-        </member>
-        <member name="M:MySoft.Data.Entity.Detach">
-            <summary>
-            将实体置为插入状态
-            </summary>
-        </member>
-        <member name="M:MySoft.Data.Entity.Attach(MySoft.Data.Field[])">
-            <summary>
-            将实体置为修改状态并移除指定的列
-            </summary>
-            <param name="removeFields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.Detach(MySoft.Data.Field[])">
-            <summary>
-            将实体置为插入状态并移除指定的列
-            </summary>
-            <param name="removeFields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.AttachAll">
-            <summary>
-            将实体置为修改状态(所有字段)
-            </summary>
-        </member>
-        <member name="M:MySoft.Data.Entity.DetachAll">
-            <summary>
-            将实体置为插入状态(所有字段)
-            </summary>
-        </member>
-        <member name="M:MySoft.Data.Entity.AttachAll(MySoft.Data.Field[])">
-            <summary>
-            将实体置为修改状态并移除指定的列(所有字段)
-            </summary>
-            <param name="removeFields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.DetachAll(MySoft.Data.Field[])">
-            <summary>
-            将实体置为插入状态并移除指定的列(所有字段)
-            </summary>
-            <param name="removeFields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.AttachSet(MySoft.Data.Field[])">
-            <summary>
-            将实体置为修改状态并更新指定的列
-            </summary>
-            <param name="setFields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.DetachSet(MySoft.Data.Field[])">
-            <summary>
-            将实体置为插入状态并插入指定的列
-            </summary>
-            <param name="setFields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.OnPropertyValueChange(MySoft.Data.Field,System.Object,System.Object)">
-            <summary>
-            增加单个属性到修改列表
-            </summary>
-            <param name="field"></param>
-            <param name="oldValue"></param>
-            <param name="newValue"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.AddFieldsToUpdate(System.Collections.Generic.IList{MySoft.Data.Field})">
-            <summary>
-            添加字段到修改列表
-            </summary>
-            <param name="fields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.RemoveFieldsToUpdate(System.Collections.Generic.IList{MySoft.Data.Field})">
-            <summary>
-            移除字段到修改列表
-            </summary>
-            <param name="fields"></param>
-        </member>
-        <member name="M:MySoft.Data.Entity.RemoveFieldsToInsert(System.Collections.Generic.IList{MySoft.Data.Field})">
-            <summary>
-            移除字段到修改列表
-            </summary>
-            <param name="fields"></param>
-        </member>
         <member name="T:MySoft.Data.ReturnValue`1">
             <summary>
             获取返回值的委托
@@ -6699,11 +6833,6 @@
         <member name="T:MySoft.Data.SysValue">
             <summary>
             系统值
-            </summary>
-        </member>
-        <member name="T:MySoft.Data.TempTable">
-            <summary>
-            临时的TResult类
             </summary>
         </member>
         <member name="T:MySoft.Data.PageSection">
@@ -6925,44 +7054,6 @@
             </summary>
             <param name="enumType"></param>
             <returns></returns>
-        </member>
-        <member name="T:MySoft.Data.Validator`1">
-            <summary>
-            实体验证类
-            </summary>
-        </member>
-        <member name="M:MySoft.Data.Validator`1.#ctor(`0)">
-            <summary>
-            实例化验证类
-            </summary>
-            <param name="entity"></param>
-        </member>
-        <member name="M:MySoft.Data.Validator`1.Validate(System.Predicate{`0},System.String)">
-            <summary>
-            验证实体属性的有效性并返回错误列表(验证所有的列)
-            </summary>
-            <param name="predicate"></param>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Data.Validator`1.Validate(System.Predicate{`0},MySoft.Data.Field,System.String)">
-            <summary>
-            验证实体属性的有效性并返回错误列表(只验证需要插入或更新的列)
-            </summary>
-            <param name="predicate"></param>
-            <param name="field"></param>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
-        <member name="P:MySoft.Data.Validator`1.Messages">
-            <summary>
-            错误消息队列
-            </summary>
-        </member>
-        <member name="P:MySoft.Data.Validator`1.IsSuccess">
-            <summary>
-            验证是否成功
-            </summary>
         </member>
     </members>
 </doc>
