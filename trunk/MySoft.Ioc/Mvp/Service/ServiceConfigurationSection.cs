@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 
-namespace MySoft.Data.Mvp
+namespace MySoft.IoC.Mvp
 {
     public sealed class ServiceConfigurationSection : ConfigurationSection
     {
