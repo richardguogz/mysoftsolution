@@ -4850,11 +4850,6 @@
             获取或设置DataPage
             </summary>
         </member>
-        <member name="T:MySoft.Data.Mvp.ServiceFactory">
-            <summary>
-            创建Service的接口
-            </summary>
-        </member>
         <member name="T:MySoft.Data.EntityState">
             <summary>
             Entity状态
@@ -5598,11 +5593,6 @@
             </summary>
             <param name="exception"></param>
             <param name="log"></param>
-        </member>
-        <member name="T:MySoft.Data.Mvp.PresenterFactory">
-            <summary>
-            创建Presenter的接口
-            </summary>
         </member>
         <member name="T:MySoft.Data.Design.ReadOnlyAttribute">
             <summary>
