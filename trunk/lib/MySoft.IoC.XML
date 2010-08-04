@@ -41,6 +41,29 @@
             <param name="paramValues">The param values.</param>
             <returns>The result.</returns>
         </member>
+        <member name="M:SevenZip.ICoder.Code(System.IO.Stream,System.IO.Stream,System.Int64,System.Int64,SevenZip.ICodeProgress)">
+            <summary>
+            Codes streams.
+            </summary>
+            <param name="inStream">
+            input Stream.
+            </param>
+            <param name="outStream">
+            output Stream.
+            </param>
+            <param name="inSize">
+            input Size. -1 if unknown.
+            </param>
+            <param name="outSize">
+            output Size. -1 if unknown.
+            </param>
+            <param name="progress">
+            callback progress reference.
+            </param>
+            <exception cref="T:SevenZip.DataErrorException">
+            if input stream is not valid
+            </exception>
+        </member>
         <member name="T:MySoft.IoC.Service.Services.DynamicService">
             <summary>
             The dynamic service.
@@ -161,42 +184,6 @@
             </summary>
             <param name="msg">The MSG.</param>
             <returns>The msg.</returns>
-        </member>
-        <member name="T:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo">
-            <summary>
-            The service node info.
-            </summary>
-        </member>
-        <member name="M:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
-            </returns>
-        </member>
-        <member name="P:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo.Key">
-            <summary>
-            Gets or sets the DEFAULT_KEY.
-            </summary>
-            <value>The DEFAULT_KEY.</value>
-        </member>
-        <member name="P:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo.Sevice">
-            <summary>
-            Gets or sets the sevice.
-            </summary>
-            <value>The sevice.</value>
-        </member>
-        <member name="P:MySoft.IoC.Service.Services.Configuration.ServiceNodeInfo.Implementation">
-            <summary>
-            Gets or sets the implementation.
-            </summary>
-            <value>The implementation.</value>
         </member>
         <member name="T:MySoft.IoC.Service.MemoryServiceMQ">
             <summary>
@@ -374,70 +361,542 @@
             OnLog event.
             </summary>
         </member>
-        <member name="T:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection">
+        <member name="T:MySoft.IoC.Mvp.IPresenter">
+            <summary>
+            Interface of all presenters
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.IPresenter.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.IPresenter.BindModel(System.Object)">
+            <summary>
+            Binds the model.
+            </summary>
+            <param name="model">The model.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.IPresenter.TypeOfView">
+            <summary>
+            Gets the type of view.
+            </summary>
+            <value>The type of view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.IPresenter.TypeOfModel">
+            <summary>
+            Gets the type of model.
+            </summary>
+            <value>The type of model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.IPresenter2">
+            <summary>
+            The extended interface of all presenters
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.IPresenter2.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.IPresenter2.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.IPresenter2.TypeOfView">
+            <summary>
+            Gets the type of view.
+            </summary>
+            <value>The type of view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.IPresenter2.TypeOfModels">
+            <summary>
+            Gets the types of model.
+            </summary>
+            <value>The types of model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`1">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`1.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`1.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`1.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`1.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`1"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`1.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`1.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`2">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`2.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`2.model">
+            <summary>
+            The model
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`2.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`2.BindModel(System.Object)">
+            <summary>
+            Binds the model.
+            </summary>
+            <param name="model">The model.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`2.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`2"/> is initialized.
+            Only when both view and model are binded, a presenter is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`2.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`2.TypeOfModel">
+            <summary>
+            Gets the type of the model.
+            </summary>
+            <value>The type of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`3">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`3.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`3.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`3.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`3.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`3.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`3.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`3"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`3.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`3.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`4">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`4.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`4.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`4.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`4.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`4.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`4.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`4.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`4"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`4.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`4.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`5">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+            <typeparam name="IModelType4"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`5.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`5.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`5.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`5.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`5.model4">
+            <summary>
+            The model 4
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`5.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`5.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`5.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`5"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`5.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`5.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`6">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+            <typeparam name="IModelType4"></typeparam>
+            <typeparam name="IModelType5"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`6.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`6.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`6.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`6.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`6.model4">
+            <summary>
+            The model 4
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`6.model5">
+            <summary>
+            The model 5
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`6.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`6.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`6.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`6"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`6.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`6.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.Mvp.Presenter`7">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+            <typeparam name="IModelType4"></typeparam>
+            <typeparam name="IModelType5"></typeparam>
+            <typeparam name="IModelType6"></typeparam>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.model4">
+            <summary>
+            The model 4
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.model5">
+            <summary>
+            The model 5
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Mvp.Presenter`7.model6">
+            <summary>
+            The model 6
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`7.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.Presenter`7.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`7.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.IoC.Mvp.Presenter`7"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`7.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.IoC.Mvp.Presenter`7.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.ServiceFactoryConfigurationSection">
             <summary>
             The service factory configuration.
             </summary>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.Type">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.Type">
             <summary>
             Gets or sets the type.
             </summary>
             <value>The type.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.Protocol">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.Protocol">
             <summary>
             Gets or sets the protocol.
             </summary>
             <value>The protocol.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.Server">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.Server">
             <summary>
             Gets or sets the server.
             </summary>
             <value>The server.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.Port">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.Port">
             <summary>
             Gets or sets the port.
             </summary>
             <value>The port.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.ServiceMQName">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.ServiceMQName">
             <summary>
             Gets or sets the name of the service MQ.
             </summary>
             <value>The name of the service MQ.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.Debug">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.Debug">
             <summary>
-            Gets or sets a value indicating whether this <see cref="T:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection"/> is debug.
+            Gets or sets a value indicating whether this <see cref="T:MySoft.IoC.ServiceFactoryConfigurationSection"/> is debug.
             </summary>
             <value><c>true</c> if debug; otherwise, <c>false</c>.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.Compress">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.Compress">
             <summary>
             Gets or sets a value indicating whether data dispatched by this service factory is compressed.
             </summary>
             <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
         </member>
-        <member name="P:MySoft.IoC.Service.Configuration.ServiceFactoryConfigurationSection.MaxTry">
+        <member name="P:MySoft.IoC.ServiceFactoryConfigurationSection.MaxTry">
             <summary>
             Gets or sets the max try.
             </summary>
             <value>The max try.</value>
         </member>
-        <member name="T:MySoft.IoC.Service.Configuration.ServiceFactoryType">
+        <member name="T:MySoft.IoC.ServiceFactoryType">
             <summary>
             Service facrory type
             </summary>
         </member>
-        <member name="F:MySoft.IoC.Service.Configuration.ServiceFactoryType.Local">
+        <member name="F:MySoft.IoC.ServiceFactoryType.Local">
             <summary>
             Local
             </summary>
         </member>
-        <member name="F:MySoft.IoC.Service.Configuration.ServiceFactoryType.Remoting">
+        <member name="F:MySoft.IoC.ServiceFactoryType.Remoting">
             <summary>
             Remoting
             </summary>
@@ -485,6 +944,179 @@
             The ServiceRequestNotifyHandler
             </summary>
             <param name="header">the msg request handler.</param>
+        </member>
+        <member name="T:MySoft.IoC.Json.JSONTokener">
+            <summary>
+            <para>
+             A JSONTokener takes a source string and extracts characters and tokens from
+             it. It is used by the JSONObject and JSONArray constructors to parse
+             JSON source strings.
+             </para>
+             <para>
+             Public Domain 2002 JSON.org
+             @author JSON.org
+             @version 0.1
+             </para>
+             <para>Ported to C# by Are Bjolseth, teleplan.no</para>
+             <para>
+             <list type="bullet">
+             <item><description>Implement Custom exceptions</description></item>
+             <item><description>Add unit testing</description></item>
+             <item><description>Add log4net</description></item>
+             </list>
+             </para>
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Json.JSONTokener.myIndex">
+            <summary>The index of the next character.</summary>
+        </member>
+        <member name="F:MySoft.IoC.Json.JSONTokener.mySource">
+            <summary>The source string being tokenized.</summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.#ctor(System.String)">
+            <summary>
+            Construct a JSONTokener from a string.
+            </summary>
+            <param name="s">A source string.</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.back">
+            <summary>
+            Back up one character. This provides a sort of lookahead capability,
+            so that you can test for a digit or letter before attempting to parse
+            the next number or identifier.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.dehexchar(System.Char)">
+            <summary>
+            Get the hex value of a character (base16).
+            </summary>
+            <param name="c">
+            A character between '0' and '9' or between 'A' and 'F' or
+            between 'a' and 'f'.
+            </param>
+            <returns>An int between 0 and 15, or -1 if c was not a hex digit.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.more">
+            <summary>
+            Determine if the source string still contains characters that next() can consume.
+            </summary>
+            <returns>true if not yet at the end of the source.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.next">
+            <summary>
+            Get the next character in the source string.
+            </summary>
+            <returns>The next character, or 0 if past the end of the source string.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.next(System.Char)">
+            <summary>
+            Consume the next character, and check that it matches a specified character
+            </summary>
+            <param name="c">The character to match.</param>
+            <returns>The character.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.next(System.Int32)">
+            <summary>
+            Get the next n characters.
+            </summary>
+            <param name="n">The number of characters to take.</param>
+            <returns>A string of n characters.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.nextClean">
+            <summary>
+            Get the next char in the string, skipping whitespace
+            and comments (slashslash and slashstar).
+            </summary>
+            <returns>A character, or 0 if there are no more characters.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.nextString(System.Char)">
+            <summary>
+            Return the characters up to the next close quote character.
+            Backslash processing is done. The formal JSON format does not
+            allow strings in single quotes, but an implementation is allowed to
+            accept them.
+            </summary>
+            <param name="quote">The quoting character, either " or '</param>
+            <returns>A String.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.nextTo(System.Char)">
+            <summary>
+            Get the text up but not including the specified character or the
+            end of line, whichever comes first.
+            </summary>
+            <param name="d">A delimiter character.</param>
+            <returns>A string.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.nextTo(System.String)">
+            <summary>
+             Get the text up but not including one of the specified delimeter
+             characters or the end of line, which ever comes first.
+            </summary>
+            <param name="delimiters">A set of delimiter characters.</param>
+            <returns>A string, trimmed.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.nextObject">
+            <summary>
+            Get the next value as object. The value can be a Boolean, Double, Integer,
+            JSONArray, JSONObject, or String, or the JSONObject.NULL object.
+            </summary>
+            <returns>An object.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.skipTo(System.Char)">
+            <summary>
+            Skip characters until the next character is the requested character.
+            If the requested character is not found, no characters are skipped.
+            </summary>
+            <param name="to">A character to skip to.</param>
+            <returns>
+            The requested character, or zero if the requested character is not found.
+            </returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.skipPast(System.String)">
+            <summary>
+            Skip characters until past the requested string.
+            If it is not found, we are left at the end of the source.
+            </summary>
+            <param name="to">A string to skip past.</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.ToString">
+            <summary>
+            Make a printable string of this JSONTokener.
+            </summary>
+            <returns>" at character [myIndex] of [mySource]"</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.unescape">
+            <summary>
+            Unescape the source text. Convert %hh sequences to single characters,
+            and convert plus to space. There are Web transport systems that insist on
+            doing unnecessary URL encoding. This provides a way to undo it.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONTokener.unescape(System.String)">
+            <summary>
+            Convert %hh sequences to single characters, and convert plus to space.
+            </summary>
+            <param name="s">A string that may contain plus and %hh sequences.</param>
+            <returns>The unescaped string.</returns>
+        </member>
+        <member name="T:MySoft.IoC.CompressionManager">
+            <summary>
+            Compress Manager
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.CompressionManager.Compress7Zip(System.String)">
+            <summary>
+            7Zip Compress the str.
+            </summary>
+            <param name="str">The STR.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.CompressionManager.Decompress7Zip(System.String)">
+            <summary>
+            7Zip Decompress the str.
+            </summary>
+            <param name="str">The STR.</param>
+            <returns></returns>
         </member>
         <member name="T:MySoft.IoC.Service.SimpleBroadCastStrategy">
             <summary>
@@ -744,6 +1376,47 @@
             HTTP
             </summary>
         </member>
+        <member name="T:MySoft.IoC.Mvp.PresenterFactory">
+            <summary>
+            Presenter Factory
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.PresenterFactory.Create">
+            <summary>
+            Creates this singleton instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.PresenterFactory.GetPresenter``1(System.Object)">
+            <summary>
+            Gets the presenter.
+            </summary>
+            <param name="view">The view.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Mvp.PresenterFactory.GetPresenter``1(System.String,System.Object)">
+            <summary>
+            Gets the presenter.
+            </summary>
+            <param name="presenterKey">The presenter key.</param>
+            <param name="view">The view.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.IoC.Json.JSONUtils">
+            <summary>
+             Public Domain 2002 JSON.org
+             @author JSON.org
+             @version 0.1
+             Ported to C# by Are Bjolseth, teleplan.no
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONUtils.Enquote(System.String)">
+            <summary>
+            Produce a string in double quotes with backslash sequences in all the right places.
+            </summary>
+            <param name="s">A String</param>
+            <returns>A String correctly formatted for insertion in a JSON message.</returns>
+        </member>
         <member name="T:MySoft.IoC.Service.Services.BaseAutoService">
             <summary>
             The base class of all auto service.
@@ -827,6 +1500,348 @@
             Attribute used to mark service interfaces.
             </summary>
         </member>
+        <member name="T:MySoft.IoC.Json.JSONObject">
+             <summary>
+             <para>
+             A JSONArray is an ordered sequence of values. Its external form is a string
+             wrapped in square brackets with commas between the values. The internal form
+             is an object having get() and opt() methods for accessing the values by
+             index, and put() methods for adding or replacing values. The values can be
+             any of these types: Boolean, JSONArray, JSONObject, Number, String, or the
+             JSONObject.NULL object.
+             </para>
+             <para>
+             The constructor can convert a JSON external form string into an
+             internal form Java object. The toString() method creates an external
+             form string.
+             </para>
+             <para>
+             A get() method returns a value if one can be found, and throws an exception
+             if one cannot be found. An opt() method returns a default value instead of
+             throwing an exception, and so is useful for obtaining optional values.
+             </para>
+             <para>
+             The generic get() and opt() methods return an object which you can cast or
+             query for type. There are also typed get() and opt() methods that do typing
+             checking and type coersion for you.
+            </para>
+             <para>
+             The texts produced by the toString() methods are very strict.
+             The constructors are more forgiving in the texts they will accept.
+             </para>
+             <para>
+             <list type="bullet">
+             <item><description>An extra comma may appear just before the closing bracket.</description></item>
+             <item><description>Strings may be quoted with single quotes.</description></item>
+             <item><description>Strings do not need to be quoted at all if they do not contain leading
+                 or trailing spaces, and if they do not contain any of these characters:
+                 { } [ ] / \ : , </description></item>
+             <item><description>Numbers may have the 0- (octal) or 0x- (hex) prefix.</description></item>
+             </list>
+             </para>
+             <para>
+             Public Domain 2002 JSON.org
+             @author JSON.org
+             @version 0.1
+            </para>
+             Ported to C# by Are Bjolseth, teleplan.no
+             TODO:
+             1. Implement Custom exceptions
+             2. Add indexer JSONObject[i] = object,     and object = JSONObject[i];
+             3. Add indexer JSONObject["key"] = object, and object = JSONObject["key"]
+             4. Add unit testing
+             5. Add log4net
+             6. Make get/put methods private, to force use of indexer instead?
+             </summary>
+        </member>
+        <member name="F:MySoft.IoC.Json.JSONObject.myHashMap">
+            <summary>The hash map where the JSONObject's properties are kept.</summary>
+        </member>
+        <member name="F:MySoft.IoC.Json.JSONObject.myKeyIndexList">
+            <summary>A shadow list of keys to enable access by sequence of insertion</summary>
+        </member>
+        <member name="F:MySoft.IoC.Json.JSONObject.NULL">
+            <summary>
+            It is sometimes more convenient and less ambiguous to have a NULL
+            object than to use C#'s null value.
+            JSONObject.NULL.toString() returns "null".
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.#ctor">
+            <summary>
+             Construct an empty JSONObject.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.#ctor(MySoft.IoC.Json.JSONTokener)">
+            <summary>
+            Construct a JSONObject from a JSONTokener.
+            </summary>
+            <param name="x">A JSONTokener object containing the source string.</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.#ctor(System.String)">
+            <summary>
+            Construct a JSONObject from a string.
+            </summary>
+            <param name="sJSON">A string beginning with '{' and ending with '}'.</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.#ctor(System.Collections.IDictionary)">
+            <summary>
+            Construct a JSONObject from a IDictionary
+            </summary>
+            <param name="map"></param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.accumulate(System.String,System.Object)">
+            <summary>
+            Accumulate values under a key. It is similar to the put method except
+            that if there is already an object stored under the key then a
+            JSONArray is stored under the key to hold all of the accumulated values.
+            If there is already a JSONArray, then the new value is appended to it.
+            In contrast, the put method replaces the previous value.
+            </summary>
+            <param name="key">A key string.</param>
+            <param name="val">An object to be accumulated under the key.</param>
+            <returns>this</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.getDictionary">
+            <summary>
+            C# convenience method
+            </summary>
+            <returns>The Hashtable</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.getValue(System.String)">
+            <summary>
+            Alias to Java get method
+            Get the value object associated with a key.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>The object associated with the key.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.getJSONArray(System.String)">
+            <summary>
+            Get the JSONArray value associated with a key.
+            </summary>
+            <param name="key">A key string</param>
+            <returns>A JSONArray which is the value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.getJSONObject(System.String)">
+            <summary>
+            Get the JSONObject value associated with a key.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>A JSONObject which is the value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.getString(System.String)">
+            <summary>
+            Get the string associated with a key.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>A string which is the value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.has(System.String)">
+            <summary>
+            Determine if the JSONObject contains a specific key.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>true if the key exists in the JSONObject.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.keys">
+            <summary>
+            Get an enumeration of the keys of the JSONObject.
+            Added to be true to orginal Java implementation
+            Indexers are easier to use
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.isNull(System.String)">
+            <summary>
+            Determine if the value associated with the key is null or if there is no value.
+            </summary>
+            <param name="key">A key string</param>
+            <returns>true if there is no value associated with the key or if the valus is the JSONObject.NULL object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.Length">
+            <summary>
+            Get the number of keys stored in the JSONObject.
+            </summary>
+            <returns>The number of keys in the JSONObject.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.names">
+            <summary>
+            Produce a JSONArray containing the pks of the elements of this JSONObject
+            </summary>
+            <returns>A JSONArray containing the key strings, or null if the JSONObject</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.opt(System.String)">
+            <summary>
+            Get an optional value associated with a key.
+            </summary>
+            <param name="key">A key string</param>
+            <returns>An object which is the value, or null if there is no value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optBoolean(System.String)">
+            <summary>
+            Get an optional value associated with a key.
+            It returns false if there is no such key, or if the value is not
+            Boolean.TRUE or the String "true".
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>bool value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optBoolean(System.String,System.Boolean)">
+            <summary>
+            Get an optional value associated with a key.
+            It returns false if there is no such key, or if the value is not
+            Boolean.TRUE or the String "true".
+            </summary>
+            <param name="key">A key string.</param>
+            <param name="defaultValue">The preferred return value if conversion fails</param>
+            <returns>bool value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optDouble(System.String)">
+            <summary>
+            Get an optional double associated with a key,
+            or NaN if there is no such key or if its value is not a number.
+            If the value is a string, an attempt will be made to evaluate it as
+            a number.
+            </summary>
+            <param name="key">A string which is the key.</param>
+            <returns>A double value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optDouble(System.String,System.Double)">
+            <summary>
+            Get an optional double associated with a key,
+            or NaN if there is no such key or if its value is not a number.
+            If the value is a string, an attempt will be made to evaluate it as
+            a number.
+            </summary>
+            <param name="key">A string which is the key.</param>
+            <param name="defaultValue">The default</param>
+            <returns>A double value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optInt(System.String)">
+            <summary>
+             Get an optional double associated with a key, or the
+             defaultValue if there is no such key or if its value is not a number.
+             If the value is a string, an attempt will be made to evaluate it as
+             number.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>An int object value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optInt(System.String,System.Int32)">
+            <summary>
+             Get an optional double associated with a key, or the
+             defaultValue if there is no such key or if its value is not a number.
+             If the value is a string, an attempt will be made to evaluate it as
+             number.
+            </summary>
+            <param name="key">A key string.</param>
+            <param name="defaultValue">The default value</param>
+            <returns>An int object value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optJSONArray(System.String)">
+            <summary>
+            Get an optional JSONArray associated with a key.
+            It returns null if there is no such key, or if its value is not a JSONArray
+            </summary>
+            <param name="key">A key string</param>
+            <returns>A JSONArray which is the value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optJSONObject(System.String)">
+            <summary>
+            Get an optional JSONObject associated with a key.
+            It returns null if there is no such key, or if its value is not a JSONObject.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>A JSONObject which is the value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optString(System.String)">
+            <summary>
+            Get an optional string associated with a key.
+            It returns an empty string if there is no such key. If the value is not
+            a string and is not null, then it is coverted to a string.
+            </summary>
+            <param name="key">A key string.</param>
+            <returns>A string which is the value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.optString(System.String,System.String)">
+            <summary>
+            Get an optional string associated with a key.
+            It returns the defaultValue if there is no such key.
+            </summary>
+            <param name="key">A key string.</param>
+            <param name="defaultValue">The default</param>
+            <returns>A string which is the value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.put(System.String,System.Object)">
+            <summary>
+            Put a key/value pair in the JSONObject. If the value is null,
+            then the key will be removed from the JSONObject if it is present.
+            </summary>
+            <param name="key"> A key string.</param>
+            <param name="val">
+            An object which is the value. It should be of one of these
+            types: Boolean, Double, Integer, JSONArray, JSONObject, String, or the
+            JSONObject.NULL object.
+            </param>
+            <returns>JSONObject</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.putOpt(System.String,System.Object)">
+            <summary>
+            Add a key value pair
+            </summary>
+            <param name="key"></param>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.remove(System.String)">
+            <summary>
+            Remove a object assosiateted with the given key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.toJSONArray(MySoft.IoC.Json.JSONArray)">
+            <summary>
+            Append an array of JSONObjects to current object
+            </summary>
+            <param name="pks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.ToString">
+            <summary>
+            Overridden to return a JSON formattet object as a string
+            </summary>
+            <returns>JSON object as formatted string</returns>
+        </member>
+        <member name="P:MySoft.IoC.Json.JSONObject.Item(System.Int32)">
+            <summary>
+            Return the key for the associated index
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.Json.JSONObject.Item(System.String)">
+            <summary>
+            Get/Add an object with the associated key
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.Json.JSONObject.Count">
+            <summary>
+            Return the number of JSON items in hashtable
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.Json.JSONObject.JSONNull">
+            <summary>
+            Make a Null object
+            JSONObject.NULL is equivalent to the value that JavaScript calls null,
+            whilst C#'s null is equivalent to the value that JavaScript calls undefined.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONObject.JSONNull.ToString">
+            <summary>
+            Overriden to return "null"
+            </summary>
+            <returns>null</returns>
+        </member>
         <member name="T:MySoft.IoC.Remoting.RemotingClientHelper">
             <summary>
             The Remoting Client Helper
@@ -882,6 +1897,296 @@
         <member name="E:MySoft.IoC.Remoting.RemotingClientHelper.OnLog">
             <summary>
             OnLog event.
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.Json.JSONArray">
+             <summary>
+             <para>
+             A JSONArray is an ordered sequence of values. Its external form is a string
+             wrapped in square brackets with commas between the values. The internal form
+             is an object having get() and opt() methods for accessing the values by
+             index, and put() methods for adding or replacing values. The values can be
+             any of these types: Boolean, JSONArray, JSONObject, Number, String, or the
+             JSONObject.NULL object.
+             </para>
+             <para>
+             The constructor can convert a JSON external form string into an
+             internal form Java object. The toString() method creates an external
+             form string.
+             </para>
+             <para>
+             A get() method returns a value if one can be found, and throws an exception
+             if one cannot be found. An opt() method returns a default value instead of
+             throwing an exception, and so is useful for obtaining optional values.
+             </para>
+             <para>
+             The generic get() and opt() methods return an object which you can cast or
+             query for type. There are also typed get() and opt() methods that do typing
+             checking and type coersion for you.
+            </para>
+             <para>
+             The texts produced by the toString() methods are very strict.
+             The constructors are more forgiving in the texts they will accept.
+             </para>
+             <para>
+             <list type="bullet">
+             <item><description>An extra comma may appear just before the closing bracket.</description></item>
+             <item><description>Strings may be quoted with single quotes.</description></item>
+             <item><description>Strings do not need to be quoted at all if they do not contain leading
+                 or trailing spaces, and if they do not contain any of these characters:
+                 { } [ ] / \ : , </description></item>
+             <item><description>Numbers may have the 0- (octal) or 0x- (hex) prefix.</description></item>
+             </list>
+             </para>
+             <para>
+             Public Domain 2002 JSON.org
+             @author JSON.org
+             @version 0.1
+            </para>
+             Ported to C# by Are Bjolseth, teleplan.no
+             TODO:
+             1. Implement Custom exceptions
+             2. Add indexer JSONObject[i] = object,     and object = JSONObject[i];
+             3. Add indexer JSONObject["DEFAULT_KEY"] = object, and object = JSONObject["DEFAULT_KEY"]
+             4. Add unit testing
+             5. Add log4net
+             6. Make get/put methods private, to force use of indexer instead?
+             </summary>
+        </member>
+        <member name="F:MySoft.IoC.Json.JSONArray.myArrayList">
+            <summary>The ArrayList where the JSONArray's properties are kept.</summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.#ctor">
+            <summary>
+            Construct an empty JSONArray
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.#ctor(MySoft.IoC.Json.JSONTokener)">
+            <summary>
+            Construct a JSONArray from a JSONTokener.
+            </summary>
+            <param name="x">A JSONTokener</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.#ctor(System.String)">
+            <summary>
+            Construct a JSONArray from a source string.
+            </summary>
+            <param name="s">A string that begins with '[' and ends with ']'.</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.#ctor(System.Collections.ICollection)">
+            <summary>
+            Construct a JSONArray from a Collection.
+            </summary>
+            <param name="collection">A Collection.</param>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.getValue(System.Int32)">
+            <summary>
+            Get the object value associated with an index.
+            Use indexer instead!!! Added to be true to the original Java implementation
+            </summary>
+            <param name="i">index subscript. The index must be between 0 and length()-1</param>
+            <returns>An object value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.getArrayList">
+            <summary>
+            Get the ArrayList which is holding the elements of the JSONArray.
+            Use the indexer instead!! Added to be true to the orignal Java src
+            </summary>
+            <returns>The ArrayList</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.getJSONArray(System.Int32)">
+            <summary>
+            Get the JSONArray associated with an index.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>A JSONArray value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.getJSONObject(System.Int32)">
+            <summary>
+            Get the JSONObject associated with an index.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>A JSONObject value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.getString(System.Int32)">
+            <summary>
+            Get the string associated with an index.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>A string value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.isNull(System.Int32)">
+            <summary>
+            Determine if the value is null.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>true if the value at the index is null, or if there is no value.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.join(System.String)">
+            <summary>
+            Make a string from the contents of this JSONArray. The separator string
+            is inserted between each element.
+            Warning: This method assumes that the data structure is acyclical.
+            </summary>
+            <param name="separator">separator A string that will be inserted between the elements.</param>
+            <returns>A string.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.Length">
+            <summary>
+            Get the length of the JSONArray.
+            Added to be true to the original Java implementation
+            </summary>
+            <returns>Number of JSONObjects in array</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.opt(System.Int32)">
+            <summary>
+            Get the optional object value associated with an index.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>object at that index.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optBoolean(System.Int32)">
+            <summary>
+            Get the optional boolean value associated with an index.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>The truth</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optBoolean(System.Int32,System.Boolean)">
+            <summary>
+            Get the optional boolean value associated with an index.
+            It returns the defaultValue if there is no value at that index or if it is not
+            a Boolean or the String "true" or "false".
+            </summary>
+            <param name="i">index subscript</param>
+            <param name="defaultValue"></param>
+            <returns>The truth.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optDouble(System.Int32)">
+            <summary>
+            Get the optional double value associated with an index.
+            NaN is returned if the index is not found,
+            or if the value is not a number and cannot be converted to a number.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>The double value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optDouble(System.Int32,System.Double)">
+            <summary>
+            Get the optional double value associated with an index.
+            NaN is returned if the index is not found,
+            or if the value is not a number and cannot be converted to a number.
+            </summary>
+            <param name="i">index subscript</param>
+            <param name="defaultValue"></param>
+            <returns>The double value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optInt(System.Int32)">
+            <summary>
+            Get the optional int value associated with an index.
+            Zero is returned if the index is not found,
+            or if the value is not a number and cannot be converted to a number.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>The int value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optInt(System.Int32,System.Int32)">
+            <summary>
+            Get the optional int value associated with an index.
+            The defaultValue is returned if the index is not found,
+            or if the value is not a number and cannot be converted to a number.
+            </summary>
+            <param name="i">index subscript</param>
+            <param name="defaultValue">The default value</param>
+            <returns>The int value object</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optJSONArray(System.Int32)">
+            <summary>
+            Get the optional JSONArray associated with an index.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>A JSONArray value, or null if the index has no value, or if the value is not a JSONArray.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optJSONObject(System.Int32)">
+            <summary>
+            Get the optional JSONObject associated with an index.
+            Null is returned if the DEFAULT_KEY is not found, or null if the index has
+            no value, or if the value is not a JSONObject.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>A JSONObject value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optString(System.Int32)">
+            <summary>
+            Get the optional string value associated with an index. It returns an
+            empty string if there is no value at that index. If the value
+            is not a string and is not null, then it is coverted to a string.
+            </summary>
+            <param name="i">index subscript</param>
+            <returns>A String value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.optString(System.Int32,System.String)">
+            <summary>
+            Get the optional string associated with an index.
+            The defaultValue is returned if the DEFAULT_KEY is not found.
+            </summary>
+            <param name="i">index subscript</param>
+            <param name="defaultValue">The default value</param>
+            <returns>A string value</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.put(System.Object)">
+            OMITTED:
+            public JSONArray put(bool val)
+            public JSONArray put(double val)
+            public JSONArray put(int val)		
+            <summary>
+            Append an object value.
+            </summary>
+            <param name="val">An object value.  The value should be a Boolean, Double, Integer, JSONArray, JSObject, or String, or the JSONObject.NULL object</param>
+            <returns>this (JSONArray)</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.put(System.Int32,System.Object)">
+            <summary>
+            Put or replace a boolean value in the JSONArray.
+            </summary>
+            <param name="i">
+            The subscript. If the index is greater than the length of
+            the JSONArray, then null elements will be added as necessary to pad it out.
+            </param>
+            <param name="val">An object value.</param>
+            <returns>this (JSONArray)</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.toJSONObject(MySoft.IoC.Json.JSONArray)">
+            <summary>
+            Produce a JSONObject by combining a JSONArray of pks with the values
+            of this JSONArray.
+            </summary>
+            <param name="pks">
+            A JSONArray containing a list of DEFAULT_KEY strings. These will be paired with the values.
+            </param>
+            <returns>A JSONObject, or null if there are no pks or if this JSONArray</returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JSONArray.ToString">
+            <summary>
+            Make an JSON external form string of this JSONArray. For compactness, no
+            unnecessary whitespace is added.
+            </summary>
+            <returns>a printable, displayable, transmittable representation of the array.</returns>
+        </member>
+        <member name="P:MySoft.IoC.Json.JSONArray.Item(System.Int32)">
+            <summary>
+            Alternate to Java get/put method, by using indexer
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.Json.JSONArray.List">
+            <summary>
+            Alternativ to Java, getArrayList, by using propery
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.Json.JSONArray.Count">
+            <summary>
+            Get the length of the JSONArray.
+            Using a propery instead of method
             </summary>
         </member>
         <member name="T:MySoft.IoC.Service.SimpleServiceContainer">
@@ -1124,12 +2429,12 @@
             Inits this instance.
             </summary>
         </member>
-        <member name="T:MySoft.IoC.Service.Services.DemoServices.IMathService">
+        <member name="T:MySoft.IoC.Service.Services.IMathService">
             <summary>
             sample math service interface.
             </summary>
         </member>
-        <member name="M:MySoft.IoC.Service.Services.DemoServices.IMathService.GetResult(System.Char,System.Int32,System.Int32)">
+        <member name="M:MySoft.IoC.Service.Services.IMathService.GetResult(System.Char,System.Int32,System.Int32)">
             <summary>
             Gets the result.
             </summary>
@@ -1138,18 +2443,18 @@
             <param name="y">The y.</param>
             <returns>The result.</returns>
         </member>
-        <member name="T:MySoft.IoC.Service.Services.DemoServices.MathService">
+        <member name="T:MySoft.IoC.Service.Services.MathService">
             <summary>
             sample math service impl.
             </summary>
         </member>
-        <member name="M:MySoft.IoC.Service.Services.DemoServices.MathService.#ctor(MySoft.IoC.Service.IServiceMQ)">
+        <member name="M:MySoft.IoC.Service.Services.MathService.#ctor(MySoft.IoC.Service.IServiceMQ)">
             <summary>
-            Initializes a new instance of the <see cref="T:MySoft.IoC.Service.Services.DemoServices.MathService"/> class.
+            Initializes a new instance of the <see cref="T:MySoft.IoC.Service.Services.MathService"/> class.
             </summary>
             <param name="mq">The mq.</param>
         </member>
-        <member name="M:MySoft.IoC.Service.Services.DemoServices.MathService.GetResult(System.Char,System.Int32,System.Int32)">
+        <member name="M:MySoft.IoC.Service.Services.MathService.GetResult(System.Char,System.Int32,System.Int32)">
             <summary>
             Gets the result.
             </summary>
@@ -1158,22 +2463,67 @@
             <param name="y">The y.</param>
             <returns>The result.</returns>
         </member>
-        <member name="M:MySoft.IoC.Service.Services.DemoServices.MathService.Run(MySoft.IoC.Service.RequestMessage)">
+        <member name="M:MySoft.IoC.Service.Services.MathService.Run(MySoft.IoC.Service.RequestMessage)">
             <summary>
             Runs the specified MSG.
             </summary>
             <param name="msg">The MSG.</param>
             <returns>The msg.</returns>
         </member>
-        <member name="T:MySoft.IoC.Mvp.PresenterFactory">
+        <member name="T:MySoft.IoC.Service.ServiceNodeInfo">
             <summary>
-            创建Presenter的接口
+            The service node info.
             </summary>
         </member>
-        <member name="T:MySoft.IoC.Mvp.ServiceFactory">
+        <member name="M:MySoft.IoC.Service.ServiceNodeInfo.#ctor">
             <summary>
-            创建Service的接口
+            Initializes a new instance of the <see cref="T:MySoft.IoC.Service.ServiceNodeInfo"/> class.
             </summary>
+        </member>
+        <member name="M:MySoft.IoC.Service.ServiceNodeInfo.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="P:MySoft.IoC.Service.ServiceNodeInfo.Key">
+            <summary>
+            Gets or sets the DEFAULT_KEY.
+            </summary>
+            <value>The DEFAULT_KEY.</value>
+        </member>
+        <member name="P:MySoft.IoC.Service.ServiceNodeInfo.Sevice">
+            <summary>
+            Gets or sets the sevice.
+            </summary>
+            <value>The sevice.</value>
+        </member>
+        <member name="P:MySoft.IoC.Service.ServiceNodeInfo.Implementation">
+            <summary>
+            Gets or sets the implementation.
+            </summary>
+            <value>The implementation.</value>
+        </member>
+        <member name="T:MySoft.IoC.Json.JsonFacade">
+            <summary>
+            Summary description for JsonFacade.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Json.JsonFacade.toJSON(System.Collections.IDictionary)">
+            <summary>
+            Parse a Hashtable and return a JSON formatted string
+            </summary>
+            <param name="idict"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Json.JsonFacade.fromJSON(System.String)">
+            <summary>
+            Parse JSON formatted string and return a Hashtable
+            </summary>
+            <param name="sJSON"></param>
+            <returns></returns>
         </member>
         <member name="T:MySoft.IoC.SerializationManager">
             <summary>
@@ -1237,868 +2587,6 @@
             </summary>
             <param name="data">the data to be deserialied.</param>
             <returns></returns>
-        </member>
-        <member name="T:MySoft.IoC.CompressionManager">
-            <summary>
-            Compress Manager
-            </summary>
-        </member>
-        <member name="M:MySoft.IoC.CompressionManager.Compress7Zip(System.String)">
-            <summary>
-            7Zip Compress the str.
-            </summary>
-            <param name="str">The STR.</param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.IoC.CompressionManager.Decompress7Zip(System.String)">
-            <summary>
-            7Zip Decompress the str.
-            </summary>
-            <param name="str">The STR.</param>
-            <returns></returns>
-        </member>
-        <member name="T:NBear.Common.JSON.JSONTokener">
-            <summary>
-            <para>
-             A JSONTokener takes a source string and extracts characters and tokens from
-             it. It is used by the JSONObject and JSONArray constructors to parse
-             JSON source strings.
-             </para>
-             <para>
-             Public Domain 2002 JSON.org
-             @author JSON.org
-             @version 0.1
-             </para>
-             <para>Ported to C# by Are Bjolseth, teleplan.no</para>
-             <para>
-             <list type="bullet">
-             <item><description>Implement Custom exceptions</description></item>
-             <item><description>Add unit testing</description></item>
-             <item><description>Add log4net</description></item>
-             </list>
-             </para>
-            </summary>
-        </member>
-        <member name="F:NBear.Common.JSON.JSONTokener.myIndex">
-            <summary>The index of the next character.</summary>
-        </member>
-        <member name="F:NBear.Common.JSON.JSONTokener.mySource">
-            <summary>The source string being tokenized.</summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.#ctor(System.String)">
-            <summary>
-            Construct a JSONTokener from a string.
-            </summary>
-            <param name="s">A source string.</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.back">
-            <summary>
-            Back up one character. This provides a sort of lookahead capability,
-            so that you can test for a digit or letter before attempting to parse
-            the next number or identifier.
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.dehexchar(System.Char)">
-            <summary>
-            Get the hex value of a character (base16).
-            </summary>
-            <param name="c">
-            A character between '0' and '9' or between 'A' and 'F' or
-            between 'a' and 'f'.
-            </param>
-            <returns>An int between 0 and 15, or -1 if c was not a hex digit.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.more">
-            <summary>
-            Determine if the source string still contains characters that next() can consume.
-            </summary>
-            <returns>true if not yet at the end of the source.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.next">
-            <summary>
-            Get the next character in the source string.
-            </summary>
-            <returns>The next character, or 0 if past the end of the source string.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.next(System.Char)">
-            <summary>
-            Consume the next character, and check that it matches a specified character
-            </summary>
-            <param name="c">The character to match.</param>
-            <returns>The character.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.next(System.Int32)">
-            <summary>
-            Get the next n characters.
-            </summary>
-            <param name="n">The number of characters to take.</param>
-            <returns>A string of n characters.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.nextClean">
-            <summary>
-            Get the next char in the string, skipping whitespace
-            and comments (slashslash and slashstar).
-            </summary>
-            <returns>A character, or 0 if there are no more characters.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.nextString(System.Char)">
-            <summary>
-            Return the characters up to the next close quote character.
-            Backslash processing is done. The formal JSON format does not
-            allow strings in single quotes, but an implementation is allowed to
-            accept them.
-            </summary>
-            <param name="quote">The quoting character, either " or '</param>
-            <returns>A String.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.nextTo(System.Char)">
-            <summary>
-            Get the text up but not including the specified character or the
-            end of line, whichever comes first.
-            </summary>
-            <param name="d">A delimiter character.</param>
-            <returns>A string.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.nextTo(System.String)">
-            <summary>
-             Get the text up but not including one of the specified delimeter
-             characters or the end of line, which ever comes first.
-            </summary>
-            <param name="delimiters">A set of delimiter characters.</param>
-            <returns>A string, trimmed.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.nextObject">
-            <summary>
-            Get the next value as object. The value can be a Boolean, Double, Integer,
-            JSONArray, JSONObject, or String, or the JSONObject.NULL object.
-            </summary>
-            <returns>An object.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.skipTo(System.Char)">
-            <summary>
-            Skip characters until the next character is the requested character.
-            If the requested character is not found, no characters are skipped.
-            </summary>
-            <param name="to">A character to skip to.</param>
-            <returns>
-            The requested character, or zero if the requested character is not found.
-            </returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.skipPast(System.String)">
-            <summary>
-            Skip characters until past the requested string.
-            If it is not found, we are left at the end of the source.
-            </summary>
-            <param name="to">A string to skip past.</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.ToString">
-            <summary>
-            Make a printable string of this JSONTokener.
-            </summary>
-            <returns>" at character [myIndex] of [mySource]"</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.unescape">
-            <summary>
-            Unescape the source text. Convert %hh sequences to single characters,
-            and convert plus to space. There are Web transport systems that insist on
-            doing unnecessary URL encoding. This provides a way to undo it.
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONTokener.unescape(System.String)">
-            <summary>
-            Convert %hh sequences to single characters, and convert plus to space.
-            </summary>
-            <param name="s">A string that may contain plus and %hh sequences.</param>
-            <returns>The unescaped string.</returns>
-        </member>
-        <member name="T:NBear.Common.JSON.JSONUtils">
-            <summary>
-             Public Domain 2002 JSON.org
-             @author JSON.org
-             @version 0.1
-             Ported to C# by Are Bjolseth, teleplan.no
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONUtils.Enquote(System.String)">
-            <summary>
-            Produce a string in double quotes with backslash sequences in all the right places.
-            </summary>
-            <param name="s">A String</param>
-            <returns>A String correctly formatted for insertion in a JSON message.</returns>
-        </member>
-        <member name="T:NBear.Common.JSON.JSONObject">
-             <summary>
-             <para>
-             A JSONArray is an ordered sequence of values. Its external form is a string
-             wrapped in square brackets with commas between the values. The internal form
-             is an object having get() and opt() methods for accessing the values by
-             index, and put() methods for adding or replacing values. The values can be
-             any of these types: Boolean, JSONArray, JSONObject, Number, String, or the
-             JSONObject.NULL object.
-             </para>
-             <para>
-             The constructor can convert a JSON external form string into an
-             internal form Java object. The toString() method creates an external
-             form string.
-             </para>
-             <para>
-             A get() method returns a value if one can be found, and throws an exception
-             if one cannot be found. An opt() method returns a default value instead of
-             throwing an exception, and so is useful for obtaining optional values.
-             </para>
-             <para>
-             The generic get() and opt() methods return an object which you can cast or
-             query for type. There are also typed get() and opt() methods that do typing
-             checking and type coersion for you.
-            </para>
-             <para>
-             The texts produced by the toString() methods are very strict.
-             The constructors are more forgiving in the texts they will accept.
-             </para>
-             <para>
-             <list type="bullet">
-             <item><description>An extra comma may appear just before the closing bracket.</description></item>
-             <item><description>Strings may be quoted with single quotes.</description></item>
-             <item><description>Strings do not need to be quoted at all if they do not contain leading
-                 or trailing spaces, and if they do not contain any of these characters:
-                 { } [ ] / \ : , </description></item>
-             <item><description>Numbers may have the 0- (octal) or 0x- (hex) prefix.</description></item>
-             </list>
-             </para>
-             <para>
-             Public Domain 2002 JSON.org
-             @author JSON.org
-             @version 0.1
-            </para>
-             Ported to C# by Are Bjolseth, teleplan.no
-             TODO:
-             1. Implement Custom exceptions
-             2. Add indexer JSONObject[i] = object,     and object = JSONObject[i];
-             3. Add indexer JSONObject["key"] = object, and object = JSONObject["key"]
-             4. Add unit testing
-             5. Add log4net
-             6. Make get/put methods private, to force use of indexer instead?
-             </summary>
-        </member>
-        <member name="F:NBear.Common.JSON.JSONObject.myHashMap">
-            <summary>The hash map where the JSONObject's properties are kept.</summary>
-        </member>
-        <member name="F:NBear.Common.JSON.JSONObject.myKeyIndexList">
-            <summary>A shadow list of keys to enable access by sequence of insertion</summary>
-        </member>
-        <member name="F:NBear.Common.JSON.JSONObject.NULL">
-            <summary>
-            It is sometimes more convenient and less ambiguous to have a NULL
-            object than to use C#'s null value.
-            JSONObject.NULL.toString() returns "null".
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.#ctor">
-            <summary>
-             Construct an empty JSONObject.
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.#ctor(NBear.Common.JSON.JSONTokener)">
-            <summary>
-            Construct a JSONObject from a JSONTokener.
-            </summary>
-            <param name="x">A JSONTokener object containing the source string.</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.#ctor(System.String)">
-            <summary>
-            Construct a JSONObject from a string.
-            </summary>
-            <param name="sJSON">A string beginning with '{' and ending with '}'.</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.#ctor(System.Collections.IDictionary)">
-            <summary>
-            Construct a JSONObject from a IDictionary
-            </summary>
-            <param name="map"></param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.accumulate(System.String,System.Object)">
-            <summary>
-            Accumulate values under a key. It is similar to the put method except
-            that if there is already an object stored under the key then a
-            JSONArray is stored under the key to hold all of the accumulated values.
-            If there is already a JSONArray, then the new value is appended to it.
-            In contrast, the put method replaces the previous value.
-            </summary>
-            <param name="key">A key string.</param>
-            <param name="val">An object to be accumulated under the key.</param>
-            <returns>this</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.getDictionary">
-            <summary>
-            C# convenience method
-            </summary>
-            <returns>The Hashtable</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.getValue(System.String)">
-            <summary>
-            Alias to Java get method
-            Get the value object associated with a key.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>The object associated with the key.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.getJSONArray(System.String)">
-            <summary>
-            Get the JSONArray value associated with a key.
-            </summary>
-            <param name="key">A key string</param>
-            <returns>A JSONArray which is the value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.getJSONObject(System.String)">
-            <summary>
-            Get the JSONObject value associated with a key.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>A JSONObject which is the value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.getString(System.String)">
-            <summary>
-            Get the string associated with a key.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>A string which is the value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.has(System.String)">
-            <summary>
-            Determine if the JSONObject contains a specific key.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>true if the key exists in the JSONObject.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.keys">
-            <summary>
-            Get an enumeration of the keys of the JSONObject.
-            Added to be true to orginal Java implementation
-            Indexers are easier to use
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.isNull(System.String)">
-            <summary>
-            Determine if the value associated with the key is null or if there is no value.
-            </summary>
-            <param name="key">A key string</param>
-            <returns>true if there is no value associated with the key or if the valus is the JSONObject.NULL object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.Length">
-            <summary>
-            Get the number of keys stored in the JSONObject.
-            </summary>
-            <returns>The number of keys in the JSONObject.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.names">
-            <summary>
-            Produce a JSONArray containing the pks of the elements of this JSONObject
-            </summary>
-            <returns>A JSONArray containing the key strings, or null if the JSONObject</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.opt(System.String)">
-            <summary>
-            Get an optional value associated with a key.
-            </summary>
-            <param name="key">A key string</param>
-            <returns>An object which is the value, or null if there is no value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optBoolean(System.String)">
-            <summary>
-            Get an optional value associated with a key.
-            It returns false if there is no such key, or if the value is not
-            Boolean.TRUE or the String "true".
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>bool value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optBoolean(System.String,System.Boolean)">
-            <summary>
-            Get an optional value associated with a key.
-            It returns false if there is no such key, or if the value is not
-            Boolean.TRUE or the String "true".
-            </summary>
-            <param name="key">A key string.</param>
-            <param name="defaultValue">The preferred return value if conversion fails</param>
-            <returns>bool value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optDouble(System.String)">
-            <summary>
-            Get an optional double associated with a key,
-            or NaN if there is no such key or if its value is not a number.
-            If the value is a string, an attempt will be made to evaluate it as
-            a number.
-            </summary>
-            <param name="key">A string which is the key.</param>
-            <returns>A double value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optDouble(System.String,System.Double)">
-            <summary>
-            Get an optional double associated with a key,
-            or NaN if there is no such key or if its value is not a number.
-            If the value is a string, an attempt will be made to evaluate it as
-            a number.
-            </summary>
-            <param name="key">A string which is the key.</param>
-            <param name="defaultValue">The default</param>
-            <returns>A double value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optInt(System.String)">
-            <summary>
-             Get an optional double associated with a key, or the
-             defaultValue if there is no such key or if its value is not a number.
-             If the value is a string, an attempt will be made to evaluate it as
-             number.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>An int object value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optInt(System.String,System.Int32)">
-            <summary>
-             Get an optional double associated with a key, or the
-             defaultValue if there is no such key or if its value is not a number.
-             If the value is a string, an attempt will be made to evaluate it as
-             number.
-            </summary>
-            <param name="key">A key string.</param>
-            <param name="defaultValue">The default value</param>
-            <returns>An int object value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optJSONArray(System.String)">
-            <summary>
-            Get an optional JSONArray associated with a key.
-            It returns null if there is no such key, or if its value is not a JSONArray
-            </summary>
-            <param name="key">A key string</param>
-            <returns>A JSONArray which is the value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optJSONObject(System.String)">
-            <summary>
-            Get an optional JSONObject associated with a key.
-            It returns null if there is no such key, or if its value is not a JSONObject.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>A JSONObject which is the value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optString(System.String)">
-            <summary>
-            Get an optional string associated with a key.
-            It returns an empty string if there is no such key. If the value is not
-            a string and is not null, then it is coverted to a string.
-            </summary>
-            <param name="key">A key string.</param>
-            <returns>A string which is the value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.optString(System.String,System.String)">
-            <summary>
-            Get an optional string associated with a key.
-            It returns the defaultValue if there is no such key.
-            </summary>
-            <param name="key">A key string.</param>
-            <param name="defaultValue">The default</param>
-            <returns>A string which is the value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.put(System.String,System.Object)">
-            <summary>
-            Put a key/value pair in the JSONObject. If the value is null,
-            then the key will be removed from the JSONObject if it is present.
-            </summary>
-            <param name="key"> A key string.</param>
-            <param name="val">
-            An object which is the value. It should be of one of these
-            types: Boolean, Double, Integer, JSONArray, JSONObject, String, or the
-            JSONObject.NULL object.
-            </param>
-            <returns>JSONObject</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.putOpt(System.String,System.Object)">
-            <summary>
-            Add a key value pair
-            </summary>
-            <param name="key"></param>
-            <param name="val"></param>
-            <returns></returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.remove(System.String)">
-            <summary>
-            Remove a object assosiateted with the given key
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.toJSONArray(NBear.Common.JSON.JSONArray)">
-            <summary>
-            Append an array of JSONObjects to current object
-            </summary>
-            <param name="pks"></param>
-            <returns></returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.ToString">
-            <summary>
-            Overridden to return a JSON formattet object as a string
-            </summary>
-            <returns>JSON object as formatted string</returns>
-        </member>
-        <member name="P:NBear.Common.JSON.JSONObject.Item(System.Int32)">
-            <summary>
-            Return the key for the associated index
-            </summary>
-        </member>
-        <member name="P:NBear.Common.JSON.JSONObject.Item(System.String)">
-            <summary>
-            Get/Add an object with the associated key
-            </summary>
-        </member>
-        <member name="P:NBear.Common.JSON.JSONObject.Count">
-            <summary>
-            Return the number of JSON items in hashtable
-            </summary>
-        </member>
-        <member name="T:NBear.Common.JSON.JSONObject.JSONNull">
-            <summary>
-            Make a Null object
-            JSONObject.NULL is equivalent to the value that JavaScript calls null,
-            whilst C#'s null is equivalent to the value that JavaScript calls undefined.
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONObject.JSONNull.ToString">
-            <summary>
-            Overriden to return "null"
-            </summary>
-            <returns>null</returns>
-        </member>
-        <member name="T:NBear.Common.JSON.JSONArray">
-             <summary>
-             <para>
-             A JSONArray is an ordered sequence of values. Its external form is a string
-             wrapped in square brackets with commas between the values. The internal form
-             is an object having get() and opt() methods for accessing the values by
-             index, and put() methods for adding or replacing values. The values can be
-             any of these types: Boolean, JSONArray, JSONObject, Number, String, or the
-             JSONObject.NULL object.
-             </para>
-             <para>
-             The constructor can convert a JSON external form string into an
-             internal form Java object. The toString() method creates an external
-             form string.
-             </para>
-             <para>
-             A get() method returns a value if one can be found, and throws an exception
-             if one cannot be found. An opt() method returns a default value instead of
-             throwing an exception, and so is useful for obtaining optional values.
-             </para>
-             <para>
-             The generic get() and opt() methods return an object which you can cast or
-             query for type. There are also typed get() and opt() methods that do typing
-             checking and type coersion for you.
-            </para>
-             <para>
-             The texts produced by the toString() methods are very strict.
-             The constructors are more forgiving in the texts they will accept.
-             </para>
-             <para>
-             <list type="bullet">
-             <item><description>An extra comma may appear just before the closing bracket.</description></item>
-             <item><description>Strings may be quoted with single quotes.</description></item>
-             <item><description>Strings do not need to be quoted at all if they do not contain leading
-                 or trailing spaces, and if they do not contain any of these characters:
-                 { } [ ] / \ : , </description></item>
-             <item><description>Numbers may have the 0- (octal) or 0x- (hex) prefix.</description></item>
-             </list>
-             </para>
-             <para>
-             Public Domain 2002 JSON.org
-             @author JSON.org
-             @version 0.1
-            </para>
-             Ported to C# by Are Bjolseth, teleplan.no
-             TODO:
-             1. Implement Custom exceptions
-             2. Add indexer JSONObject[i] = object,     and object = JSONObject[i];
-             3. Add indexer JSONObject["DEFAULT_KEY"] = object, and object = JSONObject["DEFAULT_KEY"]
-             4. Add unit testing
-             5. Add log4net
-             6. Make get/put methods private, to force use of indexer instead?
-             </summary>
-        </member>
-        <member name="F:NBear.Common.JSON.JSONArray.myArrayList">
-            <summary>The ArrayList where the JSONArray's properties are kept.</summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.#ctor">
-            <summary>
-            Construct an empty JSONArray
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.#ctor(NBear.Common.JSON.JSONTokener)">
-            <summary>
-            Construct a JSONArray from a JSONTokener.
-            </summary>
-            <param name="x">A JSONTokener</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.#ctor(System.String)">
-            <summary>
-            Construct a JSONArray from a source string.
-            </summary>
-            <param name="s">A string that begins with '[' and ends with ']'.</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.#ctor(System.Collections.ICollection)">
-            <summary>
-            Construct a JSONArray from a Collection.
-            </summary>
-            <param name="collection">A Collection.</param>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.getValue(System.Int32)">
-            <summary>
-            Get the object value associated with an index.
-            Use indexer instead!!! Added to be true to the original Java implementation
-            </summary>
-            <param name="i">index subscript. The index must be between 0 and length()-1</param>
-            <returns>An object value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.getArrayList">
-            <summary>
-            Get the ArrayList which is holding the elements of the JSONArray.
-            Use the indexer instead!! Added to be true to the orignal Java src
-            </summary>
-            <returns>The ArrayList</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.getJSONArray(System.Int32)">
-            <summary>
-            Get the JSONArray associated with an index.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>A JSONArray value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.getJSONObject(System.Int32)">
-            <summary>
-            Get the JSONObject associated with an index.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>A JSONObject value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.getString(System.Int32)">
-            <summary>
-            Get the string associated with an index.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>A string value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.isNull(System.Int32)">
-            <summary>
-            Determine if the value is null.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>true if the value at the index is null, or if there is no value.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.join(System.String)">
-            <summary>
-            Make a string from the contents of this JSONArray. The separator string
-            is inserted between each element.
-            Warning: This method assumes that the data structure is acyclical.
-            </summary>
-            <param name="separator">separator A string that will be inserted between the elements.</param>
-            <returns>A string.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.Length">
-            <summary>
-            Get the length of the JSONArray.
-            Added to be true to the original Java implementation
-            </summary>
-            <returns>Number of JSONObjects in array</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.opt(System.Int32)">
-            <summary>
-            Get the optional object value associated with an index.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>object at that index.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optBoolean(System.Int32)">
-            <summary>
-            Get the optional boolean value associated with an index.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>The truth</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optBoolean(System.Int32,System.Boolean)">
-            <summary>
-            Get the optional boolean value associated with an index.
-            It returns the defaultValue if there is no value at that index or if it is not
-            a Boolean or the String "true" or "false".
-            </summary>
-            <param name="i">index subscript</param>
-            <param name="defaultValue"></param>
-            <returns>The truth.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optDouble(System.Int32)">
-            <summary>
-            Get the optional double value associated with an index.
-            NaN is returned if the index is not found,
-            or if the value is not a number and cannot be converted to a number.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>The double value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optDouble(System.Int32,System.Double)">
-            <summary>
-            Get the optional double value associated with an index.
-            NaN is returned if the index is not found,
-            or if the value is not a number and cannot be converted to a number.
-            </summary>
-            <param name="i">index subscript</param>
-            <param name="defaultValue"></param>
-            <returns>The double value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optInt(System.Int32)">
-            <summary>
-            Get the optional int value associated with an index.
-            Zero is returned if the index is not found,
-            or if the value is not a number and cannot be converted to a number.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>The int value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optInt(System.Int32,System.Int32)">
-            <summary>
-            Get the optional int value associated with an index.
-            The defaultValue is returned if the index is not found,
-            or if the value is not a number and cannot be converted to a number.
-            </summary>
-            <param name="i">index subscript</param>
-            <param name="defaultValue">The default value</param>
-            <returns>The int value object</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optJSONArray(System.Int32)">
-            <summary>
-            Get the optional JSONArray associated with an index.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>A JSONArray value, or null if the index has no value, or if the value is not a JSONArray.</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optJSONObject(System.Int32)">
-            <summary>
-            Get the optional JSONObject associated with an index.
-            Null is returned if the DEFAULT_KEY is not found, or null if the index has
-            no value, or if the value is not a JSONObject.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>A JSONObject value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optString(System.Int32)">
-            <summary>
-            Get the optional string value associated with an index. It returns an
-            empty string if there is no value at that index. If the value
-            is not a string and is not null, then it is coverted to a string.
-            </summary>
-            <param name="i">index subscript</param>
-            <returns>A String value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.optString(System.Int32,System.String)">
-            <summary>
-            Get the optional string associated with an index.
-            The defaultValue is returned if the DEFAULT_KEY is not found.
-            </summary>
-            <param name="i">index subscript</param>
-            <param name="defaultValue">The default value</param>
-            <returns>A string value</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.put(System.Object)">
-            OMITTED:
-            public JSONArray put(bool val)
-            public JSONArray put(double val)
-            public JSONArray put(int val)		
-            <summary>
-            Append an object value.
-            </summary>
-            <param name="val">An object value.  The value should be a Boolean, Double, Integer, JSONArray, JSObject, or String, or the JSONObject.NULL object</param>
-            <returns>this (JSONArray)</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.put(System.Int32,System.Object)">
-            <summary>
-            Put or replace a boolean value in the JSONArray.
-            </summary>
-            <param name="i">
-            The subscript. If the index is greater than the length of
-            the JSONArray, then null elements will be added as necessary to pad it out.
-            </param>
-            <param name="val">An object value.</param>
-            <returns>this (JSONArray)</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.toJSONObject(NBear.Common.JSON.JSONArray)">
-            <summary>
-            Produce a JSONObject by combining a JSONArray of pks with the values
-            of this JSONArray.
-            </summary>
-            <param name="pks">
-            A JSONArray containing a list of DEFAULT_KEY strings. These will be paired with the values.
-            </param>
-            <returns>A JSONObject, or null if there are no pks or if this JSONArray</returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JSONArray.ToString">
-            <summary>
-            Make an JSON external form string of this JSONArray. For compactness, no
-            unnecessary whitespace is added.
-            </summary>
-            <returns>a printable, displayable, transmittable representation of the array.</returns>
-        </member>
-        <member name="P:NBear.Common.JSON.JSONArray.Item(System.Int32)">
-            <summary>
-            Alternate to Java get/put method, by using indexer
-            </summary>
-        </member>
-        <member name="P:NBear.Common.JSON.JSONArray.List">
-            <summary>
-            Alternativ to Java, getArrayList, by using propery
-            </summary>
-        </member>
-        <member name="P:NBear.Common.JSON.JSONArray.Count">
-            <summary>
-            Get the length of the JSONArray.
-            Using a propery instead of method
-            </summary>
-        </member>
-        <member name="T:NBear.Common.JSON.JsonFacade">
-            <summary>
-            Summary description for JsonFacade.
-            </summary>
-        </member>
-        <member name="M:NBear.Common.JSON.JsonFacade.toJSON(System.Collections.IDictionary)">
-            <summary>
-            Parse a Hashtable and return a JSON formatted string
-            </summary>
-            <param name="idict"></param>
-            <returns></returns>
-        </member>
-        <member name="M:NBear.Common.JSON.JsonFacade.fromJSON(System.String)">
-            <summary>
-            Parse JSON formatted string and return a Hashtable
-            </summary>
-            <param name="sJSON"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SevenZip.ICoder.Code(System.IO.Stream,System.IO.Stream,System.Int64,System.Int64,SevenZip.ICodeProgress)">
-            <summary>
-            Codes streams.
-            </summary>
-            <param name="inStream">
-            input Stream.
-            </param>
-            <param name="outStream">
-            output Stream.
-            </param>
-            <param name="inSize">
-            input Size. -1 if unknown.
-            </param>
-            <param name="outSize">
-            output Size. -1 if unknown.
-            </param>
-            <param name="progress">
-            callback progress reference.
-            </param>
-            <exception cref="T:SevenZip.DataErrorException">
-            if input stream is not valid
-            </exception>
         </member>
         <member name="T:SevenZip.DataErrorException">
             <summary>
