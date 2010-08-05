@@ -24,7 +24,7 @@ namespace MySoft.IoC.Service
             }
             return newHandlers;
         }
-        
+
         #endregion
 
         #region Protected Members
@@ -39,34 +39,37 @@ namespace MySoft.IoC.Service
         {
             bool needCleanHandlers = false;
 
-            List<Guid> clientIdList = new List<Guid>(handlers.Keys);
-            Random random = new Random();
-            int start = random.Next(handlers.Count);
-            for (int i = 0; i < handlers.Count; i++)
+            if (handlers.Count > 0)
             {
-                Guid tempClientId = clientIdList[(i + start) % handlers.Count];
-                ServiceRequestNotifyHandler tempHandler = handlers[tempClientId];
-                if (tempHandler != null)
+                List<Guid> clientIdList = new List<Guid>(handlers.Keys);
+                Random random = new Random();
+                int start = random.Next(handlers.Count);
+                for (int i = 0; i < handlers.Count; i++)
                 {
-                    try
+                    Guid tempClientId = clientIdList[(i + start) % handlers.Count];
+                    ServiceRequestNotifyHandler tempHandler = handlers[tempClientId];
+                    if (tempHandler != null)
                     {
-                        IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
-                        if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Notify service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "]");
-                        tempHandler(reqMsg);
+                        try
+                        {
+                            IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
+                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Notify service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "]");
+                            tempHandler(reqMsg);
 
-                        //if calling ok, skip other subscribers, easily exit loop
-                        break;
+                            //if calling ok, skip other subscribers, easily exit loop
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.ToString());
+                            handlers[tempClientId] = null;
+                            needCleanHandlers = true;
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.ToString());
-                        handlers[tempClientId] = null;
                         needCleanHandlers = true;
                     }
-                }
-                else
-                {
-                    needCleanHandlers = true;
                 }
             }
 
