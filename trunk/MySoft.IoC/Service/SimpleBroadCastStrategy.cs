@@ -39,7 +39,7 @@ namespace MySoft.IoC.Service
         {
             bool needCleanHandlers = false;
 
-            if (handlers.Count > 0)
+            if (handlers != null && handlers.Count > 0)
             {
                 List<Guid> clientIdList = new List<Guid>(handlers.Keys);
                 Random random = new Random();
@@ -61,7 +61,7 @@ namespace MySoft.IoC.Service
                         }
                         catch (Exception ex)
                         {
-                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.ToString());
+                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.Message);
                             handlers[tempClientId] = null;
                             needCleanHandlers = true;
                         }
