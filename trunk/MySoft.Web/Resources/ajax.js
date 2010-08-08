@@ -159,6 +159,7 @@ Object.extend(String.prototype, {
 }, false);
 
 var Ajax = new function() {
+    this.showErrorMessage = true;
     this.timeout = 3600000;
     this.cache = {};
     this.getRequestURL = function(url) {
@@ -381,8 +382,10 @@ Object.extend(AjaxClass.prototype, {
                 if (async && callback) {
                     if (json.Success)
                         callback(json.Message);
-                    else
-                        alert(json.Message);
+                    else {
+                        if (Ajax.showErrorMessage) alert(json.Message);
+                        Ajax.onException(json);
+                    }
                 }
             }
         });
@@ -390,8 +393,10 @@ Object.extend(AjaxClass.prototype, {
             if (json) {
                 if (json.Success)
                     return json.Message;
-                else
-                    alert(json.Message);
+                else {
+                    if (Ajax.showErrorMessage) alert(json.Message);
+                    Ajax.onException(json);
+                }
             }
         }
     }
@@ -480,7 +485,7 @@ Object.extend(Ajax, {
         }
         catch (e) { return null; }
     },
-    
+
     /*obj is callback,id,element
     * path is controlpath
     * args is control params
@@ -521,7 +526,8 @@ Object.extend(Ajax, {
                         if (op.cache) Ajax.cache[key] = json.Message;
                         fillElement(obj, json.Message);
                     } else {
-                        alert(json.Message);
+                        if (Ajax.showErrorMessage) alert(json.Message);
+                        Ajax.onException(json);
                     }
                 }
                 if (op.callback) op.callback(xmlHttp);
@@ -552,9 +558,9 @@ Object.extend(Ajax, {
             var matchs = html.match(reg);
 
             //将剩下的html祛除<script>部分，插入模版页
-            html = html.replace(reg, ""); 
+            html = html.replace(reg, "");
             fillHTML(el, html);
-            
+
             if (matchs != null) {
                 var myscript = "";
                 for (var i = 0; i < matchs.length; i++) {
