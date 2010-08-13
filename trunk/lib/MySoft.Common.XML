@@ -291,11 +291,6 @@
             DESCrypto : 采用DES对称加密方式的加密/解密。
             </summary>
         </member>
-        <member name="M:MySoft.Common.DESCrypto.#ctor">
-            <summary>
-            构造函数
-            </summary>
-        </member>
         <member name="M:MySoft.Common.DESCrypto.EncryptString(System.Byte[],System.String,System.String)">
             <summary>
             加密方法
@@ -365,32 +360,6 @@
             <param name="sKey">解密使用的密钥</param>
             <param name="sIV">解密使用的密钥初始化向量</param>
             <returns>byte[]</returns>
-        </member>
-        <member name="T:MySoft.Common.AESEncrypt">
-            <summary> 
-            加密
-            </summary> 
-        </member>
-        <member name="T:MySoft.Common.DESEncrypt">
-            <summary> 
-            加密
-            </summary> 
-        </member>
-        <member name="M:MySoft.Common.DESEncrypt.Encode(System.String,System.String)">
-            <summary>
-            DES加密字符串
-            </summary>
-            <param name="encryptString">待加密的字符串</param>
-            <param name="encryptKey">加密密钥,要求为8位</param>
-            <returns>加密成功返回加密后的字符串,失败返回源串</returns>
-        </member>
-        <member name="M:MySoft.Common.DESEncrypt.Decode(System.String,System.String)">
-            <summary>
-            DES解密字符串
-            </summary>
-            <param name="decryptString">待解密的字符串</param>
-            <param name="decryptKey">解密密钥,要求为8位,和加密密钥相同</param>
-            <returns>解密成功返回解密后的字符串,失败返源串</returns>
         </member>
         <member name="T:MySoft.Common.FunctionUtils">
             <summary>
@@ -477,14 +446,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Common.FunctionUtils.convertDirURL(System.String)">
+        <member name="M:MySoft.Common.FunctionUtils.ConvertDirURL(System.String)">
             <summary>
             转换文件路径中不规则字符
             </summary>
             <param name="path"></param>
             <returns>string</returns>
         </member>
-        <member name="M:MySoft.Common.FunctionUtils.convertXmlString(System.String)">
+        <member name="M:MySoft.Common.FunctionUtils.ConvertXmlString(System.String)">
             <summary>
             
             </summary>
@@ -564,14 +533,14 @@
             <param name="filePath">文件路径</param>
             <returns>string</returns>
         </member>
-        <member name="M:MySoft.Common.FunctionUtils.strEncode(System.String)">
+        <member name="M:MySoft.Common.FunctionUtils.HtmlEncode(System.String)">
             <summary>
             对字符串进行 HTML 编码操作
             </summary>
             <param name="str">字符串</param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Common.FunctionUtils.strDecode(System.String)">
+        <member name="M:MySoft.Common.FunctionUtils.HtmlDecode(System.String)">
             <summary>
             对 HTML 字符串进行解码操作
             </summary>
@@ -615,42 +584,6 @@
             检测值是否有效，为 null 或 "" 均为无效
             </summary>
             <param name="obj">要检测的值</param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Common.FunctionUtils.ServUEncrypt(System.String)">
-            <summary>
-            对字符串进行适应 ServU 的 MD5 加密
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Common.FunctionUtils.MD5Encrypt(System.String)">
-            <summary>
-            对字符串进行普通md5加密
-            </summary>
-            <param name="str"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Common.FunctionUtils.NoneEncrypt(System.String,System.Int32)">
-            <summary>
-            对字符串进行加密（不可逆）
-            </summary>
-            <param name="Password">要加密的字符串</param>
-            <param name="Format">加密方式,0 is SHA1,1 is MD5</param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Common.FunctionUtils.Encrypt(System.String)">
-            <summary>
-            对字符串进行加密
-            </summary>
-            <param name="Passowrd">待加密的字符串</param>
-            <returns>string</returns>
-        </member>
-        <member name="M:MySoft.Common.FunctionUtils.Decrypt(System.String)">
-            <summary>
-            对字符串进行解密
-            </summary>
-            <param name="Passowrd">已加密的字符串</param>
             <returns></returns>
         </member>
         <member name="M:MySoft.Common.FunctionUtils.ConstructSplitSQL(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
@@ -910,11 +843,6 @@
         <member name="T:MySoft.Common.RSACrypto">
             <summary>
             RSACryption : 采用RSA不对称加密方式的加密/解密及数字签名。
-            </summary>
-        </member>
-        <member name="M:MySoft.Common.RSACrypto.#ctor">
-            <summary>
-            构造函数
             </summary>
         </member>
         <member name="M:MySoft.Common.RSACrypto.RSAKey(System.String@,System.String@)">

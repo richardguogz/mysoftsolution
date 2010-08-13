@@ -7,6 +7,7 @@ copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.dll /Y
 copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.dll /Y
 copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.dll /Y
 copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.dll /Y
+copy ..\MySoft.Core\bin\Release\MySoft.Core.dll /Y
 copy ..\MySoft.IoC\bin\Release\MySoft.IoC.dll /Y
 copy ..\MySoft.Net\bin\Release\MySoft.Net.dll /Y
 copy ..\MySoft.Web\bin\Release\MySoft.Web.dll /Y
@@ -18,6 +19,7 @@ copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.xml /Y
 copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.xml /Y
 copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.xml /Y
 copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.xml /Y
+copy ..\MySoft.Core\bin\Release\MySoft.Core.xml /Y
 copy ..\MySoft.IoC\bin\Release\MySoft.IoC.xml /Y
 copy ..\MySoft.Net\bin\Release\MySoft.Net.xml /Y
 copy ..\MySoft.Web\bin\Release\MySoft.Web.xml /Y
@@ -35,6 +37,7 @@ copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.dll /Y e:\CommonDll /Y
 copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.dll e:\CommonDll /Y
 copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.dll e:\CommonDll /Y
 copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.dll e:\CommonDll /Y
+copy ..\MySoft.Core\bin\Release\MySoft.Core.dll e:\CommonDll /Y
 copy ..\MySoft.IoC\bin\Release\MySoft.IoC.dll e:\CommonDll /Y
 copy ..\MySoft.Net\bin\Release\MySoft.Net.dll e:\CommonDll /Y
 copy ..\MySoft.Web\bin\Release\MySoft.Web.dll e:\CommonDll /Y
@@ -46,6 +49,7 @@ copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.xml e:\CommonDll /Y
 copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.xml e:\CommonDll /Y
 copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.xml e:\CommonDll /Y
 copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.xml e:\CommonDll /Y
+copy ..\MySoft.Core\bin\Release\MySoft.Core.xml e:\CommonDll /Y
 copy ..\MySoft.IoC\bin\Release\MySoft.IoC.xml e:\CommonDll /Y
 copy ..\MySoft.Net\bin\Release\MySoft.Net.xml e:\CommonDll /Y
 copy ..\MySoft.Web\bin\Release\MySoft.Web.xml e:\CommonDll /Y

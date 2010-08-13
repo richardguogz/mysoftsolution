@@ -137,74 +137,6 @@
             <param name="values">方法对应的参数值</param>
             <returns></returns>
         </member>
-        <member name="T:MySoft.Web.Json.ReferenceLoopHandling">
-            <summary>
-            Specifies reference loop handling options for the <see cref="T:MySoft.Web.Json.JsonWriter"/>.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.ReferenceLoopHandling.Error">
-            <summary>
-            Throw a <see cref="T:MySoft.Web.Json.JsonSerializationException"/> when a loop is encountered.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.ReferenceLoopHandling.Ignore">
-            <summary>
-            Ignore loop references and do not serialize.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.ReferenceLoopHandling.Serialize">
-            <summary>
-            Serialize loop references.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.JsonSerializer">
-            <summary>
-            Serializes and deserializes objects into and from the Json format.
-            The <see cref="T:MySoft.Web.Json.JsonSerializer"/> enables you to control how objects are encoded into Json.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializer.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonSerializer"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializer.Deserialize(MySoft.Web.Json.JsonReader)">
-            <summary>
-            Deserializes the Json structure contained by the specified <see cref="T:MySoft.Web.Json.JsonReader"/>.
-            </summary>
-            <param name="reader">The <see cref="T:MySoft.Web.Json.JsonReader"/> that contains the Json structure to deserialize.</param>
-            <returns>The <see cref="T:System.Object"/> being deserialized.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializer.Deserialize(MySoft.Web.Json.JsonReader,System.Type)">
-            <summary>
-            Deserializes the Json structure contained by the specified <see cref="T:MySoft.Web.Json.JsonReader"/>
-            into an instance of the specified type.
-            </summary>
-            <param name="reader">The type of object to create.</param>
-            <param name="objectType">The <see cref="T:System.Type"/> of object being deserialized.</param>
-            <returns>The instance of <paramref name="objectType"/> being deserialized.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializer.Serialize(System.IO.TextWriter,System.Object)">
-            <summary>
-            Serializes the specified <see cref="T:System.Object"/> and writes the Json structure
-            to a <c>Stream</c> using the specified <see cref="T:System.IO.TextWriter"/>. 
-            </summary>
-            <param name="textWriter">The <see cref="T:System.IO.TextWriter"/> used to write the Json structure.</param>
-            <param name="value">The <see cref="T:System.Object"/> to serialize.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializer.Serialize(MySoft.Web.Json.JsonWriter,System.Object)">
-            <summary>
-            Serializes the specified <see cref="T:System.Object"/> and writes the Json structure
-            to a <c>Stream</c> using the specified <see cref="T:MySoft.Web.Json.JsonWriter"/>. 
-            </summary>
-            <param name="jsonWriter">The <see cref="T:MySoft.Web.Json.JsonWriter"/> used to write the Json structure.</param>
-            <param name="value">The <see cref="T:System.Object"/> to serialize.</param>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonSerializer.ReferenceLoopHandling">
-            <summary>
-            Get or set how reference loops (e.g. a class referencing itself) is handled.
-            </summary>
-        </member>
         <member name="T:MySoft.Web.AjaxPageHandler">
             <summary>
             异步处理Handler
@@ -218,36 +150,6 @@
         <member name="T:FormFixerHtml32TextWriter">
             <summary>
             FormHtmlTextWriter 的摘要说明
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.JsonReaderException">
-            <summary>
-            The exception thrown when an error occurs while reading Json text.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonReaderException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonReaderException"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonReaderException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonReaderException"/> class
-            with a specified error message.
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonReaderException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonReaderException"/> class
-            with a specified error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-            <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
-        </member>
-        <member name="T:MySoft.Web.Json.JavaScriptConstructor">
-            <summary>
-            Represents a JavaScript constructor.
             </summary>
         </member>
         <member name="F:MySoft.Web.CacheControlConfiguration.config">
@@ -411,30 +313,6 @@
             是否启用Ajax模板处理功能
             </summary>
         </member>
-        <member name="T:MySoft.Web.Json.JavaScriptArray">
-            <summary>
-            Represents a JavaScript array.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptArray.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JavaScriptObject"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptArray.#ctor(System.Collections.Generic.IEnumerable{System.Object})">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JavaScriptArray"/> class that
-            contains elements copied from the specified collection.
-            </summary>
-            <param name="collection">The collection whose elements are copied to the new array.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptArray.#ctor(System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JavaScriptArray"/> class that
-            is empty and has the specified initial capacity.
-            </summary>
-            <param name="capacity">The number of elements that the new array can initially store.</param>
-        </member>
         <member name="T:MySoft.Web.Config.StaticPageConfigSerializerSectionHandler">
             <summary>
             Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.
@@ -447,74 +325,6 @@
             <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
             <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> instance.</remarks>
             <returns>An instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.</returns>
-        </member>
-        <member name="T:MySoft.Web.Json.StringBuffer">
-            <summary>
-            Builds a string. Unlike StringBuilder this class lets you reuse it's internal buffer.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.FastInvokeHandler">
-            <summary>Delegate for calling a method that is not known at runtime.</summary>
-            <param name="target">the object to be called or null if the call is to a static method.</param>
-            <param name="paramters">the parameters to the method.</param>
-            <returns>the return value for the method or null if it doesn't return anything.</returns>
-        </member>
-        <member name="T:MySoft.Web.FastCreateInstanceHandler">
-            <summary>Delegate for creating and object at runtime using the default constructor.</summary>
-            <returns>the newly created object.</returns>
-        </member>
-        <member name="T:MySoft.Web.FastPropertyGetHandler">
-            <summary>Delegate to get an arbitraty property at runtime.</summary>
-            <param name="target">the object instance whose property will be obtained.</param>
-            <returns>the property value.</returns>
-        </member>
-        <member name="T:MySoft.Web.FastPropertySetHandler">
-            <summary>Delegate to set an arbitrary property at runtime.</summary>
-            <param name="target">the object instance whose property will be modified.</param>
-            <param name="parameter"></param>
-        </member>
-        <member name="T:MySoft.Web.DynamicCalls">
-            <summary>Class with helper methods for dynamic invocation generating IL on the fly.</summary>
-        </member>
-        <member name="F:MySoft.Web.DynamicCalls.dictInvoker">
-            <summary>
-            用于存放GetMethodInvoker的Dictionary
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.DynamicCalls.dictCreator">
-            <summary>
-            用于存放GetInstanceCreator的Dictionary
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.DynamicCalls.GetInstanceCreator(System.Type)">
-            <summary>Gets the instance creator delegate that can be use to create instances of the specified type.</summary>
-            <param name="type">The type of the objects we want to create.</param>
-            <returns>A delegate that can be used to create the objects.</returns>
-        </member>
-        <member name="F:MySoft.Web.DynamicCalls.dictGetter">
-            <summary>
-            用于存放GetPropertyGetter的Dictionary
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.DynamicCalls.dictSetter">
-            <summary>
-            用于存放SetPropertySetter的Dictionary
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.DynamicCalls.EmitCastToReference(System.Reflection.Emit.ILGenerator,System.Type)">
-            <summary>Emits the cast to a reference, unboxing if needed.</summary>
-            <param name="il">The MSIL generator.</param>
-            <param name="type">The type to cast.</param>
-        </member>
-        <member name="M:MySoft.Web.DynamicCalls.EmitBoxIfNeeded(System.Reflection.Emit.ILGenerator,System.Type)">
-            <summary>Boxes a type if needed.</summary>
-            <param name="ilGenerator">The MSIL generator.</param>
-            <param name="type">The type.</param>
-        </member>
-        <member name="M:MySoft.Web.DynamicCalls.EmitFastInt(System.Reflection.Emit.ILGenerator,System.Int32)">
-            <summary>Emits code to save an integer to the evaluation stack.</summary>
-            <param name="ilGeneartor">The MSIL generator.</param>
-            <param name="value">The value to push.</param>
         </member>
         <member name="T:MySoft.Web.UI.CallbackParam">
             <summary>
@@ -538,6 +348,12 @@
             <param name="defvalue"></param>
             <returns></returns>
         </member>
+        <member name="M:MySoft.Web.UI.CallbackParam.ToString">
+            <summary>
+            返回原始值
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:MySoft.Web.UI.CallbackParams">
             <summary>
             返回Callback参数字典
@@ -550,11 +366,17 @@
             <param name="key"></param>
             <param name="value"></param>
         </member>
-        <member name="M:MySoft.Web.UI.CallbackParams.Exists(System.String)">
+        <member name="M:MySoft.Web.UI.CallbackParams.Contains(System.String)">
             <summary>
             判断是否存在key
             </summary>
             <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParams.ToNameValueCollection">
+            <summary>
+            返回NameValueCollection
+            </summary>
             <returns></returns>
         </member>
         <member name="P:MySoft.Web.UI.CallbackParams.Item(System.String)">
@@ -563,11 +385,6 @@
             </summary>
             <param name="key"></param>
             <returns></returns>
-        </member>
-        <member name="P:MySoft.Web.UI.CallbackParams.KeyValues">
-            <summary>
-            获取键及值
-            </summary>
         </member>
         <member name="T:MySoft.Web.UI.AjaxPage">
             <summary>
@@ -870,14 +687,6 @@
             <param name="strs">The STRS.</param>
             <returns>The script.</returns>
         </member>
-        <member name="M:MySoft.Web.Json.Converters.XmlNodeConverter.IsNamespaceAttribute(System.String,System.String@)">
-            <summary>
-            Checks if the attributeName is a namespace attribute.
-            </summary>
-            <param name="attributeName">Attribute name to test.</param>
-            <param name="prefix">The attribute name prefix if it has one, otherwise an empty string.</param>
-            <returns>True if attribute name is for a namespace attribute, otherwise false.</returns>
-        </member>
         <member name="T:MySoft.Web.UI.AjaxRequestPage">
             <summary>
             Ajax相关信息
@@ -976,111 +785,6 @@
             </summary>
             <param name="html"></param>
         </member>
-        <member name="T:MySoft.Web.Json.JsonWriterException">
-            <summary>
-            The exception thrown when an error occurs while reading Json text.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriterException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonWriterException"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriterException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonWriterException"/> class
-            with a specified error message.
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriterException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonWriterException"/> class
-            with a specified error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-            <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
-        </member>
-        <member name="T:MySoft.Web.Json.JsonToken">
-            <summary>
-            Specifies the type of Json token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.None">
-            <summary>
-            This is returned by the <see cref="T:MySoft.Web.Json.JsonReader"/> if a <see cref="M:MySoft.Web.Json.JsonReader.Read"/> method has not been called. 
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.StartObject">
-            <summary>
-            An object start token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.StartArray">
-            <summary>
-            An array start token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.PropertyName">
-            <summary>
-            An object property name.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Comment">
-            <summary>
-            A comment.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Integer">
-            <summary>
-            An interger.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Float">
-            <summary>
-            A float.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.String">
-            <summary>
-            A string.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Boolean">
-            <summary>
-            A boolean.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Null">
-            <summary>
-            A null token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Undefined">
-            <summary>
-            An undefined token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.EndObject">
-            <summary>
-            An object end token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.EndArray">
-            <summary>
-            An array end token.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Constructor">
-            <summary>
-            A JavaScript object constructor.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JsonToken.Date">
-            <summary>
-            A Date.
-            </summary>
-        </member>
         <member name="T:MySoft.Web.PageUtils">
             <summary>
             Provides utility helper methods for the rewriting HttpModule and HttpHandler.
@@ -1173,481 +877,6 @@
             </summary>
             <param name="t"></param>
             <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.Json.WriteState">
-            <summary>
-            Specifies the state of the <see cref="T:MySoft.Web.Json.JsonWriter"/>.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.WriteState.Error">
-            <summary>
-            An exception has been thrown, which has left the <see cref="T:MySoft.Web.Json.JsonWriter"/> in an invalid state.
-            You may call the <see cref="M:MySoft.Web.Json.JsonWriter.Close"/> method to put the <see cref="T:MySoft.Web.Json.JsonWriter"/> in the <c>Closed</c> state.
-            Any other <see cref="T:MySoft.Web.Json.JsonWriter"/> method calls results in an <see cref="T:System.InvalidOperationException"/> being thrown. 
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.WriteState.Closed">
-            <summary>
-            The <see cref="M:MySoft.Web.Json.JsonWriter.Close"/> method has been called. 
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.WriteState.Object">
-            <summary>
-            An object is being written. 
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.WriteState.Array">
-            <summary>
-            A array is being written.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.WriteState.Property">
-            <summary>
-            A property is being written.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.WriteState.Start">
-            <summary>
-            A write method has not been called.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.Formatting">
-            <summary>
-            Specifies formatting options for the <see cref="T:MySoft.Web.Json.JsonWriter"/>.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.Formatting.None">
-            <summary>
-            No special formatting is applied. This is the default.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.Formatting.Indented">
-            <summary>
-            Causes child objects to be indented according to the <see cref="P:MySoft.Web.Json.JsonWriter.Indentation"/> and <see cref="P:MySoft.Web.Json.JsonWriter.IndentChar"/> settings.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.JsonWriter">
-            <summary>
-            Represents a writer that provides a fast, non-cached, forward-only way of generating Json data.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.#ctor(System.IO.TextWriter)">
-            <summary>
-            Creates an instance of the <c>JsonWriter</c> class using the specified <see cref="T:System.IO.TextWriter"/>. 
-            </summary>
-            <param name="textWriter">The <c>TextWriter</c> to write to.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.Flush">
-            <summary>
-            Flushes whatever is in the buffer to the underlying streams and also flushes the underlying stream.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.Close">
-            <summary>
-            Closes this stream and the underlying stream.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteStartObject">
-            <summary>
-            Writes the beginning of a Json object.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteEndObject">
-            <summary>
-            Writes the end of a Json object.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteStartArray">
-            <summary>
-            Writes the beginning of a Json array.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteEndArray">
-            <summary>
-            Writes the end of an array.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WritePropertyName(System.String)">
-            <summary>
-            Writes the property name of a name/value pair on a Json object.
-            </summary>
-            <param name="name"></param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteEnd">
-            <summary>
-            Writes the end of the current Json object or array.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteNull">
-            <summary>
-            Writes a null value.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteUndefined">
-            <summary>
-            Writes an undefined value.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteRaw(System.String)">
-            <summary>
-            Writes raw JavaScript manually.
-            </summary>
-            <param name="javaScript">The raw JavaScript to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.String)">
-            <summary>
-            Writes a <see cref="T:System.String"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.String"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Int32)">
-            <summary>
-            Writes a <see cref="T:System.Int32"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Int32"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.UInt32)">
-            <summary>
-            Writes a <see cref="T:System.UInt32"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.UInt32"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Int64)">
-            <summary>
-            Writes a <see cref="T:System.Int64"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Int64"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.UInt64)">
-            <summary>
-            Writes a <see cref="T:System.UInt64"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.UInt64"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Single)">
-            <summary>
-            Writes a <see cref="T:System.Single"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Single"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Double)">
-            <summary>
-            Writes a <see cref="T:System.Double"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Double"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Boolean)">
-            <summary>
-            Writes a <see cref="T:System.Boolean"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Boolean"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Int16)">
-            <summary>
-            Writes a <see cref="T:System.Int16"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Int16"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.UInt16)">
-            <summary>
-            Writes a <see cref="T:System.UInt16"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.UInt16"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Char)">
-            <summary>
-            Writes a <see cref="T:System.Char"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Char"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Byte)">
-            <summary>
-            Writes a <see cref="T:System.Byte"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Byte"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.SByte)">
-            <summary>
-            Writes a <see cref="T:System.SByte"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.SByte"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.Decimal)">
-            <summary>
-            Writes a <see cref="T:System.Decimal"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.Decimal"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteValue(System.DateTime)">
-            <summary>
-            Writes a <see cref="T:System.DateTime"/> value.
-            </summary>
-            <param name="value">The <see cref="T:System.DateTime"/> value to write.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteComment(System.String)">
-            <summary>
-            Writes out a comment <code>/*...*/</code> containing the specified text. 
-            </summary>
-            <param name="text">Text to place inside the comment.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonWriter.WriteWhitespace(System.String)">
-            <summary>
-            Writes out the given white space.
-            </summary>
-            <param name="ws">The string of white space characters.</param>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonWriter.WriteState">
-            <summary>
-            Gets the state of the writer.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonWriter.Formatting">
-            <summary>
-            Indicates how the output is formatted.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonWriter.Indentation">
-            <summary>
-            Gets or sets how many IndentChars to write for each level in the hierarchy when <paramref name="Formatting"/> is set to <c>Formatting.Indented</c>.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonWriter.QuoteChar">
-            <summary>
-            Gets or sets which character to use to quote attribute values.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonWriter.IndentChar">
-            <summary>
-            Gets or sets which character to use for indenting when <paramref name="Formatting"/> is set to <c>Formatting.Indented</c>.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonWriter.QuoteName">
-            <summary>
-            Gets or sets a value indicating whether object pks will be surrounded with quotes.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.JsonReader">
-            <summary>
-            Represents a reader that provides fast, non-cached, forward-only access to serialized Json data.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonReader.#ctor(System.IO.TextReader)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonReader"/> class with the specified <see cref="T:System.IO.TextReader"/>.
-            </summary>
-            <param name="reader">The <c>TextReader</c> containing the XML data to read.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonReader.Read">
-            <summary>
-            Reads the next Json token from the stream.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonReader.Close">
-            <summary>
-            Changes the <see cref="T:MySoft.Web.Json.JsonReader.State"/> to Closed. 
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonReader.QuoteChar">
-            <summary>
-            Gets the quotation mark character used to enclose the value of a string.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonReader.TokenType">
-            <summary>
-            Gets the type of the current Json token. 
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonReader.Value">
-            <summary>
-            Gets the text value of the current Json token.
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.Json.JsonReader.ValueType">
-            <summary>
-            Gets The Common Language Runtime (CLR) type for the current Json token.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.JavaScriptConvert">
-            <summary>
-            Provides methods for converting between common language runtime types and JavaScript types.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JavaScriptConvert.True">
-            <summary>
-            Represents JavaScript's boolean value true as a string. This field is read-only.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JavaScriptConvert.False">
-            <summary>
-            Represents JavaScript's boolean value false as a string. This field is read-only.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JavaScriptConvert.Null">
-            <summary>
-            Represents JavaScript's null as a string. This field is read-only.
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.Json.JavaScriptConvert.Undefined">
-            <summary>
-            Represents JavaScript's undefined as a string. This field is read-only.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.DateTime)">
-            <summary>
-            Converts the <see cref="T:System.DateTime"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.DateTime"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Boolean)">
-            <summary>
-            Converts the <see cref="T:System.Boolean"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Boolean"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Char)">
-            <summary>
-            Converts the <see cref="T:System.Char"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Char"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Enum)">
-            <summary>
-            Converts the <see cref="T:System.Enum"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Enum"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Int32)">
-            <summary>
-            Converts the <see cref="T:System.Int32"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Int32"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Int16)">
-            <summary>
-            Converts the <see cref="T:System.Int16"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Int16"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.UInt16)">
-            <summary>
-            Converts the <see cref="T:System.UInt16"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.UInt16"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.UInt32)">
-            <summary>
-            Converts the <see cref="T:System.UInt32"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.UInt32"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Int64)">
-            <summary>
-            Converts the <see cref="T:System.Int64"/>  to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Int64"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.UInt64)">
-            <summary>
-            Converts the <see cref="T:System.UInt64"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.UInt64"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Single)">
-            <summary>
-            Converts the <see cref="T:System.Single"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Single"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Double)">
-            <summary>
-            Converts the <see cref="T:System.Double"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Double"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Byte)">
-            <summary>
-            Converts the <see cref="T:System.Byte"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Byte"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.SByte)">
-            <summary>
-            Converts the <see cref="T:System.SByte"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.SByte"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Decimal)">
-            <summary>
-            Converts the <see cref="T:System.Decimal"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.SByte"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Guid)">
-            <summary>
-            Converts the <see cref="T:System.Guid"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Guid"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.String)">
-            <summary>
-            Converts the <see cref="T:System.String"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.String"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.String,System.Char)">
-            <summary>
-            Converts the <see cref="T:System.String"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <param name="delimter">The string delimiter character.</param>
-            <returns>A Json string representation of the <see cref="T:System.String"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.ToString(System.Object)">
-            <summary>
-            Converts the <see cref="T:System.Object"/> to it's JavaScript string representation.
-            </summary>
-            <param name="value">The value to convert.</param>
-            <returns>A Json string representation of the <see cref="T:System.Object"/>.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.SerializeObject(System.Object)">
-            <summary>
-            Serializes the specified object to a Json object.
-            </summary>
-            <param name="value">The object to serialize.</param>
-            <returns>A Json string representation of the object.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.DeserializeObject(System.String)">
-            <summary>
-            Deserializes the specified object to a Json object.
-            </summary>
-            <param name="value">The object to deserialize.</param>
-            <returns>The deserialized object from the Json string.</returns>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptConvert.DeserializeObject(System.String,System.Type)">
-            <summary>
-            Deserializes the specified object to a Json object.
-            </summary>
-            <param name="value">The object to deserialize.</param>
-            <param name="type">The <see cref="T:System.Type"/> of object being deserialized.</param>
-            <returns>The deserialized object from the Json string.</returns>
         </member>
         <member name="T:MySoft.Web.ResponseFilter">
             <summary>
@@ -1768,59 +997,6 @@
             <summary>
             时间间隔
             </summary>
-        </member>
-        <member name="T:MySoft.Web.Converter.ObjectBuilder`1">
-            <summary>
-            对象构造器
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="T:MySoft.Web.Converter.ObjectBuilder">
-            <summary>
-            对象构造器
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Json.JsonSerializationException">
-            <summary>
-            The exception thrown when an error occurs during Json serialization or deserialization.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializationException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonSerializationException"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializationException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonSerializationException"/> class
-            with a specified error message.
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-        </member>
-        <member name="M:MySoft.Web.Json.JsonSerializationException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JsonSerializationException"/> class
-            with a specified error message and a reference to the inner exception that is the cause of this exception.
-            </summary>
-            <param name="message">The error message that explains the reason for the exception.</param>
-            <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
-        </member>
-        <member name="T:MySoft.Web.Json.JavaScriptObject">
-            <summary>
-            Represents a JavaScript object.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptObject.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JavaScriptObject"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Json.JavaScriptObject.#ctor(MySoft.Web.Json.JavaScriptObject)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MySoft.Web.Json.JavaScriptObject"/> class that
-            contains values copied from the specified <see cref="T:MySoft.Web.Json.JavaScriptObject"/>.
-            </summary>
-            <param name="javaScriptObject">The <see cref="T:MySoft.Web.Json.JavaScriptObject"/> whose elements are copied to the new object.</param>
         </member>
         <member name="F:MySoft.Web.UI.AjaxMethodAttribute.name">
             <summary>
@@ -2364,51 +1540,47 @@
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.ConvertTo``1(System.String,``0)">
+        <member name="M:MySoft.Web.WebUtils.ServUEncrypt(System.String)">
             <summary>
-            将value转换成对应的类型值
+            对字符串进行适应 ServU 的 MD5 加密
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
-            <param name="defaultValue"></param>
+            <param name="str"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.Serialize(System.Object)">
+        <member name="M:MySoft.Web.WebUtils.RandomSTR(System.Int32)">
             <summary>
-            将对象系列化成字符串
+            获取一个由26个小写字母组成的指定长度的随即字符串
             </summary>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.Deserialize(System.String,System.Type)">
-            <summary>
-            将字符串反系列化成对象
-            </summary>
-            <typeparam name="TObject"></typeparam>
-            <param name="JSONString"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.Deserialize``1(System.String)">
-            <summary>
-            将字符串反系列化成对象
-            </summary>
-            <typeparam name="TObject"></typeparam>
-            <param name="JSONString"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.GetTypeAttribute``1(System.Type)">
-            <summary>
-            获取Type对应的自定义属性
-            </summary>
-            <typeparam name="AttributeType"></typeparam>
-            <param name="type"></param>
+            <param name="intLong">指定长度</param>
             <returns></returns>
         </member>
         <member name="M:MySoft.Web.WebUtils.MD5Encrypt(System.String)">
             <summary>
-            对字符串进行MD5加密
+            对字符串进行普通md5加密
             </summary>
-            <param name="text"></param>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebUtils.NoneEncrypt(System.String,System.Int32)">
+            <summary>
+            对字符串进行加密（不可逆）
+            </summary>
+            <param name="Password">要加密的字符串</param>
+            <param name="Format">加密方式,0 is SHA1,1 is MD5</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebUtils.Encrypt(System.String)">
+            <summary>
+            对字符串进行加密
+            </summary>
+            <param name="Passowrd">待加密的字符串</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:MySoft.Web.WebUtils.Decrypt(System.String)">
+            <summary>
+            对字符串进行解密
+            </summary>
+            <param name="Passowrd">已加密的字符串</param>
             <returns></returns>
         </member>
         <member name="M:MySoft.Web.WebUtils.Encrypt(System.String,System.String)">
@@ -2585,6 +1757,264 @@
             实例化Ajax输出命名空间
             </summary>
             <param name="name"></param>
+        </member>
+        <member name="T:MySoft.Web.LinkStyle">
+            <summary>
+            分页样式
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Custom">
+            <summary>
+            Custom Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Digg">
+            <summary>
+            Digg Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Yahoo">
+            <summary>
+            Yahoo Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Meneame">
+            <summary>
+            Meneame Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Flickr">
+            <summary>
+            Flickr Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Sabrosus">
+            <summary>
+            Sabrosus Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Pagination">
+            <summary>
+            Pagination Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Scott">
+            <summary>
+            Scott Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Quotes">
+            <summary>
+            Quotes Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Black">
+            <summary>
+            Black Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Black2">
+            <summary>
+            Black2 Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.BlackRed">
+            <summary>
+            BlackRed Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Grayr">
+            <summary>
+            Grayr Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Yellow">
+            <summary>
+            Yellow Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Jogger">
+            <summary>
+            Jogger Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Starcraft2">
+            <summary>
+            Starcraft2 Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Tres">
+            <summary>
+            Tres Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Megas512">
+            <summary>
+            Megas512 Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Technorati">
+            <summary>
+            Technorati Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Youtube">
+            <summary>
+            Youtube Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Msdn">
+            <summary>
+            Msdn Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Badoo">
+            <summary>
+            Badoo Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Manu">
+            <summary>
+            Manu Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.GreenBlack">
+            <summary>
+            GreenBlack Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Viciao">
+            <summary>
+            Viciao Style
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.LinkStyle.Yahoo2">
+            <summary>
+            Yahoo2 Style
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.ButtonStyle">
+            <summary>
+            链接样式
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.ButtonStyle.Href">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.ButtonStyle.Button">
+            <summary>
+            按钮
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.HtmlPager">
+            <summary>
+            创建分页的html
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.HtmlPager.dataPage">
+            <summary>
+            定义一个IDataPage属性
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.HtmlPager.linkFormat">
+            <summary>
+            翻页时连接字符串
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.HtmlPager.linkSize">
+            <summary>
+            每屏连接条数
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.Core.DataPage)">
+            <summary>
+            初始化HtmlPager对象
+            </summary>
+            <param name="dataPage"></param>
+        </member>
+        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.Core.DataPage,System.String)">
+            <summary>
+            初始化HtmlPager对象
+            </summary>
+            <param name="page">对应的数据源</param>
+            <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
+        </member>
+        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.Core.DataPage,System.String,System.Int32)">
+            <summary>
+            初始化HtmlPager对象
+            </summary>
+            <param name="page">对应的数据源</param>
+            <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
+            <param name="linkSize">每屏连接条数</param>
+        </member>
+        <member name="M:MySoft.Web.HtmlPager.GetButtonLink(System.Int32)">
+            <summary>
+            获取按钮事件
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.LinkFormat">
+            <summary>
+            翻页时连接字符串
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.LinkSize">
+            <summary>
+            每屏连接条数
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.LinkStyle">
+            <summary>
+            链接样式
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.ButtonStyle">
+            <summary>
+            按钮样式
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.PageID">
+            <summary>
+            页面参数ID
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.PrevPageTitle">
+            <summary>
+            上一页标题
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.NextPageTitle">
+            <summary>
+            下一页标题
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.ShowBracket">
+            <summary>
+            是否显示链接中的括号
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.ShowGotoPage">
+            <summary>
+            显示转到某页
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.ShowRecord">
+            <summary>
+            显示记录信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.PagerCss">
+            <summary>
+            分页样式
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.HtmlPager.DataPage">
+            <summary>
+            获取或设置DataPage
+            </summary>
         </member>
     </members>
 </doc>
