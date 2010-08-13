@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Reflection;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -308,7 +309,7 @@ namespace MySoft.Data
             //按要求改变值
             foreach (DataRow row in this.Rows)
             {
-                row[changeName] = revalue(DataUtils.ConvertValue<T>(row[readName]));
+                row[changeName] = revalue(CoreUtils.ConvertValue<T>(row[readName]));
             }
         }
 

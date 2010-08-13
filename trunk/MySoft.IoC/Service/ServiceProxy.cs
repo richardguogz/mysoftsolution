@@ -5,6 +5,7 @@ using System.Threading;
 using System.Diagnostics;
 
 using Castle.Windsor;
+using MySoft.Core;
 
 namespace MySoft.IoC.Service
 {

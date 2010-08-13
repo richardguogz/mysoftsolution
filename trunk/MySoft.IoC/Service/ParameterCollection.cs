@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using MySoft.Core.Json;
 
 namespace MySoft.IoC.Service
 {
@@ -22,7 +23,7 @@ namespace MySoft.IoC.Service
         {
             get
             {
-                MySoft.IoC.Json.JSONObject json = new MySoft.IoC.Json.JSONObject();
+                JSONObject json = new JSONObject();
                 foreach (string key in parmValues.Keys)
                 {
                     json.put(key, parmValues[key]);
@@ -32,7 +33,7 @@ namespace MySoft.IoC.Service
             }
             set
             {
-                MySoft.IoC.Json.JSONObject json = new MySoft.IoC.Json.JSONObject(value);
+                JSONObject json = new JSONObject(value);
                 parmValues.Clear();
                 IEnumerator en = json.keys();
                 while (en.MoveNext())

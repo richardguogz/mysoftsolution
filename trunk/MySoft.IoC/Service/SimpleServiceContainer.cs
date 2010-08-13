@@ -13,6 +13,7 @@ using Castle.Windsor.Configuration.Interpreters;
 using Castle.Facilities.Startable;
 
 using MySoft.IoC.Service.Services;
+using MySoft.Core;
 
 namespace MySoft.IoC.Service
 {

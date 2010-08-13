@@ -234,9 +234,13 @@
     <Content Include="WebUI\htmleditor\smile\smile48.gif" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MySoft.Data\MySoft.Data.csproj">
-      <Project>{7B603EE2-B9F0-445E-817F-F058F43E5F48}</Project>
-      <Name>MySoft.Data</Name>
+    <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">
+      <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
+      <Name>MySoft.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySoft.Web\MySoft.Web.csproj">
+      <Project>{D2610145-763C-4C1E-8853-06ACA8FF4C3E}</Project>
+      <Name>MySoft.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

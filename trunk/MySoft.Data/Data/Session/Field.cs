@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Data;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -749,7 +750,7 @@ namespace MySoft.Data
                 StringBuilder sb = new StringBuilder();
                 foreach (object value in values)
                 {
-                    string pName = DataUtils.MakeUniqueKey(30, "$p");
+                    string pName = CoreUtils.MakeUniqueKey(30, "$p");
                     SQLParameter p = new SQLParameter(pName);
                     p.Value = value;
 
@@ -826,7 +827,7 @@ namespace MySoft.Data
                     throw new MySoftException("当值为null时只能应用于=与<>操作！");
             }
 
-            string pName = DataUtils.MakeUniqueKey(30, "$p");
+            string pName = CoreUtils.MakeUniqueKey(30, "$p");
             SQLParameter p = new SQLParameter(pName);
             p.Value = value;
 

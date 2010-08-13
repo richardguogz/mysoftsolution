@@ -49,47 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binder\ToGuid.cs" />
-    <Compile Include="Binder\ToGuidArray.cs" />
     <Compile Include="Cache\CacheControlConfigurationSection.cs" />
     <Compile Include="Cache\CacheControlConfiguration.cs" />
+    <Compile Include="Utils\HtmlPager.cs" />
+    <Compile Include="Utils\WebUtils.cs" />
     <Compile Include="WebUI\Ajax\AjaxNamespaceAttribute.cs" />
-    <Compile Include="Common\DynamicCalls.cs" />
-    <Compile Include="Binder\ConverterFactory.cs" />
-    <Compile Include="Binder\IStringConverter.cs" />
-    <Compile Include="Binder\ObjectBuilder.cs" />
-    <Compile Include="Binder\ToArray.cs" />
-    <Compile Include="Binder\ToBool.cs" />
-    <Compile Include="Binder\ToBoolArray.cs" />
-    <Compile Include="Binder\ToByte.cs" />
-    <Compile Include="Binder\ToByteArray.cs" />
-    <Compile Include="Binder\ToChar.cs" />
-    <Compile Include="Binder\ToCharArray.cs" />
-    <Compile Include="Binder\ToDateTime.cs" />
-    <Compile Include="Binder\ToDateTimeArray.cs" />
-    <Compile Include="Binder\ToDecimal.cs" />
-    <Compile Include="Binder\ToDecimalArray.cs" />
-    <Compile Include="Binder\ToDouble.cs" />
-    <Compile Include="Binder\ToDoubleArray.cs" />
-    <Compile Include="Binder\ToFloat.cs" />
-    <Compile Include="Binder\ToFloatArray.cs" />
-    <Compile Include="Binder\ToInt16.cs" />
-    <Compile Include="Binder\ToInt16Array.cs" />
-    <Compile Include="Binder\ToInt32.cs" />
-    <Compile Include="Binder\ToInt32Array.cs" />
-    <Compile Include="Binder\ToLong.cs" />
-    <Compile Include="Binder\ToLongArray.cs" />
-    <Compile Include="Binder\ToSbyte.cs" />
-    <Compile Include="Binder\ToSbyteArray.cs" />
-    <Compile Include="Binder\ToString.cs" />
-    <Compile Include="Binder\ToStringArray.cs" />
-    <Compile Include="Binder\ToUInt16.cs" />
-    <Compile Include="Binder\ToUInt16Array.cs" />
-    <Compile Include="Binder\ToUInt23.cs" />
-    <Compile Include="Binder\ToUInt32Array.cs" />
-    <Compile Include="Binder\ToULong.cs" />
-    <Compile Include="Binder\ToULongArray.cs" />
-    <Compile Include="Binder\PropertyHandler.cs" />
     <Compile Include="Static\UpdateDependency.cs" />
     <Compile Include="Static\StaticPageUtils.cs" />
     <Compile Include="Static\StaticPageItem.cs" />
@@ -105,31 +69,6 @@
     <Compile Include="Handler\StaticPageHandler.cs" />
     <Compile Include="Handler\PageHandlerFactory.cs" />
     <Compile Include="Handler\ResponseFilter.cs" />
-    <Compile Include="Common\WebUtils.cs" />
-    <Compile Include="Json\Converters\HtmlColorConverter.cs" />
-    <Compile Include="Json\Converters\XmlNodeConverter.cs" />
-    <Compile Include="Json\Identifier.cs" />
-    <Compile Include="Json\JavaScriptArray.cs" />
-    <Compile Include="Json\JavaScriptConstructor.cs" />
-    <Compile Include="Json\JavaScriptConvert.cs" />
-    <Compile Include="Json\JavaScriptObject.cs" />
-    <Compile Include="Json\JavaScriptParameters.cs" />
-    <Compile Include="Json\JavaScriptUtils.cs" />
-    <Compile Include="Json\JsonConverter.cs" />
-    <Compile Include="Json\JsonConverterCollection.cs" />
-    <Compile Include="Json\JsonHandler.cs" />
-    <Compile Include="Json\JsonReader.cs" />
-    <Compile Include="Json\JsonReaderException.cs" />
-    <Compile Include="Json\JsonSerializationException.cs" />
-    <Compile Include="Json\JsonSerializer.cs" />
-    <Compile Include="Json\JsonToken.cs" />
-    <Compile Include="Json\JsonWriter.cs" />
-    <Compile Include="Json\JsonWriterException.cs" />
-    <Compile Include="Json\StringBuffer.cs" />
-    <Compile Include="Json\Utilities\CollectionUtils.cs" />
-    <Compile Include="Json\Utilities\HandlerBase.cs" />
-    <Compile Include="Json\Utilities\ReflectionUtils.cs" />
-    <Compile Include="Json\Utilities\StringUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebUI\Ajax\AjaxRequest.cs" />
     <Compile Include="WebUI\Ajax\CallbackParam.cs" />
@@ -161,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\pager.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">
+      <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
+      <Name>MySoft.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

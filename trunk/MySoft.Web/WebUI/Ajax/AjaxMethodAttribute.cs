@@ -23,6 +23,10 @@ namespace MySoft.Web.UI
             {
                 return name;
             }
+            set
+            {
+                name = value;
+            }
         }
 
         private bool async;
@@ -31,6 +35,10 @@ namespace MySoft.Web.UI
             get
             {
                 return async;
+            }
+            set
+            {
+                async = value;
             }
         }
 

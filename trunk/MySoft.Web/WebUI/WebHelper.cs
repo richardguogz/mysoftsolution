@@ -4,6 +4,7 @@ using System.Collections;
 using System.Web.UI;
 using System.Text;
 using System.Resources;
+using MySoft.Core;
 
 namespace MySoft.Web
 {
@@ -48,7 +49,7 @@ namespace MySoft.Web
                 return errorReturn;
             }
 
-            return WebUtils.ConvertTo<TReturn>(retStr, errorReturn);
+            return CoreUtils.ConvertTo<TReturn>(retStr, errorReturn);
         }
 
         /// <summary>

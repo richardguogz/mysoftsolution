@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using System.Collections.Specialized;
+using MySoft.Core;
 
 namespace MySoft.Web.UI
 {
@@ -44,9 +46,13 @@ namespace MySoft.Web.UI
         /// <returns></returns>
         public T To<T>(T defvalue)
         {
-            return WebUtils.ConvertTo<T>(this.keyValue, defvalue);
+            return CoreUtils.ConvertTo<T>(this.keyValue, defvalue);
         }
 
+        /// <summary>
+        /// 返回原始值
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.keyValue;
@@ -91,7 +97,7 @@ namespace MySoft.Web.UI
         /// <param name="value"></param>
         public void Add(string key, string value)
         {
-            if (Exists(key))
+            if (Contains(key))
             {
                 throw new Exception("已经存在此Key的值");
             }
@@ -103,26 +109,24 @@ namespace MySoft.Web.UI
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public bool Exists(string key)
+        public bool Contains(string key)
         {
             return dictValues.ContainsKey(key);
         }
 
         /// <summary>
-        /// 获取键及值
+        /// 返回NameValueCollection
         /// </summary>
-        public IList<KeyValuePair<string, CallbackParam>> KeyValues
+        /// <returns></returns>
+        public NameValueCollection ToNameValueCollection()
         {
-            get
+            NameValueCollection values = new NameValueCollection();
+            foreach (KeyValuePair<string, CallbackParam> pair in dictValues)
             {
-                var list = new List<KeyValuePair<string, CallbackParam>>();
-                foreach (KeyValuePair<string, CallbackParam> pair in dictValues)
-                {
-                    list.Add(pair);
-                }
-
-                return list;
+                values.Add(pair.Key, pair.Value.ToString());
             }
+
+            return values;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using MySoft.IoC.Service;
+using MySoft.Core;
 
 namespace MySoft.IoC.Service
 {

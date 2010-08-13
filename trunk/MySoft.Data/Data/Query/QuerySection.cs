@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Common;
 using System.Text.RegularExpressions;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -463,7 +464,7 @@ namespace MySoft.Data
         public QuerySection<TSub> SubQuery<TSub>(string aliasName)
             where TSub : Entity
         {
-            TSub entity = DataUtils.CreateInstance<TSub>();
+            TSub entity = CoreUtils.CreateInstance<TSub>();
             string tableName = entity.GetTable().Name;
             QuerySection<TSub> query = new QuerySection<TSub>(new FromSection<TSub>(tableName, aliasName), dbProvider, dbTran, pagingField);
             query.SqlString = "(" + QueryString + ") " + (aliasName != null ? "{0}" + aliasName + "{1}" : tableName);
@@ -863,7 +864,7 @@ namespace MySoft.Data
         public TResult ToScalar<TResult>()
         {
             object obj = this.ToScalar();
-            return DataUtils.ConvertValue<TResult>(obj);
+            return CoreUtils.ConvertValue<TResult>(obj);
         }
 
         /// <summary>
@@ -927,7 +928,7 @@ namespace MySoft.Data
             object obj = GetCache<T>("Count", cacheKey);
             if (obj != null)
             {
-                return DataUtils.ConvertValue<int>(obj);
+                return CoreUtils.ConvertValue<int>(obj);
             }
 
             //添加参数到Command中
@@ -935,7 +936,7 @@ namespace MySoft.Data
 
             object value = dbProvider.ExecuteScalar(queryCommand, dbTran);
 
-            int ret = DataUtils.ConvertValue<int>(value);
+            int ret = CoreUtils.ConvertValue<int>(value);
 
             SetCache<T>("Count", cacheKey, ret);
 
@@ -1024,7 +1025,7 @@ namespace MySoft.Data
                 {
                     SourceList<TResult> list = new SourceList<TResult>();
 
-                    FastCreateInstanceHandler creator = DataUtils.GetFastInstanceCreator(typeof(TResult));
+                    FastCreateInstanceHandler creator = CoreUtils.GetFastInstanceCreator(typeof(TResult));
 
                     while (reader.Read())
                     {

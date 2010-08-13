@@ -2,128 +2,14 @@ using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Management;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Security;
-using System.IO;
 using Microsoft.VisualBasic;
-using System.Security.Cryptography;
 
 namespace MySoft.Common
 {
-    /// <summary> 
-    /// 加密
-    /// </summary> 
-    public class AESEncrypt
-    {
-
-        private static byte[] Keys = { 0x41, 0x72, 0x65, 0x79, 0x6F, 0x75, 0x6D, 0x79, 0x53, 0x6E, 0x6F, 0x77, 0x6D, 0x61, 0x6E, 0x3F };
-
-        public static string Encode(string encryptString, string encryptKey)
-        {
-            encryptKey = FunctionUtils.Text.GetSubString(encryptKey, 32, "");
-            encryptKey = encryptKey.PadRight(32, ' ');
-
-            RijndaelManaged rijndaelProvider = new RijndaelManaged();
-            rijndaelProvider.Key = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
-            rijndaelProvider.IV = Keys;
-            ICryptoTransform rijndaelEncrypt = rijndaelProvider.CreateEncryptor();
-
-            byte[] inputData = Encoding.UTF8.GetBytes(encryptString);
-            byte[] encryptedData = rijndaelEncrypt.TransformFinalBlock(inputData, 0, inputData.Length);
-
-            return Convert.ToBase64String(encryptedData);
-        }
-
-
-        public static string Decode(string decryptString, string decryptKey)
-        {
-            try
-            {
-                decryptKey = FunctionUtils.Text.GetSubString(decryptKey, 32, "");
-                decryptKey = decryptKey.PadRight(32, ' ');
-
-                RijndaelManaged rijndaelProvider = new RijndaelManaged();
-                rijndaelProvider.Key = Encoding.UTF8.GetBytes(decryptKey);
-                rijndaelProvider.IV = Keys;
-                ICryptoTransform rijndaelDecrypt = rijndaelProvider.CreateDecryptor();
-
-                byte[] inputData = Convert.FromBase64String(decryptString);
-                byte[] decryptedData = rijndaelDecrypt.TransformFinalBlock(inputData, 0, inputData.Length);
-
-                return Encoding.UTF8.GetString(decryptedData);
-            }
-            catch
-            {
-                return "";
-            }
-
-        }
-
-    }
-
-    /// <summary> 
-    /// 加密
-    /// </summary> 
-    public class DESEncrypt
-    {
-        //默认密钥向量
-        private static byte[] Keys = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
-
-
-        /// <summary>
-        /// DES加密字符串
-        /// </summary>
-        /// <param name="encryptString">待加密的字符串</param>
-        /// <param name="encryptKey">加密密钥,要求为8位</param>
-        /// <returns>加密成功返回加密后的字符串,失败返回源串</returns>
-        public static string Encode(string encryptString, string encryptKey)
-        {
-            encryptKey = FunctionUtils.Text.GetSubString(encryptKey, 8, "");
-            encryptKey = encryptKey.PadRight(8, ' ');
-            byte[] rgbKey = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 8));
-            byte[] rgbIV = Keys;
-            byte[] inputByteArray = Encoding.UTF8.GetBytes(encryptString);
-            DESCryptoServiceProvider dCSP = new DESCryptoServiceProvider();
-            MemoryStream mStream = new MemoryStream();
-            CryptoStream cStream = new CryptoStream(mStream, dCSP.CreateEncryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
-            cStream.Write(inputByteArray, 0, inputByteArray.Length);
-            cStream.FlushFinalBlock();
-            return Convert.ToBase64String(mStream.ToArray());
-
-        }
-
-        /// <summary>
-        /// DES解密字符串
-        /// </summary>
-        /// <param name="decryptString">待解密的字符串</param>
-        /// <param name="decryptKey">解密密钥,要求为8位,和加密密钥相同</param>
-        /// <returns>解密成功返回解密后的字符串,失败返源串</returns>
-        public static string Decode(string decryptString, string decryptKey)
-        {
-            try
-            {
-                decryptKey = FunctionUtils.Text.GetSubString(decryptKey, 8, "");
-                decryptKey = decryptKey.PadRight(8, ' ');
-                byte[] rgbKey = Encoding.UTF8.GetBytes(decryptKey);
-                byte[] rgbIV = Keys;
-                byte[] inputByteArray = Convert.FromBase64String(decryptString);
-                DESCryptoServiceProvider DCSP = new DESCryptoServiceProvider();
-
-                MemoryStream mStream = new MemoryStream();
-                CryptoStream cStream = new CryptoStream(mStream, DCSP.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
-                cStream.Write(inputByteArray, 0, inputByteArray.Length);
-                cStream.FlushFinalBlock();
-                return Encoding.UTF8.GetString(mStream.ToArray());
-            }
-            catch
-            {
-                return null;
-            }
-        }
-    }
-
     /// <summary>
     /// Function ：功能函数类，字符串处理类等
     /// </summary>
@@ -469,14 +355,12 @@ namespace MySoft.Common
             return strResult;
         }
 
-
-
         /// <summary>
         /// 转换文件路径中不规则字符
         /// </summary>
         /// <param name="path"></param>
         /// <returns>string</returns>
-        public static string convertDirURL(string path)
+        public static string ConvertDirURL(string path)
         {
             return AddLast(path.Replace("/", "\\"), "\\");
         }
@@ -486,7 +370,7 @@ namespace MySoft.Common
         /// </summary>
         /// <param name="str"></param>
         /// <returns>string</returns>
-        public static string convertXmlString(string str)
+        public static string ConvertXmlString(string str)
         {
             return "<![CDATA[" + str + "]]>";
         }
@@ -524,7 +408,6 @@ namespace MySoft.Common
 
             return intResult;
         }
-
 
         /// <summary>
         /// 获取一个URL中引用的文件名称（包括后缀符）
@@ -674,12 +557,13 @@ namespace MySoft.Common
 
             return strResult;
         }
+
         /// <summary>
         /// 对字符串进行 HTML 编码操作
         /// </summary>
         /// <param name="str">字符串</param>
         /// <returns></returns>
-        public static string strEncode(string str)
+        public static string HtmlEncode(string str)
         {
             str = str.Replace("&", "&amp;");
             str = str.Replace("'", "''");
@@ -697,7 +581,7 @@ namespace MySoft.Common
         /// </summary>
         /// <param name="str">字符串</param>
         /// <returns></returns>
-        public static string strDecode(string str)
+        public static string HtmlDecode(string str)
         {
             str = str.Replace("<br>", "\n");
             str = str.Replace("&gt;", ">");
@@ -846,93 +730,6 @@ namespace MySoft.Common
             else
                 return true;
         }
-        #endregion
-
-        #region 对字符串的加密/解密
-
-        /// <summary>
-        /// 对字符串进行适应 ServU 的 MD5 加密
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static string ServUEncrypt(string str)
-        {
-            string strResult = "";
-            strResult = Text.RandomSTR(2);
-            str = strResult + str;
-            str = NoneEncrypt(str, 1);
-            str = strResult + str;
-
-            return str;
-        }
-
-        /// <summary>
-        /// 对字符串进行普通md5加密
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static string MD5Encrypt(string str)
-        {
-            str = NoneEncrypt(str, 1);
-            return str;
-        }
-
-        /// <summary>
-        /// 对字符串进行加密（不可逆）
-        /// </summary>
-        /// <param name="Password">要加密的字符串</param>
-        /// <param name="Format">加密方式,0 is SHA1,1 is MD5</param>
-        /// <returns></returns>
-        public static string NoneEncrypt(string Password, int Format)
-        {
-            string strResult = "";
-            switch (Format)
-            {
-                case 0:
-                    strResult = FormsAuthentication.HashPasswordForStoringInConfigFile(Password, "SHA1");
-                    break;
-                case 1:
-                    strResult = FormsAuthentication.HashPasswordForStoringInConfigFile(Password, "MD5");
-                    break;
-                default:
-                    strResult = Password;
-                    break;
-            }
-
-            return strResult;
-        }
-
-
-        /// <summary>
-        /// 对字符串进行加密
-        /// </summary>
-        /// <param name="Passowrd">待加密的字符串</param>
-        /// <returns>string</returns>
-        public static string Encrypt(string Passowrd)
-        {
-            string strResult = "";
-
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(Passowrd, true, 2);
-            strResult = FormsAuthentication.Encrypt(ticket).ToString();
-
-            return strResult;
-        }
-
-
-        /// <summary>
-        /// 对字符串进行解密
-        /// </summary>
-        /// <param name="Passowrd">已加密的字符串</param>
-        /// <returns></returns>
-        public static string Decrypt(string Passowrd)
-        {
-            string strResult = "";
-
-            strResult = FormsAuthentication.Decrypt(Passowrd).Name.ToString();
-
-            return strResult;
-        }
-
         #endregion
 
         #region 构造获取分页操作SQL语句
@@ -1621,7 +1418,6 @@ namespace MySoft.Common
                 }
                 return strResult;
             }
-
 
             /// <summary>
             /// 返回字符串的真实长度，一个汉字字符相当于两个单位长度

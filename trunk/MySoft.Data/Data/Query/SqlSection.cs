@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Common;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -186,7 +187,7 @@ namespace MySoft.Data
         {
             object obj = this.ToScalar();
             if (obj == null) return default(TResult);
-            return DataUtils.ConvertValue<TResult>(obj);
+            return CoreUtils.ConvertValue<TResult>(obj);
         }
 
         #region Ë½ÓÐ·½·¨
@@ -199,7 +200,7 @@ namespace MySoft.Data
                 using (ISourceReader reader = dbProvider.ExecuteReader(cmd, dbTran))
                 {
                     SourceList<T> list = new SourceList<T>();
-                    FastCreateInstanceHandler creator = DataUtils.GetFastInstanceCreator(typeof(T));
+                    FastCreateInstanceHandler creator = CoreUtils.GetFastInstanceCreator(typeof(T));
 
                     while (reader.Read())
                     {

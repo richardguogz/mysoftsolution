@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -145,7 +146,7 @@ namespace MySoft.Data
                 }
                 else
                 {
-                    Table table = DataUtils.CreateInstance<T>().GetTable();
+                    Table table = CoreUtils.CreateInstance<T>().GetTable();
                     dictTable.Add(typeof(T), table);
 
                     return table;

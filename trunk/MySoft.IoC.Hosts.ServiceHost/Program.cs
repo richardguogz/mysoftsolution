@@ -4,6 +4,7 @@ using System.Text;
 
 using MySoft.IoC.Remoting;
 using MySoft.IoC.Service;
+using MySoft.Core;
 
 namespace MySoft.IoC.Hosts.ServiceHost
 {

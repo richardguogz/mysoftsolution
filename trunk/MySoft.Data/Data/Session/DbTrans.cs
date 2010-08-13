@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using MySoft.Data;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -827,7 +828,7 @@ namespace MySoft.Data
 
             object retVal;
             int ret = dbProvider.Insert<ViewEntity>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, true, out retVal);
-            identityValue = DataUtils.ConvertValue<TResult>(retVal);
+            identityValue = CoreUtils.ConvertValue<TResult>(retVal);
 
             return ret;
         }

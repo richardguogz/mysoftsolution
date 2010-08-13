@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -23,7 +24,7 @@ namespace MySoft.Data
             else
                 this.section = new FromSection<T>(null, null, table);
 
-            this.section.EntityList.Add(DataUtils.CreateInstance<T>());
+            this.section.EntityList.Add(CoreUtils.CreateInstance<T>());
         }
 
         #region 不带别名

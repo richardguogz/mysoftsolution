@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Configuration;
 using MySoft.Data;
+using MySoft.Core;
 
 namespace MySoft.Data
 {

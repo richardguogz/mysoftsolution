@@ -8,6 +8,7 @@ using System.Web;
 using System.Collections.Specialized;
 using System.Web.Caching;
 using System.Threading;
+using MySoft.Core;
 
 namespace MySoft.Web.UI
 {
@@ -264,7 +265,7 @@ namespace MySoft.Web.UI
                         if (info.EnableAjaxTemplate && templatePath != null)
                         {
                             string templateString = LoadTemplate(templatePath);
-                            html = "{ data : " + html + ",\r\njst : " + WebUtils.Serialize(templateString) + " }";
+                            html = "{ data : " + html + ",\r\njst : " + CoreUtils.Serialize(templateString) + " }";
                         }
 
                         //将数据放入缓存
@@ -383,7 +384,7 @@ namespace MySoft.Web.UI
         /// </summary>
         private object GetObject(string paramsKey, Type type)
         {
-            return WebUtils.Deserialize(WebHelper.GetRequestParam<string>(info.CurrentPage.Request, paramsKey, ""), type);
+            return CoreUtils.Deserialize(WebHelper.GetRequestParam<string>(info.CurrentPage.Request, paramsKey, ""), type);
         }
 
         /// <summary>
@@ -395,7 +396,7 @@ namespace MySoft.Web.UI
             info.CurrentPage.Response.Clear();
 
             if (param != null)
-                info.CurrentPage.Response.Write(WebUtils.Serialize(param));
+                info.CurrentPage.Response.Write(CoreUtils.Serialize(param));
             else
                 info.CurrentPage.Response.ContentType = "image/gif";
 
@@ -411,7 +412,7 @@ namespace MySoft.Web.UI
         private void WriteToBuffer(AjaxMethodInfo[] methods)
         {
             info.CurrentPage.Response.Clear();
-            info.CurrentPage.Response.Write(WebUtils.Serialize(methods));
+            info.CurrentPage.Response.Write(CoreUtils.Serialize(methods));
             info.CurrentPage.Response.Cache.SetNoStore();
             info.CurrentPage.Response.Flush();
             info.CurrentPage.Response.End();

@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Text;
 using System.Text.RegularExpressions;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data.Oracle
 {

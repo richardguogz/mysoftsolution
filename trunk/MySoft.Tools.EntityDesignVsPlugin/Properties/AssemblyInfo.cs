@@ -10,5 +10,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("2.7.5.*")]
-[assembly: AssemblyFileVersion("2.7.510.0805")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.010.0812")]

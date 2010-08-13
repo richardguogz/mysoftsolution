@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -30,7 +31,7 @@ namespace MySoft.Data
 
         internal FromSection()
         {
-            this.fromEntity = DataUtils.CreateInstance<T>();
+            this.fromEntity = CoreUtils.CreateInstance<T>();
             this.fromTable = this.fromEntity.GetTable();
         }
 
@@ -560,7 +561,7 @@ namespace MySoft.Data
         private FromSection<T> Join<TJoin>(Table table, WhereClip onWhere, JoinType joinType)
             where TJoin : Entity
         {
-            TJoin entity = DataUtils.CreateInstance<TJoin>();
+            TJoin entity = CoreUtils.CreateInstance<TJoin>();
             this.entityList.Add(entity);
 
             if ((IField)query.PagingField == null)
@@ -592,7 +593,7 @@ namespace MySoft.Data
             where TJoin : Entity
         {
 
-            TJoin entity = DataUtils.CreateInstance<TJoin>();
+            TJoin entity = CoreUtils.CreateInstance<TJoin>();
             entity.GetTable().As(aliasName);
             this.entityList.Add(entity);
 

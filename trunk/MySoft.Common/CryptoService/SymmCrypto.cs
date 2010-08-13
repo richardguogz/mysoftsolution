@@ -10,7 +10,6 @@ namespace MySoft.Common
     /// </summary>
     public class SymmCrypto
     {
-
         /// <summary>
         /// 加密/解密算法的方式
         /// </summary>

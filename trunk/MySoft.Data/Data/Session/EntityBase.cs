@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySoft.Data.Design;
 using System.Data;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -85,7 +86,7 @@ namespace MySoft.Data
                 IDictionary<string, object> dict = new Dictionary<string, object>();
                 foreach (Field f in GetFields())
                 {
-                    object value = DataUtils.GetPropertyValue(this, f.PropertyName);
+                    object value = CoreUtils.GetPropertyValue(this, f.PropertyName);
                     dict[f.OriginalName] = value;
                 }
                 return dict;
@@ -126,7 +127,7 @@ namespace MySoft.Data
         {
             lock (this)
             {
-                return DataUtils.CloneObject(this);
+                return CoreUtils.CloneObject(this);
             }
         }
 

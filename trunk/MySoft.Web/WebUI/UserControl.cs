@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Text;
 using MySoft.Web;
+using MySoft.Core;
 
 namespace MySoft.Web.UI
 {
@@ -52,18 +53,18 @@ namespace MySoft.Web.UI
             sb.Append("var " + ObjectName + " = ");
             if (values == null)
             {
-                sb.Append(WebUtils.Serialize(values) + ";\r\n");
+                sb.Append(CoreUtils.Serialize(values) + ";\r\n");
             }
             else
             {
                 if (values.Length == 1)
                 {
                     object value = values[0];
-                    sb.Append(WebUtils.Serialize(values[0]) + ";\r\n");
+                    sb.Append(CoreUtils.Serialize(values[0]) + ";\r\n");
                 }
                 else
                 {
-                    sb.Append(WebUtils.Serialize(values) + ";\r\n");
+                    sb.Append(CoreUtils.Serialize(values) + ";\r\n");
                 }
             }
             WebUtils.RegisterPageScript(this.Page, sb.ToString());
@@ -123,7 +124,7 @@ namespace MySoft.Web.UI
         /// <returns></returns>
         public static T ConvertTo<T>(string value, T outValue)
         {
-            return WebUtils.ConvertTo<T>(value, outValue);
+            return CoreUtils.ConvertTo<T>(value, outValue);
         }
 
         /// <summary>

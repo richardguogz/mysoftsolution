@@ -1,7 +1,7 @@
-using  System;  
-using  System.Security.Cryptography;  
-using  System.IO;  
-using  System.Text;
+using System;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
 
 namespace MySoft.Common
 {
@@ -10,13 +10,6 @@ namespace MySoft.Common
     /// </summary>
     public class DESCrypto
     {
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        public DESCrypto()
-        {
-        }
-
         #region 加密方法
         /// <summary>
         /// 加密方法
@@ -252,6 +245,5 @@ namespace MySoft.Common
             return ms.ToArray();
         }
         #endregion
-
     }
 }

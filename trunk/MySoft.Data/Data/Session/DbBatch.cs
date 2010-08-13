@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
 using System.Threading;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -180,7 +181,7 @@ namespace MySoft.Data
                 //给标识列赋值
                 if (retVal != null)
                 {
-                    DataUtils.SetPropertyValue(entity, entity.IdentityField.PropertyName, retVal);
+                    CoreUtils.SetPropertyValue(entity, entity.IdentityField.PropertyName, retVal);
                 }
             }
             else
@@ -223,7 +224,7 @@ namespace MySoft.Data
             List<FieldValue> fvlist = DataUtils.CreateFieldValue(fields, values, true);
             object retValue;
             int ret = Insert<T>(table, fvlist, out retValue);
-            retVal = DataUtils.ConvertValue<TResult>(retValue);
+            retVal = CoreUtils.ConvertValue<TResult>(retValue);
 
             return ret;
         }
@@ -253,7 +254,7 @@ namespace MySoft.Data
             int val = 0;
             retVal = null;
 
-            T entity = DataUtils.CreateInstance<T>();
+            T entity = CoreUtils.CreateInstance<T>();
             if (useBatch)
             {
                 DbCommand cmd = dbProvider.CreateInsert<T>(table, fvlist, entity.IdentityField, entity.SequenceName);

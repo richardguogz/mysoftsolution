@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Reflection;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -178,8 +179,8 @@ namespace MySoft.Data
 
             foreach (T t in this)
             {
-                object obj = DataUtils.GetPropertyValue(t, groupName);
-                TResult value = DataUtils.ConvertValue<TResult>(obj);
+                object obj = CoreUtils.GetPropertyValue(t, groupName);
+                TResult value = CoreUtils.ConvertValue<TResult>(obj);
                 if (!group.ContainsKey(value))
                 {
                     group.Add(value, new SourceList<T>());
@@ -226,7 +227,7 @@ namespace MySoft.Data
                 DataRow dtRow = dt.NewRow();
                 foreach (PropertyInfo p in plist)
                 {
-                    object value = DataUtils.GetPropertyValue(t, p.Name);
+                    object value = CoreUtils.GetPropertyValue(t, p.Name);
                     dtRow[p.Name] = value == null ? DBNull.Value : value;
                 }
                 dt.Rows.Add(dtRow);

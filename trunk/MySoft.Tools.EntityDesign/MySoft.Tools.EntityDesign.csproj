@@ -129,6 +129,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">
+      <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
+      <Name>MySoft.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MySoft.Data.FireBird\MySoft.Data.FireBird.csproj">
       <Project>{C18C7EE5-8EF9-4A62-9A46-5D8F6508A1DD}</Project>
       <Name>MySoft.Data.FireBird</Name>

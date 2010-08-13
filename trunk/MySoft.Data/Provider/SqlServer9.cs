@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Text;
 using MySoft.Data.SqlServer;
 using MySoft.Data.Design;
+using MySoft.Core;
 
 namespace MySoft.Data.SqlServer9
 {

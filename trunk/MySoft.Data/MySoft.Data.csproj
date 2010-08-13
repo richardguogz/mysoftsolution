@@ -68,26 +68,10 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binder\ConverterFactory.cs" />
-    <Compile Include="Binder\IStringConverter.cs" />
-    <Compile Include="Binder\ToBool.cs" />
-    <Compile Include="Binder\ToByte.cs" />
-    <Compile Include="Binder\ToChar.cs" />
-    <Compile Include="Binder\ToDateTime.cs" />
-    <Compile Include="Binder\ToDecimal.cs" />
-    <Compile Include="Binder\ToDouble.cs" />
-    <Compile Include="Binder\ToFloat.cs" />
-    <Compile Include="Binder\ToGuid.cs" />
-    <Compile Include="Binder\ToInt16.cs" />
-    <Compile Include="Binder\ToInt32.cs" />
-    <Compile Include="Binder\ToLong.cs" />
-    <Compile Include="Binder\ToString.cs" />
-    <Compile Include="Common\CacheUtils.cs" />
     <Compile Include="Common\EntityConfig.cs" />
     <Compile Include="Common\EntityMapping.cs" />
-    <Compile Include="Common\EnumDescription.cs" />
     <Compile Include="Common\IValidator.cs" />
-    <Compile Include="Common\MySoftException.cs" />
+    <Compile Include="Common\ValidateException.cs" />
     <Compile Include="Common\Validator.cs" />
     <Compile Include="Creator\DeleteCreator.cs" />
     <Compile Include="Creator\IDeleteCreator.cs" />
@@ -99,17 +83,12 @@
     <Compile Include="Creator\InsertCreator.cs" />
     <Compile Include="Creator\Query\PageSection.cs" />
     <Compile Include="Creator\QueryCreator.cs" />
-    <Compile Include="Common\SerializationManager.cs" />
-    <Compile Include="Common\HtmlPager.cs" />
-    <Compile Include="Common\DataPage.cs" />
-    <Compile Include="Common\DynamicCalls.cs" />
     <Compile Include="Creator\Query\QuerySection.cs" />
     <Compile Include="Creator\Query\ViewEntity.cs" />
     <Compile Include="Creator\UpdateCreator.cs" />
     <Compile Include="Data\Cache\CacheInfo.cs" />
     <Compile Include="Data\Cache\CacheConfigurationSection.cs" />
     <Compile Include="Data\Query\SQLParameter.cs" />
-    <Compile Include="Common\Comparer.cs" />
     <Compile Include="Data\Query\TopSection.cs" />
     <Compile Include="Data\Session\EntityBase.cs" />
     <Compile Include="Data\Session\SysField.cs" />
@@ -124,7 +103,6 @@
     <Compile Include="Data\Source\ISourceList.cs" />
     <Compile Include="Data\Source\IRowReader.cs" />
     <Compile Include="Data\Source\ISourceTable.cs" />
-    <Compile Include="Data\Session\Assembler.cs" />
     <Compile Include="Data\Source\SourceReader.cs" />
     <Compile Include="Data\Session\ExcludeField.cs" />
     <Compile Include="Data\Session\DbBatch.cs" />
@@ -143,7 +121,6 @@
     <Compile Include="Design\Description.cs" />
     <Compile Include="Data\Session\DbProvider.cs" />
     <Compile Include="Data\Cache\DataCache.cs" />
-    <Compile Include="Common\IDataPage.cs" />
     <Compile Include="Provider\Oracle.cs" />
     <Compile Include="Provider\SqlServer.cs" />
     <Compile Include="Provider\MsAccess.cs" />
@@ -172,6 +149,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="update.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">
+      <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
+      <Name>MySoft.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

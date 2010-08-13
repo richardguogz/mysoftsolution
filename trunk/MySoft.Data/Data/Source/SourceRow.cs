@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -93,7 +94,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public TResult GetValue<TResult>(int index)
         {
-            return DataUtils.ConvertValue<TResult>(GetValue(index));
+            return CoreUtils.ConvertValue<TResult>(GetValue(index));
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public TResult GetValue<TResult>(string name)
         {
-            return DataUtils.ConvertValue<TResult>(GetValue(name));
+            return CoreUtils.ConvertValue<TResult>(GetValue(name));
         }
 
         /// <summary>

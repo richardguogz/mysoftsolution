@@ -21,6 +21,10 @@ namespace MySoft.Web.UI
             {
                 return name;
             }
+            set
+            {
+                name = value;
+            }
         }
 
         /// <summary>

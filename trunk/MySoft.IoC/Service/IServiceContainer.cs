@@ -5,6 +5,7 @@ using System.Text;
 
 using Castle.Core;
 using Castle.MicroKernel;
+using MySoft.Core;
 
 namespace MySoft.IoC.Service
 {

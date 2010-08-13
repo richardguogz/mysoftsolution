@@ -7,6 +7,7 @@ using System.Reflection.Emit;
 using System.Configuration;
 using MySoft.IoC.Remoting;
 using MySoft.IoC;
+using MySoft.Core;
 
 namespace MySoft.IoC.Service
 {

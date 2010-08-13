@@ -9,13 +9,6 @@ namespace MySoft.Common
     /// </summary>
     public class RSACrypto
     {
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        public RSACrypto()
-        {
-        }
-
         #region RSA 加密解密
 
         #region RSA 的密钥产生
@@ -578,6 +571,5 @@ namespace MySoft.Common
         #endregion
 
         #endregion
-
     }
 }
