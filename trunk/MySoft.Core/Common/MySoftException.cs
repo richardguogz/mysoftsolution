@@ -8,6 +8,7 @@ namespace MySoft.Core
     /// <summary>
     /// MySoft异常类
     /// </summary>
+    [Serializable]
     public class MySoftException : Exception
     {
         public MySoftException() { }

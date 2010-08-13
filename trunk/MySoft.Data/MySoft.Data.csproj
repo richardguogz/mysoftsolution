@@ -71,7 +71,6 @@
     <Compile Include="Common\EntityConfig.cs" />
     <Compile Include="Common\EntityMapping.cs" />
     <Compile Include="Common\IValidator.cs" />
-    <Compile Include="Common\ValidateException.cs" />
     <Compile Include="Common\Validator.cs" />
     <Compile Include="Creator\DeleteCreator.cs" />
     <Compile Include="Creator\IDeleteCreator.cs" />

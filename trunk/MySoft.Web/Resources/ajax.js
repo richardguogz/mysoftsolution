@@ -293,6 +293,8 @@ Object.extend(Ajax, {
     get: function(obj, url, header) {
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
+        if (header) header.add(['X-Ajax-Process', 'true']);
+        else header = [['X-Ajax-Process', 'true']];
         ajax.setheader(header);
         ajax.get(url, obj);
     },
@@ -301,6 +303,8 @@ Object.extend(Ajax, {
         if (!dtype) dtype = 'html';
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
+        if (header) header.add(['X-Ajax-Process', 'true']);
+        else header = [['X-Ajax-Process', 'true']];
         ajax.setheader(header);
         ajax.get(url, function(xmlHttp) {
             data = Ajax.getRequestData(xmlHttp, dtype);
@@ -311,6 +315,8 @@ Object.extend(Ajax, {
         var content = Ajax.toQueryString(args);
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
+        if (header) header.add(['X-Ajax-Process', 'true']);
+        else header = [['X-Ajax-Process', 'true']];
         ajax.setheader(header);
         ajax.post(url, content, obj);
     },
@@ -320,6 +326,8 @@ Object.extend(Ajax, {
         if (!dtype) dtype = 'html';
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
+        if (header) header.add(['X-Ajax-Process', 'true']);
+        else header = [['X-Ajax-Process', 'true']];
         ajax.setheader(header);
         ajax.post(url, content, function(xmlHttp) {
             data = Ajax.getRequestData(xmlHttp, dtype);
@@ -329,10 +337,18 @@ Object.extend(Ajax, {
     postForm: function(form_obj, callback, url, ptype, header) {
         if (typeof (form_obj) == 'string') form_obj = $get(form_obj);
         var callback1 = function(xmlHttp) {
-            callback(xmlHttp.responseText);
+            json = Ajax.getRequestData(xmlHttp, 'json');
+            if (json.Success == false) {
+                if (Ajax.showErrorMessage) alert(json.Message);
+                Ajax.onException(json);
+            }
+            else
+                callback(xmlHttp.responseText);
         };
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
+        if (header) header.add(['X-Ajax-Process', 'true']);
+        else header = [['X-Ajax-Process', 'true']];
         ajax.setheader(header);
         if (url && ptype) ajax.postf(form_obj, callback1, url, ptype);
         else if (url) ajax.postf(form_obj, callback1, url);
@@ -355,6 +371,8 @@ Object.extend(Ajax, {
     update: function(obj, url, interval, times, header) {
         var ajax = new AJAXRequest();
         this.setRequest(ajax);
+        if (header) header.add(['X-Ajax-Process', 'true']);
+        else header = [['X-Ajax-Process', 'true']];
         ajax.setheader(header);
         ajax.update(obj, url, interval, times);
     }

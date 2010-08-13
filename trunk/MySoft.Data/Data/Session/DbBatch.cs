@@ -162,7 +162,7 @@ namespace MySoft.Data
                     msgs.Add(msg.Split('|')[0]);
                 }
                 string message = string.Join("\r\n", msgs.ToArray());
-                throw new ValidateException(message);
+                throw new MySoftException(message);
             }
 
             #endregion
