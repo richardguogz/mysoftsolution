@@ -67,9 +67,22 @@ namespace MySoft.Web.UI
                     if (info.CurrentPage is IAjaxProcessHandler)
                         (info.CurrentPage as IAjaxProcessHandler).OnAjaxProcess(GetCallbackParams());
 
+                    bool AjaxRegister = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Register", false);
+                    bool AjaxRequest = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Request", false);
                     bool AjaxLoad = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Load", false);
                     string AjaxKey = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Key", Guid.NewGuid().ToString());
 
+                    if (AjaxRegister)
+                    {
+                        WriteAjaxMethods(info.CurrentPage.GetType());
+                    }
+                    else if (AjaxRequest)
+                    {
+                        //如果不是Ajax调用，则直接返回
+                        info.CurrentPage.Response.Cache.SetNoStore();
+                        info.CurrentPage.Response.Flush();
+                        info.CurrentPage.Response.End();
+                    }
                     if (AjaxLoad)
                     {
                         string AjaxControlPath = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Path", null);
@@ -91,23 +104,16 @@ namespace MySoft.Web.UI
                     {
                         string AjaxMethodName = WebHelper.GetRequestParam<string>(info.CurrentPage.Request, "X-Ajax-Method", null);
 
-                        if (AjaxMethodName != null)
+                        if (CheckHeader(AjaxKey))
                         {
-                            if (CheckHeader(AjaxKey))
-                            {
-                                AjaxCallbackParam value = InvokeMethod(info.CurrentPage, AjaxMethodName);
+                            AjaxCallbackParam value = InvokeMethod(info.CurrentPage, AjaxMethodName);
 
-                                //将value写入Response流
-                                WriteToBuffer(value);
-                            }
-                            else
-                            {
-                                throw new AjaxException("Method \"" + AjaxMethodName + "\" Is Invoke Error！");
-                            }
+                            //将value写入Response流
+                            WriteToBuffer(value);
                         }
                         else
                         {
-                            WriteAjaxMethods(info.CurrentPage.GetType());
+                            throw new AjaxException("Method \"" + AjaxMethodName + "\" Is Invoke Error！");
                         }
                     }
                 }

@@ -44,10 +44,7 @@ namespace MySoft.Data
         {
             lock (this)
             {
-                if (this is TEntity)
-                    return DataUtils.ConvertType<IEntityBase, TEntity>(this);
-
-                return default(TEntity);
+                return DataUtils.ConvertType<IEntityBase, TEntity>(this);
             }
         }
 
