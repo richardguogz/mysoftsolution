@@ -154,12 +154,12 @@ namespace MySoft.Web
         /// 生成本地页面
         /// </summary>
         /// <param name="templatePath">模板文件路径，如:/Default.aspx</param>
+        /// <param name="query">查询字符串</param>
         /// <param name="savePath">文件保存路径</param>
         /// <param name="inEncoding">模板页面编码</param>
         /// <param name="outEncoding">文件保存页面编码</param>
-        /// <param name="query">查询字符串</param>
         /// <param name="validateString">验证字符串</param>
-        public static bool CreateLocalPage(string templatePath, string savePath, string validateString, string query, Encoding inEncoding, Encoding outEncoding)
+        public static bool CreateLocalPage(string templatePath, string query, string savePath, string validateString, Encoding inEncoding, Encoding outEncoding)
         {
             try
             {
@@ -177,10 +177,10 @@ namespace MySoft.Web
         /// 生成本地页面
         /// </summary>
         /// <param name="templatePath">模板文件路径，如:/Default.aspx</param>
-        /// <param name="savePath">文件保存路径</param>
         /// <param name="query">查询字符串</param>
+        /// <param name="savePath">文件保存路径</param>
         /// <param name="validateString">验证字符串</param>
-        public static bool CreateLocalPage(string templatePath, string savePath, string validateString, string query)
+        public static bool CreateLocalPage(string templatePath, string query, string savePath, string validateString)
         {
             try
             {
