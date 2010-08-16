@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.Security;
 using System.Security.Cryptography;
 using MySoft.Core;
+using System.IO;
 
 namespace MySoft.Web
 {
@@ -15,12 +16,33 @@ namespace MySoft.Web
     [Serializable]
     public enum CookieExpiresType
     {
+        /// <summary>
+        /// 默认
+        /// </summary>
         None,
+        /// <summary>
+        /// 年
+        /// </summary>
         Year,
+        /// <summary>
+        /// 月
+        /// </summary>
         Month,
+        /// <summary>
+        /// 天
+        /// </summary>
         Day,
+        /// <summary>
+        /// 小时
+        /// </summary>
         Hour,
+        /// <summary>
+        /// 分钟
+        /// </summary>
         Minute,
+        /// <summary>
+        /// 秒
+        /// </summary>
         Second
     }
 
@@ -30,6 +52,15 @@ namespace MySoft.Web
     [Serializable]
     public abstract class WebUtils
     {
+        /// <summary>
+        /// 获取当前某文件绝对路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetFullPath(string path)
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+        }
+
         #region 注册文件到页面
 
         /// <summary>

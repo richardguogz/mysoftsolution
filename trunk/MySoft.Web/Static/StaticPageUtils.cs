@@ -200,6 +200,29 @@ namespace MySoft.Web
         /// <param name="templatePath">模板文件路径，如:/Default.aspx</param>
         /// <param name="savePath">文件保存路径</param>
         /// <param name="validateString">验证字符串</param>
+        /// <param name="outEncoding">文件保存页面编码</param>
+        /// <param name="validateString">验证字符串</param>
+        public static bool CreateLocalPage(string templatePath, string savePath, string validateString, Encoding inEncoding, Encoding outEncoding)
+        {
+            try
+            {
+                SaveFile(GetLocalPageString(templatePath, null, inEncoding, validateString), savePath, outEncoding);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SaveError(ex);
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 生成本地页面
+        /// </summary>
+        /// <param name="templatePath">模板文件路径，如:/Default.aspx</param>
+        /// <param name="savePath">文件保存路径</param>
+        /// <param name="validateString">验证字符串</param>
         public static bool CreateLocalPage(string templatePath, string savePath, string validateString)
         {
             try
@@ -217,15 +240,6 @@ namespace MySoft.Web
         #endregion
 
         #region Request处理
-
-        /// <summary>
-        /// 获取当前某文件绝对路径
-        /// </summary>
-        /// <returns></returns>
-        public static string GetFullPath(string path)
-        {
-            return AppDomain.CurrentDomain.BaseDirectory + path;
-        }
 
         /// <summary>
         /// 内部处理IIS请求，获取结果
