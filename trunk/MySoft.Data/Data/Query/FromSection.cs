@@ -510,6 +510,18 @@ namespace MySoft.Data
             return Join<TJoin>(aliasName, onWhere, JoinType.InnerJoin);
         }
 
+        public FromSection<T> InnerJoin<TJoin>(TableRelation<TJoin> relation, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            return InnerJoin(relation, null, onWhere);
+        }
+
+        public FromSection<T> InnerJoin<TJoin>(TableRelation<TJoin> relation, string aliasName, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            return Join<TJoin>(relation, aliasName, onWhere, JoinType.InnerJoin);
+        }
+
         #endregion
 
         #region 左连接
@@ -530,6 +542,18 @@ namespace MySoft.Data
             where TJoin : Entity
         {
             return Join<TJoin>(aliasName, onWhere, JoinType.LeftJoin);
+        }
+
+        public FromSection<T> LeftJoin<TJoin>(TableRelation<TJoin> relation, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            return LeftJoin(relation, null, onWhere);
+        }
+
+        public FromSection<T> LeftJoin<TJoin>(TableRelation<TJoin> relation, string aliasName, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            return Join<TJoin>(relation, aliasName, onWhere, JoinType.LeftJoin);
         }
 
         #endregion
@@ -554,9 +578,59 @@ namespace MySoft.Data
             return Join<TJoin>(aliasName, onWhere, JoinType.RightJoin);
         }
 
+        public FromSection<T> RightJoin<TJoin>(TableRelation<TJoin> relation, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            return RightJoin(relation, null, onWhere);
+        }
+
+        public FromSection<T> RightJoin<TJoin>(TableRelation<TJoin> relation, string aliasName, WhereClip onWhere)
+            where TJoin : Entity
+        {
+            return Join<TJoin>(relation, aliasName, onWhere, JoinType.RightJoin);
+        }
+
         #endregion
 
         #region 私有方法
+
+        private FromSection<T> Join<TJoin>(TableRelation<TJoin> relation, string aliasName, WhereClip onWhere, JoinType joinType)
+            where TJoin : Entity
+        {
+            TJoin entity = CoreUtils.CreateInstance<TJoin>();
+            //entity.GetTable().As(aliasName);
+            this.entityList.AddRange(relation.Section.entityList);
+
+            if ((IField)query.PagingField == null)
+            {
+                //标识列和主键优先,包含ID的列被抛弃
+                query.PagingField = entity.PagingField;
+            }
+
+            FromSection<TJoin> from = new FromSection<TJoin>(null);
+
+            string tableName = entity.GetTable().Name;
+            if (aliasName != null) tableName = aliasName;
+
+            from.tableName = "(" + relation.Section.query.QueryString + ") " + tableName;
+            from.query.Parameters = relation.Section.query.Parameters;
+            string strJoin = string.Empty;
+            if (onWhere != null)
+            {
+                strJoin = " on " + onWhere.ToString();
+            }
+
+            string join = GetJoinEnumString(joinType);
+
+            if (this.relation != null)
+            {
+                this.tableName = " {2} " + this.tableName;
+                this.relation += " {3} ";
+            }
+            this.relation += join + from.TableName + strJoin;
+
+            return this;
+        }
 
         private FromSection<T> Join<TJoin>(Table table, WhereClip onWhere, JoinType joinType)
             where TJoin : Entity

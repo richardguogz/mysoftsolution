@@ -75,7 +75,7 @@ namespace MySoft.Data
         /// </summary>
         public SourceTable()
         {
-            this.TableName = "NewTable";
+            this.TableName = "DataTable";
         }
 
         /// <summary>
