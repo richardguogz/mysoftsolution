@@ -8,9 +8,12 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Serialization.Formatters;
-using MySoft.Core;
+using System.Reflection;
+using System.Net;
+using System.Runtime.Remoting.Messaging;
+using System.IO;
 
-namespace MySoft.IoC.Remoting
+namespace MySoft.Core.Remoting
 {
     /// <summary>
     /// The Remoting Service Helper.
@@ -79,7 +82,7 @@ namespace MySoft.IoC.Remoting
                 IDictionary props = new Hashtable();
                 props["name"] = AppDomain.CurrentDomain.FriendlyName;
                 props["port"] = serverPort;
-                
+
                 if (channelType == RemotingChannelType.TCP)
                 {
                     serviceChannel = new TcpChannel(props, clientProvider, serverProvider);
@@ -129,5 +132,91 @@ namespace MySoft.IoC.Remoting
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ClientIPServerSinkProvider : IServerChannelSinkProvider
+    {
+        private IServerChannelSinkProvider next = null;
+
+        public ClientIPServerSinkProvider()
+        { }
+
+        public ClientIPServerSinkProvider(IDictionary properties, ICollection providerData)
+        { }
+
+        public void GetChannelData(IChannelDataStore channelData)
+        { }
+
+        public IServerChannelSink CreateSink(IChannelReceiver channel)
+        {
+            IServerChannelSink nextSink = null;
+            if (next != null)
+            {
+                nextSink = next.CreateSink(channel);
+            }
+
+            return new ClientIPServerSink(nextSink);
+        }
+
+        public IServerChannelSinkProvider Next
+        {
+            get { return next; }
+            set { next = value; }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ClientIPServerSink : BaseChannelObjectWithProperties, IServerChannelSink, IChannelSinkBase
+    {
+
+        private IServerChannelSink _next;
+
+        public ClientIPServerSink(IServerChannelSink next)
+        {
+            _next = next;
+        }
+
+        public void AsyncProcessResponse(IServerResponseChannelSinkStack sinkStack, Object state, IMessage msg, ITransportHeaders headers, Stream stream)
+        {
+        }
+
+        public Stream GetResponseStream(IServerResponseChannelSinkStack sinkStack, Object state, IMessage msg, ITransportHeaders headers)
+        {
+            return null;
+        }
+
+        public System.Runtime.Remoting.Channels.ServerProcessing ProcessMessage(IServerChannelSinkStack sinkStack, IMessage requestMsg, ITransportHeaders requestHeaders, Stream requestStream, out IMessage responseMsg, out ITransportHeaders responseHeaders, out Stream responseStream)
+        {
+            if (_next != null)
+            {
+                IPAddress ip = requestHeaders[CommonTransportKeys.IPAddress] as IPAddress;
+                String requestUri = requestHeaders[CommonTransportKeys.RequestUri].ToString();
+                Console.WriteLine(ip.ToString());
+                CallContext.SetData("ClientIPAddress", ip);
+                CallContext.SetData("RequestUri", requestUri);
+                ServerProcessing spres = _next.ProcessMessage(sinkStack, requestMsg, requestHeaders, requestStream, out responseMsg, out responseHeaders, out responseStream);
+
+                return spres;
+            }
+            else
+            {
+                responseMsg = null;
+                responseHeaders = null;
+                responseStream = null;
+
+                return new ServerProcessing();
+            }
+        }
+
+        public IServerChannelSink NextChannelSink
+        {
+            get { return _next; }
+            set { _next = value; }
+        }
     }
 }

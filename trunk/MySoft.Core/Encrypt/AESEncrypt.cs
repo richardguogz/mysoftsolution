@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace MySoft.Core.Encrypt
+namespace MySoft.Core.Security
 {
     /// <summary> 
     /// AESEncrypt加密
@@ -61,8 +61,6 @@ namespace MySoft.Core.Encrypt
             {
                 return "";
             }
-
         }
-
     }
 }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Xml;
-
-using MySoft.IoC.Remoting;
 using MySoft.IoC.Service;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC
 {

@@ -33,8 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +94,21 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\ReflectionUtils.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\StringUtils.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
+    <Compile Include="Remoting\Configuration\ConfigurationBase.cs" />
+    <Compile Include="Remoting\Configuration\RemotingClientConfiguration.cs" />
+    <Compile Include="Remoting\Configuration\RemotingClientConfigurationHandler.cs" />
+    <Compile Include="Remoting\Configuration\RemotingServerConfiguration.cs" />
+    <Compile Include="Remoting\Configuration\RemotingServerConfigurationHandler.cs" />
+    <Compile Include="Remoting\RemotingChannelType.cs" />
+    <Compile Include="Remoting\RemotingClientHelper.cs" />
+    <Compile Include="Remoting\RemotingClientUtil.cs" />
+    <Compile Include="Remoting\RemotingHost.cs" />
+    <Compile Include="Remoting\RemotingHostCheck.cs" />
+    <Compile Include="Remoting\RemotingLogFileManager.cs" />
+    <Compile Include="Remoting\RemotingServer.cs" />
+    <Compile Include="Remoting\RemotingServerHelper.cs" />
+    <Compile Include="Remoting\RemotingTest.cs" />
+    <Compile Include="Remoting\ServiceModule.cs" />
     <Compile Include="Utils\CoreUtils.cs" />
     <Compile Include="Converter\ConverterFactory.cs" />
     <Compile Include="Converter\IStringConverter.cs" />

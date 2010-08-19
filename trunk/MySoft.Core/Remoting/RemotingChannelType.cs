@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.IoC.Remoting
+namespace MySoft.Core.Remoting
 {
     /// <summary>
     /// Remoting Channel Type

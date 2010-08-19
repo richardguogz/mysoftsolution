@@ -5,9 +5,9 @@ using System.Reflection;
 using Castle.Windsor;
 using System.Reflection.Emit;
 using System.Configuration;
-using MySoft.IoC.Remoting;
 using MySoft.IoC;
 using MySoft.Core;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service
 {

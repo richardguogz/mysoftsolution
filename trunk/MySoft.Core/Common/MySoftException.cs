@@ -11,7 +11,7 @@ namespace MySoft.Core
     [Serializable]
     public class MySoftException : Exception
     {
-        public MySoftException() { }
+        public MySoftException() : base("MySoft Component Error.") { }
         public MySoftException(string message) : base(message) { }
         public MySoftException(string message, Exception inner) : base(message, inner) { }
         protected MySoftException(SerializationInfo info, StreamingContext context) : base(info, context) { }

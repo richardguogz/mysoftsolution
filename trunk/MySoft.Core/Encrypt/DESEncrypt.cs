@@ -4,7 +4,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace MySoft.Core.Encrypt
+namespace MySoft.Core.Security
 {
     /// <summary> 
     /// DESEncrypt加密
