@@ -419,7 +419,10 @@ namespace MySoft.Web
         /// <param name="logMsg"></param>
         internal static void SaveLog(string logMsg)
         {
-            if (OnLog != null) OnLog(logMsg);
+            if (OnLog != null)
+            {
+                OnLog(logMsg);
+            }
         }
 
         /// <summary>
@@ -429,7 +432,10 @@ namespace MySoft.Web
         internal static void SaveError(Exception ex)
         {
             SaveLog(ex.Message);
-            if (OnError != null) OnError(ex);
+            if (OnError != null)
+            {
+                OnError(ex);
+            }
         }
 
         #endregion
