@@ -7,7 +7,7 @@ using MySoft.Core;
 
 namespace MySoft.Data
 {
-    interface IDbProvider : ILogable
+    interface IDbProvider : IExcutingCommand
     {
         #region ²ÎÊý²Ù×÷
 

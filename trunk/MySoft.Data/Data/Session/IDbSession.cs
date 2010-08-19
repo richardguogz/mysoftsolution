@@ -32,6 +32,12 @@ namespace MySoft.Data
         void RegisterSqlExceptionLogger(ExceptionLogHandler handler);
         void UnregisterSqlExceptionLogger(ExceptionLogHandler handler);
 
+        void RegisterOnStartHandler(ExcutingHandler handler);
+        void UnregisterOnStartHandler(ExcutingHandler handler);
+
+        void RegisterOnEndHandler(ExcutingHandler handler);
+        void UnregisterOnEndHandler(ExcutingHandler handler);
+
         #endregion
 
         #region »º´æ²Ù×÷

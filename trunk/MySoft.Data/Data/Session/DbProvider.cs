@@ -24,7 +24,7 @@ namespace MySoft.Data
             this.dbHelper = new DbHelper(connectionString, dbFactory);
         }
 
-        internal void SetEventHandler(DecryptEventHandler decryptEvent)
+        internal void SetDecryptHandler(DecryptHandler decryptEvent)
         {
             this.dbHelper.SetDecryptHandler(decryptEvent);
         }
@@ -168,8 +168,8 @@ namespace MySoft.Data
             //调整DbCommand;
             PrepareCommand(cmd);
 
-            //写日志
-            WriteLog(cmd);
+            //执行命令前的事件
+            StartExcuteCommand(cmd);
 
             try
             {
@@ -185,6 +185,11 @@ namespace MySoft.Data
 
                 throw ex;
             }
+            finally
+            {
+                //执行命令后的事件
+                EndExcuteCommand(cmd);
+            }
         }
 
         public SourceReader ExecuteReader(DbCommand cmd, DbTrans trans)
@@ -192,8 +197,8 @@ namespace MySoft.Data
             //调整DbCommand;
             PrepareCommand(cmd);
 
-            //写日志
-            WriteLog(cmd);
+            //执行命令前的事件
+            StartExcuteCommand(cmd);
 
             try
             {
@@ -214,6 +219,11 @@ namespace MySoft.Data
 
                 throw ex;
             }
+            finally
+            {
+                //执行命令后的事件
+                EndExcuteCommand(cmd);
+            }
         }
 
         public DataSet ExecuteDataSet(DbCommand cmd, DbTrans trans)
@@ -221,8 +231,8 @@ namespace MySoft.Data
             //调整DbCommand;
             PrepareCommand(cmd);
 
-            //写日志
-            WriteLog(cmd);
+            //执行命令前的事件
+            StartExcuteCommand(cmd);
 
             try
             {
@@ -238,6 +248,11 @@ namespace MySoft.Data
 
                 throw ex;
             }
+            finally
+            {
+                //执行命令后的事件
+                EndExcuteCommand(cmd);
+            }
         }
 
         public DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans)
@@ -245,8 +260,8 @@ namespace MySoft.Data
             //调整DbCommand;
             PrepareCommand(cmd);
 
-            //写日志
-            WriteLog(cmd);
+            //执行命令前的事件
+            StartExcuteCommand(cmd);
 
             try
             {
@@ -262,6 +277,11 @@ namespace MySoft.Data
 
                 throw ex;
             }
+            finally
+            {
+                //执行命令后的事件
+                EndExcuteCommand(cmd);
+            }
         }
 
         public object ExecuteScalar(DbCommand cmd, DbTrans trans)
@@ -269,8 +289,8 @@ namespace MySoft.Data
             //调整DbCommand;
             PrepareCommand(cmd);
 
-            //写日志
-            WriteLog(cmd);
+            //执行命令前的事件
+            StartExcuteCommand(cmd);
 
             try
             {
@@ -285,6 +305,11 @@ namespace MySoft.Data
                 WriteExceptionLog(ex, cmd);
 
                 throw ex;
+            }
+            finally
+            {
+                //执行命令后的事件
+                EndExcuteCommand(cmd);
             }
         }
 
@@ -630,11 +655,28 @@ namespace MySoft.Data
         /// Writes the log.
         /// </summary>
         /// <param name="command">The command.</param>
-        private void WriteLog(DbCommand command)
+        private void StartExcuteCommand(DbCommand command)
         {
             if (OnLog != null)
             {
                 OnLog(GetLog(command));
+            }
+
+            if (OnStart != null)
+            {
+                OnStart(command);
+            }
+        }
+
+        /// <summary>
+        /// 结束时执行的操作
+        /// </summary>
+        /// <param name="command"></param>
+        private void EndExcuteCommand(DbCommand command)
+        {
+            if (OnEnd != null)
+            {
+                OnEnd(command);
             }
         }
 
@@ -686,6 +728,16 @@ namespace MySoft.Data
         /// OnExceptionLog event.
         /// </summary>
         public event ExceptionLogHandler OnExceptionLog;
+
+        /// <summary>
+        /// 开始事件
+        /// </summary>
+        public event ExcutingHandler OnStart;
+
+        /// <summary>
+        /// 结束事件
+        /// </summary>
+        public event ExcutingHandler OnEnd;
 
         #endregion
 

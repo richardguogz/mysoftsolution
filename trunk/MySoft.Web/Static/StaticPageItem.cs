@@ -56,19 +56,19 @@ namespace MySoft.Web
     /// 返回值数组的委托
     /// </summary>
     /// <returns></returns>
-    public delegate object[] GetValuesEventHandler();
+    public delegate object[] GetValuesHandler();
 
     /// <summary>
     /// 返回开始数的委托
     /// </summary>
     /// <returns></returns>
-    public delegate int StartValueEventHandler();
+    public delegate int StartValueHandler();
 
     /// <summary>
     /// 返回结束数的委托
     /// </summary>
     /// <returns></returns>
-    public delegate int EndValueEventHandler();
+    public delegate int EndValueHandler();
 
     /// <summary>
     /// 通用静态页子项
@@ -279,11 +279,11 @@ namespace MySoft.Web
             get { return paramName; }
         }
 
-        private GetValuesEventHandler getValues;
+        private GetValuesHandler getValues;
         /// <summary>
         /// 获取值委托
         /// </summary>
-        public GetValuesEventHandler GetValues
+        public GetValuesHandler GetValues
         {
             get { return getValues; }
         }
@@ -299,7 +299,7 @@ namespace MySoft.Web
             this.getValues = delegate() { return list.ToArray(); };
         }
 
-        public StaticPageParamInfo(string paramName, StartValueEventHandler startValue, EndValueEventHandler endValue)
+        public StaticPageParamInfo(string paramName, StartValueHandler startValue, EndValueHandler endValue)
             : this(paramName, startValue(), endValue())
         { }
 
@@ -309,7 +309,7 @@ namespace MySoft.Web
             this.getValues = delegate() { return values; };
         }
 
-        public StaticPageParamInfo(string paramName, GetValuesEventHandler getValues)
+        public StaticPageParamInfo(string paramName, GetValuesHandler getValues)
         {
             this.paramName = paramName;
             this.getValues = getValues;

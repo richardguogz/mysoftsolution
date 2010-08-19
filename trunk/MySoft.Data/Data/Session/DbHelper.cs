@@ -5,11 +5,11 @@ using System.Collections;
 
 namespace MySoft.Data
 {
-    public delegate string DecryptEventHandler(string connectionString);
+    public delegate string DecryptHandler(string connectionString);
 
     public sealed class DbHelper
     {
-        private DecryptEventHandler decryptProxy;
+        private DecryptHandler decryptProxy;
         private DbProviderFactory dbFactory;
         private string dbConnectionString;
 
@@ -19,7 +19,7 @@ namespace MySoft.Data
             this.dbFactory = dbFactory;
         }
 
-        public void SetDecryptHandler(DecryptEventHandler decryptProxy)
+        public void SetDecryptHandler(DecryptHandler decryptProxy)
         {
             this.decryptProxy = decryptProxy;
         }

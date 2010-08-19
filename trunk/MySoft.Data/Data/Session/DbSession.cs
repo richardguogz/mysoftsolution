@@ -245,7 +245,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 注册一个日志事件
+        /// 注册一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
         public void RegisterSqlExceptionLogger(ExceptionLogHandler handler)
@@ -254,12 +254,48 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 取消一个日志事件
+        /// 取消一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
         public void UnregisterSqlExceptionLogger(ExceptionLogHandler handler)
         {
             dbProvider.OnExceptionLog -= handler;
+        }
+
+        /// <summary>
+        /// 注册执行命令前的事件
+        /// </summary>
+        /// <param name="handler"></param>
+        public void RegisterOnStartHandler(ExcutingHandler handler)
+        {
+            dbProvider.OnStart += handler;
+        }
+
+        /// <summary>
+        /// 取消执行命令前的事件
+        /// </summary>
+        /// <param name="handler"></param>
+        public void UnregisterOnStartHandler(ExcutingHandler handler)
+        {
+            dbProvider.OnStart -= handler;
+        }
+
+        /// <summary>
+        /// 注册执行命令后的事件
+        /// </summary>
+        /// <param name="handler"></param>
+        public void RegisterOnEndHandler(ExcutingHandler handler)
+        {
+            dbProvider.OnEnd += handler;
+        }
+
+        /// <summary>
+        /// 取消执行命令后的事件
+        /// </summary>
+        /// <param name="handler"></param>
+        public void UnregisterOnEndHandler(ExcutingHandler handler)
+        {
+            dbProvider.OnEnd -= handler;
         }
 
         #endregion
@@ -1074,7 +1110,7 @@ namespace MySoft.Data
         private void InitSession(DbProvider dbProvider)
         {
             this.dbProvider = dbProvider;
-            this.dbProvider.SetEventHandler(Decrypt);
+            this.dbProvider.SetDecryptHandler(Decrypt);
             this.dbProvider.DataCache = new DataCache();
             this.dbTrans = new DbTrans(dbProvider, false);
 
