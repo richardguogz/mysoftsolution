@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Cache\CacheControlConfigurationSection.cs" />
     <Compile Include="Cache\CacheControlConfiguration.cs" />
+    <Compile Include="Utils\CookieExpiresType.cs" />
     <Compile Include="Utils\HtmlPager.cs" />
     <Compile Include="Utils\WebUtils.cs" />
     <Compile Include="WebUI\Ajax\AjaxNamespaceAttribute.cs" />
