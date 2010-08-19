@@ -57,8 +57,8 @@
     <Compile Include="Common\Compression\SevenZip\Compress\RangeCoder\RangeCoderBit.cs" />
     <Compile Include="Common\Compression\SevenZip\Compress\RangeCoder\RangeCoderBitTree.cs" />
     <Compile Include="Common\Compression\SevenZip\ICoder.cs" />
-    <Compile Include="Encrypt\AESEncrypt.cs" />
-    <Compile Include="Encrypt\DESEncrypt.cs" />
+    <Compile Include="Security\AESEncrypt.cs" />
+    <Compile Include="Security\DESEncrypt.cs" />
     <Compile Include="Json\JSONArray.cs" />
     <Compile Include="Json\JSONFacade.cs" />
     <Compile Include="Json\JSONObject.cs" />
