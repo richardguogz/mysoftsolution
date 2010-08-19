@@ -20,7 +20,7 @@
         {
             batch.Save(msgs[index]);
         }
-        batch.Process();
+        batch.Execute();
 
         //使用带事务批处理
         DbTrans tran = DbSession.Default.BeginTrans();
@@ -29,7 +29,7 @@
         {
             batch1.Save(msgs[index]);
         }
-        batch1.Process();
+        batch1.Execute();
         tran.Commit();
 
         //使用单条处理

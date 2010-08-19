@@ -39,10 +39,10 @@ namespace MySoft.Data
         /// 执行批处理操作
         /// </summary>
         /// <returns></returns>
-        public int Process()
+        public int Execute()
         {
             IList<MySoftException> errors;
-            return Process(out errors);
+            return Execute(out errors);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="errors">输出的错误</param>
         /// <returns></returns>
-        public int Process(out IList<MySoftException> errors)
+        public int Execute(out IList<MySoftException> errors)
         {
             //实例化errors
             errors = new List<MySoftException>();

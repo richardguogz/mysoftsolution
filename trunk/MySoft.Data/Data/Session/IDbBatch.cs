@@ -52,13 +52,13 @@ namespace MySoft.Data
         /// <summary>
         /// 执行批处理操作
         /// </summary>
-        int Process();
+        int Execute();
 
         /// <summary>
         /// 执行批处理操作
         /// </summary>
         /// <param name="errors">输出的错误</param>
         /// <returns></returns>
-        int Process(out IList<MySoftException> errors);
+        int Execute(out IList<MySoftException> errors);
     }
 }
