@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Security.Cryptography;
-using Newtonsoft.Json;
 
 namespace MySoft.Core
 {
@@ -230,7 +229,7 @@ namespace MySoft.Core
             if (CheckStruct(type))
             {
                 //如果字段为结构，则进行系列化操作
-                return SerializationManager.Deserialize(type, value.ToString());
+                return SerializationManager.DeserializeJSON(type, value.ToString());
             }
             else
             {
@@ -300,7 +299,7 @@ namespace MySoft.Core
 
         #endregion
 
-        #region 转换和系列化相关
+        #region 数据转换
 
         /// <summary>
         /// 将value转换成对应的类型值
@@ -330,68 +329,6 @@ namespace MySoft.Core
             }
 
             return defaultValue;
-        }
-
-        /// <summary>
-        /// 将对象系列化成字符串
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static string Serialize(object obj)
-        {
-            if (obj == null)
-            {
-                return "null";
-            }
-
-            Type type = obj.GetType();
-            if (type.IsEnum)
-            {
-                return JavaScriptConvert.ToString((Enum)obj);
-            }
-            else if (type == typeof(string))
-            {
-                return JavaScriptConvert.ToString(obj.ToString());
-            }
-            else if (type == typeof(DateTime))
-            {
-                return JavaScriptConvert.ToString((DateTime)obj);
-            }
-            else if (type == typeof(bool))
-            {
-                return JavaScriptConvert.ToString((bool)obj);
-            }
-            else if (type.IsValueType)
-            {
-                return obj.ToString();
-            }
-            return JavaScriptConvert.SerializeObject(obj);
-        }
-
-        /// <summary>
-        /// 将字符串反系列化成对象
-        /// </summary>
-        /// <typeparam name="TObject"></typeparam>
-        /// <param name="JSONString"></param>
-        /// <returns></returns>
-        public static object Deserialize(string jsonString, Type type)
-        {
-            if (type.IsArray && jsonString != null && !jsonString.StartsWith("["))
-            {
-                jsonString = "[" + jsonString + "]";
-            }
-            return JavaScriptConvert.DeserializeObject(jsonString, type);
-        }
-
-        /// <summary>
-        /// 将字符串反系列化成对象
-        /// </summary>
-        /// <typeparam name="TObject"></typeparam>
-        /// <param name="JSONString"></param>
-        /// <returns></returns>
-        public static TObject Deserialize<TObject>(string jsonString)
-        {
-            return (TObject)Deserialize(jsonString, typeof(TObject));
         }
 
         #endregion

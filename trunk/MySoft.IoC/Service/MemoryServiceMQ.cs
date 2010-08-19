@@ -125,16 +125,6 @@ namespace MySoft.IoC.Service
         }
 
         /// <summary>
-        /// Gets the next request by service name from queue.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns>The msg.</returns>
-        protected virtual RequestMessage GetNextRequestByServiceNameFromQueue(string serviceName)
-        {
-            return (RequestMessage)GetData(requests, serviceName);
-        }
-
-        /// <summary>
         /// Gets the response from queue.
         /// </summary>
         /// <param name="tid">The tid.</param>
@@ -168,7 +158,7 @@ namespace MySoft.IoC.Service
         }
 
         #endregion
-    
+
         #region IServiceMQ Members
 
         /// <summary>
@@ -186,7 +176,7 @@ namespace MySoft.IoC.Service
 
             AddRequestToQueue(msg.TransactionId, msg);
 
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddRequestToQueue({1}):{0}", serviceName, msg.TransactionId));
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddRequestToQueue({0}):{1}. -->(name:{2} parameters:{3})", msg.TransactionId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
 
             BroadCast(msg);
 
@@ -206,7 +196,7 @@ namespace MySoft.IoC.Service
 
             AddResponseToQueue(msg.TransactionId, msg);
 
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddResponseToQueue({1}):{0}", msg.ServiceName, msg.TransactionId));
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddResponseToQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message));
         }
 
         /// <summary>
@@ -220,24 +210,7 @@ namespace MySoft.IoC.Service
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetRequestFromQueue({1}):{0}", msg.ServiceName, transactionId));
-            }
-
-            return msg;
-        }
-
-        /// <summary>
-        /// Receives the next request from queue.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <returns>The msg.</returns>
-        public RequestMessage ReceiveNextRequestFromQueue(string serviceName)
-        {
-            RequestMessage msg = GetNextRequestByServiceNameFromQueue(serviceName);
-
-            if (msg != null)
-            {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetNextRequestFromQueue({1}):{0}", serviceName, msg.TransactionId));
+                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetRequestFromQueue({0}):{1}. -->(name:{2} parameters:{3})", transactionId, msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
             }
 
             return msg;
@@ -254,7 +227,7 @@ namespace MySoft.IoC.Service
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetResponseFromQueue({1}):{0}", msg.ServiceName, transactionId));
+                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetResponseFromQueue({0}):{1}. -->(result:{2})\r\n", msg.TransactionId, msg.ServiceName, msg.Message));
             }
 
             return msg;

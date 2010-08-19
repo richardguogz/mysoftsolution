@@ -54,7 +54,7 @@ namespace MySoft.IoC.Service
                         try
                         {
                             IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
-                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Notify service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "]");
+                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "]");
                             tempHandler(reqMsg);
 
                             //if calling ok, skip other subscribers, easily exit loop
@@ -62,7 +62,7 @@ namespace MySoft.IoC.Service
                         }
                         catch (Exception ex)
                         {
-                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: " + reqMsg.ServiceName + "[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.Message);
+                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason:" + ex.Message);
                             handlers[tempClientId] = null;
                             needCleanHandlers = true;
                         }

@@ -39,7 +39,7 @@ namespace MySoft.IoC.Service.Services
         {
             this.serviceName = serviceName;
             this.mq = mq;
-            clientId = Guid.NewGuid();
+            this.clientId = Guid.NewGuid();
         }
 
         #region IService Members
@@ -73,7 +73,7 @@ namespace MySoft.IoC.Service.Services
         public ResponseMessage CallService(RequestMessage msg)
         {
             //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("dynamic service({2})[{1}] process(parameters->{0})", msg.Parameters.SerializedData, clientId, serviceName));
+            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} process. -->(name:{2} parameters:{3})", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
             ResponseMessage retMsg = null;
             try
             {
@@ -81,11 +81,11 @@ namespace MySoft.IoC.Service.Services
             }
             catch (Exception ex)
             {
-                if (OnLog != null) OnLog(string.Format("Error occured at {0}[{1}]: {2}", serviceName, clientId, ex));
+                if (OnLog != null) OnLog(string.Format("Error occured at ({0}):{1}. -->(error:{2})\r\n", clientId, serviceName, ex.Message));
                 return null;
             }
-            // SerializationManager.Serialize(retMsg)
-            if (OnLog != null) OnLog(string.Format("dynamic service({2})[{1}] return(parameters->{0})", msg.Parameters.SerializedData, clientId, serviceName));
+            //SerializationManager.Serialize(retMsg)
+            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})\r\n", clientId, serviceName, retMsg.Message));
             return retMsg;
         }
 

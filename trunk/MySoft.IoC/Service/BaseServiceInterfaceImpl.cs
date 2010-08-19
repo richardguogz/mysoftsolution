@@ -100,7 +100,7 @@ namespace MySoft.IoC.Service
                         continue;
                     }
 
-                    string val = SerializationManager.Serialize(paramValues[i]);
+                    string val = SerializationManager.SerializeJSON(paramValues[i]);
 
                     reqMsg.Parameters[pis[i].Name] = val;
                 }
@@ -114,6 +114,8 @@ namespace MySoft.IoC.Service
 
             try
             {
+                resMsg.Type = returnType;
+
                 if (!container.Compress)
                 {
                     if (returnType == typeof(System.Data.DataSet))
@@ -122,7 +124,7 @@ namespace MySoft.IoC.Service
                     }
                     else if (resMsg.Text != null)
                     {
-                        return SerializationManager.Deserialize(returnType, resMsg.Text);
+                        return SerializationManager.DeserializeJSON(returnType, resMsg.Text);
                     }
                 }
                 else
@@ -130,7 +132,7 @@ namespace MySoft.IoC.Service
                     string retText = CompressionManager.Decompress7Zip(resMsg.Text);
                     if (retText != null)
                     {
-                        return SerializationManager.Deserialize(returnType, retText);
+                        return SerializationManager.DeserializeJSON(returnType, retText);
                     }
                 }
             }

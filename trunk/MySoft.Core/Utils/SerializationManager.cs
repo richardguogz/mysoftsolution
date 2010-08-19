@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Xml.Serialization;
 using System.Xml;
+using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace MySoft.Core
 {
@@ -36,14 +37,80 @@ namespace MySoft.Core
             InitDefaultSerializeHandlers();
         }
 
+        #region 数据系列化
+
+        /// <summary>
+        /// 将对象系列化成字符串
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string SerializeJSON(object obj)
+        {
+            if (obj == null)
+            {
+                return "null";
+            }
+
+            Type type = obj.GetType();
+            if (type.IsEnum)
+            {
+                return JavaScriptConvert.ToString((Enum)obj);
+            }
+            else if (type == typeof(string))
+            {
+                return JavaScriptConvert.ToString(obj.ToString());
+            }
+            else if (type == typeof(DateTime))
+            {
+                return JavaScriptConvert.ToString((DateTime)obj);
+            }
+            else if (type == typeof(bool))
+            {
+                return JavaScriptConvert.ToString((bool)obj);
+            }
+            else if (type.IsValueType)
+            {
+                return obj.ToString();
+            }
+            return JavaScriptConvert.SerializeObject(obj);
+        }
+
+        /// <summary>
+        /// 将字符串反系列化成对象
+        /// </summary>
+        /// <param name="returnType"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static object DeserializeJSON(Type returnType, string data)
+        {
+            if (returnType.IsArray && data != null && !data.StartsWith("["))
+            {
+                data = "[" + data + "]";
+            }
+            return JavaScriptConvert.DeserializeObject(data, returnType);
+        }
+
+        /// <summary>
+        /// 将字符串反系列化成对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static T DeserializeJSON<T>(string data)
+        {
+            return (T)DeserializeJSON(typeof(T), data);
+        }
+
+        #endregion
+
         /// <summary>
         /// Serializes the specified obj.
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static string Serialize(object obj)
+        public static string SerializeXML(object obj)
         {
-            return Serialize(obj, Encoding.UTF8);
+            return SerializeXML(obj, Encoding.Default);
         }
 
         /// <summary>
@@ -51,7 +118,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static string Serialize(object obj, Encoding encoding)
+        public static string SerializeXML(object obj, Encoding encoding)
         {
             if (obj == null)
             {
@@ -64,14 +131,26 @@ namespace MySoft.Core
             }
             else
             {
-                MemoryStream ms = new MemoryStream();
-                XmlTextWriter xw = new XmlTextWriter(ms, encoding);
-                xw.Formatting = Formatting.Indented;
-                xw.WriteStartDocument();
-                XmlSerializer serializer = new XmlSerializer(obj.GetType());
-                serializer.Serialize(xw, obj);
-                xw.Close();
-                return encoding.GetString(ms.ToArray());
+                if (encoding == Encoding.Default)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    StringWriter sw = new StringWriter(sb);
+                    XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                    serializer.Serialize(sw, obj);
+                    sw.Close();
+                    return sb.ToString();
+                }
+                else
+                {
+                    MemoryStream ms = new MemoryStream();
+                    XmlTextWriter xw = new XmlTextWriter(ms, encoding);
+                    xw.Formatting = System.Xml.Formatting.Indented;
+                    xw.WriteStartDocument();
+                    XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                    serializer.Serialize(xw, obj);
+                    xw.Close();
+                    return encoding.GetString(ms.ToArray());
+                }
             }
         }
 
@@ -81,9 +160,9 @@ namespace MySoft.Core
         /// <param name="returnType">Type of the return.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static T Deserialize<T>(string data)
+        public static T DeserializeXML<T>(string data)
         {
-            return (T)Deserialize(typeof(T), data);
+            return (T)DeserializeXML(typeof(T), data);
         }
 
         /// <summary>
@@ -92,7 +171,7 @@ namespace MySoft.Core
         /// <param name="returnType">Type of the return.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static object Deserialize(Type returnType, string data)
+        public static object DeserializeXML(Type returnType, string data)
         {
             if (data == null)
             {

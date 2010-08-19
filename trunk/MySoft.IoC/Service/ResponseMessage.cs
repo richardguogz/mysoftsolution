@@ -14,6 +14,7 @@ namespace MySoft.IoC.Service
         private RequestMessage request;
         private string text;
         private DataSet data;
+        private Type type;
 
         /// <summary>
         /// Gets or sets the request.
@@ -28,6 +29,37 @@ namespace MySoft.IoC.Service
             set
             {
                 request = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        public string Message
+        {
+            get
+            {
+                if (type == null)
+                    return text;
+                else if (type == typeof(DataSet))
+                    return "[DataSet]";
+
+                return text;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        public Type Type
+        {
+            get
+            {
+                return type;
+            }
+            set
+            {
+                type = value;
             }
         }
 

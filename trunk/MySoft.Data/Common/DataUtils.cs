@@ -173,7 +173,7 @@ namespace MySoft.Data
                 if (CheckStruct(type))
                 {
                     //如果属性是值类型，则进行系列化存储
-                    return SerializationManager.Serialize(val);
+                    return SerializationManager.SerializeJSON(val);
                 }
 
                 return val.ToString();

@@ -37,14 +37,14 @@ namespace MySoft.IoC.Service
             ResponseMessage retMsg = null;
 
             //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Run reqMsg for {0} to service mq. Parameters:{1} ", serviceName, msg.Parameters.SerializedData));
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Run reqMsg for {0} to service mq. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
             Guid tid = mq.SendRequestToQueue(serviceName, msg);
             for (int i = 0; i < maxTryNum; i++)
             {
                 retMsg = mq.ReceieveResponseFromQueue(tid);
                 if (retMsg == null)
                 {
-                    if (OnLog != null) OnLog("Try Run...... " + (i + 1));
+                    if (OnLog != null) OnLog(string.Format("Try {0} Run (name:{1} parameters:{2}) ...... ", (i + 1), msg.SubServiceName, msg.Parameters.SerializedData));
                     Thread.Sleep(i * 10);
                 }
                 else
@@ -56,7 +56,7 @@ namespace MySoft.IoC.Service
             if (retMsg != null)
             {
                 //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog("Result:" + serviceName + "-->" + retMsg.Text);
+                if (OnLog != null) OnLog(string.Format("Result: ({0})", retMsg.Message));
             }
             else
             {
@@ -70,12 +70,12 @@ namespace MySoft.IoC.Service
         public ResponseMessage CallMethod(string serviceName, RequestMessage msg)
         {
             //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Receive reqMsg for service:" + serviceName + "-->" + msg.Parameters.SerializedData);
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Receive reqMsg for service:{0}. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
 
             long t1 = System.Environment.TickCount;
             ResponseMessage retMsg = Run(serviceName, msg);
             long t2 = System.Environment.TickCount - t1;
-            if (OnLog != null) OnLog("Spent time:(" + t2.ToString() + ")ms ");
+            if (OnLog != null) OnLog("Spent time: (" + t2.ToString() + ") ms\r\n");
 
             return retMsg;
         }

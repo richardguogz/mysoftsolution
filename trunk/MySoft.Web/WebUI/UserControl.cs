@@ -53,18 +53,18 @@ namespace MySoft.Web.UI
             sb.Append("var " + ObjectName + " = ");
             if (values == null)
             {
-                sb.Append(CoreUtils.Serialize(values) + ";\r\n");
+                sb.Append(SerializationManager.SerializeJSON(values) + ";\r\n");
             }
             else
             {
                 if (values.Length == 1)
                 {
                     object value = values[0];
-                    sb.Append(CoreUtils.Serialize(values[0]) + ";\r\n");
+                    sb.Append(SerializationManager.SerializeJSON(values[0]) + ";\r\n");
                 }
                 else
                 {
-                    sb.Append(CoreUtils.Serialize(values) + ";\r\n");
+                    sb.Append(SerializationManager.SerializeJSON(values) + ";\r\n");
                 }
             }
             WebUtils.RegisterPageScript(this.Page, sb.ToString());

@@ -290,12 +290,12 @@ namespace MySoft.IoC.Service
 
             if (localService != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Calling local service: {0}[{1}]", serviceName, localService.ClientId));
+                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Calling local service ({0}):{1}.", localService.ClientId, serviceName));
                 return localService.CallService(msg);
             }
 
             //if no local service, call remote service
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Calling remote service: {0}", serviceName));
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Calling remote service {0}.", serviceName));
             return serviceProxy.CallMethod(serviceName, msg);
         }
 

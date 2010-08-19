@@ -209,7 +209,7 @@ namespace MySoft.Web.UI
                     List<object> list = new List<object>();
                     foreach (ParameterInfo p in parameters)
                     {
-                        object obj = GetObject(p.Name, p.ParameterType);
+                        object obj = GetObject(p.ParameterType, p.Name);
                         list.Add(obj);
                     }
 
@@ -271,7 +271,7 @@ namespace MySoft.Web.UI
                         if (info.EnableAjaxTemplate && templatePath != null)
                         {
                             string templateString = LoadTemplate(templatePath);
-                            html = "{ data : " + html + ",\r\njst : " + CoreUtils.Serialize(templateString) + " }";
+                            html = "{ data : " + html + ",\r\njst : " + SerializationManager.SerializeJSON(templateString) + " }";
                         }
 
                         //将数据放入缓存
@@ -377,20 +377,20 @@ namespace MySoft.Web.UI
         /// <summary>
         /// 将字符串反系列化成对象
         /// </summary>
-        /// <typeparam name="TObject"></typeparam>
+        /// <typeparam name="T"></typeparam>
         /// <param name="paramsKey">传入key值获取对象</param>
         /// <returns></returns>
-        private TObject GetObject<TObject>(string paramsKey)
+        private T GetObject<T>(string paramsKey)
         {
-            return WebHelper.StrongTyped<TObject>(GetObject(paramsKey, typeof(TObject)));
+            return WebHelper.StrongTyped<T>(GetObject(typeof(T), paramsKey));
         }
 
         /// <summary>
         /// 将字符串反系列化成对象
         /// </summary>
-        private object GetObject(string paramsKey, Type type)
+        private object GetObject(Type type, string paramsKey)
         {
-            return CoreUtils.Deserialize(WebHelper.GetRequestParam<string>(info.CurrentPage.Request, paramsKey, ""), type);
+            return SerializationManager.DeserializeJSON(type, WebHelper.GetRequestParam<string>(info.CurrentPage.Request, paramsKey, ""));
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace MySoft.Web.UI
             info.CurrentPage.Response.Clear();
 
             if (param != null)
-                info.CurrentPage.Response.Write(CoreUtils.Serialize(param));
+                info.CurrentPage.Response.Write(SerializationManager.SerializeJSON(param));
             else
                 info.CurrentPage.Response.ContentType = "image/gif";
 
@@ -418,7 +418,7 @@ namespace MySoft.Web.UI
         private void WriteToBuffer(AjaxMethodInfo[] methods)
         {
             info.CurrentPage.Response.Clear();
-            info.CurrentPage.Response.Write(CoreUtils.Serialize(methods));
+            info.CurrentPage.Response.Write(SerializationManager.SerializeJSON(methods));
             info.CurrentPage.Response.Cache.SetNoStore();
             info.CurrentPage.Response.Flush();
             info.CurrentPage.Response.End();

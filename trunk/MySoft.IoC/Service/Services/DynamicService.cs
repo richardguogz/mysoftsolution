@@ -96,7 +96,7 @@ namespace MySoft.IoC.Service.Services
             {
                 Type type = pis[i].ParameterType;
 
-                object val = SerializationManager.Deserialize(type, msg.Parameters[pis[i].Name]);
+                object val = SerializationManager.DeserializeJSON(type, msg.Parameters[pis[i].Name]);
 
                 parms[i] = val;
             }
@@ -124,6 +124,7 @@ namespace MySoft.IoC.Service.Services
             if (returnValue != null)
             {
                 Type returnType = mi.ReturnType;
+                resMsg.Type = returnType;
 
                 if (!container.Compress)
                 {
@@ -133,7 +134,7 @@ namespace MySoft.IoC.Service.Services
                     }
                     else
                     {
-                        resMsg.Text = SerializationManager.Serialize(returnValue);
+                        resMsg.Text = SerializationManager.SerializeJSON(returnValue);
                     }
                 }
                 else
@@ -141,11 +142,11 @@ namespace MySoft.IoC.Service.Services
                     string retText;
                     if (returnType == typeof(System.Data.DataSet))
                     {
-                        retText = SerializationManager.Serialize(returnValue);
+                        retText = SerializationManager.SerializeJSON(returnValue);
                     }
                     else
                     {
-                        retText = SerializationManager.Serialize(returnValue);
+                        retText = SerializationManager.SerializeJSON(returnValue);
                     }
 
                     resMsg.Text = CompressionManager.Compress7Zip(retText);
