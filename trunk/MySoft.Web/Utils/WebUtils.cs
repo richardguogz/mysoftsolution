@@ -52,15 +52,6 @@ namespace MySoft.Web
     [Serializable]
     public abstract class WebUtils
     {
-        /// <summary>
-        /// 获取当前某文件绝对路径
-        /// </summary>
-        /// <returns></returns>
-        public static string GetFullPath(string path)
-        {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-        }
-
         #region 注册文件到页面
 
         /// <summary>

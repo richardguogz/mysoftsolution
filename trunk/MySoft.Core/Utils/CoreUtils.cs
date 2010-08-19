@@ -15,6 +15,15 @@ namespace MySoft.Core
     /// </summary>
     public static class CoreUtils
     {
+        /// <summary>
+        /// 获取当前某文件绝对路径
+        /// </summary>
+        /// <returns></returns>
+        public static string GetFullPath(string path)
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+        }
+
         #region 对象克隆
 
         /// <summary>
