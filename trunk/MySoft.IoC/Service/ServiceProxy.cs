@@ -36,14 +36,15 @@ namespace MySoft.IoC.Service
         {
             ResponseMessage retMsg = null;
 
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Run reqMsg for {0} to service mq. RequestMsg:{1} ", serviceName, SerializationManager.Serialize(msg)));
+            //SerializationManager.Serialize(msg)
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Run reqMsg for {0} to service mq. Parameters:{1} ", serviceName, msg.Parameters.SerializedData));
             Guid tid = mq.SendRequestToQueue(serviceName, msg);
             for (int i = 0; i < maxTryNum; i++)
             {
                 retMsg = mq.ReceieveResponseFromQueue(tid);
                 if (retMsg == null)
                 {
-                    if (OnLog != null) OnLog("Try...... " + (i + 1));
+                    if (OnLog != null) OnLog("Try Run...... " + (i + 1));
                     Thread.Sleep(i * 10);
                 }
                 else
@@ -54,7 +55,8 @@ namespace MySoft.IoC.Service
 
             if (retMsg != null)
             {
-                if (OnLog != null) OnLog("Result:" + serviceName + "-->" + SerializationManager.Serialize(retMsg));
+                //SerializationManager.Serialize(retMsg)
+                if (OnLog != null) OnLog("Result:" + serviceName + "-->" + retMsg.Text);
             }
             else
             {
@@ -67,7 +69,8 @@ namespace MySoft.IoC.Service
 
         public ResponseMessage CallMethod(string serviceName, RequestMessage msg)
         {
-            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Receive reqMsg for service:" + serviceName + "-->" + SerializationManager.Serialize(msg));
+            //SerializationManager.Serialize(msg)
+            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Receive reqMsg for service:" + serviceName + "-->" + msg.Parameters.SerializedData);
 
             long t1 = System.Environment.TickCount;
             ResponseMessage retMsg = Run(serviceName, msg);

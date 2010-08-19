@@ -72,7 +72,8 @@ namespace MySoft.IoC.Service.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            if (OnLog != null) OnLog(string.Format("dynamic service({2})[{1}] process(msg->{0})", SerializationManager.Serialize(msg), clientId, serviceName));
+            //SerializationManager.Serialize(msg)
+            if (OnLog != null) OnLog(string.Format("dynamic service({2})[{1}] process(parameters->{0})", msg.Parameters.SerializedData, clientId, serviceName));
             ResponseMessage retMsg = null;
             try
             {
@@ -83,7 +84,8 @@ namespace MySoft.IoC.Service.Services
                 if (OnLog != null) OnLog(string.Format("Error occured at {0}[{1}]: {2}", serviceName, clientId, ex));
                 return null;
             }
-            if (OnLog != null) OnLog(string.Format("dynamic service({2})[{1}] return(msg->{0})", SerializationManager.Serialize(retMsg), clientId, serviceName));
+            // SerializationManager.Serialize(retMsg)
+            if (OnLog != null) OnLog(string.Format("dynamic service({2})[{1}] return(parameters->{0})", msg.Parameters.SerializedData, clientId, serviceName));
             return retMsg;
         }
 

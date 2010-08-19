@@ -292,7 +292,7 @@ namespace MySoft.Data
 
                 if (fields.Length != values.Length)
                 {
-                    throw new MySoftException("字段与值无法对应！"); ;
+                    throw new MySoftException("字段与值无法对应！");
                 }
 
                 int index = 0;

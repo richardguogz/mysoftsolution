@@ -114,7 +114,7 @@ namespace MySoft.IoC.Service.Services
 
             try
             {
-                returnValue = mi.Invoke(service, parms);
+                returnValue = DynamicCalls.GetMethodInvoker(mi).Invoke(service, parms);
             }
             catch
             {

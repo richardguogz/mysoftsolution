@@ -297,7 +297,7 @@ namespace SevenZip.Compression.LZMA
 			public UInt32 Backs3;
 
 			public void MakeAsChar() { BackPrev = 0xFFFFFFFF; Prev1IsChar = false; }
-			public void MakeAsShortRep() { BackPrev = 0; ; Prev1IsChar = false; }
+			public void MakeAsShortRep() { BackPrev = 0; Prev1IsChar = false; }
 			public bool IsShortRep() { return (BackPrev == 0); }
 		};
 		Optimal[] _optimum = new Optimal[kNumOpts];
@@ -1411,7 +1411,7 @@ namespace SevenZip.Compression.LZMA
 					{
 						const int kDicLogSizeMaxCompress = 30;
 						if (!(prop is Int32))
-							throw new InvalidParamException(); ;
+							throw new InvalidParamException();
 						Int32 dictionarySize = (Int32)prop;
 						if (dictionarySize < (UInt32)(1 << Base.kDicLogSizeMin) ||
 							dictionarySize > (UInt32)(1 << kDicLogSizeMaxCompress))
@@ -1451,7 +1451,7 @@ namespace SevenZip.Compression.LZMA
 							throw new InvalidParamException();
 						Int32 v = (Int32)prop;
 						if (v < 0 || v > (UInt32)Base.kNumLitContextBitsMax)
-							throw new InvalidParamException(); ;
+							throw new InvalidParamException();
 						_numLiteralContextBits = (int)v;
 						break;
 					}

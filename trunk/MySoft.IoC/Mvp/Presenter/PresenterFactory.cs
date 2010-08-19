@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Configuration;
 using MySoft.IoC.Service;
+using MySoft.Core;
 
 namespace MySoft.IoC.Mvp
 {
@@ -61,7 +62,8 @@ namespace MySoft.IoC.Mvp
                 if (typeof(IPresenter).IsAssignableFrom(_presenter.GetType()))
                 {
                     IPresenter presenter = (IPresenter)_presenter;
-                    object model = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModel).Invoke(container, null); ;
+                    MethodInfo method = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModel);
+                    object model = DynamicCalls.GetMethodInvoker(method).Invoke(container, null);
                     presenter.BindView(view);
                     presenter.BindModel(model);
                     return _presenter;
@@ -72,7 +74,8 @@ namespace MySoft.IoC.Mvp
                     object[] models = new object[presenter.TypeOfModels.Length];
                     for (int i = 0; i < models.Length; i++)
                     {
-                        models[i] = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModels[i]).Invoke(container, null); ;
+                        MethodInfo method = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModels[i]);
+                        models[i] = DynamicCalls.GetMethodInvoker(method).Invoke(container, null);
                     }
                     presenter.BindView(view);
                     presenter.BindModels(models);
