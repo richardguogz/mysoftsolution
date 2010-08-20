@@ -269,6 +269,8 @@ namespace MySoft.IoC.Service
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
                     singleton = new ServiceFactory(new SimpleServiceContainer(mq));
                 }
+
+                singleton.ServiceContainer.Protocol = config.Protocol;
                 singleton.ServiceContainer.Compress = config.Compress;
                 singleton.ServiceContainer.MaxTryNum = config.MaxTry;
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using MySoft.Core;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service
 {
@@ -114,26 +115,24 @@ namespace MySoft.IoC.Service
 
             try
             {
-                resMsg.Type = returnType;
+                if (resMsg.Data == null) return resMsg.Data;
 
                 if (!container.Compress)
                 {
-                    if (returnType == typeof(System.Data.DataSet))
+                    if (container.Protocol == RemotingChannelType.TCP)
                     {
-                        return resMsg.Data;
+                        return SerializationManager.DeserializeBin((byte[])resMsg.Data);
                     }
-                    else if (resMsg.Text != null)
+                    else
                     {
-                        return SerializationManager.DeserializeJSON(returnType, resMsg.Text);
+                        return SerializationManager.DeserializeJSON(returnType, resMsg.Data.ToString());
                     }
                 }
                 else
                 {
-                    string retText = CompressionManager.Decompress7Zip(resMsg.Text);
-                    if (retText != null)
-                    {
-                        return SerializationManager.DeserializeJSON(returnType, retText);
-                    }
+                    string retText = CompressionManager.Decompress7Zip(resMsg.Data.ToString());
+
+                    return SerializationManager.DeserializeJSON(returnType, retText);
                 }
             }
             catch

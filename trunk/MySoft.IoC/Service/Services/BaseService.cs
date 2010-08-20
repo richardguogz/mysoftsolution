@@ -81,11 +81,11 @@ namespace MySoft.IoC.Service.Services
             }
             catch (Exception ex)
             {
-                if (OnLog != null) OnLog(string.Format("Error occured at ({0}):{1}. -->(error:{2})\r\n", clientId, serviceName, ex.Message));
+                if (OnLog != null) OnLog(string.Format("Error occured at ({0}):{1}. -->(error:{2})", clientId, serviceName, ex.Message));
                 return null;
             }
             //SerializationManager.Serialize(retMsg)
-            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})\r\n", clientId, serviceName, retMsg.Message));
+            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Data));
             return retMsg;
         }
 

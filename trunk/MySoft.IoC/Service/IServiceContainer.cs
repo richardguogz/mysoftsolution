@@ -6,6 +6,7 @@ using System.Text;
 using Castle.Core;
 using Castle.MicroKernel;
 using MySoft.Core;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service
 {
@@ -14,6 +15,10 @@ namespace MySoft.IoC.Service
     /// </summary>
     public interface IServiceContainer : IDisposable, ILogable
     {
+        /// <summary>
+        /// Gets or sets the ChannelType.
+        /// </summary>
+        RemotingChannelType Protocol { get; set; }
         /// <summary>
         /// Gets or sets the max try num.
         /// </summary>

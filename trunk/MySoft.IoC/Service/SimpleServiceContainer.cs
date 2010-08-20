@@ -14,6 +14,7 @@ using Castle.Facilities.Startable;
 
 using MySoft.IoC.Service.Services;
 using MySoft.Core;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service
 {
@@ -37,6 +38,7 @@ namespace MySoft.IoC.Service
         private ServiceProxy serviceProxy;
         private IServiceMQ mq;
         private bool compress = false;
+        private RemotingChannelType protocol;
 
         private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
         {
@@ -176,6 +178,21 @@ namespace MySoft.IoC.Service
         #endregion
 
         #region IServiceContainer Members
+
+        /// <summary>
+        /// Gets or sets the protocol.
+        /// </summary>
+        public RemotingChannelType Protocol
+        {
+            get
+            {
+                return protocol;
+            }
+            set
+            {
+                protocol = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the max try num.

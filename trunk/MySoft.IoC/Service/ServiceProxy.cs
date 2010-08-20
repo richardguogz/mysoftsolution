@@ -56,7 +56,7 @@ namespace MySoft.IoC.Service
             if (retMsg != null)
             {
                 //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog(string.Format("Result: ({0})", retMsg.Message));
+                if (OnLog != null) OnLog(string.Format("Result: {0}", retMsg.Data));
             }
             else
             {
@@ -75,7 +75,7 @@ namespace MySoft.IoC.Service
             long t1 = System.Environment.TickCount;
             ResponseMessage retMsg = Run(serviceName, msg);
             long t2 = System.Environment.TickCount - t1;
-            if (OnLog != null) OnLog("Spent time: (" + t2.ToString() + ") ms\r\n");
+            if (OnLog != null) OnLog("Spent time: (" + t2.ToString() + ") ms");
 
             return retMsg;
         }

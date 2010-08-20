@@ -5,6 +5,9 @@ using System.IO;
 using System.Xml;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using System.Data;
+using Newtonsoft.Json.Converters;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MySoft.Core
 {
@@ -40,16 +43,29 @@ namespace MySoft.Core
         #region 数据系列化
 
         /// <summary>
+        /// 将对象系列化成二进制
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static byte[] SerializeBin(object obj)
+        {
+            if (obj == null) return new byte[0];
+
+            MemoryStream ms = new MemoryStream();
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(ms, obj);
+
+            return ms.ToArray();
+        }
+
+        /// <summary>
         /// 将对象系列化成字符串
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         public static string SerializeJSON(object obj)
         {
-            if (obj == null)
-            {
-                return "null";
-            }
+            if (obj == null) return "null";
 
             Type type = obj.GetType();
             if (type.IsEnum)
@@ -72,8 +88,47 @@ namespace MySoft.Core
             {
                 return obj.ToString();
             }
-            return JavaScriptConvert.SerializeObject(obj);
+
+            //处理DataRow，DataTable，DataSet的系列化
+            JsonConverter converter = null;
+            if (type == typeof(DataRow))
+                converter = new DataRowConverter();
+            else if (type == typeof(DataTable))
+                converter = new DataTableConverter();
+            else if (type == typeof(DataSet))
+                converter = new DataSetConverter();
+
+            if (converter == null)
+                return JavaScriptConvert.SerializeObject(obj);
+            else
+                return JavaScriptConvert.SerializeObject(obj, converter);
         }
+
+        /// <summary>
+        /// 将数据反系列化成对象
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static object DeserializeBin(byte[] data)
+        {
+            if (data == null) return null;
+
+            MemoryStream ms = new MemoryStream(data);
+            BinaryFormatter formatter = new BinaryFormatter();
+            return formatter.Deserialize(ms);
+        }
+
+        /// <summary>
+        /// 将数据反系列化成对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static T DeserializeBin<T>(byte[] data)
+        {
+            return (T)DeserializeBin(data);
+        }
+
 
         /// <summary>
         /// 将字符串反系列化成对象
@@ -83,11 +138,26 @@ namespace MySoft.Core
         /// <returns></returns>
         public static object DeserializeJSON(Type returnType, string data)
         {
+            if (string.IsNullOrEmpty(data)) return null;
+
             if (returnType.IsArray && data != null && !data.StartsWith("["))
             {
                 data = "[" + data + "]";
             }
-            return JavaScriptConvert.DeserializeObject(data, returnType);
+
+            //处理DataRow，DataTable，DataSet的反系列化
+            JsonConverter converter = null;
+            if (returnType == typeof(DataRow))
+                converter = new DataRowConverter();
+            else if (returnType == typeof(DataTable))
+                converter = new DataTableConverter();
+            else if (returnType == typeof(DataSet))
+                converter = new DataSetConverter();
+
+            if (converter == null)
+                return JavaScriptConvert.DeserializeObject(data, returnType);
+            else
+                return JavaScriptConvert.DeserializeObject(data, returnType, converter);
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Reflection;
 using MySoft.Core;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service.Services
 {
@@ -125,32 +126,24 @@ namespace MySoft.IoC.Service.Services
             if (returnValue != null)
             {
                 Type returnType = mi.ReturnType;
-                resMsg.Type = returnType;
+                if (returnValue == null) return resMsg;
 
                 if (!container.Compress)
                 {
-                    if (returnType == typeof(System.Data.DataSet))
+                    if (container.Protocol == RemotingChannelType.TCP)
                     {
-                        resMsg.Data = (DataSet)returnValue;
+                        resMsg.Data = SerializationManager.SerializeBin(returnValue);
                     }
                     else
                     {
-                        resMsg.Text = SerializationManager.SerializeJSON(returnValue);
+                        resMsg.Data = SerializationManager.SerializeJSON(returnValue);
                     }
                 }
                 else
                 {
-                    string retText;
-                    if (returnType == typeof(System.Data.DataSet))
-                    {
-                        retText = SerializationManager.SerializeJSON(returnValue);
-                    }
-                    else
-                    {
-                        retText = SerializationManager.SerializeJSON(returnValue);
-                    }
+                    string retText = SerializationManager.SerializeJSON(returnValue);
 
-                    resMsg.Text = CompressionManager.Compress7Zip(retText);
+                    resMsg.Data = CompressionManager.Compress7Zip(retText);
                 }
             }
 

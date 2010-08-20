@@ -57,6 +57,9 @@
     <Compile Include="Common\Compression\SevenZip\Compress\RangeCoder\RangeCoderBit.cs" />
     <Compile Include="Common\Compression\SevenZip\Compress\RangeCoder\RangeCoderBitTree.cs" />
     <Compile Include="Common\Compression\SevenZip\ICoder.cs" />
+    <Compile Include="Json\Newtonsoft.Json\Converters\DataRowConverter.cs" />
+    <Compile Include="Json\Newtonsoft.Json\Converters\DataSetConverter.cs" />
+    <Compile Include="Json\Newtonsoft.Json\Converters\DataTableConverter.cs" />
     <Compile Include="Security\AESEncrypt.cs" />
     <Compile Include="Security\DESEncrypt.cs" />
     <Compile Include="Json\JSONArray.cs" />
