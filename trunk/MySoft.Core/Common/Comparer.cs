@@ -60,14 +60,14 @@ namespace MySoft.Core
     /// 自定义数据排序算法
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class CustomComparer<T> : IComparer<T>
+    public class SortComparer<T> : IComparer<T>
     {
         private List<SortProperty> sorts;
         /// <summary>
         /// 初始化自定义比较类
         /// </summary>
         /// <param name="sorts"></param>
-        public CustomComparer(params SortProperty[] sorts)
+        public SortComparer(params SortProperty[] sorts)
         {
             this.sorts = new List<SortProperty>(sorts);
         }
