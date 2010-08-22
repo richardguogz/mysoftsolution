@@ -27,10 +27,18 @@ namespace MySoft.Data
         /// <returns></returns>
         void AddParameter(DbCommand cmd, SQLParameter[] parameters);
 
+        void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value);
         void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, object value);
+
         void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size);
-        void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value, int size);
+        void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType);
+
+        void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value);
+        void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value);
+
+        void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType, int size);
         void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType);
+
         DbParameter GetParameter(DbCommand cmd, string parameterName);
 
 

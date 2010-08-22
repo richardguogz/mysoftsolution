@@ -115,7 +115,16 @@ namespace MySoft.Data
             cmd.Parameters.Add(dbParameter);
         }
 
-        public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value, int size)
+        public void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType)
+        {
+            DbParameter dbParameter = cmd.CreateParameter();
+            dbParameter.DbType = dbType;
+            dbParameter.ParameterName = parameterName;
+            dbParameter.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(dbParameter);
+        }
+
+        public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value)
         {
             DbParameter dbParameter = cmd.CreateParameter();
             dbParameter.DbType = dbType;
@@ -123,6 +132,26 @@ namespace MySoft.Data
             dbParameter.Value = value;
             dbParameter.Size = size;
             dbParameter.Direction = ParameterDirection.InputOutput;
+            cmd.Parameters.Add(dbParameter);
+        }
+
+        public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value)
+        {
+            DbParameter dbParameter = cmd.CreateParameter();
+            dbParameter.DbType = dbType;
+            dbParameter.ParameterName = parameterName;
+            dbParameter.Value = value;
+            dbParameter.Direction = ParameterDirection.InputOutput;
+            cmd.Parameters.Add(dbParameter);
+        }
+
+        public void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType, int size)
+        {
+            DbParameter dbParameter = cmd.CreateParameter();
+            dbParameter.DbType = dbType;
+            dbParameter.Size = size;
+            dbParameter.ParameterName = parameterName;
+            dbParameter.Direction = ParameterDirection.ReturnValue;
             cmd.Parameters.Add(dbParameter);
         }
 

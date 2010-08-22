@@ -70,11 +70,12 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="paramName"></param>
         /// <param name="dbType"></param>
+        /// <param name="size"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public SqlSection AddInputParameter(string paramName, DbType dbType, object value)
+        public SqlSection AddInputParameter(string paramName, DbType dbType, int size, object value)
         {
-            dbProvider.AddInputParameter(dbCommand, paramName, dbType, value);
+            dbProvider.AddInputParameter(dbCommand, paramName, dbType, size, value);
             return this;
         }
 
@@ -83,12 +84,11 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="paramName"></param>
         /// <param name="dbType"></param>
-        /// <param name="size"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public SqlSection AddInputParameter(string paramName, DbType dbType, int size, object value)
+        public SqlSection AddInputParameter(string paramName, DbType dbType, object value)
         {
-            dbProvider.AddInputParameter(dbCommand, paramName, dbType, size, value);
+            dbProvider.AddInputParameter(dbCommand, paramName, dbType, value);
             return this;
         }
 

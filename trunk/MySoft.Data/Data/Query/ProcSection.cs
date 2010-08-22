@@ -72,9 +72,9 @@ namespace MySoft.Data
         /// <param name="dbType"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public ProcSection AddInputParameter(string parameterName, DbType dbType, object value)
+        public ProcSection AddInputParameter(string parameterName, DbType dbType, int size, object value)
         {
-            dbProvider.AddInputParameter(dbCommand, parameterName, dbType, value);
+            dbProvider.AddInputParameter(dbCommand, parameterName, dbType, size, value);
             return this;
         }
 
@@ -85,9 +85,22 @@ namespace MySoft.Data
         /// <param name="dbType"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public ProcSection AddInputParameter(string parameterName, DbType dbType, int size, object value)
+        public ProcSection AddInputParameter(string parameterName, DbType dbType, object value)
         {
-            dbProvider.AddInputParameter(dbCommand, parameterName, dbType, size, value);
+            dbProvider.AddInputParameter(dbCommand, parameterName, dbType, value);
+            return this;
+        }
+
+        /// <summary>
+        /// 增加一个输出参数到当前Proc命令
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ProcSection AddOutputParameter(string parameterName, DbType dbType, int size)
+        {
+            dbProvider.AddInputParameter(dbCommand, parameterName, dbType, size);
             return this;
         }
 
@@ -98,9 +111,9 @@ namespace MySoft.Data
         /// <param name="dbType"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public ProcSection AddOutputParameter(string parameterName, DbType dbType, int size)
+        public ProcSection AddOutputParameter(string parameterName, DbType dbType)
         {
-            dbProvider.AddOutputParameter(dbCommand, parameterName, dbType, size);
+            dbProvider.AddOutputParameter(dbCommand, parameterName, dbType);
             return this;
         }
 
@@ -112,9 +125,34 @@ namespace MySoft.Data
         /// <param name="value"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public ProcSection AddInputOutputParameter(string parameterName, DbType dbType, object value, int size)
+        public ProcSection AddInputOutputParameter(string parameterName, DbType dbType, int size, object value)
         {
-            dbProvider.AddInputOutputParameter(dbCommand, parameterName, dbType, value, size);
+            dbProvider.AddInputOutputParameter(dbCommand, parameterName, dbType, size, value);
+            return this;
+        }
+
+        /// <summary>
+        /// 增加一个输入输出参数到当前Proc命令
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ProcSection AddInputOutputParameter(string parameterName, DbType dbType, object value)
+        {
+            dbProvider.AddInputOutputParameter(dbCommand, parameterName, dbType, value);
+            return this;
+        }
+
+        /// <summary>
+        /// 增加一个返回参数到当前Proc命令
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <returns></returns>
+        public ProcSection AddReturnValueParameter(string parameterName, DbType dbType, int size)
+        {
+            dbProvider.AddReturnValueParameter(dbCommand, parameterName, dbType, size);
             return this;
         }
 

@@ -129,26 +129,97 @@ namespace MySoft.Data
             AddParameter(cmd, list.ToArray());
         }
 
+        /// <summary>
+        /// 添加输入参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="size"></param>
+        /// <param name="value"></param>
         public void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value)
         {
             dbHelper.AddInputParameter(cmd, parameterName, dbType, size, value);
         }
 
+        /// <summary>
+        /// 添加输入参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="value"></param>
         public void AddInputParameter(DbCommand cmd, string parameterName, DbType dbType, object value)
         {
             dbHelper.AddInputParameter(cmd, parameterName, dbType, value);
         }
 
+        /// <summary>
+        /// 添加输出参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="size"></param>
         public void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size)
         {
             dbHelper.AddOutputParameter(cmd, parameterName, dbType, size);
         }
 
-        public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value, int size)
+        /// <summary>
+        /// 添加输出参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        public void AddOutputParameter(DbCommand cmd, string parameterName, DbType dbType)
         {
-            dbHelper.AddInputOutputParameter(cmd, parameterName, dbType, value, size);
+            dbHelper.AddOutputParameter(cmd, parameterName, dbType);
         }
 
+        /// <summary>
+        /// 添加输入输出参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="size"></param>
+        /// <param name="value"></param>
+        public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, int size, object value)
+        {
+            dbHelper.AddInputOutputParameter(cmd, parameterName, dbType, size, value);
+        }
+
+        /// <summary>
+        /// 添加输入输出参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="value"></param>
+        public void AddInputOutputParameter(DbCommand cmd, string parameterName, DbType dbType, object value)
+        {
+            dbHelper.AddInputOutputParameter(cmd, parameterName, dbType, value);
+        }
+
+        /// <summary>
+        /// 添加返回参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
+        /// <param name="size"></param>
+        public void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType, int size)
+        {
+            dbHelper.AddReturnValueParameter(cmd, parameterName, dbType, size);
+        }
+
+        /// <summary>
+        /// 添加返回参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="dbType"></param>
         public void AddReturnValueParameter(DbCommand cmd, string parameterName, DbType dbType)
         {
             dbHelper.AddReturnValueParameter(cmd, parameterName, dbType);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
+using System.Data.Common;
 
 namespace MySoft.Data
 {
@@ -45,6 +46,28 @@ namespace MySoft.Data
             : this(pName)
         {
             this.Value = pValue;
+        }
+
+        /// <summary>
+        /// 初始化OrmParameter
+        /// </summary>
+        /// <param name="pName"></param>
+        /// <param name="pValue"></param>
+        public SQLParameter(string pName, object pValue, ParameterDirection pDirection)
+            : this(pName, pValue)
+        {
+            this.Direction = pDirection;
+        }
+
+        /// <summary>
+        /// 通过DbParameter实例化对象
+        /// </summary>
+        /// <param name="dbParameter"></param>
+        public SQLParameter(DbParameter dbParameter)
+        {
+            this.Name = dbParameter.ParameterName;
+            this.Value = dbParameter.Value;
+            this.Direction = dbParameter.Direction;
         }
     }
 }
