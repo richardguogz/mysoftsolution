@@ -151,7 +151,7 @@ namespace MySoft.Core
                 ret = ((IComparable)value1).CompareTo((IComparable)value2);
             }
 
-            if (!property.IsDesc) return -ret;
+            if (property.IsDesc) return -ret;
             return ret;
         }
 
