@@ -146,9 +146,12 @@ namespace MySoft.Core
                 value2 = Convert.ChangeType(value2, type2);
                 ret = ((IComparable)value1).CompareTo((IComparable)value2);
             }
-            else ret = ((IComparable)value1).CompareTo((IComparable)value2);
+            else
+            {
+                ret = ((IComparable)value1).CompareTo((IComparable)value2);
+            }
 
-            if (property.IsDesc) return -ret;
+            if (!property.IsDesc) return -ret;
             return ret;
         }
 
