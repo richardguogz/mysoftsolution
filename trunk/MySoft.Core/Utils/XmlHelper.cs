@@ -20,11 +20,27 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="element"></param>
-        public XmlNodeHelper(XmlDocument doc, string element)
+        internal XmlNodeHelper(XmlDocument doc, string element)
         {
             this.doc = doc;
             this.element = element;
-            this.node = doc.SelectSingleNode(element);
+
+            if (string.IsNullOrEmpty(element))
+                this.node = (XmlNode)doc.DocumentElement;
+            else
+                this.node = doc.SelectSingleNode(element);
+        }
+
+        /// <summary>
+        /// 实例化 XmlNodeHelper
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="node"></param>
+        private XmlNodeHelper(XmlDocument doc, XmlNode node)
+        {
+            this.doc = doc;
+            this.element = node.Name;
+            this.node = node;
         }
 
         /// <summary>
@@ -34,8 +50,33 @@ namespace MySoft.Core
         /// <returns></returns>
         public XmlNodeHelper GetNode(string element)
         {
-            string el = "/" + string.Format("{0}/{1}", this.element, element);
+            string el = null;
+            if (string.IsNullOrEmpty(this.element))
+                el = "/" + element.TrimStart('/');
+            else
+                el = string.Format("/{0}/{1}", this.element.TrimStart('/'), element.TrimStart('/'));
+
             return new XmlNodeHelper(doc, el);
+        }
+
+        /// <summary>
+        /// 获取节点列表
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public XmlNodeHelper[] GetNodes(string element)
+        {
+            var list = new List<XmlNodeHelper>();
+            foreach (XmlNode nd in node.ChildNodes)
+            {
+                if (nd.Name == element)
+                {
+                    var helper = new XmlNodeHelper(doc, nd);
+                    list.Add(helper);
+                }
+            }
+
+            return list.ToArray();
         }
 
         /// <summary>
@@ -58,6 +99,16 @@ namespace MySoft.Core
         #region 插入节点
 
         /// <summary>
+        /// 插入节点及值
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="value"></param>
+        public XmlNodeHelper Insert(string attribute, string value)
+        {
+            return Insert(null, attribute, value);
+        }
+
+        /// <summary>
         /// 插入属性及值
         /// </summary>
         /// <param name="attributes"></param>
@@ -68,13 +119,14 @@ namespace MySoft.Core
         }
 
         /// <summary>
-        /// 插入节点及值
+        /// 插入节点、属性及值
         /// </summary>
         /// <param name="element"></param>
+        /// <param name="attribute"></param>
         /// <param name="value"></param>
-        public XmlNodeHelper Insert(string element, string value)
+        public XmlNodeHelper Insert(string element, string attribute, string value)
         {
-            return Insert(element, null, value);
+            return Insert(element, new string[] { attribute }, new string[] { value });
         }
 
         /// <summary>
@@ -111,42 +163,6 @@ namespace MySoft.Core
                 else
                 {
                     node.AppendChild(xe);
-
-                    return GetNode(element);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new MySoftException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 插入节点、属性及值
-        /// </summary>
-        /// <param name="element"></param>
-        /// <param name="attribute"></param>
-        /// <param name="value"></param>
-        public XmlNodeHelper Insert(string element, string attribute, string value)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(element))
-                {
-                    XmlElement xe = (XmlElement)node;
-                    xe.SetAttribute(attribute, value);
-
-                    return this;
-                }
-                else
-                {
-                    XmlElement xe = doc.CreateElement(element);
-                    if (string.IsNullOrEmpty(attribute))
-                        xe.InnerText = value;
-                    else
-                        xe.SetAttribute(attribute, value);
-                    node.AppendChild(xe);
-
                     return GetNode(element);
                 }
             }
@@ -163,10 +179,9 @@ namespace MySoft.Core
         /// <summary>
         /// 更新属性值
         /// </summary>
-        /// <param name="node"></param>
         /// <param name="attribute"></param>
         /// <param name="value"></param>
-        public XmlNodeHelper Update(string node, string attribute, string value)
+        public XmlNodeHelper Update(string attribute, string value)
         {
             return Update(new string[] { attribute }, new string[] { value });
         }
@@ -239,11 +254,11 @@ namespace MySoft.Core
         {
             get
             {
-                return node.Value;
+                return node.InnerText;
             }
             set
             {
-                node.Value = value;
+                node.InnerText = value;
             }
         }
     }
@@ -280,7 +295,25 @@ namespace MySoft.Core
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Create(string element)
+        public XmlNodeHelper Insert(string element)
+        {
+            return Insert(element, (string[])null, (string[])null);
+        }
+
+        /// <summary>
+        /// 创建element根节点
+        /// </summary>
+        /// <param name="element"></param>
+        public XmlNodeHelper Insert(string element, string attribute, string value)
+        {
+            return Insert(element, new string[] { attribute }, new string[] { value });
+        }
+
+        /// <summary>
+        /// 创建element根节点
+        /// </summary>
+        /// <param name="element"></param>
+        public XmlNodeHelper Insert(string element, string[] attributes, string[] values)
         {
             try
             {
@@ -290,6 +323,16 @@ namespace MySoft.Core
                 xw.Formatting = Formatting.Indented;
                 xw.WriteStartDocument();
                 xw.WriteStartElement(element);
+
+                if (attributes != null)
+                {
+                    int index = 0;
+                    foreach (string attribute in attributes)
+                    {
+                        xw.WriteAttributeString(attribute, values[index]);
+                    }
+                }
+
                 xw.WriteEndElement();
                 xw.WriteEndDocument();
                 xw.Flush();
@@ -297,13 +340,12 @@ namespace MySoft.Core
                 ms.Position = 0;
                 var xr = XmlReader.Create(ms);
                 doc.Load(xr);
+                xr.Close();
 
                 ms.Close();
                 xw.Close();
 
-                content = doc.InnerXml;
-
-                return new XmlNodeHelper(doc, element);
+                return GetNode(element);
             }
             catch (Exception ex)
             {
@@ -318,12 +360,27 @@ namespace MySoft.Core
         /// <returns></returns>
         public XmlNodeHelper GetNode(string element)
         {
-            if (content == null)
+            if (doc.ChildNodes.Count == 0)
             {
                 throw new MySoftException("xml文件不存在，请先创建！");
             }
 
-            return new XmlNodeHelper(doc, element);
+            string[] elements = element.Split(new char[] { '.', '/', '|' });
+            if (elements.Length == 1)
+            {
+                return new XmlNodeHelper(doc, elements[0]);
+            }
+
+            XmlNodeHelper node = null;
+            foreach (string el in elements)
+            {
+                if (node == null)
+                    node = new XmlNodeHelper(doc, el);
+                else
+                    node = node.GetNode(el);
+            }
+
+            return node;
         }
 
         #region 保存节点
@@ -351,11 +408,11 @@ namespace MySoft.Core
                             var fs = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
                             fs.SetLength(0);
 
-                            StreamWriter sw = new StreamWriter(fs);
-                            sw.Write(doc.InnerXml);
-
-                            doc.Save(sw);
-                            sw.Close();
+                            using (var sw = new StreamWriter(fs))
+                            {
+                                sw.Write(doc.InnerXml);
+                                sw.Flush();
+                            }
                         }
                         else
                         {

@@ -68,14 +68,20 @@ namespace MySoft.Core.Test
         public void CreateTest()
         {
             string path = "c:\\test.xml"; // TODO: 初始化为适当的值
+
             using (XmlHelper target = new XmlHelper(path)) // TODO: 初始化为适当的值
             {
                 string element = "config"; // TODO: 初始化为适当的值
-                target.Create(element).Insert(element, new string[] { "key", "value" }, new string[] { "pokey", "povalue" })
-               .Insert(element, new string[] { "key", "value" }, new string[] { "pokey1", "povalue1" });
+                //target.Insert(element, new string[] { "key", "value" }, new string[] { "pokey1", "povalue1" })
+                //    .Insert(element, new string[] { "key", "value" }, new string[] { "pokey2", "povalue2" })
+                //    .Insert(element, new string[] { "key", "value" }, new string[] { "pokey3", "povalue3" });
 
-                //target.GetNode(element).Update(new string[] { "key", "value" }, new string[] { "pokey123", "povalue123" });
-                //Assert.Inconclusive("无法验证不返回值的方法。");
+                ////target.GetNode(element).Update(new string[] { "key", "value" }, new string[] { "pokey123", "povalue123" });
+                ////Assert.Inconclusive("无法验证不返回值的方法。");
+
+                //target.GetNode("config.config").Insert(element, new string[] { "key", "value" }, new string[] { "pokey3", "povalue3" });
+
+                XmlNodeHelper[] h = target.GetNode(element).GetNode(element).GetNodes(element);
             }
         }
     }
