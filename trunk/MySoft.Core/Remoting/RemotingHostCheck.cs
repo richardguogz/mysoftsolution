@@ -16,19 +16,15 @@ namespace MySoft.Core.Remoting
 
         System.Timers.Timer timer = null;
         RemotingClientConfiguration cfg = null;
-        Dictionary<string, string> _CheckLog = new Dictionary<string, string>();
+        IList<string> _CheckLog = new List<string>();
 
         /// <summary>
         /// 服务器检测日志
         /// </summary>
-        public Dictionary<string, string> CheckLog
+        public IList<string> CheckLog
         {
             get { return _CheckLog; }
             set { _CheckLog = value; }
-        }
-	
-        private RemotingHostCheck()
-        {
         }
 
         /// <summary>
@@ -95,7 +91,7 @@ namespace MySoft.Core.Remoting
             try
             {
                 objectUrl = cfg.GetRemoteObjectUrl(usableServerUrl, "RemotingTest");
-                RemotingTest t = (RemotingTest)Activator.GetObject(typeof(RemotingTest), objectUrl);
+                IRemotingTest t = (IRemotingTest)Activator.GetObject(typeof(RemotingTest), objectUrl);
                 t.GetDate();
                 WriteLog(host.Name, usableServerUrl, true, "ok");
             }
@@ -111,7 +107,7 @@ namespace MySoft.Core.Remoting
                 try
                 {
                     objectUrl = cfg.GetRemoteObjectUrl(defaultServer.ServerUrl, "RemotingTest");
-                    RemotingTest t = (RemotingTest)Activator.GetObject(typeof(RemotingTest), objectUrl);
+                    IRemotingTest t = (IRemotingTest)Activator.GetObject(typeof(RemotingTest), objectUrl);
                     t.GetDate();
 
                     AppDomain.CurrentDomain.SetData(host.Name, defaultServer.ServerUrl);
@@ -137,7 +133,7 @@ namespace MySoft.Core.Remoting
 
                 try
                 {
-                    RemotingTest t = (RemotingTest)Activator.GetObject(typeof(RemotingTest), objectUrl);
+                    IRemotingTest t = (IRemotingTest)Activator.GetObject(typeof(RemotingTest), objectUrl);
                     t.GetDate();
 
                     if (flag)
@@ -174,21 +170,14 @@ namespace MySoft.Core.Remoting
         #endregion
 
         //写日志
-        private void WriteLog(string hostName,string serverUrl,bool isCurrentServer,string msg)
+        private void WriteLog(string hostName, string serverUrl, bool isCurrentServer, string msg)
         {
-            string key = string.Format("{0}${1}", hostName, serverUrl);
-            string log = string.Format("RemotingHost：{0}，服务器：{1}，是否当前服务器：{2}，状态：{3}，记录时间：{4}", hostName, serverUrl, isCurrentServer.ToString(), msg,DateTime.Now.ToString());
+            //string key = string.Format("{0}${1}", hostName, serverUrl);
+            string log = string.Format("RemotingHost：{0}，服务器：{1}，是否当前服务器：{2}，状态：{3}，记录时间：{4}", hostName, serverUrl, isCurrentServer.ToString(), msg, DateTime.Now.ToString());
 
             lock (_CheckLog)
             {
-                if (_CheckLog.ContainsKey(key))
-                {
-                    _CheckLog[key] = log;
-                }
-                else
-                {
-                    _CheckLog.Add(key, log);
-                }
+                _CheckLog.Add(log);
             }
         }
     }

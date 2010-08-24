@@ -11,7 +11,7 @@ namespace MySoft.Core.Remoting
     /// Remoting客户端工具类
     /// </summary>
     /// <typeparam name="T">一般为接口类型</typeparam>
-    public class RemotingClientUtil<T>
+    public class RemotingClientUtil<T> : ILogable
     {
         /// <summary>
         /// 
@@ -27,14 +27,6 @@ namespace MySoft.Core.Remoting
         {
             get { return _RemotingConfiguration; }
             set { _RemotingConfiguration = value; }
-        }
-
-        /// <summary>
-        /// 服务器检测日志
-        /// </summary>
-        public Dictionary<string, string> RemotingServerCheckLog
-        {
-            get { return RemotingHostCheck.Instance.CheckLog; }
         }
 
         private RemotingClientUtil()
@@ -54,6 +46,39 @@ namespace MySoft.Core.Remoting
 
             //检测每个客户端的可用服务器
             RemotingHostCheck.Instance.DoCheck();
+
+            System.Threading.Thread thread = new System.Threading.Thread(DoWork);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        void DoWork()
+        {
+            while (true)
+            {
+                if (OnLog != null)
+                {
+                    try
+                    {
+                        lock (RemotingHostCheck.Instance.CheckLog)
+                        {
+                            foreach (string log in RemotingHostCheck.Instance.CheckLog)
+                            {
+                                OnLog(log);
+                            }
+
+                            RemotingHostCheck.Instance.CheckLog.Clear();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OnLog(ex.Message);
+                    }
+                }
+
+                //每隔10秒生成一次日志
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
+            }
         }
 
         /// <summary>
@@ -163,7 +188,7 @@ namespace MySoft.Core.Remoting
         /// <returns>Remoting服务器时间</returns>
         public string RemotingServerTest(string serverUrl)
         {
-            RemotingTest t = RemotingClientUtil<RemotingTest>.Instance.GetWellKnownClientInstance(serverUrl.TrimEnd('/') + "/RemotingTest");
+            IRemotingTest t = RemotingClientUtil<IRemotingTest>.Instance.GetWellKnownClientInstance(serverUrl.TrimEnd('/') + "/RemotingTest");
             return t.GetDate();
         }
 
@@ -178,5 +203,10 @@ namespace MySoft.Core.Remoting
             IChannel channel = new TcpChannel(props, clientProvider, serverProvider);
             ChannelServices.RegisterChannel(channel, false);
         }
+
+        /// <summary>
+        /// OnLog event.
+        /// </summary>
+        public event LogHandler OnLog;
     }
 }

@@ -162,6 +162,7 @@
     <Compile Include="Utils\EmitUtils.cs" />
     <Compile Include="Utils\ILogable.cs" />
     <Compile Include="Utils\SerializationManager.cs" />
+    <Compile Include="Utils\XmlHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
