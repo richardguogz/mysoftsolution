@@ -7,13 +7,255 @@ using System.IO;
 namespace MySoft.Core
 {
     /// <summary>
+    /// XmlNodeHelper 的摘要说明
+    /// </summary>
+    public class XmlNodeHelper
+    {
+        private XmlDocument doc;
+        private string element;
+        private XmlNode node;
+
+        /// <summary>
+        /// 实例化 XmlNodeHelper
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="element"></param>
+        public XmlNodeHelper(XmlDocument doc, string element)
+        {
+            this.doc = doc;
+            this.element = element;
+            this.node = doc.SelectSingleNode(element);
+        }
+
+        /// <summary>
+        /// 获取一个节点
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public XmlNodeHelper GetNode(string element)
+        {
+            string el = "/" + string.Format("{0}/{1}", this.element, element);
+            return new XmlNodeHelper(doc, el);
+        }
+
+        /// <summary>
+        /// 获取属性值
+        /// </summary>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        public string GetAttribute(string attribute)
+        {
+            try
+            {
+                return node.Attributes[attribute].Value;
+            }
+            catch (Exception ex)
+            {
+                throw new MySoftException(ex.Message, ex);
+            }
+        }
+
+        #region 插入节点
+
+        /// <summary>
+        /// 插入属性及值
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="values"></param>
+        public XmlNodeHelper Insert(string[] attributes, string[] values)
+        {
+            return Insert(null, attributes, values);
+        }
+
+        /// <summary>
+        /// 插入节点及值
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="value"></param>
+        public XmlNodeHelper Insert(string element, string value)
+        {
+            return Insert(element, null, value);
+        }
+
+        /// <summary>
+        /// 插入节点、属性及值
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="attributes"></param>
+        /// <param name="values"></param>
+        public XmlNodeHelper Insert(string element, string[] attributes, string[] values)
+        {
+            try
+            {
+                XmlElement xe;
+                bool isRoot = true;
+                if (string.IsNullOrEmpty(element))
+                    xe = (XmlElement)node;
+                else
+                {
+                    isRoot = false;
+                    xe = doc.CreateElement(element);
+                }
+
+                int index = 0;
+                foreach (string attribute in attributes)
+                {
+                    xe.SetAttribute(attribute, values[index]);
+                    index++;
+                }
+
+                if (isRoot)
+                {
+                    return this;
+                }
+                else
+                {
+                    node.AppendChild(xe);
+
+                    return GetNode(element);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new MySoftException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 插入节点、属性及值
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="attribute"></param>
+        /// <param name="value"></param>
+        public XmlNodeHelper Insert(string element, string attribute, string value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(element))
+                {
+                    XmlElement xe = (XmlElement)node;
+                    xe.SetAttribute(attribute, value);
+
+                    return this;
+                }
+                else
+                {
+                    XmlElement xe = doc.CreateElement(element);
+                    if (string.IsNullOrEmpty(attribute))
+                        xe.InnerText = value;
+                    else
+                        xe.SetAttribute(attribute, value);
+                    node.AppendChild(xe);
+
+                    return GetNode(element);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new MySoftException(ex.Message, ex);
+            }
+        }
+
+        #endregion
+
+        #region 更新节点
+
+        /// <summary>
+        /// 更新属性值
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="attribute"></param>
+        /// <param name="value"></param>
+        public XmlNodeHelper Update(string node, string attribute, string value)
+        {
+            return Update(new string[] { attribute }, new string[] { value });
+        }
+
+        /// <summary>
+        /// 更新属性值
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="values"></param>
+        public XmlNodeHelper Update(string[] attributes, string[] values)
+        {
+            try
+            {
+                XmlElement xe = (XmlElement)node;
+                int index = 0;
+                foreach (string attribute in attributes)
+                {
+                    xe.SetAttribute(attribute, values[index]);
+                    index++;
+                }
+
+                return this;
+            }
+            catch (Exception ex)
+            {
+                throw new MySoftException(ex.Message, ex);
+            }
+        }
+
+        #endregion
+
+        #region 删除节点
+
+        /// <summary>
+        /// 删除节点
+        /// </summary>
+        public XmlNodeHelper Delete()
+        {
+            return Delete(null);
+        }
+
+        /// <summary>
+        /// 删除属性
+        /// </summary>
+        /// <param name="attribute"></param>
+        public XmlNodeHelper Delete(string attribute)
+        {
+            try
+            {
+                XmlElement xe = (XmlElement)node;
+                if (string.IsNullOrEmpty(attribute))
+                    node.ParentNode.RemoveChild(node);
+                else
+                    xe.RemoveAttribute(attribute);
+
+                return this;
+            }
+            catch (Exception ex)
+            {
+                throw new MySoftException(ex.Message, ex);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 获取节点值
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                return node.Value;
+            }
+            set
+            {
+                node.Value = value;
+            }
+        }
+    }
+
+    /// <summary>
     /// XmlHelper 的摘要说明
     /// </summary>
     public class XmlHelper : IDisposable
     {
         XmlDocument doc = new XmlDocument();
         private string path;
-        private string oldContent;
+        private string content;
 
         /// <summary>
         /// 实例化XmlHelper
@@ -28,22 +270,17 @@ namespace MySoft.Core
                 try
                 {
                     doc.Load(path);
-                    oldContent = doc.InnerXml;
+                    content = doc.InnerXml;
                 }
                 catch { }
             }
         }
 
         /// <summary>
-        /// 创建xml文件
+        /// 创建element根节点
         /// </summary>
-        /// <param name="root">根目录名称</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Create(path, "Node")
-         ************************************************/
-        public void Create(string element)
+        /// <param name="element"></param>
+        public XmlNodeHelper Create(string element)
         {
             try
             {
@@ -64,7 +301,9 @@ namespace MySoft.Core
                 ms.Close();
                 xw.Close();
 
-                oldContent = doc.InnerXml;
+                content = doc.InnerXml;
+
+                return new XmlNodeHelper(doc, element);
             }
             catch (Exception ex)
             {
@@ -73,320 +312,21 @@ namespace MySoft.Core
         }
 
         /// <summary>
-        /// 读取数据
+        /// 获取一个节点
         /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时返回该属性值，否则返回串联值</param>
-        /// <returns>string</returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Read(path, "/Node", "")
-         * XmlHelper.Read(path, "/Node/Element[@Attribute='Name']", "Attribute")
-         ************************************************/
-        public string Read(string node)
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public XmlNodeHelper GetNode(string element)
         {
-            return Read(node, null);
-        }
-
-        /// <summary>
-        /// 读取数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时返回该属性值，否则返回串联值</param>
-        /// <returns>string</returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Read(path, "/Node", "")
-         * XmlHelper.Read(path, "/Node/Element[@Attribute='Name']", "Attribute")
-         ************************************************/
-        public string Read(string node, string attribute)
-        {
-            if (oldContent == null)
+            if (content == null)
             {
                 throw new MySoftException("xml文件不存在，请先创建！");
             }
 
-            string value = "";
-            try
-            {
-                XmlNode xn = doc.SelectSingleNode(node);
-                value = (string.IsNullOrEmpty(attribute) ? xn.InnerText : xn.Attributes[attribute].Value);
-            }
-            catch (Exception ex)
-            {
-                throw new MySoftException(ex.Message, ex);
-            }
-            return value;
+            return new XmlNodeHelper(doc, element);
         }
 
-        /// <summary>
-        /// 插入数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="element">元素名，非空时插入新元素，否则在该元素中插入属性</param>
-        /// <param name="attribute">属性名，非空时插入该元素属性值，否则插入元素值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "Element", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Element", "Attribute", "Value")
-         * XmlHelper.Insert(path, "/Node", "", "Attribute", "Value")
-         ************************************************/
-        public void Insert(string node, string[] attributes, string[] values)
-        {
-            Insert(node, null, attributes, values);
-        }
-
-        /// <summary>
-        /// 插入数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="element">元素名，非空时插入新元素，否则在该元素中插入属性</param>
-        /// <param name="attribute">属性名，非空时插入该元素属性值，否则插入元素值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "Element", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Element", "Attribute", "Value")
-         * XmlHelper.Insert(path, "/Node", "", "Attribute", "Value")
-         ************************************************/
-        public void Insert(string node, string element, string[] attributes, string[] values)
-        {
-            if (oldContent == null)
-            {
-                throw new MySoftException("xml文件不存在，请先创建！");
-            }
-
-            try
-            {
-                XmlNode xn = doc.SelectSingleNode(node);
-                XmlElement xe;
-                bool isRoot = true;
-                if (string.IsNullOrEmpty(element))
-                    xe = (XmlElement)xn;
-                else
-                {
-                    isRoot = false;
-                    xe = doc.CreateElement(element);
-                }
-
-                int index = 0;
-                foreach (string attribute in attributes)
-                {
-                    xe.SetAttribute(attribute, values[index]);
-                    index++;
-                }
-
-                if (!isRoot) xn.AppendChild(xe);
-            }
-            catch (Exception ex)
-            {
-                throw new MySoftException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 插入数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="element">元素名，非空时插入新元素，否则在该元素中插入属性</param>
-        /// <param name="attribute">属性名，非空时插入该元素属性值，否则插入元素值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "Element", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Element", "Attribute", "Value")
-         * XmlHelper.Insert(path, "/Node", "", "Attribute", "Value")
-         ************************************************/
-        public void Insert(string node, string element, string value)
-        {
-            Insert(node, element, null, value);
-        }
-
-        /// <summary>
-        /// 插入数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="element">元素名，非空时插入新元素，否则在该元素中插入属性</param>
-        /// <param name="attribute">属性名，非空时插入该元素属性值，否则插入元素值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "Element", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Element", "Attribute", "Value")
-         * XmlHelper.Insert(path, "/Node", "", "Attribute", "Value")
-         ************************************************/
-        public void Insert(string node, string element, string attribute, string value)
-        {
-            if (oldContent == null)
-            {
-                throw new MySoftException("xml文件不存在，请先创建！");
-            }
-
-            try
-            {
-                XmlNode xn = doc.SelectSingleNode(node);
-                if (string.IsNullOrEmpty(element))
-                {
-                    if (!string.IsNullOrEmpty(attribute))
-                    {
-                        XmlElement xe = (XmlElement)xn;
-                        xe.SetAttribute(attribute, value);
-                    }
-                }
-                else
-                {
-                    XmlElement xe = doc.CreateElement(element);
-                    if (string.IsNullOrEmpty(attribute))
-                        xe.InnerText = value;
-                    else
-                        xe.SetAttribute(attribute, value);
-                    xn.AppendChild(xe);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new MySoftException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 修改数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时修改该节点属性值，否则修改节点值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Attribute", "Value")
-         ************************************************/
-        public void Update(string node, string value)
-        {
-            Update(node, null, value);
-        }
-
-        /// <summary>
-        /// 修改数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时修改该节点属性值，否则修改节点值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Attribute", "Value")
-         ************************************************/
-        public void Update(string node, string attribute, string value)
-        {
-            Update(node, new string[] { attribute }, new string[] { value });
-        }
-
-        /// <summary>
-        /// 修改数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时修改该节点属性值，否则修改节点值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Insert(path, "/Node", "", "Value")
-         * XmlHelper.Insert(path, "/Node", "Attribute", "Value")
-         ************************************************/
-        public void Update(string node, string[] attributes, string[] values)
-        {
-            if (oldContent == null)
-            {
-                throw new MySoftException("xml文件不存在，请先创建！");
-            }
-
-            try
-            {
-                XmlNode xn = doc.SelectSingleNode(node);
-                XmlElement xe = (XmlElement)xn;
-                int index = 0;
-                foreach (string attribute in attributes)
-                {
-                    xe.SetAttribute(attribute, values[index]);
-                    index++;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new MySoftException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时删除该节点属性值，否则删除节点值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Delete(path, "/Node", "")
-         * XmlHelper.Delete(path, "/Node", "Attribute")
-         ************************************************/
-        public void Delete(string node)
-        {
-            Delete(node, null);
-        }
-
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="path">路径</param>
-        /// <param name="node">节点</param>
-        /// <param name="attribute">属性名，非空时删除该节点属性值，否则删除节点值</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        /**************************************************
-         * 使用示列:
-         * XmlHelper.Delete(path, "/Node", "")
-         * XmlHelper.Delete(path, "/Node", "Attribute")
-         ************************************************/
-        public void Delete(string node, string attribute)
-        {
-            if (oldContent == null)
-            {
-                throw new MySoftException("xml文件不存在，请先创建！");
-            }
-
-            try
-            {
-                XmlNode xn = doc.SelectSingleNode(node);
-                XmlElement xe = (XmlElement)xn;
-                if (string.IsNullOrEmpty(attribute))
-                    xn.ParentNode.RemoveChild(xn);
-                else
-                    xe.RemoveAttribute(attribute);
-            }
-            catch (Exception ex)
-            {
-                throw new MySoftException(ex.Message, ex);
-            }
-        }
-
-        #region IDisposable 成员
+        #region 保存节点
 
         /// <summary>
         /// 保存更新
@@ -396,7 +336,7 @@ namespace MySoft.Core
             try
             {
                 //有更改时才保存
-                if (oldContent != doc.InnerXml)
+                if (content != doc.InnerXml)
                 {
                     if (!string.IsNullOrEmpty(doc.InnerXml))
                     {
@@ -426,6 +366,10 @@ namespace MySoft.Core
             }
             catch { };
         }
+
+        #endregion
+
+        #region IDisposable 成员
 
         /// <summary>
         /// 释放资源

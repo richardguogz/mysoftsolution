@@ -61,69 +61,6 @@ namespace MySoft.Core.Test
         //
         #endregion
 
-
-        /// <summary>
-        ///Update 的测试
-        ///</summary>
-        [TestMethod()]
-        public void UpdateTest()
-        {
-            string path = string.Empty; // TODO: 初始化为适当的值
-            XmlHelper target = new XmlHelper(path); // TODO: 初始化为适当的值
-            string node = string.Empty; // TODO: 初始化为适当的值
-            string attribute = string.Empty; // TODO: 初始化为适当的值
-            string value = string.Empty; // TODO: 初始化为适当的值
-            target.Update(node, attribute, value);
-            Assert.Inconclusive("无法验证不返回值的方法。");
-        }
-
-        /// <summary>
-        ///Read 的测试
-        ///</summary>
-        [TestMethod()]
-        public void ReadTest()
-        {
-            string path = string.Empty; // TODO: 初始化为适当的值
-            XmlHelper target = new XmlHelper(path); // TODO: 初始化为适当的值
-            string node = string.Empty; // TODO: 初始化为适当的值
-            string attribute = string.Empty; // TODO: 初始化为适当的值
-            string expected = string.Empty; // TODO: 初始化为适当的值
-            string actual;
-            actual = target.Read(node, attribute);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("验证此测试方法的正确性。");
-        }
-
-        /// <summary>
-        ///Insert 的测试
-        ///</summary>
-        [TestMethod()]
-        public void InsertTest()
-        {
-            string path = string.Empty; // TODO: 初始化为适当的值
-            XmlHelper target = new XmlHelper(path); // TODO: 初始化为适当的值
-            string node = string.Empty; // TODO: 初始化为适当的值
-            string element = string.Empty; // TODO: 初始化为适当的值
-            string attribute = string.Empty; // TODO: 初始化为适当的值
-            string value = string.Empty; // TODO: 初始化为适当的值
-            target.Insert(node, element, attribute, value);
-            Assert.Inconclusive("无法验证不返回值的方法。");
-        }
-
-        /// <summary>
-        ///Delete 的测试
-        ///</summary>
-        [TestMethod()]
-        public void DeleteTest()
-        {
-            string path = string.Empty; // TODO: 初始化为适当的值
-            XmlHelper target = new XmlHelper(path); // TODO: 初始化为适当的值
-            string node = string.Empty; // TODO: 初始化为适当的值
-            string attribute = string.Empty; // TODO: 初始化为适当的值
-            target.Delete(node, attribute);
-            Assert.Inconclusive("无法验证不返回值的方法。");
-        }
-
         /// <summary>
         ///Create 的测试
         ///</summary>
@@ -134,25 +71,12 @@ namespace MySoft.Core.Test
             using (XmlHelper target = new XmlHelper(path)) // TODO: 初始化为适当的值
             {
                 string element = "config"; // TODO: 初始化为适当的值
-                //target.Create(element);
-                //target.Insert(element, new string[] { "key", "value" }, new string[] { "pokey", "povalue" });
-                //target.Insert(element, "config", new string[] { "key", "value" }, new string[] { "pokey1", "povalue1" });
+                target.Create(element).Insert(element, new string[] { "key", "value" }, new string[] { "pokey", "povalue" })
+               .Insert(element, new string[] { "key", "value" }, new string[] { "pokey1", "povalue1" });
 
-                target.Update(element, new string[] { "key", "value" }, new string[] { "pokey123", "povalue123" });
-
+                //target.GetNode(element).Update(new string[] { "key", "value" }, new string[] { "pokey123", "povalue123" });
                 //Assert.Inconclusive("无法验证不返回值的方法。");
             }
-        }
-
-        /// <summary>
-        ///XmlHelper 构造函数 的测试
-        ///</summary>
-        [TestMethod()]
-        public void XmlHelperConstructorTest()
-        {
-            string path = string.Empty; // TODO: 初始化为适当的值
-            XmlHelper target = new XmlHelper(path);
-            Assert.Inconclusive("TODO: 实现用来验证目标的代码");
         }
     }
 }
