@@ -96,6 +96,19 @@ namespace MySoft.Core
             }
         }
 
+        /// <summary>
+        /// 获取属性值
+        /// </summary>
+        /// <param name="attribute"></param>
+        /// <returns></returns>
+        public string this[string attribute]
+        {
+            get
+            {
+                return GetAttribute(attribute);
+            }
+        }
+
         #region 插入节点
 
         /// <summary>
@@ -350,6 +363,19 @@ namespace MySoft.Core
             catch (Exception ex)
             {
                 throw new MySoftException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取一个节点
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public XmlNodeHelper this[string element]
+        {
+            get
+            {
+                return GetNode(element);
             }
         }
 
