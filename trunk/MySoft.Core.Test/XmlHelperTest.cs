@@ -71,7 +71,7 @@ namespace MySoft.Core.Test
 
             using (XmlHelper target = new XmlHelper(path)) // TODO: 初始化为适当的值
             {
-                string element = "config"; // TODO: 初始化为适当的值
+                string element = "Config"; // TODO: 初始化为适当的值
                 //target.Insert(element, new string[] { "key", "value" }, new string[] { "pokey1", "povalue1" })
                 //    .Insert(element, new string[] { "key", "value" }, new string[] { "pokey2", "povalue2" })
                 //    .Insert(element, new string[] { "key", "value" }, new string[] { "pokey3", "povalue3" });
@@ -81,7 +81,9 @@ namespace MySoft.Core.Test
 
                 //target.GetNode("config.config").Insert(element, new string[] { "key", "value" }, new string[] { "pokey3", "povalue3" });
 
-                XmlNodeHelper[] h = target.GetNode(element).GetNode(element).GetNodes(element);
+                XmlNodeHelper[] h = target.GetNode(element).GetNode(element).GetNodes(element + "1");
+
+                Assert.AreEqual(h.Length, 2);
             }
         }
     }
