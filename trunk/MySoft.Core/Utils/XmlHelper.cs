@@ -29,6 +29,11 @@ namespace MySoft.Core
                 this.node = (XmlNode)doc.DocumentElement;
             else
                 this.node = doc.SelectSingleNode(element);
+
+            if (node == null)
+            {
+                throw new MySoftException(string.Format("节点{0}不存在！", element));
+            }
         }
 
         /// <summary>
@@ -41,6 +46,11 @@ namespace MySoft.Core
             this.doc = doc;
             this.element = node.Name;
             this.node = node;
+
+            if (node == null)
+            {
+                throw new MySoftException("传入的节点不存在！");
+            }
         }
 
         /// <summary>
@@ -308,25 +318,31 @@ namespace MySoft.Core
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Insert(string element)
+        public XmlNodeHelper Create(string element)
         {
-            return Insert(element, (string[])null, (string[])null);
+            return Create(element, (string[])null, (string[])null);
         }
 
         /// <summary>
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Insert(string element, string attribute, string value)
+        /// <param name="attribute"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public XmlNodeHelper Create(string element, string attribute, string value)
         {
-            return Insert(element, new string[] { attribute }, new string[] { value });
+            return Create(element, new string[] { attribute }, new string[] { value });
         }
 
         /// <summary>
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Insert(string element, string[] attributes, string[] values)
+        /// <param name="attributes"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public XmlNodeHelper Create(string element, string[] attributes, string[] values)
         {
             try
             {
