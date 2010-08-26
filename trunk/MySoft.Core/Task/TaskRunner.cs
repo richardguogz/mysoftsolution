@@ -63,7 +63,7 @@ namespace MySoft.Core.Task
                         threads.Add(job.Name, thread);
                         thread.Start();
 
-                        WriteLog(string.Format("任务[{0}]已启动，服务名称：{1}", job.Name, job.ClassName));
+                        WriteLog(string.Format("任务[{0}]已启动，服务类名：{1}，程序集：{2}", job.Name, job.ClassName, job.AssemblyName));
                     }
                 }
             }
