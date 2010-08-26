@@ -231,7 +231,7 @@ namespace MySoft.Core.Task
                         }
 
                         _ExceptionCount = _ExceptionCount + 1;
-                        _LatestException = new MySoftException("任务执行失败！", ex);
+                        _LatestException = new MySoftException("Task任务执行失败！", ex);
                     }
                 }
 
