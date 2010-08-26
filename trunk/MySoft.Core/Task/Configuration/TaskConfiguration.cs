@@ -92,7 +92,7 @@ namespace MySoft.Core.Task
                     else
                         job.EndTime = "23:59";
 
-                    if (ac["interval"] != null && ac["interval"].Value != null)
+                    if (ac["interval"] != null && ac["interval"].Value.Trim() != string.Empty)
                         job.Interval = Convert.ToInt32(ac["interval"].Value);
 
                     job.AssemblyName = ac["assemblyName"].Value;

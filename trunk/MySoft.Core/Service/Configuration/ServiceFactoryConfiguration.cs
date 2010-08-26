@@ -46,13 +46,13 @@ namespace MySoft.Core.Service
                 if (n.Name == "serviceObject")
                 {
                     ServiceBase config = new ServiceBase();
-                    if (n.Attributes["name"] != null && n.Attributes["name"].Value != null)
+                    if (n.Attributes["name"] != null && n.Attributes["name"].Value.Trim() != string.Empty)
                         config.Name = n.Attributes["name"].Value;
 
-                    if (n.Attributes["assemblyName"] != null && n.Attributes["assemblyName"].Value != null)
+                    if (n.Attributes["assemblyName"] != null && n.Attributes["assemblyName"].Value.Trim() != string.Empty)
                         config.AssemblyName = n.Attributes["assemblyName"].Value;
 
-                    if (n.Attributes["className"] != null && n.Attributes["className"].Value != null)
+                    if (n.Attributes["className"] != null && n.Attributes["className"].Value.Trim() != string.Empty)
                         config.ClassName = n.Attributes["className"].Value;
 
                     services.Add(config);

@@ -45,28 +45,28 @@ namespace MySoft.IoC.Service
         {
             if (node == null) return;
 
-            if (node.Attributes["type"] != null && node.Attributes["type"].Value != null)
+            if (node.Attributes["type"] != null && node.Attributes["type"].Value.Trim() != string.Empty)
                 type = (ServiceFactoryType)Enum.Parse(typeof(ServiceFactoryType), node.Attributes["type"].Value);
 
             if (node.Attributes["protocol"] != null && node.Attributes["protocol"].Value != null)
                 protocol = (RemotingChannelType)Enum.Parse(typeof(RemotingChannelType), node.Attributes["protocol"].Value);
 
-            if (node.Attributes["server"] != null && node.Attributes["server"].Value != null)
+            if (node.Attributes["server"] != null && node.Attributes["server"].Value.Trim() != string.Empty)
                 server = node.Attributes["server"].Value;
 
-            if (node.Attributes["port"] != null && node.Attributes["port"].Value != null)
+            if (node.Attributes["port"] != null && node.Attributes["port"].Value.Trim() != string.Empty)
                 port = Convert.ToInt32(node.Attributes["port"].Value);
 
-            if (node.Attributes["name"] != null && node.Attributes["name"].Value != null)
+            if (node.Attributes["name"] != null && node.Attributes["name"].Value.Trim() != string.Empty)
                 serviceMQName = node.Attributes["name"].Value;
 
-            if (node.Attributes["debug"] != null && node.Attributes["debug"].Value != null)
+            if (node.Attributes["debug"] != null && node.Attributes["debug"].Value.Trim() != string.Empty)
                 debug = Convert.ToBoolean(node.Attributes["debug"].Value);
 
-            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value != null)
+            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value.Trim() != string.Empty)
                 compress = Convert.ToBoolean(node.Attributes["compress"].Value);
 
-            if (node.Attributes["maxTry"] != null && node.Attributes["maxTry"].Value != null)
+            if (node.Attributes["maxTry"] != null && node.Attributes["maxTry"].Value.Trim() != string.Empty)
                 maxTry = Convert.ToInt32(node.Attributes["maxTry"].Value);
         }
 
