@@ -23,7 +23,7 @@ namespace MySoft.Core.Service
         /// <returns></returns>
         public static ServiceFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("configFramework/serviceFactory");
+            object obj = ConfigurationManager.GetSection("serviceFramework/serviceFactory");
 
             if (obj != null)
                 return (ServiceFactoryConfiguration)obj;

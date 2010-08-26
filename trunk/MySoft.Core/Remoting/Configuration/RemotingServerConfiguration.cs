@@ -14,20 +14,20 @@ namespace MySoft.Core.Remoting
     /// <code>
     /// <configuration>
     ///     <configSections>
-    /// 	    <sectionGroup name="configFramework">
+    /// 	    <sectionGroup name="serviceFramework">
     /// 		    <section name="remotingServer" type="MySoft.Core.Remoting.RemotingServerConfigurationHandler, MySoft.Core"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///     <system.web>
     /// 	......
     ///     </system.web>
-    ///     <configFramework>
+    ///     <serviceFramework>
     /// 	    <remotingServer>
     ///             <server channelType="tcp" serverAddress="127.0.0.1" port="8888"/>
     /// 		    <remoteObject name="基金净值" assemblyName="Shumi.BLL" className="SB.NetValue" mode="singleton" />
     /// 		    <remoteObject name="基金净值" assemblyName="Shumi.BLL" className="SB.NetValue" mode="singlecall" />
     /// 	    </remotingServer>
-    ///     </configFramework>
+    ///     </serviceFramework>
     /// </configuration>
     /// </code>
     /// </example>
@@ -40,7 +40,7 @@ namespace MySoft.Core.Remoting
         /// <returns></returns>
         public static RemotingServerConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("configFramework/remotingServer");
+            object obj = ConfigurationManager.GetSection("serviceFramework/remotingServer");
 
             if (obj != null)
                 return (RemotingServerConfiguration)obj;

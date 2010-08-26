@@ -12,16 +12,16 @@ namespace MySoft.Core.Task
     /// <code>
     /// <configuration>
     ///     <configSections>
-    /// 	    <sectionGroup name="configFramework">
+    /// 	    <sectionGroup name="serviceFramework">
     /// 		    <section name="task" type="MySoft.Core.Task.TaskConfigurationHandler, MySoft.Core"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///        ......
-    ///     <shumi.framework>
+    ///     <serviceFramework>
     /// 	    <task>
     ///             <job name="job1" beginDate="2008-1-1" endDate="2010-1-1" beginTime="" endTime="" interval="" assemblyName="" className=""/>
     /// 	    </task>
-    ///     </configFramework>
+    ///     </serviceFramework>
     /// </configuration>
     /// </code>
     /// </remarks>
@@ -34,7 +34,7 @@ namespace MySoft.Core.Task
         /// <returns></returns>
         public static TaskConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("configFramework/task");
+            object obj = ConfigurationManager.GetSection("serviceFramework/serviceTask");
 
             if (obj != null)
                 return (TaskConfiguration)obj;
@@ -65,7 +65,7 @@ namespace MySoft.Core.Task
             {
                 if (n.NodeType == XmlNodeType.Comment) continue;
 
-                if (n.Name == "job")
+                if (n.Name == "jobTask")
                 {
                     XmlAttributeCollection ac = n.Attributes;
                     Job job = new Job();
