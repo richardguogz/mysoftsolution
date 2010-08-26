@@ -10,7 +10,7 @@ namespace MySoft.Core.Task
     /// </summary>
     public class TaskRunner : MarshalByRefObject, ILogable
     {
-        TaskConfiguration cfg = TaskConfiguration.GetConfig();
+        private TaskConfiguration cfg;
 
         /// <summary>
         /// 
@@ -26,10 +26,19 @@ namespace MySoft.Core.Task
         }
 
         /// <summary>
-        /// 
+        /// 实例化TaskRunner
         /// </summary>
         public TaskRunner()
         {
+            this.cfg = new TaskConfiguration();
+        }
+
+        /// <summary>
+        /// 实例化TaskRunner
+        /// </summary>
+        public TaskRunner(TaskConfiguration cfg)
+        {
+            this.cfg = cfg;
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace MySoft.Core.Task
     /// <code>
     /// <configuration>
     ///     <configSections>
-    /// 	    <sectionGroup name="serviceFramework">
+    /// 	    <sectionGroup name="configFramework">
     /// 		    <section name="task" type="MySoft.Core.Task.TaskConfigurationHandler, MySoft.Core"/>
     /// 	    </sectionGroup>
     ///     </configSections>
@@ -21,7 +21,7 @@ namespace MySoft.Core.Task
     /// 	    <task>
     ///             <job name="job1" beginDate="2008-1-1" endDate="2010-1-1" beginTime="" endTime="" timespan="" interval="" assemblyName="" className=""/>
     /// 	    </task>
-    ///     </serviceFramework>
+    ///     </configFramework>
     /// </configuration>
     /// </code>
     /// </remarks>
@@ -34,7 +34,7 @@ namespace MySoft.Core.Task
         /// <returns></returns>
         public static TaskConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/task");
+            object obj = ConfigurationManager.GetSection("configFramework/task");
 
             if (obj != null)
                 return (TaskConfiguration)obj;

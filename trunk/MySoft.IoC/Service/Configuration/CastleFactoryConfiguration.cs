@@ -29,7 +29,7 @@ namespace MySoft.IoC.Service
         /// <returns></returns>
         public static CastleFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/castleFactory");
+            object obj = ConfigurationManager.GetSection("configFramework/castleFactory");
 
             if (obj != null)
                 return (CastleFactoryConfiguration)obj;
