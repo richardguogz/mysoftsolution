@@ -19,7 +19,7 @@ namespace MySoft.Core.Task
     ///        ......
     ///     <shumi.framework>
     /// 	    <task>
-    ///             <job name="job1" beginDate="2008-1-1" endDate="2010-1-1" beginTime="" endTime="" timespan="" interval="" assemblyName="" className=""/>
+    ///             <job name="job1" beginDate="2008-1-1" endDate="2010-1-1" beginTime="" endTime="" interval="" assemblyName="" className=""/>
     /// 	    </task>
     ///     </configFramework>
     /// </configuration>
@@ -94,8 +94,6 @@ namespace MySoft.Core.Task
 
                     if (ac["interval"] != null && ac["interval"].Value != null)
                         job.Interval = Convert.ToInt32(ac["interval"].Value);
-                    else if (ac["timespan"] != null && ac["timespan"].Value != null)
-                        job.Interval = (int)TimeSpan.Parse(ac["timespan"].Value).TotalMilliseconds;
 
                     job.AssemblyName = ac["assemblyName"].Value;
                     job.ClassName = ac["className"].Value;
