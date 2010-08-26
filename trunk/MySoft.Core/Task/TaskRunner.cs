@@ -63,13 +63,13 @@ namespace MySoft.Core.Task
                         threads.Add(job.Name, thread);
                         thread.Start();
 
-                        WriteLog(string.Format("任务[{0}]已启动，服务类名：{1}，程序集：{2}", job.Name, job.ClassName, job.AssemblyName));
+                        WriteLog(string.Format("计划任务[{0}]已启动，服务类名：{1}，程序集：{2}", job.Name, job.ClassName, job.AssemblyName));
                     }
                 }
             }
             else
             {
-                WriteLog("当前配置文件没有设置要计划执行的任务");
+                WriteLog("当前配置文件没有设置要执行的计划任务");
             }
         }
 
@@ -96,7 +96,8 @@ namespace MySoft.Core.Task
                     t = new Thread(new ThreadStart(job.Execute));
                     t.Start();
                     TaskThreadPool.Instance.Threads[job.Name] = t;
-                    WriteLog(string.Format("任务[{0}]已启动", jobName));
+
+                    WriteLog(string.Format("计划任务[{0}]已启动，服务类名：{1}，程序集：{2}", job.Name, job.ClassName, job.AssemblyName));
                 }
             }
         }
@@ -118,8 +119,14 @@ namespace MySoft.Core.Task
                 if (job.State == JobState.Running)
                 {
                     job.State = JobState.Stop;
-                    TaskThreadPool.Instance.Threads[job.Name].Abort();
-                    WriteLog(string.Format("任务[{0}]已停止", jobName));
+
+                    try
+                    {
+                        TaskThreadPool.Instance.Threads[job.Name].Abort();
+                    }
+                    catch { }
+
+                    WriteLog(string.Format("计划任务[{0}]已停止，服务类名：{1}，程序集：{2}", job.Name, job.ClassName, job.AssemblyName));
                 }
             }
         }

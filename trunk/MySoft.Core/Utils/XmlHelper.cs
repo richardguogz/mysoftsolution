@@ -37,6 +37,18 @@ namespace MySoft.Core
         }
 
         /// <summary>
+        /// 是否存在这个元素
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public bool Contains(string element)
+        {
+            if (doc.ChildNodes.Count == 0) return false;
+            var node = this.node.SelectSingleNode(element);
+            return node != null;
+        }
+
+        /// <summary>
         /// 实例化 XmlNodeHelper
         /// </summary>
         /// <param name="doc"></param>
@@ -312,6 +324,18 @@ namespace MySoft.Core
                 }
                 catch { }
             }
+        }
+
+        /// <summary>
+        /// 是否存在这个元素
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public bool Contains(string element)
+        {
+            if (doc.ChildNodes.Count == 0) return false;
+            var node = doc.SelectSingleNode(element);
+            return node != null;
         }
 
         /// <summary>
