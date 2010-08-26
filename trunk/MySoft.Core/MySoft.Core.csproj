@@ -112,6 +112,8 @@
     <Compile Include="Remoting\RemotingServerHelper.cs" />
     <Compile Include="Remoting\RemotingTest.cs" />
     <Compile Include="Remoting\ServiceModule.cs" />
+    <Compile Include="Service\ServiceConfigurationSection.cs" />
+    <Compile Include="Service\ServiceConfig.cs" />
     <Compile Include="Utils\CoreUtils.cs" />
     <Compile Include="Converter\ConverterFactory.cs" />
     <Compile Include="Converter\IStringConverter.cs" />

@@ -20,6 +20,8 @@ namespace MySoft.Core
         /// <returns></returns>
         public static string GetFullPath(string path)
         {
+            path = path.Replace("/", "\\").TrimStart('\\');
+
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
         }
 
