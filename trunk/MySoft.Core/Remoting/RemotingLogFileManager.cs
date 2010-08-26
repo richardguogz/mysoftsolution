@@ -10,14 +10,12 @@ namespace MySoft.Core.Remoting
     /// </summary>
     public class RemotingLogFileManager : MarshalByRefObject
     {
-        static string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log");
+        static string logDir = CoreUtils.GetFullPath("log");
 
         /// <summary>
         /// 
         /// </summary>
-        public RemotingLogFileManager()
-        {
-        }
+        public RemotingLogFileManager() { }
 
         /// <summary>
         /// 获取所有日志文件名列表

@@ -17,7 +17,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
             MemoryServiceMQ mq = new MemoryServiceMQ();
             mq.OnLog += logger;
 
-            RemotingServerHelper rh = new RemotingServerHelper(config.Protocol, config.Server, config.Port);
+            RemotingServiceHelper rh = new RemotingServiceHelper(config.Protocol, config.Server, config.Port);
             rh.OnLog += logger;
             rh.PublishWellKnownServiceInstance(config.ServiceMQName, typeof(IServiceMQ), mq, System.Runtime.Remoting.WellKnownObjectMode.Singleton);
 

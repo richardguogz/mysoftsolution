@@ -18,7 +18,59 @@ namespace MySoft.Core.Remoting
     /// <summary>
     /// The Remoting Service Helper.
     /// </summary>
-    public sealed class RemotingServerHelper : IDisposable, ILogable
+    public sealed class RemotingServerHelper : RemotingServiceHelper
+    {
+        private RemotingServerConfiguration cfg;
+        public RemotingServerHelper(RemotingServerConfiguration cfg)
+            : base(cfg.ChannelType, cfg.ServerAddress, cfg.Port)
+        {
+            this.cfg = cfg;
+        }
+
+        /// <summary>
+        /// 发布知名对象服务器端实例（远程对象已在配置文件中定义）
+        /// </summary>
+        public void PublishWellKnownServiceInstance()
+        {
+            if (cfg != null)
+            {
+                List<ServiceModule> list = cfg.Modules;
+
+                foreach (ServiceModule m in list)
+                {
+                    Assembly assembly = Assembly.Load(m.AssemblyName);
+                    Type t = assembly.GetType(m.ClassName);
+
+                    if (t != null)
+                    {
+                        RemotingConfiguration.RegisterWellKnownServiceType(t, m.ClassName, m.Mode);
+                        WriteLog(string.Format("远程对象[{0}]发布成功，URL：{1}", m.ClassName, BuildUrl(m.ClassName)));
+                    }
+                    else
+                    {
+                        WriteLog(string.Format("远程对象[{0}]发布失败，URL：{1}", m.ClassName, BuildUrl(m.ClassName)));
+                    }
+                }
+            }
+
+            PublishRemotingManageModule();
+        }
+
+        //发布Remoting服务管理模块
+        private void PublishRemotingManageModule()
+        {
+            //发布Remoting测试模块
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(RemotingTest), "RemotingTest", WellKnownObjectMode.Singleton);
+
+            //发布Remoting服务日志文件管理模块
+            RemotingConfiguration.RegisterWellKnownServiceType(typeof(RemotingLogFileManager), "RemotingLogFileManager", WellKnownObjectMode.Singleton);
+        }
+    }
+
+    /// <summary>
+    /// The Remoting Service Helper.
+    /// </summary>
+    public class RemotingServiceHelper : IDisposable, ILogable
     {
         #region Private Members
 
@@ -27,7 +79,7 @@ namespace MySoft.Core.Remoting
         private int serverPort;
         private IChannel serviceChannel;
 
-        private void WriteLog(string logMsg)
+        protected void WriteLog(string logMsg)
         {
             if (OnLog != null)
             {
@@ -35,7 +87,7 @@ namespace MySoft.Core.Remoting
             }
         }
 
-        private string BuildUrl(string notifyName)
+        protected string BuildUrl(string notifyName)
         {
             StringBuilder url = new StringBuilder();
             url.Append(channelType.ToString().ToLower());
@@ -61,7 +113,7 @@ namespace MySoft.Core.Remoting
         /// <param name="channelType">Type of the channel.</param>
         /// <param name="serverAddress">The server address.</param>
         /// <param name="serverPort">The server port.</param>
-        public RemotingServerHelper(RemotingChannelType channelType, string serverAddress, int serverPort)
+        public RemotingServiceHelper(RemotingChannelType channelType, string serverAddress, int serverPort)
         {
             this.channelType = channelType;
             this.serverAddress = serverAddress;
