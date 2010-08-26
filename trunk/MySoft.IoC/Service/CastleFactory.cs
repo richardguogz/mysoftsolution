@@ -243,7 +243,7 @@ namespace MySoft.IoC.Service
         {
             if (singleton == null)
             {
-                ContainerFactoryConfiguration config = ContainerFactoryConfiguration.GetConfig();
+                CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
                 if (config.Type == ServiceFactoryType.Local)
                 {
