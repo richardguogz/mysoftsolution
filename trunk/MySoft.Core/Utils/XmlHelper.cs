@@ -381,6 +381,7 @@ namespace MySoft.Core
                     foreach (string attribute in attributes)
                     {
                         xw.WriteAttributeString(attribute, values[index]);
+                        index++;
                     }
                 }
 
