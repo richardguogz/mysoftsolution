@@ -142,7 +142,7 @@ namespace MySoft.Core.Remoting
         /// <returns></returns>
         public T GetRemotingObject(string remoteObjectName)
         {
-            this.RegisterChannelWithTimeout();
+            //this.RegisterChannelWithTimeout();
 
             RemotingHost host = null;
 
@@ -169,7 +169,7 @@ namespace MySoft.Core.Remoting
         /// <returns></returns>
         public T GetWellKnownClientInstance(string objectUrl)
         {
-            this.RegisterChannelWithTimeout();
+            //this.RegisterChannelWithTimeout();
 
             T instance;
 
@@ -196,17 +196,17 @@ namespace MySoft.Core.Remoting
             return t.GetDate();
         }
 
-        private void RegisterChannelWithTimeout()
-        {
-            BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-            BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+        //private void RegisterChannelWithTimeout()
+        //{
+        //    BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+        //    BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
 
-            IDictionary props = new Hashtable();
-            props["timeout"] = 1000 * 60 * 5; //5分钟超时
+        //    IDictionary props = new Hashtable();
+        //    props["timeout"] = 1000 * 60 * 5; //5分钟超时
 
-            IChannel channel = new TcpChannel(props, clientProvider, serverProvider);
-            ChannelServices.RegisterChannel(channel, false);
-        }
+        //    IChannel channel = new TcpChannel(props, clientProvider, serverProvider);
+        //    ChannelServices.RegisterChannel(channel, false);
+        //}
 
         /// <summary>
         /// OnLog event.
