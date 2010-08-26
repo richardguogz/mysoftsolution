@@ -18,7 +18,7 @@ namespace MySoft.Core.Remoting
     /// <summary>
     /// The Remoting Service Helper.
     /// </summary>
-    public sealed class RemotingServiceHelper : IDisposable, ILogable
+    public sealed class RemotingServerHelper : IDisposable, ILogable
     {
         #region Private Members
 
@@ -56,12 +56,12 @@ namespace MySoft.Core.Remoting
         public event LogHandler OnLog;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemotingServiceHelper"/> class.
+        /// Initializes a new instance of the <see cref="RemotingServerHelper"/> class.
         /// </summary>
         /// <param name="channelType">Type of the channel.</param>
         /// <param name="serverAddress">The server address.</param>
         /// <param name="serverPort">The server port.</param>
-        public RemotingServiceHelper(RemotingChannelType channelType, string serverAddress, int serverPort)
+        public RemotingServerHelper(RemotingChannelType channelType, string serverAddress, int serverPort)
         {
             this.channelType = channelType;
             this.serverAddress = serverAddress;
