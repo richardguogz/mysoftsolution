@@ -97,7 +97,7 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\ReflectionUtils.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\StringUtils.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
-    <Compile Include="Remoting\Configuration\ConfigurationBase.cs" />
+    <Compile Include="Common\ConfigurationBase.cs" />
     <Compile Include="Remoting\Configuration\RemotingClientConfiguration.cs" />
     <Compile Include="Remoting\Configuration\RemotingClientConfigurationHandler.cs" />
     <Compile Include="Remoting\Configuration\RemotingServerConfiguration.cs" />
@@ -112,8 +112,9 @@
     <Compile Include="Remoting\RemotingServerHelper.cs" />
     <Compile Include="Remoting\RemotingTest.cs" />
     <Compile Include="Remoting\ServiceModule.cs" />
-    <Compile Include="Service\ServiceConfigurationSection.cs" />
-    <Compile Include="Service\ServiceConfig.cs" />
+    <Compile Include="Service\ServiceFactoryConfiguration.cs" />
+    <Compile Include="Service\ServiceFactory.cs" />
+    <Compile Include="Service\ServiceFactoryConfigurationHandler.cs" />
     <Compile Include="Utils\CoreUtils.cs" />
     <Compile Include="Converter\ConverterFactory.cs" />
     <Compile Include="Converter\IStringConverter.cs" />

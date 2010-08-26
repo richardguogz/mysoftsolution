@@ -12,14 +12,14 @@ namespace MySoft.Core.Remoting
     /// <code>
     /// <configuration>
     ///     <configSections>
-    /// 	    <sectionGroup name="remotingFramework">
+    /// 	    <sectionGroup name="serviceFramework">
     /// 		    <section name="remotingClient" type="MySoft.Core.Remoting.RemotingClientConfigurationHandler, MySoft.Core"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///     <system.web>
     /// 	......
     ///     </system.web>
-    ///     <remotingFramework>
+    ///     <serviceFramework>
     /// 	    <remotingClient isCheckServer="true" interval="3000">
     ///             <remotingHost name="NetValueClient" defaultServer="s1">
     ///                 <server name="s1" url="tcp://192.168.0.1:8888"/>
@@ -27,7 +27,7 @@ namespace MySoft.Core.Remoting
     ///                 <remoteObject name="NetValue" objectUri="SB.NetValue"/>
     ///             </remotingHost>
     /// 	    </remotingClient>
-    ///     </remotingFramework>
+    ///     </serviceFramework>
     /// </configuration>
     /// </code>
     /// </remarks>
@@ -40,7 +40,7 @@ namespace MySoft.Core.Remoting
         /// <returns></returns>
         public static RemotingClientConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("remotingFramework/remotingClient");
+            object obj = ConfigurationManager.GetSection("serviceFramework/remotingClient");
 
             if (obj != null)
                 return (RemotingClientConfiguration)obj;

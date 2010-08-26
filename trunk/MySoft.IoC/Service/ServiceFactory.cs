@@ -234,20 +234,6 @@ namespace MySoft.IoC.Service
             if (OnLog != null) OnLog(logInfo);
         }
 
-        /// <summary>
-        /// Loads the service factory configuration.
-        /// </summary>
-        /// <returns>The section.</returns>
-        public static ServiceFactoryConfigurationSection LoadServiceFactoryConfiguration()
-        {
-            object config = ConfigurationManager.GetSection("serviceFactory");
-            if (config == null)
-            {
-                return new ServiceFactoryConfigurationSection();
-            }
-            return (ServiceFactoryConfigurationSection)config;
-        }
-
         private static ServiceFactory singleton = null;
         /// <summary>
         /// Creates this instance.
@@ -257,7 +243,7 @@ namespace MySoft.IoC.Service
         {
             if (singleton == null)
             {
-                ServiceFactoryConfigurationSection config = LoadServiceFactoryConfiguration();
+                ServiceFactoryConfiguration config = ServiceFactoryConfiguration.GetConfig();
 
                 if (config.Type == ServiceFactoryType.Local)
                 {

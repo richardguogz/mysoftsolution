@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Core
 {
     /// <summary>
     /// ≈‰÷√ª˘¿‡

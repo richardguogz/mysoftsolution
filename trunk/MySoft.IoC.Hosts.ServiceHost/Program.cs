@@ -10,14 +10,16 @@ namespace MySoft.IoC.Hosts.ServiceHost
     {
         static void Main(string[] args)
         {
-            ServiceFactoryConfigurationSection config = ServiceFactory.LoadServiceFactoryConfiguration();
-            LogHandler logger = (config.Debug ? new LogHandler(Console.WriteLine) : null);
-            ServiceFactory.Create().OnLog += logger;
+            //ServiceFactoryConfiguration config = ServiceFactoryConfiguration.GetConfig();
+            //LogHandler logger = (config.Debug ? new LogHandler(Console.WriteLine) : null);
+            //ServiceFactory.Create().OnLog += logger;
 
-            Console.WriteLine("Service host started...");
-            Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));
-            Console.WriteLine("Press any key to exit and stop host...");
-            Console.ReadLine();
+            MySoft.Core.Service.ServiceFactory.Create(); 
+
+            //Console.WriteLine("Service host started...");
+            //Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));
+            //Console.WriteLine("Press any key to exit and stop host...");
+            //Console.ReadLine();
         }
     }
 }
