@@ -47,9 +47,13 @@ namespace MySoft.Core.Remoting
             //检测每个客户端的可用服务器
             RemotingHostCheck.Instance.DoCheck();
 
-            System.Threading.Thread thread = new System.Threading.Thread(DoWork);
-            thread.IsBackground = true;
-            thread.Start();
+            //如果检测服务器，则输出日志
+            if (_RemotingConfiguration.IsCheckServer)
+            {
+                System.Threading.Thread thread = new System.Threading.Thread(DoWork);
+                thread.IsBackground = true;
+                thread.Start();
+            }
         }
 
         void DoWork()
