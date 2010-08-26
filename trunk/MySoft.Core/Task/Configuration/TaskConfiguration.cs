@@ -34,7 +34,7 @@ namespace MySoft.Core.Task
         /// <returns></returns>
         public static TaskConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/serviceTask");
+            object obj = ConfigurationManager.GetSection("serviceFramework/task");
 
             if (obj != null)
                 return (TaskConfiguration)obj;
@@ -65,7 +65,7 @@ namespace MySoft.Core.Task
             {
                 if (n.NodeType == XmlNodeType.Comment) continue;
 
-                if (n.Name == "jobTask")
+                if (n.Name == "job")
                 {
                     XmlAttributeCollection ac = n.Attributes;
                     Job job = new Job();
