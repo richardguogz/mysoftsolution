@@ -44,8 +44,7 @@ namespace MySoft.Core
         public bool Contains(string element)
         {
             if (doc.ChildNodes.Count == 0) return false;
-            var node = this.node.SelectSingleNode(element);
-            return node != null;
+            return GetNode(element) != null;
         }
 
         /// <summary>
@@ -334,8 +333,7 @@ namespace MySoft.Core
         public bool Contains(string element)
         {
             if (doc.ChildNodes.Count == 0) return false;
-            var node = doc.SelectSingleNode(element);
-            return node != null;
+            return GetNode(element) != null;
         }
 
         /// <summary>
