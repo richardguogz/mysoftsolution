@@ -370,7 +370,7 @@ namespace MySoft.Core
             {
                 MemoryStream ms = new MemoryStream();
 
-                var xw = new XmlTextWriter(ms, Encoding.Default);
+                var xw = new XmlTextWriter(ms, Encoding.UTF8);
                 xw.Formatting = Formatting.Indented;
                 xw.WriteStartDocument();
                 xw.WriteStartElement(element);
@@ -473,7 +473,7 @@ namespace MySoft.Core
                             var fs = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
                             fs.SetLength(0);
 
-                            using (var sw = new StreamWriter(fs))
+                            using (var sw = new StreamWriter(fs, Encoding.UTF8))
                             {
                                 sw.Write(doc.InnerXml);
                                 sw.Flush();
