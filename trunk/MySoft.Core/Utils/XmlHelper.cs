@@ -190,15 +190,8 @@ namespace MySoft.Core
                     index++;
                 }
 
-                if (isRoot)
-                {
-                    return this;
-                }
-                else
-                {
-                    node.AppendChild(xe);
-                    return GetNode(element);
-                }
+                if (!isRoot) node.AppendChild(xe);
+                return this;
             }
             catch (Exception ex)
             {
