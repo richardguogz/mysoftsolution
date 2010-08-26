@@ -14,7 +14,7 @@ namespace MySoft.IoC.Service
     /// <summary>
     /// The service factory.
     /// </summary>
-    public class ServiceFactory : ILogable
+    public class CastleFactory : ILogable
     {
         #region Emit DynamicServiceImpl
 
@@ -215,7 +215,7 @@ namespace MySoft.IoC.Service
         /// Initializes a new instance of the <see cref="ServiceFactory"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
-        protected ServiceFactory(IServiceContainer container)
+        protected CastleFactory(IServiceContainer container)
         {
             if (container == null)
             {
@@ -234,26 +234,26 @@ namespace MySoft.IoC.Service
             if (OnLog != null) OnLog(logInfo);
         }
 
-        private static ServiceFactory singleton = null;
+        private static CastleFactory singleton = null;
         /// <summary>
         /// Creates this instance.
         /// </summary>
         /// <returns>The service factoru singleton instance.</returns>
-        public static ServiceFactory Create()
+        public static CastleFactory Create()
         {
             if (singleton == null)
             {
-                ServiceFactoryConfiguration config = ServiceFactoryConfiguration.GetConfig();
+                CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
                 if (config.Type == ServiceFactoryType.Local)
                 {
-                    singleton = new ServiceFactory(new SimpleServiceContainer());
+                    singleton = new CastleFactory(new SimpleServiceContainer());
                 }
                 else
                 {
                     RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
-                    singleton = new ServiceFactory(new SimpleServiceContainer(mq));
+                    singleton = new CastleFactory(new SimpleServiceContainer(mq));
                 }
 
                 singleton.ServiceContainer.Protocol = config.Protocol;

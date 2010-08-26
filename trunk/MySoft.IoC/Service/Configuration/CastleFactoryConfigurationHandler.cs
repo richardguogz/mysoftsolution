@@ -8,13 +8,13 @@ namespace MySoft.IoC.Service
     /// <summary>
     /// 服务配置类
     /// </summary>
-    public class ServiceFactoryConfigurationHandler : IConfigurationSectionHandler
+    public class CastleFactoryConfigurationHandler : IConfigurationSectionHandler
     {
         #region IConfigurationSectionHandler 成员
 
         public object Create(object parent, object configContext, System.Xml.XmlNode section)
         {
-            ServiceFactoryConfiguration config = new ServiceFactoryConfiguration();
+            CastleFactoryConfiguration config = new CastleFactoryConfiguration();
             config.LoadValuesFromConfigurationXml(section);
             return config;
         }

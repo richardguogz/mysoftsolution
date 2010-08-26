@@ -12,7 +12,7 @@ namespace MySoft.IoC.Service
     /// <summary>
     /// The service factory configuration.
     /// </summary>
-    public class ServiceFactoryConfiguration : ConfigurationBase
+    public class CastleFactoryConfiguration : ConfigurationBase
     {
         private ServiceFactoryType type = ServiceFactoryType.Local;
         private RemotingChannelType protocol = RemotingChannelType.HTTP;
@@ -27,12 +27,12 @@ namespace MySoft.IoC.Service
         /// 获取远程对象配置
         /// </summary>
         /// <returns></returns>
-        public static ServiceFactoryConfiguration GetConfig()
+        public static CastleFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/remotingFactory");
+            object obj = ConfigurationManager.GetSection("serviceFramework/castleFactory");
 
             if (obj != null)
-                return (ServiceFactoryConfiguration)obj;
+                return (CastleFactoryConfiguration)obj;
             else
                 return null;
         }

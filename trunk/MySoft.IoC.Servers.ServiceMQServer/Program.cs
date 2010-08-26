@@ -11,7 +11,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
     {
         static void Main(string[] args)
         {
-            ServiceFactoryConfiguration config = ServiceFactoryConfiguration.GetConfig();
+            CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
             LogHandler logger = (config.Debug ? new LogHandler(Console.WriteLine) : null);
             MemoryServiceMQ mq = new MemoryServiceMQ();

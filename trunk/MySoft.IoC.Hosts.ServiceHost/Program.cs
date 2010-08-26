@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MySoft.IoC.Service;
+using MySoft.Core.Service;
 using MySoft.Core;
 
 namespace MySoft.IoC.Hosts.ServiceHost
@@ -10,16 +11,16 @@ namespace MySoft.IoC.Hosts.ServiceHost
     {
         static void Main(string[] args)
         {
-            //ServiceFactoryConfiguration config = ServiceFactoryConfiguration.GetConfig();
-            //LogHandler logger = (config.Debug ? new LogHandler(Console.WriteLine) : null);
-            //ServiceFactory.Create().OnLog += logger;
+            CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
+            LogHandler logger = (config.Debug ? new LogHandler(Console.WriteLine) : null);
+            CastleFactory.Create().OnLog += logger;
 
-            MySoft.Core.Service.ServiceFactory.Create(); 
+            ServiceFactory.Create();
 
-            //Console.WriteLine("Service host started...");
-            //Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));
-            //Console.WriteLine("Press any key to exit and stop host...");
-            //Console.ReadLine();
+            Console.WriteLine("Service host started...");
+            Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));
+            Console.WriteLine("Press any key to exit and stop host...");
+            Console.ReadLine();
         }
     }
 }

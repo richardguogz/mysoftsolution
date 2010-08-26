@@ -13,11 +13,11 @@ namespace MySoft.IoC.Mvp
     /// </summary>
     public sealed class PresenterFactory
     {
-        private ServiceFactory container;
+        private CastleFactory container;
 
         private PresenterFactory()
         {
-            container = ServiceFactory.Create();
+            container = CastleFactory.Create();
         }
 
         private static PresenterFactory singleton = null;
