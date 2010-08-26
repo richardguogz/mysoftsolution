@@ -24,7 +24,8 @@ namespace MySoft.Core.Service
                 Assembly ass = Assembly.Load(service.AssemblyName);
                 if (ass != null)
                 {
-                    obj = ass.CreateInstance(service.ClassName);
+                    Type type = ass.GetType(service.ClassName);
+                    obj = Activator.CreateInstance(type);
                 }
                 if (obj != null)
                 {
