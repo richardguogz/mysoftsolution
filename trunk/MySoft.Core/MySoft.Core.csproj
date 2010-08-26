@@ -112,6 +112,7 @@
     <Compile Include="Remoting\RemotingServerHelper.cs" />
     <Compile Include="Remoting\RemotingTest.cs" />
     <Compile Include="Remoting\ServiceModule.cs" />
+    <Compile Include="Service\ServiceBase.cs" />
     <Compile Include="Service\ServiceFactoryConfiguration.cs" />
     <Compile Include="Service\ServiceFactory.cs" />
     <Compile Include="Service\ServiceFactoryConfigurationHandler.cs" />

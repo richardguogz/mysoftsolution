@@ -11,8 +11,8 @@ namespace MySoft.Core.Service
     /// </summary>
     public sealed class ServiceFactoryConfiguration : ConfigurationSection
     {
-        private ServiceConfigCollection services = new ServiceConfigCollection();
-        internal ServiceConfigCollection Services
+        private List<ServiceBase> services = new List<ServiceBase>();
+        public List<ServiceBase> Services
         {
             get { return services; }
         }
@@ -45,43 +45,19 @@ namespace MySoft.Core.Service
 
                 if (n.Name == "serviceObject")
                 {
-                    ServiceConfig config = new ServiceConfig();
-                    if (n.Attributes["key"] != null && n.Attributes["key"].Value != null)
-                        config.Key = n.Attributes["key"].Value;
+                    ServiceBase config = new ServiceBase();
+                    if (n.Attributes["name"] != null && n.Attributes["name"].Value != null)
+                        config.Name = n.Attributes["name"].Value;
 
-                    if (n.Attributes["service"] != null && n.Attributes["service"].Value != null)
-                        config.Key = n.Attributes["service"].Value;
+                    if (n.Attributes["assemblyName"] != null && n.Attributes["assemblyName"].Value != null)
+                        config.AssemblyName = n.Attributes["assemblyName"].Value;
+
+                    if (n.Attributes["className"] != null && n.Attributes["className"].Value != null)
+                        config.ClassName = n.Attributes["className"].Value;
 
                     services.Add(config);
                 }
             }
-        }
-    }
-
-    /// <summary>
-    /// 服务配置集合
-    /// </summary>
-    internal sealed class ServiceConfigCollection : List<ServiceConfig>
-    { }
-
-    /// <summary>
-    /// 服务配置
-    /// </summary>
-    internal sealed class ServiceConfig
-    {
-        private string key;
-        private string service;
-
-        public string Key
-        {
-            get { return key; }
-            set { key = value; }
-        }
-
-        public string Service
-        {
-            get { return service; }
-            set { service = value; }
         }
     }
 }

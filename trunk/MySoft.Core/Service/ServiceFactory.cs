@@ -18,21 +18,17 @@ namespace MySoft.Core.Service
         {
             if (config == null) return;
 
-            foreach (ServiceConfig service in config.Services)
+            foreach (ServiceBase service in config.Services)
             {
                 object obj = null;
-                string[] values = service.Service.Split(',');
-                if (values.Length < 2) continue;
-
-                string assemblyName = values[1];
-                Assembly ass = Assembly.Load(assemblyName);
+                Assembly ass = Assembly.Load(service.AssemblyName);
                 if (ass != null)
                 {
-                    obj = ass.CreateInstance(values[0]);
+                    obj = ass.CreateInstance(service.ClassName);
                 }
                 if (obj != null)
                 {
-                    services.Add(service.Key, obj);
+                    services.Add(service.Name, obj);
                 }
             }
         }
@@ -62,19 +58,19 @@ namespace MySoft.Core.Service
         /// 获取服务
         /// </summary>
         /// <typeparam name="TService"></typeparam>
-        /// <param name="key"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
-        public TService GetService<TService>(string key)
+        public TService GetService<TService>(string name)
         {
             try
             {
-                if (services.ContainsKey(key))
+                if (services.ContainsKey(name))
                 {
-                    return (TService)services[key];
+                    return (TService)services[name];
                 }
                 else
                 {
-                    throw new Exception(string.Format("不存在对应KEY【{0}】的程序集！", key));
+                    throw new Exception(string.Format("不存在对应名称【{0}】的程序集！", name));
                 }
             }
             catch (Exception ex)
