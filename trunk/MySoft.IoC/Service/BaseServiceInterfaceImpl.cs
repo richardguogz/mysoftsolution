@@ -117,22 +117,25 @@ namespace MySoft.IoC.Service
             {
                 if (resMsg.Data == null) return resMsg.Data;
 
-                if (!container.Compress)
+                if (container.Protocol == RemotingChannelType.TCP)
                 {
-                    if (container.Protocol == RemotingChannelType.TCP)
+                    byte[] buffer = (byte[])resMsg.Data;
+                    if (container.Compress)
                     {
-                        return SerializationManager.DeserializeBin((byte[])resMsg.Data);
+                        buffer = CompressionManager.Decompress7Zip(buffer);
                     }
-                    else
-                    {
-                        return SerializationManager.DeserializeJSON(returnType, resMsg.Data.ToString());
-                    }
+
+                    return SerializationManager.DeserializeBin(buffer);
                 }
                 else
                 {
-                    string retText = CompressionManager.Decompress7Zip(resMsg.Data.ToString());
+                    string jsonString = resMsg.Data.ToString();
+                    if (container.Compress)
+                    {
+                        jsonString = CompressionManager.Decompress7Zip(jsonString);
+                    }
 
-                    return SerializationManager.DeserializeJSON(returnType, retText);
+                    return SerializationManager.DeserializeJSON(returnType, jsonString);
                 }
             }
             catch

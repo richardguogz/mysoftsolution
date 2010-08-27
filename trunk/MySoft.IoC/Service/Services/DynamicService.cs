@@ -128,22 +128,29 @@ namespace MySoft.IoC.Service.Services
                 Type returnType = mi.ReturnType;
                 if (returnValue == null) return resMsg;
 
-                if (!container.Compress)
+                if (container.Protocol == RemotingChannelType.TCP)
                 {
-                    if (container.Protocol == RemotingChannelType.TCP)
+                    byte[] buffer = SerializationManager.SerializeBin(returnValue);
+                    if (container.Compress)
                     {
-                        resMsg.Data = SerializationManager.SerializeBin(returnValue);
+                        resMsg.Data = CompressionManager.Compress7Zip(buffer);
                     }
                     else
                     {
-                        resMsg.Data = SerializationManager.SerializeJSON(returnValue);
+                        resMsg.Data = buffer;
                     }
                 }
                 else
                 {
-                    string retText = SerializationManager.SerializeJSON(returnValue);
-
-                    resMsg.Data = CompressionManager.Compress7Zip(retText);
+                    string jsonString = SerializationManager.SerializeJSON(returnValue);
+                    if (container.Compress)
+                    {
+                        resMsg.Data = CompressionManager.Compress7Zip(jsonString);
+                    }
+                    else
+                    {
+                        resMsg.Data = jsonString;
+                    }
                 }
             }
 
