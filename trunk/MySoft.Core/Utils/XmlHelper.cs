@@ -115,7 +115,7 @@ namespace MySoft.Core
                 int count = 0;
                 foreach (string attribute in attributes)
                 {
-                    if (nd.Attributes[attribute].Value == values[index])
+                    if (nd.Attributes[attribute].Value.ToLower() == values[index].ToLower())
                     {
                         count++;
                     }
