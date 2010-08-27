@@ -19,49 +19,12 @@ namespace MySoft.Core
         /// 实例化 XmlNodeHelper
         /// </summary>
         /// <param name="doc"></param>
-        /// <param name="element"></param>
-        internal XmlNodeHelper(XmlDocument doc, string element)
-        {
-            this.doc = doc;
-            this.element = element;
-
-            if (string.IsNullOrEmpty(element))
-                this.node = (XmlNode)doc.DocumentElement;
-            else
-                this.node = doc.SelectSingleNode(element);
-
-            if (node == null)
-            {
-                throw new MySoftException(string.Format("节点{0}不存在！", element));
-            }
-        }
-
-        /// <summary>
-        /// 是否存在这个元素
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        public bool Contains(string element)
-        {
-            if (doc.ChildNodes.Count == 0) return false;
-            return GetNode(element) != null;
-        }
-
-        /// <summary>
-        /// 实例化 XmlNodeHelper
-        /// </summary>
-        /// <param name="doc"></param>
         /// <param name="node"></param>
-        private XmlNodeHelper(XmlDocument doc, XmlNode node)
+        public XmlNodeHelper(XmlDocument doc, XmlNode node)
         {
             this.doc = doc;
             this.element = node.Name;
             this.node = node;
-
-            if (node == null)
-            {
-                throw new MySoftException("传入的节点不存在！");
-            }
         }
 
         /// <summary>
@@ -77,8 +40,99 @@ namespace MySoft.Core
             else
                 el = string.Format("/{0}/{1}", this.element.TrimStart('/'), element.TrimStart('/'));
 
-            return new XmlNodeHelper(doc, el);
+            var node = doc.SelectSingleNode(el);
+            if (node == null) return null;
+
+            return new XmlNodeHelper(doc, node);
         }
+
+        #region 根据属性获取值
+
+        /// <summary>
+        /// 通过属性的值获取另一属性的值
+        /// </summary>
+        /// <param name="attribute"></param>
+        /// <param name="value"></param>
+        /// <param name="outAttribute"></param>
+        /// <returns></returns>
+        public string GetValueByAttributeValue(string attribute, string value, string outAttribute)
+        {
+            var nodes = GetNodesByAttributeValue(attribute, value);
+            if (nodes.Length > 0)
+            {
+                return nodes[0].GetAttribute(outAttribute);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 通过属性的值获取另一属性的值
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="values"></param>
+        /// <param name="outAttribute"></param>
+        /// <returns></returns>
+        public string GetValueByAttributeValue(string[] attributes, string[] values, string outAttribute)
+        {
+            var nodes = GetNodesByAttributeValue(attributes, values);
+            if (nodes.Length > 0)
+            {
+                return nodes[0].GetAttribute(outAttribute);
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region 根据属性获取对象
+
+        /// <summary>
+        /// 通过属性的值获取节点
+        /// </summary>
+        /// <param name="attribute"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public XmlNodeHelper[] GetNodesByAttributeValue(string attribute, string value)
+        {
+            return GetNodesByAttributeValue(new string[] { attribute }, new string[] { value });
+        }
+
+        /// <summary>
+        /// 通过属性的值获取节点
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public XmlNodeHelper[] GetNodesByAttributeValue(string[] attributes, string[] values)
+        {
+            var list = new List<XmlNodeHelper>();
+
+            foreach (XmlNode nd in node.ChildNodes)
+            {
+                int index = 0;
+                int count = 0;
+                foreach (string attribute in attributes)
+                {
+                    if (nd.Attributes[attribute].Value == values[index])
+                    {
+                        count++;
+                    }
+                    index++;
+                }
+
+                if (count == attributes.Length)
+                {
+                    var helper = new XmlNodeHelper(doc, nd);
+                    list.Add(helper);
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        #endregion
 
         /// <summary>
         /// 获取节点列表
@@ -133,10 +187,32 @@ namespace MySoft.Core
         #region 插入节点
 
         /// <summary>
-        /// 插入节点及值
+        /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
+        public XmlNodeHelper Create(string element)
+        {
+            return Insert(element, (string[])null, (string[])null);
+        }
+
+        /// <summary>
+        /// 创建element根节点
+        /// </summary>
+        /// <param name="element"></param>
+        public XmlNodeHelper Create(string element, string value)
+        {
+            var node = Create(element);
+            node.Text = value;
+
+            return node;
+        }
+
+        /// <summary>
+        /// 插入节点及值
+        /// </summary>
+        /// <param name="attribute"></param>
         /// <param name="value"></param>
+        /// <returns></returns>
         public XmlNodeHelper Insert(string attribute, string value)
         {
             return Insert(null, attribute, value);
@@ -183,15 +259,25 @@ namespace MySoft.Core
                     xe = doc.CreateElement(element);
                 }
 
-                int index = 0;
-                foreach (string attribute in attributes)
+                if (attributes != null)
                 {
-                    xe.SetAttribute(attribute, values[index]);
-                    index++;
+                    int index = 0;
+                    foreach (string attribute in attributes)
+                    {
+                        xe.SetAttribute(attribute, values[index]);
+                        index++;
+                    }
                 }
 
-                if (!isRoot) node.AppendChild(xe);
-                return this;
+                if (isRoot)
+                {
+                    return this;
+                }
+                else
+                {
+                    node.AppendChild(xe);
+                    return new XmlNodeHelper(doc, (XmlNode)xe);
+                }
             }
             catch (Exception ex)
             {
@@ -288,6 +374,17 @@ namespace MySoft.Core
                 node.InnerText = value;
             }
         }
+
+        /// <summary>
+        /// 获取节点xml
+        /// </summary>
+        public string XML
+        {
+            get
+            {
+                return node.OuterXml;
+            }
+        }
     }
 
     /// <summary>
@@ -319,23 +416,24 @@ namespace MySoft.Core
         }
 
         /// <summary>
-        /// 是否存在这个元素
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        public bool Contains(string element)
-        {
-            if (doc.ChildNodes.Count == 0) return false;
-            return GetNode(element) != null;
-        }
-
-        /// <summary>
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
         public XmlNodeHelper Create(string element)
         {
             return Create(element, (string[])null, (string[])null);
+        }
+
+        /// <summary>
+        /// 创建element根节点
+        /// </summary>
+        /// <param name="element"></param>
+        public XmlNodeHelper Create(string element, string value)
+        {
+            var node = Create(element);
+            node.Text = value;
+
+            return node;
         }
 
         /// <summary>
@@ -390,7 +488,7 @@ namespace MySoft.Core
                 ms.Close();
                 xw.Close();
 
-                return GetNode(element);
+                return new XmlNodeHelper(doc, (XmlNode)doc.DocumentElement);
             }
             catch (Exception ex)
             {
@@ -418,27 +516,36 @@ namespace MySoft.Core
         /// <returns></returns>
         public XmlNodeHelper GetNode(string element)
         {
-            if (doc.ChildNodes.Count == 0)
+            if (doc.ChildNodes.Count == 0) return null;
+
+            //如果只有2个节点，说明是要节点
+            if (doc.ChildNodes.Count == 2)
             {
-                throw new MySoftException("xml文件不存在，请先创建！");
+                return new XmlNodeHelper(doc, (XmlNode)doc.DocumentElement);
             }
 
             string[] elements = element.Split(new char[] { '.', '/', '|' });
             if (elements.Length == 1)
             {
-                return new XmlNodeHelper(doc, elements[0]);
+                var node = doc.SelectSingleNode(elements[0]);
+                if (node == null) return null;
+
+                return new XmlNodeHelper(doc, node);
             }
 
-            XmlNodeHelper node = null;
+            XmlNodeHelper help = null;
             foreach (string el in elements)
             {
-                if (node == null)
-                    node = new XmlNodeHelper(doc, el);
+                var node = doc.SelectSingleNode(elements[0]);
+                if (node == null) return null;
+
+                if (help == null)
+                    help = new XmlNodeHelper(doc, node);
                 else
-                    node = node.GetNode(el);
+                    help = help.GetNode(el);
             }
 
-            return node;
+            return help;
         }
 
         #region 保存节点
