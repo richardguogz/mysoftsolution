@@ -20,8 +20,14 @@ namespace MySoft.Core.Task
             get { return cfg.Jobs; }
         }
 
+        /// <summary>
+        /// ÃÌº”»ŒŒÒ
+        /// </summary>
+        /// <param name="job"></param>
         public void AddJob(Job job)
         {
+            if (!job.IsRegisterLog) job.OnLog += OnLog;
+
             cfg.Jobs.Add(job.Name, job);
         }
 
@@ -54,6 +60,8 @@ namespace MySoft.Core.Task
                 foreach (KeyValuePair<string, Job> kvp in jobs)
                 {
                     Job job = kvp.Value;
+
+                    if (!job.IsRegisterLog) job.OnLog += OnLog;
 
                     if (!threads.ContainsKey(job.Name))
                     {

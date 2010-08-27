@@ -10,8 +10,24 @@ namespace MySoft.Core.Task
     /// 任务实体
     /// </summary>
     [Serializable]
-    public class Job
+    public class Job : ILogable
     {
+        /// <summary>
+        /// 事件处理日志
+        /// </summary>
+        public event LogHandler OnLog;
+
+        /// <summary>
+        /// 是否注册了日志
+        /// </summary>
+        internal bool IsRegisterLog
+        {
+            get
+            {
+                return OnLog != null;
+            }
+        }
+
         private string _Name;
 
         /// <summary>
@@ -44,7 +60,6 @@ namespace MySoft.Core.Task
             get { return _EndDate; }
             set { _EndDate = value; }
         }
-
 
         private string _BeginTime;
 
@@ -207,6 +222,8 @@ namespace MySoft.Core.Task
 
                     try
                     {
+                        WriteLog(string.Format("正在执行任务[{0}]......", this.Name));
+
                         //执行任务
                         Assembly assembly = Assembly.Load(_AssemblyName);
                         Type type = assembly.GetType(_ClassName);
@@ -221,6 +238,8 @@ namespace MySoft.Core.Task
                         {
                             DynamicCalls.GetMethodInvoker(mi).Invoke(obj, null);
                         }
+
+                        WriteLog(string.Format("执行任务[{0}]成功！", this.Name));
                     }
                     catch (Exception ex)
                     {
@@ -232,10 +251,20 @@ namespace MySoft.Core.Task
 
                         _ExceptionCount = _ExceptionCount + 1;
                         _LatestException = new MySoftException("Task任务执行失败！", ex);
+
+                        WriteLog(string.Format("执行任务[{0}]失败，错误：{1}！", this.Name, ex.Message));
                     }
                 }
 
                 Thread.Sleep(_Interval);
+            }
+        }
+
+        void WriteLog(string logMsg)
+        {
+            if (OnLog != null)
+            {
+                OnLog(logMsg);
             }
         }
     }
