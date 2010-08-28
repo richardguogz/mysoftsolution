@@ -121,8 +121,8 @@ namespace MySoft.IoC.Service
                 {
                     byte[] buffer = (byte[])resMsg.Data;
 
-                    //数据包大于1M才解压缩
-                    if (container.Compress && buffer.Length > 1024 * 1024)
+                    //数据包大于1K才解压缩
+                    if (container.Compress && buffer.Length > 1024)
                     {
                         buffer = CompressionManager.Decompress7Zip(buffer);
                     }
@@ -133,8 +133,8 @@ namespace MySoft.IoC.Service
                 {
                     string jsonString = resMsg.Data.ToString();
 
-                    //数据包大于1M才解压缩
-                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024 * 1024)
+                    //数据包大于1K才解压缩
+                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024)
                     {
                         jsonString = CompressionManager.Decompress7Zip(jsonString);
                     }

@@ -132,8 +132,8 @@ namespace MySoft.IoC.Service.Services
                 {
                     byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
-                    //数据包大于1兆才压缩
-                    if (container.Compress && buffer.Length > 1024 * 1024)
+                    //数据包大于1K才压缩
+                    if (container.Compress && buffer.Length > 1024)
                     {
                         resMsg.Data = CompressionManager.Compress7Zip(buffer);
                     }
@@ -146,8 +146,8 @@ namespace MySoft.IoC.Service.Services
                 {
                     string jsonString = SerializationManager.SerializeJSON(returnValue);
 
-                    //数据包大于1兆才压缩
-                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024 * 1024)
+                    //数据包大于1K才压缩
+                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024)
                     {
                         resMsg.Data = CompressionManager.Compress7Zip(jsonString);
                     }
