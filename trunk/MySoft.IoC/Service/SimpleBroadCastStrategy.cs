@@ -26,6 +26,11 @@ namespace MySoft.IoC.Service
             return newHandlers;
         }
 
+        /// <summary>
+        /// 字典用于响应计数，当达到10次时才将委托出除
+        /// </summary>
+        private Dictionary<Guid, int> notifyCount = new Dictionary<Guid, int>();
+
         #endregion
 
         #region Protected Members
@@ -62,9 +67,28 @@ namespace MySoft.IoC.Service
                         }
                         catch (Exception ex)
                         {
-                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason:" + ex.Message);
-                            handlers[tempClientId] = null;
-                            needCleanHandlers = true;
+                            if (!notifyCount.ContainsKey(tempClientId))
+                            {
+                                notifyCount[tempClientId] = 1;
+                            }
+                            else
+                            {
+                                notifyCount[tempClientId]++;
+                            }
+
+                            //当出错次数达到10次，或者同样的handler多于一个时
+                            if (notifyCount[tempClientId] > 10 || handlers.Count > 1)
+                            {
+                                if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason:" + ex.Message);
+                                handlers[tempClientId] = null;
+                                needCleanHandlers = true;
+
+                                notifyCount.Remove(tempClientId);
+                            }
+                            else
+                            {
+                                if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] notify " + notifyCount[tempClientId] + " error! Reason:" + ex.Message);
+                            }
                         }
                     }
                     else

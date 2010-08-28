@@ -85,7 +85,7 @@ namespace MySoft.IoC.Service.Services
                 return null;
             }
             //SerializationManager.Serialize(retMsg)
-            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Data));
+            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Message));
             return retMsg;
         }
 

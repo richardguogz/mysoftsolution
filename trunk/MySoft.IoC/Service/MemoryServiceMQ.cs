@@ -196,7 +196,7 @@ namespace MySoft.IoC.Service
 
             AddResponseToQueue(msg.TransactionId, msg);
 
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddResponseToQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Data)); 
+            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddResponseToQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message)); 
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace MySoft.IoC.Service
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetResponseFromQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Data)); 
+                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetResponseFromQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message)); 
             }
 
             return msg;

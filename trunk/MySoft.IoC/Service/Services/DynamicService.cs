@@ -131,7 +131,9 @@ namespace MySoft.IoC.Service.Services
                 if (container.Protocol == RemotingChannelType.TCP)
                 {
                     byte[] buffer = SerializationManager.SerializeBin(returnValue);
-                    if (container.Compress)
+
+                    //数据包大于1兆才压缩
+                    if (container.Compress && buffer.Length > 1024 * 1024)
                     {
                         resMsg.Data = CompressionManager.Compress7Zip(buffer);
                     }
@@ -143,7 +145,9 @@ namespace MySoft.IoC.Service.Services
                 else
                 {
                     string jsonString = SerializationManager.SerializeJSON(returnValue);
-                    if (container.Compress)
+
+                    //数据包大于1兆才压缩
+                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024 * 1024)
                     {
                         resMsg.Data = CompressionManager.Compress7Zip(jsonString);
                     }

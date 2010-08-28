@@ -56,7 +56,7 @@ namespace MySoft.IoC.Service
             if (retMsg != null)
             {
                 //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog(string.Format("Result: {0}", retMsg.Data));
+                if (OnLog != null) OnLog(string.Format("Result: {0}", retMsg.Message));
             }
             else
             {

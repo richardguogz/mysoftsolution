@@ -45,5 +45,29 @@ namespace MySoft.IoC.Service
                 data = value;
             }
         }
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        public string Message
+        {
+            get
+            {
+                if (data == null)
+                {
+                    return "empty data";
+                }
+
+                if (data.GetType() == typeof(byte[]))
+                {
+                    return string.Format("packet size: {0}bytes", ((byte[])data).Length);
+                }
+                else
+                {
+                    return data.ToString();
+                }
+            }
+        }
     }
 }
