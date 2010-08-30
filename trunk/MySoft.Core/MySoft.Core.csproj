@@ -172,7 +172,7 @@
     <Compile Include="Common\IDataPage.cs" />
     <Compile Include="Utils\EmitUtils.cs" />
     <Compile Include="Utils\ILogable.cs" />
-    <Compile Include="Utils\SerializationManager.cs" />
+    <Compile Include="Common\SerializationManager.cs" />
     <Compile Include="Utils\XmlHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
