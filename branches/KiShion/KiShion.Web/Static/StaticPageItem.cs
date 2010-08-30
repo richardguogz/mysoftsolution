@@ -12,6 +12,11 @@ namespace KiShion.Web
     public interface IStaticPageItem
     {
         /// <summary>
+        /// 生成页面时回调
+        /// </summary>
+        event CallbackEventHandler Callback;
+
+        /// <summary>
         /// 静态页生成依赖
         /// </summary>
         IUpdateDependency StaticPageDependency { get; set; }
@@ -53,6 +58,13 @@ namespace KiShion.Web
     }
 
     /// <summary>
+    /// 生成页面时回调
+    /// </summary>
+    /// <param name="content"></param>
+    /// <returns></returns>
+    public delegate string CallbackEventHandler(string content);
+
+    /// <summary>
     /// 返回值数组的委托
     /// </summary>
     /// <returns></returns>
@@ -75,6 +87,11 @@ namespace KiShion.Web
     /// </summary>
     public sealed class SingleStaticPageItem : IStaticPageItem
     {
+        /// <summary>
+        /// 生成页面时回调
+        /// </summary>
+        public event CallbackEventHandler Callback;
+
         #region 属性
 
         private string query;
@@ -227,13 +244,17 @@ namespace KiShion.Web
             {
                 if (isRemote)
                 {
-                    StaticPageUtils.SaveFile(StaticPageUtils.GetRemotePageString(templatePath, inEncoding, validateString),
-                        savePath, outEncoding);
+                    string content = StaticPageUtils.GetRemotePageString(templatePath, inEncoding, validateString);
+                    if (Callback != null) content = Callback(content);
+
+                    StaticPageUtils.SaveFile(content, savePath, outEncoding);
                 }
                 else
                 {
-                    StaticPageUtils.SaveFile(StaticPageUtils.GetLocalPageString(templatePath, query, inEncoding, validateString),
-                        savePath, outEncoding);
+                    string content = StaticPageUtils.GetLocalPageString(templatePath, query, inEncoding, validateString);
+                    if (Callback != null) content = Callback(content);
+
+                    StaticPageUtils.SaveFile(content, savePath, outEncoding);
                 }
             }
             catch (Exception ex)
@@ -321,6 +342,11 @@ namespace KiShion.Web
     /// </summary>
     public sealed class ParamStaticPageItem : IStaticPageItem
     {
+        /// <summary>
+        /// 生成页面时回调
+        /// </summary>
+        public event CallbackEventHandler Callback;
+
         #region 属性
 
         private string templatePath;
@@ -505,13 +531,19 @@ namespace KiShion.Web
                     {
                         if (isRemote)
                         {
-                            StaticPageUtils.SaveFile(StaticPageUtils.GetRemotePageString(GetQueryString(templatePath),
-                                inEncoding, validateString), GetQueryString(savePath), outEncoding);
+                            string content = StaticPageUtils.GetRemotePageString(GetRealPath(templatePath),
+                                inEncoding, validateString);
+                            if (Callback != null) content = Callback(content);
+
+                            StaticPageUtils.SaveFile(content, GetRealPath(savePath), outEncoding);
                         }
                         else
                         {
-                            StaticPageUtils.SaveFile(StaticPageUtils.GetLocalPageString(templatePath, GetQueryString(query),
-                                inEncoding, validateString), GetQueryString(savePath), outEncoding);
+                            string content = StaticPageUtils.GetLocalPageString(templatePath, GetRealPath(query),
+                                inEncoding, validateString);
+                            if (Callback != null) content = Callback(content);
+
+                            StaticPageUtils.SaveFile(content, GetRealPath(savePath), outEncoding);
                         }
                     }
                     catch (Exception ex)
@@ -571,7 +603,7 @@ namespace KiShion.Web
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        private string GetQueryString(string query)
+        private string GetRealPath(string query)
         {
             foreach (string key in dict.Keys)
             {
