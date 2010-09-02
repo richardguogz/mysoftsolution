@@ -551,6 +551,20 @@ namespace MySoft.Core
         #region 保存节点
 
         /// <summary>
+        /// 将对象设置到当前文档
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetObject(object value)
+        {
+            try
+            {
+                string xml = SerializationManager.SerializeXML(value);
+                doc.InnerXml = xml;
+            }
+            catch { }
+        }
+
+        /// <summary>
         /// 保存更新
         /// </summary>
         public void Save()
