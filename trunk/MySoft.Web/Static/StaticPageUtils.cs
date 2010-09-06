@@ -52,12 +52,36 @@ namespace MySoft.Web
         /// <summary>
         /// 启动静态管理类
         /// </summary>
+        /// <param name="isRunCreate">是否启动就生成</param>
+        public static void Start(bool isRunCreate)
+        {
+            Start(Interval, isRunCreate);
+        }
+
+        /// <summary>
+        /// 启动静态管理类
+        /// </summary>
         /// <param name="interval">检测间隔时间(默认为一分钟)</param>
         public static void Start(double interval)
+        {
+            Start(interval, false);
+        }
+
+        /// <summary>
+        /// 启动静态管理类
+        /// </summary>
+        /// <param name="interval">检测间隔时间(默认为一分钟)</param>
+        /// <param name="isRunCreate">是否启动就生成</param>
+        public static void Start(double interval, bool isRunCreate)
         {
             StaticPageTimer = new Timer(interval);
             StaticPageTimer.Elapsed += new ElapsedEventHandler(StaticPageTimer_Elapsed);
             StaticPageTimer.Start();
+
+            if (isRunCreate)
+            {
+                StaticPageTimer_Elapsed(null, null);
+            }
         }
 
         static void StaticPageTimer_Elapsed(object sender, ElapsedEventArgs e)

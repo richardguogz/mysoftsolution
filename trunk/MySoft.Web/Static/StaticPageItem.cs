@@ -12,9 +12,14 @@ namespace MySoft.Web
     public interface IStaticPageItem
     {
         /// <summary>
-        /// 回调
+        /// 开始处理
         /// </summary>
-        event CallbackEventHandler Callback;
+        event CallbackEventHandler OnStart;
+
+        /// <summary>
+        /// 结束处理
+        /// </summary>
+        event CallbackEventHandler OnEnd;
 
         /// <summary>
         /// 静态页生成依赖
@@ -61,8 +66,10 @@ namespace MySoft.Web
     /// 生成页面时回调
     /// </summary>
     /// <param name="content"></param>
+    /// <param name="dynamicurl"></param>
+    /// <param name="staticurl"></param>
     /// <returns></returns>
-    public delegate string CallbackEventHandler(string content);
+    public delegate void CallbackEventHandler(string content, string dynamicurl, string staticurl);
 
     /// <summary>
     /// 返回值数组的委托
@@ -90,7 +97,12 @@ namespace MySoft.Web
         /// <summary>
         /// 回调
         /// </summary>
-        public event CallbackEventHandler Callback;
+        public event CallbackEventHandler OnStart;
+
+        /// <summary>
+        /// 结束处理
+        /// </summary>
+        public event CallbackEventHandler OnEnd;
 
         #region 属性
 
@@ -242,20 +254,31 @@ namespace MySoft.Web
 
             try
             {
-                if (isRemote)
-                {
-                    string content = StaticPageUtils.GetRemotePageString(templatePath, inEncoding, validateString);
-                    if (Callback != null) content = Callback(content);
+                string content = null;
+                string dynamicurl = templatePath;
+                string staticurl = savePath;
 
-                    StaticPageUtils.SaveFile(content, savePath, outEncoding);
-                }
+                if (isRemote)
+                    content = StaticPageUtils.GetRemotePageString(dynamicurl, inEncoding, validateString);
                 else
                 {
-                    string content = StaticPageUtils.GetLocalPageString(templatePath, query, inEncoding, validateString);
-                    if (Callback != null) content = Callback(content);
+                    content = StaticPageUtils.GetLocalPageString(dynamicurl, query, inEncoding, validateString);
 
-                    StaticPageUtils.SaveFile(content, savePath, outEncoding);
+                    if (!string.IsNullOrEmpty(query))
+                        dynamicurl = string.Format("{0}?{1}", dynamicurl, query);
                 }
+
+                //加入静态页生成元素
+                content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
+                                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
+
+                //开始生成
+                if (OnStart != null) OnStart(content, dynamicurl, staticurl);
+
+                StaticPageUtils.SaveFile(content, staticurl, outEncoding);
+
+                //结束生成
+                if (OnEnd != null) OnEnd(content, dynamicurl, staticurl);
             }
             catch (Exception ex)
             {
@@ -287,7 +310,7 @@ namespace MySoft.Web
     }
 
     /// <summary>
-    /// 查询信息
+    /// 参数信息
     /// </summary>
     public sealed class StaticPageParamInfo
     {
@@ -345,7 +368,12 @@ namespace MySoft.Web
         /// <summary>
         /// 回调
         /// </summary>
-        public event CallbackEventHandler Callback;
+        public event CallbackEventHandler OnStart;
+
+        /// <summary>
+        /// 结束处理
+        /// </summary>
+        public event CallbackEventHandler OnEnd;
 
         #region 属性
 
@@ -529,20 +557,34 @@ namespace MySoft.Web
                 {
                     try
                     {
+                        string content = null;
+                        string dynamicurl = GetRealPath(templatePath);
+                        string staticurl = GetRealPath(savePath);
+
                         if (isRemote)
                         {
-                            string content = StaticPageUtils.GetRemotePageString(GetRealPath(templatePath), inEncoding, validateString);
-                            if (Callback != null) content = Callback(content);
-
-                            StaticPageUtils.SaveFile(content, GetRealPath(savePath), outEncoding);
+                            content = StaticPageUtils.GetRemotePageString(dynamicurl, inEncoding, validateString);
                         }
                         else
                         {
-                            string content = StaticPageUtils.GetLocalPageString(templatePath, GetRealPath(query), inEncoding, validateString);
-                            if (Callback != null) content = Callback(content);
+                            string queryurl = GetRealPath(query);
+                            content = StaticPageUtils.GetLocalPageString(dynamicurl, queryurl, inEncoding, validateString);
 
-                            StaticPageUtils.SaveFile(content, GetRealPath(savePath), outEncoding);
+                            if (!string.IsNullOrEmpty(queryurl))
+                                dynamicurl = string.Format("{0}?{1}", dynamicurl, queryurl);
                         }
+
+                        //加入静态页生成元素
+                        content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
+                                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
+
+                        //开始生成
+                        if (OnStart != null) OnStart(content, dynamicurl, staticurl);
+
+                        StaticPageUtils.SaveFile(content, staticurl, outEncoding);
+
+                        //结束生成
+                        if (OnEnd != null) OnEnd(content, dynamicurl, staticurl);
                     }
                     catch (Exception ex)
                     {
