@@ -95,9 +95,19 @@ namespace MySoft.Web
                         string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
                         string staticurl = filePath;
 
-                        //加入静态页生成元素
-                        content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
-                                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
+                        string extension = Path.GetExtension(staticurl);
+                        if (extension != null && extension.ToLower() == ".js")
+                        {
+                            //加入静态页生成元素
+                            content = string.Format("//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->\r\n{3}",
+                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
+                        }
+                        else
+                        {
+                            //加入静态页生成元素
+                            content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
+                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
+                        }
 
                         byte[] _buffer = enc.GetBytes(content);
                         int _count = enc.GetByteCount(content);
