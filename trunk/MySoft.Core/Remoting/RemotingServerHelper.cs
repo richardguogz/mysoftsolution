@@ -79,11 +79,11 @@ namespace MySoft.Core.Remoting
         private int serverPort;
         private IChannel serviceChannel;
 
-        protected void WriteLog(string logMsg)
+        protected void WriteLog(string log)
         {
             if (OnLog != null)
             {
-                OnLog(logMsg);
+                OnLog(log);
             }
         }
 
@@ -105,7 +105,7 @@ namespace MySoft.Core.Remoting
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemotingServerHelper"/> class.

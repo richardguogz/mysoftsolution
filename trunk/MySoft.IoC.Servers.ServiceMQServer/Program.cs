@@ -13,7 +13,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
         {
             CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
-            LogHandler logger = (config.Debug ? new LogHandler(Console.WriteLine) : null);
+            LogEventHandler logger = (config.Debug ? new LogEventHandler(Console.WriteLine) : null);
             MemoryServiceMQ mq = new MemoryServiceMQ();
             mq.OnLog += logger;
 

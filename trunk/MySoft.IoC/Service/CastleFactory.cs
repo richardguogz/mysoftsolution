@@ -226,7 +226,7 @@ namespace MySoft.IoC.Service
                 this.container = container;
             }
 
-            this.container.OnLog += new LogHandler(WriteLog);
+            this.container.OnLog += new LogEventHandler(WriteLog);
         }
 
         private void WriteLog(string logInfo)
@@ -340,7 +340,7 @@ namespace MySoft.IoC.Service
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
     }

@@ -24,11 +24,11 @@ namespace MySoft.Core.Remoting
         private int callbackPort;
         private IChannel clientChannel;
 
-        private void WriteLog(string logMsg)
+        private void WriteLog(string log)
         {
             if (OnLog != null)
             {
-                OnLog(logMsg);
+                OnLog(log);
             }
         }
 
@@ -180,7 +180,7 @@ namespace MySoft.Core.Remoting
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
     }

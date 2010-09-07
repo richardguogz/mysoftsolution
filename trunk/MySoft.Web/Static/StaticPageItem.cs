@@ -14,12 +14,17 @@ namespace MySoft.Web
         /// <summary>
         /// 开始处理
         /// </summary>
-        event CallbackEventHandler OnStart;
+        event ExcutingEventHandler OnStart;
 
         /// <summary>
         /// 结束处理
         /// </summary>
-        event CallbackEventHandler OnEnd;
+        event ExcutingEventHandler OnEnd;
+
+        /// <summary>
+        /// 生成时的回调
+        /// </summary>
+        event CallbackEventHandler Callback;
 
         /// <summary>
         /// 静态页生成依赖
@@ -63,31 +68,31 @@ namespace MySoft.Web
     }
 
     /// <summary>
-    /// 生成页面时回调
+    /// 执行生成时的委托
     /// </summary>
-    /// <param name="content"></param>
+    /// <param name="createTime"></param>
     /// <param name="dynamicurl"></param>
     /// <param name="staticurl"></param>
+    public delegate void ExcutingEventHandler(DateTime createTime, string dynamicurl, string staticurl);
+
+    /// <summary>
+    /// 生成页面时委托
+    /// </summary>
+    /// <param name="content"></param>
     /// <returns></returns>
-    public delegate void CallbackEventHandler(string content, string dynamicurl, string staticurl);
+    public delegate string CallbackEventHandler(string content);
 
     /// <summary>
     /// 返回值数组的委托
     /// </summary>
     /// <returns></returns>
-    public delegate object[] GetValuesHandler();
+    public delegate object[] GetValuesEventHandler();
 
     /// <summary>
-    /// 返回开始数的委托
+    /// 获取开始结束值的委托
     /// </summary>
     /// <returns></returns>
-    public delegate int StartValueHandler();
-
-    /// <summary>
-    /// 返回结束数的委托
-    /// </summary>
-    /// <returns></returns>
-    public delegate int EndValueHandler();
+    public delegate int StartEndValueEventHandler();
 
     /// <summary>
     /// 通用静态页子项
@@ -97,12 +102,17 @@ namespace MySoft.Web
         /// <summary>
         /// 回调
         /// </summary>
-        public event CallbackEventHandler OnStart;
+        public event ExcutingEventHandler OnStart;
 
         /// <summary>
         /// 结束处理
         /// </summary>
-        public event CallbackEventHandler OnEnd;
+        public event ExcutingEventHandler OnEnd;
+
+        /// <summary>
+        /// 生成时的回调
+        /// </summary>
+        public event CallbackEventHandler Callback;
 
         #region 属性
 
@@ -252,11 +262,12 @@ namespace MySoft.Web
         {
             updateComplete = false;
 
+            string dynamicurl = templatePath;
+            string staticurl = savePath;
+
             try
             {
                 string content = null;
-                string dynamicurl = templatePath;
-                string staticurl = savePath;
 
                 if (isRemote)
                     content = StaticPageUtils.GetRemotePageString(dynamicurl, inEncoding, validateString);
@@ -268,21 +279,23 @@ namespace MySoft.Web
                         dynamicurl = string.Format("{0}?{1}", dynamicurl, query);
                 }
 
+                //开始生成
+                if (OnStart != null) OnStart(DateTime.Now, dynamicurl, staticurl);
+
                 //加入静态页生成元素
                 content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
                                     DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
 
-                //开始生成
-                if (OnStart != null) OnStart(content, dynamicurl, staticurl);
-
+                //生成时回调
+                if (Callback != null) content = Callback(content);
                 StaticPageUtils.SaveFile(content, staticurl, outEncoding);
 
                 //结束生成
-                if (OnEnd != null) OnEnd(content, dynamicurl, staticurl);
+                if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, staticurl);
             }
             catch (Exception ex)
             {
-                StaticPageUtils.SaveError(ex);
+                StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", staticurl));
                 //如果出错，则继续往下执行
             }
             finally
@@ -323,11 +336,11 @@ namespace MySoft.Web
             get { return paramName; }
         }
 
-        private GetValuesHandler getValues;
+        private GetValuesEventHandler getValues;
         /// <summary>
         /// 获取值委托
         /// </summary>
-        public GetValuesHandler GetValues
+        public GetValuesEventHandler GetValues
         {
             get { return getValues; }
         }
@@ -343,7 +356,7 @@ namespace MySoft.Web
             this.getValues = delegate() { return list.ToArray(); };
         }
 
-        public StaticPageParamInfo(string paramName, StartValueHandler startValue, EndValueHandler endValue)
+        public StaticPageParamInfo(string paramName, StartEndValueEventHandler startValue, StartEndValueEventHandler endValue)
             : this(paramName, startValue(), endValue())
         { }
 
@@ -353,7 +366,7 @@ namespace MySoft.Web
             this.getValues = delegate() { return values; };
         }
 
-        public StaticPageParamInfo(string paramName, GetValuesHandler getValues)
+        public StaticPageParamInfo(string paramName, GetValuesEventHandler getValues)
         {
             this.paramName = paramName;
             this.getValues = getValues;
@@ -368,12 +381,17 @@ namespace MySoft.Web
         /// <summary>
         /// 回调
         /// </summary>
-        public event CallbackEventHandler OnStart;
+        public event ExcutingEventHandler OnStart;
 
         /// <summary>
         /// 结束处理
         /// </summary>
-        public event CallbackEventHandler OnEnd;
+        public event ExcutingEventHandler OnEnd;
+
+        /// <summary>
+        /// 生成时的回调
+        /// </summary>
+        public event CallbackEventHandler Callback;
 
         #region 属性
 
@@ -555,11 +573,12 @@ namespace MySoft.Web
                 int count = GetPageCount(dict);
                 for (int index = 0; index < count; index++)
                 {
+                    string dynamicurl = GetRealPath(templatePath);
+                    string staticurl = GetRealPath(savePath);
+
                     try
                     {
                         string content = null;
-                        string dynamicurl = GetRealPath(templatePath);
-                        string staticurl = GetRealPath(savePath);
 
                         if (isRemote)
                         {
@@ -574,21 +593,23 @@ namespace MySoft.Web
                                 dynamicurl = string.Format("{0}?{1}", dynamicurl, queryurl);
                         }
 
+                        //开始生成
+                        if (OnStart != null) OnStart(DateTime.Now, dynamicurl, staticurl);
+
                         //加入静态页生成元素
                         content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
                                             DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
 
-                        //开始生成
-                        if (OnStart != null) OnStart(content, dynamicurl, staticurl);
-
+                        //生成时回调
+                        if (Callback != null) content = Callback(content);
                         StaticPageUtils.SaveFile(content, staticurl, outEncoding);
 
                         //结束生成
-                        if (OnEnd != null) OnEnd(content, dynamicurl, staticurl);
+                        if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, staticurl);
                     }
                     catch (Exception ex)
                     {
-                        StaticPageUtils.SaveError(ex);
+                        StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", staticurl));
                         //如果出错，则继续往下执行
                     }
                     finally

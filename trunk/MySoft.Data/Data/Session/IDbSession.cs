@@ -26,17 +26,17 @@ namespace MySoft.Data
 
         #region ×¢²áLog
 
-        void RegisterSqlLogger(LogHandler handler);
-        void UnregisterSqlLogger(LogHandler handler);
+        void RegisterSqlLogger(LogEventHandler handler);
+        void UnregisterSqlLogger(LogEventHandler handler);
 
-        void RegisterSqlExceptionLogger(ExceptionLogHandler handler);
-        void UnregisterSqlExceptionLogger(ExceptionLogHandler handler);
+        void RegisterSqlExceptionLogger(ExceptionLogEventHandler handler);
+        void UnregisterSqlExceptionLogger(ExceptionLogEventHandler handler);
 
-        void RegisterOnStartHandler(ExcutingHandler handler);
-        void UnregisterOnStartHandler(ExcutingHandler handler);
+        void RegisterOnStartHandler(ExcutingEventHandler handler);
+        void UnregisterOnStartHandler(ExcutingEventHandler handler);
 
-        void RegisterOnEndHandler(ExcutingHandler handler);
-        void UnregisterOnEndHandler(ExcutingHandler handler);
+        void RegisterOnEndHandler(ExcutingEventHandler handler);
+        void UnregisterOnEndHandler(ExcutingEventHandler handler);
 
         #endregion
 

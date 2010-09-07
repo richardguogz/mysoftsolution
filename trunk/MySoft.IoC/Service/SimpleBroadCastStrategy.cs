@@ -141,7 +141,7 @@ namespace MySoft.IoC.Service
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
     }

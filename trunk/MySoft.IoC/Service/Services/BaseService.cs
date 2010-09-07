@@ -113,7 +113,7 @@ namespace MySoft.IoC.Service.Services
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
     }

@@ -15,7 +15,7 @@ namespace MySoft.Core.Task
         /// <summary>
         /// 事件处理日志
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         /// <summary>
         /// 是否注册了日志
@@ -260,11 +260,11 @@ namespace MySoft.Core.Task
             }
         }
 
-        void WriteLog(string logMsg)
+        void WriteLog(string log)
         {
             if (OnLog != null)
             {
-                OnLog(logMsg);
+                OnLog(log);
             }
         }
     }

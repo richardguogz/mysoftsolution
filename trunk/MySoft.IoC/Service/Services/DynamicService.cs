@@ -29,7 +29,7 @@ namespace MySoft.IoC.Service.Services
             : base(serviceInterfaceType.FullName, container.MQ)
         {
             this.container = container;
-            this.OnLog += new LogHandler(container.WriteLog);
+            this.OnLog += new LogEventHandler(container.WriteLog);
             this.serviceInterfaceType = serviceInterfaceType;
         }
 

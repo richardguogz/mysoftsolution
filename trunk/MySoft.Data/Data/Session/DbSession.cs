@@ -230,7 +230,7 @@ namespace MySoft.Data
         /// 注册一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlLogger(LogHandler handler)
+        public void RegisterSqlLogger(LogEventHandler handler)
         {
             dbProvider.OnLog += handler;
         }
@@ -239,7 +239,7 @@ namespace MySoft.Data
         /// 取消一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlLogger(LogHandler handler)
+        public void UnregisterSqlLogger(LogEventHandler handler)
         {
             dbProvider.OnLog -= handler;
         }
@@ -248,25 +248,25 @@ namespace MySoft.Data
         /// 注册一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlExceptionLogger(ExceptionLogHandler handler)
+        public void RegisterSqlExceptionLogger(ExceptionLogEventHandler handler)
         {
-            dbProvider.OnExceptionLog += handler;
+            dbProvider.OnError += handler;
         }
 
         /// <summary>
         /// 取消一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlExceptionLogger(ExceptionLogHandler handler)
+        public void UnregisterSqlExceptionLogger(ExceptionLogEventHandler handler)
         {
-            dbProvider.OnExceptionLog -= handler;
+            dbProvider.OnError -= handler;
         }
 
         /// <summary>
         /// 注册执行命令前的事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterOnStartHandler(ExcutingHandler handler)
+        public void RegisterOnStartHandler(ExcutingEventHandler handler)
         {
             dbProvider.OnStart += handler;
         }
@@ -275,7 +275,7 @@ namespace MySoft.Data
         /// 取消执行命令前的事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterOnStartHandler(ExcutingHandler handler)
+        public void UnregisterOnStartHandler(ExcutingEventHandler handler)
         {
             dbProvider.OnStart -= handler;
         }
@@ -284,7 +284,7 @@ namespace MySoft.Data
         /// 注册执行命令后的事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterOnEndHandler(ExcutingHandler handler)
+        public void RegisterOnEndHandler(ExcutingEventHandler handler)
         {
             dbProvider.OnEnd += handler;
         }
@@ -293,7 +293,7 @@ namespace MySoft.Data
         /// 取消执行命令后的事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterOnEndHandler(ExcutingHandler handler)
+        public void UnregisterOnEndHandler(ExcutingEventHandler handler)
         {
             dbProvider.OnEnd -= handler;
         }

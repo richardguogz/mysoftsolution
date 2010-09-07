@@ -8,21 +8,10 @@ using System.Web;
 using System.Net;
 using System.Web.Hosting;
 using System.Collections;
+using MySoft.Core;
 
 namespace MySoft.Web
 {
-    /// <summary>
-    /// 写日志委托
-    /// </summary>
-    /// <param name="logMsg"></param>
-    public delegate void LogHandler(string logMsg);
-
-    /// <summary>
-    /// 错误委托
-    /// </summary>
-    /// <param name="ex"></param>
-    public delegate void StaticErrorHandler(Exception ex);
-
     /// <summary>
     /// 静态页处理类
     /// </summary>
@@ -30,9 +19,9 @@ namespace MySoft.Web
     {
         private const double Interval = 60000;
 
-        public static event LogHandler OnLog;
+        public static event LogEventHandler OnLog;
 
-        public static event StaticErrorHandler OnError;
+        public static event ExceptionLogEventHandler OnError;
 
         //静态生成计时器
         private static Timer StaticPageTimer;
@@ -149,7 +138,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                SaveError(ex);
+                SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
             }
         }
@@ -169,7 +158,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                SaveError(ex);
+                SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
             }
         }
@@ -192,7 +181,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                SaveError(ex);
+                SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
             }
         }
@@ -213,7 +202,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                SaveError(ex);
+                SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
             }
         }
@@ -235,7 +224,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                SaveError(ex);
+                SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
             }
         }
@@ -256,7 +245,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                SaveError(ex);
+                SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
             }
         }
@@ -440,25 +429,25 @@ namespace MySoft.Web
         /// <summary>
         /// 保存日志
         /// </summary>
-        /// <param name="logMsg"></param>
-        internal static void SaveLog(string logMsg)
+        /// <param name="log"></param>
+        internal static void SaveLog(string log)
         {
             if (OnLog != null)
             {
-                OnLog(logMsg);
+                OnLog(log);
             }
         }
 
         /// <summary>
         /// 保存错误
         /// </summary>
+        /// <param name="log"></param>
         /// <param name="ex"></param>
-        internal static void SaveError(Exception ex)
+        internal static void SaveError(Exception ex, string log)
         {
-            SaveLog(ex.Message);
             if (OnError != null)
             {
-                OnError(ex);
+                OnError(ex, log);
             }
         }
 

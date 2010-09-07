@@ -5,10 +5,17 @@ using System.Text;
 namespace MySoft.Core
 {
     /// <summary>
+    /// A delegate used for exception.
+    /// </summary>
+    /// <param name="exception"></param>
+    /// <param name="log"></param>
+    public delegate void ExceptionLogEventHandler(Exception exception, string log);
+
+    /// <summary>
     /// A delegate used for log.
     /// </summary>
-    /// <param name="logMsg">The msg to write to log.</param>
-    public delegate void LogHandler(string log);
+    /// <param name="log">The msg to write to log.</param>
+    public delegate void LogEventHandler(string log);
 
     /// <summary>
     /// Mark a implementing class as loggable.
@@ -18,6 +25,6 @@ namespace MySoft.Core
         /// <summary>
         /// OnLog event.
         /// </summary>
-        event LogHandler OnLog;
+        event LogEventHandler OnLog;
     }
 }

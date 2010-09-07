@@ -211,6 +211,6 @@ namespace MySoft.Core.Remoting
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
     }
 }

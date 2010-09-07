@@ -24,7 +24,7 @@ namespace MySoft.Data
             this.dbHelper = new DbHelper(connectionString, dbFactory);
         }
 
-        internal void SetDecryptHandler(DecryptHandler decryptEvent)
+        internal void SetDecryptHandler(DecryptEventHandler decryptEvent)
         {
             this.dbHelper.SetDecryptHandler(decryptEvent);
         }
@@ -758,9 +758,9 @@ namespace MySoft.Data
         /// <param name="command"></param>
         private void WriteExceptionLog(Exception ex, DbCommand command)
         {
-            if (OnExceptionLog != null)
+            if (OnError != null)
             {
-                OnExceptionLog(ex, GetLog(command));
+                OnError(ex, GetLog(command));
             }
         }
 
@@ -793,22 +793,22 @@ namespace MySoft.Data
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         /// <summary>
         /// OnExceptionLog event.
         /// </summary>
-        public event ExceptionLogHandler OnExceptionLog;
+        public event ExceptionLogEventHandler OnError;
 
         /// <summary>
         /// 开始事件
         /// </summary>
-        public event ExcutingHandler OnStart;
+        public event ExcutingEventHandler OnStart;
 
         /// <summary>
         /// 结束事件
         /// </summary>
-        public event ExcutingHandler OnEnd;
+        public event ExcutingEventHandler OnEnd;
 
         #endregion
 

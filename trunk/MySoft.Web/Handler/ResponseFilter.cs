@@ -92,6 +92,13 @@ namespace MySoft.Web
                         //内容进行编码处理
                         enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
 
+                        string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
+                        string staticurl = filePath;
+
+                        //加入静态页生成元素
+                        content = string.Format("<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->\r\n{3}",
+                                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content);
+
                         byte[] _buffer = enc.GetBytes(content);
                         int _count = enc.GetByteCount(content);
 

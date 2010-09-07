@@ -166,15 +166,15 @@ namespace MySoft.Core.Task
         /// <summary>
         /// 
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
 
-        void WriteLog(string logMsg)
+        void WriteLog(string log)
         {
             if (OnLog != null)
             {
-                OnLog(logMsg);
+                OnLog(log);
             }
         }
     }
