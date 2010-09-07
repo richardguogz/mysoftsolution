@@ -39,7 +39,7 @@ namespace MySoft.Web
             string url = context.Request.Url.PathAndQuery;
             string sendToUrl = url;
             string filePath = context.Request.PhysicalApplicationPath;
-            string htmlFile = null;
+            string htmlFile = null, fileExtension = null;
             bool htmlExists = false;
 
             //检测是否为Ajax调用
@@ -78,6 +78,7 @@ namespace MySoft.Web
                                 //静态页面存在
                                 FileInfo file = new FileInfo(htmlFile);
                                 htmlExists = file.Exists;
+                                fileExtension = file.Extension;
 
                                 //按秒检测页面重新生成
                                 int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
@@ -90,6 +91,10 @@ namespace MySoft.Web
                                 }
                                 else
                                 {
+                                    //判断是否为xml格式
+                                    if (fileExtension.ToLower().Contains("xml"))
+                                        context.Response.ContentType = "text/xml";
+
                                     context.Response.WriteFile(htmlFile);
                                     return;
                                 }
@@ -123,6 +128,10 @@ namespace MySoft.Web
             {
                 if (htmlExists && !string.IsNullOrEmpty(htmlFile))
                 {
+                    //判断是否为xml格式
+                    if (fileExtension.ToLower().Contains("xml"))
+                        context.Response.ContentType = "text/xml";
+
                     context.Response.WriteFile(htmlFile);
                     return;
                 }
