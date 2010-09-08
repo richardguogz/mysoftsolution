@@ -155,7 +155,7 @@ namespace MySoft.Web
         /// <returns></returns>
         private string RemoveRootPath(string path)
         {
-            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/");
+            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/").Replace("//", "/");
         }
     }
 }
