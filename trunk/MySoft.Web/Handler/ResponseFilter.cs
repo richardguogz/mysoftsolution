@@ -100,13 +100,13 @@ namespace MySoft.Web
                         {
                             //加入静态页生成元素
                             content = string.Format("{3}\r\n\r\n//<!-- 生成方式：被动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content.Trim());
+                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
                         else
                         {
                             //加入静态页生成元素
                             content = string.Format("{3}\r\n\r\n<!-- 生成方式：被动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content.Trim());
+                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
 
                         byte[] _buffer = enc.GetBytes(content);
@@ -146,6 +146,16 @@ namespace MySoft.Web
 
             //Write out the response to the browser.
             this.m_sink.Write(buffer, offset, count);
+        }
+
+        /// <summary>
+        /// 去除根目录
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string RemoveRootPath(string path)
+        {
+            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/");
         }
     }
 }

@@ -280,7 +280,7 @@ namespace MySoft.Web
                 }
 
                 //开始生成
-                if (OnStart != null) OnStart(DateTime.Now, dynamicurl, staticurl);
+                if (OnStart != null) OnStart(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
 
                 //生成时回调
                 if (Callback != null) content = Callback(content);
@@ -290,23 +290,23 @@ namespace MySoft.Web
                 {
                     //加入静态页生成元素
                     content = string.Format("{3}\r\n\r\n//<!-- 生成方式：主动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
-                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content.Trim());
+                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
                 else
                 {
                     //加入静态页生成元素
                     content = string.Format("{3}\r\n\r\n<!-- 生成方式：主动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
-                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content.Trim());
+                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
 
                 StaticPageUtils.SaveFile(content, staticurl, outEncoding);
 
                 //结束生成
-                if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, staticurl);
+                if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
             }
             catch (Exception ex)
             {
-                StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", staticurl));
+                StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                 //如果出错，则继续往下执行
             }
             finally
@@ -330,6 +330,16 @@ namespace MySoft.Web
 
                 Update(DateTime.MaxValue);
             });
+        }
+
+        /// <summary>
+        /// 去除根目录
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string RemoveRootPath(string path)
+        {
+            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/");
         }
     }
 
@@ -605,7 +615,7 @@ namespace MySoft.Web
                         }
 
                         //开始生成
-                        if (OnStart != null) OnStart(DateTime.Now, dynamicurl, staticurl);
+                        if (OnStart != null) OnStart(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
 
                         //生成时回调
                         if (Callback != null) content = Callback(content);
@@ -615,23 +625,23 @@ namespace MySoft.Web
                         {
                             //加入静态页生成元素
                             content = string.Format("{3}\r\n\r\n//<!-- 生成方式：主动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content.Trim());
+                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
                         else
                         {
                             //加入静态页生成元素
                             content = string.Format("{3}\r\n\r\n<!-- 生成方式：主动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, staticurl, content.Trim());
+                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
 
                         StaticPageUtils.SaveFile(content, staticurl, outEncoding);
 
                         //结束生成
-                        if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, staticurl);
+                        if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
                     }
                     catch (Exception ex)
                     {
-                        StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", staticurl));
+                        StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                         //如果出错，则继续往下执行
                     }
                     finally
@@ -713,6 +723,16 @@ namespace MySoft.Web
                 dictPosition[key] = 0;
                 SetPosition(--index);
             }
+        }
+
+        /// <summary>
+        /// 去除根目录
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string RemoveRootPath(string path)
+        {
+            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/");
         }
     }
 }
