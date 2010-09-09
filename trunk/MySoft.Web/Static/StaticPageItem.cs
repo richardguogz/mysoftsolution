@@ -183,8 +183,8 @@ namespace MySoft.Web
         /// </summary>
         private SingleStaticPageItem()
         {
-            this.outEncoding = new UTF8Encoding();
-            this.inEncoding = new UTF8Encoding();
+            this.outEncoding = Encoding.UTF8;
+            this.inEncoding = Encoding.UTF8;
             this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(0, 20, 0));
             this.isRemote = false;
             this.updateComplete = true;
@@ -279,8 +279,10 @@ namespace MySoft.Web
                         dynamicurl = string.Format("{0}?{1}", dynamicurl, query);
                 }
 
+                DateTime createTime = DateTime.Now;
+
                 //开始生成
-                if (OnStart != null) OnStart(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
+                if (OnStart != null) OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
 
                 //生成时回调
                 if (Callback != null) content = Callback(content);
@@ -290,19 +292,19 @@ namespace MySoft.Web
                 {
                     //加入静态页生成元素
                     content = string.Format("{3}\r\n\r\n//<!-- 生成方式：主动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
-                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
+                                        createTime.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
                 else
                 {
                     //加入静态页生成元素
                     content = string.Format("{3}\r\n\r\n<!-- 生成方式：主动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
-                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
+                                        createTime.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
 
                 StaticPageUtils.SaveFile(content, staticurl, outEncoding);
 
                 //结束生成
-                if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
+                if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
             }
             catch (Exception ex)
             {
@@ -500,8 +502,8 @@ namespace MySoft.Web
         /// </summary>
         private ParamStaticPageItem()
         {
-            this.outEncoding = new UTF8Encoding();
-            this.inEncoding = new UTF8Encoding();
+            this.outEncoding = Encoding.UTF8;
+            this.inEncoding = Encoding.UTF8;
             this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(0, 20, 0));
             this.isRemote = false;
             this.updateComplete = true;
@@ -621,8 +623,10 @@ namespace MySoft.Web
                                 dynamicurl = string.Format("{0}?{1}", dynamicurl, queryurl);
                         }
 
+                        DateTime createTime = DateTime.Now;
+
                         //开始生成
-                        if (OnStart != null) OnStart(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
+                        if (OnStart != null) OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
 
                         //生成时回调
                         if (Callback != null) content = Callback(content);
@@ -632,19 +636,19 @@ namespace MySoft.Web
                         {
                             //加入静态页生成元素
                             content = string.Format("{3}\r\n\r\n//<!-- 生成方式：主动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
+                                                createTime.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
                         else
                         {
                             //加入静态页生成元素
                             content = string.Format("{3}\r\n\r\n<!-- 生成方式：主动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
+                                                createTime.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
 
                         StaticPageUtils.SaveFile(content, staticurl, outEncoding);
 
                         //结束生成
-                        if (OnEnd != null) OnEnd(DateTime.Now, dynamicurl, RemoveRootPath(staticurl));
+                        if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
                     }
                     catch (Exception ex)
                     {

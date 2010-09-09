@@ -9,6 +9,7 @@ using System.Net;
 using System.Web.Hosting;
 using System.Collections;
 using MySoft.Core;
+using System.Threading;
 
 namespace MySoft.Web
 {
@@ -17,16 +18,14 @@ namespace MySoft.Web
     /// </summary>
     public abstract class StaticPageUtils
     {
-        private const double Interval = 60000;
+        private const int Interval = 60000;
 
         public static event LogEventHandler OnLog;
 
         public static event ExceptionLogEventHandler OnError;
 
-        //静态生成计时器
-        private static Timer StaticPageTimer;
+        //静态页生成项
         private static List<IStaticPageItem> staticPageItems = new List<IStaticPageItem>();
-        private static Regex removeRemarkRegex = new Regex("<!--@[\\s\\S]+?-->");
 
         #region 启动静态页生成
 
@@ -41,65 +40,50 @@ namespace MySoft.Web
         /// <summary>
         /// 启动静态管理类
         /// </summary>
-        /// <param name="isRunOnce">是否启动就生成</param>
-        public static void Start(bool isRunOnce)
-        {
-            Start(Interval, isRunOnce);
-        }
-
-        /// <summary>
-        /// 启动静态管理类
-        /// </summary>
         /// <param name="interval">检测间隔时间(默认为一分钟)</param>
-        public static void Start(double interval)
+        public static void Start(int interval)
         {
-            Start(interval, false);
+            Thread thread = new Thread(DoWork);
+            thread.IsBackground = true;
+            thread.Start(interval);
         }
 
-        /// <summary>
-        /// 启动静态管理类
-        /// </summary>
-        /// <param name="interval">检测间隔时间(默认为一分钟)</param>
-        /// <param name="isRunOnce">是否启动就生成</param>
-        public static void Start(double interval, bool isRunOnce)
+        //执行生成事件
+        static void DoWork(object value)
         {
-            StaticPageTimer = new Timer(interval);
-            StaticPageTimer.Elapsed += new ElapsedEventHandler(StaticPageTimer_Elapsed);
-            StaticPageTimer.Start();
-
-            //是否第一次启动就运行
-            if (isRunOnce)
+            while (true)
             {
-                StaticPageTimer_Elapsed(null, null);
-            }
-        }
-
-        static void StaticPageTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            StaticPageTimer.Stop();
-
-            lock (staticPageItems)
-            {
-                DateTime currentDate = DateTime.Now;
-                foreach (IStaticPageItem sti in staticPageItems)
+                lock (staticPageItems)
                 {
-                    //需要生成才启动线程
-                    if (sti.NeedUpdate(currentDate))
+                    DateTime dateTime = DateTime.Now;
+                    foreach (IStaticPageItem sti in staticPageItems)
                     {
-                        System.Threading.ThreadPool.QueueUserWorkItem(obj =>
+                        try
                         {
-                            if (obj == null) return;
+                            //需要生成才启动线程
+                            if (sti.NeedUpdate(dateTime))
+                            {
+                                System.Threading.ThreadPool.QueueUserWorkItem(obj =>
+                                {
+                                    if (obj == null) return;
 
-                            ArrayList arr = obj as ArrayList;
-                            IStaticPageItem item = arr[0] as IStaticPageItem;
-                            DateTime time = (DateTime)arr[1];
-                            item.Update(time);
-                        }, new ArrayList { sti, currentDate });
+                                    ArrayList arr = obj as ArrayList;
+                                    IStaticPageItem item = arr[0] as IStaticPageItem;
+                                    DateTime time = (DateTime)arr[1];
+                                    item.Update(time);
+                                }, new ArrayList { sti, dateTime });
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            if (OnError != null) OnError(ex, "执行页面生成出现异常：" + ex.Message);
+                        }
                     }
                 }
-            }
 
-            StaticPageTimer.Start();
+                //休眠间隔
+                Thread.Sleep(Convert.ToInt32(value));
+            }
         }
 
         /// <summary>
@@ -154,7 +138,7 @@ namespace MySoft.Web
         {
             try
             {
-                SaveFile(GetRemotePageString(templatePath, new UTF8Encoding(), validateString), savePath, new UTF8Encoding());
+                SaveFile(GetRemotePageString(templatePath, Encoding.UTF8, validateString), savePath, Encoding.UTF8);
                 return true;
             }
             catch (Exception ex)
@@ -198,7 +182,7 @@ namespace MySoft.Web
         {
             try
             {
-                SaveFile(GetLocalPageString(templatePath, query, new UTF8Encoding(), validateString), savePath, new UTF8Encoding());
+                SaveFile(GetLocalPageString(templatePath, query, Encoding.UTF8, validateString), savePath, Encoding.UTF8);
                 return true;
             }
             catch (Exception ex)
@@ -241,64 +225,13 @@ namespace MySoft.Web
         {
             try
             {
-                SaveFile(GetLocalPageString(templatePath, null, new UTF8Encoding(), validateString), savePath, new UTF8Encoding());
+                SaveFile(GetLocalPageString(templatePath, null, Encoding.UTF8, validateString), savePath, Encoding.UTF8);
                 return true;
             }
             catch (Exception ex)
             {
                 SaveError(ex, string.Format("生成静态文件{0}失败！", savePath));
                 return false;
-            }
-        }
-
-        #endregion
-
-        #region Request处理
-
-        /// <summary>
-        /// 内部处理IIS请求，获取结果
-        /// </summary>
-        /// <param name="page">页面路径。应用程序绝对路径。</param>
-        /// <returns>解析结果</returns>
-        public static string ProcessRequest(string page, string query)
-        {
-            using (StringWriter sw = new StringWriter())
-            {
-                HttpRuntime.ProcessRequest(new RequestEncoding(page.Replace("/", "\\").TrimStart('\\'), query, sw));
-                return sw.ToString();
-            }
-        }
-
-        public static string ProcessRequest(string page)
-        {
-            using (StringWriter sw = new StringWriter())
-            {
-                HttpRuntime.ProcessRequest(new RequestEncoding(page.Replace("/", "\\").TrimStart('\\'), null, sw));
-                return sw.ToString();
-            }
-        }
-
-        /// <summary>
-        /// 内部处理IIS请求，获取结果
-        /// </summary>
-        /// <param name="page">页面路径。应用程序绝对路径。</param>
-        /// <param name="encoding">编码，默认是UTF8</param>
-        /// <returns>解析结果</returns>
-        public static string ProcessRequest(string page, string query, Encoding encoding)
-        {
-            using (StringWriter sw = new StringWriter())
-            {
-                HttpRuntime.ProcessRequest(new RequestEncoding(page.Replace("/", "\\").TrimStart('\\'), query, sw, encoding));
-                return sw.ToString();
-            }
-        }
-
-        public static string ProcessRequest(string page, Encoding encoding)
-        {
-            using (StringWriter sw = new StringWriter())
-            {
-                HttpRuntime.ProcessRequest(new RequestEncoding(page.Replace("/", "\\").TrimStart('\\'), null, sw, encoding));
-                return sw.ToString();
             }
         }
 
@@ -316,23 +249,29 @@ namespace MySoft.Web
         /// <returns></returns>
         internal static string GetLocalPageString(string templatePath, string query, Encoding encoding, string validateString)
         {
-            string result;
             try
             {
-                result = ProcessRequest(templatePath, query, encoding);
-                result = removeRemarkRegex.Replace(result, "");
+                StringBuilder result = new StringBuilder();
+                using (StringWriter sw = new StringWriter(result))
+                {
+                    string path = templatePath.TrimStart('/');
+                    HttpRuntime.ProcessRequest(new EncodingWorkerRequest(path, query, sw, encoding));
+                }
+
+                string content = result.ToString();
                 if (!string.IsNullOrEmpty(validateString))
                 {
-                    if (result.IndexOf(validateString) >= 0)
+                    if (content.IndexOf(validateString) >= 0)
                     {
-                        return result;
+                        return content;
                     }
                     else
                     {
                         throw new Exception("执行本地页面" + templatePath + (query == null ? "" : "?" + query) + "出错，页面内容和验证字符串匹配失败。");
                     }
                 }
-                return result;
+
+                return content;
             }
             catch (Exception ex)
             {
@@ -358,7 +297,6 @@ namespace MySoft.Web
                     using (StreamReader sr = new StreamReader(stream, encoding))
                     {
                         result = sr.ReadToEnd();
-                        result = removeRemarkRegex.Replace(result, "");
                         if (string.IsNullOrEmpty(validateString))
                         {
                             throw new Exception("执行远程页面" + templatePath + "出错，验证字符串不能为空。");
@@ -453,33 +391,55 @@ namespace MySoft.Web
         }
 
         #endregion
-
     }
+
 
     /// <summary>
     /// 简单请求处理类
     /// </summary>
-    internal class RequestEncoding : SimpleWorkerRequest
+    internal class EncodingWorkerRequest : SimpleWorkerRequest
     {
         private TextWriter output;
-        private Encoding encoding = Encoding.UTF8;
+        private Encoding encoding;
+        private MemoryStream stream;
 
-        public RequestEncoding(string page, string query, TextWriter output)
+        public EncodingWorkerRequest(string page, string query, TextWriter output)
             : base(page, query, output)
         {
             this.output = output;
+            this.encoding = Encoding.UTF8;
+            this.stream = new MemoryStream();
         }
 
-        public RequestEncoding(string page, string query, TextWriter output, Encoding encoding)
+        public EncodingWorkerRequest(string page, string query, TextWriter output, Encoding encoding)
             : base(page, query, output)
         {
             this.output = output;
             this.encoding = encoding;
+            this.stream = new MemoryStream();
         }
 
         public override void SendResponseFromMemory(byte[] data, int length)
         {
-            output.Write(encoding.GetChars(data, 0, length));
+            if (length > 0 && data != null)
+            {
+                stream.Write(data, 0, data.Length);
+            }
+        }
+
+        public override void FlushResponse(bool finalFlush)
+        {
+            if (finalFlush)
+            {
+                StreamReader sr = new StreamReader(stream, encoding);
+                stream.Position = 0;
+                stream.Flush();
+
+                string content = sr.ReadToEnd();
+
+                //把内容写入输出流中
+                output.Write(content);
+            }
         }
     }
 }
