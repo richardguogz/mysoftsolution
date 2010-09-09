@@ -329,7 +329,7 @@ namespace MySoft.Web
                 Thread.Sleep(span);
 
                 Update(DateTime.MaxValue);
-            });
+            }, timeSpan);
         }
 
         /// <summary>
@@ -339,7 +339,14 @@ namespace MySoft.Web
         /// <returns></returns>
         private string RemoveRootPath(string path)
         {
-            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/").Replace("//", "/");
+            try
+            {
+                return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/").Replace("//", "/");
+            }
+            catch
+            {
+                return path;
+            }
         }
     }
 
@@ -650,9 +657,10 @@ namespace MySoft.Web
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                //不处理错误;
+                StaticPageUtils.SaveError(ex, "调用静态页生成方法Update时发生异常：" + ex.Message);
+                //如果出错，则继续往下执行
             }
             finally
             {
@@ -674,7 +682,7 @@ namespace MySoft.Web
                 Thread.Sleep(span);
 
                 Update(DateTime.MaxValue);
-            });
+            }, timeSpan);
         }
 
         /// <summary>
@@ -732,7 +740,14 @@ namespace MySoft.Web
         /// <returns></returns>
         private string RemoveRootPath(string path)
         {
-            return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/").Replace("//", "/");
+            try
+            {
+                return path.Replace(AppDomain.CurrentDomain.BaseDirectory, "/").Replace("\\", "/").Replace("//", "/");
+            }
+            catch
+            {
+                return path;
+            }
         }
     }
 }
