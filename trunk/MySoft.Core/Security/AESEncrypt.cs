@@ -24,7 +24,7 @@ namespace MySoft.Core.Security
             encryptKey = encryptKey.PadRight(32, ' ');
 
             RijndaelManaged rijndaelProvider = new RijndaelManaged();
-            rijndaelProvider.Key = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
+            rijndaelProvider.Key = Encoding.UTF8.GetBytes(encryptKey);
             rijndaelProvider.IV = Keys;
             ICryptoTransform rijndaelEncrypt = rijndaelProvider.CreateEncryptor();
 

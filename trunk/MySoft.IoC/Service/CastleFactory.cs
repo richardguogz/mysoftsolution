@@ -243,7 +243,7 @@ namespace MySoft.IoC.Service
         {
             if (singleton == null)
             {
-                CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
+                CastleClientConfiguration config = CastleClientConfiguration.GetConfig();
 
                 if (config.Type == ServiceFactoryType.Local)
                 {
@@ -251,7 +251,7 @@ namespace MySoft.IoC.Service
                 }
                 else
                 {
-                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
+                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0, config.Timeout);
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
                     singleton = new CastleFactory(new SimpleServiceContainer(mq));
                 }

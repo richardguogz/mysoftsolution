@@ -21,6 +21,22 @@ namespace MySoft.Data
         /// </summary>
         /// <returns></returns>
         T[] ToArray();
+
+        /// <summary>
+        /// 返回字典
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        IDictionary<TResult, T> ToDictionary<TResult>(string propertyName);
+
+        /// <summary>
+        /// 返回字典
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        IDictionary<TResult, T> ToDictionary<TResult>(Field groupField);
     }
 
     /// <summary>
@@ -69,7 +85,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="groupName"></param>
         /// <returns></returns>
-        IDictionary<TResult, IList<T>> ToGroupList<TResult>(string groupName);
+        IDictionary<TResult, IList<T>> ToDictionary<TResult>(string groupName);
 
         /// <summary>
         /// 返回字典
@@ -77,7 +93,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="groupField"></param>
         /// <returns></returns>
-        IDictionary<TResult, IList<T>> ToGroupList<TResult>(Field groupField);
+        IDictionary<TResult, IList<T>> ToDictionary<TResult>(Field groupField);
 
         #endregion
     }

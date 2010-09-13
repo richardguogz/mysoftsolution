@@ -40,11 +40,11 @@ namespace MySoft.Web
             if (url.IndexOf("?") >= 0) url = url.Remove(url.IndexOf("?"));
             if (page.Request.QueryString.Count > 0) url += page.Request.Url.Query;
 
-            string query = Encrypt(url, ajaxKey);
+            string query = CoreUtils.Encrypt(url, ajaxKey);
             if (urlType != null)
             {
                 UI.AjaxNamespaceAttribute ajaxSpace = CoreUtils.GetTypeAttribute<UI.AjaxNamespaceAttribute>(urlType);
-                if (ajaxSpace != null) query += ";" + Encrypt(ajaxSpace.Name ?? urlType.Name, ajaxKey);
+                if (ajaxSpace != null) query += ";" + CoreUtils.Encrypt(ajaxSpace.Name ?? urlType.Name, ajaxKey);
             }
 
             string urlResource = page.Request.ApplicationPath + (page.Request.ApplicationPath.EndsWith("/") ? "" : "/") + "Ajax/" + type.FullName + ".ashx?" + query;
@@ -429,85 +429,22 @@ namespace MySoft.Web
         /// <summary>
         /// 对字符串进行加密
         /// </summary>
-        /// <param name="Passowrd">待加密的字符串</param>
+        /// <param name="value">待加密的字符串</param>
         /// <returns>string</returns>
-        public static string Encrypt(string Passowrd)
+        public static string Encrypt(string value)
         {
-            string strResult = "";
-
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(Passowrd, true, 2);
-            strResult = FormsAuthentication.Encrypt(ticket).ToString();
-
-            return strResult;
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(value, true, 2);
+            return FormsAuthentication.Encrypt(ticket).ToString();
         }
 
         /// <summary>
         /// 对字符串进行解密
         /// </summary>
-        /// <param name="Passowrd">已加密的字符串</param>
+        /// <param name="value">已加密的字符串</param>
         /// <returns></returns>
-        public static string Decrypt(string Passowrd)
+        public static string Decrypt(string value)
         {
-            string strResult = "";
-
-            strResult = FormsAuthentication.Decrypt(Passowrd).Name.ToString();
-
-            return strResult;
-        }
-
-        private static byte[] Keys = { 0x41, 0x72, 0x65, 0x79, 0x6F, 0x75, 0x6D, 0x79, 0x53, 0x6E, 0x6F, 0x77, 0x6D, 0x61, 0x6E, 0x3F };
-
-        /// <summary>
-        /// 对字符串进行加密
-        /// </summary>
-        /// <param name="text">待加密的字符串</param>
-        /// <returns>string</returns>
-        public static string Encrypt(string text, string key)
-        {
-            try
-            {
-                key = key.PadRight(32, ' ');
-                RijndaelManaged rijndaelProvider = new RijndaelManaged();
-                rijndaelProvider.Key = Encoding.UTF8.GetBytes(key);
-                rijndaelProvider.IV = Keys;
-                ICryptoTransform rijndaelEncrypt = rijndaelProvider.CreateEncryptor();
-
-                byte[] inputData = Encoding.UTF8.GetBytes(text);
-                byte[] encryptedData = rijndaelEncrypt.TransformFinalBlock(inputData, 0, inputData.Length);
-
-                return Convert.ToBase64String(encryptedData);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-
-        /// <summary>
-        /// 对字符串进行解密
-        /// </summary>
-        /// <param name="text">已加密的字符串</param>
-        /// <returns></returns>
-        public static string Decrypt(string text, string key)
-        {
-            try
-            {
-                key = key.PadRight(32, ' ');
-                RijndaelManaged rijndaelProvider = new RijndaelManaged();
-                rijndaelProvider.Key = Encoding.UTF8.GetBytes(key);
-                rijndaelProvider.IV = Keys;
-                ICryptoTransform rijndaelDecrypt = rijndaelProvider.CreateDecryptor();
-
-                byte[] inputData = Convert.FromBase64String(text);
-                byte[] decryptedData = rijndaelDecrypt.TransformFinalBlock(inputData, 0, inputData.Length);
-
-                return Encoding.UTF8.GetString(decryptedData);
-            }
-            catch
-            {
-                return null;
-            }
+            return FormsAuthentication.Decrypt(value).Name.ToString();
         }
 
         #endregion

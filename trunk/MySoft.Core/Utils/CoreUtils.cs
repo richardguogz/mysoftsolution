@@ -484,5 +484,76 @@ namespace MySoft.Core
         }
 
         #endregion
+
+        #region 简单加密解密
+
+        private static byte[] Keys = { 0x41, 0x72, 0x65, 0x79, 0x6F, 0x75, 0x6D, 0x79, 0x53, 0x6E, 0x6F, 0x77, 0x6D, 0x61, 0x6E, 0x3F };
+
+        /// <summary>
+        /// 对字符串进行加密
+        /// </summary>
+        /// <param name="text">待加密的字符串</param>
+        /// <returns>string</returns>
+        public static string Encrypt(string text, string key)
+        {
+            try
+            {
+                key = key.PadRight(32, ' ');
+                RijndaelManaged rijndaelProvider = new RijndaelManaged();
+                rijndaelProvider.Key = Encoding.UTF8.GetBytes(key);
+                rijndaelProvider.IV = Keys;
+                ICryptoTransform rijndaelEncrypt = rijndaelProvider.CreateEncryptor();
+
+                byte[] inputData = Encoding.UTF8.GetBytes(text);
+                byte[] encryptedData = rijndaelEncrypt.TransformFinalBlock(inputData, 0, inputData.Length);
+
+                return Convert.ToBase64String(encryptedData);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// 对字符串进行解密
+        /// </summary>
+        /// <param name="text">已加密的字符串</param>
+        /// <returns></returns>
+        public static string Decrypt(string text, string key)
+        {
+            try
+            {
+                key = key.PadRight(32, ' ');
+                RijndaelManaged rijndaelProvider = new RijndaelManaged();
+                rijndaelProvider.Key = Encoding.UTF8.GetBytes(key);
+                rijndaelProvider.IV = Keys;
+                ICryptoTransform rijndaelDecrypt = rijndaelProvider.CreateDecryptor();
+
+                byte[] inputData = Convert.FromBase64String(text);
+                byte[] decryptedData = rijndaelDecrypt.TransformFinalBlock(inputData, 0, inputData.Length);
+
+                return Encoding.UTF8.GetString(decryptedData);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 比较两个值的大小
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static int Compare<T>(T x, T y)
+        {
+            return new SortComparer<T>().Compare(x, y);
+        }
+
+        #endregion
     }
 }

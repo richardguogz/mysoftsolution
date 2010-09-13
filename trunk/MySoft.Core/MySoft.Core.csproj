@@ -60,6 +60,7 @@
     <Compile Include="Json\Newtonsoft.Json\Converters\DataRowConverter.cs" />
     <Compile Include="Json\Newtonsoft.Json\Converters\DataSetConverter.cs" />
     <Compile Include="Json\Newtonsoft.Json\Converters\DataTableConverter.cs" />
+    <Compile Include="Remoting\IServiceInterface.cs" />
     <Compile Include="Security\AESEncrypt.cs" />
     <Compile Include="Security\DESEncrypt.cs" />
     <Compile Include="Json\JSONArray.cs" />

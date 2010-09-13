@@ -8,6 +8,7 @@ using Castle.MicroKernel.SubSystems.Conversion;
 using Castle.Core;
 
 using MySoft.IoC.Service.Services;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service.Facilities
 {

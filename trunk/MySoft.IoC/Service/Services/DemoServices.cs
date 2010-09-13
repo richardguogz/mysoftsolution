@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Service.Services
 {

@@ -41,15 +41,10 @@ namespace MySoft.Core.Remoting
                     Assembly assembly = Assembly.Load(m.AssemblyName);
                     Type t = assembly.GetType(m.ClassName);
 
-                    if (t != null)
-                    {
-                        RemotingConfiguration.RegisterWellKnownServiceType(t, m.ClassName, m.Mode);
-                        WriteLog(string.Format("远程对象[{0}]发布成功，URL：{1}", m.ClassName, BuildUrl(m.ClassName)));
-                    }
+                    if (t == null)
+                        WriteLog("(" + m.AssemblyName + " --> " + m.ClassName + ") loading failed! ");
                     else
-                    {
-                        WriteLog(string.Format("远程对象[{0}]发布失败，URL：{1}", m.ClassName, BuildUrl(m.ClassName)));
-                    }
+                        PublishWellKnownServiceInstance(m.Name, t, m.Mode);
                 }
             }
 
@@ -60,10 +55,10 @@ namespace MySoft.Core.Remoting
         private void PublishRemotingManageModule()
         {
             //发布Remoting测试模块
-            RemotingConfiguration.RegisterWellKnownServiceType(typeof(RemotingTest), "RemotingTest", WellKnownObjectMode.Singleton);
+            PublishWellKnownServiceInstance("RemotingTest", typeof(RemotingTest), WellKnownObjectMode.Singleton);
 
             //发布Remoting服务日志文件管理模块
-            RemotingConfiguration.RegisterWellKnownServiceType(typeof(RemotingLogFileManager), "RemotingLogFileManager", WellKnownObjectMode.Singleton);
+            PublishWellKnownServiceInstance("RemotingLogFileManager", typeof(RemotingLogFileManager), WellKnownObjectMode.Singleton);
         }
     }
 
@@ -87,7 +82,7 @@ namespace MySoft.Core.Remoting
             }
         }
 
-        protected string BuildUrl(string notifyName)
+        private string BuildUrl(string notifyName)
         {
             StringBuilder url = new StringBuilder();
             url.Append(channelType.ToString().ToLower());
@@ -152,14 +147,30 @@ namespace MySoft.Core.Remoting
         /// </summary>
         /// <param name="notifyName">Name of the notify.</param>
         /// <param name="interfaceType">Type of the interface.</param>
+        /// <param name="mode">The mode.</param>
+        public void PublishWellKnownServiceInstance(string notifyName, Type interfaceType, WellKnownObjectMode mode)
+        {
+            PublishWellKnownServiceInstance(notifyName, interfaceType, null, mode);
+        }
+
+        /// <summary>
+        /// Publishes the well known service instance.
+        /// </summary>
+        /// <param name="notifyName">Name of the notify.</param>
+        /// <param name="interfaceType">Type of the interface.</param>
         /// <param name="instance">The instance.</param>
         /// <param name="mode">The mode.</param>
         public void PublishWellKnownServiceInstance(string notifyName, Type interfaceType, MarshalByRefObject instance, WellKnownObjectMode mode)
         {
             WriteLog("Instance URL --> " + BuildUrl(notifyName));
+
             RemotingConfiguration.RegisterWellKnownServiceType(interfaceType, BuildUrl(notifyName), mode);
             ObjRef objRef = RemotingServices.Marshal(instance, notifyName);
-            WriteLog("(" + instance.ToString() + ") start listening at port: " + serverPort);
+
+            if (instance == null)
+                WriteLog("(" + BuildUrl(notifyName) + ") start listening at port: " + serverPort);
+            else
+                WriteLog("(" + instance.ToString() + ") start listening at port: " + serverPort);
         }
 
         /// <summary>

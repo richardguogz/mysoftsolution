@@ -99,6 +99,10 @@
       <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
       <Name>MySoft.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MySoft.IoC.Dll\MySoft.IoC.Dll.csproj">
+      <Project>{4955AB17-A062-4399-8795-3D40F6FDB869}</Project>
+      <Name>MySoft.IoC.Dll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MySoft.IoC\MySoft.IoC.csproj">
       <Project>{3B83A695-C929-47E8-BCC3-A2F33D8A44B5}</Project>
       <Name>MySoft.IoC</Name>

@@ -44,6 +44,43 @@ namespace MySoft.Data
                     base[index] = value;
             }
         }
+
+        #region 字典操作
+
+        /// <summary>
+        /// 返回字典
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public IDictionary<TResult, T> ToDictionary<TResult>(string propertyName)
+        {
+            var dict = new Dictionary<TResult, T>();
+            foreach (var t in this)
+            {
+                var key = CoreUtils.GetPropertyValue(t, propertyName);
+
+                if (dict.ContainsKey((TResult)key))
+                {
+                    throw new MySoftException("属性值必须是唯一才能生成字典！");
+                }
+
+                dict.Add((TResult)key, t);
+            }
+
+            return dict;
+        }
+
+        /// <summary>
+        /// 返回字典
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public IDictionary<TResult, T> ToDictionary<TResult>(Field groupField)
+        {
+            return ToDictionary<TResult>(groupField.PropertyName);
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -161,9 +198,9 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="groupField"></param>
         /// <returns></returns>
-        public IDictionary<TResult, IList<T>> ToGroupList<TResult>(Field groupField)
+        public IDictionary<TResult, IList<T>> ToDictionary<TResult>(Field groupField)
         {
-            return ToGroupList<TResult>(groupField.PropertyName);
+            return ToDictionary<TResult>(groupField.PropertyName);
         }
 
         /// <summary>
@@ -172,7 +209,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="groupName"></param>
         /// <returns></returns>
-        public IDictionary<TResult, IList<T>> ToGroupList<TResult>(string groupName)
+        public IDictionary<TResult, IList<T>> ToDictionary<TResult>(string groupName)
         {
             IDictionary<TResult, IList<T>> group = new Dictionary<TResult, IList<T>>();
             if (this.Count == 0) return group;

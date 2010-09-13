@@ -22,6 +22,7 @@ namespace MySoft.Core.Remoting
         private string serverAddress;
         private int serverPort;
         private int callbackPort;
+        private int timeout = -1;
         private IChannel clientChannel;
 
         private void WriteLog(string log)
@@ -65,6 +66,24 @@ namespace MySoft.Core.Remoting
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RemotingClientHelper"/> class.
+        /// </summary>
+        /// <param name="channelType">Type of the channel.</param>
+        /// <param name="serverAddress">The server address.</param>
+        /// <param name="serverPort">The server port.</param>
+        /// <param name="callbackPort">The callback port.</param>
+        public RemotingClientHelper(RemotingChannelType channelType, string serverAddress, int serverPort, int callbackPort, int timeout)
+        {
+            this.channelType = channelType;
+            this.serverAddress = serverAddress;
+            this.serverPort = serverPort;
+            this.callbackPort = callbackPort;
+            this.timeout = timeout;
+
+            Init();
+        }
+
+        /// <summary>
         /// Inits this instance.
         /// </summary>
         private void Init()
@@ -80,6 +99,7 @@ namespace MySoft.Core.Remoting
                 IDictionary props = new Hashtable();
                 props["name"] = AppDomain.CurrentDomain.FriendlyName;
                 props["port"] = callbackPort;
+                props["timeout"] = timeout; //1000 * 60 * 5; //5∑÷÷”≥¨ ±
 
                 if (channelType == RemotingChannelType.TCP)
                 {

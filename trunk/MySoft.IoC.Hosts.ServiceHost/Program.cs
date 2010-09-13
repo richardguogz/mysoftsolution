@@ -4,6 +4,8 @@ using System.Text;
 using MySoft.IoC.Service;
 using MySoft.Core.Service;
 using MySoft.Core;
+using System.Collections;
+using MySoft.Core.Remoting;
 
 namespace MySoft.IoC.Hosts.ServiceHost
 {
@@ -11,11 +13,10 @@ namespace MySoft.IoC.Hosts.ServiceHost
     {
         static void Main(string[] args)
         {
-            CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
+            CastleClientConfiguration config = CastleClientConfiguration.GetConfig();
             LogEventHandler logger = (config.Debug ? new LogEventHandler(Console.WriteLine) : null);
-            CastleFactory.Create().OnLog += logger;
 
-            ServiceFactory.Create();
+            CastleFactory.Create().OnLog += logger;
 
             Console.WriteLine("Service host started...");
             Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));

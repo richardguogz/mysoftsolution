@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.IO;
-using MySoft.Web.UI;
+using MySoft.Core;
 
 namespace MySoft.Web
 {
@@ -37,9 +37,9 @@ namespace MySoft.Web
             string ajaxKey = "AjaxProcess", url = string.Empty, space = string.Empty;
             string[] split = context.Request.Url.Query.Remove(0, 1).Split(';');
 
-            url = WebUtils.Decrypt(split[0], ajaxKey);
+            url = CoreUtils.Decrypt(split[0], ajaxKey);
             url = (url.IndexOf('/') >= 0 ? url : "/" + url);
-            if (split.Length > 1) space = WebUtils.Decrypt(split[1], ajaxKey);
+            if (split.Length > 1) space = CoreUtils.Decrypt(split[1], ajaxKey);
             if (string.IsNullOrEmpty(space)) space = "AjaxMethods";
 
             StringBuilder sb = new StringBuilder();

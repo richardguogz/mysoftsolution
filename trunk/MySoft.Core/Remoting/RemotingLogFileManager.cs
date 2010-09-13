@@ -6,9 +6,35 @@ using System.IO;
 namespace MySoft.Core.Remoting
 {
     /// <summary>
+    /// 文件管理Remoting服务
+    /// </summary>
+    [ServiceContract]
+    public interface IRemotingLogFileManager
+    {
+        /// <summary>
+        /// 删除日志文件
+        /// </summary>
+        /// <param name="filename"></param>
+        void Delete(string filename);
+
+        /// <summary>
+        /// 获取日志文件内容
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        string Get(string filename);
+
+        /// <summary>
+        /// 获取所有日志文件名列表
+        /// </summary>
+        /// <returns></returns>
+        string[] GetAll();
+    }
+
+    /// <summary>
     /// Remoting Service Log File Manager
     /// </summary>
-    public class RemotingLogFileManager : MarshalByRefObject
+    public class RemotingLogFileManager : MarshalByRefObject, MySoft.Core.Remoting.IRemotingLogFileManager
     {
         static string logDir = CoreUtils.GetFullPath("log");
 

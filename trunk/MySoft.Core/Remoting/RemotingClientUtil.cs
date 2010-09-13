@@ -54,6 +54,9 @@ namespace MySoft.Core.Remoting
                 thread.IsBackground = true;
                 thread.Start();
             }
+
+            //注册超时信道
+            this.RegisterChannelWithTimeout(_RemotingConfiguration.Timeout);
         }
 
         void DoWork()
@@ -80,8 +83,8 @@ namespace MySoft.Core.Remoting
                     }
                 }
 
-                //每隔10秒生成一次日志
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
+                //每隔30秒生成一次日志
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
             }
         }
 
@@ -142,8 +145,6 @@ namespace MySoft.Core.Remoting
         /// <returns></returns>
         public T GetRemotingObject(string remoteObjectName)
         {
-            //this.RegisterChannelWithTimeout();
-
             RemotingHost host = null;
 
             foreach (KeyValuePair<string, RemotingHost> kvp in _RemotingConfiguration.RemotingHosts)
@@ -169,20 +170,16 @@ namespace MySoft.Core.Remoting
         /// <returns></returns>
         public T GetWellKnownClientInstance(string objectUrl)
         {
-            //this.RegisterChannelWithTimeout();
-
-            T instance;
-
-            try
+            if (!_RemoteObjects.ContainsKey(objectUrl))
             {
-                instance = (T)Activator.GetObject(typeof(T), objectUrl);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                T instance = (T)Activator.GetObject(typeof(T), objectUrl);
+
+                _RemoteObjects.Add(objectUrl, instance);
+
+                return instance;
             }
 
-            return instance;
+            return _RemoteObjects[objectUrl];
         }
 
         /// <summary>
@@ -196,17 +193,19 @@ namespace MySoft.Core.Remoting
             return t.GetDate();
         }
 
-        //private void RegisterChannelWithTimeout()
-        //{
-        //    BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-        //    BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+        private void RegisterChannelWithTimeout(int timeout)
+        {
+            BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+            BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
 
-        //    IDictionary props = new Hashtable();
-        //    props["timeout"] = 1000 * 60 * 5; //5分钟超时
+            IDictionary props = new Hashtable();
+            props["name"] = AppDomain.CurrentDomain.FriendlyName;
+            props["port"] = 0;
+            props["timeout"] = timeout; //1000 * 60 * 5; //5分钟超时
 
-        //    IChannel channel = new TcpChannel(props, clientProvider, serverProvider);
-        //    ChannelServices.RegisterChannel(channel, false);
-        //}
+            IChannel channel = new TcpChannel(props, clientProvider, serverProvider);
+            ChannelServices.RegisterChannel(channel, false);
+        }
 
         /// <summary>
         /// OnLog event.

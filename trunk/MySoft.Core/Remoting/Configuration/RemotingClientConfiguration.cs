@@ -70,6 +70,17 @@ namespace MySoft.Core.Remoting
             set { _Interval = value; }
         }
 
+        private int _Timeout = -1;
+
+        /// <summary>
+        /// 信道超时时间
+        /// </summary>
+        public int Timeout
+        {
+            get { return _Timeout; }
+            set { _Timeout = value; }
+        }
+
         private Dictionary<string, RemotingHost> _RemotingHosts = new Dictionary<string, RemotingHost>();
 
         /// <summary>
@@ -86,7 +97,7 @@ namespace MySoft.Core.Remoting
         /// <param name="serverUrl">远程服务器地址（比如：tcp://127.0.0.1:8888）</param>
         /// <param name="remoteObjectUri">远程对象Uri（如：NetValue）</param>
         /// <returns></returns>
-        public string GetRemoteObjectUrl(string serverUrl,string remoteObjectUri)
+        public string GetRemoteObjectUrl(string serverUrl, string remoteObjectUri)
         {
             string url = string.Format("{0}/{1}", serverUrl, remoteObjectUri);
             return url;
@@ -100,10 +111,12 @@ namespace MySoft.Core.Remoting
         {
             if (node == null) return;
 
-            if(node.Attributes["isCheckServer"].Value != null)
+            if (node.Attributes["isCheckServer"].Value != null)
                 _IsCheckServer = node.Attributes["isCheckServer"].Value == "true" ? true : false;
-            if(node.Attributes["interval"].Value != null)
+            if (node.Attributes["interval"].Value != null)
                 _Interval = Convert.ToDouble(node.Attributes["interval"].Value);
+            if (node.Attributes["timeout"].Value != null)
+                _Timeout = Convert.ToInt32(node.Attributes["timeout"].Value);
 
             foreach (XmlNode n in node.ChildNodes)
             {
@@ -117,7 +130,7 @@ namespace MySoft.Core.Remoting
                     host.DefaultServer = ac["defaultServer"].Value;
 
                     Dictionary<string, string> modules = new Dictionary<string, string>();
-                    Dictionary<string, RemotingServer> servers = new Dictionary<string,RemotingServer>();
+                    Dictionary<string, RemotingServer> servers = new Dictionary<string, RemotingServer>();
 
                     foreach (XmlNode n1 in n.ChildNodes)
                     {
