@@ -546,12 +546,39 @@ namespace MySoft.Core
         /// 比较两个值的大小
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
         /// <returns></returns>
-        public static int Compare<T>(T x, T y)
+        public static int Compare<T>(T value1, T value2)
         {
-            return new SortComparer<T>().Compare(x, y);
+            try
+            {
+                int ret = 0;
+
+                if (value1 == null && value2 == null) ret = 0;
+                else if (value1 == null) ret = -1;
+                else if (value2 == null) ret = 1;
+                else if (value1.GetType().IsGenericType && value1.GetType().GetGenericTypeDefinition() == typeof(Nullable<>)
+                    && value2.GetType().IsGenericType && value2.GetType().GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    //如果是Nullable<>类型，需要特殊处理
+                    Type type1 = Nullable.GetUnderlyingType(value1.GetType());
+                    Type type2 = Nullable.GetUnderlyingType(value2.GetType());
+                    value1 = (T)Convert.ChangeType(value1, type1);
+                    value2 = (T)Convert.ChangeType(value2, type2);
+                    ret = ((IComparable)value1).CompareTo((IComparable)value2);
+                }
+                else
+                {
+                    ret = ((IComparable)value1).CompareTo((IComparable)value2);
+                }
+
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                throw new MySoftException("比较两个值大小时发生错误：" + ex.Message, ex);
+            }
         }
 
         #endregion

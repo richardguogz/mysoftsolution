@@ -132,24 +132,8 @@ namespace MySoft.Core
             object value1 = CoreUtils.GetPropertyValue(x, property.PropertyName);
             object value2 = CoreUtils.GetPropertyValue(y, property.PropertyName);
 
-            int ret = 0;
-            if (value1 == null && value2 == null) ret = 0;
-            else if (value1 == null) ret = -1;
-            else if (value2 == null) ret = 1;
-            else if (value1.GetType().IsGenericType && value1.GetType().GetGenericTypeDefinition() == typeof(Nullable<>)
-                && value2.GetType().IsGenericType && value2.GetType().GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                //如果是Nullable<>类型，需要特殊处理
-                Type type1 = Nullable.GetUnderlyingType(value1.GetType());
-                Type type2 = Nullable.GetUnderlyingType(value2.GetType());
-                value1 = Convert.ChangeType(value1, type1);
-                value2 = Convert.ChangeType(value2, type2);
-                ret = ((IComparable)value1).CompareTo((IComparable)value2);
-            }
-            else
-            {
-                ret = ((IComparable)value1).CompareTo((IComparable)value2);
-            }
+            //比较两个值的大小
+            int ret = CoreUtils.Compare(value1, value2);
 
             if (property.IsDesc) return -ret;
             return ret;

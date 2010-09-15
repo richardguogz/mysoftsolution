@@ -21,9 +21,14 @@ namespace MySoft.Data
         internal DbBatch(DbProvider dbProvider, DbTrans dbTran, int batchSize)
         {
             this.dbProvider = dbProvider;
-            this.batchSize = batchSize > 0 ? batchSize : 1;
+            this.batchSize = batchSize;
             this.dbTrans = dbTran;
             this.useBatch = true;
+
+            if (batchSize < 0 || batchSize > 100)
+            {
+                throw new MySoftException("请设置batchSize的值在1-100之间！");
+            }
         }
 
         internal DbBatch(DbProvider dbProvider, DbTrans dbTran)
@@ -106,7 +111,7 @@ namespace MySoft.Data
                             mergeCommand.Parameters.Add(newp);
                         }
                         sb.Append(cmdText);
-                        sb.Append(";\n");
+                        sb.Append(";\r\n");
 
                         pIndex++;
                     }
