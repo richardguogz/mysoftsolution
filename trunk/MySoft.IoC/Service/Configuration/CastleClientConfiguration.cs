@@ -15,7 +15,9 @@ namespace MySoft.IoC.Service
     public class CastleClientConfiguration : ConfigurationBase
     {
         private ServiceFactoryType type = ServiceFactoryType.Local;
-        private RemotingChannelType protocol = RemotingChannelType.HTTP;
+        private RemotingChannelType protocol = RemotingChannelType.TCP;
+        private RemotingDataType transfer = RemotingDataType.BINARY;
+
         private string server = "127.0.0.1";
         private int port = 8888;
         private string serviceMQName = "MMQ";
@@ -51,6 +53,9 @@ namespace MySoft.IoC.Service
 
             if (node.Attributes["protocol"] != null && node.Attributes["protocol"].Value != null)
                 protocol = (RemotingChannelType)Enum.Parse(typeof(RemotingChannelType), node.Attributes["protocol"].Value);
+
+            if (node.Attributes["transfer"] != null && node.Attributes["transfer"].Value != null)
+                transfer = (RemotingDataType)Enum.Parse(typeof(RemotingDataType), node.Attributes["transfer"].Value);
 
             if (node.Attributes["server"] != null && node.Attributes["server"].Value.Trim() != string.Empty)
                 server = node.Attributes["server"].Value;
@@ -92,6 +97,16 @@ namespace MySoft.IoC.Service
         {
             get { return protocol; }
             set { protocol = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the transfer.
+        /// </summary>
+        /// <value>The transfer.</value>
+        public RemotingDataType Transfer
+        {
+            get { return transfer; }
+            set { transfer = value; }
         }
 
         /// <summary>

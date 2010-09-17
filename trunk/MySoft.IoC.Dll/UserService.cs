@@ -4,11 +4,15 @@ using System.Text;
 
 namespace MySoft.IoC.Dll
 {
-    public class UserService : MarshalByRefObject
+    public class UserService : MarshalByRefObject, IUserService
     {
-        public string GetUserInfo(string username)
+        public UserInfo GetUserInfo(string username)
         {
-            return string.Format("{0} --> 您的用户名为：{1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), username);
+            return new UserInfo()
+            {
+                Name = username,
+                Description = string.Format("{0} --> 您的用户名为：{1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), username)
+            };
         }
     }
 }

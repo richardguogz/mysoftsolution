@@ -18,4 +18,23 @@ namespace MySoft.Core.Remoting
         /// </summary>
         HTTP
     }
+
+    /// <summary>
+    /// Remoting Data Type
+    /// </summary>
+    public enum RemotingDataType
+    {
+        /// <summary>
+        /// 二进制
+        /// </summary>
+        BINARY,
+        /// <summary>
+        /// json格式
+        /// </summary>
+        JSON,
+        /// <summary>
+        /// xml格式
+        /// </summary>
+        XML
+    }
 }

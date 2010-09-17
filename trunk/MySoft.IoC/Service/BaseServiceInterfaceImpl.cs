@@ -117,29 +117,38 @@ namespace MySoft.IoC.Service
             {
                 if (resMsg.Data == null) return resMsg.Data;
 
-                if (container.Protocol == RemotingChannelType.TCP)
+                switch (container.Transfer)
                 {
-                    byte[] buffer = (byte[])resMsg.Data;
+                    case RemotingDataType.BINARY:
+                        byte[] buffer = (byte[])resMsg.Data;
 
-                    //数据包大于1K才解压缩
-                    if (container.Compress && buffer.Length > 1024)
-                    {
-                        buffer = CompressionManager.Decompress7Zip(buffer);
-                    }
+                        //将数据进行解压缩
+                        if (container.Compress)
+                        {
+                            buffer = CompressionManager.Decompress7Zip(buffer);
+                        }
 
-                    return SerializationManager.DeserializeBin(buffer);
-                }
-                else
-                {
-                    string jsonString = resMsg.Data.ToString();
+                        return SerializationManager.DeserializeBin(buffer);
+                    case RemotingDataType.JSON:
+                        string jsonString = resMsg.Data.ToString();
 
-                    //数据包大于1K才解压缩
-                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024)
-                    {
-                        jsonString = CompressionManager.Decompress7Zip(jsonString);
-                    }
+                        //将数据进行解压缩
+                        if (container.Compress)
+                        {
+                            jsonString = CompressionManager.Decompress7Zip(jsonString);
+                        }
 
-                    return SerializationManager.DeserializeJSON(returnType, jsonString);
+                        return SerializationManager.DeserializeJSON(returnType, jsonString);
+                    case RemotingDataType.XML:
+                        string xmlString = resMsg.Data.ToString();
+
+                        //将数据进行解压缩
+                        if (container.Compress)
+                        {
+                            xmlString = CompressionManager.Decompress7Zip(xmlString);
+                        }
+
+                        return SerializationManager.DeserializeXML(returnType, xmlString);
                 }
             }
             catch

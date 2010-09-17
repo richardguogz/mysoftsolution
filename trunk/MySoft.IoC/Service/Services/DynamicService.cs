@@ -128,33 +128,47 @@ namespace MySoft.IoC.Service.Services
                 Type returnType = mi.ReturnType;
                 if (returnValue == null) return resMsg;
 
-                if (container.Protocol == RemotingChannelType.TCP)
+                switch (container.Transfer)
                 {
-                    byte[] buffer = SerializationManager.SerializeBin(returnValue);
+                    case RemotingDataType.BINARY:
+                        byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
-                    //数据包大于1K才压缩
-                    if (container.Compress && buffer.Length > 1024)
-                    {
-                        resMsg.Data = CompressionManager.Compress7Zip(buffer);
-                    }
-                    else
-                    {
-                        resMsg.Data = buffer;
-                    }
-                }
-                else
-                {
-                    string jsonString = SerializationManager.SerializeJSON(returnValue);
+                        //将数据进行压缩
+                        if (container.Compress)
+                        {
+                            resMsg.Data = CompressionManager.Compress7Zip(buffer);
+                        }
+                        else
+                        {
+                            resMsg.Data = buffer;
+                        }
+                        break;
+                    case RemotingDataType.JSON:
+                        string jsonString = SerializationManager.SerializeJSON(returnValue);
 
-                    //数据包大于1K才压缩
-                    if (container.Compress && Encoding.Default.GetByteCount(jsonString) > 1024)
-                    {
-                        resMsg.Data = CompressionManager.Compress7Zip(jsonString);
-                    }
-                    else
-                    {
-                        resMsg.Data = jsonString;
-                    }
+                        //将数据进行压缩
+                        if (container.Compress)
+                        {
+                            resMsg.Data = CompressionManager.Compress7Zip(jsonString);
+                        }
+                        else
+                        {
+                            resMsg.Data = jsonString;
+                        }
+                        break;
+                    case RemotingDataType.XML:
+                        string xmlString = SerializationManager.SerializeXML(returnValue);
+
+                        //将数据进行压缩
+                        if (container.Compress)
+                        {
+                            resMsg.Data = CompressionManager.Compress7Zip(xmlString);
+                        }
+                        else
+                        {
+                            resMsg.Data = xmlString;
+                        }
+                        break;
                 }
             }
 

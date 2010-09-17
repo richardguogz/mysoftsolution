@@ -38,7 +38,7 @@ namespace MySoft.IoC.Service
         private ServiceProxy serviceProxy;
         private IServiceMQ mq;
         private bool compress = false;
-        private RemotingChannelType protocol;
+        private RemotingDataType transfer;
 
         private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
         {
@@ -180,17 +180,17 @@ namespace MySoft.IoC.Service
         #region IServiceContainer Members
 
         /// <summary>
-        /// Gets or sets the protocol.
+        /// Gets or sets the transfer.
         /// </summary>
-        public RemotingChannelType Protocol
+        public RemotingDataType Transfer
         {
             get
             {
-                return protocol;
+                return transfer;
             }
             set
             {
-                protocol = value;
+                transfer = value;
             }
         }
 

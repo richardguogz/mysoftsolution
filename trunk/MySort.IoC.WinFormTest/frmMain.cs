@@ -53,9 +53,9 @@ namespace MySort.IoC.WinFormTest
                 Stopwatch watch = Stopwatch.StartNew();
                 try
                 {
-                    string time = service.GetUserInfo("maoyong");
+                    UserInfo info = service.GetUserInfo("maoyong");
 
-                    string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, time);
+                    string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
                     WriteMessage(msg);
                 }
                 catch (Exception ex)

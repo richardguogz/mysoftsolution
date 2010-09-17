@@ -256,7 +256,7 @@ namespace MySoft.IoC.Service
                     singleton = new CastleFactory(new SimpleServiceContainer(mq));
                 }
 
-                singleton.ServiceContainer.Protocol = config.Protocol;
+                singleton.ServiceContainer.Transfer = config.Transfer;
                 singleton.ServiceContainer.Compress = config.Compress;
                 singleton.ServiceContainer.MaxTryNum = config.MaxTry;
             }

@@ -16,9 +16,9 @@ namespace MySoft.IoC.Service
     public interface IServiceContainer : IDisposable, ILogable
     {
         /// <summary>
-        /// Gets or sets the ChannelType.
+        /// Gets or sets the transfer.
         /// </summary>
-        RemotingChannelType Protocol { get; set; }
+        RemotingDataType Transfer { get; set; }
         /// <summary>
         /// Gets or sets the max try num.
         /// </summary>
