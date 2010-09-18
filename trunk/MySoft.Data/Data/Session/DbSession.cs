@@ -23,7 +23,7 @@ namespace MySoft.Data
             {
                 try
                 {
-                    Default = new DbSession(ProviderFactory.Default);
+                    Default = new DbSession(DbProviderFactory.Default);
                 }
                 catch { }
             }
@@ -34,7 +34,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="connectName"></param>
         public DbSession(string connectName)
-            : this(ProviderFactory.CreateDbProvider(connectName))
+            : this(DbProviderFactory.CreateDbProvider(connectName))
         { }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace MySoft.Data
         /// <param name="connectName"></param>
         public void SetProvider(string connectName)
         {
-            SetProvider(ProviderFactory.CreateDbProvider(connectName));
+            SetProvider(DbProviderFactory.CreateDbProvider(connectName));
         }
 
         /// <summary>

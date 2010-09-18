@@ -9,7 +9,7 @@ namespace MySoft.Data
     /// <summary>
     /// 驱动类型
     /// </summary>
-    public enum ProviderType
+    public enum DbProviderType
     {
         /// <summary>
         /// Access数据库
@@ -56,13 +56,13 @@ namespace MySoft.Data
     /// <summary>
     /// The db provider factory.
     /// </summary>
-    public sealed class ProviderFactory
+    public sealed class DbProviderFactory
     {
         #region Private Members
 
         private static IDictionary<string, DbProvider> providerCache = new Dictionary<string, DbProvider>();
 
-        private ProviderFactory() { }
+        private DbProviderFactory() { }
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="connectionString">Name of the conn STR.</param>
         /// <returns>The db provider.</returns>
-        public static DbProvider CreateDbProvider(ProviderType providerType, string connectionString)
+        public static DbProvider CreateDbProvider(DbProviderType providerType, string connectionString)
         {
             try
             {
@@ -226,7 +226,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="connStrName">Name of the conn STR.</param>
         /// <returns>The db provider.</returns>
-        public static DbProvider CreateDbProvider(string connectName, ProviderType providerType)
+        public static DbProvider CreateDbProvider(string connectName, DbProviderType providerType)
         {
             try
             {

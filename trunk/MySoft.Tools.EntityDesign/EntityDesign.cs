@@ -144,7 +144,7 @@ namespace MySoft.Tools.EntityDesign
                 }
                 else if (radioSQLite.Checked)
                 {
-                    DbProvider dbProvider = ProviderFactory.CreateDbProvider("MySoft.Data.SQLite", "MySoft.Data.SQLite.SQLiteProvider", txtConnStr.Text);
+                    DbProvider dbProvider = DbProviderFactory.CreateDbProvider("MySoft.Data.SQLite", "MySoft.Data.SQLite.SQLiteProvider", txtConnStr.Text);
                     DbSession.SetDefault(dbProvider);
 
                     System.Data.Common.DbConnection conn = DbSession.Default.CreateConnection();
@@ -166,7 +166,7 @@ namespace MySoft.Tools.EntityDesign
                 }
                 else if (radioMySQL.Checked)
                 {
-                    DbProvider dbProvider = ProviderFactory.CreateDbProvider("MySoft.Data.MySql", "MySoft.Data.MySql.MySqlProvider", txtConnStr.Text);
+                    DbProvider dbProvider = DbProviderFactory.CreateDbProvider("MySoft.Data.MySql", "MySoft.Data.MySql.MySqlProvider", txtConnStr.Text);
                     DbSession.SetDefault(dbProvider);
 
                     System.Data.Common.DbConnection conn = DbSession.Default.CreateConnection();
