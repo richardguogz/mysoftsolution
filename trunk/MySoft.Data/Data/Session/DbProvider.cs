@@ -15,7 +15,7 @@ namespace MySoft.Data
         private char rightToken;
         private char paramPrefixToken;
 
-        protected DbProvider(string connectionString, DbProviderFactory dbFactory, char leftToken, char rightToken, char paramPrefixToken)
+        protected DbProvider(string connectionString, System.Data.Common.DbProviderFactory dbFactory, char leftToken, char rightToken, char paramPrefixToken)
         {
             this.connectName = "Default";
             this.leftToken = leftToken;

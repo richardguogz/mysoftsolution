@@ -17,7 +17,7 @@ namespace MySoft.Data.SqlServer
         {
         }
 
-        public SqlServerProvider(string connectionString, DbProviderFactory dbFactory)
+        public SqlServerProvider(string connectionString, System.Data.Common.DbProviderFactory dbFactory)
             : base(connectionString, dbFactory, '[', ']', '@')
         {
         }

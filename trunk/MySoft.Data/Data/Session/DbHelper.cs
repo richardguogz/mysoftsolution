@@ -10,10 +10,10 @@ namespace MySoft.Data
     public sealed class DbHelper
     {
         private DecryptEventHandler decryptProxy;
-        private DbProviderFactory dbFactory;
+        private System.Data.Common.DbProviderFactory dbFactory;
         private string dbConnectionString;
 
-        public DbHelper(string connectionString, DbProviderFactory dbFactory)
+        public DbHelper(string connectionString, System.Data.Common.DbProviderFactory dbFactory)
         {
             this.dbConnectionString = connectionString;
             this.dbFactory = dbFactory;
