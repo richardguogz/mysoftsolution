@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{88967C2C-D661-4D6D-BB6E-543FBADD310A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LiveChat.Client</RootNamespace>
+    <AssemblyName>LiveChat.Client</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EmotionPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\EmotionPanel.dll</HintPath>
+    </Reference>
+    <Reference Include="IrisSkin2, Version=2006.3.22.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\IrisSkin2.dll</HintPath>
+    </Reference>
+    <Reference Include="MySoft.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MySoft.Data, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="classes\ClientInfo.cs" />
+    <Compile Include="classes\ClientUtils.cs" />
+    <Compile Include="controls\dbImageBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="controls\dbTreeViewCtrl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="controls\DoubleBufferListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="controls\DoubleBufferTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EmotionDropdown.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EmotionDropdown.designer.cs">
+      <DependentUpon>EmotionDropdown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAd.Designer.cs">
+      <DependentUpon>frmAd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddSeat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddSeat.Designer.cs">
+      <DependentUpon>frmAddSeat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddSeatConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddSeatConfirm.Designer.cs">
+      <DependentUpon>frmAddSeatConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChat.designer.cs">
+      <DependentUpon>frmChat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConfirmFriend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfirmFriend.Designer.cs">
+      <DependentUpon>frmConfirmFriend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGroup.Designer.cs">
+      <DependentUpon>frmGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGroupChat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGroupChat.Designer.cs">
+      <DependentUpon>frmGroupChat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLeaveManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLeaveManager.Designer.cs">
+      <DependentUpon>frmLeaveManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMessage.designer.cs">
+      <DependentUpon>frmMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNavigate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNavigate.Designer.cs">
+      <DependentUpon>frmNavigate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNetwork.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNetwork.Designer.cs">
+      <DependentUpon>frmNetwork.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPassword.Designer.cs">
+      <DependentUpon>frmPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeat.Designer.cs">
+      <DependentUpon>frmSeat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeatChat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeatChat.Designer.cs">
+      <DependentUpon>frmSeatChat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSeatInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeatInfo.Designer.cs">
+      <DependentUpon>frmSeatInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetup.designer.cs">
+      <DependentUpon>frmSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="classes\RemotingUtil.cs" />
+    <Compile Include="classes\Singleton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EmotionDropdown.resx">
+      <DependentUpon>EmotionDropdown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAd.resx">
+      <DependentUpon>frmAd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddSeat.resx">
+      <DependentUpon>frmAddSeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddSeatConfirm.resx">
+      <DependentUpon>frmAddSeatConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChat.resx">
+      <DependentUpon>frmChat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfirmFriend.resx">
+      <DependentUpon>frmConfirmFriend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGroup.resx">
+      <DependentUpon>frmGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGroupChat.resx">
+      <DependentUpon>frmGroupChat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLeaveManager.resx">
+      <DependentUpon>frmLeaveManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMessage.resx">
+      <DependentUpon>frmMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNavigate.resx">
+      <DependentUpon>frmNavigate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNetwork.resx">
+      <DependentUpon>frmNetwork.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPassword.resx">
+      <DependentUpon>frmPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeat.resx">
+      <DependentUpon>frmSeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeatChat.resx">
+      <DependentUpon>frmSeatChat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeatInfo.resx">
+      <DependentUpon>frmSeatInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetup.resx">
+      <DependentUpon>frmSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\chat.ico" />
+    <Content Include="images\face\face1.gif" />
+    <Content Include="images\face\face10.gif" />
+    <Content Include="images\face\face11.gif" />
+    <Content Include="images\face\face12.gif" />
+    <Content Include="images\face\face13.gif" />
+    <Content Include="images\face\face14.gif" />
+    <Content Include="images\face\face15.gif" />
+    <Content Include="images\face\face16.gif" />
+    <Content Include="images\face\face17.gif" />
+    <Content Include="images\face\face18.gif" />
+    <Content Include="images\face\face19.gif" />
+    <Content Include="images\face\face2.gif" />
+    <Content Include="images\face\face20.gif" />
+    <Content Include="images\face\face21.gif" />
+    <Content Include="images\face\face22.gif" />
+    <Content Include="images\face\face23.gif" />
+    <Content Include="images\face\face24.gif" />
+    <Content Include="images\face\face3.gif" />
+    <Content Include="images\face\face4.gif" />
+    <Content Include="images\face\face5.gif" />
+    <Content Include="images\face\face6.gif" />
+    <Content Include="images\face\face7.gif" />
+    <Content Include="images\face\face8.gif" />
+    <Content Include="images\face\face9.gif" />
+    <Content Include="images\icon\captrue16.ico" />
+    <Content Include="images\icon\face16.ico" />
+    <Content Include="images\icon\font16.ico" />
+    <Content Include="images\icon\fresh24.ico" />
+    <Content Include="images\icon\info16.ico" />
+    <Content Include="images\icon\mail16.ico" />
+    <Content Include="images\icon\quickmsg16.ico" />
+    <Content Include="images\icon\sendfile24.ico" />
+    <Content Include="images\icon\sendpic16.ico" />
+    <Content Include="images\logo.jpg" />
+    <Content Include="images\personal.ico" />
+    <Content Include="images\software.jpg" />
+    <Content Include="images\userhead.jpg" />
+    <Content Include="images\users.ico" />
+    <None Include="Resources\apprise.PNG" />
+    <None Include="Resources\capture.png" />
+    <None Include="Resources\endsession.PNG" />
+    <None Include="Resources\face.PNG" />
+    <None Include="Resources\file.png" />
+    <None Include="Resources\font.PNG" />
+    <None Include="Resources\quickrep.PNG" />
+    <None Include="Resources\trans.PNG" />
+    <None Include="Resources\tool1.png" />
+    <None Include="Resources\tool2.png" />
+    <None Include="Resources\tool3.png" />
+    <None Include="Resources\tool4.png" />
+    <None Include="Resources\tool5.png" />
+    <None Include="Resources\tool6.png" />
+    <None Include="Resources\delete.ico" />
+    <None Include="Resources\export.ico" />
+    <None Include="Resources\find.ico" />
+    <None Include="Resources\last.ico" />
+    <None Include="Resources\next.ico" />
+    <None Include="Resources\refresh.ico" />
+    <None Include="Resources\add_f.png" />
+    <None Include="Resources\history.PNG" />
+    <None Include="Resources\msg.PNG" />
+    <None Include="Resources\regnewuser.PNG" />
+    <None Include="Resources\status.PNG" />
+    <None Include="Resources\visitor.PNG" />
+    <Content Include="images\头像.jpg" />
+    <None Include="Resources\截屏.png" />
+    <None Include="Resources\人.png" />
+    <None Include="Resources\字体颜色.png" />
+    <None Include="Resources\字体格式.png" />
+    <None Include="Resources\喇叭.png" />
+    <None Include="Resources\喇叭2.png" />
+    <None Include="Resources\树打开.png" />
+    <None Include="Resources\树第一级.png" />
+    <None Include="Resources\人_灰色.png" />
+    <Content Include="template\chat.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="images\icon\vssver2.scc" />
+    <None Include="skin\deep.ssk" />
+    <None Include="skin\mp10.ssk" />
+    <None Include="skin\msn.ssk" />
+    <None Include="skin\office2007.ssk" />
+    <None Include="skin\page.ssk" />
+    <None Include="skin\royale.ssk" />
+    <None Include="skin\winxp.ssk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Live.Framework\LiveChat.Framework.csproj">
+      <Project>{CBA483B8-3EBC-4F99-959A-0BCBD651ED21}</Project>
+      <Name>LiveChat.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LiveChat.Entity\LiveChat.Entity.csproj">
+      <Project>{CD173DCC-3A8F-4483-B463-A934EBBC5210}</Project>
+      <Name>LiveChat.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LiveChat.Interface\LiveChat.Interface.csproj">
+      <Project>{DA2EFC21-634B-4263-B9E5-10397ABB3674}</Project>
+      <Name>LiveChat.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SL">
+      <Guid>{F3E2E566-1FB6-410A-84CC-F13DCF7258CD}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

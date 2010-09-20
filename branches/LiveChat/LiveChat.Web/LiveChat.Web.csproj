@@ -1,0 +1,470 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9D9A965A-C213-4CBC-AE4E-0A9091DC52CD}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LiveChat.Web</RootNamespace>
+    <AssemblyName>LiveChat.Web</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySoft.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MySoft.Data, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="MySoft.Web, Version=2.9.3.27, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="activex.htm" />
+    <Content Include="Admin\Analysis\Left.aspx" />
+    <Content Include="Admin\Analysis\Main.aspx" />
+    <Content Include="Admin\css\main.css" />
+    <Content Include="Admin\images\btn2word.png" />
+    <Content Include="Admin\images\btn4word.png" />
+    <Content Include="Admin\images\change.gif" />
+    <Content Include="Admin\images\exit.gif" />
+    <Content Include="Admin\images\leftbg.gif" />
+    <Content Include="Admin\images\leftmenu.gif" />
+    <Content Include="Admin\images\lefton.gif" />
+    <Content Include="Admin\images\leftop.gif" />
+    <Content Include="Admin\images\loginbg.gif" />
+    <Content Include="Admin\images\loginbtn.gif" />
+    <Content Include="Admin\images\manubg.gif" />
+    <Content Include="Admin\images\manuline.gif" />
+    <Content Include="Admin\images\mlogo.gif" />
+    <Content Include="Admin\images\mybg.jpg" />
+    <Content Include="Admin\images\seachbg.gif" />
+    <Content Include="Admin\images\seachbg2.gif" />
+    <Content Include="Admin\images\seachleft.gif" />
+    <Content Include="Admin\images\seachleft2.gif" />
+    <Content Include="Admin\images\tabtit.gif" />
+    <Content Include="Admin\images\titbg.gif" />
+    <Content Include="Admin\images\titleft.gif" />
+    <Content Include="Admin\images\titright.gif" />
+    <Content Include="Admin\images\toparc.gif" />
+    <Content Include="Admin\images\topbg.gif" />
+    <Content Include="Admin\Index.aspx" />
+    <Content Include="Admin\Logout.aspx" />
+    <Content Include="Javascript\common.js" />
+    <Content Include="Javascript\datepicker\calendar.js" />
+    <Content Include="Javascript\datepicker\config.js" />
+    <Content Include="Javascript\datepicker\lang\en.js" />
+    <Content Include="Javascript\datepicker\lang\zh-cn.js" />
+    <Content Include="Javascript\datepicker\lang\zh-tw.js" />
+    <Content Include="Javascript\datepicker\My97DatePicker.htm" />
+    <Content Include="Javascript\datepicker\skin\blueFresh\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\blueFresh\img.gif" />
+    <Content Include="Javascript\datepicker\skin\blue\bg.jpg" />
+    <Content Include="Javascript\datepicker\skin\blue\btnbg.jpg" />
+    <Content Include="Javascript\datepicker\skin\blue\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\blue\down.jpg" />
+    <Content Include="Javascript\datepicker\skin\blue\left.gif" />
+    <Content Include="Javascript\datepicker\skin\blue\navLeft.gif" />
+    <Content Include="Javascript\datepicker\skin\blue\navRight.gif" />
+    <Content Include="Javascript\datepicker\skin\blue\qs.jpg" />
+    <Content Include="Javascript\datepicker\skin\blue\right.gif" />
+    <Content Include="Javascript\datepicker\skin\blue\up.jpg" />
+    <Content Include="Javascript\datepicker\skin\datePicker.gif" />
+    <Content Include="Javascript\datepicker\skin\default\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\default\img.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\ext\dateselect.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\glass-bg.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\hd-sprite.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\img.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\left-btn.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\left-btn2.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\right-btn.gif" />
+    <Content Include="Javascript\datepicker\skin\ext\right-btn2.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\bg.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\bg_calendar.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\simple\down.jpg" />
+    <Content Include="Javascript\datepicker\skin\simple\indexbg.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\left.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\navLeft.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\navRight.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\qs.jpg" />
+    <Content Include="Javascript\datepicker\skin\simple\right.gif" />
+    <Content Include="Javascript\datepicker\skin\simple\up.jpg" />
+    <Content Include="Javascript\datepicker\skin\simple\ymbg.jpg" />
+    <Content Include="Javascript\datepicker\skin\WdatePicker.css" />
+    <Content Include="Javascript\datepicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Javascript\datepicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\whyGreen\img.gif" />
+    <Content Include="Javascript\datepicker\skin\YcloudRed\bg.gif" />
+    <Content Include="Javascript\datepicker\skin\YcloudRed\datepicker.css" />
+    <Content Include="Javascript\datepicker\skin\YcloudRed\qs.jpg" />
+    <Content Include="Javascript\datepicker\WdatePicker.js" />
+    <Content Include="Javascript\dialog\dialog.js" />
+    <Content Include="Javascript\dialog\images\dialog_bg.jpg" />
+    <Content Include="Javascript\dialog\images\dialog_cb.png" />
+    <Content Include="Javascript\dialog\images\dialog_closebtn.gif" />
+    <Content Include="Javascript\dialog\images\dialog_closebtn.png" />
+    <Content Include="Javascript\dialog\images\dialog_closebtn_over.gif" />
+    <Content Include="Javascript\dialog\images\dialog_closebtn_over.png" />
+    <Content Include="Javascript\dialog\images\dialog_ct.png" />
+    <Content Include="Javascript\dialog\images\dialog_footercenter.png" />
+    <Content Include="Javascript\dialog\images\dialog_footerleft.png" />
+    <Content Include="Javascript\dialog\images\dialog_footerright.png" />
+    <Content Include="Javascript\dialog\images\dialog_lb.png" />
+    <Content Include="Javascript\dialog\images\dialog_lt.png" />
+    <Content Include="Javascript\dialog\images\dialog_mc.gif" />
+    <Content Include="Javascript\dialog\images\dialog_mc.png" />
+    <Content Include="Javascript\dialog\images\dialog_mlb.png" />
+    <Content Include="Javascript\dialog\images\dialog_mlm.png" />
+    <Content Include="Javascript\dialog\images\dialog_mlt.png" />
+    <Content Include="Javascript\dialog\images\dialog_mrb.png" />
+    <Content Include="Javascript\dialog\images\dialog_mrm.png" />
+    <Content Include="Javascript\dialog\images\dialog_mrt.png" />
+    <Content Include="Javascript\dialog\images\dialog_rb.png" />
+    <Content Include="Javascript\dialog\images\dialog_rt.png" />
+    <Content Include="Javascript\dialog\images\foot_bg1.gif" />
+    <Content Include="Javascript\dialog\images\foot_bg2.gif" />
+    <Content Include="Javascript\dialog\images\icons.gif" />
+    <Content Include="Javascript\dialog\images\icon_alert.gif" />
+    <Content Include="Javascript\dialog\images\icon_dialog.gif" />
+    <Content Include="Javascript\dialog\images\icon_query.gif" />
+    <Content Include="Javascript\jquery\jquery-1.3.2-vsdoc2.js" />
+    <Content Include="Javascript\jquery\jquery-1.3.2.js" />
+    <Content Include="Javascript\jquery\jquery.easydrag.handler.beta2.js" />
+    <Content Include="Javascript\jquery\jquery.form.js" />
+    <Content Include="Javascript\jquery\jquery.min.js" />
+    <Content Include="Javascript\jquery\jquery.slider.js" />
+    <Content Include="Javascript\jquery\jquery.validate.js" />
+    <Content Include="Javascript\jquery\jquery.validate.min.js" />
+    <Content Include="Javascript\window\jquery.myext.js" />
+    <Content Include="Javascript\window\jquery.window.js" />
+    <Content Include="Javascript\window\office.css" />
+    <Content Include="Javascript\window\office\bottom_center.gif" />
+    <Content Include="Javascript\window\office\bottom_left.gif" />
+    <Content Include="Javascript\window\office\bottom_right.gif" />
+    <Content Include="Javascript\window\office\close.gif" />
+    <Content Include="Javascript\window\office\maxi.gif" />
+    <Content Include="Javascript\window\office\mid_left.gif" />
+    <Content Include="Javascript\window\office\mid_right.gif" />
+    <Content Include="Javascript\window\office\mini.gif" />
+    <Content Include="Javascript\window\office\progress.gif" />
+    <Content Include="Javascript\window\office\sizer.gif" />
+    <Content Include="Javascript\window\office\top_center.gif" />
+    <Content Include="Javascript\window\office\top_left.gif" />
+    <Content Include="Javascript\window\office\top_right.gif" />
+    <Content Include="Admin\Login.aspx" />
+    <Content Include="alert.swf" />
+    <Content Include="Chat.aspx" />
+    <Content Include="Download.aspx" />
+    <Content Include="Images\leave\bg.jpg" />
+    <Content Include="Images\leave\bottom_shadow.png" />
+    <Content Include="Images\leave\button.gif" />
+    <Content Include="Images\leave\callback.gif" />
+    <Content Include="Images\leave\dialog_shadow.png" />
+    <Content Include="Images\leave\head_bg.png" />
+    <Content Include="Images\leave\head_left.png" />
+    <Content Include="Images\leave\head_right.png" />
+    <Content Include="Images\leave\right_shadow_bottom.png" />
+    <Content Include="Images\leave\right_shadow_middle.png" />
+    <Content Include="Images\leave\right_shadow_top.png" />
+    <Content Include="Images\leave\top_bg.jpg" />
+    <Content Include="Javascript\validator.js" />
+    <Content Include="Online.aspx" />
+    <Content Include="setup.exe" />
+    <Content Include="Upload.aspx" />
+    <Content Include="History.aspx" />
+    <Content Include="Images\face.gif" />
+    <Content Include="Images\face\face1.gif" />
+    <Content Include="Images\face\face10.gif" />
+    <Content Include="Images\face\face11.gif" />
+    <Content Include="Images\face\face12.gif" />
+    <Content Include="Images\face\face13.gif" />
+    <Content Include="Images\face\face14.gif" />
+    <Content Include="Images\face\face15.gif" />
+    <Content Include="Images\face\face16.gif" />
+    <Content Include="Images\face\face17.gif" />
+    <Content Include="Images\face\face18.gif" />
+    <Content Include="Images\face\face19.gif" />
+    <Content Include="Images\face\face2.gif" />
+    <Content Include="Images\face\face20.gif" />
+    <Content Include="Images\face\face21.gif" />
+    <Content Include="Images\face\face22.gif" />
+    <Content Include="Images\face\face23.gif" />
+    <Content Include="Images\face\face24.gif" />
+    <Content Include="Images\face\face3.gif" />
+    <Content Include="Images\face\face4.gif" />
+    <Content Include="Images\face\face5.gif" />
+    <Content Include="Images\face\face6.gif" />
+    <Content Include="Images\face\face7.gif" />
+    <Content Include="Images\face\face8.gif" />
+    <Content Include="Images\face\face9.gif" />
+    <Content Include="Images\file.png" />
+    <Content Include="Images\kefulink3.gif" />
+    <Content Include="Images\kefulink3off.gif" />
+    <Content Include="Images\kefulink4.gif" />
+    <Content Include="Images\kefulink4off.gif" />
+    <Content Include="Images\kefulink5.gif" />
+    <Content Include="Images\kefulink5off.gif" />
+    <Content Include="Images\kefulink6.gif" />
+    <Content Include="Images\kefulink6off.gif" />
+    <Content Include="Images\kefulink7.gif" />
+    <Content Include="Images\kefulink7off.gif" />
+    <Content Include="Images\kefulink8.gif" />
+    <Content Include="Images\kefulink8off.gif" />
+    <Content Include="Images\leave.css" />
+    <Content Include="Index.aspx" />
+    <Content Include="Javascript\leave.js" />
+    <Content Include="Leave.aspx" />
+    <Content Include="Transfer.aspx" />
+    <Content Include="Images\1.gif" />
+    <Content Include="Images\2.gif" />
+    <Content Include="Images\3.gif" />
+    <Content Include="Images\arrowDown.gif" />
+    <Content Include="Images\arrowUp.gif" />
+    <Content Include="Images\bg.jpg" />
+    <Content Include="Images\button_sele.gif" />
+    <Content Include="Images\button_sele2.gif" />
+    <Content Include="Images\dot.gif" />
+    <Content Include="Images\i1.gif" />
+    <Content Include="Images\ico002.gif" />
+    <Content Include="Images\ico01.gif" />
+    <Content Include="Images\ico02.gif" />
+    <Content Include="Images\ico03.gif" />
+    <Content Include="Images\invite_bg.gif" />
+    <Content Include="Images\left_bg.gif" />
+    <Content Include="Images\live800.jpg" />
+    <Content Include="Images\logo.gif" />
+    <Content Include="Images\logo1.gif" />
+    <Content Include="Images\offline_second.gif" />
+    <Content Include="Images\online_second.gif" />
+    <Content Include="Images\right_bg.gif" />
+    <Content Include="Images\main.css" />
+    <Content Include="Images\screen_1.GIF" />
+    <Content Include="Images\screen_2.GIF" />
+    <Content Include="Images\screen_3.GIF" />
+    <Content Include="Javascript\main.js" />
+    <Content Include="Images\talk01.jpg" />
+    <Content Include="Images\talk02.jpg" />
+    <Content Include="Images\talk03.jpg" />
+    <Content Include="Images\talk04.jpg" />
+    <Content Include="Images\talk05.jpg" />
+    <Content Include="Images\talk06.jpg" />
+    <Content Include="Images\talk07.jpg" />
+    <Content Include="Images\talk08.jpg" />
+    <Content Include="Images\tools_icn.gif" />
+    <Content Include="Javascript\chat.js" />
+    <Content Include="Javascript\core.js" />
+    <Content Include="Javascript\monitor.js" />
+    <Content Include="player.htm" />
+    <Content Include="Server.aspx" />
+    <Content Include="SL.Image.cab" />
+    <Content Include="uploadFile.htm" />
+    <Content Include="Validate.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\Analysis\Left.aspx.cs">
+      <DependentUpon>Left.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Analysis\Left.aspx.designer.cs">
+      <DependentUpon>Left.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Analysis\Main.aspx.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Analysis\Main.aspx.designer.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AppCode\AdminListPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\AdminPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\AjaxBaseControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\AjaxBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\BaseControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\DataAccess.cs" />
+    <Compile Include="AppCode\LoginPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Chat.aspx.cs">
+      <DependentUpon>Chat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Chat.aspx.designer.cs">
+      <DependentUpon>Chat.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Download.aspx.cs">
+      <DependentUpon>Download.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Download.aspx.designer.cs">
+      <DependentUpon>Download.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Online.aspx.cs">
+      <DependentUpon>Online.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Online.aspx.designer.cs">
+      <DependentUpon>Online.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Upload.aspx.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Upload.aspx.designer.cs">
+      <DependentUpon>Upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Leave.aspx.cs">
+      <DependentUpon>Leave.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Leave.aspx.designer.cs">
+      <DependentUpon>Leave.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Validate.aspx.cs">
+      <DependentUpon>Validate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\ParentPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AppCode\ClientInfo.cs" />
+    <Compile Include="History.aspx.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="History.aspx.designer.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transfer.aspx.cs">
+      <DependentUpon>Transfer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transfer.aspx.designer.cs">
+      <DependentUpon>Transfer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AppCode\RemotingUtil.cs" />
+    <Compile Include="Server.aspx.cs">
+      <DependentUpon>Server.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Server.aspx.designer.cs">
+      <DependentUpon>Server.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AppCode\ValidatePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Live.Framework\LiveChat.Framework.csproj">
+      <Project>{CBA483B8-3EBC-4F99-959A-0BCBD651ED21}</Project>
+      <Name>LiveChat.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LiveChat.Entity\LiveChat.Entity.csproj">
+      <Project>{CD173DCC-3A8F-4483-B463-A934EBBC5210}</Project>
+      <Name>LiveChat.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LiveChat.Interface\LiveChat.Interface.csproj">
+      <Project>{DA2EFC21-634B-4263-B9E5-10397ABB3674}</Project>
+      <Name>LiveChat.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1990</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://chat.zgsxw.com</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,369 @@
+﻿html, body, p, div, ul, li, form, fieldset, input
+{
+	padding: 0;
+	margin: 0;
+}
+html, body, .wrap
+{
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+div.content
+{
+	width: 440px;
+	height: 254px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -120px 0 0 -280px;
+}
+.content fieldset
+{
+	margin: 36px 0 0 0;
+	position: relative;
+}
+fieldset label
+{
+	width: 90px;
+	height: 30px;
+	text-align: right;
+	display: block;
+	float: left;
+	padding: 0 4px;
+}
+fieldset
+{
+	border: none;
+	line-height: 30px;
+}
+h1
+{
+	height: 63px;
+	font-size: 14px;
+	font-weight: normal;
+	padding: 0 120px 0 0;
+	text-align: center;
+}
+fieldset p
+{
+	height: 30px;
+	line-height: 30px;
+	clear: both;
+}
+fieldset input
+{
+	width: 324px;
+	height: 20px;
+}
+fieldset .small input
+{
+	width: 130px;
+}
+fieldset .fixfloat
+{
+	position: absolute;
+	top: 0;
+	right: 16px;
+}
+#mobile
+{
+	padding: 0 0 0 40px;
+}
+#mobile .checkbox
+{
+	border: none;
+	width: auto;
+	height: auto;
+}
+fieldset div.ctn
+{
+	clear: both;
+	height: 98px;
+}
+#mobile input
+{
+	margin: 0 4px;
+}
+#mobile img
+{
+	padding: 4px 0;
+}
+#mobile li
+{
+	float: left;
+	list-style: none;
+}
+fieldset textarea
+{
+	height: 92px;
+	width: 324px;
+	overflow: auto;
+	padding: 0;
+	margin: 0;
+}
+div.button
+{
+	position: absolute;
+	bottom: 30px;
+	height: 27px;
+	width: 100%;
+}
+div.button p
+{
+	padding: 0 120px 0 0;
+	margin: 0;
+	height: 30px;
+	text-align: center;
+}
+#enter
+{
+	width: 55px;
+	height: 27px;
+	line-height: 26px;
+	border: none;
+}
+#dialback
+{
+	width: 85px;
+	height: 27px;
+	line-height: 26px;
+	border: none;
+	position: absolute;
+	bottom: 0px;
+	text-indent: 18px;
+}
+.wrap
+{
+	height: 100%;
+	width: 100%;
+	position: relative;
+	text-align: left;
+	font-size: 12px;
+}
+.head
+{
+	padding: 0 13px;
+	height: 39px;
+	position: relative;
+	line-height: 39px;
+}
+#head
+{
+	height: 39px;
+	position: relative;
+}
+#head label
+{
+	position: absolute;
+	margin: 0 0 0 10px;
+}
+.head .right
+{
+	top: 0;
+	right: 0;
+	float: right;
+}
+.head .left
+{
+	top: 0;
+	left: 0;
+}
+.head .left, .head .right
+{
+	width: 13px;
+	display: block;
+	height: 39px;
+	position: absolute;
+}
+#banner
+{
+	width: 120px;
+	height: 240px;
+	position: absolute;
+	top: 44px;
+	right: 4px;
+	cursor: pointer;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.decorative1
+{
+	position: absolute;
+	width: 100%;
+	height: 11px;
+	bottom: 71px;
+	left: 0;
+}
+.decorative1 p, .decorative2 p, .decorative4 p
+{
+	height: 11px;
+	margin: 0 120px 0 0;
+}
+.decorative3 p
+{
+	width: 4px;
+}
+.decorative2
+{
+	position: absolute;
+	width: 100%;
+	height: 11px;
+	top: 39px;
+	left: 0;
+}
+.decorative3
+{
+	position: absolute;
+	width: 4px;
+	top: 39px;
+	right: 128px;
+}
+.decorative4
+{
+	position: absolute;
+	width: 100%;
+	height: 11px;
+	top: 102px;
+	left: 0;
+}
+.footer
+{
+	height: 81px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+#error, #message
+{
+	position: absolute;
+	top: 88px;
+	width: 320px;
+	left: 50%;
+	line-height: 24px;
+	margin: 0 0 0 -195px;
+	padding: 3px 0px 3px 10px;
+	/*text-align: center;*/
+	display: none;
+}
+#error
+{
+	background: #FFDDDD;
+	color: red;
+}
+#message
+{
+	background: #D2F0D7;
+	color: #000;
+}
+#logo
+{
+	display: block;
+	position: absolute;
+	left: 10px;
+	top: 0px;
+	height: 39px;
+	width: 72px;
+	cursor: pointer;
+	z-index: 3;
+}
+.logoDefault
+{
+	background: url(800logo.png) no-repeat center;
+}
+form .active
+{
+	background: #ffffea;
+}
+#live800
+{
+	position: absolute;
+	bottom: 2px;
+	right: 10px;
+	width: 61px;
+	height: 10px;
+}
+
+form .active
+{
+	border: 2px solid #519623;
+}
+/*
+body{background:#fff url(/images/leave/bg.jpg) repeat-x 0 -81px;}
+body .wrap{background:url(/images/leave/top_bg.jpg) no-repeat top right;}
+*/
+div.head
+{
+	background: #fff url(/images/leave/bg.jpg) repeat-x 0 -81px;
+}
+fieldset input, fieldset textarea, #mobile #textImage
+{
+	border: #dfe8d5 1px solid;
+}
+#head
+{
+	background: url(/images/leave/head_bg.png) repeat-x 0 0;
+}
+#head label
+{
+	color: #455d0f;
+}
+.head .left
+{
+	background: url(/images/leave/head_left.png) no-repeat;
+}
+.head .right
+{
+	background: url(/images/leave/head_right.png) no-repeat;
+}
+.decorative1 p
+{
+	background: url(/images/leave/dialog_shadow.png) no-repeat bottom center;
+}
+.decorative2 p
+{
+	background: url(/images/leave/bottom_shadow.png) no-repeat top center;
+}
+.decorative3 .dtop
+{
+	background: url(/images/leave/right_shadow_top.png) no-repeat 0 0;
+	display: block;
+	height: 125px;
+	width: 8px;
+}
+.decorative3 .dbottom
+{
+	background: url(/images/leave/right_shadow_bottom.png) no-repeat 0 0;
+	display: block;
+	height: 124px;
+	width: 8px;
+}
+.decorative3 p
+{
+	background: url(/images/leave/right_shadow_middle.png) repeat-y 0 0;
+}
+.decorative4 p
+{
+	background: url(/images/leave/dialog_shadow.png) no-repeat bottom center;
+}
+.footer
+{
+	background: url(/images/leave/bg.jpg) repeat-x 0 0;
+}
+.button #enter
+{
+	background: url(/images/leave/button.gif) no-repeat 0 0;
+}
+#dialback
+{
+	background: url(/images/leave/callback.gif) no-repeat 0 0;
+}
+#mobile #textImage
+{
+	width: 40px;
+}
+fieldset .fixfloat input.active
+{
+	margin: 0;
+}
