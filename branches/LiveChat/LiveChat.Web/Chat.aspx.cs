@@ -18,8 +18,10 @@ namespace LiveChat.Web
     {
         protected string userID;
         protected string seatID;
+        protected string seatCode;
         protected string skinID;
         protected string sessionID;
+        protected string companyID;
         protected Company company;
         protected Seat seat;
         protected void Page_Load(object sender, EventArgs e)
@@ -32,8 +34,10 @@ namespace LiveChat.Web
             }
 
             string loadSessionID = null;
-            skinID = Request["skinID"];
-            string companyID = Request["CompanyID"];
+            skinID = GetRequestParam<string>("SkinID", null);
+            companyID = GetRequestParam<string>("CompanyID", null);
+            seatCode = GetRequestParam<string>("SeatCode", null);
+
             string[] arr = GetSessionInfo(userID, companyID);
             if (arr == null || arr.Length == 1)
             {

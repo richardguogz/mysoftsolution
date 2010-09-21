@@ -135,7 +135,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 103);
+            this.label2.Location = new System.Drawing.Point(38, 99);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(113, 12);
             this.label2.TabIndex = 20;
@@ -194,11 +194,12 @@
             // 
             // lblRequest
             // 
-            this.lblRequest.AutoSize = true;
+            this.lblRequest.BackColor = System.Drawing.Color.White;
+            this.lblRequest.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblRequest.ForeColor = System.Drawing.Color.Red;
-            this.lblRequest.Location = new System.Drawing.Point(62, 120);
+            this.lblRequest.Location = new System.Drawing.Point(40, 115);
             this.lblRequest.Name = "lblRequest";
-            this.lblRequest.Size = new System.Drawing.Size(41, 12);
+            this.lblRequest.Size = new System.Drawing.Size(368, 34);
             this.lblRequest.TabIndex = 30;
             this.lblRequest.Text = "label5";
             // 

@@ -43,6 +43,9 @@ namespace LiveChat.Client
         /// </summary>
         public static bool SoftwareOtherLogin = false;
 
+        //最大会话数
+        public const int MaxAcceptCount = 20;
+
         /// <summary>   
         /// get a certain rectangle part of a known graphic   
         /// </summary>   

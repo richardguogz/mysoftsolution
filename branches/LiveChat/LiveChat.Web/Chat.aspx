@@ -15,6 +15,7 @@
         var skinID = '<% =skinID %>';
         var userID = '<% =userID %>';
         var seatID = '<% =seatID %>';
+        var seatCode = '<% =seatCode %>';
     </script>
 
 </head>
@@ -292,9 +293,9 @@
         <iframe id="framePlayer" src="" frameborder="0" height="0px" width="1px;"></iframe>
     </div>
 
-    <script language="javascript" type="text/javascript" src="javascript/main.js?20100807"></script>
+    <script language="javascript" type="text/javascript" src="javascript/main.js?20100921"></script>
 
-    <script type="text/javascript" src="javascript/chat.js?20100807" charset="utf-8"></script>
+    <script type="text/javascript" src="javascript/chat.js?20100921" charset="utf-8"></script>
 
 </body>
 </html>

@@ -38,8 +38,16 @@ namespace LiveChat.Web
                 SaveIDValue("userid", userid);
             }
 
-            string companyID = Request["CompanyID"];
-            bool online = GetSeatOnline(companyID);
+            string companyID = GetRequestParam<string>("CompanyID", null);
+            string seatCode = GetRequestParam<string>("SeatCode", null);
+
+            bool online = service.GetSeatOnline(companyID);
+            if (seatCode != null) online = service.GetSeatOnline(companyID, seatCode);
+
+            //Response.Write(seatCode);
+            //Response.Write(online);
+            //Response.End();
+
             if (!online)
             {
                 //留言入口
@@ -52,7 +60,13 @@ namespace LiveChat.Web
                 IMResult result = service.Login(clientID, userType, userid, password);
                 if (result == IMResult.Successful)
                 {
-                    string url = "/Chat.aspx?SkinID=" + Request["SkinID"] + "&CompanyID=" + companyID + "&ClientID=" + clientID;
+                    string skinid = GetRequestParam<string>("SkinID", null);
+
+                    string url = "/Chat.aspx?CompanyID=" + companyID;
+                    if (seatCode != null) url += "&SeatCode=" + seatCode;
+                    if (skinid != null) url += "&SkinID=" + skinid;
+                    url += "&ClientID=" + clientID;
+
                     Response.Redirect(url);
                 }
                 else
@@ -60,15 +74,6 @@ namespace LiveChat.Web
                     Response.Write("关联网站用户信息失败！");
                 }
             }
-        }
-
-        /// <summary>
-        /// 获取客服在线状态
-        /// </summary>
-        /// <returns></returns>
-        private bool GetSeatOnline(string companyID)
-        {
-            return service.GetSeatOnline(companyID);
         }
 
         public string MakeUniqueKey(int length, string prefix)

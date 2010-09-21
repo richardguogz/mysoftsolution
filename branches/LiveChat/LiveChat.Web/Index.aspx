@@ -41,6 +41,34 @@
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
+                <tr>
+                    <td align="center" valign="middle" style="font-size: 12px; border: solid 1px #eee;
+                        padding: 10px;">
+                        <a id="A1001" lim:prefix="http://chat.zgsxw.com" lim:company="1001" lim:code="super"
+                            lim:skin="skin001" onclick="openChat(this);" href="javascript:void(0);">管理员</a>（<script
+                                type="text/javascript" src="http://chat.zgsxw.com/online.aspx?type=text&companyID=1001&seatCode=super"></script>）
+                    </td>
+                    <td align="center" valign="middle" style="font-size: 12px; border: solid 1px #eee;
+                        padding: 10px;">
+                        <img id="IMG1001" lim:prefix="http://chat.zgsxw.com" lim:company="1001" lim:code="super"
+                            lim:skin="skin001" onclick="openChat(this);" src="http://chat.zgsxw.com/online.aspx?type=jpg&companyID=1001&seatCode=super&online=http://chat.zgsxw.com/images/kefulink5.gif&offline=http://chat.zgsxw.com/images/kefulink5off.gif"
+                            alt="管理员" style="cursor: pointer;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="middle" style="font-size: 12px; border: solid 1px #eee;
+                        padding: 10px;">
+                        <a id="A1" lim:prefix="http://chat.zgsxw.com" lim:company="1001" lim:code="0002"
+                            lim:skin="skin001" onclick="openChat(this);" href="javascript:void(0);">客服02</a>（<script
+                                type="text/javascript" src="http://chat.zgsxw.com/online.aspx?type=text&companyID=1001&seatCode=0002"></script>）
+                    </td>
+                    <td align="center" valign="middle" style="font-size: 12px; border: solid 1px #eee;
+                        padding: 10px;">
+                        <img id="IMG1" lim:prefix="http://chat.zgsxw.com" lim:company="1001" lim:code="0002"
+                            lim:skin="skin001" onclick="openChat(this);" src="http://chat.zgsxw.com/online.aspx?type=jpg&companyID=1001&seatCode=0002&online=http://chat.zgsxw.com/images/kefulink5.gif&offline=http://chat.zgsxw.com/images/kefulink5off.gif"
+                            alt="客服02" style="cursor: pointer;" />
+                    </td>
+                </tr>
                 </table>
             </FooterTemplate>
         </asp:Repeater>

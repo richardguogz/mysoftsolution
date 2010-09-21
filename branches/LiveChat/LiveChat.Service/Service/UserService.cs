@@ -831,6 +831,24 @@ namespace LiveChat.Service
         /// </summary>
         /// <param name="companyID"></param>
         /// <returns></returns>
+        public bool GetSeatOnline(string companyID, string seatCode)
+        {
+            try
+            {
+                Seat seat = SeatManager.Instance.GetSeat(companyID, seatCode);
+                return seat.State != OnlineState.Offline;
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取公司客服是否在线
+        /// </summary>
+        /// <param name="companyID"></param>
+        /// <returns></returns>
         public bool GetSeatOnline(string companyID)
         {
             try

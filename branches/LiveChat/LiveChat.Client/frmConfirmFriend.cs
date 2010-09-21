@@ -37,7 +37,7 @@ namespace LiveChat.Client
             lblMobileNumber.Text = friend.MobileNumber;
             lblEmail.Text = friend.Email;
 
-            lblRequest.Text = request.Request;
+            lblRequest.Text = "　　" + request.Request;
         }
 
         private void button2_Click(object sender, EventArgs e)

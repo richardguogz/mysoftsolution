@@ -54,6 +54,14 @@
             this.系统菜单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.个人资料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.修改密码ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.皮肤切换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem26 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem27 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem28 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem29 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem30 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem31 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem32 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.历史记录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.留言ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,6 +108,42 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.OFFICE2007ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mP10ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pAGEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mSNToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wINXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rOYALEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dEEPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem21 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem22 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem23 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem24 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem25 = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip5 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem33 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem34 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -117,6 +161,8 @@
             this.cmSysTray.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
+            this.contextMenuStrip4.SuspendLayout();
+            this.contextMenuStrip5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -158,7 +204,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button3.Image = global::LiveChat.Client.Properties.Resources.visitor;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(189, 6);
+            this.button3.Location = new System.Drawing.Point(188, 8);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(30, 27);
             this.button3.TabIndex = 3;
@@ -300,6 +346,7 @@
             this.系统菜单ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.个人资料ToolStripMenuItem,
             this.修改密码ToolStripMenuItem,
+            this.皮肤切换ToolStripMenuItem,
             this.toolStripSeparator1,
             this.历史记录ToolStripMenuItem,
             this.留言ToolStripMenuItem,
@@ -326,6 +373,76 @@
             this.修改密码ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.修改密码ToolStripMenuItem.Text = "修改密码";
             this.修改密码ToolStripMenuItem.Click += new System.EventHandler(this.修改密码ToolStripMenuItem_Click);
+            // 
+            // 皮肤切换ToolStripMenuItem
+            // 
+            this.皮肤切换ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem26,
+            this.toolStripMenuItem27,
+            this.toolStripMenuItem28,
+            this.toolStripMenuItem29,
+            this.toolStripMenuItem30,
+            this.toolStripMenuItem31,
+            this.toolStripMenuItem32});
+            this.皮肤切换ToolStripMenuItem.Name = "皮肤切换ToolStripMenuItem";
+            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.皮肤切换ToolStripMenuItem.Text = "皮肤切换";
+            // 
+            // toolStripMenuItem26
+            // 
+            this.toolStripMenuItem26.Name = "toolStripMenuItem26";
+            this.toolStripMenuItem26.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem26.Tag = "office2007";
+            this.toolStripMenuItem26.Text = "OFFICE2007";
+            this.toolStripMenuItem26.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem27
+            // 
+            this.toolStripMenuItem27.Name = "toolStripMenuItem27";
+            this.toolStripMenuItem27.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem27.Tag = "mp10";
+            this.toolStripMenuItem27.Text = "MP10";
+            this.toolStripMenuItem27.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem28
+            // 
+            this.toolStripMenuItem28.Name = "toolStripMenuItem28";
+            this.toolStripMenuItem28.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem28.Tag = "page";
+            this.toolStripMenuItem28.Text = "PAGE";
+            this.toolStripMenuItem28.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem29
+            // 
+            this.toolStripMenuItem29.Name = "toolStripMenuItem29";
+            this.toolStripMenuItem29.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem29.Tag = "msn";
+            this.toolStripMenuItem29.Text = "MSN";
+            this.toolStripMenuItem29.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem30
+            // 
+            this.toolStripMenuItem30.Name = "toolStripMenuItem30";
+            this.toolStripMenuItem30.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem30.Tag = "winxp";
+            this.toolStripMenuItem30.Text = "WINXP";
+            this.toolStripMenuItem30.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem31
+            // 
+            this.toolStripMenuItem31.Name = "toolStripMenuItem31";
+            this.toolStripMenuItem31.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem31.Tag = "royale";
+            this.toolStripMenuItem31.Text = "ROYALE";
+            this.toolStripMenuItem31.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem32
+            // 
+            this.toolStripMenuItem32.Name = "toolStripMenuItem32";
+            this.toolStripMenuItem32.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem32.Tag = "deep";
+            this.toolStripMenuItem32.Text = "DEEP";
+            this.toolStripMenuItem32.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -472,8 +589,8 @@
             this.imgList.Images.SetKeyName(3, "树第一级.png");
             this.imgList.Images.SetKeyName(4, "树打开.bmp");
             this.imgList.Images.SetKeyName(5, "人.png");
-            this.imgList.Images.SetKeyName(6, "MSN图标下载10.jpg");
-            this.imgList.Images.SetKeyName(7, "MSN图标下载1.jpg");
+            this.imgList.Images.SetKeyName(6, "人.ico");
+            this.imgList.Images.SetKeyName(7, "离开.ico");
             // 
             // tabPage2
             // 
@@ -757,6 +874,258 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem3.Text = "刷新";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.刷新RToolStripMenuItem_Click);
+            // 
+            // contextMenuStrip4
+            // 
+            this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem2,
+            this.toolStripSeparator9,
+            this.toolStripMenuItem4});
+            this.contextMenuStrip4.Name = "contextMenuStrip2";
+            this.contextMenuStrip4.Size = new System.Drawing.Size(125, 54);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem2.Text = "关闭会话";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(121, 6);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem4.Text = "刷新";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.刷新RToolStripMenuItem_Click);
+            // 
+            // OFFICE2007ToolStripMenuItem
+            // 
+            this.OFFICE2007ToolStripMenuItem.Name = "OFFICE2007ToolStripMenuItem";
+            this.OFFICE2007ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.OFFICE2007ToolStripMenuItem.Tag = "office2007";
+            this.OFFICE2007ToolStripMenuItem.Text = "OFFICE2007";
+            // 
+            // mP10ToolStripMenuItem
+            // 
+            this.mP10ToolStripMenuItem.Name = "mP10ToolStripMenuItem";
+            this.mP10ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.mP10ToolStripMenuItem.Tag = "mp10";
+            this.mP10ToolStripMenuItem.Text = "MP10";
+            // 
+            // pAGEToolStripMenuItem
+            // 
+            this.pAGEToolStripMenuItem.Name = "pAGEToolStripMenuItem";
+            this.pAGEToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.pAGEToolStripMenuItem.Tag = "page";
+            this.pAGEToolStripMenuItem.Text = "PAGE";
+            // 
+            // mSNToolStripMenuItem
+            // 
+            this.mSNToolStripMenuItem.Name = "mSNToolStripMenuItem";
+            this.mSNToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.mSNToolStripMenuItem.Tag = "msn";
+            this.mSNToolStripMenuItem.Text = "MSN";
+            // 
+            // wINXPToolStripMenuItem
+            // 
+            this.wINXPToolStripMenuItem.Name = "wINXPToolStripMenuItem";
+            this.wINXPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.wINXPToolStripMenuItem.Tag = "winxp";
+            this.wINXPToolStripMenuItem.Text = "WINXP";
+            // 
+            // rOYALEToolStripMenuItem
+            // 
+            this.rOYALEToolStripMenuItem.Name = "rOYALEToolStripMenuItem";
+            this.rOYALEToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.rOYALEToolStripMenuItem.Tag = "royale";
+            this.rOYALEToolStripMenuItem.Text = "ROYALE";
+            // 
+            // dEEPToolStripMenuItem
+            // 
+            this.dEEPToolStripMenuItem.Name = "dEEPToolStripMenuItem";
+            this.dEEPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.dEEPToolStripMenuItem.Tag = "deep";
+            this.dEEPToolStripMenuItem.Text = "DEEP";
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem5.Tag = "office2007";
+            this.toolStripMenuItem5.Text = "OFFICE2007";
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem6.Tag = "mp10";
+            this.toolStripMenuItem6.Text = "MP10";
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem7.Tag = "page";
+            this.toolStripMenuItem7.Text = "PAGE";
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem8.Tag = "msn";
+            this.toolStripMenuItem8.Text = "MSN";
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem9.Tag = "winxp";
+            this.toolStripMenuItem9.Text = "WINXP";
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem10.Tag = "royale";
+            this.toolStripMenuItem10.Text = "ROYALE";
+            // 
+            // toolStripMenuItem11
+            // 
+            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem11.Tag = "deep";
+            this.toolStripMenuItem11.Text = "DEEP";
+            // 
+            // toolStripMenuItem12
+            // 
+            this.toolStripMenuItem12.Name = "toolStripMenuItem12";
+            this.toolStripMenuItem12.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem12.Tag = "office2007";
+            this.toolStripMenuItem12.Text = "OFFICE2007";
+            // 
+            // toolStripMenuItem13
+            // 
+            this.toolStripMenuItem13.Name = "toolStripMenuItem13";
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem13.Tag = "mp10";
+            this.toolStripMenuItem13.Text = "MP10";
+            // 
+            // toolStripMenuItem14
+            // 
+            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem14.Tag = "page";
+            this.toolStripMenuItem14.Text = "PAGE";
+            // 
+            // toolStripMenuItem15
+            // 
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem15.Tag = "msn";
+            this.toolStripMenuItem15.Text = "MSN";
+            // 
+            // toolStripMenuItem16
+            // 
+            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem16.Tag = "winxp";
+            this.toolStripMenuItem16.Text = "WINXP";
+            // 
+            // toolStripMenuItem17
+            // 
+            this.toolStripMenuItem17.Name = "toolStripMenuItem17";
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem17.Tag = "royale";
+            this.toolStripMenuItem17.Text = "ROYALE";
+            // 
+            // toolStripMenuItem18
+            // 
+            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem18.Tag = "deep";
+            this.toolStripMenuItem18.Text = "DEEP";
+            // 
+            // toolStripMenuItem19
+            // 
+            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
+            this.toolStripMenuItem19.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem19.Tag = "office2007";
+            this.toolStripMenuItem19.Text = "OFFICE2007";
+            // 
+            // toolStripMenuItem20
+            // 
+            this.toolStripMenuItem20.Name = "toolStripMenuItem20";
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem20.Tag = "mp10";
+            this.toolStripMenuItem20.Text = "MP10";
+            // 
+            // toolStripMenuItem21
+            // 
+            this.toolStripMenuItem21.Name = "toolStripMenuItem21";
+            this.toolStripMenuItem21.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem21.Tag = "page";
+            this.toolStripMenuItem21.Text = "PAGE";
+            // 
+            // toolStripMenuItem22
+            // 
+            this.toolStripMenuItem22.Name = "toolStripMenuItem22";
+            this.toolStripMenuItem22.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem22.Tag = "msn";
+            this.toolStripMenuItem22.Text = "MSN";
+            // 
+            // toolStripMenuItem23
+            // 
+            this.toolStripMenuItem23.Name = "toolStripMenuItem23";
+            this.toolStripMenuItem23.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem23.Tag = "winxp";
+            this.toolStripMenuItem23.Text = "WINXP";
+            // 
+            // toolStripMenuItem24
+            // 
+            this.toolStripMenuItem24.Name = "toolStripMenuItem24";
+            this.toolStripMenuItem24.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem24.Tag = "royale";
+            this.toolStripMenuItem24.Text = "ROYALE";
+            // 
+            // toolStripMenuItem25
+            // 
+            this.toolStripMenuItem25.Name = "toolStripMenuItem25";
+            this.toolStripMenuItem25.Size = new System.Drawing.Size(145, 22);
+            this.toolStripMenuItem25.Tag = "deep";
+            this.toolStripMenuItem25.Text = "DEEP";
+            // 
+            // contextMenuStrip5
+            // 
+            this.contextMenuStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem33,
+            this.toolStripSeparator10,
+            this.toolStripMenuItem34});
+            this.contextMenuStrip5.Name = "contextMenuStrip2";
+            this.contextMenuStrip5.Size = new System.Drawing.Size(153, 76);
+            // 
+            // toolStripMenuItem33
+            // 
+            this.toolStripMenuItem33.Name = "toolStripMenuItem33";
+            this.toolStripMenuItem33.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem33.Text = "接受会话";
+            this.toolStripMenuItem33.Click += new System.EventHandler(this.toolStripMenuItem33_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(149, 6);
+            // 
+            // toolStripMenuItem34
+            // 
+            this.toolStripMenuItem34.Name = "toolStripMenuItem34";
+            this.toolStripMenuItem34.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem34.Text = "刷新";
             // 
             // frmNavigate
             // 
@@ -796,6 +1165,8 @@
             this.cmSysTray.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip3.ResumeLayout(false);
+            this.contextMenuStrip4.ResumeLayout(false);
+            this.contextMenuStrip5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -867,5 +1238,49 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox tbSearchName;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem OFFICE2007ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mP10ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pAGEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mSNToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wINXPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rOYALEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dEEPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem11;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem12;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem13;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem14;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem15;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem16;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem17;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem18;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem19;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem20;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem21;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem22;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem23;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem24;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem25;
+        private System.Windows.Forms.ToolStripMenuItem 皮肤切换ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem26;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem27;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem28;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem29;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem30;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem31;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem32;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip5;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem33;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem34;
     }
 }

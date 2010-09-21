@@ -43,17 +43,17 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.系统菜单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.网络设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.皮肤切换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.关于我们ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mP10ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OFFICE2007ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mP10ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAGEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mSNToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wINXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rOYALEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dEEPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.网络设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于我们ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -163,9 +163,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(26, 24);
+            this.pictureBox1.Location = new System.Drawing.Point(29, 24);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(185, 60);
+            this.pictureBox1.Size = new System.Drawing.Size(180, 62);
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
@@ -191,13 +191,6 @@
             this.系统菜单ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
             this.系统菜单ToolStripMenuItem.Text = "系统菜单";
             // 
-            // 网络设置ToolStripMenuItem
-            // 
-            this.网络设置ToolStripMenuItem.Name = "网络设置ToolStripMenuItem";
-            this.网络设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.网络设置ToolStripMenuItem.Text = "网络设置";
-            this.网络设置ToolStripMenuItem.Click += new System.EventHandler(this.网络设置ToolStripMenuItem_Click);
-            // 
             // 皮肤切换ToolStripMenuItem
             // 
             this.皮肤切换ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -209,41 +202,29 @@
             this.rOYALEToolStripMenuItem,
             this.dEEPToolStripMenuItem});
             this.皮肤切换ToolStripMenuItem.Name = "皮肤切换ToolStripMenuItem";
-            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.皮肤切换ToolStripMenuItem.Text = "皮肤切换";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
-            // 
-            // 关于我们ToolStripMenuItem
-            // 
-            this.关于我们ToolStripMenuItem.Name = "关于我们ToolStripMenuItem";
-            this.关于我们ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.关于我们ToolStripMenuItem.Text = "关于我们";
-            this.关于我们ToolStripMenuItem.Click += new System.EventHandler(this.关于我们ToolStripMenuItem_Click);
-            // 
-            // mP10ToolStripMenuItem
-            // 
-            this.mP10ToolStripMenuItem.Name = "mP10ToolStripMenuItem";
-            this.mP10ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.mP10ToolStripMenuItem.Tag = "mp10";
-            this.mP10ToolStripMenuItem.Text = "MP10";
-            this.mP10ToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
             // 
             // OFFICE2007ToolStripMenuItem
             // 
             this.OFFICE2007ToolStripMenuItem.Name = "OFFICE2007ToolStripMenuItem";
-            this.OFFICE2007ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OFFICE2007ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.OFFICE2007ToolStripMenuItem.Tag = "office2007";
             this.OFFICE2007ToolStripMenuItem.Text = "OFFICE2007";
             this.OFFICE2007ToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
             // 
+            // mP10ToolStripMenuItem
+            // 
+            this.mP10ToolStripMenuItem.Name = "mP10ToolStripMenuItem";
+            this.mP10ToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.mP10ToolStripMenuItem.Tag = "mp10";
+            this.mP10ToolStripMenuItem.Text = "MP10";
+            this.mP10ToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
             // pAGEToolStripMenuItem
             // 
             this.pAGEToolStripMenuItem.Name = "pAGEToolStripMenuItem";
-            this.pAGEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pAGEToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.pAGEToolStripMenuItem.Tag = "page";
             this.pAGEToolStripMenuItem.Text = "PAGE";
             this.pAGEToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
@@ -251,7 +232,7 @@
             // mSNToolStripMenuItem
             // 
             this.mSNToolStripMenuItem.Name = "mSNToolStripMenuItem";
-            this.mSNToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mSNToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.mSNToolStripMenuItem.Tag = "msn";
             this.mSNToolStripMenuItem.Text = "MSN";
             this.mSNToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
@@ -259,7 +240,7 @@
             // wINXPToolStripMenuItem
             // 
             this.wINXPToolStripMenuItem.Name = "wINXPToolStripMenuItem";
-            this.wINXPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wINXPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.wINXPToolStripMenuItem.Tag = "winxp";
             this.wINXPToolStripMenuItem.Text = "WINXP";
             this.wINXPToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
@@ -267,7 +248,7 @@
             // rOYALEToolStripMenuItem
             // 
             this.rOYALEToolStripMenuItem.Name = "rOYALEToolStripMenuItem";
-            this.rOYALEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rOYALEToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.rOYALEToolStripMenuItem.Tag = "royale";
             this.rOYALEToolStripMenuItem.Text = "ROYALE";
             this.rOYALEToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
@@ -275,10 +256,29 @@
             // dEEPToolStripMenuItem
             // 
             this.dEEPToolStripMenuItem.Name = "dEEPToolStripMenuItem";
-            this.dEEPToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dEEPToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.dEEPToolStripMenuItem.Tag = "deep";
             this.dEEPToolStripMenuItem.Text = "DEEP";
             this.dEEPToolStripMenuItem.Click += new System.EventHandler(this.StyleToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
+            // 
+            // 网络设置ToolStripMenuItem
+            // 
+            this.网络设置ToolStripMenuItem.Name = "网络设置ToolStripMenuItem";
+            this.网络设置ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.网络设置ToolStripMenuItem.Text = "网络设置";
+            this.网络设置ToolStripMenuItem.Click += new System.EventHandler(this.网络设置ToolStripMenuItem_Click);
+            // 
+            // 关于我们ToolStripMenuItem
+            // 
+            this.关于我们ToolStripMenuItem.Name = "关于我们ToolStripMenuItem";
+            this.关于我们ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.关于我们ToolStripMenuItem.Text = "关于我们";
+            this.关于我们ToolStripMenuItem.Click += new System.EventHandler(this.关于我们ToolStripMenuItem_Click);
             // 
             // frmLogin
             // 

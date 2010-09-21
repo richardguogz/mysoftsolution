@@ -12,6 +12,12 @@ function openChat(el) {
     
     var companyID = el.getAttribute("lim:company");
     url += "?companyID=" + companyID;
+
+    var seatCode = el.getAttribute("lim:code");
+    if ((null != seatCode && typeof seatCode != "undefined") && seatCode.length > 0) {
+        url += "&seatCode=" + seatCode;
+    }
+    
     var sid = el.getAttribute("lim:skin");
     if ((null != sid && typeof sid != "undefined") && sid.length > 0) {
         url += "&skinID=" + sid;

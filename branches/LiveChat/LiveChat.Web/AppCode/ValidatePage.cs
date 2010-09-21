@@ -14,7 +14,7 @@ namespace LiveChat.Web
         {
             base.OnAjaxInit();
 
-            Guid clientID = new Guid(Request["ClientID"]);
+            Guid clientID = new Guid(GetRequestParam<string>("ClientID", null));
             string userid = GetUserID();
             if (string.IsNullOrEmpty(userid))
             {

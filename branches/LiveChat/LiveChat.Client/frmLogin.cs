@@ -35,7 +35,7 @@ namespace LiveChat.Client
             this.Left = 50;
             this.Top = (Screen.PrimaryScreen.Bounds.Height - this.Height - 50) / 2;
             this.path = CoreUtils.GetFullPath("/user.dat");
-            this.skinEngine1.SkinFile = CoreUtils.GetFullPath("/skin/page.ssk");
+            frmNav_Callback("office2007");
 
             if (service == null)
             {
@@ -110,8 +110,9 @@ namespace LiveChat.Client
                         Singleton.Show(() =>
                         {
                             Point point = new Point(this.Left, this.Top);
-                            frmNavigate frm = new frmNavigate(service, company, seat, clientID, point);
-                            return frm;
+                            frmNavigate frmNav = new frmNavigate(service, company, seat, clientID, point);
+                            frmNav.Callback += new CallbackEventHandler(frmNav_Callback);
+                            return frmNav;
                         });
 
                         isExit = false;
@@ -123,6 +124,14 @@ namespace LiveChat.Client
             {
                 MessageBox.Show(ex.Message, "ÓÃ»§µÇÂ¼", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        void frmNav_Callback(object obj)
+        {
+            if (obj == null) return;
+
+            string style = obj.ToString();
+            this.skinEngine1.SkinFile = CoreUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
         }
 
         private void ReadUserInfoForFile()

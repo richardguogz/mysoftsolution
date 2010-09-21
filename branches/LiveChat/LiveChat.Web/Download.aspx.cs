@@ -13,12 +13,12 @@ namespace LiveChat.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             //如果出错则直接退出
-            if (string.IsNullOrEmpty(Request["filePath"]))
+            if (string.IsNullOrEmpty(GetRequestParam<string>("filePath", null)))
             {
                 Response.Write("传入的参数错误！");
                 Response.End();
             }
-            string filePath = Request["filePath"];
+            string filePath = GetRequestParam<string>("filePath", null);
             //filePath = System.Text.Encoding.Default.GetString(Convert.FromBase64String(filePath));
 
             filePath = Server.MapPath(filePath);

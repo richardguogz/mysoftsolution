@@ -15,18 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_00DC4FADBEE041739E5A420903F550E4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_09A3782145944D34B8ADCEC68366B88A"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0AD1E34E7CF046FC9E8448FE64D4764F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -45,20 +33,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_10E939C8484D4535B727649E90038282"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_12ED7ED534108B04C539AE3322129FBD"
         "OwnerKey" = "8:_2D23172283EFB9ACCC428C3288F43B3A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_15C7275A8E434C54BC9A5CBEE3E01FC3"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -70,12 +46,6 @@
         "Entry"
         {
         "MsmKey" = "8:_2ABD4CDF3B504DDA9D63B46060759730"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2BE6CED710C9410AB0A5F93B83B31DF9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -93,43 +63,25 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_39238159FCB642CA9AB538B11F5290E3"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_39551530604D353A336B73E175B93F69"
         "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_4579E3FB2A7E4E04BD0CC7AEBBFA416D"
+        "MsmKey" = "8:_50543790543C41D9A2E0C35A0CD7CE76"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_473633B0FA4544ECB9E0DB19521A4589"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_49322EB095DA4B5BB94B51E746DA6C93"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4E0DF296052A4D9D888D4C00062751E9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_576330604724478F9EB86D723CEF3603"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_58B7B7ED8C064CE7883BD0E0361F16DC"
+        "MsmKey" = "8:_5F737AB8A99D40859B02C574DBE744CB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -137,18 +89,6 @@
         {
         "MsmKey" = "8:_7687B464419D89F2FF89E065251150DA"
         "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_783FF4C0C3B9423D986FBDF830922B61"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7864FDC42B1F49EF9CD59C4EB3D169AE"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -165,24 +105,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_81AD6D67BA1F4C8197E68D7F4EFECFD8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_86C30E233D884E5C803BC486EF2E81D4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8C02DCD3EFF241F9A0C7358A9D4CA665"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_916B339CF0F241568BFAD761834B9B39"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -195,13 +117,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A2113E942E7C4FD9B9CC1640F8DE9EF3"
+        "MsmKey" = "8:_93122CBC60C4443097FAFAEDCF1694C5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A8BF493FF40A4E8485BCD60783585696"
+        "MsmKey" = "8:_A0F0DFA38E874762A453F71B64B061BD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A88DA29F3A66467DACD6F2FB95462579"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -219,19 +147,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C16A616AF1E140859F14C4A04676E3D9"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C9AEEE1884054D038634B5B21BF7F7CB"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CA36B4819770442584032A14D3EDFBBE"
+        "MsmKey" = "8:_C3DCF89202B845E0A5A79F8504B3301D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -243,25 +159,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_CF521F8FB057495BAEB7DBFB2831CFB8"
+        "MsmKey" = "8:_D5F7F58E313047628C741AD239F50ED3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D13C1E9536154C70AE13C0CDDB5815AA"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D54E04F88F7246B6AE9F1B7E8638DFD1"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DA2E80DD4DBF4481AE10954207F0FFF4"
+        "MsmKey" = "8:_DC694C66C1574781903C020731171281"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -273,19 +177,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EA99B579771742FA9095F779A140F78C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F77F576C0C114A8AA39E2F995721FAF4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F8BEB572769543A99EDEB6602E93F510"
+        "MsmKey" = "8:_FA3C7BEA82274DEF92ECE7917BE06840"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -449,46 +341,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00DC4FADBEE041739E5A420903F550E4"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face1.gif"
-            "TargetName" = "8:face1.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09A3782145944D34B8ADCEC68366B88A"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face3.gif"
-            "TargetName" = "8:face3.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0AD1E34E7CF046FC9E8448FE64D4764F"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\skin\\royale.ssk"
@@ -540,26 +392,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_10E939C8484D4535B727649E90038282"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face2.gif"
-            "TargetName" = "8:face2.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_12ED7ED534108B04C539AE3322129FBD"
             {
             "SourcePath" = "8:SL.Image.dll"
@@ -578,26 +410,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_15C7275A8E434C54BC9A5CBEE3E01FC3"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face16.gif"
-            "TargetName" = "8:face16.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2788ED3E791FAAED8D4880E9C522BE7D"
@@ -635,26 +447,6 @@
             {
             "SourcePath" = "8:C:\\Windows\\System32\\msiexec.exe"
             "TargetName" = "8:msiexec.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BE6CED710C9410AB0A5F93B83B31DF9"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\users.ico"
-            "TargetName" = "8:users.ico"
             "Tag" = "8:"
             "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
             "Condition" = "8:"
@@ -733,6 +525,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_39238159FCB642CA9AB538B11F5290E3"
+            {
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\msn.ssk"
+            "TargetName" = "8:msn.ssk"
+            "Tag" = "8:"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_39551530604D353A336B73E175B93F69"
             {
             "AssemblyRegister" = "3:1"
@@ -764,12 +576,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4579E3FB2A7E4E04BD0CC7AEBBFA416D"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_50543790543C41D9A2E0C35A0CD7CE76"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face13.gif"
-            "TargetName" = "8:face13.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\DeepCyan.ssk"
+            "TargetName" = "8:DeepCyan.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -784,92 +596,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_473633B0FA4544ECB9E0DB19521A4589"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5F737AB8A99D40859B02C574DBE744CB"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face8.gif"
-            "TargetName" = "8:face8.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\office2007.ssk"
+            "TargetName" = "8:office2007.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_49322EB095DA4B5BB94B51E746DA6C93"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face6.gif"
-            "TargetName" = "8:face6.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E0DF296052A4D9D888D4C00062751E9"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face24.gif"
-            "TargetName" = "8:face24.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_576330604724478F9EB86D723CEF3603"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face20.gif"
-            "TargetName" = "8:face20.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_58B7B7ED8C064CE7883BD0E0361F16DC"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face21.gif"
-            "TargetName" = "8:face21.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -915,46 +647,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_783FF4C0C3B9423D986FBDF830922B61"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face15.gif"
-            "TargetName" = "8:face15.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7864FDC42B1F49EF9CD59C4EB3D169AE"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face4.gif"
-            "TargetName" = "8:face4.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8131D4AABBE48001D52DBF6D87C6D6AB"
             {
             "AssemblyRegister" = "3:1"
@@ -984,66 +676,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_81AD6D67BA1F4C8197E68D7F4EFECFD8"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face9.gif"
-            "TargetName" = "8:face9.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86C30E233D884E5C803BC486EF2E81D4"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\userhead.jpg"
-            "TargetName" = "8:userhead.jpg"
-            "Tag" = "8:"
-            "Folder" = "8:_66972DA48A664E0EA0C4CC49B83F1D48"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8C02DCD3EFF241F9A0C7358A9D4CA665"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face11.gif"
-            "TargetName" = "8:face11.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_916B339CF0F241568BFAD761834B9B39"
@@ -1086,12 +718,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A2113E942E7C4FD9B9CC1640F8DE9EF3"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_93122CBC60C4443097FAFAEDCF1694C5"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face23.gif"
-            "TargetName" = "8:face23.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\mp10.ssk"
+            "TargetName" = "8:mp10.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1106,12 +738,32 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A8BF493FF40A4E8485BCD60783585696"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0F0DFA38E874762A453F71B64B061BD"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face19.gif"
-            "TargetName" = "8:face19.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\images\\Fabric2.ico"
+            "TargetName" = "8:Fabric2.ico"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A88DA29F3A66467DACD6F2FB95462579"
+            {
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\images\\Fabric.ico"
+            "TargetName" = "8:Fabric.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1188,52 +840,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C16A616AF1E140859F14C4A04676E3D9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3DCF89202B845E0A5A79F8504B3301D"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face14.gif"
-            "TargetName" = "8:face14.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\page.ssk"
+            "TargetName" = "8:page.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C9AEEE1884054D038634B5B21BF7F7CB"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face7.gif"
-            "TargetName" = "8:face7.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CA36B4819770442584032A14D3EDFBBE"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face18.gif"
-            "TargetName" = "8:face18.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1268,12 +880,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CF521F8FB057495BAEB7DBFB2831CFB8"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5F7F58E313047628C741AD239F50ED3"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\logo.jpg"
-            "TargetName" = "8:logo.jpg"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\winxp.ssk"
+            "TargetName" = "8:winxp.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_66972DA48A664E0EA0C4CC49B83F1D48"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1288,52 +900,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D13C1E9536154C70AE13C0CDDB5815AA"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DC694C66C1574781903C020731171281"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face5.gif"
-            "TargetName" = "8:face5.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\royale.ssk"
+            "TargetName" = "8:royale.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D54E04F88F7246B6AE9F1B7E8638DFD1"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face10.gif"
-            "TargetName" = "8:face10.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA2E80DD4DBF4481AE10954207F0FFF4"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face17.gif"
-            "TargetName" = "8:face17.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1379,52 +951,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA99B579771742FA9095F779A140F78C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA3C7BEA82274DEF92ECE7917BE06840"
             {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face22.gif"
-            "TargetName" = "8:face22.gif"
+            "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\skin\\deep.ssk"
+            "TargetName" = "8:deep.ssk"
             "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F77F576C0C114A8AA39E2F995721FAF4"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\face12.gif"
-            "TargetName" = "8:face12.gif"
-            "Tag" = "8:"
-            "Folder" = "8:_28063F39EA1D4C34A8F1B9616F23406A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F8BEB572769543A99EDEB6602E93F510"
-            {
-            "SourcePath" = "8:..\\LiveChat.Client\\images\\users.ico"
-            "TargetName" = "8:users.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_66972DA48A664E0EA0C4CC49B83F1D48"
+            "Folder" = "8:_B012C196DCD5456F885E616FCB8A985B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1497,28 +1029,6 @@
                     "Property" = "8:_A1998C6E9471478FBC9E4099E485B389"
                         "Folders"
                         {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_66972DA48A664E0EA0C4CC49B83F1D48"
-                    {
-                    "Name" = "8:images"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_A06B967B21924E18BBD1016639D9B01F"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_28063F39EA1D4C34A8F1B9616F23406A"
-                            {
-                            "Name" = "8:face"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_7840076A9A2847799997BB0DA041B6C2"
-                                "Folders"
-                                {
-                                }
-                            }
                         }
                     }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_B012C196DCD5456F885E616FCB8A985B"
@@ -1695,7 +1205,7 @@
             "Target" = "8:_E8698B3943624E01A47A51A6EA056F4C"
             "Folder" = "8:_95DBA4B6DC09425593BB52FA351A815A"
             "WorkingFolder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
-            "Icon" = "8:_2BE6CED710C9410AB0A5F93B83B31DF9"
+            "Icon" = "8:_A88DA29F3A66467DACD6F2FB95462579"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E043C20C453F4F22B92F035B8A43AC4B"
@@ -1709,7 +1219,7 @@
             "Target" = "8:_E8698B3943624E01A47A51A6EA056F4C"
             "Folder" = "8:_643A977CA128437FACDC8F4F45C3A9F7"
             "WorkingFolder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
-            "Icon" = "8:_2BE6CED710C9410AB0A5F93B83B31DF9"
+            "Icon" = "8:_A0F0DFA38E874762A453F71B64B061BD"
             "Feature" = "8:"
             }
         }

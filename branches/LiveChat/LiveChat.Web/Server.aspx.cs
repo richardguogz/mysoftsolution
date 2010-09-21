@@ -61,7 +61,7 @@ namespace LiveChat.Web
                     {
                         seatCode = null;
                     }
-                    sessionID = service.SendP2CMessage(type, GetUserID(), Request["CompanyID"], seatCode, Request.UserHostAddress, text);
+                    sessionID = service.SendP2CMessage(type, GetUserID(), GetRequestParam<string>("CompanyID", null), seatCode, Request.UserHostAddress, text);
                 }
                 else
                 {
@@ -141,8 +141,8 @@ namespace LiveChat.Web
         {
             try
             {
-                P2CSession p = service.GetP2CSession(GetUserID(), Request["CompanyID"]);
-                Company company = service.GetCompany(Request["CompanyID"]);
+                P2CSession p = service.GetP2CSession(GetUserID(), GetRequestParam<string>("CompanyID", null));
+                Company company = service.GetCompany(GetRequestParam<string>("CompanyID", null));
                 return p == null ? null : (p.Seat == null ? new string[] { p.SessionID } : new string[] { p.SessionID, company.CompanyName, p.Seat.ShowName, p.Seat.SeatCode, p.Seat.Telephone, p.Seat.MobileNumber, p.Seat.Email });
             }
             catch
@@ -160,7 +160,7 @@ namespace LiveChat.Web
         {
             try
             {
-                return service.GetSeatOnline(Request["CompanyID"]);
+                return service.GetSeatOnline(GetRequestParam<string>("CompanyID", null));
             }
             catch
             {

@@ -189,6 +189,13 @@ namespace LiveChat.Interface
         bool GetSeatOnline(string companyID);
 
         /// <summary>
+        /// 获取公司客服是否在线
+        /// </summary>
+        /// <param name="companyID"></param>
+        /// <returns></returns>
+        bool GetSeatOnline(string companyID, string seatCode);
+
+        /// <summary>
         /// 添加留言
         /// </summary>
         /// <param name="companyID"></param>

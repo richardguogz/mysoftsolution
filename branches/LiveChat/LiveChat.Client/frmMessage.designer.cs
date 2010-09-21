@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ToolStripButton tsbExit;
             System.Windows.Forms.ToolStripButton tsbRefresh;
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("公司客服", 5, 5);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("我的好友", 5, 5);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("公司客服", 0, 0);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("我的好友", 0, 0);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMessage));
             this.wbChatBox = new System.Windows.Forms.WebBrowser();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -372,13 +372,13 @@
             this.tvLinkman.ItemHeight = 24;
             this.tvLinkman.Location = new System.Drawing.Point(0, 0);
             this.tvLinkman.Name = "tvLinkman";
-            treeNode1.ImageIndex = 5;
+            treeNode1.ImageIndex = 0;
             treeNode1.Name = "节点2";
-            treeNode1.SelectedImageIndex = 5;
+            treeNode1.SelectedImageIndex = 0;
             treeNode1.Text = "公司客服";
-            treeNode2.ImageIndex = 5;
+            treeNode2.ImageIndex = 0;
             treeNode2.Name = "节点0";
-            treeNode2.SelectedImageIndex = 5;
+            treeNode2.SelectedImageIndex = 0;
             treeNode2.Text = "我的好友";
             this.tvLinkman.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
@@ -401,8 +401,8 @@
             this.imgList.Images.SetKeyName(2, "群.png");
             this.imgList.Images.SetKeyName(3, "树第一级.png");
             this.imgList.Images.SetKeyName(4, "树打开.bmp");
-            this.imgList.Images.SetKeyName(5, "MSN图标下载10.jpg");
-            this.imgList.Images.SetKeyName(6, "MSN图标下载1.jpg");
+            this.imgList.Images.SetKeyName(5, "人.ico");
+            this.imgList.Images.SetKeyName(6, "离开.ico");
             // 
             // wbFriendChat
             // 

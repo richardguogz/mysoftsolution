@@ -17,6 +17,8 @@ namespace LiveChat.Client
         [DllImport("user32.dll")]
         public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
 
+        public event CallbackEventHandler Callback;
+
         #region private member
 
         private const int maxAcceptCount = 20;
@@ -164,9 +166,11 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1));
-
                 MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                //throw ex;
+
+                System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1));
             }
 
             refreshtime.Start();
@@ -239,6 +243,7 @@ namespace LiveChat.Client
                 tn.SelectedImageIndex = 5;
                 tn.ImageIndex = 5;
                 tn.Tag = info;
+                tn.ContextMenuStrip = contextMenuStrip5;
                 node.Nodes.Add(tn);
             }
             node.Expand();
@@ -286,6 +291,7 @@ namespace LiveChat.Client
                 tn.SelectedImageIndex = 5;
                 tn.ImageIndex = 5;
                 tn.Tag = info;
+                tn.ContextMenuStrip = contextMenuStrip4;
                 node.Nodes.Add(tn);
             }
             node.Expand();
@@ -341,12 +347,22 @@ namespace LiveChat.Client
                     else
                         tn.Text = string.Format("{0}", kv.Key.ShowName);
 
-                    if (kv.Key.State != (tn.Tag as SeatFriend).State)
+                    if (kv.Key.State != (tn.Tag as Seat).State)
                     {
                         if (kv.Key.State == OnlineState.Online)
                         {
                             tn.SelectedImageIndex = 0;
                             tn.ImageIndex = 0;
+                        }
+                        else if (kv.Key.State == OnlineState.Busy)
+                        {
+                            tn.SelectedImageIndex = 6;
+                            tn.ImageIndex = 6;
+                        }
+                        else if (kv.Key.State == OnlineState.Leave)
+                        {
+                            tn.SelectedImageIndex = 7;
+                            tn.ImageIndex = 7;
                         }
                         else
                         {
@@ -372,14 +388,6 @@ namespace LiveChat.Client
                 if (!dictCompany.ContainsKey(friend.CompanyID))
                     dictCompany.Add(friend.CompanyID, friend.CompanyName);
 
-                ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
-                item.Tag = friend;
-                lvSearchName.Items.Add(item);
-            }
-
-            foreach (var friend in friends)
-            {
-                myfriends.Add(friend);
                 ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
                 item.Tag = friend;
                 lvSearchName.Items.Add(item);
@@ -428,6 +436,15 @@ namespace LiveChat.Client
                 }
 
                 tvLinkman.Nodes.Add(node);
+            }
+
+            //默生人
+            foreach (var friend in friends)
+            {
+                myfriends.Add(friend);
+                ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
+                item.Tag = friend;
+                lvSearchName.Items.Add(item);
             }
 
             TreeNode tn1 = new TreeNode(string.Format("陌生人({0})", friends.Count));
@@ -861,9 +878,16 @@ namespace LiveChat.Client
 
         private void frmNavigate_SizeChanged(object sender, EventArgs e)
         {
-            if (isMainShow && this.WindowState == FormWindowState.Minimized)
+            if (isMainShow)
             {
-                Singleton.Hide<frmMain>();
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    Singleton.Hide<frmMain>();
+                }
+                else if (this.WindowState == FormWindowState.Normal)
+                {
+                    Singleton.Show<frmMain>();
+                }
             }
         }
 
@@ -1062,6 +1086,72 @@ namespace LiveChat.Client
             if (tabControl1.SelectedTab == tabPage2)
             {
                 tbSearchName.Focus();
+            }
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (tvSession.SelectedNode == null || tvSession.SelectedNode.Tag == null)
+            {
+                MessageBox.Show("请选中要操作的会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            P2SSession session = tvSession.SelectedNode.Tag as P2SSession;
+
+            if (MessageBox.Show(string.Format("确定结束与【{0}】的会话吗？", session.User.UserID), "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                try
+                {
+                    service.CloseSession(session.SessionID);
+                    BindSession();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void StyleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            string style = item.ToString();
+            if (Callback != null) Callback(style);
+            //this.skinEngine1.SkinFile = CoreUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
+        }
+
+        private void toolStripMenuItem33_Click(object sender, EventArgs e)
+        {
+            if (tvSession.SelectedNode == null || tvSession.SelectedNode.Tag == null)
+            {
+                MessageBox.Show("请选中要操作的会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            P2SSession session = tvSession.SelectedNode.Tag as P2SSession;
+
+            if (MessageBox.Show(string.Format("确定接受与【{0}】的会话吗？", session.User.UserID), "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                try
+                {
+                    //接入会话
+                    P2SSession p2session = service.AcceptSession(loginSeat.SeatID, ClientUtils.MaxAcceptCount, session.SessionID);
+                    BindRequest();
+
+                    //弹出窗口
+                    SingletonMul.Show(p2session.SessionID, () =>
+                    {
+                        frmChat chat = new frmChat(service, p2session, loginCompany, loginSeat, currentFont, currentColor);
+                        chat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                        chat.Callback += new CallbackEventHandler(chat_Callback);
+                        return chat;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

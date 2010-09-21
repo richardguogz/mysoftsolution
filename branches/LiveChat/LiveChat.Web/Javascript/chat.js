@@ -139,7 +139,7 @@ function sendMessage() {
     content = content.replace(/{FACE#([\d]+)#}/ig, '<img border="0" src="' + chatWebSite + '/images/face/face$1.gif" />');
 
     //发送到服务器端
-    AjaxMethods.SendMessage(MessageType.Text, sessionID, seatID, content, function(ssid) {
+    AjaxMethods.SendMessage(MessageType.Text, sessionID, seatCode, content, function(ssid) {
 
         if (ssid == null) {
 
@@ -189,6 +189,12 @@ function getMessage() {
             //        $('framePlayer').src = '/player.htm';
             //    }
             //}
+
+            //开始显示消息
+            dynamicMsg.initIntervalMsg();
+            setTimeout(function() {
+                dynamicMsg.clearIntervalMsg();
+            }, 10000);
 
             for (var index = 0; index < msgs.length; index++) {
 
@@ -390,7 +396,7 @@ function writeFile(url1, url2, isfile) {
     }
 
     //发送到服务器端
-    AjaxMethods.SendMessage(msgType, sessionID, seatID, content, function(ssid) {
+    AjaxMethods.SendMessage(msgType, sessionID, seatCode, content, function(ssid) {
         if (ssid == null) {
 
             addMsgToChat('您&nbsp;说:<br/><span>消息发送失败！</span>', true);
@@ -423,10 +429,10 @@ function setcurrface(index) {
 
     var msg = $('inputbox');
     msg.value += '{FACE#' + index + '#}';
-    
+
     //给消息框设置焦点
     msg.focus();
-    
+
     setface();
 }
 
@@ -482,3 +488,31 @@ function openWindow(url, name, param) {
         }
     } catch (e) { }
 }
+
+/**  
+* 处理新消息提示的操作  
+*/
+function DynamicMessage(defaultMsg, msg, hiddenMsg) {
+    this.initIntervalMsg = function() {
+        this.intervalMsg = setInterval(function() {
+            if (!this.bMsg) {
+                window.document.title = msg + " - " + defaultMsg;
+                this.bMsg = true;
+            } else {
+                window.document.title = hiddenMsg + " - " + defaultMsg;
+                this.bMsg = false;
+            }
+        }, 1000);
+    };
+
+    this.clearIntervalMsg = function() {
+        if (this.intervalMsg != null) {
+            clearInterval(this.intervalMsg);
+            window.document.title = defaultMsg;
+            this.bMsg = false;
+        }
+    };
+}
+
+//实例化一个消息显示类
+var dynamicMsg = new DynamicMessage(document.title, "【您有新的消息】", "【】");

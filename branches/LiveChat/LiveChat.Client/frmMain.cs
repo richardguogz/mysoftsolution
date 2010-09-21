@@ -32,8 +32,6 @@ namespace LiveChat.Client
 
         #region private member
 
-        private const int maxAcceptCount = 20;
-
         private Color currentColor;
         private Font currentFont;
         private Rectangle rect;
@@ -635,7 +633,7 @@ namespace LiveChat.Client
             try
             {
                 //接入会话
-                P2SSession p2session = service.AcceptSession(seat.SeatID, maxAcceptCount, session.SessionID);
+                P2SSession p2session = service.AcceptSession(seat.SeatID, ClientUtils.MaxAcceptCount, session.SessionID);
                 BindRequest();
 
                 //弹出窗口

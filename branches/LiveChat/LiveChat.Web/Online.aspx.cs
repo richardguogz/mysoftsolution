@@ -27,6 +27,16 @@ namespace LiveChat.Web
             }
 
             var ret = service.GetSeatOnline(companyID);
+            var seatid = GetRequestParam<string>("seatCode", null);
+
+            if (seatid != null)
+            {
+                try
+                {
+                    ret = service.GetSeatOnline(companyID, seatid);
+                }
+                catch { }
+            }
 
             if (type == "jpg")
             {

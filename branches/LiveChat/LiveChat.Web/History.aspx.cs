@@ -22,14 +22,14 @@ namespace LiveChat.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             //如果出错则直接退出
-            if (string.IsNullOrEmpty(Request["sessionID"]))
+            if (string.IsNullOrEmpty(GetRequestParam<string>("sessionID", null)))
             {
                 Response.Write("传入的参数不正确！");
                 Response.End();
             }
 
-            skinID = Request["skinID"];
-            string sessionID = Request["sessionID"];
+            skinID = GetRequestParam<string>("skinID", null);
+            string sessionID = GetRequestParam<string>("sessionID", null);
 
             //如果会话已经结束，则查询出错
             if (service.GetSession(sessionID) == null)

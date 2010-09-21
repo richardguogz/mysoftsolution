@@ -731,8 +731,6 @@ namespace LiveChat.Service
                     .ConvertAll<Session>(p => (Session)p);
                 sessions.AddRange(seat.Sessions);
 
-                var friends = SeatFriendManager.Instance.GetFriends(seatID, true);
-
                 foreach (var session in sessions)
                 {
                     if (session is P2SSession)
@@ -754,7 +752,11 @@ namespace LiveChat.Service
                     }
                 }
 
-                foreach (var friend in friends)
+                IList<SeatFriend> friends;
+                var friendlist = GetSeatFriends(seatID, out friends);
+                (friendlist as List<SeatFriend>).AddRange(friends);
+
+                foreach (var friend in friendlist)
                 {
                     Seat seatFriend = GetSeat(friend.SeatID);
                     info.SeatMessages[seatFriend] = 0;
