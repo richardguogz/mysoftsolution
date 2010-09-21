@@ -225,6 +225,7 @@ namespace LiveChat.Client
                     tn.SelectedImageIndex = 5;
                     tn.ImageIndex = 5;
                     tn.Tag = kv.Key;
+                    tn.ContextMenuStrip = contextMenuStrip5;
                     tvSession.Nodes[0].Nodes.Add(tn);
                 }
             }
@@ -273,6 +274,7 @@ namespace LiveChat.Client
                     tn.SelectedImageIndex = 5;
                     tn.ImageIndex = 5;
                     tn.Tag = kv.Key;
+                    tn.ContextMenuStrip = contextMenuStrip4;
                     tvSession.Nodes[1].Nodes.Add(tn);
                 }
             }

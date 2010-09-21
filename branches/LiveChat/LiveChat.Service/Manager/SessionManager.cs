@@ -152,14 +152,17 @@ namespace LiveChat.Service.Manager
 
                 foreach (S2SSession session in pslist)
                 {
-                    dictSession.Add(session.SessionID, session);
+                    Seat owner = session.Owner;
+                    Seat friend = session.Friend;
+
+                    if (owner == null || friend == null) continue;
+                    if (dictSession.ContainsKey(session.SessionID)) continue;
 
                     //把会话添加到各自的会话队列中
-                    Seat owner = session.Owner;
+                    dictSession.Add(session.SessionID, session);
+
                     owner[session.SessionID] = session.LastReceiveTime;
                     owner.AddSession(session);
-
-                    Seat friend = session.Friend;
                     friend[session.SessionID] = session.LastReceiveTime;
                     friend.AddSession(session);
                 }

@@ -2,6 +2,7 @@
 var tid = setInterval('getMessage()', 5000);
 var isValidate = true;
 var isChatClosing = false;
+var chatInterval = null;
 
 //Ajax.showErrorMessage = false;
 Ajax.onException = function(ex) {
@@ -192,7 +193,13 @@ function getMessage() {
 
             //开始显示消息
             dynamicMsg.initIntervalMsg();
-            setTimeout(function() {
+
+            //先清除时间
+            if (chatInterval) {
+                clearTimeout(chatInterval);
+            }
+
+            chatInterval = setTimeout(function() {
                 dynamicMsg.clearIntervalMsg();
             }, 10000);
 

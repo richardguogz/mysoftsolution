@@ -13,6 +13,12 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            if (refreshtime != null)
+            {
+                refreshtime.Stop();
+                refreshtime = null;
+            }
+
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -655,7 +661,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "客服信息";
-            this.columnHeader1.Width = 200;
+            this.columnHeader1.Width = 190;
             // 
             // tvLinkman
             // 
@@ -1107,24 +1113,24 @@
             this.toolStripSeparator10,
             this.toolStripMenuItem34});
             this.contextMenuStrip5.Name = "contextMenuStrip2";
-            this.contextMenuStrip5.Size = new System.Drawing.Size(153, 76);
+            this.contextMenuStrip5.Size = new System.Drawing.Size(125, 54);
             // 
             // toolStripMenuItem33
             // 
             this.toolStripMenuItem33.Name = "toolStripMenuItem33";
-            this.toolStripMenuItem33.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem33.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem33.Text = "接受会话";
             this.toolStripMenuItem33.Click += new System.EventHandler(this.toolStripMenuItem33_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(121, 6);
             // 
             // toolStripMenuItem34
             // 
             this.toolStripMenuItem34.Name = "toolStripMenuItem34";
-            this.toolStripMenuItem34.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem34.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem34.Text = "刷新";
             // 
             // frmNavigate

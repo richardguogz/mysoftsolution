@@ -49,7 +49,7 @@ namespace LiveChat.Client
             {
                 btnLogin_Click(sender, e);
             }
-            else
+            else if (isRelogin)
             {
                 this.Text = "ÖØÐÂµÇÂ¼";
             }

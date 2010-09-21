@@ -94,6 +94,22 @@ namespace LiveChat.Client
         {
             msgtimer.Stop();
 
+            try
+            {
+                var s = service.GetSession(session.SessionID);
+                if (s == null || s.State == SessionState.Closed)
+                {
+                    msgtimer.Stop();
+                    MessageBox.Show("当前会话已经被用户关闭，强制关闭本窗口！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                    this.Dispose();
+                }
+            }
+            catch
+            {
+                ClientUtils.SoftwareIsOnline = false;
+            }
+
             LoadMessage(true);
 
             msgtimer.Start();

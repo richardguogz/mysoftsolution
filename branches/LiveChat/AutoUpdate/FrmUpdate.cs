@@ -367,6 +367,7 @@ namespace AutoUpdate
                 this.Close();
                 return;
             }
+
             //获取服务器地址
             updateUrl = updaterXmlFiles.GetNodeValue("//Url");
 

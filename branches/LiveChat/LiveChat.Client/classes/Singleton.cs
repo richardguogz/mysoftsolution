@@ -254,6 +254,7 @@ namespace LiveChat.Client
         public void Close()
         {
             if (IsDisposed) return;
+            form.Close();
             form.Dispose();
         }
 

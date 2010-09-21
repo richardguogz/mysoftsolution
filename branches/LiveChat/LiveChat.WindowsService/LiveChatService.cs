@@ -49,6 +49,8 @@ namespace LiveChat.WindowsService
                     srv.PublishWellKnownServiceInstanceByConfig();
                     srv_OnLog("远程对象发布完成.");
 
+                    //Thread.Sleep(30000);
+
                     //加载服务异常后的数据
                     CompanyManager.Instance.LoadCompany();
                     GroupManager.Instance.LoadGroup();

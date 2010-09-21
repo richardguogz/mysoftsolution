@@ -82,6 +82,9 @@ namespace LiveChat.Client
             dtpStartTime.Value = DateTime.Today.AddDays(-7);
             dtpEndTime.Value = DateTime.Today.AddHours(23).AddMinutes(59);
 
+            dateTimePicker1.Value = DateTime.Today;
+            dateTimePicker2.Value = DateTime.Today;
+
             BindSeatFriend();
 
             if (toSeat != null) tabControl1.SelectedTab = tabPage3;
@@ -111,12 +114,18 @@ namespace LiveChat.Client
 
         private void BindSeatFriend()
         {
-            IList<SeatFriend> friendlist = service.GetSeatFriends(seat.SeatID);
+            TreeNode selectNode = null;
+            IList<SeatFriend> friends;
+            IList<SeatFriend> friendlist = service.GetSeatFriends(seat.SeatID, out friends);
+
             Dictionary<string, string> dictCompany = new Dictionary<string, string>();
             foreach (SeatFriend friend in friendlist)
             {
                 if (!dictCompany.ContainsKey(friend.CompanyID))
                     dictCompany.Add(friend.CompanyID, friend.CompanyName);
+
+                ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
+                item.Tag = friend;
             }
 
             tvLinkman.Nodes.Clear();
@@ -124,12 +133,12 @@ namespace LiveChat.Client
             {
                 var list = (friendlist as List<SeatFriend>).FindAll(p => p.CompanyID == kv.Key);
                 TreeNode node = new TreeNode();
-                node.SelectedImageIndex = 5;
-                node.ImageIndex = 5;
+                node.SelectedImageIndex = 3;
+                node.ImageIndex = 3;
                 node.Text = string.Format("{0}({1})", kv.Value, list.Count);
                 foreach (var friend in list)
                 {
-                    TreeNode tn = new TreeNode(string.Format("{0}", friend.SeatName));
+                    TreeNode tn = new TreeNode(string.Format("{0}", friend.ShowName));
                     if (friend.State == OnlineState.Online)
                     {
                         tn.SelectedImageIndex = 0;
@@ -152,17 +161,63 @@ namespace LiveChat.Client
                     }
                     tn.Tag = friend;
 
-                    //选中
-                    if (toSeat != null && friend.SeatID == toSeat.SeatID)
+                    if (toSeat != null && toSeat.SeatID == friend.SeatID)
                     {
-                        tvLinkman.SelectedNode = tn;
+                        selectNode = tn;
                     }
-
                     node.Nodes.Add(tn);
                 }
-                node.Expand();
+
+                //展开自己所在的公司
+                if (kv.Key == company.CompanyID)
+                {
+                    node.Expand();
+                }
 
                 tvLinkman.Nodes.Add(node);
+            }
+
+            TreeNode tn1 = new TreeNode(string.Format("陌生人({0})", friends.Count));
+            tn1.SelectedImageIndex = 3;
+            tn1.ImageIndex = 3;
+
+            tvLinkman.Nodes.Add(tn1);
+            foreach (var friend in friends)
+            {
+                TreeNode tn = new TreeNode(string.Format("{0}", friend.ShowName));
+                if (friend.State == OnlineState.Online)
+                {
+                    tn.SelectedImageIndex = 0;
+                    tn.ImageIndex = 0;
+                }
+                else if (friend.State == OnlineState.Busy)
+                {
+                    tn.SelectedImageIndex = 6;
+                    tn.ImageIndex = 6;
+                }
+                else if (friend.State == OnlineState.Leave)
+                {
+                    tn.SelectedImageIndex = 7;
+                    tn.ImageIndex = 7;
+                }
+                else
+                {
+                    tn.SelectedImageIndex = 1;
+                    tn.ImageIndex = 1;
+                }
+
+                tn.Tag = friend;
+
+                if (toSeat != null && toSeat.SeatID == friend.SeatID)
+                {
+                    selectNode = tn;
+                }
+                tn1.Nodes.Add(tn);
+            }
+
+            if (selectNode != null)
+            {
+                tvLinkman.SelectedNode = selectNode;
             }
         }
 
@@ -314,7 +369,7 @@ namespace LiveChat.Client
 
             try
             {
-                var view = service.GetS2SHistoryMessagesFromDB(seat.SeatID, friendID, DateTime.Today, DateTime.Today.AddDays(1), 1, 1000);
+                var view = service.GetS2SHistoryMessagesFromDB(seat.SeatID, friendID, dateTimePicker1.Value.Date, dateTimePicker2.Value.Date.AddDays(1), 1, 1000);
 
                 if (view.RowCount > 0)
                 {
