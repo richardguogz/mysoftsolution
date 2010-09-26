@@ -125,6 +125,7 @@ namespace MySoft.Core.Remoting
                 BinaryClientFormatterSinkProvider clientProvider = new
                     BinaryClientFormatterSinkProvider();
                 serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+                serverProvider.Next = new ClientIPServerSinkProvider();
 
                 IDictionary props = new Hashtable();
                 props["name"] = AppDomain.CurrentDomain.FriendlyName;
