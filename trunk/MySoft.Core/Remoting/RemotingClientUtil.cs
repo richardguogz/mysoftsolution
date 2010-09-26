@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Collections;
+using System.Runtime.Remoting.Channels.Http;
 
 namespace MySoft.Core.Remoting
 {
@@ -203,8 +204,11 @@ namespace MySoft.Core.Remoting
             props["port"] = 0;
             props["timeout"] = timeout; //1000 * 60 * 5; //5∑÷÷”≥¨ ±
 
-            IChannel channel = new TcpChannel(props, clientProvider, serverProvider);
-            ChannelServices.RegisterChannel(channel, false);
+            IChannel channel1 = new TcpChannel(props, clientProvider, serverProvider);
+            IChannel channel2 = new HttpChannel(props, clientProvider, serverProvider);
+
+            ChannelServices.RegisterChannel(channel1, false);
+            ChannelServices.RegisterChannel(channel2, false);
         }
 
         /// <summary>
