@@ -55,8 +55,6 @@
     <Compile Include="Service\BaseServiceInterfaceImpl.cs" />
     <Compile Include="Service\Configuration\CastleClientConfiguration.cs" />
     <Compile Include="Service\Configuration\CastleClientConfigurationHandler.cs" />
-    <Compile Include="Service\Configuration\CastleServerConfiguration.cs" />
-    <Compile Include="Service\Configuration\CastleServerConfigurationHandler.cs" />
     <Compile Include="Service\Configuration\ServiceFactoryType.cs" />
     <Compile Include="Service\Exceptions.cs" />
     <Compile Include="Service\Facilities\ServiceDiscoverFacility.cs" />

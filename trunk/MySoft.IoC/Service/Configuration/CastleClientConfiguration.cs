@@ -52,10 +52,39 @@ namespace MySoft.IoC.Service
                 type = (ServiceFactoryType)Enum.Parse(typeof(ServiceFactoryType), node.Attributes["type"].Value);
 
             if (node.Attributes["protocol"] != null && node.Attributes["protocol"].Value != null)
-                protocol = (RemotingChannelType)Enum.Parse(typeof(RemotingChannelType), node.Attributes["protocol"].Value);
+            {
+                switch (node.Attributes["protocol"].Value.ToLower())
+                {
+                    case "http":
+                        protocol = RemotingChannelType.HTTP;
+                        break;
+                    case "tcp":
+                        protocol = RemotingChannelType.TCP;
+                        break;
+                    default:
+                        protocol = RemotingChannelType.TCP;
+                        break;
+                }
+            }
 
             if (node.Attributes["transfer"] != null && node.Attributes["transfer"].Value != null)
-                transfer = (RemotingDataType)Enum.Parse(typeof(RemotingDataType), node.Attributes["transfer"].Value);
+            {
+                switch (node.Attributes["transfer"].Value.ToLower())
+                {
+                    case "binary":
+                        transfer = RemotingDataType.BINARY;
+                        break;
+                    case "json":
+                        transfer = RemotingDataType.JSON;
+                        break;
+                    case "xml":
+                        transfer = RemotingDataType.XML;
+                        break;
+                    default:
+                        transfer = RemotingDataType.BINARY;
+                        break;
+                }
+            }
 
             if (node.Attributes["server"] != null && node.Attributes["server"].Value.Trim() != string.Empty)
                 server = node.Attributes["server"].Value;
