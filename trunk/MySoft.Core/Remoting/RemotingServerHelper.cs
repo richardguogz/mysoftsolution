@@ -120,10 +120,8 @@ namespace MySoft.Core.Remoting
         {
             if (serviceChannel == null)
             {
-                BinaryServerFormatterSinkProvider serverProvider = new
-                    BinaryServerFormatterSinkProvider();
-                BinaryClientFormatterSinkProvider clientProvider = new
-                    BinaryClientFormatterSinkProvider();
+                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
                 serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
                 serverProvider.Next = new ClientIPServerSinkProvider();
 
@@ -139,6 +137,7 @@ namespace MySoft.Core.Remoting
                 {
                     serviceChannel = new HttpChannel(props, clientProvider, serverProvider);
                 }
+
                 ChannelServices.RegisterChannel(serviceChannel, false);
             }
         }
@@ -260,7 +259,7 @@ namespace MySoft.Core.Remoting
             {
                 IPAddress ip = requestHeaders[CommonTransportKeys.IPAddress] as IPAddress;
                 String requestUri = requestHeaders[CommonTransportKeys.RequestUri].ToString();
-                Console.WriteLine(ip.ToString());
+                //Console.WriteLine(ip.ToString());
                 CallContext.SetData("ClientIPAddress", ip);
                 CallContext.SetData("RequestUri", requestUri);
                 ServerProcessing spres = _next.ProcessMessage(sinkStack, requestMsg, requestHeaders, requestStream, out responseMsg, out responseHeaders, out responseStream);

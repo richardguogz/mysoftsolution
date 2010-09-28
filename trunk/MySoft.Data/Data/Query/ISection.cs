@@ -36,5 +36,7 @@ namespace MySoft.Data
 
         TResult ToScalar<TResult>(out IDictionary<string, object> outValues);
         object ToScalar(out IDictionary<string, object> outValues);
+
+        int ReturnValue { get; }
     }
 }

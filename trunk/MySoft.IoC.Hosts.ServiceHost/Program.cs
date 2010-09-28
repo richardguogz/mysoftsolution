@@ -13,7 +13,7 @@ namespace MySoft.IoC.Hosts.ServiceHost
     {
         static void Main(string[] args)
         {
-            CastleClientConfiguration config = CastleClientConfiguration.GetConfig();
+            CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
             LogEventHandler logger = (config.Debug ? new LogEventHandler(Console.WriteLine) : null);
 
             CastleFactory.Create().OnLog += logger;

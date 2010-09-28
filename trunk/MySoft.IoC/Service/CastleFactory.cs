@@ -225,8 +225,6 @@ namespace MySoft.IoC.Service
             {
                 this.container = container;
             }
-
-            this.container.OnLog += new LogEventHandler(WriteLog);
         }
 
         private void WriteLog(string logInfo)
@@ -235,6 +233,7 @@ namespace MySoft.IoC.Service
         }
 
         private static CastleFactory singleton = null;
+
         /// <summary>
         /// Creates this instance.
         /// </summary>
@@ -243,7 +242,7 @@ namespace MySoft.IoC.Service
         {
             if (singleton == null)
             {
-                CastleClientConfiguration config = CastleClientConfiguration.GetConfig();
+                CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
                 if (config.Type == ServiceFactoryType.Local)
                 {
@@ -252,8 +251,15 @@ namespace MySoft.IoC.Service
                 else
                 {
                     RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0, config.Timeout);
+                    helper.OnLog += new LogEventHandler(msg_OnLog);
+
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
-                    singleton = new CastleFactory(new SimpleServiceContainer(mq));
+                    mq.OnLog += new LogEventHandler(msg_OnLog);
+
+                    IServiceContainer container = new SimpleServiceContainer(mq);
+                    container.OnLog += new LogEventHandler(msg_OnLog);
+
+                    singleton = new CastleFactory(container);
                 }
 
                 singleton.ServiceContainer.Transfer = config.Transfer;
@@ -262,6 +268,19 @@ namespace MySoft.IoC.Service
             }
 
             return singleton;
+        }
+
+        static void msg_OnLog(string log)
+        {
+            if (singleton != null)
+            {
+                if (singleton.OnLog != null) singleton.OnLog(log);
+            }
+            else
+            {
+                //未设置委托之前，从控制台输出
+                Console.WriteLine(log);
+            }
         }
 
         #endregion

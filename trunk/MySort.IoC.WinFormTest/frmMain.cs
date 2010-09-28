@@ -24,12 +24,16 @@ namespace MySort.IoC.WinFormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int count = (int)numericUpDown1.Value;
-
-            CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(frmMain_OnLog);
+            CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(WriteMessage);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
+            //DataTable dt = service.GetDataTable();
+            //return;
+
             richTextBox1.AppendText("测试：" + service.GetUserInfo("test") + "\r\n");
+
+            int count = (int)numericUpDown1.Value;
+            count = 1;
 
             for (int i = 0; i < count; i++)
             {
@@ -38,11 +42,6 @@ namespace MySort.IoC.WinFormTest
                 thread.IsBackground = true;
                 thread.Start(service);
             }
-        }
-
-        void frmMain_OnLog(string log)
-        {
-
         }
 
         private void DoWork(object value)

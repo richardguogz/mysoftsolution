@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using MySoft.Core.Remoting;
+using System.Data;
 
 namespace MySoft.IoC.Dll
 {
     public interface IUserService : IServiceInterface
     {
         UserInfo GetUserInfo(string username);
+
+        DataTable GetDataTable();
     }
 
     /// <summary>

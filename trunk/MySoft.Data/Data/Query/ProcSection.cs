@@ -15,6 +15,7 @@ namespace MySoft.Data
         private DbProvider dbProvider;
         private DbCommand dbCommand;
         private DbTrans dbTran;
+        private int returnValue = -1;
 
         internal ProcSection(string procName, DbProvider dbProvider, DbTrans dbTran)
         {
@@ -390,6 +391,17 @@ namespace MySoft.Data
             return CoreUtils.ConvertValue<TResult>(obj);
         }
 
+        /// <summary>
+        /// 获取返回值
+        /// </summary>
+        public int ReturnValue
+        {
+            get
+            {
+                return returnValue;
+            }
+        }
+
         #endregion
 
         #region 私有方法
@@ -468,16 +480,19 @@ namespace MySoft.Data
         {
             try
             {
-                IDictionary<string, object> returnValues = new Dictionary<string, object>();
+                outValues = new Dictionary<string, object>();
                 foreach (DbParameter p in cmd.Parameters)
                 {
                     //如果是输出参数直接跳过
                     if (p.Direction == ParameterDirection.Input) continue;
                     if (p.Value == DBNull.Value) p.Value = null;
 
-                    returnValues.Add(p.ParameterName.Substring(1), p.Value);
+                    //获取返回值
+                    if (p.Direction == ParameterDirection.ReturnValue)
+                        returnValue = Convert.ToInt32(p.Value);
+
+                    outValues.Add(p.ParameterName.Substring(1), p.Value);
                 }
-                outValues = returnValues;
             }
             catch
             {

@@ -32,51 +32,50 @@ namespace MySoft.Data
             }
             else
             {
+                TOutput t = default(TOutput);
+
                 try
                 {
-                    TOutput t = CoreUtils.CreateInstance<TOutput>();
-
-                    //如果当前实体为Entity，数据源为IRowReader的话，可以通过内部方法赋值
-                    if (t is Entity && obj is IRowReader)
-                    {
-                        (t as Entity).SetAllValues(obj as IRowReader);
-                    }
-                    else
-                    {
-                        foreach (PropertyInfo p in typeof(TOutput).GetProperties())
-                        {
-                            object value = null;
-                            if (obj is IRowReader)
-                            {
-                                IRowReader reader = obj as IRowReader;
-                                if (reader.IsDBNull(p.Name)) continue;
-                                value = reader[p.Name];
-                            }
-                            else if (obj is NameValueCollection)
-                            {
-                                NameValueCollection reader = obj as NameValueCollection;
-                                if (reader[p.Name] == null) continue;
-                                value = reader[p.Name];
-                            }
-                            else
-                            {
-                                value = CoreUtils.GetPropertyValue(obj, p.Name);
-                            }
-                            if (value == null) continue;
-                            CoreUtils.SetPropertyValue(t, p, value);
-                        }
-                    }
-
-                    return t;
-                }
-                catch (MySoftException ex)
-                {
-                    throw ex;
+                    t = CoreUtils.CreateInstance<TOutput>();
                 }
                 catch (Exception ex)
                 {
-                    throw new MySoftException(ex.Message);
+                    throw new MySoftException(string.Format("创建类型对象【{0}】出错，可能不存在构造函数！", typeof(TOutput).FullName), ex);
                 }
+
+                //如果当前实体为Entity，数据源为IRowReader的话，可以通过内部方法赋值
+                if (t is Entity && obj is IRowReader)
+                {
+                    (t as Entity).SetAllValues(obj as IRowReader);
+                }
+                else
+                {
+                    foreach (PropertyInfo p in typeof(TOutput).GetProperties())
+                    {
+                        object value = null;
+                        if (obj is IRowReader)
+                        {
+                            IRowReader reader = obj as IRowReader;
+                            if (reader.IsDBNull(p.Name)) continue;
+                            value = reader[p.Name];
+                        }
+                        else if (obj is NameValueCollection)
+                        {
+                            NameValueCollection reader = obj as NameValueCollection;
+                            if (reader[p.Name] == null) continue;
+                            value = reader[p.Name];
+                        }
+                        else
+                        {
+                            value = CoreUtils.GetPropertyValue(obj, p.Name);
+                        }
+
+                        if (value == null) continue;
+                        CoreUtils.SetPropertyValue(t, p, value);
+                    }
+                }
+
+                return t;
             }
         }
 

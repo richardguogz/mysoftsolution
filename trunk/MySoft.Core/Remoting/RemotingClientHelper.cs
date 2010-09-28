@@ -90,11 +90,10 @@ namespace MySoft.Core.Remoting
         {
             if (clientChannel == null)
             {
-                BinaryServerFormatterSinkProvider serverProvider = new
-                    BinaryServerFormatterSinkProvider();
-                BinaryClientFormatterSinkProvider clientProvider = new
-                    BinaryClientFormatterSinkProvider();
+                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
                 serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+                //serverProvider.Next = new ClientIPServerSinkProvider();
 
                 IDictionary props = new Hashtable();
                 props["name"] = AppDomain.CurrentDomain.FriendlyName;
@@ -109,6 +108,7 @@ namespace MySoft.Core.Remoting
                 {
                     clientChannel = new HttpChannel(props, clientProvider, serverProvider);
                 }
+
                 ChannelServices.RegisterChannel(clientChannel, false);
             }
         }

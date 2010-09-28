@@ -53,8 +53,8 @@
     <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BaseServiceInterfaceImpl.cs" />
-    <Compile Include="Service\Configuration\CastleClientConfiguration.cs" />
-    <Compile Include="Service\Configuration\CastleClientConfigurationHandler.cs" />
+    <Compile Include="Service\Configuration\CastleFactoryConfiguration.cs" />
+    <Compile Include="Service\Configuration\CastleFactoryConfigurationHandler.cs" />
     <Compile Include="Service\Configuration\ServiceFactoryType.cs" />
     <Compile Include="Service\Exceptions.cs" />
     <Compile Include="Service\Facilities\ServiceDiscoverFacility.cs" />
