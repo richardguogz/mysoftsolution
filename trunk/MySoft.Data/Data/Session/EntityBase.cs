@@ -97,7 +97,7 @@ namespace MySoft.Data
         /// <summary>
         /// 获取原始对象
         /// </summary>
-        EntityBase IEntityBase.OldObject
+        EntityBase IEntityBase.OriginalObject
         {
             get
             {

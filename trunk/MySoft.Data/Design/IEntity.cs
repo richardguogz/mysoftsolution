@@ -44,7 +44,7 @@ namespace MySoft.Data
         /// <summary>
         /// 获取原始对象
         /// </summary>
-        EntityBase OldObject { get; }
+        EntityBase OriginalObject { get; }
     }
 }
 
