@@ -254,8 +254,6 @@ namespace MySoft.IoC.Service
                     helper.OnLog += new LogEventHandler(msg_OnLog);
 
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
-                    mq.OnLog += new LogEventHandler(msg_OnLog);
-
                     IServiceContainer container = new SimpleServiceContainer(mq);
                     container.OnLog += new LogEventHandler(msg_OnLog);
 

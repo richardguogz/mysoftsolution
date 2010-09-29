@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using MySoft.Core;
+using System.Net.Sockets;
 
 namespace MySoft.IoC.Service
 {
@@ -25,11 +26,6 @@ namespace MySoft.IoC.Service
             }
             return newHandlers;
         }
-
-        /// <summary>
-        /// 字典用于响应计数，当达到10次时才将委托出除
-        /// </summary>
-        private Dictionary<Guid, int> notifyCount = new Dictionary<Guid, int>();
 
         #endregion
 
@@ -65,30 +61,22 @@ namespace MySoft.IoC.Service
                             //if calling ok, skip other subscribers, easily exit loop
                             break;
                         }
-                        catch (Exception ex)
+                        catch (SocketException ex) //如果socket错误，表示连接失败
                         {
-                            if (!notifyCount.ContainsKey(tempClientId))
-                            {
-                                notifyCount[tempClientId] = 1;
-                            }
-                            else
-                            {
-                                notifyCount[tempClientId]++;
-                            }
-
-                            //当出错次数达到10次，或者同样的handler多于一个时
-                            if (notifyCount[tempClientId] > 10 || handlers.Count > 1)
+                            if (handlers.Count > 1)
                             {
                                 if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason:" + ex.Message);
                                 handlers[tempClientId] = null;
                                 needCleanHandlers = true;
-
-                                notifyCount.Remove(tempClientId);
                             }
                             else
                             {
-                                if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] notify " + notifyCount[tempClientId] + " error! Reason:" + ex.Message);
+                                if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason:" + ex.Message);
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason:" + ex.Message);
                         }
                     }
                     else

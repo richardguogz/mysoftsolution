@@ -87,7 +87,7 @@ namespace MySoft.IoC.Service.Services
 
             if (mi == null)
             {
-                return null;
+                throw new Exception(string.Format("未在服务中找到对应的方法{0}!", msg.SubServiceName));
             }
 
             ParameterInfo[] pis = mi.GetParameters();
@@ -117,59 +117,59 @@ namespace MySoft.IoC.Service.Services
             {
                 returnValue = DynamicCalls.GetMethodInvoker(mi).Invoke(service, parms);
                 //returnValue = mi.Invoke(service, parms);
-            }
-            catch
-            {
-                return null;
-            }
 
-            if (returnValue != null)
-            {
-                Type returnType = mi.ReturnType;
-                if (returnValue == null) return resMsg;
-
-                switch (container.Transfer)
+                if (returnValue != null)
                 {
-                    case RemotingDataType.BINARY:
-                        byte[] buffer = SerializationManager.SerializeBin(returnValue);
+                    Type returnType = mi.ReturnType;
+                    if (returnValue == null) return resMsg;
 
-                        //将数据进行压缩
-                        if (container.Compress)
-                        {
-                            resMsg.Data = CompressionManager.Compress7Zip(buffer);
-                        }
-                        else
-                        {
-                            resMsg.Data = buffer;
-                        }
-                        break;
-                    case RemotingDataType.JSON:
-                        string jsonString = SerializationManager.SerializeJSON(returnValue);
+                    switch (container.Transfer)
+                    {
+                        case RemotingDataType.BINARY:
+                            byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
-                        //将数据进行压缩
-                        if (container.Compress)
-                        {
-                            resMsg.Data = CompressionManager.Compress7Zip(jsonString);
-                        }
-                        else
-                        {
-                            resMsg.Data = jsonString;
-                        }
-                        break;
-                    case RemotingDataType.XML:
-                        string xmlString = SerializationManager.SerializeXML(returnValue);
+                            //将数据进行压缩
+                            if (container.Compress)
+                            {
+                                resMsg.Data = CompressionManager.Compress7Zip(buffer);
+                            }
+                            else
+                            {
+                                resMsg.Data = buffer;
+                            }
+                            break;
+                        case RemotingDataType.JSON:
+                            string jsonString = SerializationManager.SerializeJSON(returnValue);
 
-                        //将数据进行压缩
-                        if (container.Compress)
-                        {
-                            resMsg.Data = CompressionManager.Compress7Zip(xmlString);
-                        }
-                        else
-                        {
-                            resMsg.Data = xmlString;
-                        }
-                        break;
+                            //将数据进行压缩
+                            if (container.Compress)
+                            {
+                                resMsg.Data = CompressionManager.Compress7Zip(jsonString);
+                            }
+                            else
+                            {
+                                resMsg.Data = jsonString;
+                            }
+                            break;
+                        case RemotingDataType.XML:
+                            string xmlString = SerializationManager.SerializeXML(returnValue);
+
+                            //将数据进行压缩
+                            if (container.Compress)
+                            {
+                                resMsg.Data = CompressionManager.Compress7Zip(xmlString);
+                            }
+                            else
+                            {
+                                resMsg.Data = xmlString;
+                            }
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("调用方法{0}失败,错误:{1}！", msg.SubServiceName, ex.Message));
             }
 
             return resMsg;

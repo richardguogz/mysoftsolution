@@ -45,7 +45,7 @@ namespace MySoft.IoC.Service
                 if (retMsg == null)
                 {
                     if (OnLog != null) OnLog(string.Format("Try {0} Run (name:{1} parameters:{2}) ...... ", (i + 1), msg.SubServiceName, msg.Parameters.SerializedData));
-                    Thread.Sleep(i * 10);
+                    Thread.Sleep(100);
                 }
                 else
                 {
