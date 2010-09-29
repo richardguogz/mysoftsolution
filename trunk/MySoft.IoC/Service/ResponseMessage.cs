@@ -61,7 +61,7 @@ namespace MySoft.IoC.Service
 
                 if (data.GetType() == typeof(byte[]))
                 {
-                    return string.Format("packet size: {0}bytes", ((byte[])data).Length);
+                    return string.Format("packet size: {0} bytes", ((byte[])data).Length);
                 }
                 else
                 {
