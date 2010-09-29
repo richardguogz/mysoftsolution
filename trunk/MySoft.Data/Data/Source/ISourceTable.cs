@@ -10,7 +10,7 @@ namespace MySoft.Data
     /// <summary>
     /// 数据源接口
     /// </summary>
-    interface ISourceTable : IListConvert<IRowReader>, IDisposable
+    interface ISourceTable : IListConvert<IRowReader>, IDataSource<DataTable>, IDisposable
     {
         #region 常用方法
 
@@ -30,12 +30,6 @@ namespace MySoft.Data
         /// <param name="index"></param>
         /// <returns></returns>
         IRowReader this[int index] { get; }
-
-        /// <summary>
-        /// 克隆Table
-        /// </summary>
-        /// <returns></returns>
-        SourceTable Clone();
 
         /// <summary>
         /// 选择某些列

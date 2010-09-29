@@ -45,6 +45,18 @@ namespace MySoft.Data
             }
         }
 
+        /// <summary>
+        /// 获取当前DataSource
+        /// </summary>
+        /// <returns></returns>
+        public IList<T> OriginalData
+        {
+            get
+            {
+                return this.ConvertAll<T>(p => p);
+            }
+        }
+
         #region 字典操作
 
         /// <summary>
@@ -198,7 +210,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="groupField"></param>
         /// <returns></returns>
-        public IDictionary<TResult, IList<T>> ToDictionary<TResult>(Field groupField)
+        public new IDictionary<TResult, IList<T>> ToDictionary<TResult>(Field groupField)
         {
             return ToDictionary<TResult>(groupField.PropertyName);
         }
@@ -209,7 +221,7 @@ namespace MySoft.Data
         /// <typeparam name="TResult"></typeparam>
         /// <param name="groupName"></param>
         /// <returns></returns>
-        public IDictionary<TResult, IList<T>> ToDictionary<TResult>(string groupName)
+        public new IDictionary<TResult, IList<T>> ToDictionary<TResult>(string groupName)
         {
             IDictionary<TResult, IList<T>> group = new Dictionary<TResult, IList<T>>();
             if (this.Count == 0) return group;

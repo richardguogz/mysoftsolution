@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 可以输出Array的接口
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    interface IArrayList<T> : IList<T>
+    interface IArrayList<T> : IList<T>, IDataSource<IList<T>>
     {
         /// <summary>
         /// 获取当前索引的对象

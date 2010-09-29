@@ -22,7 +22,8 @@ namespace MySoft.IoC.Dll
             DbProvider p = DbProviderFactory.CreateDbProvider(DbProviderType.SqlServer9, "server=(local);Database=Shumi.LiveChat;Uid=sa;Pwd=shumiwang;");
             DbSession dbSession = new DbSession(p);
 
-            return dbSession.FromSql("select * from t_company").ToTable();
+            var data = dbSession.FromSql("select * from t_company").ToTable().OriginalData;
+            return data;
         }
     }
 }

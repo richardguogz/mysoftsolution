@@ -167,8 +167,15 @@ namespace MySoft.Core
         public static object GetPropertyValue(object obj, PropertyInfo property)
         {
             if (!property.CanRead) return null;
-            FastPropertyGetHandler getter = DynamicCalls.GetPropertyGetter(property);
-            return getter(obj);
+            try
+            {
+                FastPropertyGetHandler getter = DynamicCalls.GetPropertyGetter(property);
+                return getter(obj);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>

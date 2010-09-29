@@ -5,15 +5,15 @@ using System.Text;
 namespace MySoft.Data
 {
     /// <summary>
-    /// 行数据阅读器
+    /// 数据源
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRowReader<T> : IRowReader
+    public interface IDataSource<T>
     {
         /// <summary>
         /// 数据源
         /// </summary>
-        T DataSource { get; }
+        T OriginalData { get; }
     }
 
     /// <summary>

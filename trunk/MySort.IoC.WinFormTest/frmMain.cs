@@ -24,11 +24,11 @@ namespace MySort.IoC.WinFormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(WriteMessage);
+            //CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(WriteMessage);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
-            //DataTable dt = service.GetDataTable();
-            //return;
+            DataTable dt = service.GetDataTable();
+            return;
 
             richTextBox1.AppendText("测试：" + service.GetUserInfo("test") + "\r\n");
 

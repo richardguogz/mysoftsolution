@@ -87,6 +87,30 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 获取当前DataSource
+        /// </summary>
+        /// <returns></returns>
+        public DataTable OriginalData
+        {
+            get
+            {
+                DataTable table = new DataTable(this.TableName);
+                foreach (DataColumn column in this.Columns)
+                {
+                    table.Columns.Add(column.ColumnName, column.DataType);
+                }
+                if (this.Rows.Count != 0)
+                {
+                    foreach (DataRow row in this.Rows)
+                    {
+                        table.ImportRow(row);
+                    }
+                }
+                return table;
+            }
+        }
+
+        /// <summary>
         /// 实例化SourceTable
         /// </summary>
         /// <param name="dt"></param>
@@ -149,35 +173,25 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 克隆Table
-        /// </summary>
-        /// <returns></returns>
-        public new SourceTable Clone()
-        {
-            DataTable table = base.Copy();
-            return new SourceTable(table);
-        }
-
-        /// <summary>
         /// 选择某些列
         /// </summary>
         /// <param name="names"></param>
         /// <returns></returns>
         public SourceTable Select(params string[] names)
         {
-            SourceTable st = this.Clone();
+            DataTable dt = base.Copy();
             List<string> namelist = new List<string>(names);
             namelist.ForEach(p => p.ToLower());
             foreach (DataColumn column in this.Columns)
             {
                 if (!namelist.Contains(column.ColumnName.ToLower()))
-                    st.Columns.Remove(column.ColumnName);
+                    dt.Columns.Remove(column.ColumnName);
             }
 
             int index = 0;
-            namelist.ForEach(p => st.Columns[p].SetOrdinal(index++));
+            namelist.ForEach(p => dt.Columns[p].SetOrdinal(index++));
 
-            return st;
+            return dt as SourceTable;
         }
 
         /// <summary>
@@ -196,7 +210,7 @@ namespace MySoft.Data
                     dt.ImportRow(row);
                 }
             }
-            return new SourceTable(dt);
+            return dt as SourceTable;
         }
 
         /// <summary>
@@ -215,7 +229,7 @@ namespace MySoft.Data
                     dt.ImportRow(row);
                 }
             }
-            return new SourceTable(dt);
+            return dt as SourceTable;
         }
 
         /// <summary>
