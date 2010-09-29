@@ -27,13 +27,12 @@ namespace MySort.IoC.WinFormTest
             //CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(WriteMessage);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
-            DataTable dt = service.GetDataTable();
-            return;
+            //DataTable dt = service.GetDataTable();
+            //return;
 
             richTextBox1.AppendText("测试：" + service.GetUserInfo("test") + "\r\n");
 
             int count = (int)numericUpDown1.Value;
-            count = 1;
 
             for (int i = 0; i < count; i++)
             {
@@ -52,7 +51,7 @@ namespace MySort.IoC.WinFormTest
                 Stopwatch watch = Stopwatch.StartNew();
                 try
                 {
-                    UserInfo info = service.GetUserInfo("maoyong");
+                    UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000));
 
                     string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
                     WriteMessage(msg);

@@ -19,7 +19,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
 
             RemotingServiceHelper rh = new RemotingServiceHelper(config.Protocol, config.Server, config.Port);
             rh.OnLog += logger;
-            rh.PublishWellKnownServiceInstance(config.ServiceMQName, typeof(IServiceMQ), mq, System.Runtime.Remoting.WellKnownObjectMode.Singleton);
+            rh.PublishWellKnownServiceInstance(config.ServiceMQName, typeof(IServiceMQ), mq, System.Runtime.Remoting.WellKnownObjectMode.SingleCall);
 
             Console.WriteLine("Service MQ Server started...");
             Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));
