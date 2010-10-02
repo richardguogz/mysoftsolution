@@ -18,7 +18,7 @@ namespace LiveChat.Entity
         /// <summary>
         /// 客服消息数
         /// </summary>
-        public IDictionary<Seat, int> SeatMessages { get; set; }
+        public IDictionary<Seat, MessageInfo> SeatMessages { get; set; }
 
         /// <summary>
         /// 群消息数
