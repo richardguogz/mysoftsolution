@@ -449,6 +449,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="setup.rar" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Admin\Bll\" />
     <Folder Include="Admin\usercontrols\" />
   </ItemGroup>
