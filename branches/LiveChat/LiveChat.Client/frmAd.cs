@@ -97,7 +97,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 

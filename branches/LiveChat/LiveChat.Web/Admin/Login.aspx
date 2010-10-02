@@ -65,7 +65,7 @@
                 <li>密&nbsp;&nbsp;&nbsp;&nbsp;码：&nbsp;<input name="Admin_Password" id="Admin_Password"
                     type="password" style="width: 150px" /></li>
                 <li>验证码：&nbsp;<input name="Admin_Validate" id="Admin_Validate" type="text" style="width: 54px" />&nbsp;&nbsp;<img
-                    style="vertical-align: top;" src="validate.aspx" /></li>
+                    style="vertical-align: top;" src="../Validate.aspx" /></li>
                 <li>
                     <input type="checkbox" id="ChkSaveLogin" name="ChkSaveLogin" /><label for="ChkSaveLogin">记住我的登录状态&nbsp;
 			            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></li>

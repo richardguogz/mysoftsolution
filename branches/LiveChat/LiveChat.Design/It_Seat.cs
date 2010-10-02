@@ -26,5 +26,6 @@ namespace LiveChat.Design
         string Telephone { get; set; }
         string MobileNumber { get; set; }
         string Email { get; set; }
+        byte[] FaceImage { get; set; }
     }
 }

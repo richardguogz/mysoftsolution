@@ -15,10 +15,10 @@ namespace LiveChat.Client
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
-        private SeatConfig seat;
+        private Seat seat;
         private Company company;
 
-        public frmSeat(ISeatService service, Company company, SeatConfig seat)
+        public frmSeat(ISeatService service, Company company, Seat seat)
         {
             this.service = service;
             this.seat = seat;
@@ -125,11 +125,11 @@ namespace LiveChat.Client
                 {
                     if (seat == null)
                     {
-                        service.AddSeatConfig(company.CompanyID, seatCode, seatName, password, email, phone, mobile, sign, remark, type);
+                        service.AddSeat(company.CompanyID, seatCode, seatName, password, email, phone, mobile, sign, remark, type);
                     }
                     else
                     {
-                        service.UpdateSeatConfig(seat.SeatID, seatName, email, phone, mobile, sign, remark, type);
+                        service.UpdateSeat(seat.SeatID, seatName, email, phone, mobile, sign, remark, type);
                     }
                     if (Callback != null) Callback(company.CompanyID);
                     this.Close();

@@ -99,11 +99,11 @@ namespace LiveChat.Client
             }
             catch (LiveChatException ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowError(ex);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("系统初始化错误，请与开发商联系！" + ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowError("系统初始化错误，请与开发商联系！", ex);
             }
         }
 
@@ -124,7 +124,7 @@ namespace LiveChat.Client
 
             try
             {
-                var info = service.GetSeatInfo(seat.SeatID);
+                var info = service.GetSeatMessage(seat.SeatID);
 
                 StringBuilder sb = new StringBuilder();
 
@@ -141,11 +141,11 @@ namespace LiveChat.Client
                 }
 
                 //客服消息
-                foreach (KeyValuePair<Seat, int> kv in info.SeatMessages)
+                foreach (KeyValuePair<Seat, MessageInfo> kv in info.SeatMessages)
                 {
-                    if (kv.Value > 0)
+                    if (kv.Value.Count > 0)
                     {
-                        string msgText = string.Format("客服【{0}】给您发送了【{1}】条新消息！", kv.Key.SeatName, kv.Value);
+                        string msgText = string.Format("客服【{0}】给您发送了【{1}】条新消息！", kv.Key.SeatName, kv.Value.Count);
                         sb.AppendLine(msgText);
                     }
                 }
@@ -182,7 +182,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
 
             msgtimer.Start();
@@ -236,8 +236,8 @@ namespace LiveChat.Client
                     ClientUtils.SoftwareOtherLogin = true;
 
                     MessageBox.Show("您当前的ID号在其它地方登录，将强制退出！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Application.ExitThread();
                     Application.Exit();
-                    Environment.Exit(0);
 
                     return;
                 }
@@ -273,7 +273,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
 
             chattimer.Start();
@@ -390,7 +390,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
                 return 0;
             }
         }
@@ -467,7 +467,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
                 return 0;
             }
         }
@@ -647,7 +647,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -677,7 +677,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 

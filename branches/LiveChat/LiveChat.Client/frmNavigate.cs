@@ -9,6 +9,7 @@ using LiveChat.Interface;
 using LiveChat.Entity;
 using MySoft.Core;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace LiveChat.Client
 {
@@ -31,11 +32,10 @@ namespace LiveChat.Client
         private ISeatService service;
         private Company loginCompany;
         private Seat loginSeat;
-        private SeatConfig config;
         private Guid clientID;
         private IList<Area> areaList;
         private Timer refreshtime;
-        private SeatInfo seatInfo;
+        private SeatMessage seatInfo;
         private bool isMainShow = true;
         private IList<SeatFriend> myfriends;
 
@@ -83,7 +83,11 @@ namespace LiveChat.Client
 
                 Singleton.Show(() =>
                 {
-                    Rectangle rect = new Rectangle(this.Left + this.Width, this.Top, 10000, this.Height);
+                    int left = this.Left + this.Width;
+                    if (this.Left > Screen.PrimaryScreen.Bounds.Width / 2)
+                        left = this.Left - 800;
+
+                    Rectangle rect = new Rectangle(left, this.Top, 10000, this.Height);
                     frmMain main = new frmMain(service, loginCompany, loginSeat, clientID, SystemFonts.DefaultFont, SystemColors.WindowText, rect);
                     main.CallbackClose += new CallbackEventHandler(main_Callback);
                     main.CallbackSession += new CallbackEventHandler(main_CallbackSession);
@@ -93,7 +97,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -117,19 +121,27 @@ namespace LiveChat.Client
             tabControl1.ItemSize = new Size(width, 24);
 
             ImageList imgList2 = new ImageList();
-            imgList2.ImageSize = new Size(1, 24);//分别是宽和高
-            lvSearchName.SmallImageList = imgList2;   //这里设置listView的SmallImageList 
+            imgList2.ImageSize = new Size(1, 24);       //分别是宽和高
+            lvSearchName.SmallImageList = imgList2;     //这里设置listView的SmallImageList 
 
-            config = service.GetSeatConfig(loginSeat.SeatID);
-            lblUserName.Text = string.Format("{0}(在线)", config.SeatName);
+            lblUserName.Text = string.Format("{0}(在线)", loginSeat.SeatName);
             tsUserName.Text = string.Empty;
-            lblSign.Text = config.Sign;
-            toolTip1.SetToolTip(lblSign, config.Sign);
-            tsmiExit.Text = string.Format("退出系统【{0}】", loginSeat.SeatCode);
+            if (loginSeat.FaceImage != null)
+            {
+                MemoryStream ms = new MemoryStream(loginSeat.FaceImage);
+                Image img = BitmapManipulator.ResizeBitmap((Bitmap)Bitmap.FromStream(ms), 60, 60);
+                pbSeatFace.Image = img;
+            }
+            lblSign.Text = loginSeat.Sign;
+            toolTip1.SetToolTip(lblSign, loginSeat.Sign);
+            tsmiExit.Text = string.Format("退出系统【{0}】", loginSeat.ShowName);
 
             tvSession.HideSelection = false;
+            tvSession.MouseDown += new MouseEventHandler(tvSession_MouseDown);
             tvLinkman.HideSelection = false;
+            tvLinkman.MouseDown += new MouseEventHandler(tvLinkman_MouseDown);
             tvSeatGroup.HideSelection = false;
+            tvSeatGroup.MouseDown += new MouseEventHandler(tvSeatGroup_MouseDown);
 
             //获取地区信息
             areaList = service.GetAreas();
@@ -140,6 +152,42 @@ namespace LiveChat.Client
             refreshtime.Start();
         }
 
+        void tvSeatGroup_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var node = tvSeatGroup.GetNodeAt(e.X, e.Y);
+                if (node != null && node.Tag != null)
+                {
+                    tvSeatGroup.SelectedNode = node;
+                }
+            }
+        }
+
+        void tvLinkman_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var node = tvLinkman.GetNodeAt(e.X, e.Y);
+                if (node != null && node.Tag != null)
+                {
+                    tvLinkman.SelectedNode = node;
+                }
+            }
+        }
+
+        void tvSession_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var node = tvSession.GetNodeAt(e.X, e.Y);
+                if (node != null && node.Tag != null)
+                {
+                    tvSession.SelectedNode = node;
+                }
+            }
+        }
+
         void refreshtime_Tick(object sender, EventArgs e)
         {
             refreshtime.Stop();
@@ -147,7 +195,7 @@ namespace LiveChat.Client
             try
             {
                 //处理定时刷新
-                seatInfo = service.GetSeatInfo(loginSeat.SeatID);
+                seatInfo = service.GetSeatMessage(loginSeat.SeatID);
 
                 //绑定请求
                 RefreshRequest();
@@ -166,7 +214,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
 
                 //throw ex;
 
@@ -198,7 +246,7 @@ namespace LiveChat.Client
             BindSeatFriend();
 
             //处理定时刷新
-            seatInfo = service.GetSeatInfo(loginSeat.SeatID);
+            seatInfo = service.GetSeatMessage(loginSeat.SeatID);
         }
 
         private void RefreshRequest()
@@ -344,10 +392,20 @@ namespace LiveChat.Client
                 TreeNode tn = FindTreeNode<Seat>(tvLinkman, kv.Key, "SeatID");
                 if (tn != null)
                 {
-                    if (kv.Value > 0)
-                        tn.Text = string.Format("{0}({1})", kv.Key.ShowName, kv.Value);
+                    if (!string.IsNullOrEmpty(kv.Value.MemoName))
+                    {
+                        if (kv.Value.Count > 0)
+                            tn.Text = string.Format("{0}({1}) {2}", kv.Value.MemoName, kv.Value.Count, kv.Key.Sign);
+                        else
+                            tn.Text = string.Format("{0} {1}", kv.Value.MemoName, kv.Key.Sign);
+                    }
                     else
-                        tn.Text = string.Format("{0}", kv.Key.ShowName);
+                    {
+                        if (kv.Value.Count > 0)
+                            tn.Text = string.Format("{0}({1}) {2}", kv.Key.ShowName, kv.Value.Count, kv.Key.Sign);
+                        else
+                            tn.Text = string.Format("{0} {1}", kv.Key.ShowName, kv.Key.Sign);
+                    }
 
                     if (kv.Key.State != (tn.Tag as Seat).State)
                     {
@@ -391,6 +449,9 @@ namespace LiveChat.Client
                     dictCompany.Add(friend.CompanyID, friend.CompanyName);
 
                 ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
+                if (!string.IsNullOrEmpty(friend.MemoName))
+                    item = new ListViewItem(new string[] { friend.MemoName + string.Format("({0})", friend.SeatCode) });
+
                 item.Tag = friend;
                 lvSearchName.Items.Add(item);
             }
@@ -405,7 +466,10 @@ namespace LiveChat.Client
                 node.Text = string.Format("{0}({1})", kv.Value, list.Count);
                 foreach (var friend in list)
                 {
-                    TreeNode tn = new TreeNode(string.Format("{0}", friend.ShowName));
+                    TreeNode tn = new TreeNode(string.Format("{0} {1}", friend.ShowName, friend.Sign));
+                    if (!string.IsNullOrEmpty(friend.MemoName))
+                        tn = new TreeNode(string.Format("{0} {1}", friend.MemoName, friend.Sign));
+
                     if (friend.State == OnlineState.Online)
                     {
                         tn.SelectedImageIndex = 0;
@@ -445,6 +509,9 @@ namespace LiveChat.Client
             {
                 myfriends.Add(friend);
                 ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
+                if (!string.IsNullOrEmpty(friend.MemoName))
+                    item = new ListViewItem(new string[] { friend.MemoName });
+
                 item.Tag = friend;
                 lvSearchName.Items.Add(item);
             }
@@ -456,7 +523,10 @@ namespace LiveChat.Client
             tvLinkman.Nodes.Add(tn1);
             foreach (var friend in friends)
             {
-                TreeNode tn = new TreeNode(string.Format("{0}", friend.ShowName));
+                TreeNode tn = new TreeNode(string.Format("{0} {1}", friend.ShowName, friend.Sign));
+                if (!string.IsNullOrEmpty(friend.MemoName))
+                    tn = new TreeNode(string.Format("{0} {1}", friend.MemoName, friend.Sign));
+
                 if (friend.State == OnlineState.Online)
                 {
                     tn.SelectedImageIndex = 0;
@@ -555,7 +625,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                SeatConfig seat = service.GetSeatConfig(loginSeat.SeatID);
+                Seat seat = service.GetSeat(loginSeat.SeatID);
                 frmSeatInfo frm = new frmSeatInfo(service, seat, true);
                 frm.Callback += new CallbackEventHandler(frm_Callback);
                 return frm;
@@ -565,9 +635,9 @@ namespace LiveChat.Client
         void frm_Callback(object obj)
         {
             if (obj == null) return;
-            if (obj is SeatConfig)
+            if (obj is Seat)
             {
-                SeatConfig seat = obj as SeatConfig;
+                Seat seat = obj as Seat;
                 lblUserName.Text = seat.ShowName;
                 lblSign.Text = seat.Sign;
             }
@@ -673,8 +743,8 @@ namespace LiveChat.Client
                 if (ClientUtils.SoftwareOtherLogin)
                 {
                     isClose = true;
+                    Application.ExitThread();
                     Application.Exit();
-                    Environment.Exit(0);
                     this.Close();
 
                     return;
@@ -696,14 +766,14 @@ namespace LiveChat.Client
                     catch { }
 
                     isClose = true;
+                    Application.ExitThread();
                     Application.Exit();
-                    Environment.Exit(0);
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("退出系统时出现错误：" + ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError("退出系统时出现错误：", ex);
             }
         }
 
@@ -731,7 +801,7 @@ namespace LiveChat.Client
                 return;
             }
 
-            string seatID = ((SeatFriend)e.Node.Tag).SeatID;
+            string seatID = ((Seat)e.Node.Tag).SeatID;
             if (seatID == loginSeat.SeatID)
             {
                 MessageBox.Show("不能自己与自己聊天！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -833,7 +903,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                SeatConfig seat = service.GetSeatConfig(loginSeat.SeatID);
+                Seat seat = service.GetSeat(loginSeat.SeatID);
                 frmSeatInfo frm = new frmSeatInfo(service, seat, true);
                 frm.Callback += new CallbackEventHandler(frm_Callback);
                 return frm;
@@ -858,7 +928,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -954,7 +1024,11 @@ namespace LiveChat.Client
             frmMain main = Singleton.GetForm<frmMain>();
             if (main == null) return;
             main.Top = this.Top;
-            main.Left = this.Left + this.Width;
+
+            if (this.Left > Screen.PrimaryScreen.Bounds.Width / 2)
+                main.Left = this.Left - main.Width;
+            else
+                main.Left = this.Left + this.Width;
             main.Activate();
         }
 
@@ -963,7 +1037,7 @@ namespace LiveChat.Client
             try
             {
                 service.ChangeSeatState(loginSeat.SeatID, OnlineState.Online);
-                lblUserName.Text = string.Format("{0}(在线)", config.SeatName);
+                lblUserName.Text = string.Format("{0}(在线)", loginSeat.SeatName);
             }
             catch { }
         }
@@ -973,7 +1047,7 @@ namespace LiveChat.Client
             try
             {
                 service.ChangeSeatState(loginSeat.SeatID, OnlineState.Leave);
-                lblUserName.Text = string.Format("{0}(离开)", config.SeatName);
+                lblUserName.Text = string.Format("{0}(离开)", loginSeat.SeatName);
             }
             catch { }
         }
@@ -983,7 +1057,7 @@ namespace LiveChat.Client
             try
             {
                 service.ChangeSeatState(loginSeat.SeatID, OnlineState.Busy);
-                lblUserName.Text = string.Format("{0}(忙碌)", config.SeatName);
+                lblUserName.Text = string.Format("{0}(忙碌)", loginSeat.SeatName);
             }
             catch { }
         }
@@ -1003,13 +1077,16 @@ namespace LiveChat.Client
                     var friends = (myfriends as List<SeatFriend>).FindAll(p =>
                         {
                             string value = tbSearchName.Text.Trim();
-                            return p.ShowName.Contains(value);
+                            return p.ShowName.Contains(value) || (!string.IsNullOrEmpty(p.MemoName) && p.MemoName.Contains(value));
                         });
 
                     lvSearchName.Items.Clear();
                     foreach (SeatFriend friend in friends)
                     {
                         ListViewItem item = new ListViewItem(new string[] { friend.ShowName });
+                        if (!string.IsNullOrEmpty(friend.MemoName))
+                            item = new ListViewItem(new string[] { friend.MemoName + string.Format("({0})", friend.SeatCode) });
+
                         item.Tag = friend;
                         lvSearchName.Items.Add(item);
                     }
@@ -1030,15 +1107,13 @@ namespace LiveChat.Client
                 return;
             }
 
-            SeatFriend friend = tvLinkman.SelectedNode.Tag as SeatFriend;
-
-            if (MessageBox.Show(string.Format("确定添加【{0}】为好友吗？", friend.SeatName), "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            Seat friend = (Seat)tvLinkman.SelectedNode.Tag;
+            //发送请求加对方为好友
+            Singleton.Show<frmAddSeatConfirm>(() =>
             {
-                if (service.AddSeatFriend(loginSeat.SeatID, friend.SeatID))
-                {
-                    BindSeatFriend();
-                }
-            }
+                frmAddSeatConfirm frm = new frmAddSeatConfirm(service, loginCompany, loginSeat, friend);
+                return frm;
+            });
         }
 
         private void 删除好友ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1049,7 +1124,7 @@ namespace LiveChat.Client
                 return;
             }
 
-            SeatFriend friend = tvLinkman.SelectedNode.Tag as SeatFriend;
+            Seat friend = (Seat)tvLinkman.SelectedNode.Tag;
             if (MessageBox.Show(string.Format("确定删除【{0}】吗？", friend.SeatName), "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 if (service.DeleteSeatFriend(loginSeat.SeatID, friend.SeatID))
@@ -1065,7 +1140,7 @@ namespace LiveChat.Client
             lvSearchName.Visible = false;
             tvLinkman.Refresh();
 
-            string seatID = ((SeatFriend)lvSearchName.SelectedItems[0].Tag).SeatID;
+            string seatID = ((Seat)lvSearchName.SelectedItems[0].Tag).SeatID;
             if (seatID == loginSeat.SeatID)
             {
                 MessageBox.Show("不能自己与自己聊天！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1110,7 +1185,7 @@ namespace LiveChat.Client
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ClientUtils.ShowError(ex);
                 }
             }
         }
@@ -1152,9 +1227,50 @@ namespace LiveChat.Client
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ClientUtils.ShowError(ex);
                 }
             }
+        }
+
+        private void 查看资料ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvLinkman.SelectedNode == null || tvLinkman.SelectedNode.Tag == null)
+            {
+                MessageBox.Show("请选中要操作的好友！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Seat friend = tvLinkman.SelectedNode.Tag as Seat;
+            Singleton.Show<frmSeatInfo>(() =>
+            {
+                Seat seat = service.GetSeat(friend.SeatID);
+                frmSeatInfo frm = new frmSeatInfo(service, seat, false);
+                return frm;
+            });
+        }
+
+        private void 修改备注名称ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvLinkman.SelectedNode == null || tvLinkman.SelectedNode.Tag == null)
+            {
+                MessageBox.Show("请选中要操作的好友！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Seat friend = tvLinkman.SelectedNode.Tag as Seat;
+            //实现备注名称的修改
+            Singleton.Show<frmSeatRename>(() =>
+            {
+                frmSeatRename frmRename = new frmSeatRename(service, loginSeat, friend);
+                frmRename.Callback += new CallbackEventHandler(frmRename_Callback);
+                return frmRename;
+            });
+        }
+
+        void frmRename_Callback(object obj)
+        {
+            //刷新好友
+            BindSeatFriend();
         }
     }
 }

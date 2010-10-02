@@ -51,7 +51,6 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnSendMessage = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -66,6 +65,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             tsbExit = new System.Windows.Forms.ToolStripButton();
             this.plChat.SuspendLayout();
             this.tsChatTools.SuspendLayout();
@@ -93,7 +93,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(784, 382);
+            this.wbChatBox.Size = new System.Drawing.Size(584, 256);
             this.wbChatBox.TabIndex = 13;
             // 
             // plChat
@@ -104,18 +104,18 @@
             this.plChat.Controls.Add(this.tsChatTools);
             this.plChat.Controls.Add(this.panel7);
             this.plChat.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.plChat.Location = new System.Drawing.Point(0, 438);
+            this.plChat.Location = new System.Drawing.Point(0, 312);
             this.plChat.Name = "plChat";
-            this.plChat.Size = new System.Drawing.Size(784, 124);
+            this.plChat.Size = new System.Drawing.Size(584, 100);
             this.plChat.TabIndex = 12;
             // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.Location = new System.Drawing.Point(696, 33);
+            this.btnSend.Location = new System.Drawing.Point(496, 33);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(77, 83);
+            this.btnSend.Size = new System.Drawing.Size(77, 59);
             this.btnSend.TabIndex = 1;
             this.btnSend.Text = "发送(&S)";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -129,7 +129,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(682, 92);
+            this.txtMessage.Size = new System.Drawing.Size(482, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -151,25 +151,27 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(782, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(582, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
             // tsbFont
             // 
+            this.tsbFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbFont.Image = global::LiveChat.Client.Properties.Resources.字体格式;
             this.tsbFont.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbFont.Name = "tsbFont";
-            this.tsbFont.Size = new System.Drawing.Size(79, 22);
+            this.tsbFont.Size = new System.Drawing.Size(23, 22);
             this.tsbFont.Text = "文本格式";
             this.tsbFont.Click += new System.EventHandler(this.tsbFont_Click);
             // 
             // tsbColor
             // 
+            this.tsbColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbColor.Image = global::LiveChat.Client.Properties.Resources.字体颜色;
             this.tsbColor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbColor.Name = "tsbColor";
-            this.tsbColor.Size = new System.Drawing.Size(79, 22);
+            this.tsbColor.Size = new System.Drawing.Size(23, 22);
             this.tsbColor.Text = "字体颜色";
             this.tsbColor.Click += new System.EventHandler(this.tsbColor_Click);
             // 
@@ -289,21 +291,11 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.emotionDropdown1);
-            this.panel4.Location = new System.Drawing.Point(2, 350);
+            this.panel4.Location = new System.Drawing.Point(2, 224);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(226, 87);
             this.panel4.TabIndex = 15;
             this.panel4.Visible = false;
-            // 
-            // emotionDropdown1
-            // 
-            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
-            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(226, 87);
-            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(226, 87);
-            this.emotionDropdown1.Name = "emotionDropdown1";
-            this.emotionDropdown1.Size = new System.Drawing.Size(226, 87);
-            this.emotionDropdown1.TabIndex = 0;
             // 
             // panel2
             // 
@@ -314,9 +306,9 @@
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(2, 367);
+            this.panel2.Location = new System.Drawing.Point(2, 241);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(562, 70);
+            this.panel2.Size = new System.Drawing.Size(500, 70);
             this.panel2.TabIndex = 16;
             this.panel2.Visible = false;
             // 
@@ -324,7 +316,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(383, 34);
+            this.button3.Location = new System.Drawing.Point(321, 34);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(59, 21);
             this.button3.TabIndex = 4;
@@ -342,13 +334,13 @@
             this.txtFile.Location = new System.Drawing.Point(22, 34);
             this.txtFile.Name = "txtFile";
             this.txtFile.ReadOnly = true;
-            this.txtFile.Size = new System.Drawing.Size(355, 21);
+            this.txtFile.Size = new System.Drawing.Size(293, 21);
             this.txtFile.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(448, 33);
+            this.button2.Location = new System.Drawing.Point(386, 33);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(46, 23);
             this.button2.TabIndex = 2;
@@ -359,7 +351,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(500, 33);
+            this.button1.Location = new System.Drawing.Point(438, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(46, 23);
             this.button1.TabIndex = 1;
@@ -390,7 +382,7 @@
             tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(784, 56);
+            this.toolStrip1.Size = new System.Drawing.Size(584, 56);
             this.toolStrip1.TabIndex = 18;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -426,11 +418,21 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 56);
             // 
+            // emotionDropdown1
+            // 
+            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
+            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(226, 87);
+            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(226, 87);
+            this.emotionDropdown1.Name = "emotionDropdown1";
+            this.emotionDropdown1.Size = new System.Drawing.Size(226, 87);
+            this.emotionDropdown1.TabIndex = 0;
+            // 
             // frmSeatChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(584, 412);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.wbChatBox);

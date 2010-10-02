@@ -58,7 +58,6 @@
     <Compile Include="Manager\LeaveManager.cs" />
     <Compile Include="Manager\MessageManager.cs" />
     <Compile Include="Manager\ReplyManager.cs" />
-    <Compile Include="Manager\SeatConfigManager.cs" />
     <Compile Include="Manager\LinkManager.cs" />
     <Compile Include="Manager\SeatFriendManager.cs" />
     <Compile Include="Model\Entities.cs" />

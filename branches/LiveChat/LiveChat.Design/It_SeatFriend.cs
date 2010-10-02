@@ -11,6 +11,7 @@ namespace LiveChat.Design
         string SeatID { get; set; }
         [PrimaryKey]
         string FriendID { get; set; }
+        string MemoName { get; set; }
         DateTime AddTime { get; set; }
     }
 }

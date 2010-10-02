@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="classes\BitmapManipulator.cs" />
     <Compile Include="classes\ClientInfo.cs" />
     <Compile Include="classes\ClientUtils.cs" />
     <Compile Include="controls\dbImageBox.cs">
@@ -199,6 +200,12 @@
     <Compile Include="frmSeatInfo.Designer.cs">
       <DependentUpon>frmSeatInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSeatRename.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeatRename.Designer.cs">
+      <DependentUpon>frmSeatRename.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSetup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -272,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSeatInfo.resx">
       <DependentUpon>frmSeatInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeatRename.resx">
+      <DependentUpon>frmSeatRename.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSetup.resx">
       <DependentUpon>frmSetup.cs</DependentUpon>

@@ -207,16 +207,16 @@ namespace LiveChat.Client
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            Application.ExitThread();
             Application.Exit();
-            Environment.Exit(0);
         }
 
         private void frmLogin_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (isExit)
             {
+                Application.ExitThread();
                 Application.Exit();
-                Environment.Exit(0);
             }
         }
 
@@ -229,8 +229,8 @@ namespace LiveChat.Client
         {
             if (!isNewForm)
             {
+                Application.ExitThread();
                 Application.Exit();
-                Environment.Exit(0);
             }
         }
 

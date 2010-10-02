@@ -999,7 +999,7 @@
                 {
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_95DBA4B6DC09425593BB52FA351A815A"
                     {
-                    "Name" = "8:Web在线客服系统"
+                    "Name" = "8:面料QQ"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
@@ -1182,7 +1182,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_06FCE31AE79E46499EE4BFEC6DD093A3"
             {
-            "Name" = "8:卸载Web在线客服系统v2.0"
+            "Name" = "8:卸载面料QQ2.0"
             "Arguments" = "8:/x {72C50954-4D73-4F08-91F5-0C90F0CD8339}"
             "Description" = "8:卸载Web在线客服系统2.0"
             "ShowCmd" = "3:1"
@@ -1196,7 +1196,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C10A12BFA4F34F03B34284C44E8A6DCB"
             {
-            "Name" = "8:Web在线客服系统v2.0"
+            "Name" = "8:面料QQ2.0"
             "Arguments" = "8:"
             "Description" = "8:Web在线客服系统2.0"
             "ShowCmd" = "3:1"
@@ -1210,7 +1210,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E043C20C453F4F22B92F035B8A43AC4B"
             {
-            "Name" = "8:Web在线客服系统v2.0"
+            "Name" = "8:面料QQ2.0"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"

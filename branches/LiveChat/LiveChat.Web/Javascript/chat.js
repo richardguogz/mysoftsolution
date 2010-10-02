@@ -503,13 +503,13 @@ function DynamicMessage(defaultMsg, msg, hiddenMsg) {
     this.initIntervalMsg = function() {
         this.intervalMsg = setInterval(function() {
             if (!this.bMsg) {
-                window.document.title = msg + " - " + defaultMsg;
+                window.document.title = msg;
                 this.bMsg = true;
             } else {
-                window.document.title = hiddenMsg + " - " + defaultMsg;
+                window.document.title = hiddenMsg;
                 this.bMsg = false;
             }
-        }, 1000);
+        }, 500);
     };
 
     this.clearIntervalMsg = function() {

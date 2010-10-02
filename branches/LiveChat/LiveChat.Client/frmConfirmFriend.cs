@@ -56,6 +56,8 @@ namespace LiveChat.Client
                 else if (radioButton3.Checked) type = AcceptType.Refuse;
 
                 service.ConfirmAddSeatFriend(request.ID, type, refuse);
+                if (Callback != null) Callback(null);
+                this.Close();
             }
             catch (LiveChatException ex)
             {
@@ -65,9 +67,6 @@ namespace LiveChat.Client
             {
                 MessageBox.Show("错误：" + ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            if (Callback != null) Callback(null);
-            this.Close();
         }
 
         private void textBox1_Click(object sender, EventArgs e)

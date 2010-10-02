@@ -37,6 +37,8 @@ namespace LiveChat.Service {
             
             protected String _Email;
             
+            protected Byte[] _FaceImage;
+            
             public String CompanyID {
                 get {
                     return this._CompanyID;
@@ -177,6 +179,16 @@ namespace LiveChat.Service {
                 }
             }
             
+            public Byte[] FaceImage {
+                get {
+                    return this._FaceImage;
+                }
+                set {
+                    this.OnPropertyValueChange(_.FaceImage, _FaceImage, value);
+                    this._FaceImage = value;
+                }
+            }
+            
             /// <summary>
             /// 获取实体对应的表名
             /// </summary>
@@ -211,7 +223,8 @@ namespace LiveChat.Service {
                         _.LoginCount,
                         _.Telephone,
                         _.MobileNumber,
-                        _.Email};
+                        _.Email,
+                        _.FaceImage};
             }
             
             /// <summary>
@@ -232,7 +245,8 @@ namespace LiveChat.Service {
                         this._LoginCount,
                         this._Telephone,
                         this._MobileNumber,
-                        this._Email};
+                        this._Email,
+                        this._FaceImage};
             }
             
             /// <summary>
@@ -280,6 +294,9 @@ namespace LiveChat.Service {
                 }
                 if ((false == reader.IsDBNull(_.Email))) {
                     this._Email = reader.GetString(_.Email);
+                }
+                if ((false == reader.IsDBNull(_.FaceImage))) {
+                    this._FaceImage = reader.GetBytes(_.FaceImage);
                 }
             }
             
@@ -376,7 +393,11 @@ namespace LiveChat.Service {
                 /// 字段名：Email - 数据类型：String
                 /// </summary>
                 public static Field Email = new Field<t_Seat>("Email");
+                
+                /// <summary>
+                /// 字段名：FaceImage - 数据类型：Byte[]
+                /// </summary>
+                public static Field FaceImage = new Field<t_Seat>("FaceImage");
             }
         }
     }
-    

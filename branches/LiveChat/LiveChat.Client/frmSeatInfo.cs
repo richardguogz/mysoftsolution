@@ -15,9 +15,9 @@ namespace LiveChat.Client
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
-        private SeatConfig seat;
+        private Seat seat;
         private bool isSelf;
-        public frmSeatInfo(ISeatService service, SeatConfig seat, bool isSelf)
+        public frmSeatInfo(ISeatService service, Seat seat, bool isSelf)
         {
             this.service = service;
             this.seat = seat;
@@ -46,29 +46,36 @@ namespace LiveChat.Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string seatName = txtSeatName.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string phone = txtTelephone.Text.Trim();
-            string mobile = txtMobileNumber.Text.Trim();
-            string sign = txtSign.Text.Trim();
-            string remark = txtRemark.Text.Trim();
-
-            if (string.IsNullOrEmpty(seatName))
+            try
             {
-                MessageBox.Show("客服名称不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtSeatName.Focus();
-                return;
+                string seatName = txtSeatName.Text.Trim();
+                string email = txtEmail.Text.Trim();
+                string phone = txtTelephone.Text.Trim();
+                string mobile = txtMobileNumber.Text.Trim();
+                string sign = txtSign.Text.Trim();
+                string remark = txtRemark.Text.Trim();
+
+                if (string.IsNullOrEmpty(seatName))
+                {
+                    MessageBox.Show("客服名称不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    txtSeatName.Focus();
+                    return;
+                }
+
+                //提示是否需要提交数据
+                if (MessageBox.Show("确定修改吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+
+                service.UpdateSeat(seat.SeatID, seatName, email, phone, mobile, sign, remark, seat.SeatType);
+                seat.SeatName = seatName;
+                seat.Sign = sign;
+                seat.Introduction = remark;
+                if (Callback != null) Callback(seat);
+                this.Close();
             }
-
-            //提示是否需要提交数据
-            if (MessageBox.Show("确定修改吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
-
-            service.UpdateSeatConfig(seat.SeatID, seatName, email, phone, mobile, sign, remark, seat.SeatType);
-            seat.SeatName = seatName;
-            seat.Sign = sign;
-            seat.Introduction = remark;
-            if (Callback != null) Callback(seat);
-            this.Close();
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

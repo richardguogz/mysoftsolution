@@ -51,14 +51,13 @@
     <Compile Include="Message\S2SMessage.cs" />
     <Compile Include="Person\RequestInfo.cs" />
     <Compile Include="Person\SeatFriend.cs" />
-    <Compile Include="Person\SeatInfo.cs" />
+    <Compile Include="Person\SeatMessage.cs" />
     <Compile Include="Session\P2PSession.cs" />
     <Compile Include="SortType.cs" />
     <Compile Include="UploadType.cs" />
     <Compile Include="Message\MessageState.cs" />
     <Compile Include="Person\SexType.cs" />
     <Compile Include="Person\UserExtend.cs" />
-    <Compile Include="SeatConfig.cs" />
     <Compile Include="Message\MessageType.cs" />
     <Compile Include="Person\Company.cs" />
     <Compile Include="Group\SeatGroup.cs" />

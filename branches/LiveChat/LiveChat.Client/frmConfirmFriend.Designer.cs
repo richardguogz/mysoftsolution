@@ -173,7 +173,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(339, 261);
+            this.button2.Location = new System.Drawing.Point(339, 269);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -184,7 +184,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(258, 261);
+            this.button1.Location = new System.Drawing.Point(258, 269);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
@@ -194,18 +194,18 @@
             // 
             // lblRequest
             // 
-            this.lblRequest.BackColor = System.Drawing.Color.White;
-            this.lblRequest.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblRequest.BackColor = System.Drawing.SystemColors.Control;
             this.lblRequest.ForeColor = System.Drawing.Color.Red;
             this.lblRequest.Location = new System.Drawing.Point(40, 115);
             this.lblRequest.Name = "lblRequest";
-            this.lblRequest.Size = new System.Drawing.Size(368, 34);
+            this.lblRequest.Size = new System.Drawing.Size(368, 28);
             this.lblRequest.TabIndex = 30;
             this.lblRequest.Text = "label5";
             // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(40, 152);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(143, 16);
@@ -221,7 +221,6 @@
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(47, 16);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "同意";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
@@ -232,7 +231,6 @@
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(47, 16);
             this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
             this.radioButton3.Text = "拒绝";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 

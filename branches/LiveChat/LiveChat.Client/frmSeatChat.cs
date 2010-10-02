@@ -118,14 +118,14 @@ namespace LiveChat.Client
                             {
                                 p.SetAttribute("className", "visitor");
                                 if (msg.Type == MessageType.Picture)
-                                    sb.Append(msg.SenderName + "向您发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append(msg.SenderName + "向您发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                 else if (msg.Type == MessageType.File)
                                 {
-                                    sb.Append(msg.SenderName + "向您传送了一个文件 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append(msg.SenderName + "向您传送了一个文件 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                     msg.Content = "点击下载:" + msg.Content;
                                 }
                                 else
-                                    sb.Append(msg.SenderName + "&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append(msg.SenderName + "&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
 
                                 sb.Append("<br />");
                                 sb.Append("<span>" + msg.Content + "</span>");
@@ -134,14 +134,14 @@ namespace LiveChat.Client
                             {
                                 p.SetAttribute("className", "operator");
                                 if (msg.Type == MessageType.Picture)
-                                    sb.Append("您向" + ((P2PMessage)msg).ReceiverName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append("您向" + ((P2PMessage)msg).ReceiverName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                 else if (msg.Type == MessageType.File)
                                 {
-                                    sb.Append("您向" + ((P2PMessage)msg).ReceiverName + "传送了一个文件 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append("您向" + ((P2PMessage)msg).ReceiverName + "传送了一个文件 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                     msg.Content = "点击下载:" + msg.Content;
                                 }
                                 else
-                                    sb.Append("您&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append("您&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
 
                                 sb.Append("<br />");
                                 sb.Append("<span>" + msg.Content + "</span>");
@@ -481,8 +481,7 @@ namespace LiveChat.Client
         {
             Singleton.Show<frmSeatInfo>(() =>
             {
-                SeatConfig seat = service.GetSeatConfig(toSeat.SeatID);
-                frmSeatInfo frm = new frmSeatInfo(service, seat, false);
+                frmSeatInfo frm = new frmSeatInfo(service, toSeat, false);
                 return frm;
             });
         }

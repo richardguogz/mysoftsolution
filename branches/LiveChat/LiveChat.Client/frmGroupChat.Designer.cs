@@ -142,7 +142,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(784, 562);
+            this.tabControl1.Size = new System.Drawing.Size(584, 412);
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage3
@@ -153,7 +153,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(776, 530);
+            this.tabPage3.Size = new System.Drawing.Size(576, 380);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "客服群聊天（1/10）";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -163,7 +163,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.emotionDropdown1);
-            this.panel1.Location = new System.Drawing.Point(3, 315);
+            this.panel1.Location = new System.Drawing.Point(3, 189);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(226, 87);
             this.panel1.TabIndex = 13;
@@ -186,7 +186,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(770, 400);
+            this.wbChatBox.Size = new System.Drawing.Size(570, 274);
             this.wbChatBox.TabIndex = 9;
             // 
             // panel2
@@ -197,18 +197,18 @@
             this.panel2.Controls.Add(this.tsChatTools);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 403);
+            this.panel2.Location = new System.Drawing.Point(3, 277);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(770, 124);
+            this.panel2.Size = new System.Drawing.Size(570, 100);
             this.panel2.TabIndex = 8;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(682, 33);
+            this.button1.Location = new System.Drawing.Point(482, 33);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(77, 83);
+            this.button1.Size = new System.Drawing.Size(77, 59);
             this.button1.TabIndex = 1;
             this.button1.Text = "发送(&S)";
             this.button1.UseVisualStyleBackColor = true;
@@ -222,7 +222,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(668, 92);
+            this.txtMessage.Size = new System.Drawing.Size(468, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -242,25 +242,27 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(768, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(568, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
             // tsbFont
             // 
+            this.tsbFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbFont.Image = global::LiveChat.Client.Properties.Resources.字体格式;
             this.tsbFont.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbFont.Name = "tsbFont";
-            this.tsbFont.Size = new System.Drawing.Size(79, 22);
+            this.tsbFont.Size = new System.Drawing.Size(23, 22);
             this.tsbFont.Text = "文本格式";
             this.tsbFont.Click += new System.EventHandler(this.tsbFont_Click);
             // 
             // tsbColor
             // 
+            this.tsbColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbColor.Image = global::LiveChat.Client.Properties.Resources.字体颜色;
             this.tsbColor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbColor.Name = "tsbColor";
-            this.tsbColor.Size = new System.Drawing.Size(79, 22);
+            this.tsbColor.Size = new System.Drawing.Size(23, 22);
             this.tsbColor.Text = "字体颜色";
             this.tsbColor.Click += new System.EventHandler(this.tsbColor_Click);
             // 
@@ -425,7 +427,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(584, 412);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmGroupChat";

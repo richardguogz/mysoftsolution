@@ -8,7 +8,7 @@ namespace LiveChat.Entity
     /// 客服信息
     /// </summary>
     [Serializable]
-    public class SeatInfo
+    public class SeatMessage
     {
         /// <summary>
         /// 会话消息数

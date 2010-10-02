@@ -31,12 +31,12 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                WhereClip where = t_SeatFriendRequest._.SeatID == seatID && t_SeatFriendRequest._.ConfirmState == 0;
+                WhereClip where = t_SeatFriendRequest._.FriendID == seatID && t_SeatFriendRequest._.ConfirmState == 0;
                 var list = dbSession.From<t_SeatFriendRequest>().Where(where).ToList();
 
                 var friendlist = list.ConvertAll<KeyValuePair<Seat, RequestInfo>>(p =>
                 {
-                    var seat = SeatManager.Instance.GetSeat(p.FriendID);
+                    var seat = SeatManager.Instance.GetSeat(p.SeatID);
 
                     if (seat == null) return new KeyValuePair<Seat, RequestInfo>();
 
@@ -59,6 +59,21 @@ namespace LiveChat.Service.Manager
                 }
 
                 return items;
+            }
+        }
+
+        /// <summary>
+        /// 修改备注名称
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool UpdateMemoName(string seatID, string friendID, string name)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
+                return dbSession.Update<t_SeatFriend>(t_SeatFriend._.MemoName, name, where) > 0;
             }
         }
 
@@ -108,8 +123,15 @@ namespace LiveChat.Service.Manager
                             SeatName = seat2.SeatName,
                             SeatType = seat2.SeatType,
                             State = seat2.State,
-                            Telephone = seat2.Telephone
+                            Telephone = seat2.Telephone,
+                            FaceImage = seat2.FaceImage,
+                            Sign = seat2.Sign,
+                            Introduction = seat2.Introduction,
+                            MemoName = p.MemoName
                         };
+
+                        //如果是陌生人，则显示原来的名字
+                        if (!isFriend) friend.MemoName = null;
 
                         return friend;
                     });
@@ -199,15 +221,27 @@ namespace LiveChat.Service.Manager
                             where = t_SeatFriend._.SeatID == request.FriendID && t_SeatFriend._.FriendID == request.SeatID;
                             if (!dbSession.Exists<t_SeatFriend>(where))
                             {
-                                //把自己加为对方好友
-                                t_SeatFriend friend = new t_SeatFriend()
+                                //把自己加为对方好友请求
+                                //t_SeatFriend friend = new t_SeatFriend()
+                                //{
+                                //    SeatID = request.FriendID,
+                                //    FriendID = request.SeatID,
+                                //    AddTime = DateTime.Now
+                                //};
+
+                                //ret = dbSession.Save(friend);
+
+                                //把对方加为好友
+                                t_SeatFriendRequest friend = new t_SeatFriendRequest()
                                 {
                                     SeatID = request.FriendID,
                                     FriendID = request.SeatID,
+                                    Request = "对方同意并请求加你为好友！",
+                                    ConfirmState = 0,
                                     AddTime = DateTime.Now
                                 };
 
-                                ret = dbSession.Save(friend);
+                                ret += dbSession.Save(friend);
                             }
 
                             WhereClip where1 = t_SeatFriendRequest._.RequestID == requestID;
@@ -234,36 +268,6 @@ namespace LiveChat.Service.Manager
                 }
 
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// 添加好友
-        /// </summary>
-        /// <param name="seatID"></param>
-        /// <param name="friendID"></param>
-        /// <returns></returns>
-        public bool AddFriend(string seatID, string friendID)
-        {
-            lock (syncobj)
-            {
-                WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
-                if (dbSession.Exists<t_SeatFriend>(where))
-                {
-                    throw new LiveChatException("此客服已经是您的好友，不能重复添加！");
-                }
-
-                Seat seat = SeatManager.Instance.GetSeat(friendID);
-
-                //把对方加为好友
-                t_SeatFriend friend = new t_SeatFriend()
-                {
-                    SeatID = seatID,
-                    FriendID = friendID,
-                    AddTime = DateTime.Now
-                };
-
-                return dbSession.Save(friend) > 0;
             }
         }
 

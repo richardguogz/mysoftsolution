@@ -450,9 +450,6 @@ namespace LiveChat.Service
             {
                 Seat seat = SeatManager.Instance.GetSeat(seatID);
 
-                //获取配置信息
-                SeatConfig config = SeatConfigManager.Instance.GetSeatConfig(seatID);
-
                 //获取客服会话数
                 IList<P2SSession> list = GetP2SSessions(seatID);
 
@@ -496,12 +493,8 @@ namespace LiveChat.Service
                 }
 
                 //自动发送系统导语
-                if (config != null && !string.IsNullOrEmpty(config.Introduction))
-                {
-                    //发送消息给用户
-                    MessageManager.Instance.AddP2SMessage(session, seat.SeatID, seat.ShowName, user.UserID, user.ShowName,
-                        null, MessageType.Tip, config.Introduction);
-                }
+                MessageManager.Instance.AddP2SMessage(session, seat.SeatID, seat.ShowName, user.UserID, user.ShowName,
+                    null, MessageType.Tip, seat.Introduction);
 
                 return session;
             }
@@ -522,9 +515,6 @@ namespace LiveChat.Service
             try
             {
                 Seat seat = SeatManager.Instance.GetSeat(seatID);
-
-                //获取配置信息
-                SeatConfig config = SeatConfigManager.Instance.GetSeatConfig(seatID);
 
                 foreach (string sessionID in sessionIDs)
                 {
@@ -576,12 +566,8 @@ namespace LiveChat.Service
                     }
 
                     //自动发送系统导语
-                    if (config != null && !string.IsNullOrEmpty(config.Introduction))
-                    {
-                        //发送消息给用户
-                        MessageManager.Instance.AddP2SMessage(session, seat.SeatID, seat.ShowName, user.UserID, user.ShowName,
-                            null, MessageType.Tip, config.Introduction);
-                    }
+                    MessageManager.Instance.AddP2SMessage(session, seat.SeatID, seat.ShowName, user.UserID, user.ShowName,
+                        null, MessageType.Tip, seat.Introduction);
                 }
             }
             catch (Exception ex)
@@ -698,13 +684,13 @@ namespace LiveChat.Service
         /// </summary>
         /// <param name="seatID"></param>
         /// <returns></returns>
-        public SeatInfo GetSeatInfo(string seatID)
+        public SeatMessage GetSeatMessage(string seatID)
         {
             try
             {
-                var info = new SeatInfo();
+                var info = new SeatMessage();
                 info.GroupMessages = new Dictionary<SeatGroup, int>();
-                info.SeatMessages = new Dictionary<Seat, int>();
+                info.SeatMessages = new Dictionary<Seat, MessageInfo>();
                 info.SessionMessages = new Dictionary<P2SSession, int>();
                 info.RequestMessages = new Dictionary<Seat, RequestInfo>();
 
@@ -759,7 +745,7 @@ namespace LiveChat.Service
                 foreach (var friend in friendlist)
                 {
                     Seat seatFriend = GetSeat(friend.SeatID);
-                    info.SeatMessages[seatFriend] = 0;
+                    info.SeatMessages[seatFriend] = new MessageInfo() { Count = 0, MemoName = friend.MemoName };
 
                     foreach (var session in sessions)
                     {
@@ -782,9 +768,9 @@ namespace LiveChat.Service
                                 session.NoReadMessageCount = count;
 
                                 if (s2s.Owner.SeatID == friend.SeatID)
-                                    info.SeatMessages[s2s.Owner] = count;
+                                    info.SeatMessages[s2s.Owner].Count = count;
                                 else
-                                    info.SeatMessages[s2s.Friend] = count;
+                                    info.SeatMessages[s2s.Friend].Count = count;
 
                                 break;
                             }
@@ -814,25 +800,6 @@ namespace LiveChat.Service
             try
             {
                 return SeatManager.Instance.GetSeat(companyID, seatCode);
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 通过公司Name和Code获取一个客服
-        /// </summary>
-        /// <param name="companyName"></param>
-        /// <param name="seatCode"></param>
-        /// <returns></returns>
-        public Seat GetSeatForCompanyName(string companyName, string seatCode)
-        {
-            try
-            {
-                Company company = CompanyManager.Instance.GetCompanyForName(companyName);
-                return SeatManager.Instance.GetSeat(company.CompanyID, seatCode);
             }
             catch (Exception ex)
             {
@@ -874,7 +841,7 @@ namespace LiveChat.Service
                 seat.State = OnlineState.Online;
                 seat.ClientID = clientID;
 
-                SeatConfigManager.Instance.UpdateSeat(seat.SeatID,
+                SeatManager.Instance.UpdateSeat(seat.SeatID,
                                 new Field[] { t_Seat._.LoginCount, t_Seat._.LoginTime },
                                 new object[] { seat.LoginCount, seat.LoginTime }
                             );
@@ -920,7 +887,7 @@ namespace LiveChat.Service
                 seat.State = OnlineState.Online;
                 seat.ClientID = clientID;
 
-                SeatConfigManager.Instance.UpdateSeat(seat.SeatID,
+                SeatManager.Instance.UpdateSeat(seat.SeatID,
                                 new Field[] { t_Seat._.LoginCount, t_Seat._.LoginTime },
                                 new object[] { seat.LoginCount, seat.LoginTime }
                             );
@@ -945,7 +912,7 @@ namespace LiveChat.Service
                 seat.LogoutTime = DateTime.Now;
                 seat.State = OnlineState.Offline;
 
-                SeatConfigManager.Instance.UpdateSeat(seat.SeatID,
+                SeatManager.Instance.UpdateSeat(seat.SeatID,
                                 new Field[] { t_Seat._.LogoutTime },
                                 new object[] { seat.LogoutTime }
                             );
@@ -973,7 +940,7 @@ namespace LiveChat.Service
                     throw new LiveChatException("原始密码验证不成功！");
                 }
 
-                return SeatConfigManager.Instance.UpdatePassword(seatID, newpassword);
+                return SeatManager.Instance.UpdatePassword(seatID, newpassword);
             }
             catch (Exception ex)
             {
@@ -1552,23 +1519,6 @@ namespace LiveChat.Service
         #endregion
 
         /// <summary>
-        /// 获取配置信息
-        /// </summary>
-        /// <param name="seatID"></param>
-        /// <returns></returns>
-        public SeatConfig GetSeatConfig(string seatID)
-        {
-            try
-            {
-                return SeatConfigManager.Instance.GetSeatConfig(seatID);
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
         /// 添加客服
         /// </summary>
         /// <param name="companyID"></param>
@@ -1580,11 +1530,11 @@ namespace LiveChat.Service
         /// <param name="sign"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        public bool AddSeatConfig(string companyID, string seatCode, string seatName, string password, string email, string telephone, string mobilenumber, string sign, string remark, SeatType seattype)
+        public bool AddSeat(string companyID, string seatCode, string seatName, string password, string email, string telephone, string mobilenumber, string sign, string remark, SeatType seattype)
         {
             try
             {
-                SeatConfig sc = new SeatConfig()
+                Seat seat = new Seat()
                 {
                     CompanyID = companyID,
                     SeatCode = seatCode,
@@ -1598,7 +1548,7 @@ namespace LiveChat.Service
                     SeatType = seattype,
                 };
 
-                return SeatConfigManager.Instance.AddSeat(sc);
+                return SeatManager.Instance.AddSeat(seat);
             }
             catch (Exception ex)
             {
@@ -1614,40 +1564,22 @@ namespace LiveChat.Service
         /// <param name="sign"></param>
         /// <param name="introduction"></param>
         /// <returns></returns>
-        public bool UpdateSeatConfig(string seatID, string seatName, string email, string telephone, string mobilenumber, string sign, string introduction, SeatType seattype)
+        public bool UpdateSeat(string seatID, string seatName, string email, string telephone, string mobilenumber, string sign, string introduction, SeatType seattype)
         {
             try
             {
-                SeatConfig config = SeatConfigManager.Instance.GetSeatConfig(seatID);
-                if (config == null) return false;
+                Seat seat = GetSeat(seatID);
+                if (seat == null) return false;
 
-                config.SeatType = seattype;
-                config.Telephone = telephone;
-                config.MobileNumber = mobilenumber;
-                config.Email = email;
-                config.SeatName = seatName;
-                config.Sign = sign;
-                config.Introduction = introduction;
+                seat.SeatType = seattype;
+                seat.Telephone = telephone;
+                seat.MobileNumber = mobilenumber;
+                seat.Email = email;
+                seat.SeatName = seatName;
+                seat.Sign = sign;
+                seat.Introduction = introduction;
 
-                return SeatConfigManager.Instance.UpdateSeatConfig(config);
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-
-        /// <summary>
-        /// 获取客服列表
-        /// </summary>
-        /// <param name="companyID"></param>
-        /// <returns></returns>
-        public IList<SeatConfig> GetSeatConfigs(string companyID)
-        {
-            try
-            {
-                return SeatConfigManager.Instance.GetSeatConfigs(companyID);
+                return SeatManager.Instance.UpdateSeat(seat);
             }
             catch (Exception ex)
             {
@@ -1664,7 +1596,7 @@ namespace LiveChat.Service
         {
             try
             {
-                return SeatConfigManager.Instance.DeleteSeat(seatID);
+                return SeatManager.Instance.DeleteSeat(seatID);
             }
             catch (Exception ex)
             {
@@ -2186,6 +2118,24 @@ namespace LiveChat.Service
         #region 好友功能
 
         /// <summary>
+        /// 修改备注名称
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool RenameFriend(string seatID, string friendID, string name)
+        {
+            try
+            {
+                return SeatFriendManager.Instance.UpdateMemoName(seatID, friendID, name);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
         /// 获取客服的好友
         /// </summary>
         /// <param name="seatID"></param>
@@ -2220,24 +2170,6 @@ namespace LiveChat.Service
                 });
 
                 return list;
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 添加好友
-        /// </summary>
-        /// <param name="seatID"></param>
-        /// <param name="friendID"></param>
-        /// <returns></returns>
-        public bool AddSeatFriend(string seatID, string friendID)
-        {
-            try
-            {
-                return SeatFriendManager.Instance.AddFriend(seatID, friendID);
             }
             catch (Exception ex)
             {

@@ -31,7 +31,16 @@ namespace LiveChat.Interface
         /// </summary>
         /// <param name="seatID"></param>
         /// <returns></returns>
-        SeatInfo GetSeatInfo(string seatID);
+        SeatMessage GetSeatMessage(string seatID);
+
+        /// <summary>
+        /// 修改备注名称
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="friendID"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        bool RenameFriend(string seatID, string friendID, string name);
 
         /// <summary>
         /// 结束客服所有会话
@@ -53,14 +62,6 @@ namespace LiveChat.Interface
         /// <param name="companyID"></param>
         /// <param name="seatCode"></param>
         Seat GetSeat(string companyID, string seatCode);
-
-        /// <summary>
-        /// 通过公司Name和Code获取一个客服
-        /// </summary>
-        /// <param name="companyName"></param>
-        /// <param name="seatCode"></param>
-        /// <returns></returns>
-        Seat GetSeatForCompanyName(string companyName, string seatCode);
 
         /// <summary>
         /// 客服登录
@@ -420,7 +421,7 @@ namespace LiveChat.Interface
         /// <param name="sign"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        bool AddSeatConfig(string companyID, string seatCode, string seatName, string password, string email, string telephone, string mobilenumber, string sign, string remark, SeatType seattype);
+        bool AddSeat(string companyID, string seatCode, string seatName, string password, string email, string telephone, string mobilenumber, string sign, string remark, SeatType seattype);
 
         /// <summary>
         /// 修改配置信息
@@ -430,21 +431,7 @@ namespace LiveChat.Interface
         /// <param name="sign"></param>
         /// <param name="introduction"></param>
         /// <returns></returns>
-        bool UpdateSeatConfig(string seatID, string seatName, string email, string telephone, string mobilenumber, string sign, string introduction, SeatType seattype);
-
-        /// <summary>
-        /// 获取客服列表
-        /// </summary>
-        /// <param name="companyID"></param>
-        /// <returns></returns>
-        IList<SeatConfig> GetSeatConfigs(string companyID);
-
-        /// <summary>
-        /// 获取配置信息
-        /// </summary>
-        /// <param name="seatID"></param>
-        /// <returns></returns>
-        SeatConfig GetSeatConfig(string seatID);
+        bool UpdateSeat(string seatID, string seatName, string email, string telephone, string mobilenumber, string sign, string introduction, SeatType seattype);
 
         /// <summary>
         /// 删除客服
@@ -585,14 +572,6 @@ namespace LiveChat.Interface
         /// <param name="seatID"></param>
         /// <returns></returns>
         IList<SeatFriend> GetSeatFriends(string seatID, out IList<SeatFriend> friends);
-
-        /// <summary>
-        /// 添加好友
-        /// </summary>
-        /// <param name="seatID"></param>
-        /// <param name="friendID"></param>
-        /// <returns></returns>
-        bool AddSeatFriend(string seatID, string friendID);
 
         /// <summary>
         /// 添加好友

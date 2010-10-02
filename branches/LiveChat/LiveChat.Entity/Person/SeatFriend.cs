@@ -20,6 +20,16 @@ namespace LiveChat.Entity
             set { _Owner = value; }
         }
 
+        private string _MemoName;
+        /// <summary>
+        /// 备注名称
+        /// </summary>
+        public string MemoName
+        {
+            get { return _MemoName; }
+            set { _MemoName = value; }
+        }
+
         private string _CompanyName;
         /// <summary>
         /// 公司名称

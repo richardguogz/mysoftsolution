@@ -13,6 +13,8 @@ namespace LiveChat.Service {
             
             protected String _FriendID;
             
+            protected String _MemoName;
+            
             protected DateTime _AddTime;
             
             public String SeatID {
@@ -32,6 +34,16 @@ namespace LiveChat.Service {
                 set {
                     this.OnPropertyValueChange(_.FriendID, _FriendID, value);
                     this._FriendID = value;
+                }
+            }
+            
+            public String MemoName {
+                get {
+                    return this._MemoName;
+                }
+                set {
+                    this.OnPropertyValueChange(_.MemoName, _MemoName, value);
+                    this._MemoName = value;
                 }
             }
             
@@ -68,6 +80,7 @@ namespace LiveChat.Service {
                 return new Field[] {
                         _.SeatID,
                         _.FriendID,
+                        _.MemoName,
                         _.AddTime};
             }
             
@@ -78,6 +91,7 @@ namespace LiveChat.Service {
                 return new object[] {
                         this._SeatID,
                         this._FriendID,
+                        this._MemoName,
                         this._AddTime};
             }
             
@@ -90,6 +104,9 @@ namespace LiveChat.Service {
                 }
                 if ((false == reader.IsDBNull(_.FriendID))) {
                     this._FriendID = reader.GetString(_.FriendID);
+                }
+                if ((false == reader.IsDBNull(_.MemoName))) {
+                    this._MemoName = reader.GetString(_.MemoName);
                 }
                 if ((false == reader.IsDBNull(_.AddTime))) {
                     this._AddTime = reader.GetDateTime(_.AddTime);
@@ -129,6 +146,11 @@ namespace LiveChat.Service {
                 /// 字段名：FriendID - 数据类型：String
                 /// </summary>
                 public static Field FriendID = new Field<t_SeatFriend>("FriendID");
+                
+                /// <summary>
+                /// 字段名：MemoName - 数据类型：String
+                /// </summary>
+                public static Field MemoName = new Field<t_SeatFriend>("MemoName");
                 
                 /// <summary>
                 /// 字段名：AddTime - 数据类型：DateTime

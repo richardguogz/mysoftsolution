@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using LiveChat.Entity;
 using LiveChat.Interface;
 using LiveChat.Utils;
+using System.IO;
 
 namespace LiveChat.Client
 {
@@ -15,51 +16,53 @@ namespace LiveChat.Client
     {
         private ISeatService service;
         private Company company;
-        private Seat seat;
-        private SeatConfig config;
-        public frmAddSeatConfirm(ISeatService service, Company company, Seat seat, SeatConfig config)
+        private Seat seat, friend;
+        public frmAddSeatConfirm(ISeatService service, Company company, Seat seat, Seat friend)
         {
             this.service = service;
             this.company = company;
             this.seat = seat;
-            this.config = config;
+            this.friend = friend;
 
             InitializeComponent();
         }
 
         private void frmAddSeatConfirm_Load(object sender, EventArgs e)
         {
-            lblSeatCode.Text = config.SeatCode;
-            lblSeatName.Text = config.SeatName;
-            lblTelephone.Text = config.Telephone;
-            lblMobileNumber.Text = config.MobileNumber;
-            lblEmail.Text = config.Email;
+            lblSeatCode.Text = friend.SeatCode;
+            lblSeatName.Text = friend.SeatName;
+            lblTelephone.Text = friend.Telephone;
+            lblMobileNumber.Text = friend.MobileNumber;
+            lblEmail.Text = friend.Email;
+
+            if (friend.FaceImage != null)
+            {
+                MemoryStream ms = new MemoryStream(friend.FaceImage);
+                Image img = BitmapManipulator.ResizeBitmap((Bitmap)Bitmap.FromStream(ms), 60, 60);
+                pbSeatFace.Image = img;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未完成！");
-            if (MessageBox.Show(string.Format("确定添加【{0}】为您的好友吗？", config.SeatName), "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            try
             {
-                try
+                string request = textBox1.Text.Trim();
+                bool ret = service.AddSeatFriendRequest(seat.SeatID, friend.SeatID, request);
+                if (ret)
                 {
-                    string request = textBox1.Text.Trim();
-                    bool ret = service.AddSeatFriendRequest(seat.SeatID, config.SeatID, request);
-                    if (ret)
-                    {
-                        MessageBox.Show("添加好友请求发送成功！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    MessageBox.Show("添加好友请求发送成功！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (LiveChatException ex)
-                {
-                    MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("错误：" + ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
                 this.Close();
+            }
+            catch (LiveChatException ex)
+            {
+                //显示异常信息
+                ClientUtils.ShowMessage(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
             }
         }
 

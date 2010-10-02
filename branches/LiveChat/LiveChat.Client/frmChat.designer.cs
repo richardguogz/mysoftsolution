@@ -104,7 +104,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 562);
+            this.panel1.Size = new System.Drawing.Size(584, 412);
             this.panel1.TabIndex = 3;
             // 
             // panel9
@@ -114,7 +114,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(784, 562);
+            this.panel9.Size = new System.Drawing.Size(584, 412);
             this.panel9.TabIndex = 2;
             // 
             // panel12
@@ -123,7 +123,7 @@
             this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel12.Location = new System.Drawing.Point(0, 0);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(782, 560);
+            this.panel12.Size = new System.Drawing.Size(582, 410);
             this.panel12.TabIndex = 5;
             // 
             // panel3
@@ -137,7 +137,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(782, 560);
+            this.panel3.Size = new System.Drawing.Size(582, 410);
             this.panel3.TabIndex = 0;
             // 
             // panel4
@@ -145,7 +145,7 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.emotionDropdown1);
-            this.panel4.Location = new System.Drawing.Point(5, 344);
+            this.panel4.Location = new System.Drawing.Point(5, 218);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(226, 87);
             this.panel4.TabIndex = 12;
@@ -170,9 +170,9 @@
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(6, 361);
+            this.panel2.Location = new System.Drawing.Point(6, 235);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(562, 70);
+            this.panel2.Size = new System.Drawing.Size(500, 70);
             this.panel2.TabIndex = 11;
             this.panel2.Visible = false;
             // 
@@ -180,7 +180,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(383, 34);
+            this.button3.Location = new System.Drawing.Point(321, 34);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(59, 21);
             this.button3.TabIndex = 4;
@@ -198,13 +198,13 @@
             this.txtFile.Location = new System.Drawing.Point(22, 34);
             this.txtFile.Name = "txtFile";
             this.txtFile.ReadOnly = true;
-            this.txtFile.Size = new System.Drawing.Size(355, 21);
+            this.txtFile.Size = new System.Drawing.Size(293, 21);
             this.txtFile.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(448, 33);
+            this.button2.Location = new System.Drawing.Point(386, 33);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(46, 23);
             this.button2.TabIndex = 2;
@@ -215,7 +215,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(500, 33);
+            this.button1.Location = new System.Drawing.Point(438, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(46, 23);
             this.button1.TabIndex = 1;
@@ -239,7 +239,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(782, 377);
+            this.wbChatBox.Size = new System.Drawing.Size(582, 251);
             this.wbChatBox.TabIndex = 7;
             // 
             // toolStrip1
@@ -253,7 +253,7 @@
             tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(782, 56);
+            this.toolStrip1.Size = new System.Drawing.Size(582, 56);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -305,9 +305,9 @@
             // splitter1
             // 
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter1.Location = new System.Drawing.Point(0, 433);
+            this.splitter1.Location = new System.Drawing.Point(0, 307);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(782, 3);
+            this.splitter1.Size = new System.Drawing.Size(582, 3);
             this.splitter1.TabIndex = 8;
             this.splitter1.TabStop = false;
             // 
@@ -319,18 +319,18 @@
             this.plChat.Controls.Add(this.tsChatTools);
             this.plChat.Controls.Add(this.panel7);
             this.plChat.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.plChat.Location = new System.Drawing.Point(0, 436);
+            this.plChat.Location = new System.Drawing.Point(0, 310);
             this.plChat.Name = "plChat";
-            this.plChat.Size = new System.Drawing.Size(782, 124);
+            this.plChat.Size = new System.Drawing.Size(582, 100);
             this.plChat.TabIndex = 7;
             // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.Location = new System.Drawing.Point(694, 33);
+            this.btnSend.Location = new System.Drawing.Point(494, 33);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(77, 83);
+            this.btnSend.Size = new System.Drawing.Size(77, 59);
             this.btnSend.TabIndex = 1;
             this.btnSend.Text = "发送(&S)";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -344,7 +344,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(680, 92);
+            this.txtMessage.Size = new System.Drawing.Size(480, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -368,25 +368,27 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(780, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(580, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
             // tsbFont
             // 
+            this.tsbFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbFont.Image = global::LiveChat.Client.Properties.Resources.字体格式;
             this.tsbFont.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbFont.Name = "tsbFont";
-            this.tsbFont.Size = new System.Drawing.Size(79, 22);
+            this.tsbFont.Size = new System.Drawing.Size(23, 22);
             this.tsbFont.Text = "文本格式";
             this.tsbFont.Click += new System.EventHandler(this.tsbFont_Click);
             // 
             // tsbColor
             // 
+            this.tsbColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbColor.Image = global::LiveChat.Client.Properties.Resources.字体颜色;
             this.tsbColor.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbColor.Name = "tsbColor";
-            this.tsbColor.Size = new System.Drawing.Size(79, 22);
+            this.tsbColor.Size = new System.Drawing.Size(23, 22);
             this.tsbColor.Text = "字体颜色";
             this.tsbColor.Click += new System.EventHandler(this.tsbColor_Click);
             // 
@@ -525,7 +527,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.ClientSize = new System.Drawing.Size(584, 412);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmChat";

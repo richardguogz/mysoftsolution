@@ -51,6 +51,10 @@ namespace LiveChat.Service.Manager
                 l.ForEach(delegate(t_Seat st)
                 {
                     Seat seat = DataUtils.ConvertType<t_Seat, Seat>(st);
+                    if (string.IsNullOrEmpty(seat.Introduction))
+                    {
+                        seat.Introduction = string.Format("您好，我是{0}客服，很高兴为您在线服务！", company.CompanyName);
+                    }
                     company.AddSeat(seat);
                 });
             });

@@ -214,9 +214,9 @@ namespace LiveChat.Client
                             {
                                 p.SetAttribute("className", "visitor");
                                 if (msg.Type == MessageType.Picture)
-                                    sb.Append(msg.SenderName + "向群发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append(msg.SenderName + "向群发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                 else
-                                    sb.Append(msg.SenderName + "&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append(msg.SenderName + "&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
 
                                 sb.Append("<br />");
                                 sb.Append("<span>" + msg.Content + "</span>");
@@ -225,9 +225,9 @@ namespace LiveChat.Client
                             {
                                 p.SetAttribute("className", "operator");
                                 if (msg.Type == MessageType.Picture)
-                                    sb.Append("您向" + group.GroupName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append("您向" + group.GroupName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                 else
-                                    sb.Append("您&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToLongTimeString() + "</font>:");
+                                    sb.Append("您&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
 
                                 sb.Append("<br />");
                                 sb.Append("<span>" + msg.Content + "</span>");

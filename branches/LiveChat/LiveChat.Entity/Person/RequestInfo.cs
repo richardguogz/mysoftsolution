@@ -35,4 +35,41 @@ namespace LiveChat.Entity
         /// </summary>
         public DateTime AddTime { get; set; }
     }
+
+    /// <summary>
+    /// 消息信息
+    /// </summary>
+    [Serializable]
+    public class MessageInfo
+    {
+        private int _Count;
+        /// <summary>
+        /// 消息数
+        /// </summary>
+        public int Count
+        {
+            get { return _Count; }
+            set { _Count = value; }
+        }
+
+        private string _Sign;
+        /// <summary>
+        /// 签名信息
+        /// </summary>
+        public string Sign
+        {
+            get { return _Sign; }
+            set { _Sign = value; }
+        }
+
+        private string _MemoName;
+        /// <summary>
+        /// 备注名称
+        /// </summary>
+        public string MemoName
+        {
+            get { return _MemoName; }
+            set { _MemoName = value; }
+        }
+    }
 }

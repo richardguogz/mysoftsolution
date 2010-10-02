@@ -46,6 +46,37 @@ namespace LiveChat.Client
         //最大会话数
         public const int MaxAcceptCount = 20;
 
+        #region 显示消息
+
+        /// <summary>
+        /// 显示错误
+        /// </summary>
+        /// <param name="ex"></param>
+        public static void ShowError(Exception ex)
+        {
+            MessageBox.Show(ex.Message, "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// 显示错误
+        /// </summary>
+        /// <param name="ex"></param>
+        public static void ShowError(string attachMessage, Exception ex)
+        {
+            MessageBox.Show(attachMessage + ex.Message, "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// 显示消息
+        /// </summary>
+        /// <param name="message"></param>
+        public static void ShowMessage(string message)
+        {
+            MessageBox.Show(message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        #endregion
+
         /// <summary>   
         /// get a certain rectangle part of a known graphic   
         /// </summary>   

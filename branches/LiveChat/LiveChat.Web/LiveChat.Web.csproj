@@ -77,6 +77,7 @@
     <Content Include="Admin\images\topbg.gif" />
     <Content Include="Admin\Index.aspx" />
     <Content Include="Admin\Logout.aspx" />
+    <Content Include="Admin\Total.aspx" />
     <Content Include="Javascript\common.js" />
     <Content Include="Javascript\datepicker\calendar.js" />
     <Content Include="Javascript\datepicker\config.js" />
@@ -306,6 +307,13 @@
     <Compile Include="Admin\Analysis\Main.aspx.designer.cs">
       <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Total.aspx.cs">
+      <DependentUpon>Total.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Total.aspx.designer.cs">
+      <DependentUpon>Total.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AppCode\AdminListPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -439,6 +447,10 @@
       <Project>{DA2EFC21-634B-4263-B9E5-10397ABB3674}</Project>
       <Name>LiveChat.Interface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Admin\Bll\" />
+    <Folder Include="Admin\usercontrols\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

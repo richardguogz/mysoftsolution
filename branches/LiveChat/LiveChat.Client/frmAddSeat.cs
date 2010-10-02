@@ -59,10 +59,10 @@ namespace LiveChat.Client
         {
             companyID = companyID ?? company.CompanyID;
 
-            IList<SeatConfig> list = service.GetSeatConfigs(companyID);
+            IList<Seat> list = service.GetCompanySeats(companyID);
             listSeats.Items.Clear();
             int index = 1;
-            foreach (SeatConfig info in list)
+            foreach (Seat info in list)
             {
                 //去除自己
                 if (info.SeatID == seat.SeatID) continue;
@@ -77,7 +77,7 @@ namespace LiveChat.Client
         private void button1_Click(object sender, EventArgs e)
         {
             if (listSeats.SelectedItems.Count == 0) return;
-            SeatConfig config = listSeats.SelectedItems[0].Tag as SeatConfig;
+            Seat config = listSeats.SelectedItems[0].Tag as Seat;
 
             Singleton.Show<frmAddSeatConfirm>(() =>
             {
@@ -94,7 +94,7 @@ namespace LiveChat.Client
         private void listSeats_DoubleClick(object sender, EventArgs e)
         {
             if (listSeats.SelectedItems.Count == 0) return;
-            SeatConfig config = listSeats.SelectedItems[0].Tag as SeatConfig;
+            Seat config = listSeats.SelectedItems[0].Tag as Seat;
 
             string key = string.Format("Config_{0}", config.SeatID);
             SingletonMul.Show<frmSeatInfo>(key, () =>

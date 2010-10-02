@@ -4,8 +4,6 @@ using LiveChat.Entity;
 
 namespace LiveChat.Service.Test
 {
-
-
     /// <summary>
     ///这是 UserServiceTest 的测试类，旨在
     ///包含所有 UserServiceTest 单元测试

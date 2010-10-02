@@ -316,10 +316,10 @@ namespace LiveChat.Client
         private void LoadSeatInfo(string companyID)
         {
             companyID = companyID ?? company.CompanyID;
-            IList<SeatConfig> list = service.GetSeatConfigs(companyID);
+            IList<Seat> list = service.GetCompanySeats(companyID);
             listSeats.Items.Clear();
             int index = 1;
-            foreach (SeatConfig info in list)
+            foreach (Seat info in list)
             {
                 if (info.SeatType == SeatType.Super) continue;
 
@@ -585,7 +585,7 @@ namespace LiveChat.Client
                 return;
             }
 
-            SeatConfig seatConfig = listSeats.SelectedItems[0].Tag as SeatConfig;
+            Seat seatConfig = listSeats.SelectedItems[0].Tag as Seat;
             Company c = cboSeatCompany.SelectedItem as Company;
 
             frmSeat frmSeat = new frmSeat(service, c, seatConfig);
@@ -609,7 +609,7 @@ namespace LiveChat.Client
             }
 
             //删除客服代码
-            SeatConfig seatConfig = listSeats.SelectedItems[0].Tag as SeatConfig;
+            Seat seatConfig = listSeats.SelectedItems[0].Tag as Seat;
             if (seatConfig.SeatID == seat.SeatID)
             {
                 MessageBox.Show("不能删除自己！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -637,7 +637,7 @@ namespace LiveChat.Client
         {
             if (listSeats.SelectedItems.Count == 0) return;
 
-            SeatConfig seatConfig = listSeats.SelectedItems[0].Tag as SeatConfig;
+            Seat seatConfig = listSeats.SelectedItems[0].Tag as Seat;
             Company c = cboSeatCompany.SelectedItem as Company;
 
             frmSeat frmSeat = new frmSeat(service, c, seatConfig);

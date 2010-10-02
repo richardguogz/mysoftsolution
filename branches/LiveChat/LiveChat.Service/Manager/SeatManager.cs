@@ -173,5 +173,122 @@ namespace LiveChat.Service.Manager
         }
 
         #endregion
+
+        #region 修改客服信息
+
+        /// <summary>
+        /// 修改配置信息
+        /// </summary>
+        /// <returns></returns>
+        public bool UpdateSeat(Seat cf)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_Seat._.CompanyID == cf.CompanyID && t_Seat._.SeatCode == cf.SeatCode;
+                bool ret = dbSession.Update<t_Seat>
+                    (new Field[] { t_Seat._.SeatName, t_Seat._.Email, t_Seat._.Telephone, t_Seat._.MobileNumber, t_Seat._.Sign, t_Seat._.Introduction, t_Seat._.SeatType },
+                    new object[] { cf.SeatName, cf.Email, cf.Telephone, cf.MobileNumber, cf.Sign, cf.Introduction, cf.SeatType }, where) > 0;
+
+                if (ret)
+                {
+                    Seat seat = SeatManager.Instance.GetSeat(cf.SeatID);
+                    seat.SeatName = cf.SeatName;
+                    seat.Email = cf.Email;
+                    seat.Telephone = cf.Telephone;
+                    seat.MobileNumber = cf.MobileNumber;
+                    seat.Sign = cf.Sign;
+                    seat.Introduction = cf.Introduction;
+                    seat.SeatType = cf.SeatType;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 修改客服密码
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool UpdatePassword(string seatID, string password)
+        {
+            lock (syncobj)
+            {
+                Seat seat = SeatManager.Instance.GetSeat(seatID);
+                WhereClip where = t_Seat._.CompanyID == seat.CompanyID && t_Seat._.SeatCode == seat.SeatCode;
+                bool ret = dbSession.Update<t_Seat>(t_Seat._.Password, password, where) > 0;
+                if (ret)
+                {
+                    seat.Password = password;
+                }
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 删除客服
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        public bool DeleteSeat(string seatID)
+        {
+            lock (syncobj)
+            {
+                Seat seat = SeatManager.Instance.GetSeat(seatID);
+                WhereClip where = t_Seat._.CompanyID == seat.CompanyID && t_Seat._.SeatCode == seat.SeatCode;
+                bool ret = dbSession.Delete<t_Seat>(where) > 0;
+                if (ret)
+                {
+                    Company company = CompanyManager.Instance.GetCompany(seat.CompanyID);
+                    if (company.Seats.Exists(seat))
+                    {
+                        company.Seats.RemoveAll(p => p.SeatID == seat.SeatID);
+                    }
+                }
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 添加客服
+        /// </summary>
+        /// <param name="seat"></param>
+        /// <returns></returns>
+        public bool AddSeat(Seat seat)
+        {
+            lock (syncobj)
+            {
+                t_Seat s = DataUtils.ConvertType<Seat, t_Seat>(seat);
+                s.AddTime = DateTime.Now;
+
+                bool ret = dbSession.Save(s) > 0;
+                if (ret)
+                {
+                    Company company = CompanyManager.Instance.GetCompany(seat.CompanyID);
+                    company.AddSeat(seat);
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 保存实体到数据库
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="fields"></param>
+        /// <param name="values"></param>
+        public void UpdateSeat(string seatID, Field[] fields, object[] values)
+        {
+            lock (syncobj)
+            {
+                Seat seat = SeatManager.Instance.GetSeat(seatID);
+                dbSession.Update<t_Seat>(fields, values, t_Seat._.CompanyID == seat.CompanyID && t_Seat._.SeatCode == seat.SeatCode);
+            }
+        }
+
+        #endregion
+
     }
 }

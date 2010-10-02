@@ -119,6 +119,54 @@ namespace LiveChat.Entity
             }
         }
 
+        private string _Sign;
+        /// <summary>
+        /// 签名信息
+        /// </summary>
+        public string Sign
+        {
+            get
+            {
+                return _Sign;
+            }
+            set
+            {
+                _Sign = value;
+            }
+        }
+
+        private string _Introduction;
+        /// <summary>
+        /// 系统导语
+        /// </summary>
+        public string Introduction
+        {
+            get
+            {
+                return _Introduction;
+            }
+            set
+            {
+                _Introduction = value;
+            }
+        }
+
+        private byte[] _FaceImage;
+        /// <summary>
+        /// 图像信息
+        /// </summary>
+        public byte[] FaceImage
+        {
+            get
+            {
+                return _FaceImage;
+            }
+            set
+            {
+                _FaceImage = value;
+            }
+        }
+
         #endregion
 
         private int _UserSessionCount;
