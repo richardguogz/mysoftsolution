@@ -97,12 +97,21 @@ namespace LiveChat.Client
             try
             {
                 var s = service.GetSession(session.SessionID);
-                if (s == null || s.State == SessionState.Closed)
+                if (s != null && s is P2SSession)
                 {
-                    msgtimer.Stop();
-                    MessageBox.Show("当前会话已经被用户关闭，强制关闭本窗口！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
-                    this.Dispose();
+                    //表示已经被接受的会话
+                    var ss = s as P2SSession;
+                    if (ss.Seat != null && ss.State == SessionState.Closed)
+                    {
+                        //客服端关闭会话
+                        service.CloseSession(session.SessionID);
+
+                        msgtimer.Stop();
+                        ClientUtils.ShowMessage("当前会话已经被用户结束，将强制关闭本窗口！");
+                        if (Callback != null) Callback(session.SessionID);
+                        this.Close();
+                        this.Dispose();
+                    }
                 }
             }
             catch
@@ -242,7 +251,7 @@ namespace LiveChat.Client
         {
             if (session.Seat == null)
             {
-                MessageBox.Show("请先接受会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先接受会话！");
                 return;
             }
 
@@ -256,7 +265,7 @@ namespace LiveChat.Client
         {
             if (session.Seat == null)
             {
-                MessageBox.Show("请先接受会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先接受会话！");
                 return;
             }
 
@@ -383,7 +392,7 @@ namespace LiveChat.Client
         {
             if (txtMessage.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("发送的消息不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("发送的消息不能为空！");
                 txtMessage.Focus();
                 return;
             }
@@ -444,6 +453,7 @@ namespace LiveChat.Client
                 //接入会话
                 session = service.AcceptSession(seat.SeatID, maxAcceptCount, session.SessionID);
                 if (Callback != null) Callback(new string[] { oldID, session.SessionID });
+
                 LoadMessage(false);
 
                 this.Text = string.Format("当前【{0}】与【{1}】正在聊天中...", session.Seat.SeatName, session.User.UserName);
@@ -455,15 +465,14 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
         private void tsbEndTalk_Click(object sender, EventArgs e)
         {
 
-            if (MessageBox.Show("确定结束当前会话吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
-                return;
+            if (MessageBox.Show("确定结束当前会话吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
 
             try
             {
@@ -474,7 +483,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -490,7 +499,6 @@ namespace LiveChat.Client
 
         void EmotionContainer_ItemClick(object sender, EmotionItemMouseClickEventArgs e)
         {
-            //throw new NotImplementedException();
             panel4.Visible = false;
             txtMessage.Text += "{" + string.Format("FACE#{0}#", e.Item.Text) + "}";
             txtMessage.Focus();
@@ -503,7 +511,6 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (panel2.Visible)
             {
                 panel2.Visible = false;
@@ -528,7 +535,7 @@ namespace LiveChat.Client
         {
             if (txtFile.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("请先选择要传送的文件！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先选择要传送的文件！");
                 button3.Focus();
                 return;
             }

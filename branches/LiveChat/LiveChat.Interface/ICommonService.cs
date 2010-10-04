@@ -8,19 +8,18 @@ namespace LiveChat.Interface
     public interface ICommonService
     {
         /// <summary>
-        /// 验证客户端
-        /// </summary>
-        /// <param name="id">要验证的使用者ID</param>
-        /// <param name="clientID"></param>
-        /// <returns></returns>
-        bool ValidateClient(string id, Guid clientID);
-
-        /// <summary>
         /// 获取会话信息
         /// </summary>
         /// <param name="sessionID"></param>
         /// <returns></returns>
         Session GetSession(string sessionID);
+
+        /// <summary>
+        /// 通过公司ID和Code获取一个客服
+        /// </summary>
+        /// <param name="companyID"></param>
+        /// <param name="seatCode"></param>
+        Seat GetSeat(string companyID, string seatCode);
 
         /// <summary>
         /// 发送消息到客服

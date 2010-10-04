@@ -20,10 +20,6 @@ namespace LiveChat.Utils
         /// <summary>
         /// 无效的密码
         /// </summary>
-        InvalidPassword,
-        /// <summary>
-        /// 不是客服经理
-        /// </summary>
-        NotManager
+        InvalidPassword
     }
 }

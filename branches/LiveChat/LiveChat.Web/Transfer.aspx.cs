@@ -56,8 +56,7 @@ namespace LiveChat.Web
             }
             else
             {
-                Guid clientID = Guid.NewGuid();
-                IMResult result = service.Login(clientID, userType, userid, password);
+                IMResult result = service.Login(userType, userid, password);
                 if (result == IMResult.Successful)
                 {
                     string skinid = GetRequestParam<string>("SkinID", null);
@@ -65,7 +64,9 @@ namespace LiveChat.Web
                     string url = "/Chat.aspx?CompanyID=" + companyID;
                     if (seatCode != null) url += "&SeatCode=" + seatCode;
                     if (skinid != null) url += "&SkinID=" + skinid;
-                    url += "&ClientID=" + clientID;
+
+                    string tm = GetRequestParam<string>("tm", null);
+                    if (tm != null) url += "&tm=" + tm;
 
                     Response.Redirect(url);
                 }

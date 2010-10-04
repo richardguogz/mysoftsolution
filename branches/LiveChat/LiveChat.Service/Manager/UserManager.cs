@@ -111,12 +111,10 @@ namespace LiveChat.Service.Manager
 
                 if (ret)
                 {
-                    if (user.Extend != null)
-                    {
-                        user.Extend.LastChatTime = lastChatTime;
-                        user.Extend.ChatCount = chatCount;
-                    }
+                    user.LastChatTime = lastChatTime;
+                    user.ChatCount = chatCount;
                 }
+
                 return ret;
             }
         }
@@ -215,8 +213,8 @@ namespace LiveChat.Service.Manager
                             //如果不是匿名用户，则还需要从扩展信息中获取
                             if (user.UserType != UserType.TempUser)
                             {
-                                u.ChatCount = user.Extend.ChatCount;
-                                u.LastChatTime = user.Extend.LastChatTime;
+                                u.ChatCount = user.ChatCount;
+                                u.LastChatTime = user.LastChatTime;
                             }
 
                             batch.Save<t_User>(u);

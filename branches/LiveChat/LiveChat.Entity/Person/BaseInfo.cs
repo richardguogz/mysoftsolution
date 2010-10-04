@@ -10,22 +10,6 @@ namespace LiveChat.Entity
     [Serializable]
     public abstract class BaseInfo
     {
-        private Guid _ClientID;
-        /// <summary>
-        /// 用于验证的客服端ID
-        /// </summary>
-        public Guid ClientID
-        {
-            get
-            {
-                return _ClientID;
-            }
-            set
-            {
-                _ClientID = value;
-            }
-        }
-
         #region 公共信息
 
         /// <summary>
@@ -79,22 +63,6 @@ namespace LiveChat.Entity
             set
             {
                 _LogoutTime = value;
-            }
-        }
-
-        private DateTime _RefreshTime;
-        /// <summary>
-        /// 刷新时间
-        /// </summary>
-        public DateTime RefreshTime
-        {
-            get
-            {
-                return _RefreshTime;
-            }
-            set
-            {
-                _RefreshTime = value;
             }
         }
 

@@ -75,8 +75,14 @@ namespace LiveChat.Client
             MessageBox.Show(message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// 退出应用程序
+        /// </summary>
         public static void ExitApplication()
         {
+            Application.Exit();
+            Application.ExitThread();
+            Environment.Exit(Environment.ExitCode);
         }
 
         #endregion

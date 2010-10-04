@@ -17,10 +17,6 @@ namespace LiveChat.Entity
         /// <summary>
         /// 网站用户
         /// </summary>
-        WebUser,
-        /// <summary>
-        /// 基金公司用户
-        /// </summary>
-        FundUser
+        WebUser
     }
 }

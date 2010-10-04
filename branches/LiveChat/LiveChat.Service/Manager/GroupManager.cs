@@ -56,7 +56,7 @@ namespace LiveChat.Service.Manager
                     sg.GroupName = p.GroupName;
                     sg.AddTime = p.AddTime.Value;
 
-                    //加载座席到群里
+                    //加载客服到群里
                     foreach (Seat seat in company.Seats)
                     {
                         sg.Seats.Add(seat);

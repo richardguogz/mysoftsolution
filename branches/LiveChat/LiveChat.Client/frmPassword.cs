@@ -24,7 +24,7 @@ namespace LiveChat.Client
         {
             if (txtOldPassword.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入旧密码！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入旧密码！");
                 txtOldPassword.Focus();
 
                 return;
@@ -32,7 +32,7 @@ namespace LiveChat.Client
 
             if (txtPassword.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入新密码！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入新密码！");
                 txtPassword.Focus();
 
                 return;
@@ -40,7 +40,7 @@ namespace LiveChat.Client
 
             if (txtPassword2.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入确认密码！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入确认密码！");
                 txtPassword2.Focus();
 
                 return;
@@ -52,20 +52,27 @@ namespace LiveChat.Client
 
             if (newPassword != newPassword2)
             {
-                MessageBox.Show("两次输入的密码不一致，请重输！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("两次输入的密码不一致，请重输！");
                 txtPassword.Focus();
 
                 return;
             }
 
-            if (service.UpdatePassword(seatID, oldPassword, newPassword))
+            try
             {
-                MessageBox.Show("修改密码成功！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                if (service.UpdatePassword(seatID, oldPassword, newPassword))
+                {
+                    ClientUtils.ShowMessage("修改密码成功！");
+                    this.Close();
+                }
+                else
+                {
+                    ClientUtils.ShowMessage("修改密码失败！");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("修改密码失败！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 

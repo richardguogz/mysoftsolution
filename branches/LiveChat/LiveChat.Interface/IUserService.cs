@@ -33,12 +33,11 @@ namespace LiveChat.Interface
         /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="clientID"></param>
         /// <param name="userType"></param>
         /// <param name="userID"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        IMResult Login(Guid clientID, UserType userType, string userID, string password);
+        IMResult Login(UserType userType, string userID, string password);
 
         /// <summary>
         /// 退出登录
@@ -125,13 +124,6 @@ namespace LiveChat.Interface
         /// <param name="userID"></param>
         /// <param name="groupID"></param>
         void ExitGroup(string userID, Guid groupID);
-
-        /// <summary>
-        /// 获取用户未读的消息
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
-        IList<Message> GetNoReadMessages(string userID);
 
         /// <summary>
         /// 获取会话中所有消息

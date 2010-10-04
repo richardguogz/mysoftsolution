@@ -30,27 +30,6 @@ namespace LiveChat.Service
         }
 
         /// <summary>
-        /// 验证客户端
-        /// </summary>
-        /// <param name="id">要验证的使用者ID</param>
-        /// <param name="clientID"></param>
-        /// <returns></returns>
-        public bool ValidateClient(string id, Guid clientID)
-        {
-            try
-            {
-                User user = UserManager.Instance.GetUser(id);
-                if (user == null) return false;
-                user.RefreshTime = DateTime.Now;
-                return user.ClientID == clientID;
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
         /// 验证用户
         /// </summary>
         /// <param name="id">要验证的使用者ID</param>
@@ -204,9 +183,12 @@ namespace LiveChat.Service
                 {
                     throw new LiveChatException(string.Format("会话({0})不存在！", sessionID));
                 }
+
                 P2SSession session = SessionManager.Instance.GetSession(sessionID) as P2SSession;
+                session.RefreshTime = DateTime.Now;
                 User user = session.User;
                 Seat seat = session.Seat;
+
                 MessageManager.Instance.AddP2SMessage(session, user.UserID, user.ShowName, seat.SeatID, seat.ShowName, senderIP, type, content);
             }
             catch (Exception ex)
@@ -236,6 +218,15 @@ namespace LiveChat.Service
                 }
 
                 P2SSession session = SessionManager.Instance.GetSession(sessionID) as P2SSession;
+
+                //检测会话超时(超时半小时未回话，自动关闭会话)
+                if (DateTime.Now.Subtract(session.RefreshTime).TotalMinutes > 30)
+                {
+                    CloseSession(session.SessionID);
+                    string msg = "您已经半小时未回复，系统自动关闭当前会话！";
+                    throw new LiveChatException(msg);
+                }
+
                 User user = session.User;
                 IList<Message> msgs = session.Messages;
                 IList<Message> list = new List<Message>();
@@ -297,29 +288,6 @@ namespace LiveChat.Service
                 }
 
                 return null;
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 获取用户未读的消息
-        /// </summary>
-        /// <param name="userID"></param>
-        /// <returns></returns>
-        public IList<Message> GetNoReadMessages(string userID)
-        {
-            try
-            {
-                User user = UserManager.Instance.GetUser(userID);
-                IList<Message> list = new List<Message>(user.Messages);
-
-                //读取消息后清除
-                user.Messages.Clear();
-
-                return list;
             }
             catch (Exception ex)
             {
@@ -446,7 +414,7 @@ namespace LiveChat.Service
         {
             try
             {
-                SessionManager.Instance.CloseSession(sessionID);
+                SessionManager.Instance.ClosingSession(sessionID);
             }
             catch (Exception ex)
             {
@@ -475,14 +443,31 @@ namespace LiveChat.Service
         }
 
         /// <summary>
+        /// 通过公司ID和Code获取一个客服
+        /// </summary>
+        /// <param name="companyID"></param>
+        /// <param name="seatCode"></param>
+        /// <returns></returns>
+        public Seat GetSeat(string companyID, string seatCode)
+        {
+            try
+            {
+                return SeatManager.Instance.GetSeat(companyID, seatCode);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="clientID"></param>
         /// <param name="userType"></param>
         /// <param name="userID"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public IMResult Login(Guid clientID, UserType userType, string userID, string password)
+        public IMResult Login(UserType userType, string userID, string password)
         {
             try
             {
@@ -493,61 +478,21 @@ namespace LiveChat.Service
                     {
                         //匿名用户不需要密码
                         case UserType.TempUser:
-                            //string key = CommonUtils.MakeUniqueKey(4, string.Empty);
-                            //string userName = string.Format("{0}({1})", "匿名用户", key);
                             user = new User(userID);
                             user.UserName = user.UserID;
                             break;
-                        //网站用户和基金宝客服端用户需要密码验证
-                        //case UserType.FundUser:
-                        //case UserType.WebUser:
-                        //    E.User u1 = M.UserManager.Instance.GetUser(userID);
-                        //    if (u1 == null)
-                        //    {
-                        //        return IMResult.InvalidUser;
-                        //    }
-                        //    else if (Encrypt.MD5(u1.Password) != password)
-                        //    {
-                        //        return IMResult.InvalidPassword;
-                        //    }
-                        //    user = new User(u1.Name);
-                        //    user.IsVIP = u1.IsEndow;
-
-                        //    UserExtend extend = new UserExtend();
-                        //    extend.Email = u1.Email;
-                        //    extend.MyAsset = u1.Money;
-                        //    user.Extend = extend;
-                        //    break;
+                        case UserType.WebUser:
+                            break;
                     }
 
                     //把用户添加到用户列表中
                     UserManager.Instance.AddUser(user);
                 }
-                //else if (userType != UserType.TempUser)
-                //{
-                //    //网站用户需要每次都验证
-                //    E.User u = M.UserManager.Instance.GetUser(userID);
-                //    if (u == null)
-                //    {
-                //        return IMResult.InvalidUser;
-                //    }
-                //    else if (Encrypt.MD5(u.Password) != password)
-                //    {
-                //        return IMResult.InvalidPassword;
-                //    }
-
-                //    user.IsVIP = u.IsEndow;
-
-                //    UserExtend extend = user.Extend;
-                //    extend.Email = u.Email;
-                //    extend.MyAsset = u.Money;
-                //}
 
                 user.UserType = userType;
                 user.LoginCount++;
                 user.LoginTime = DateTime.Now;
                 user.State = OnlineState.Online;
-                user.ClientID = clientID;
 
                 return IMResult.Successful;
             }

@@ -218,7 +218,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(149, 12);
             this.label8.TabIndex = 11;
-            this.label8.Text = "广告图片大小为 150 * 120";
+            this.label8.Text = "广告图片大小为 150 * 200";
             // 
             // label10
             // 

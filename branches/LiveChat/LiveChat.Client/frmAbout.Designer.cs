@@ -38,11 +38,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(101, 47);
+            this.label1.Location = new System.Drawing.Point(130, 49);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 12);
+            this.label1.Size = new System.Drawing.Size(71, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "WEB在线客服系统 v2.0";
+            this.label1.Text = "面料QQ v2.0";
             // 
             // label2
             // 
@@ -89,7 +89,7 @@
             this.MinimumSize = new System.Drawing.Size(348, 224);
             this.Name = "frmAbout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "关于 WEB在线客服系统";
+            this.Text = "关于 面料QQ";
             this.Load += new System.EventHandler(this.frmAbout_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

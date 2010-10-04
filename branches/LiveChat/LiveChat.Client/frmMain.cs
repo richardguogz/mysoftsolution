@@ -235,9 +235,8 @@ namespace LiveChat.Client
 
                     ClientUtils.SoftwareOtherLogin = true;
 
-                    MessageBox.Show("您当前的ID号在其它地方登录，将强制退出！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Application.ExitThread();
-                    Application.Exit();
+                    ClientUtils.ShowMessage("您当前的ID号在其它地方登录，将强制退出！");
+                    ClientUtils.ExitApplication();
 
                     return;
                 }
@@ -483,7 +482,7 @@ namespace LiveChat.Client
         {
             if (dgvTalks.SelectedRows.Count == 0)
             {
-                MessageBox.Show("请先选中一个会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先选中一个会话！");
                 return;
             }
 
@@ -534,7 +533,7 @@ namespace LiveChat.Client
         {
             if (dgvClients.SelectedRows.Count == 0)
             {
-                MessageBox.Show("请先选中一个会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先选中一个会话！");
                 return;
             }
 
@@ -621,7 +620,7 @@ namespace LiveChat.Client
             ClientSession session = null;
             if (dgvTalks.SelectedRows.Count == 0)
             {
-                MessageBox.Show("请先选中一个会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先选中一个会话！");
                 return;
             }
 
@@ -656,7 +655,7 @@ namespace LiveChat.Client
             ClientSession session = null;
             if (dgvClients.SelectedRows.Count == 0)
             {
-                MessageBox.Show("请先选中一个会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先选中一个会话！");
                 return;
             }
 

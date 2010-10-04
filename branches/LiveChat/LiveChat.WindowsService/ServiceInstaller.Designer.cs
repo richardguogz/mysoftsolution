@@ -39,9 +39,9 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "网站在线客服服务 v2.0";
-            this.serviceInstaller1.DisplayName = "Web LiveChat Service";
-            this.serviceInstaller1.ServiceName = "Web LiveChat Service";
+            this.serviceInstaller1.Description = "面料QQ服务 v2.0";
+            this.serviceInstaller1.DisplayName = "FabricQQ Service";
+            this.serviceInstaller1.ServiceName = "FabricQQService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ServiceInstaller

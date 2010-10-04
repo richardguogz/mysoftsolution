@@ -186,7 +186,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(149, 12);
             this.label9.TabIndex = 4;
-            this.label9.Text = "logo图片大小为 150 * 120";
+            this.label9.Text = "logo图片大小为 150 * 200";
             // 
             // txtCompanyName
             // 

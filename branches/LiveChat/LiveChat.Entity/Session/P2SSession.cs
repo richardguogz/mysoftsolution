@@ -154,6 +154,22 @@ namespace LiveChat.Entity
             }
         }
 
+        private DateTime _RefreshTime;
+        /// <summary>
+        /// 刷新时间
+        /// </summary>
+        public DateTime RefreshTime
+        {
+            get
+            {
+                return _RefreshTime;
+            }
+            set
+            {
+                _RefreshTime = value;
+            }
+        }
+
         public override string SessionID
         {
             get
@@ -182,6 +198,7 @@ namespace LiveChat.Entity
             : base()
         {
             this._StartTime = DateTime.Now;
+            this._RefreshTime = DateTime.Now;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-function checkAllChange() {
+﻿function checkAllChange() {
     $(".check").attr("checked", $("#checkAll").attr("checked"))
 }
 

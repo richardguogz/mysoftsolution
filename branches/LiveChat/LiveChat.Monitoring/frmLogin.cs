@@ -42,8 +42,7 @@ namespace LiveChat.Monitoring
 
             try
             {
-                //IMResult result = service.LoginForCompanyName(clientID, companyName, userID, password, false);
-                IMResult result = service.Login(clientID, companyID, userID, password, false);
+                IMResult result = service.Login(clientID, companyID, userID, password);
 
                 switch (result)
                 {
@@ -56,11 +55,6 @@ namespace LiveChat.Monitoring
 
                         MessageBox.Show("输入的密码不正确！", "用户登录", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
-
-                    //case IMResult.NotManager:
-
-                    //    MessageBox.Show("监控程序只允许客服经理及管理员登录！", "用户登录", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //    break;
 
                     case IMResult.Successful:
 

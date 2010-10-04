@@ -228,10 +228,14 @@ p.visitor
 p.operator span
 {
 	margin-left: 12px;
+	margin-top: 3px;
+	display: block;
 }
 p.visitor span
 {
 	margin-left: 12px;
+	margin-top: 3px;
+	display: block;
 }
 span
 {
@@ -242,8 +246,7 @@ span
 p
 {
 	margin: 0px;
-	padding: 4px 0;
-	/* line-height: 1.5em; */
+	padding: 4px 0; /* line-height: 1.5em; */
 }
 .ts_text
 {
@@ -323,7 +326,7 @@ p
 {
 	margin: 0px;
 	padding: 0px;
-	padding-top: 10px;
+	padding-top: 5px;
 }
 .list li
 {
@@ -350,14 +353,15 @@ p
 
 #tableface td
 {
-	text-align:center;
+	text-align: center;
 }
 
-#uploadFileBox {
+#uploadFileBox
+{
 	position: absolute;
 	left: 6px;
 	top: 184px;
-	height:50px;
+	height: 50px;
 	padding-left: 5px;
 	background-color: #FFFFFF;
 	width: 380px;
@@ -365,8 +369,9 @@ p
 	display: none;
 }
 
-#uploadFileFrame {
-	height:24px;
+#uploadFileFrame
+{
+	height: 24px;
 	overflow: hidden;
 	width: 380px;
 	border-top-style: none;

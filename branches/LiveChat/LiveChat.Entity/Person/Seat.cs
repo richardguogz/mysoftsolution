@@ -10,6 +10,38 @@ namespace LiveChat.Entity
     [Serializable]
     public class Seat : BaseInfo
     {
+        private Guid _ClientID;
+        /// <summary>
+        /// 用于验证的客服端ID
+        /// </summary>
+        public Guid ClientID
+        {
+            get
+            {
+                return _ClientID;
+            }
+            set
+            {
+                _ClientID = value;
+            }
+        }
+
+        private DateTime _RefreshTime;
+        /// <summary>
+        /// 刷新时间
+        /// </summary>
+        public DateTime RefreshTime
+        {
+            get
+            {
+                return _RefreshTime;
+            }
+            set
+            {
+                _RefreshTime = value;
+            }
+        }
+
         private string _CompanyID;
         /// <summary>
         /// 公司信息

@@ -132,7 +132,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
 
             msgtimer.Start();
@@ -147,7 +147,7 @@ namespace LiveChat.Client
         {
             if (txtMessage.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("发送的消息不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("发送的消息不能为空！");
                 txtMessage.Focus();
                 return;
             }

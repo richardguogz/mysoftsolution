@@ -300,7 +300,7 @@ namespace LiveChat.Client
             string userid = textBox1.Text.Trim();
             if (string.IsNullOrEmpty(userid))
             {
-                MessageBox.Show("请输入要查询的用户ID号！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入要查询的用户ID号！");
                 textBox1.Focus();
                 return;
             }

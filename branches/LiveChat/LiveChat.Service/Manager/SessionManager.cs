@@ -380,6 +380,28 @@ namespace LiveChat.Service.Manager
         #region 会话操作
 
         /// <summary>
+        /// 准备关闭会话，客户端操作
+        /// </summary>
+        /// <param name="sessionID"></param>
+        public void ClosingSession(string sessionID)
+        {
+            lock (syncobj)
+            {
+                if (dictSession.ContainsKey(sessionID))
+                {
+                    //改变状态
+                    Session session = dictSession[sessionID];
+                    P2SSession ps = session as P2SSession;
+                    if (ps.State != SessionState.Closed)
+                    {
+                        ps.EndTime = DateTime.Now;
+                        ps.State = SessionState.Closed;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 结束会话
         /// </summary>
         /// <param name="sessionID"></param>
@@ -396,8 +418,11 @@ namespace LiveChat.Service.Manager
                         if (session is P2SSession)
                         {
                             P2SSession ps = session as P2SSession;
-                            ps.EndTime = DateTime.Now;
-                            ps.State = SessionState.Closed;
+                            if (ps.State != SessionState.Closed)
+                            {
+                                ps.EndTime = DateTime.Now;
+                                ps.State = SessionState.Closed;
+                            }
                             closeSession[sessionID] = ps;
 
                             ps.Seat.RemoveSession(ps);

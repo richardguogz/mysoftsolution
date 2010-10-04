@@ -282,7 +282,7 @@ namespace LiveChat.Client
         {
             if (txtMessage.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("发送的消息不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("发送的消息不能为空！");
                 txtMessage.Focus();
                 return;
             }
@@ -368,7 +368,6 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (panel2.Visible)
             {
                 panel2.Visible = false;
@@ -393,7 +392,7 @@ namespace LiveChat.Client
         {
             if (txtFile.Text.Trim() == string.Empty)
             {
-                MessageBox.Show("请先选择要传送的文件！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请先选择要传送的文件！");
                 button3.Focus();
                 return;
             }

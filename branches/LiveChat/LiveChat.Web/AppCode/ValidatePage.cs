@@ -14,18 +14,10 @@ namespace LiveChat.Web
         {
             base.OnAjaxInit();
 
-            Guid clientID = new Guid(GetRequestParam<string>("ClientID", null));
             string userid = GetUserID();
             if (string.IsNullOrEmpty(userid))
             {
                 throw new AjaxException("当前会话已经过期，请重新联系客服！");
-            }
-            else
-            {
-                if (!service.ValidateClient(userid, clientID))
-                {
-                    throw new AjaxException("此用户已在其它地方登录！");
-                }
             }
         }
     }

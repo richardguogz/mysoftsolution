@@ -61,11 +61,11 @@ namespace LiveChat.Client
             }
             catch (LiveChatException ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage(ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("错误：" + ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 

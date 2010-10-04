@@ -26,22 +26,29 @@ namespace LiveChat.Web
         [AjaxMethod]
         public string CreateFile(string sessionID, string userID)
         {
-            //打开聊天记录窗口
-            var url = "/history.aspx";
-            var query = "sessionID=" + sessionID;
-            var path = Server.MapPath("history.aspx");
-            var dir = System.IO.Path.GetDirectoryName(path);
-            var fileName = string.Format("{0}.htm", userID);
-            dir = System.IO.Path.Combine(dir, "history");
-            var filePath = System.IO.Path.Combine(dir, fileName);
-
-            if (StaticPageUtils.CreateLocalPage(url, query, filePath, "聊天记录", Encoding.UTF8, Encoding.UTF8))
+            try
             {
-                url = string.Format("/history/{0}", fileName);
-                return Server.UrlEncode(url);
+                //打开聊天记录窗口
+                var url = "/history.aspx";
+                var query = "sessionID=" + sessionID;
+                var path = Server.MapPath("history.aspx");
+                var dir = System.IO.Path.GetDirectoryName(path);
+                var fileName = string.Format("{0}.htm", userID);
+                dir = System.IO.Path.Combine(dir, "history");
+                var filePath = System.IO.Path.Combine(dir, fileName);
+
+                if (StaticPageUtils.CreateLocalPage(url, query, filePath, "聊天记录", Encoding.UTF8, Encoding.UTF8))
+                {
+                    url = string.Format("/history/{0}", fileName);
+                    return Server.UrlEncode(url);
+                }
+                else
+                    return null;
             }
-            else
+            catch
+            {
                 return null;
+            }
         }
 
         /// <summary>
@@ -67,13 +74,13 @@ namespace LiveChat.Web
                 {
                     service.SendP2SMessage(type, sessionID, Request.UserHostAddress, text);
                 }
-            }
-            catch
-            {
-                sessionID = null;
-            }
 
-            return sessionID;
+                return sessionID;
+            }
+            catch (Exception ex)
+            {
+                throw new AjaxException(ex.Message);
+            }
         }
 
         /// <summary>
@@ -89,9 +96,9 @@ namespace LiveChat.Web
                 byte[] buffer = Convert.FromBase64String(base64String);
                 return service.UploadImage(buffer, ".jpg");
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                throw new AjaxException(ex.Message);
             }
         }
 
@@ -126,9 +133,9 @@ namespace LiveChat.Web
 
                 return list;
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                throw new AjaxException(ex.Message);
             }
         }
 
@@ -145,9 +152,9 @@ namespace LiveChat.Web
                 Company company = service.GetCompany(GetRequestParam<string>("CompanyID", null));
                 return p == null ? null : (p.Seat == null ? new string[] { p.SessionID } : new string[] { p.SessionID, company.CompanyName, p.Seat.ShowName, p.Seat.SeatCode, p.Seat.Telephone, p.Seat.MobileNumber, p.Seat.Email });
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                throw new AjaxException(ex.Message);
             }
         }
 
@@ -162,9 +169,9 @@ namespace LiveChat.Web
             {
                 return service.GetSeatOnline(GetRequestParam<string>("CompanyID", null));
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw new AjaxException(ex.Message);
             }
         }
 
@@ -174,13 +181,20 @@ namespace LiveChat.Web
         [AjaxMethod]
         public void EndRequest(string sessionID)
         {
-            if (!string.IsNullOrEmpty(sessionID))
+            try
             {
-                //结束本次会话
-                service.CloseSession(sessionID);
-            }
+                if (!string.IsNullOrEmpty(sessionID))
+                {
+                    //结束本次会话
+                    service.CloseSession(sessionID);
+                }
 
-            service.Logout(GetUserID());
+                service.Logout(GetUserID());
+            }
+            catch (Exception ex)
+            {
+                throw new AjaxException(ex.Message);
+            }
         }
 
         /// <summary>

@@ -19,14 +19,14 @@ namespace LiveChat.Client
         {
             if (string.IsNullOrEmpty(textBox1.Text.Trim()))
             {
-                MessageBox.Show("IP地址不允许为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("IP地址不允许为空！");
                 textBox1.Focus();
                 return;
             }
 
             if (string.IsNullOrEmpty(textBox2.Text.Trim()))
             {
-                MessageBox.Show("端口不允许为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("端口不允许为空！");
                 textBox2.Focus();
                 return;
             }
@@ -64,7 +64,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -92,7 +92,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 

@@ -31,7 +31,14 @@ namespace LiveChat.Web
 
             if (seatid != null)
             {
-                ret = service.GetSeatOnline(companyID, seatid);
+                try
+                {
+                    ret = service.GetSeatOnline(companyID, seatid);
+                }
+                catch
+                {
+                    ret = false;
+                }
             }
 
             if (type == "jpg")

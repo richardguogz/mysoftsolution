@@ -71,27 +71,21 @@ namespace LiveChat.Client
 
             try
             {
-                //IMResult result = service.LoginForCompanyName(clientID, companyName, userID, password, false);
-                IMResult result = service.Login(clientID, companyID, userID, password, false);
+                IMResult result = service.Login(clientID, companyID, userID, password);
 
                 switch (result)
                 {
                     case IMResult.InvalidUser:
 
-                        MessageBox.Show("此公司用户ID不存在！", "用户登录", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClientUtils.ShowMessage("此公司用户ID不存在！");
                         txtCompanyID.Focus();
                         break;
 
                     case IMResult.InvalidPassword:
 
-                        MessageBox.Show("输入的密码不正确！", "用户登录", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClientUtils.ShowMessage("输入的密码不正确！");
                         txtPassword.Focus();
                         break;
-
-                    //case IMResult.NotManager:
-
-                    //    MessageBox.Show("监控程序只允许客服经理及管理员登录！", "用户登录", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //    break;
 
                     case IMResult.Successful:
 
@@ -122,7 +116,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "用户登录", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -207,16 +201,14 @@ namespace LiveChat.Client
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Application.ExitThread();
-            Application.Exit();
+            ClientUtils.ExitApplication();
         }
 
         private void frmLogin_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (isExit)
             {
-                Application.ExitThread();
-                Application.Exit();
+
             }
         }
 
@@ -229,8 +221,7 @@ namespace LiveChat.Client
         {
             if (!isNewForm)
             {
-                Application.ExitThread();
-                Application.Exit();
+                ClientUtils.ExitApplication();
             }
         }
 

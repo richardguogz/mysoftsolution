@@ -36,11 +36,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNavigate));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("会话请求", 3, 3);
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("客服会话", 3, 3);
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("公司客服", 3, 3);
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("我的好友", 3, 3);
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("客服群", 3, 3);
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("会话请求", 3, 3);
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("客服会话", 3, 3);
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("公司客服", 3, 3);
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("我的好友", 3, 3);
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("客服群", 3, 3);
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblSign = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -80,13 +80,18 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tvSession = new LiveChat.Client.DoubleBufferTreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.刷新RToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tbSearchName = new System.Windows.Forms.TextBox();
+            this.lvSearchName = new LiveChat.Client.DoubleBufferListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.tvLinkman = new LiveChat.Client.DoubleBufferTreeView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tvSeatGroup = new LiveChat.Client.DoubleBufferTreeView();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmSysTray = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.隐藏窗口ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -148,11 +153,8 @@
             this.toolStripMenuItem33 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem34 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tvSession = new LiveChat.Client.DoubleBufferTreeView();
-            this.lvSearchName = new LiveChat.Client.DoubleBufferListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.tvLinkman = new LiveChat.Client.DoubleBufferTreeView();
-            this.tvSeatGroup = new LiveChat.Client.DoubleBufferTreeView();
+            this.消息记录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.消息记录ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).BeginInit();
@@ -201,9 +203,9 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(183, 11);
+            this.label2.Location = new System.Drawing.Point(183, 7);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(5, 32);
+            this.label2.Size = new System.Drawing.Size(5, 36);
             this.label2.TabIndex = 6;
             this.label2.Text = "     ";
             // 
@@ -544,6 +546,36 @@
             this.tabPage1.Text = "访客";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tvSession
+            // 
+            this.tvSession.ContextMenuStrip = this.contextMenuStrip1;
+            this.tvSession.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvSession.HideSelection = false;
+            this.tvSession.ImageIndex = 0;
+            this.tvSession.ImageList = this.imgList;
+            this.tvSession.ItemHeight = 24;
+            this.tvSession.Location = new System.Drawing.Point(0, 0);
+            this.tvSession.Name = "tvSession";
+            treeNode6.ImageIndex = 3;
+            treeNode6.Name = "节点0";
+            treeNode6.SelectedImageIndex = 3;
+            treeNode6.Text = "会话请求";
+            treeNode7.ImageIndex = 3;
+            treeNode7.Name = "节点1";
+            treeNode7.SelectedImageIndex = 3;
+            treeNode7.Text = "客服会话";
+            this.tvSession.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode6,
+            treeNode7});
+            this.tvSession.SelectedImageIndex = 0;
+            this.tvSession.ShowLines = false;
+            this.tvSession.ShowRootLines = false;
+            this.tvSession.Size = new System.Drawing.Size(216, 388);
+            this.tvSession.TabIndex = 0;
+            this.tvSession.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSession_NodeMouseDoubleClick);
+            this.tvSession.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvSession_AfterCollapse);
+            this.tvSession.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvSession_AfterExpand);
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -612,6 +644,60 @@
             this.tbSearchName.TabIndex = 2;
             this.tbSearchName.TextChanged += new System.EventHandler(this.tbSearchName_TextChanged);
             // 
+            // lvSearchName
+            // 
+            this.lvSearchName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvSearchName.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.lvSearchName.FullRowSelect = true;
+            this.lvSearchName.GridLines = true;
+            this.lvSearchName.HideSelection = false;
+            this.lvSearchName.Location = new System.Drawing.Point(1, 0);
+            this.lvSearchName.MultiSelect = false;
+            this.lvSearchName.Name = "lvSearchName";
+            this.lvSearchName.Size = new System.Drawing.Size(214, 148);
+            this.lvSearchName.TabIndex = 2;
+            this.lvSearchName.UseCompatibleStateImageBehavior = false;
+            this.lvSearchName.View = System.Windows.Forms.View.Details;
+            this.lvSearchName.Visible = false;
+            this.lvSearchName.DoubleClick += new System.EventHandler(this.lvSearchName_DoubleClick);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "客服信息";
+            this.columnHeader1.Width = 190;
+            // 
+            // tvLinkman
+            // 
+            this.tvLinkman.ContextMenuStrip = this.contextMenuStrip1;
+            this.tvLinkman.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvLinkman.HideSelection = false;
+            this.tvLinkman.ImageIndex = 0;
+            this.tvLinkman.ImageList = this.imgList;
+            this.tvLinkman.ItemHeight = 24;
+            this.tvLinkman.Location = new System.Drawing.Point(0, 0);
+            this.tvLinkman.Name = "tvLinkman";
+            treeNode1.ImageIndex = 3;
+            treeNode1.Name = "节点2";
+            treeNode1.SelectedImageIndex = 3;
+            treeNode1.Text = "公司客服";
+            treeNode2.ImageIndex = 3;
+            treeNode2.Name = "节点0";
+            treeNode2.SelectedImageIndex = 3;
+            treeNode2.Text = "我的好友";
+            this.tvLinkman.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            this.tvLinkman.SelectedImageIndex = 0;
+            this.tvLinkman.ShowLines = false;
+            this.tvLinkman.ShowRootLines = false;
+            this.tvLinkman.Size = new System.Drawing.Size(216, 359);
+            this.tvLinkman.TabIndex = 0;
+            this.tvLinkman.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvLinkman_NodeMouseDoubleClick);
+            this.tvLinkman.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvLinkman_AfterCollapse);
+            this.tvLinkman.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvLinkman_AfterExpand);
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.tvSeatGroup);
@@ -622,12 +708,37 @@
             this.tabPage3.Text = "群";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // tvSeatGroup
+            // 
+            this.tvSeatGroup.ContextMenuStrip = this.contextMenuStrip1;
+            this.tvSeatGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvSeatGroup.HideSelection = false;
+            this.tvSeatGroup.ImageIndex = 0;
+            this.tvSeatGroup.ImageList = this.imgList;
+            this.tvSeatGroup.ItemHeight = 24;
+            this.tvSeatGroup.Location = new System.Drawing.Point(0, 0);
+            this.tvSeatGroup.Name = "tvSeatGroup";
+            treeNode3.ImageIndex = 3;
+            treeNode3.Name = "节点0";
+            treeNode3.SelectedImageIndex = 3;
+            treeNode3.Text = "客服群";
+            this.tvSeatGroup.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode3});
+            this.tvSeatGroup.SelectedImageIndex = 0;
+            this.tvSeatGroup.ShowLines = false;
+            this.tvSeatGroup.ShowRootLines = false;
+            this.tvSeatGroup.Size = new System.Drawing.Size(216, 388);
+            this.tvSeatGroup.TabIndex = 1;
+            this.tvSeatGroup.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSeatGroup_NodeMouseDoubleClick);
+            this.tvSeatGroup.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvSeatGroup_AfterCollapse);
+            this.tvSeatGroup.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvSeatGroup_AfterExpand);
+            // 
             // notifyIcon1
             // 
             this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyIcon1.ContextMenuStrip = this.cmSysTray;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "WEB在线客服系统";
+            this.notifyIcon1.Text = "面料QQ";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
@@ -804,27 +915,28 @@
             // 
             this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2,
+            this.消息记录ToolStripMenuItem,
             this.toolStripSeparator9,
             this.toolStripMenuItem4});
             this.contextMenuStrip4.Name = "contextMenuStrip2";
-            this.contextMenuStrip4.Size = new System.Drawing.Size(125, 54);
+            this.contextMenuStrip4.Size = new System.Drawing.Size(125, 76);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem2.Text = "关闭会话";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(121, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(124, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem4.Text = "刷新";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.刷新RToolStripMenuItem_Click);
             // 
@@ -1028,10 +1140,11 @@
             // 
             this.contextMenuStrip5.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem33,
+            this.消息记录ToolStripMenuItem1,
             this.toolStripSeparator10,
             this.toolStripMenuItem34});
             this.contextMenuStrip5.Name = "contextMenuStrip2";
-            this.contextMenuStrip5.Size = new System.Drawing.Size(125, 54);
+            this.contextMenuStrip5.Size = new System.Drawing.Size(153, 98);
             // 
             // toolStripMenuItem33
             // 
@@ -1051,114 +1164,19 @@
             this.toolStripMenuItem34.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem34.Text = "刷新";
             // 
-            // tvSession
+            // 消息记录ToolStripMenuItem
             // 
-            this.tvSession.ContextMenuStrip = this.contextMenuStrip1;
-            this.tvSession.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvSession.HideSelection = false;
-            this.tvSession.ImageIndex = 0;
-            this.tvSession.ImageList = this.imgList;
-            this.tvSession.ItemHeight = 24;
-            this.tvSession.Location = new System.Drawing.Point(0, 0);
-            this.tvSession.Name = "tvSession";
-            treeNode1.ImageIndex = 3;
-            treeNode1.Name = "节点0";
-            treeNode1.SelectedImageIndex = 3;
-            treeNode1.Text = "会话请求";
-            treeNode2.ImageIndex = 3;
-            treeNode2.Name = "节点1";
-            treeNode2.SelectedImageIndex = 3;
-            treeNode2.Text = "客服会话";
-            this.tvSession.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            this.tvSession.SelectedImageIndex = 0;
-            this.tvSession.ShowLines = false;
-            this.tvSession.ShowRootLines = false;
-            this.tvSession.Size = new System.Drawing.Size(216, 388);
-            this.tvSession.TabIndex = 0;
-            this.tvSession.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSession_NodeMouseDoubleClick);
-            this.tvSession.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvSession_AfterCollapse);
-            this.tvSession.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvSession_AfterExpand);
+            this.消息记录ToolStripMenuItem.Name = "消息记录ToolStripMenuItem";
+            this.消息记录ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.消息记录ToolStripMenuItem.Text = "消息记录";
+            this.消息记录ToolStripMenuItem.Click += new System.EventHandler(this.消息记录ToolStripMenuItem_Click);
             // 
-            // lvSearchName
+            // 消息记录ToolStripMenuItem1
             // 
-            this.lvSearchName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvSearchName.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.lvSearchName.FullRowSelect = true;
-            this.lvSearchName.GridLines = true;
-            this.lvSearchName.HideSelection = false;
-            this.lvSearchName.Location = new System.Drawing.Point(1, 0);
-            this.lvSearchName.MultiSelect = false;
-            this.lvSearchName.Name = "lvSearchName";
-            this.lvSearchName.Size = new System.Drawing.Size(214, 148);
-            this.lvSearchName.TabIndex = 2;
-            this.lvSearchName.UseCompatibleStateImageBehavior = false;
-            this.lvSearchName.View = System.Windows.Forms.View.Details;
-            this.lvSearchName.Visible = false;
-            this.lvSearchName.DoubleClick += new System.EventHandler(this.lvSearchName_DoubleClick);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "客服信息";
-            this.columnHeader1.Width = 190;
-            // 
-            // tvLinkman
-            // 
-            this.tvLinkman.ContextMenuStrip = this.contextMenuStrip1;
-            this.tvLinkman.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvLinkman.HideSelection = false;
-            this.tvLinkman.ImageIndex = 0;
-            this.tvLinkman.ImageList = this.imgList;
-            this.tvLinkman.ItemHeight = 24;
-            this.tvLinkman.Location = new System.Drawing.Point(0, 0);
-            this.tvLinkman.Name = "tvLinkman";
-            treeNode3.ImageIndex = 3;
-            treeNode3.Name = "节点2";
-            treeNode3.SelectedImageIndex = 3;
-            treeNode3.Text = "公司客服";
-            treeNode4.ImageIndex = 3;
-            treeNode4.Name = "节点0";
-            treeNode4.SelectedImageIndex = 3;
-            treeNode4.Text = "我的好友";
-            this.tvLinkman.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
-            this.tvLinkman.SelectedImageIndex = 0;
-            this.tvLinkman.ShowLines = false;
-            this.tvLinkman.ShowRootLines = false;
-            this.tvLinkman.Size = new System.Drawing.Size(216, 359);
-            this.tvLinkman.TabIndex = 0;
-            this.tvLinkman.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvLinkman_NodeMouseDoubleClick);
-            this.tvLinkman.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvLinkman_AfterCollapse);
-            this.tvLinkman.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvLinkman_AfterExpand);
-            // 
-            // tvSeatGroup
-            // 
-            this.tvSeatGroup.ContextMenuStrip = this.contextMenuStrip1;
-            this.tvSeatGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvSeatGroup.HideSelection = false;
-            this.tvSeatGroup.ImageIndex = 0;
-            this.tvSeatGroup.ImageList = this.imgList;
-            this.tvSeatGroup.ItemHeight = 24;
-            this.tvSeatGroup.Location = new System.Drawing.Point(0, 0);
-            this.tvSeatGroup.Name = "tvSeatGroup";
-            treeNode5.ImageIndex = 3;
-            treeNode5.Name = "节点0";
-            treeNode5.SelectedImageIndex = 3;
-            treeNode5.Text = "客服群";
-            this.tvSeatGroup.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5});
-            this.tvSeatGroup.SelectedImageIndex = 0;
-            this.tvSeatGroup.ShowLines = false;
-            this.tvSeatGroup.ShowRootLines = false;
-            this.tvSeatGroup.Size = new System.Drawing.Size(216, 388);
-            this.tvSeatGroup.TabIndex = 1;
-            this.tvSeatGroup.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSeatGroup_NodeMouseDoubleClick);
-            this.tvSeatGroup.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvSeatGroup_AfterCollapse);
-            this.tvSeatGroup.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvSeatGroup_AfterExpand);
+            this.消息记录ToolStripMenuItem1.Name = "消息记录ToolStripMenuItem1";
+            this.消息记录ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.消息记录ToolStripMenuItem1.Text = "消息记录";
+            this.消息记录ToolStripMenuItem1.Click += new System.EventHandler(this.消息记录ToolStripMenuItem_Click);
             // 
             // frmNavigate
             // 
@@ -1318,5 +1336,7 @@
         private System.Windows.Forms.ToolStripMenuItem 修改备注名称ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 查看资料ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 查看资料ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 消息记录ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 消息记录ToolStripMenuItem1;
     }
 }

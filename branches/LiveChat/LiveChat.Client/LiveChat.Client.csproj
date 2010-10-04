@@ -52,10 +52,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EmotionPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Library\EmotionPanel.dll</HintPath>
-    </Reference>
     <Reference Include="IrisSkin2, Version=2006.3.22.45, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Library\IrisSkin2.dll</HintPath>
@@ -381,6 +377,10 @@
     <None Include="skin\winxp.ssk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EmotionPanel\CSharpWin.csproj">
+      <Project>{C9BB207F-521A-4805-B308-1CD08C7BE3F6}</Project>
+      <Name>CSharpWin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Live.Framework\LiveChat.Framework.csproj">
       <Project>{CBA483B8-3EBC-4F99-959A-0BCBD651ED21}</Project>
       <Name>LiveChat.Framework</Name>

@@ -1,5 +1,4 @@
-﻿
-//提交Form
+﻿//提交Form
 function submitForm() {
 
     var form1 = document.getElementById('form1');

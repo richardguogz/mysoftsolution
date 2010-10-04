@@ -11,6 +11,7 @@ using LiveChat.Remoting;
 using LiveChat.Service;
 using LiveChat.Utils;
 using LiveChat.Service.Manager;
+using System.Runtime.Remoting;
 
 namespace LiveChat.WindowsService
 {
@@ -39,6 +40,10 @@ namespace LiveChat.WindowsService
         {
             try
             {
+                //远程抛出错误
+                RemotingConfiguration.CustomErrorsMode = CustomErrorsModes.Off;
+                RemotingConfiguration.CustomErrorsEnabled(false);
+
                 RemotingServerConfiguration cfg = RemotingServerConfiguration.GetConfig();
 
                 if (cfg != null)
@@ -52,10 +57,14 @@ namespace LiveChat.WindowsService
                     //Thread.Sleep(30000);
 
                     //加载服务异常后的数据
+                    srv_OnLog("正在加载初始化数据......");
+
                     CompanyManager.Instance.LoadCompany();
                     GroupManager.Instance.LoadGroup();
                     UserManager.Instance.LoadUser();
                     SessionManager.Instance.LoadSessionAndMessage();
+
+                    srv_OnLog("初始化数据加载完成.");
                 }
                 else
                 {

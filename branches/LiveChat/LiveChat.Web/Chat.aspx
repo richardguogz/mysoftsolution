@@ -14,7 +14,6 @@
         var sessionID = '<% =sessionID %>';
         var skinID = '<% =skinID %>';
         var userID = '<% =userID %>';
-        var seatID = '<% =seatID %>';
         var seatCode = '<% =seatCode %>';
     </script>
 
@@ -33,7 +32,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="d_r" id="adBox" runat="server" style="position:absolute; top:1px; right: 0px;">
+                        <div class="d_r" id="adBox" runat="server" style="position: absolute; top: 1px; right: 0px;">
                             <!-- 这里放广告信息 -->
                         </div>
                     </div>
@@ -62,13 +61,17 @@
                                     <div style="text-align: center; background: url(images/talk04.jpg) no-repeat;" id="div2"
                                         class="scoll">
                                         <ul class="list">
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>公司:</b><%= company.CompanyName %></li>
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>网址:</b><br />&nbsp;&nbsp;<a href='<%= company.WebSite %>' target=_blank><%= company.WebSite %></a></li>
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>姓名:</b><span id='seatName'><%= seat==null?"":seat.SeatName %></span></li>
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>工号:</b><span id='seatID'><%= seat==null?"":seat.SeatCode %></span></li>
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>电话:</b><span id='telePhone'><%= seat==null?"":seat.Telephone %></span></li>
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>手机:</b><span id='mobileNumber'><%= seat==null?"":seat.MobileNumber %></span></li>
-                                            <li><img src="images/i1.gif" class="itemimg" /><b>邮件:</b><span id='email'><%= seat==null?"":seat.Email %></span></li>
+                                            <li>
+                                                <img src="images/i1.gif" class="itemimg" /><b><a href='<%= company.WebSite.IndexOf("http://") < 0?"http://" + company.WebSite:company.WebSite %>'
+                                                    target="_blank"><%= company.CompanyName %></a></b></li>
+                                            <li>
+                                                <img src="images/i1.gif" class="itemimg" /><span><b id='seatName'><%= seat==null?"":seat.ShowName %></b></span></li>
+                                            <li>
+                                                <img src="images/i1.gif" class="itemimg" /><span><b id='telePhone'><%= seat==null?"":seat.Telephone %></b></span></li>
+                                            <li>
+                                                <img src="images/i1.gif" class="itemimg" /><span><b id='mobileNumber'><%= seat==null?"":seat.MobileNumber %></b></span></li>
+                                            <li>
+                                                <img src="images/i1.gif" class="itemimg" /><span><b id='email'><%= seat==null?"":seat.Email %></b></span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -82,148 +85,125 @@
                                             <div class="kj">
                                                 <div id="emotionpane" style="border-style: ridge; border-width: 1px; visibility: visible;
                                                     position: absolute; width: 205px; height: 75px; z-index: 105; left: 6px; top: 159px;
-                                                    background-color: rgb(255, 255, 255); display:none; ">
+                                                    background-color: rgb(255, 255, 255); display: none;">
                                                     <table height="100%" cellpadding="2" border="0" width="100%" bordercolordark="#F3F3CD"
                                                         bordercolorlight="#FFFFFF" id="tableface">
                                                         <tbody>
                                                             <tr>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(1);" style="background-position: 0pt 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(1);" style="background-position: 0pt 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(2);" style="background-position: -19px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(2);" style="background-position: -19px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(3);" style="background-position: -38px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(3);" style="background-position: -38px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(4);" style="background-position: -57px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(4);" style="background-position: -57px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(5);" style="background-position: -76px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(5);" style="background-position: -76px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(6);" style="background-position: -95px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(6);" style="background-position: -95px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(7);" style="background-position: -114px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(7);" style="background-position: -114px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(8);" style="background-position: -133px 0pt;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(8);" style="background-position: -133px 0pt;" class="emo">
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(9);" style="background-position: 0pt -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(9);" style="background-position: 0pt -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(10);" style="background-position: -19px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(10);" style="background-position: -19px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(11);" style="background-position: -38px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(11);" style="background-position: -38px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(12);" style="background-position: -57px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(12);" style="background-position: -57px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(13);" style="background-position: -76px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(13);" style="background-position: -76px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(14);" style="background-position: -95px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(14);" style="background-position: -95px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(15);" style="background-position: -114px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(15);" style="background-position: -114px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(16);" style="background-position: -133px -19px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(16);" style="background-position: -133px -19px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(17);" style="background-position: 0pt -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(17);" style="background-position: 0pt -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(18);" style="background-position: -19px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(18);" style="background-position: -19px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(19);" style="background-position: -38px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(19);" style="background-position: -38px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(20);" style="background-position: -57px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(20);" style="background-position: -57px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(21);" style="background-position: -76px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(21);" style="background-position: -76px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(22);" style="background-position: -95px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(22);" style="background-position: -95px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(23);" style="background-position: -114px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(23);" style="background-position: -114px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                                 <td bgcolor="#ffffff" onmouseout="this.bgColor='#ffffff'" onmouseover="this.bgColor='#FFC895'">
-                                                                    <div onclick="setcurrface(24);" style="background-position: -133px -38px;"
-                                                                        class="emo">
+                                                                    <div onclick="setcurrface(24);" style="background-position: -133px -38px;" class="emo">
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div id="uploadFileBox" style="display:none;" >
-                                                    <div style="margin-left:18px; padding:3px;">文件大小限制在4M以内！</div>
-	                                                <iframe id="uploadFileFrame" height="30px" frameborder="0" scrolling="no"></iframe>
+                                                <div id="uploadFileBox" style="display: none;">
+                                                    <div style="margin-left: 18px; padding: 3px;">
+                                                        文件大小限制在4M以内！</div>
+                                                    <iframe id="uploadFileFrame" height="30px" frameborder="0" scrolling="no"></iframe>
                                                 </div>
                                                 <ul>
-                                                    <li onclick="setface();" id='chatface' onmouseover="this.className='ico0 hover';" onmouseout="this.className='ico0';"
-                                                        class="ico0">表情</li>
-                                                    <li onclick="showUploadFile('/uploadFile.htm');" id='file' onmouseover="this.className='icof hover';" onmouseout="this.className='icof';"
-                                                        class="icof">&nbsp;传送文件</li>
+                                                    <li onclick="setface();" id='chatface' onmouseover="this.className='ico0 hover';"
+                                                        onmouseout="this.className='ico0';" class="ico0">表情</li>
+                                                    <li onclick="showUploadFile('/uploadFile.htm');" id='file' onmouseover="this.className='icof hover';"
+                                                        onmouseout="this.className='icof';" class="icof">&nbsp;传送文件</li>
                                                     <li onclick="download();" id='active' onmouseover="this.className='ico hover';" onmouseout="this.className='ico';"
                                                         class="ico">截屏</li>
                                                     <li onclick="doclose();" id="closesound" onmouseover="this.className='ico2 hover';"
@@ -277,10 +257,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="width:100%; ">
+                            <td colspan="3" style="width: 100%;">
                                 <div id="divText" runat="server">
-                                    <marquee direction="left" behavior="scroll" width="100%" scrolldelay="50"
-                                        scrollamount="2" id="adText" runat="server">
+                                    <marquee direction="left" behavior="scroll" width="100%" scrolldelay="50" scrollamount="2"
+                                        id="adText" runat="server">
                                        <!--文字广告 -->
                                     </marquee>
                                 </div>

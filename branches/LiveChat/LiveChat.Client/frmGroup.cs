@@ -33,14 +33,14 @@ namespace LiveChat.Client
 
             if (string.IsNullOrEmpty(groupName))
             {
-                MessageBox.Show("客服群名称不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("客服群名称不能为空！");
                 textBox1.Focus();
                 return;
             }
 
             if (maxCount < 10 || maxCount > 100)
             {
-                MessageBox.Show("客服群人数应该在10-100人之间！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("客服群人数应该在10-100人之间！");
                 numericUpDown1.Focus();
                 return;
             }
@@ -65,7 +65,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 

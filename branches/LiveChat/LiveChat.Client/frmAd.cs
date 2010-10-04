@@ -44,35 +44,35 @@ namespace LiveChat.Client
 
             if (string.IsNullOrEmpty(adName))
             {
-                MessageBox.Show("广告名称不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("广告名称不能为空！");
                 txtAdName.Focus();
                 return;
             }
 
             if (string.IsNullOrEmpty(adTitle))
             {
-                MessageBox.Show("广告标题不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("广告标题不能为空！");
                 txtAdTitle.Focus();
                 return;
             }
 
             if (string.IsNullOrEmpty(adArea))
             {
-                MessageBox.Show("投放地区不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("投放地区不能为空！");
                 cboAdArea.Focus();
                 return;
             }
 
             if (string.IsNullOrEmpty(adImgUrl))
             {
-                MessageBox.Show("广告图片不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("广告图片不能为空！");
                 txtAdImgUrl.Focus();
                 return;
             }
 
             if (string.IsNullOrEmpty(adUrl))
             {
-                MessageBox.Show("广告Url不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("广告Url不能为空！");
                 txtAdUrl.Focus();
                 return;
             }

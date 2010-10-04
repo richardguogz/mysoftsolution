@@ -51,7 +51,7 @@ namespace LiveChat.Client
                 bool ret = service.AddSeatFriendRequest(seat.SeatID, friend.SeatID, request);
                 if (ret)
                 {
-                    MessageBox.Show("添加好友请求发送成功！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClientUtils.ShowMessage("添加好友请求发送成功！");
                 }
                 this.Close();
             }

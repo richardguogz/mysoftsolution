@@ -2,7 +2,6 @@
 var tid = setInterval('getMessage()', 5000);
 var isValidate = true;
 var isChatClosing = false;
-var chatInterval = null;
 
 //Ajax.showErrorMessage = false;
 Ajax.onException = function(ex) {
@@ -87,15 +86,13 @@ function getSessionInfo() {
             sessionID = session[0];
             var companyName = session[1];
             var seatName = session[2];
-            seatID = session[3];
 
             $('seatName').innerHTML = seatName;
-            $('seatID').innerHTML = seatID;
             $('telePhone').innerHTML = session[4];
             $('mobileNumber').innerHTML = session[5];
             $('email').innerHTML = session[6];
 
-            document.title = "您正在与" + companyName + "客服" + seatName + "会话... ";
+            document.title = "您正在与" + companyName + "客服【" + seatName + "】会话... ";
             $('headerBox').innerHTML = document.title;
 
             //var inputbox = $('inputbox');
@@ -192,16 +189,7 @@ function getMessage() {
             //}
 
             //开始显示消息
-            dynamicMsg.initIntervalMsg();
-
-            //先清除时间
-            if (chatInterval) {
-                clearTimeout(chatInterval);
-            }
-
-            chatInterval = setTimeout(function() {
-                dynamicMsg.clearIntervalMsg();
-            }, 10000);
+            dynamicMsg.start(10000);
 
             for (var index = 0; index < msgs.length; index++) {
 
@@ -225,7 +213,7 @@ function getMessage() {
 
                 }
 
-                $('footerBox').innerHTML = '最后一条消息接收于:' + msg.SendTime.toLocaleTimeString();
+                $('footerBox').innerHTML = '最后消息接收于:' + msg.SendTime.toLocaleTimeString();
             }
         }
     });
@@ -496,30 +484,42 @@ function openWindow(url, name, param) {
     } catch (e) { }
 }
 
-/**  
+/*  
 * 处理新消息提示的操作  
 */
-function DynamicMessage(defaultMsg, msg, hiddenMsg) {
-    this.initIntervalMsg = function() {
-        this.intervalMsg = setInterval(function() {
-            if (!this.bMsg) {
-                window.document.title = msg;
-                this.bMsg = true;
+function DynamicMessage(msg, hiddenMsg) {
+    var defaultMsg;
+    var intervalMsg;
+    var bRunning = false;
+    var bMessage = false;
+    this.start = function(interval) {
+        if (bRunning) return;
+
+        defaultMsg = document.title;
+        intervalMsg = setInterval(function() {
+            if (!bMessage) {
+                document.title = msg;
+                bMessage = true;
             } else {
-                window.document.title = hiddenMsg;
-                this.bMsg = false;
+                document.title = hiddenMsg;
+                bMessage = false;
             }
         }, 500);
-    };
 
-    this.clearIntervalMsg = function() {
-        if (this.intervalMsg != null) {
-            clearInterval(this.intervalMsg);
-            window.document.title = defaultMsg;
-            this.bMsg = false;
-        }
+        //清除定时器
+        setTimeout(function() {
+            if (intervalMsg != null) {
+                clearInterval(intervalMsg);
+                document.title = defaultMsg;
+                bRunning = false;
+                bMessage = false;
+            }
+        }, interval);
+
+        //正在运行
+        bRunning = true;
     };
-}
+};
 
 //实例化一个消息显示类
-var dynamicMsg = new DynamicMessage(document.title, "【您有新的消息】", "【】");
+var dynamicMsg = new DynamicMessage("【您有新的消息】", "【】");

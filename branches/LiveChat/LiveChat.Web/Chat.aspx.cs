@@ -17,7 +17,6 @@ namespace LiveChat.Web
     public partial class Chat : ParentPage
     {
         protected string userID;
-        protected string seatID;
         protected string seatCode;
         protected string skinID;
         protected string sessionID;
@@ -38,7 +37,8 @@ namespace LiveChat.Web
             companyID = GetRequestParam<string>("CompanyID", null);
             seatCode = GetRequestParam<string>("SeatCode", null);
 
-            string[] arr = GetSessionInfo(userID, companyID);
+            //获取公司名称
+            string[] arr = GetSessionInfo(userID, companyID, out company);
             if (arr == null || arr.Length == 1)
             {
                 bool online = GetSeatOnline(companyID);
@@ -57,11 +57,16 @@ namespace LiveChat.Web
                 {
                     loadSessionID = arr[0];
                 }
+
+                //获取客服信息
+                if (!string.IsNullOrEmpty(seatCode))
+                {
+                    seat = service.GetSeat(companyID, seatCode);
+                }
             }
             else if (arr.Length > 1)
             {
                 sessionID = arr[0];
-                seatID = arr[3];
                 seat = new Seat() { SeatName = arr[2], SeatCode = arr[3], Telephone = arr[4], MobileNumber = arr[5], Email = arr[6] };
                 this.Title = "您正在与" + arr[1] + "客服【" + arr[2] + "】会话... ";
 
@@ -74,17 +79,14 @@ namespace LiveChat.Web
             //把服务页面注册到server.aspx
             RegisterPageForAjax("server.aspx");
 
-            //获取公司名称
-            company = service.GetCompany(companyID);
-
             Ad ad = service.GetAdFromIP(companyID, Request.UserHostAddress);
             if (ad == null)
             {
                 //加载广告
                 headerBox.InnerHtml = "没有找到此地区相应的广告！";
 
-                adLogo.InnerHtml = string.Format("<a href=\"{0}\" title=\"{1}\" target='_blank'><img src=\"{2}\" width=\"150\" height=\"120\" border=\"0px\" /></a>", company.WebSite, company.CompanyName, company.CompanyLogo);
-                adText.InnerHtml = string.Format("<a href=\"{0}\" target=\"_blank\">{1}</a>", company.WebSite, company.CompanyName);
+                adLogo.InnerHtml = string.Format("<a href='{0}' title='{1}' target='_blank'><img src='{2}' width='150px' height='200px' border='0px' alt='{1}' /></a>", company.WebSite, company.CompanyName, company.CompanyLogo);
+                adText.InnerHtml = string.Format("<a href='{0}' target='_blank'>{1}</a>", company.WebSite, company.CompanyName);
             }
             else
             {
@@ -93,11 +95,11 @@ namespace LiveChat.Web
 
                 if (!string.IsNullOrEmpty(ad.AdLogoUrl) && !string.IsNullOrEmpty(ad.AdLogoImgUrl))
                 {
-                    adLogo.InnerHtml = string.Format("<a href='{0}' title='{1}' target='_blank'><img src='{2}' width='150px' height='120px' border='0px' alt='{1}' /></a>", ad.AdLogoUrl, ad.AdTitle, ad.AdLogoImgUrl);
+                    adLogo.InnerHtml = string.Format("<a href='{0}' title='{1}' target='_blank'><img src='{2}' width='150px' height='200px' border='0px' alt='{1}' /></a>", ad.AdLogoUrl, ad.AdTitle, ad.AdLogoImgUrl);
                 }
                 else
                 {
-                    adLogo.InnerHtml = string.Format("<a href=\"{0}\" title=\"{1}\" target='_blank'><img src=\"{2}\" width=\"150\" height=\"120\" border=\"0px\" /></a>", company.WebSite, company.CompanyName, company.CompanyLogo);
+                    adLogo.InnerHtml = string.Format("<a href='{0}' title='{1}' target='_blank'><img src='{2}' width='150px' height='200px' border='0px' alt='{1}' /></a>", company.WebSite, company.CompanyName, company.CompanyLogo);
                 }
 
                 if (!string.IsNullOrEmpty(ad.AdText) && !string.IsNullOrEmpty(ad.AdTextUrl))
@@ -131,10 +133,10 @@ namespace LiveChat.Web
         /// 获取会话信息
         /// </summary>
         /// <returns></returns>
-        private string[] GetSessionInfo(string userID, string companyID)
+        private string[] GetSessionInfo(string userID, string companyID, out Company company)
         {
             P2CSession p = service.GetP2CSession(userID, companyID);
-            Company company = service.GetCompany(companyID);
+            company = service.GetCompany(companyID);
             return p == null ? null : (p.Seat == null ? new string[] { p.SessionID } : new string[] { p.SessionID, company.CompanyName, p.Seat.ShowName, p.Seat.SeatCode, p.Seat.Telephone, p.Seat.MobileNumber, p.Seat.Email });
         }
     }

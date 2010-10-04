@@ -255,27 +255,37 @@ namespace LiveChat.Client
 
             foreach (var kv in seatInfo.SessionMessages)
             {
-                if (kv.Key.Seat != null) return;
+                if (kv.Key.Seat != null) continue;
 
                 TreeNode tn = FindTreeNode<P2SSession>(tvSession.Nodes[0], kv.Key, "SessionID");
                 if (tn != null)
                 {
                     if (kv.Value > 0)
-                        tn.Text = string.Format("{0}({1})", kv.Key.User.UserID, kv.Value);
+                        tn.Text = string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value);
                     else
-                        tn.Text = string.Format("{0}", kv.Key.User.UserID);
+                        tn.Text = string.Format("[{1}]{0}", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"));
 
                     tn.Tag = kv.Key;
                 }
                 else
                 {
-                    tn = new TreeNode(string.Format("{0}({1})", kv.Key.User.UserID, kv.Value));
+                    tn = new TreeNode(string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value));
                     tn.SelectedImageIndex = 5;
                     tn.ImageIndex = 5;
                     tn.Tag = kv.Key;
                     tn.ContextMenuStrip = contextMenuStrip5;
-                    tvSession.Nodes[0].Nodes.Add(tn);
+                    tvSession.Nodes[0].Nodes.Insert(0, tn);
                 }
+            }
+
+            if (tvSession.Nodes[0].Nodes.Count > 0)
+            {
+                tvSession.Nodes[0].Text = string.Format("会话请求({0})", tvSession.Nodes[0].Nodes.Count);
+                tvSession.Nodes[0].Expand();
+            }
+            else
+            {
+                tvSession.Nodes[0].Text = "会话请求(0)";
             }
         }
 
@@ -287,7 +297,7 @@ namespace LiveChat.Client
             node.Text = string.Format("会话请求({0})", list.Count);
             foreach (var info in list)
             {
-                TreeNode tn = new TreeNode(string.Format("{0}({1})", info.User.UserID, info.NoReadMessageCount));
+                TreeNode tn = new TreeNode(string.Format("[{1}]{0}({2})", info.User.UserID, info.LastReceiveTime.ToString("HH:mm"), info.NoReadMessageCount));
                 tn.Text = tn.Text.Replace("(0)", "");
                 tn.SelectedImageIndex = 5;
                 tn.ImageIndex = 5;
@@ -295,7 +305,8 @@ namespace LiveChat.Client
                 tn.ContextMenuStrip = contextMenuStrip5;
                 node.Nodes.Add(tn);
             }
-            node.Expand();
+
+            if (list.Count > 0) node.Expand();
         }
 
         private void RefreshSession()
@@ -304,27 +315,37 @@ namespace LiveChat.Client
 
             foreach (var kv in seatInfo.SessionMessages)
             {
-                if (kv.Key.Seat == null) return;
+                if (kv.Key.Seat == null) continue;
 
                 TreeNode tn = FindTreeNode<P2SSession>(tvSession.Nodes[1], kv.Key, "SessionID");
                 if (tn != null)
                 {
                     if (kv.Value > 0)
-                        tn.Text = string.Format("{0}({1})", kv.Key.User.UserID, kv.Value);
+                        tn.Text = string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value);
                     else
-                        tn.Text = string.Format("{0}", kv.Key.User.UserID);
+                        tn.Text = string.Format("[{1}]{0}", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"));
 
                     tn.Tag = kv.Key;
                 }
                 else
                 {
-                    tn = new TreeNode(string.Format("{0}({1})", kv.Key.User.UserID, kv.Value));
+                    tn = new TreeNode(string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value));
                     tn.SelectedImageIndex = 5;
                     tn.ImageIndex = 5;
                     tn.Tag = kv.Key;
                     tn.ContextMenuStrip = contextMenuStrip4;
                     tvSession.Nodes[1].Nodes.Add(tn);
                 }
+            }
+
+            if (tvSession.Nodes[1].Nodes.Count > 0)
+            {
+                tvSession.Nodes[1].Text = string.Format("客服会话({0})", tvSession.Nodes[1].Nodes.Count);
+                tvSession.Nodes[1].Expand();
+            }
+            else
+            {
+                tvSession.Nodes[1].Text = "客服会话(0)";
             }
         }
 
@@ -336,7 +357,7 @@ namespace LiveChat.Client
             node.Text = string.Format("客服会话({0})", list.Count);
             foreach (var info in list)
             {
-                TreeNode tn = new TreeNode(string.Format("{0}({1})", info.User.UserID, info.NoReadMessageCount));
+                TreeNode tn = new TreeNode(string.Format("[{1}]{0}({2})", info.User.UserID, info.LastReceiveTime.ToString("HH:mm"), info.NoReadMessageCount));
                 tn.Text = tn.Text.Replace("(0)", "");
                 tn.SelectedImageIndex = 5;
                 tn.ImageIndex = 5;
@@ -344,7 +365,8 @@ namespace LiveChat.Client
                 tn.ContextMenuStrip = contextMenuStrip4;
                 node.Nodes.Add(tn);
             }
-            node.Expand();
+
+            if (list.Count > 0) node.Expand();
         }
 
         private void RefreshSeatGroup()
@@ -743,9 +765,8 @@ namespace LiveChat.Client
                 if (ClientUtils.SoftwareOtherLogin)
                 {
                     isClose = true;
-                    Application.ExitThread();
-                    Application.Exit();
                     this.Close();
+                    ClientUtils.ExitApplication();
 
                     return;
                 }
@@ -766,9 +787,8 @@ namespace LiveChat.Client
                     catch { }
 
                     isClose = true;
-                    Application.ExitThread();
-                    Application.Exit();
                     this.Close();
+                    ClientUtils.ExitApplication();
                 }
             }
             catch (Exception ex)
@@ -804,7 +824,7 @@ namespace LiveChat.Client
             string seatID = ((Seat)e.Node.Tag).SeatID;
             if (seatID == loginSeat.SeatID)
             {
-                MessageBox.Show("不能自己与自己聊天！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("不能自己与自己聊天！");
                 return;
             }
 
@@ -850,24 +870,20 @@ namespace LiveChat.Client
 
         void chat_Callback(object obj)
         {
-            try
+            if (obj != null && obj.GetType().IsArray)
             {
-                if (obj != null && obj.GetType().IsArray)
-                {
-                    string[] ids = (string[])obj;
+                string[] ids = (string[])obj;
 
-                    //将之前的窗口进行替换
-                    SingletonMul.RenameKey(ids[0], ids[1]);
-                }
-                else if (obj != null && obj.GetType() == typeof(string))
-                {
-                    SingletonMul.RemoveKey(obj.ToString());
-                }
-
-                BindRequest();
-                BindSession();
+                //将之前的窗口进行替换
+                SingletonMul.RenameKey(ids[0], ids[1]);
             }
-            catch { }
+            else if (obj != null && obj.GetType() == typeof(string))
+            {
+                SingletonMul.RemoveKey(obj.ToString());
+            }
+
+            BindRequest();
+            BindSession();
         }
 
         private void 关于我们ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1103,7 +1119,7 @@ namespace LiveChat.Client
         {
             if (tvLinkman.SelectedNode == null || tvLinkman.SelectedNode.Tag == null)
             {
-                MessageBox.Show("请选中要操作的好友！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选中要操作的好友！");
                 return;
             }
 
@@ -1116,11 +1132,28 @@ namespace LiveChat.Client
             });
         }
 
+        private void 消息记录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvSession.SelectedNode == null || tvSession.SelectedNode.Tag == null)
+            {
+                ClientUtils.ShowMessage("请选中要操作的会话！");
+                return;
+            }
+
+            P2SSession session = tvSession.SelectedNode.Tag as P2SSession;
+
+            Singleton.Show(() =>
+            {
+                frmMessage frm = new frmMessage(service, loginCompany, loginSeat, session);
+                return frm;
+            });
+        }
+
         private void 删除好友ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tvLinkman.SelectedNode == null || tvLinkman.SelectedNode.Tag == null)
             {
-                MessageBox.Show("请选中要操作的好友！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选中要操作的好友！");
                 return;
             }
 
@@ -1143,7 +1176,7 @@ namespace LiveChat.Client
             string seatID = ((Seat)lvSearchName.SelectedItems[0].Tag).SeatID;
             if (seatID == loginSeat.SeatID)
             {
-                MessageBox.Show("不能自己与自己聊天！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("不能自己与自己聊天！");
                 return;
             }
 
@@ -1170,7 +1203,7 @@ namespace LiveChat.Client
         {
             if (tvSession.SelectedNode == null || tvSession.SelectedNode.Tag == null)
             {
-                MessageBox.Show("请选中要操作的会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选中要操作的会话！");
                 return;
             }
 
@@ -1202,7 +1235,7 @@ namespace LiveChat.Client
         {
             if (tvSession.SelectedNode == null || tvSession.SelectedNode.Tag == null)
             {
-                MessageBox.Show("请选中要操作的会话！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选中要操作的会话！");
                 return;
             }
 
@@ -1215,6 +1248,7 @@ namespace LiveChat.Client
                     //接入会话
                     P2SSession p2session = service.AcceptSession(loginSeat.SeatID, ClientUtils.MaxAcceptCount, session.SessionID);
                     BindRequest();
+                    BindSession();
 
                     //弹出窗口
                     SingletonMul.Show(p2session.SessionID, () =>
@@ -1236,7 +1270,7 @@ namespace LiveChat.Client
         {
             if (tvLinkman.SelectedNode == null || tvLinkman.SelectedNode.Tag == null)
             {
-                MessageBox.Show("请选中要操作的好友！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选中要操作的好友！");
                 return;
             }
 
@@ -1253,7 +1287,7 @@ namespace LiveChat.Client
         {
             if (tvLinkman.SelectedNode == null || tvLinkman.SelectedNode.Tag == null)
             {
-                MessageBox.Show("请选中要操作的好友！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选中要操作的好友！");
                 return;
             }
 

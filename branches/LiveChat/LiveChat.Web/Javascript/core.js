@@ -1,5 +1,4 @@
-﻿
-//打开会话窗
+﻿//打开会话窗
 function openChat(el) {
     
     var url = el.getAttribute("lim:prefix");
@@ -24,8 +23,8 @@ function openChat(el) {
     }
     
     url += "&tm=" + (new Date).getTime();
-    var winAttr = "toolbar=0,scrollbars=0,location=0,menubar=0,resizable=1,width=645,height=450";
-    window.open(url, '' , winAttr);
+    var winAttr = "toolbar=0,scrollbars=0,location=0,menubar=0,resizable=1,width=680,height=450";
+    window.open(url, 'chat_' + companyID, winAttr);
     
     return false;
 };

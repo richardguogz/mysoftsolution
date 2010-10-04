@@ -5,37 +5,6 @@ using System.Text;
 namespace LiveChat.Entity
 {
     /// <summary>
-    /// 网站用户
-    /// </summary>
-    [Serializable]
-    public class WebUser : User
-    {
-        private string _Password;
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password
-        {
-            get
-            {
-                return _Password;
-            }
-            set
-            {
-                _Password = value;
-            }
-        }
-
-        /// <summary>
-        /// 实例化网站用户
-        /// </summary>
-        /// <param name="userID"></param>
-        public WebUser(string userID)
-            : base(userID)
-        { }
-    }
-
-    /// <summary>
     /// 用户信息
     /// </summary>
     [Serializable]
@@ -89,6 +58,38 @@ namespace LiveChat.Entity
             }
         }
 
+        private int? _ChatCount;
+        /// <summary>
+        /// 会话次数
+        /// </summary>
+        public int? ChatCount
+        {
+            get
+            {
+                return _ChatCount;
+            }
+            set
+            {
+                _ChatCount = value;
+            }
+        }
+
+        private DateTime? _LastChatTime;
+        /// <summary>
+        /// 最后会话时间
+        /// </summary>
+        public DateTime? LastChatTime
+        {
+            get
+            {
+                return _LastChatTime;
+            }
+            set
+            {
+                _LastChatTime = value;
+            }
+        }
+
         /// <summary>
         /// 用户界面显示的用户名
         /// </summary>
@@ -111,23 +112,6 @@ namespace LiveChat.Entity
             }
         }
 
-        [NonSerialized]
-        private IList<Message> _Messages;
-        /// <summary>
-        /// 保存此用户未读的消息
-        /// </summary>
-        public IList<Message> Messages
-        {
-            get
-            {
-                return _Messages;
-            }
-            set
-            {
-                _Messages = value;
-            }
-        }
-
         private UserType _UserType;
         /// <summary>
         /// 用户类型
@@ -144,28 +128,11 @@ namespace LiveChat.Entity
             }
         }
 
-        private UserExtend _Extend;
-        /// <summary>
-        /// 用户扩展信息
-        /// </summary>
-        public UserExtend Extend
-        {
-            get
-            {
-                return _Extend;
-            }
-            set
-            {
-                _Extend = value;
-            }
-        }
-
         public User()
         {
             this._State = OnlineState.Offline;
             this._UserType = UserType.TempUser;
             this._IsVIP = false;
-            this._Messages = new List<Message>();
         }
 
         public User(string userID)
@@ -174,7 +141,6 @@ namespace LiveChat.Entity
             this._State = OnlineState.Offline;
             this._UserType = UserType.TempUser;
             this._IsVIP = false;
-            this._Messages = new List<Message>();
         }
     }
 }

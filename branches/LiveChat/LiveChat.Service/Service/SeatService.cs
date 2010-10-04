@@ -435,6 +435,9 @@ namespace LiveChat.Service
                 list.Sort(new SortTimeP2CSession());
             }
 
+            //移除不是给自己的会话
+            list.RemoveAll(p => !string.IsNullOrEmpty(p.RequestCode) && p.RequestCode != seat.SeatCode);
+
             return list;
         }
 
@@ -485,9 +488,9 @@ namespace LiveChat.Service
                 if (user.UserType != UserType.TempUser)
                 {
                     int chatCount = 1;
-                    if (user.Extend.ChatCount.HasValue)
+                    if (user.ChatCount.HasValue)
                     {
-                        chatCount = user.Extend.ChatCount.Value + 1;
+                        chatCount = user.ChatCount.Value + 1;
                     }
                     UserManager.Instance.UpdateChatInfo(user.UserID, DateTime.Now, chatCount);
                 }
@@ -558,9 +561,9 @@ namespace LiveChat.Service
                     if (user.UserType != UserType.TempUser)
                     {
                         int chatCount = 1;
-                        if (user.Extend.ChatCount.HasValue)
+                        if (user.ChatCount.HasValue)
                         {
-                            chatCount = user.Extend.ChatCount.Value + 1;
+                            chatCount = user.ChatCount.Value + 1;
                         }
                         UserManager.Instance.UpdateChatInfo(user.UserID, DateTime.Now, chatCount);
                     }
@@ -603,53 +606,7 @@ namespace LiveChat.Service
         {
             try
             {
-                AddNoReadMessagesToUser(sessionID);
                 SessionManager.Instance.CloseSession(sessionID);
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 添加未读消息到用户消息列表
-        /// </summary>
-        /// <param name="sessionID"></param>
-        /// <returns></returns>
-        private void AddNoReadMessagesToUser(string sessionID)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(sessionID))
-                {
-                    throw new LiveChatException("会话ID不能为空！");
-                }
-
-                if (!SessionManager.Instance.ExistsSession(sessionID))
-                {
-                    return;
-                }
-
-                P2SSession session = SessionManager.Instance.GetSession(sessionID) as P2SSession;
-                User user = session.User;
-                IList<Message> msgs = session.Messages;
-                IList<Message> list = new List<Message>();
-                DateTime getTime = user[session.SessionID];
-
-                foreach (Message msg in msgs)
-                {
-                    //去除自己的消息
-                    if ((msg.SenderID != user.UserID || msg.Type == MessageType.Tip || msg.Type == MessageType.System) && msg.SendTime > getTime)
-                    {
-                        list.Add(msg);
-                    }
-                }
-
-                user[session.SessionID] = DateTime.Now;
-
-                (user.Messages as List<Message>)
-                    .AddRange(list);
             }
             catch (Exception ex)
             {
@@ -713,8 +670,10 @@ namespace LiveChat.Service
                 //添加会话消息
                 Seat seat = GetSeat(seatID);
 
+                //会话请求列表
                 List<Session> sessions = new List<P2CSession>(GetRequestSessions(seatID, SortType.Vip, 1, 100).DataSource)
                     .ConvertAll<Session>(p => (Session)p);
+
                 sessions.AddRange(seat.Sessions);
 
                 foreach (var session in sessions)
@@ -816,7 +775,7 @@ namespace LiveChat.Service
         /// <param name="password"></param>
         /// <param name="isvalidateManager"></param>
         /// <returns></returns>
-        public IMResult Login(Guid clientID, string companyID, string seatCode, string password, bool isvalidateManager)
+        public IMResult Login(Guid clientID, string companyID, string seatCode, string password)
         {
             try
             {
@@ -830,60 +789,9 @@ namespace LiveChat.Service
                     return IMResult.InvalidPassword;
                 }
 
-                if (isvalidateManager && seat.SeatType == SeatType.Normal)
-                {
-                    return IMResult.NotManager;
-                }
-
                 seat.LoginCount++;
                 seat.LoginTime = DateTime.Now;
                 seat.RefreshTime = DateTime.Now;
-                seat.State = OnlineState.Online;
-                seat.ClientID = clientID;
-
-                SeatManager.Instance.UpdateSeat(seat.SeatID,
-                                new Field[] { t_Seat._.LoginCount, t_Seat._.LoginTime },
-                                new object[] { seat.LoginCount, seat.LoginTime }
-                            );
-
-                return IMResult.Successful;
-            }
-            catch (Exception ex)
-            {
-                throw new LiveChatException(ex.Message, ex);
-            }
-        }
-
-        /// <summary>
-        /// 客服登录(用户公司名称)
-        /// </summary>
-        /// <param name="clientID"></param>
-        /// <param name="companyName"></param>
-        /// <param name="seatCode"></param>
-        /// <param name="password"></param>
-        /// <param name="isvalidateManager"></param>
-        /// <returns></returns>
-        public IMResult LoginForCompanyName(Guid clientID, string companyName, string seatCode, string password, bool isvalidateManager)
-        {
-            try
-            {
-                Seat seat = SeatManager.Instance.GetSeatForCompanyName(companyName, seatCode);
-                if (seat == null)
-                {
-                    return IMResult.InvalidUser;
-                }
-                else if (Encrypt.MD5(seat.Password) != password)
-                {
-                    return IMResult.InvalidPassword;
-                }
-
-                if (isvalidateManager && seat.SeatType == SeatType.Normal)
-                {
-                    return IMResult.NotManager;
-                }
-
-                seat.LoginCount++;
-                seat.LoginTime = DateTime.Now;
                 seat.State = OnlineState.Online;
                 seat.ClientID = clientID;
 

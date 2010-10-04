@@ -62,16 +62,19 @@ namespace LiveChat.Service.Manager
             {
                 string area = PHCZIP.Get(ip);
                 WhereClip where = WhereClip.Bracket(t_Ad._.CompanyID == companyID || t_Ad._.IsCommon == 1);
-                t_Ad ad = dbSession.From<t_Ad>().Where(where && new Field("replace(AdArea,'|','')") == area)
-                    .OrderBy(t_Ad._.IsCommon.Asc && t_Ad._.AddTime.Desc).ToSingle();
+                IList<t_Ad> ads = dbSession.From<t_Ad>().Where(where && new Field("replace(AdArea,'|','')") == area)
+                     .OrderBy(t_Ad._.IsCommon.Asc && t_Ad._.AddTime.Desc).ToList();
 
-                if (ad == null)
+                if (ads.Count == 0)
                 {
                     where = WhereClip.Bracket(t_Ad._.CompanyID == companyID || t_Ad._.IsCommon == 1);
                     where &= t_Ad._.IsDefault == true;
-                    ad = dbSession.From<t_Ad>().Where(where).OrderBy(t_Ad._.IsCommon.Asc && t_Ad._.AddTime.Desc).ToSingle();
-                    if (ad == null) return null;
+                    ads = dbSession.From<t_Ad>().Where(where).OrderBy(t_Ad._.IsCommon.Asc && t_Ad._.AddTime.Desc).ToList();
                 }
+
+                if (ads.Count == 0) return null;
+
+                t_Ad ad = ads[new Random().Next(ads.Count)];
                 return ad.As<Ad>();
             }
         }

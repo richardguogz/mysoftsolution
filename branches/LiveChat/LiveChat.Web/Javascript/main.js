@@ -1,4 +1,4 @@
-// JavaScript Document
+﻿// JavaScript Document
 function getPageScroll(){
   var yScroll;
   if (self.pageYOffset) {
@@ -56,10 +56,10 @@ function getPageSize(){
 }
   
 function autoResize(){
-
+   
     var number = 57;
     var left = 164;
-    var right = 185;
+    var right = 265;
     
     if (!window.XMLHttpRequest) {
         number = 66;
@@ -98,6 +98,11 @@ function autoResize(){
 
     var div5 = document.getElementById("uploadFileBox");
     div5.style.top = (height - 266 - 30) + 'px';
+
+    var divText = document.getElementById('divText');
+    if (divText) {
+        divText.innerHTML = divText.innerHTML;
+    }
 }
 
 //设置自适应

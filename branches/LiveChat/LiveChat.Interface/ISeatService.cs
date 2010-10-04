@@ -8,6 +8,14 @@ namespace LiveChat.Interface
 {
     public interface ISeatService : ICommonService
     {
+        /// <summary>
+        /// 验证客户端
+        /// </summary>
+        /// <param name="id">要验证的使用者ID</param>
+        /// <param name="clientID"></param>
+        /// <returns></returns>
+        bool ValidateClient(string id, Guid clientID);
+
         #region 用户相信信息
 
         /// <summary>
@@ -57,13 +65,6 @@ namespace LiveChat.Interface
         Seat GetSeat(string seatID);
 
         /// <summary>
-        /// 通过公司ID和Code获取一个客服
-        /// </summary>
-        /// <param name="companyID"></param>
-        /// <param name="seatCode"></param>
-        Seat GetSeat(string companyID, string seatCode);
-
-        /// <summary>
         /// 客服登录
         /// </summary>
         /// <param name="clientID"></param>
@@ -72,18 +73,7 @@ namespace LiveChat.Interface
         /// <param name="password"></param>
         /// <param name="isvalidateManager"></param>
         /// <returns></returns>
-        IMResult Login(Guid clientID, string companyID, string seatCode, string password, bool isvalidateManager);
-
-        /// <summary>
-        /// 客服登录(用户公司名称)
-        /// </summary>
-        /// <param name="clientID"></param>
-        /// <param name="companyName"></param>
-        /// <param name="seatCode"></param>
-        /// <param name="password"></param>
-        /// <param name="isvalidateManager"></param>
-        /// <returns></returns>
-        IMResult LoginForCompanyName(Guid clientID, string companyName, string seatCode, string password, bool isvalidateManager);
+        IMResult Login(Guid clientID, string companyID, string seatCode, string password);
 
         /// <summary>
         /// 退出登录

@@ -57,7 +57,7 @@ namespace LiveChat.Client
 
                 if (string.IsNullOrEmpty(seatName))
                 {
-                    MessageBox.Show("客服名称不能为空！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClientUtils.ShowMessage("客服名称不能为空！");
                     txtSeatName.Focus();
                     return;
                 }

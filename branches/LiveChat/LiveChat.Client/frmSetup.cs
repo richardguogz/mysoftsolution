@@ -30,7 +30,7 @@ namespace LiveChat.Client
         {
             if (txtReplyTitle.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入回复标题！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入回复标题！");
                 txtReplyTitle.Focus();
 
                 return;
@@ -38,7 +38,7 @@ namespace LiveChat.Client
 
             if (txtReplyBody.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入回复内容！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入回复内容！");
                 txtReplyBody.Focus();
 
                 return;
@@ -64,7 +64,7 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    MessageBox.Show("保存快速回复信息失败！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ClientUtils.ShowMessage("保存快速回复信息失败！");
                 }
             }
             else
@@ -79,61 +79,68 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    MessageBox.Show("保存快速回复信息失败！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ClientUtils.ShowMessage("保存快速回复信息失败！");
                 }
             }
         }
 
         private void btnSave2_Click(object sender, EventArgs e)
         {
-            if (txtUrlTitle.Text.Trim().Length == 0)
+            try
             {
-                MessageBox.Show("请输入链接标题！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtUrlTitle.Focus();
-
-                return;
-            }
-
-            if (txtUrlBody.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("请输入链接地址！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtUrlBody.Focus();
-
-                return;
-            }
-
-            Link info = new Link();
-            info.Title = txtUrlTitle.Text;
-            info.Url = txtUrlBody.Text;
-            if (txtUrlTitle.Tag != null)
-            {
-                btnSave2.Text = "添加(&A)";
-                info.LinkID = (int)txtUrlTitle.Tag;
-                if (service.UpdateLink(info.LinkID, info.Title, info.Url))
+                if (txtUrlTitle.Text.Trim().Length == 0)
                 {
-                    txtUrlTitle.Tag = null;
-                    txtUrlTitle.Text = string.Empty;
-                    txtUrlBody.Text = string.Empty;
-                    LoadLinkInfo();
+                    ClientUtils.ShowMessage("请输入链接标题！");
+                    txtUrlTitle.Focus();
+
+                    return;
+                }
+
+                if (txtUrlBody.Text.Trim().Length == 0)
+                {
+                    ClientUtils.ShowMessage("请输入链接地址！");
+                    txtUrlBody.Focus();
+
+                    return;
+                }
+
+                Link info = new Link();
+                info.Title = txtUrlTitle.Text;
+                info.Url = txtUrlBody.Text;
+                if (txtUrlTitle.Tag != null)
+                {
+                    btnSave2.Text = "添加(&A)";
+                    info.LinkID = (int)txtUrlTitle.Tag;
+                    if (service.UpdateLink(info.LinkID, info.Title, info.Url))
+                    {
+                        txtUrlTitle.Tag = null;
+                        txtUrlTitle.Text = string.Empty;
+                        txtUrlBody.Text = string.Empty;
+                        LoadLinkInfo();
+                    }
+                    else
+                    {
+                        ClientUtils.ShowMessage("保存链接信息失败！");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("保存链接信息失败！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (service.AddLink(company.CompanyID, info.Title, info.Url) > 0)
+                    {
+                        txtUrlTitle.Tag = null;
+                        txtUrlTitle.Text = string.Empty;
+                        txtUrlBody.Text = string.Empty;
+                        LoadLinkInfo();
+                    }
+                    else
+                    {
+                        ClientUtils.ShowMessage("保存链接信息失败！");
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (service.AddLink(company.CompanyID, info.Title, info.Url) > 0)
-                {
-                    txtUrlTitle.Tag = null;
-                    txtUrlTitle.Text = string.Empty;
-                    txtUrlBody.Text = string.Empty;
-                    LoadLinkInfo();
-                }
-                else
-                {
-                    MessageBox.Show("保存链接信息失败！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                ClientUtils.ShowError(ex);
             }
         }
 
@@ -399,7 +406,7 @@ namespace LiveChat.Client
         {
             if (txtChatWebSite.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入客服站点！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入客服站点！");
                 txtChatWebSite.Focus();
 
                 return;
@@ -407,7 +414,7 @@ namespace LiveChat.Client
 
             if (txtCompanyName.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入公司名称！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入公司名称！");
                 txtCompanyName.Focus();
 
                 return;
@@ -415,7 +422,7 @@ namespace LiveChat.Client
 
             if (txtWebSite.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入公司网址！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入公司网址！");
                 txtWebSite.Focus();
 
                 return;
@@ -423,7 +430,7 @@ namespace LiveChat.Client
 
             if (txtLogo.Text.Trim().Length == 0)
             {
-                MessageBox.Show("请输入广告URL！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请输入广告URL！");
                 txtLogo.Focus();
 
                 return;
@@ -438,16 +445,23 @@ namespace LiveChat.Client
                 WebSite = txtWebSite.Text.Trim()
             };
 
-            if (service.UpdateCompany(c.CompanyID, c.CompanyName, c.WebSite, c.CompanyLogo, c.ChatWebSite))
+            try
             {
-                this.company = service.GetCompany(c.CompanyID);
-                MessageBox.Show("修改公司信息成功！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("保存链接信息失败！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
 
+                if (service.UpdateCompany(c.CompanyID, c.CompanyName, c.WebSite, c.CompanyLogo, c.ChatWebSite))
+                {
+                    this.company = service.GetCompany(c.CompanyID);
+                    ClientUtils.ShowMessage("修改公司信息成功！");
+                }
+                else
+                {
+                    ClientUtils.ShowMessage("保存链接信息失败！");
+                }
+            }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
         }
 
         private void btnCancelCompany_Click(object sender, EventArgs e)
@@ -469,7 +483,6 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             Company c = cboAdCompany.SelectedItem as Company;
 
             frmAd frm = new frmAd(service, areaList, c, null);
@@ -492,10 +505,9 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (listAds.SelectedItems.Count == 0)
             {
-                MessageBox.Show("请选择一条广告信息！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选择一条广告信息！");
                 return;
             }
 
@@ -514,20 +526,26 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (listAds.SelectedItems.Count == 0)
             {
-                MessageBox.Show("请选择一条广告信息！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选择一条广告信息！");
                 return;
             }
 
             if (MessageBox.Show("确定删除当前选中的广告吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                //删除广告代码
-                Ad ad = listAds.SelectedItems[0].Tag as Ad;
-                if (service.DeleteAd(ad.ID))
+                try
                 {
-                    LoadAdInfo(null);
+                    //删除广告代码
+                    Ad ad = listAds.SelectedItems[0].Tag as Ad;
+                    if (service.DeleteAd(ad.ID))
+                    {
+                        LoadAdInfo(null);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ClientUtils.ShowError(ex);
                 }
             }
         }
@@ -555,7 +573,6 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             Company c = cboSeatCompany.SelectedItem as Company;
 
             frmSeat frmSeat = new frmSeat(service, c, null);
@@ -578,10 +595,9 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (listSeats.SelectedItems.Count == 0)
             {
-                MessageBox.Show("请选择一个客服！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选择一个客服！");
                 return;
             }
 
@@ -600,11 +616,9 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton6_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
-
             if (listSeats.SelectedItems.Count == 0)
             {
-                MessageBox.Show("请选择一个客服！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选择一个客服！");
                 return;
             }
 
@@ -612,22 +626,29 @@ namespace LiveChat.Client
             Seat seatConfig = listSeats.SelectedItems[0].Tag as Seat;
             if (seatConfig.SeatID == seat.SeatID)
             {
-                MessageBox.Show("不能删除自己！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("不能删除自己！");
                 return;
             }
 
-            if (MessageBox.Show("确定删除当前选中的客服吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("确定删除当前选中的客服吗？\r\n\r\n删除客服的操作最谨慎操作！", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 if (seatConfig.State == OnlineState.Online)
                 {
-                    MessageBox.Show("此客服处于登录状态，不能删除！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClientUtils.ShowMessage("此客服处于登录状态，不能删除！");
                     return;
                 }
                 else
                 {
-                    if (service.DeleteSeat(seatConfig.SeatID))
+                    try
                     {
-                        LoadSeatInfo(null);
+                        if (service.DeleteSeat(seatConfig.SeatID))
+                        {
+                            LoadSeatInfo(null);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ClientUtils.ShowError(ex);
                     }
                 }
             }
@@ -656,10 +677,9 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (listGroup.Items.Count > 0)
             {
-                MessageBox.Show("目前只支持一个客服群！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("目前只支持一个客服群！");
                 return;
             }
 
@@ -685,10 +705,9 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton8_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
             if (listGroup.SelectedItems.Count == 0)
             {
-                MessageBox.Show("请选择客服群！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选择客服群！");
                 return;
             }
 
@@ -707,17 +726,15 @@ namespace LiveChat.Client
         /// <param name="e"></param>
         private void toolStripButton9_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("尚未实现！");
-
             if (listGroup.Items.Count <= 1)
             {
-                MessageBox.Show("目前只支持一个客服群，暂不能进行删除！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("目前只支持一个客服群，暂不能进行删除！");
                 return;
             }
 
             if (listGroup.SelectedItems.Count == 0)
             {
-                MessageBox.Show("请选择客服群！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClientUtils.ShowMessage("请选择客服群！");
                 return;
             }
 
@@ -729,7 +746,7 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ClientUtils.ShowError(ex);
             }
         }
 
