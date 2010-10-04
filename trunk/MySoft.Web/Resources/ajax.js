@@ -355,8 +355,8 @@ Object.extend(Ajax, {
         var callback1 = function(xmlHttp) {
             json = Ajax.getRequestData(xmlHttp, 'json');
             if (json.Success == false) {
-                if (Ajax.showErrorMessage) alert(json.Message);
                 Ajax.onException(json);
+                if (Ajax.showErrorMessage) alert(json.Message);
             }
             else
                 callback(json);
@@ -423,8 +423,8 @@ Object.extend(AjaxClass.prototype, {
                     if (json.Success)
                         callback(json.Message);
                     else {
-                        if (Ajax.showErrorMessage) alert(json.Message);
                         Ajax.onException(json);
+                        if (Ajax.showErrorMessage) alert(json.Message);
                     }
                 }
             }
@@ -434,8 +434,8 @@ Object.extend(AjaxClass.prototype, {
                 if (json.Success)
                     return json.Message;
                 else {
-                    if (Ajax.showErrorMessage) alert(json.Message);
                     Ajax.onException(json);
+                    if (Ajax.showErrorMessage) alert(json.Message);
                 }
             }
         }
@@ -562,8 +562,8 @@ Object.extend(Ajax, {
                         if (op.cache) Ajax.cache[key] = json.Message;
                         fillElement(obj, json.Message);
                     } else {
-                        if (Ajax.showErrorMessage) alert(json.Message);
                         Ajax.onException(json);
+                        if (Ajax.showErrorMessage) alert(json.Message);
                     }
                 }
                 if (op.callback) op.callback(xmlHttp);
