@@ -291,7 +291,7 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.emotionDropdown1);
-            this.panel4.Location = new System.Drawing.Point(2, 224);
+            this.panel4.Location = new System.Drawing.Point(1, 224);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(226, 87);
             this.panel4.TabIndex = 15;
@@ -316,7 +316,7 @@
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(2, 241);
+            this.panel2.Location = new System.Drawing.Point(1, 241);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(500, 70);
             this.panel2.TabIndex = 16;
@@ -433,8 +433,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 412);
-            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.wbChatBox);
             this.Controls.Add(this.plChat);
             this.Controls.Add(this.toolStrip1);

@@ -13,17 +13,17 @@ namespace LiveChat.Entity
         /// <summary>
         /// 会话消息数
         /// </summary>
-        public IDictionary<P2SSession, int> SessionMessages { get; set; }
+        public IDictionary<P2SSession, MessageInfo> SessionMessages { get; set; }
 
         /// <summary>
         /// 客服消息数
         /// </summary>
-        public IDictionary<Seat, MessageInfo> SeatMessages { get; set; }
+        public IDictionary<SeatFriend, SeatInfo> SeatMessages { get; set; }
 
         /// <summary>
         /// 群消息数
         /// </summary>
-        public IDictionary<SeatGroup, int> GroupMessages { get; set; }
+        public IDictionary<SeatGroup, MessageInfo> GroupMessages { get; set; }
 
         /// <summary>
         /// 请求消息

@@ -23,7 +23,7 @@ function openChat(el) {
     }
     
     url += "&tm=" + (new Date).getTime();
-    var winAttr = "toolbar=0,scrollbars=0,location=0,menubar=0,resizable=1,width=680,height=450";
+    var winAttr = "toolbar=0,scrollbars=0,location=0,menubar=0,resizable=1,width=685,height=480";
     window.open(url, 'chat_' + companyID, winAttr);
     
     return false;

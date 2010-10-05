@@ -96,21 +96,20 @@ namespace LiveChat.Client
 
             try
             {
-                var s = service.GetSession(session.SessionID);
-                if (s != null && s is P2SSession)
+                if (session.Seat != null)
                 {
-                    //表示已经被接受的会话
-                    var ss = s as P2SSession;
-                    if (ss.Seat != null && ss.State == SessionState.Closed)
+                    var s = service.GetSession(session.SessionID);
+                    if (s == null)  //表示会话已经被关闭
                     {
-                        //客服端关闭会话
-                        service.CloseSession(session.SessionID);
-
                         msgtimer.Stop();
+                        msgtimer = null;
+
                         ClientUtils.ShowMessage("当前会话已经被用户结束，将强制关闭本窗口！");
                         if (Callback != null) Callback(session.SessionID);
                         this.Close();
                         this.Dispose();
+
+                        return;
                     }
                 }
             }
@@ -450,6 +449,7 @@ namespace LiveChat.Client
             try
             {
                 string oldID = session.SessionID;
+
                 //接入会话
                 session = service.AcceptSession(seat.SeatID, maxAcceptCount, session.SessionID);
                 if (Callback != null) Callback(new string[] { oldID, session.SessionID });
@@ -518,6 +518,7 @@ namespace LiveChat.Client
             else
             {
                 panel2.Visible = true;
+                txtFile.Text = string.Empty;
                 button3.Focus();
             }
         }
@@ -635,6 +636,7 @@ namespace LiveChat.Client
         private void txtMessage_Click(object sender, EventArgs e)
         {
             panel4.Visible = false;
+            panel2.Visible = false;
         }
     }
 }

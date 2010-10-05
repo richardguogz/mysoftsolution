@@ -22,11 +22,35 @@ namespace LiveChat.Client
     /// <summary>
     /// 显示提示委托
     /// </summary>
-    /// <param name="title"></param>
-    /// <param name="text"></param>
-    /// <param name="icon"></param>
+    /// <param name="tip"></param>
     /// <param name="handler"></param>
-    public delegate void ShowTipEventHandler(string title, string text, ToolTipIcon icon, EventHandler handler);
+    public delegate void ShowTipEventHandler(TipInfo tip, CallbackEventHandler handler);
+
+    /// <summary>
+    /// 提示信息
+    /// </summary>
+    public class TipInfo
+    {
+        /// <summary>
+        /// 消息ID
+        /// </summary>
+        public string Key { get; set; }
+
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// 消息
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 目标
+        /// </summary>
+        public object Target { get; set; }
+    }
 
     /// <summary>
     /// 

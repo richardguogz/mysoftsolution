@@ -70,6 +70,7 @@
     <Compile Include="classes\BitmapManipulator.cs" />
     <Compile Include="classes\ClientInfo.cs" />
     <Compile Include="classes\ClientUtils.cs" />
+    <Compile Include="classes\Win32.cs" />
     <Compile Include="controls\dbImageBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -178,6 +179,12 @@
     <Compile Include="frmPassword.Designer.cs">
       <DependentUpon>frmPassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPopup.Designer.cs">
+      <DependentUpon>frmPopup.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSeat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +273,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPassword.resx">
       <DependentUpon>frmPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPopup.resx">
+      <DependentUpon>frmPopup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSeat.resx">
       <DependentUpon>frmSeat.cs</DependentUpon>

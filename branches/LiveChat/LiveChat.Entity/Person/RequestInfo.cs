@@ -37,31 +37,11 @@ namespace LiveChat.Entity
     }
 
     /// <summary>
-    /// 消息信息
+    /// 客服信息
     /// </summary>
     [Serializable]
-    public class MessageInfo
+    public class SeatInfo : MessageInfo
     {
-        private int _Count;
-        /// <summary>
-        /// 消息数
-        /// </summary>
-        public int Count
-        {
-            get { return _Count; }
-            set { _Count = value; }
-        }
-
-        private string _Sign;
-        /// <summary>
-        /// 签名信息
-        /// </summary>
-        public string Sign
-        {
-            get { return _Sign; }
-            set { _Sign = value; }
-        }
-
         private string _MemoName;
         /// <summary>
         /// 备注名称
@@ -70,6 +50,39 @@ namespace LiveChat.Entity
         {
             get { return _MemoName; }
             set { _MemoName = value; }
+        }
+    }
+
+    /// <summary>
+    /// 消息信息
+    /// </summary>
+    [Serializable]
+    public class MessageInfo
+    {
+        /// <summary>
+        /// 消息数
+        /// </summary>
+        public int Count
+        {
+            get { return _Messages.Count; }
+        }
+
+        private IList<Message> _Messages;
+        /// <summary>
+        /// 消息列表
+        /// </summary>
+        public IList<Message> Messages
+        {
+            get { return _Messages; }
+            set { _Messages = value; }
+        }
+
+        /// <summary>
+        /// 实例化消息
+        /// </summary>
+        public MessageInfo()
+        {
+            this._Messages = new List<Message>();
         }
     }
 }

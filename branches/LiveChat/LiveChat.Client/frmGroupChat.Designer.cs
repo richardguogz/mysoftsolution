@@ -163,7 +163,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.emotionDropdown1);
-            this.panel1.Location = new System.Drawing.Point(3, 189);
+            this.panel1.Location = new System.Drawing.Point(2, 189);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(226, 87);
             this.panel1.TabIndex = 13;
@@ -368,7 +368,7 @@
             this.tabPage1.Controls.Add(this.listSeats);
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(776, 530);
+            this.tabPage1.Size = new System.Drawing.Size(576, 380);
             this.tabPage1.TabIndex = 1;
             this.tabPage1.Text = "群成员";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -389,7 +389,7 @@
             this.listSeats.Location = new System.Drawing.Point(0, 0);
             this.listSeats.MultiSelect = false;
             this.listSeats.Name = "listSeats";
-            this.listSeats.Size = new System.Drawing.Size(776, 530);
+            this.listSeats.Size = new System.Drawing.Size(576, 380);
             this.listSeats.TabIndex = 5;
             this.listSeats.UseCompatibleStateImageBehavior = false;
             this.listSeats.View = System.Windows.Forms.View.Details;

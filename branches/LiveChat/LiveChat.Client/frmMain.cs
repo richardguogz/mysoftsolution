@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using LiveChat.Entity;
 using LiveChat.Interface;
@@ -25,11 +24,6 @@ namespace LiveChat.Client
         //会话事件
         public event CallbackEventHandler CallbackSession;
 
-        /// <summary>
-        /// 显示消息
-        /// </summary>
-        public event ShowTipEventHandler CallbackShowTip;
-
         #region private member
 
         private Color currentColor;
@@ -40,7 +34,7 @@ namespace LiveChat.Client
         private Company company;
         private Seat seat;
         private Guid clientID;
-        private Timer chattimer, msgtimer;
+        private Timer chattimer;
         private List<RequestSession> reqSessions;
 
         #endregion
@@ -83,11 +77,6 @@ namespace LiveChat.Client
                 chattimer.Tick += new EventHandler(chattimer_Tick);
                 chattimer.Start();
 
-                msgtimer = new Timer();
-                msgtimer.Interval = 30000;
-                msgtimer.Tick += new EventHandler(msgtimer_Tick);
-                msgtimer.Start();
-
                 int requestCount = BindRequest();
                 int sessionCount = BindSession();
 
@@ -105,87 +94,6 @@ namespace LiveChat.Client
             {
                 ClientUtils.ShowError("系统初始化错误，请与开发商联系！", ex);
             }
-        }
-
-        //定时处理消息
-        void msgtimer_Tick(object sender, EventArgs e)
-        {
-            if (this.IsDisposed)
-            {
-                msgtimer.Stop();
-                msgtimer = null;
-                return;
-            }
-
-            //如果选择不提示，则直接返回
-            if (!checkBox2.Checked) return;
-
-            msgtimer.Stop();
-
-            try
-            {
-                var info = service.GetSeatMessage(seat.SeatID);
-
-                StringBuilder sb = new StringBuilder();
-
-                //会话消息
-                foreach (KeyValuePair<P2SSession, int> kv in info.SessionMessages)
-                {
-                    if (kv.Key.Seat == null) continue;
-
-                    if (kv.Value > 0)
-                    {
-                        string msgText = string.Format("访客【{0}】给您发送了【{1}】条新消息！", kv.Key.User.UserName, kv.Value);
-                        sb.AppendLine(msgText);
-                    }
-                }
-
-                //客服消息
-                foreach (KeyValuePair<Seat, MessageInfo> kv in info.SeatMessages)
-                {
-                    if (kv.Value.Count > 0)
-                    {
-                        string msgText = string.Format("客服【{0}】给您发送了【{1}】条新消息！", kv.Key.SeatName, kv.Value.Count);
-                        sb.AppendLine(msgText);
-                    }
-                }
-
-                //群消息
-                foreach (KeyValuePair<SeatGroup, int> kv in info.GroupMessages)
-                {
-                    if (kv.Value > 0)
-                    {
-                        string msgText = string.Format("群【{0}】发送了【{1}】条新消息！", kv.Key.GroupName, kv.Value);
-                        sb.AppendLine(msgText);
-                    }
-                }
-
-                if (sb.Length > 0)
-                {
-                    if (CallbackShowTip != null)
-                    {
-                        CallbackShowTip("您有新的消息", sb.ToString(), ToolTipIcon.Info, (p1, p2) =>
-                        {
-                            Singleton.Show<frmNavigate>();
-                        });
-                    }
-
-                    FlashWindow(this.Handle, true);
-                }
-
-                //设置在线
-                SetOnlineState(true);
-            }
-            catch (SocketException ex)
-            {
-                SetOnlineState(false);
-            }
-            catch (Exception ex)
-            {
-                ClientUtils.ShowError(ex);
-            }
-
-            msgtimer.Start();
         }
 
         void SetOnlineState(bool state)
@@ -230,7 +138,6 @@ namespace LiveChat.Client
                 bool isSuccess = service.ValidateClient(seat.SeatID, clientID);
                 if (!isSuccess)
                 {
-                    if (msgtimer != null) msgtimer.Stop();
                     if (chattimer != null) chattimer.Stop();
 
                     ClientUtils.SoftwareOtherLogin = true;
@@ -290,25 +197,42 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    StringBuilder sb = new StringBuilder();
+                    IList<TipInfo> tiplist = new List<TipInfo>();
                     foreach (P2CSession s in list)
                     {
                         if (!reqSessions.Exists(p => p.SessionID == s.SessionID))
                         {
                             exists = true;
+                            string msgText = string.Format("访客【{0}】请求与您会话，请及时处理！\t来自：{1}", s.User.UserName, s.FromAddress);
 
-                            string msgText = string.Format("访客【{0}】发送请求，请及时处理！\r\n来自：{1}", s.User.UserName, s.FromAddress);
-                            sb.AppendLine(msgText);
+                            StringBuilder sbMsg = new StringBuilder(msgText);
+                            sbMsg.AppendLine();
+                            sbMsg.AppendLine();
+                            sbMsg.Append(s.RequestMessage);
+
+                            TipInfo tip = new TipInfo() { Title = "您有新的请求", Message = sbMsg.ToString() };
+                            tip.Key = string.Format("UserRequest_{0}", s.User.UserID);
+                            tip.Target = s;
+
+                            tiplist.Add(tip);
                         }
                     }
 
-                    if (sb.Length > 0)
+                    if (tiplist.Count > 0)
                     {
-                        if (CallbackShowTip != null)
+                        foreach (var tip in tiplist)
                         {
-                            CallbackShowTip("您有新的请求", sb.ToString(), ToolTipIcon.Info, (p1, p2) =>
+                            //回调
+                            ShowTip(tip, p =>
                             {
-                                Singleton.Show<frmNavigate>();
+                                P2SSession session = tip.Target as P2SSession;
+                                SingletonMul.Show(session.SessionID, () =>
+                                {
+                                    frmChat chat = new frmChat(service, session, company, seat, currentFont, currentColor);
+                                    chat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                    chat.Callback += new CallbackEventHandler(chat_Callback);
+                                    return chat;
+                                });
                             });
                         }
 
@@ -392,6 +316,17 @@ namespace LiveChat.Client
                 ClientUtils.ShowError(ex);
                 return 0;
             }
+        }
+
+        //显示提示信息
+        private void ShowTip(TipInfo tip, CallbackEventHandler handler)
+        {
+            SingletonMul.Show<frmPopup>(tip.Key, () =>
+            {
+                frmPopup frm = new frmPopup(tip);
+                frm.Callback += handler;
+                return frm;
+            });
         }
 
         private int BindSession()

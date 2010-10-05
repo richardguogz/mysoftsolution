@@ -15,12 +15,11 @@ namespace LiveChat.Client
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
-        private Seat seat, friend;
+        private SeatFriend friend;
 
-        public frmSeatRename(ISeatService service, Seat seat, Seat friend)
+        public frmSeatRename(ISeatService service, SeatFriend friend)
         {
             this.service = service;
-            this.seat = seat;
             this.friend = friend;
 
             InitializeComponent();
@@ -34,7 +33,7 @@ namespace LiveChat.Client
 
             try
             {
-                bool success = service.RenameFriend(seat.SeatID, friend.SeatID, name);
+                bool success = service.RenameFriend(friend.Owner.SeatID, friend.SeatID, name);
                 if (success) Callback(name);
                 this.Close();
             }
@@ -47,6 +46,11 @@ namespace LiveChat.Client
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void frmSeatRename_Load(object sender, EventArgs e)
+        {
+            this.textBox1.Text = friend.MemoName;
         }
     }
 }

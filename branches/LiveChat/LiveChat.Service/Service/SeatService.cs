@@ -646,25 +646,25 @@ namespace LiveChat.Service
             try
             {
                 var info = new SeatMessage();
-                info.GroupMessages = new Dictionary<SeatGroup, int>();
-                info.SeatMessages = new Dictionary<Seat, MessageInfo>();
-                info.SessionMessages = new Dictionary<P2SSession, int>();
+                info.GroupMessages = new Dictionary<SeatGroup, MessageInfo>();
+                info.SeatMessages = new Dictionary<SeatFriend, SeatInfo>();
+                info.SessionMessages = new Dictionary<P2SSession, MessageInfo>();
                 info.RequestMessages = new Dictionary<Seat, RequestInfo>();
 
                 //添加组消息
                 var groups = GetJoinGroups(seatID);
                 foreach (var group in groups)
                 {
-                    int count = (group.Messages as List<Message>).FindAll(msg =>
-                       {
-                           //去除自己发送的消息
-                           if ((msg.SenderID != seatID || msg.Type == MessageType.Tip || msg.Type == MessageType.System) && msg.SendTime > group[seatID])
-                               return true;
-                           else
-                               return false;
-                       }).Count;
+                    var list = (group.Messages as List<Message>).FindAll(msg =>
+                    {
+                        //去除自己发送的消息
+                        if ((msg.SenderID != seatID || msg.Type == MessageType.Tip || msg.Type == MessageType.System) && msg.SendTime > group[seatID])
+                            return true;
+                        else
+                            return false;
+                    });
 
-                    info.GroupMessages[group] = count;
+                    info.GroupMessages[group] = new MessageInfo() { Messages = list };
                 }
 
                 //添加会话消息
@@ -680,20 +680,20 @@ namespace LiveChat.Service
                 {
                     if (session is P2SSession)
                     {
-                        int count = (session.Messages as List<Message>).FindAll(msg =>
+                        var list = (session.Messages as List<Message>).FindAll(msg =>
                         {
                             //去除自己发送的消息
                             if ((msg.SenderID != seatID || msg.Type == MessageType.Tip || msg.Type == MessageType.System) && msg.SendTime > seat[session.SessionID])
                                 return true;
                             else
                                 return false;
-                        }).Count;
+                        });
 
                         //处理未读消息数
-                        session.NoReadMessageCount = count;
+                        session.NoReadMessageCount = list.Count;
 
                         P2SSession p2s = session as P2SSession;
-                        info.SessionMessages[p2s] = count;
+                        info.SessionMessages[p2s] = new MessageInfo() { Messages = list };
                     }
                 }
 
@@ -703,8 +703,7 @@ namespace LiveChat.Service
 
                 foreach (var friend in friendlist)
                 {
-                    Seat seatFriend = GetSeat(friend.SeatID);
-                    info.SeatMessages[seatFriend] = new MessageInfo() { Count = 0, MemoName = friend.MemoName };
+                    var seatInfo = new SeatInfo() { MemoName = friend.MemoName };
 
                     foreach (var session in sessions)
                     {
@@ -714,22 +713,20 @@ namespace LiveChat.Service
 
                             if (s2s.Owner.SeatID == friend.SeatID || s2s.Friend.SeatID == friend.SeatID)
                             {
-                                int count = (session.Messages as List<Message>).FindAll(msg =>
+                                var list = (session.Messages as List<Message>).FindAll(msg =>
                                 {
                                     //去除自己发送的消息
                                     if ((msg.SenderID != seatID || msg.Type == MessageType.Tip || msg.Type == MessageType.System) && msg.SendTime > seat[session.SessionID])
                                         return true;
                                     else
                                         return false;
-                                }).Count;
+                                });
 
                                 //处理未读消息数
-                                session.NoReadMessageCount = count;
+                                session.NoReadMessageCount = list.Count;
 
-                                if (s2s.Owner.SeatID == friend.SeatID)
-                                    info.SeatMessages[s2s.Owner].Count = count;
-                                else
-                                    info.SeatMessages[s2s.Friend].Count = count;
+                                seatInfo.Messages = list;
+                                info.SeatMessages[friend] = seatInfo;
 
                                 break;
                             }

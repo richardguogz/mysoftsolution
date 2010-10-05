@@ -13,6 +13,7 @@ using LiveChat.Entity;
 using System.Collections.Generic;
 using MySoft.Web;
 using System.Text;
+using LiveChat.Utils;
 
 namespace LiveChat.Web
 {
@@ -76,6 +77,10 @@ namespace LiveChat.Web
                 }
 
                 return sessionID;
+            }
+            catch (LiveChatTimeoutException ex)
+            {
+                throw new AjaxException(ex.Message);
             }
             catch (Exception ex)
             {

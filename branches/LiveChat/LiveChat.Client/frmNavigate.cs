@@ -10,6 +10,7 @@ using LiveChat.Entity;
 using MySoft.Core;
 using System.Runtime.InteropServices;
 using System.IO;
+using MySoft.Data;
 
 namespace LiveChat.Client
 {
@@ -91,7 +92,6 @@ namespace LiveChat.Client
                     frmMain main = new frmMain(service, loginCompany, loginSeat, clientID, SystemFonts.DefaultFont, SystemColors.WindowText, rect);
                     main.CallbackClose += new CallbackEventHandler(main_Callback);
                     main.CallbackSession += new CallbackEventHandler(main_CallbackSession);
-                    main.CallbackShowTip += new ShowTipEventHandler(main_CallbackShowTip);
                     return main;
                 });
             }
@@ -102,14 +102,14 @@ namespace LiveChat.Client
         }
 
         //设置提示信息
-        void main_CallbackShowTip(string title, string text, ToolTipIcon icon, EventHandler handler)
-        {
-            notifyIcon1.BalloonTipTitle = title;
-            notifyIcon1.BalloonTipText = text;
-            notifyIcon1.BalloonTipIcon = icon;
-            notifyIcon1.BalloonTipClicked += handler;
-            notifyIcon1.ShowBalloonTip(1000);
-        }
+        //void main_CallbackShowTip(string title, string text, ToolTipIcon icon, EventHandler handler)
+        //{
+        //    notifyIcon1.BalloonTipTitle = title;
+        //    notifyIcon1.BalloonTipText = text;
+        //    notifyIcon1.BalloonTipIcon = icon;
+        //    notifyIcon1.BalloonTipClicked += handler;
+        //    notifyIcon1.ShowBalloonTip(1000);
+        //}
 
         private void InitSystemInfo()
         {
@@ -211,6 +211,9 @@ namespace LiveChat.Client
 
                 //刷新用户请求
                 RefreshFriendRequest();
+
+                //显示消息提示
+                ShowMessage();
             }
             catch (Exception ex)
             {
@@ -222,6 +225,140 @@ namespace LiveChat.Client
             }
 
             refreshtime.Start();
+        }
+
+        private void ShowMessage()
+        {
+            IList<TipInfo> tiplist = new List<TipInfo>();
+
+            //会话消息
+            foreach (KeyValuePair<P2SSession, MessageInfo> kv in seatInfo.SessionMessages)
+            {
+                if (kv.Key.Seat == null) continue;
+
+                if (kv.Value.Count > 0)
+                {
+                    string msgText = string.Format("访客【{0}】给您发送了【{1}】条新消息！", kv.Key.User.UserName, kv.Value.Count);
+
+                    StringBuilder sbMsg = new StringBuilder(msgText);
+                    sbMsg.AppendLine();
+                    sbMsg.AppendLine();
+
+                    foreach (var msg in kv.Value.Messages)
+                    {
+                        sbMsg.AppendFormat(msg.Content + "[{0}]", msg.SendTime.ToLongTimeString());
+                        sbMsg.AppendLine();
+                    }
+
+                    TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
+                    tip.Key = string.Format("UserMessage_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
+                    tip.Target = kv.Key;
+
+                    tiplist.Add(tip);
+                }
+            }
+
+            //客服消息
+            foreach (KeyValuePair<SeatFriend, SeatInfo> kv in seatInfo.SeatMessages)
+            {
+                if (kv.Value.Count > 0)
+                {
+                    string msgText = string.Format("客服【{0}】给您发送了【{1}】条新消息！", kv.Key.SeatName, kv.Value.Count);
+
+                    StringBuilder sbMsg = new StringBuilder(msgText);
+                    sbMsg.AppendLine();
+                    sbMsg.AppendLine();
+
+                    foreach (var msg in kv.Value.Messages)
+                    {
+                        sbMsg.AppendFormat(msg.Content + "[{0}]", msg.SendTime.ToLongTimeString());
+                        sbMsg.AppendLine();
+                    }
+
+                    TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
+                    tip.Key = string.Format("SeatMessage_{0}_{1}", loginSeat.SeatID, kv.Key.SeatID);
+                    tip.Target = kv.Key;
+
+                    tiplist.Add(tip);
+                }
+            }
+
+            //群消息
+            foreach (KeyValuePair<SeatGroup, MessageInfo> kv in seatInfo.GroupMessages)
+            {
+                if (kv.Value.Count > 0)
+                {
+                    string msgText = string.Format("群【{0}】发送了【{1}】条新消息！", kv.Key.GroupName, kv.Value.Count);
+
+                    StringBuilder sbMsg = new StringBuilder(msgText);
+                    sbMsg.AppendLine();
+                    sbMsg.AppendLine();
+
+                    foreach (var msg in kv.Value.Messages)
+                    {
+                        sbMsg.AppendFormat(msg.Content + "[{0}]", msg.SendTime.ToLongTimeString());
+                        sbMsg.AppendLine();
+                    }
+
+                    TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
+                    tip.Key = string.Format("GroupMessage_{0}_{1}", loginSeat.SeatID, kv.Key.GroupID);
+                    tip.Target = kv.Key;
+
+                    tiplist.Add(tip);
+                }
+            }
+
+            if (tiplist.Count > 0)
+            {
+                foreach (var tip in tiplist)
+                {
+                    ShowTip(tip, p =>
+                    {
+                        if (tip.Target is P2SSession)
+                        {
+                            P2SSession session = tip.Target as P2SSession;
+                            SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
+                            {
+                                frmChat chat = new frmChat(service, session, loginCompany, loginSeat, currentFont, currentColor);
+                                chat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                chat.Callback += new CallbackEventHandler(chat_Callback);
+                                return chat;
+                            });
+                        }
+                        else if (tip.Target is Seat)
+                        {
+                            Seat toSeat = tip.Target as Seat;
+                            SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
+                            {
+                                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, currentFont, currentColor);
+                                frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                return frmSeatChat;
+                            });
+                        }
+                        else if (tip.Target is Group)
+                        {
+                            SeatGroup group = tip.Target as SeatGroup;
+                            SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
+                            {
+                                frmGroupChat frmGroupChat = new frmGroupChat(service, loginCompany, loginSeat, group, currentFont, currentColor);
+                                frmGroupChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                return frmGroupChat;
+                            });
+                        }
+                    });
+                }
+            }
+        }
+
+        //显示提示信息
+        private void ShowTip(TipInfo tip, CallbackEventHandler handler)
+        {
+            SingletonMul.Show<frmPopup>(tip.Key, () =>
+            {
+                frmPopup frm = new frmPopup(tip);
+                frm.Callback += handler;
+                return frm;
+            });
         }
 
         private void RefreshFriendRequest()
@@ -260,16 +397,16 @@ namespace LiveChat.Client
                 TreeNode tn = FindTreeNode<P2SSession>(tvSession.Nodes[0], kv.Key, "SessionID");
                 if (tn != null)
                 {
-                    if (kv.Value > 0)
-                        tn.Text = string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value);
+                    if (kv.Value.Count > 0)
+                        tn.Text = string.Format("[{1}]{0}({2})【{3}】", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value.Count, kv.Key.FromAddress);
                     else
-                        tn.Text = string.Format("[{1}]{0}", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"));
+                        tn.Text = string.Format("[{1}]{0}【{2}】", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Key.FromAddress);
 
                     tn.Tag = kv.Key;
                 }
                 else
                 {
-                    tn = new TreeNode(string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value));
+                    tn = new TreeNode(string.Format("[{1}]{0}({2})【{3}】", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value.Count, kv.Key.FromAddress));
                     tn.SelectedImageIndex = 5;
                     tn.ImageIndex = 5;
                     tn.Tag = kv.Key;
@@ -297,7 +434,7 @@ namespace LiveChat.Client
             node.Text = string.Format("会话请求({0})", list.Count);
             foreach (var info in list)
             {
-                TreeNode tn = new TreeNode(string.Format("[{1}]{0}({2})", info.User.UserID, info.LastReceiveTime.ToString("HH:mm"), info.NoReadMessageCount));
+                TreeNode tn = new TreeNode(string.Format("[{1}]{0}({2})【{3}】", info.User.UserID, info.LastReceiveTime.ToString("HH:mm"), info.NoReadMessageCount, info.FromAddress));
                 tn.Text = tn.Text.Replace("(0)", "");
                 tn.SelectedImageIndex = 5;
                 tn.ImageIndex = 5;
@@ -320,16 +457,16 @@ namespace LiveChat.Client
                 TreeNode tn = FindTreeNode<P2SSession>(tvSession.Nodes[1], kv.Key, "SessionID");
                 if (tn != null)
                 {
-                    if (kv.Value > 0)
-                        tn.Text = string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value);
+                    if (kv.Value.Count > 0)
+                        tn.Text = string.Format("[{1}]{0}({2})【{3}】", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value.Count, kv.Key.FromAddress);
                     else
-                        tn.Text = string.Format("[{1}]{0}", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"));
+                        tn.Text = string.Format("[{1}]{0}【{2}】", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Key.FromAddress);
 
                     tn.Tag = kv.Key;
                 }
                 else
                 {
-                    tn = new TreeNode(string.Format("[{1}]{0}({2})", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value));
+                    tn = new TreeNode(string.Format("[{1}]{0}({2})【{3}】", kv.Key.User.UserID, kv.Key.LastReceiveTime.ToString("HH:mm"), kv.Value.Count, kv.Key.FromAddress));
                     tn.SelectedImageIndex = 5;
                     tn.ImageIndex = 5;
                     tn.Tag = kv.Key;
@@ -357,7 +494,7 @@ namespace LiveChat.Client
             node.Text = string.Format("客服会话({0})", list.Count);
             foreach (var info in list)
             {
-                TreeNode tn = new TreeNode(string.Format("[{1}]{0}({2})", info.User.UserID, info.LastReceiveTime.ToString("HH:mm"), info.NoReadMessageCount));
+                TreeNode tn = new TreeNode(string.Format("[{1}]{0}({2})【{3}】", info.User.UserID, info.LastReceiveTime.ToString("HH:mm"), info.NoReadMessageCount, info.FromAddress));
                 tn.Text = tn.Text.Replace("(0)", "");
                 tn.SelectedImageIndex = 5;
                 tn.ImageIndex = 5;
@@ -375,11 +512,11 @@ namespace LiveChat.Client
 
             foreach (var kv in seatInfo.GroupMessages)
             {
-                TreeNode tn = FindTreeNode<Group>(tvSeatGroup, kv.Key, "GroupID");
+                TreeNode tn = FindTreeNode<SeatGroup>(tvSeatGroup, kv.Key, "GroupID");
                 if (tn != null)
                 {
-                    if (kv.Value > 0)
-                        tn.Text = string.Format("{0}({1})", kv.Key.GroupName, kv.Value);
+                    if (kv.Value.Count > 0)
+                        tn.Text = string.Format("{0}({1})", kv.Key.GroupName, kv.Value.Count);
                     else
                         tn.Text = string.Format("{0}", kv.Key.GroupName);
 
@@ -411,7 +548,7 @@ namespace LiveChat.Client
 
             foreach (var kv in seatInfo.SeatMessages)
             {
-                TreeNode tn = FindTreeNode<Seat>(tvLinkman, kv.Key, "SeatID");
+                TreeNode tn = FindTreeNode<SeatFriend>(tvLinkman, kv.Key, "SeatID");
                 if (tn != null)
                 {
                     if (!string.IsNullOrEmpty(kv.Value.MemoName))
@@ -451,6 +588,7 @@ namespace LiveChat.Client
                             tn.SelectedImageIndex = 1;
                             tn.ImageIndex = 1;
                         }
+
                         tn.Tag = kv.Key;
                     }
                 }
@@ -688,7 +826,6 @@ namespace LiveChat.Client
                     frmMain main = new frmMain(service, loginCompany, loginSeat, clientID, currentFont, currentColor);
                     main.CallbackClose += new CallbackEventHandler(main_Callback);
                     main.CallbackSession += new CallbackEventHandler(main_CallbackSession);
-                    main.CallbackShowTip += new ShowTipEventHandler(main_CallbackShowTip);
                     return main;
                 }, rect);
 
@@ -821,18 +958,16 @@ namespace LiveChat.Client
                 return;
             }
 
-            string seatID = ((Seat)e.Node.Tag).SeatID;
-            if (seatID == loginSeat.SeatID)
+            Seat toSeat = (Seat)e.Node.Tag;
+            if (toSeat.SeatID == loginSeat.SeatID)
             {
                 ClientUtils.ShowMessage("不能自己与自己聊天！");
                 return;
             }
 
-            string key = string.Format("CHAT_{0}_{1}", loginSeat.SeatID, seatID);
-
+            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
             SingletonMul.Show(key, () =>
             {
-                Seat toSeat = service.GetSeat(seatID);
                 frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, currentFont, currentColor);
                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
                 return frmSeatChat;
@@ -844,8 +979,8 @@ namespace LiveChat.Client
             if (e.Node.Tag == null) return;
 
             SeatGroup group = ((SeatGroup)e.Node.Tag);
-            string key = string.Format("CHAT_{0}_{1}", loginSeat.SeatID, group.GroupID);
 
+            string key = string.Format("GroupChat_{0}_{1}", loginSeat.SeatID, group.GroupID);
             SingletonMul.Show(key, () =>
             {
                 frmGroupChat frmGroupChat = new frmGroupChat(service, loginCompany, loginSeat, group, currentFont, currentColor);
@@ -858,8 +993,14 @@ namespace LiveChat.Client
         {
             if (e.Node.Tag == null) return;
             P2SSession session = ((P2SSession)e.Node.Tag);
+            if (service.GetSession(session.SessionID) == null)
+            {
+                tvSession.Nodes.Remove(e.Node);
+                return;
+            }
 
-            SingletonMul.Show(session.SessionID, () =>
+            string key = string.Format("UserChat_{0}_{1}", loginSeat.SeatID, session.User.UserID);
+            SingletonMul.Show(key, () =>
             {
                 frmChat chat = new frmChat(service, session, loginCompany, loginSeat, currentFont, currentColor);
                 chat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
@@ -1291,11 +1432,12 @@ namespace LiveChat.Client
                 return;
             }
 
-            Seat friend = tvLinkman.SelectedNode.Tag as Seat;
+            SeatFriend friend = tvLinkman.SelectedNode.Tag as SeatFriend;
+
             //实现备注名称的修改
             Singleton.Show<frmSeatRename>(() =>
             {
-                frmSeatRename frmRename = new frmSeatRename(service, loginSeat, friend);
+                frmSeatRename frmRename = new frmSeatRename(service, friend);
                 frmRename.Callback += new CallbackEventHandler(frmRename_Callback);
                 return frmRename;
             });

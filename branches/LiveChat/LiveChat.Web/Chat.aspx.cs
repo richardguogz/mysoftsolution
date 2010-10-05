@@ -91,7 +91,7 @@ namespace LiveChat.Web
             else
             {
                 headerBox.InnerHtml = this.Title;
-                adBox.InnerHtml = string.Format("<a href='{0}' target='_blank' title='{1}'><img src='{2}' width='650px' height='50px' border='0px' alt='{1}' /></a>", ad.AdUrl, ad.AdTitle, ad.AdImgUrl);
+                adBox.InnerHtml = string.Format("<a href='{0}' target='_blank' title='{1}'><img src='{2}' width='680px' height='50px' border='0px' alt='{1}' /></a>", ad.AdUrl, ad.AdTitle, ad.AdImgUrl);
 
                 if (!string.IsNullOrEmpty(ad.AdLogoUrl) && !string.IsNullOrEmpty(ad.AdLogoImgUrl))
                 {

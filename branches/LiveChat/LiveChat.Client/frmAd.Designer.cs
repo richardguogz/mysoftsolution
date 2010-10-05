@@ -167,7 +167,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(143, 12);
             this.label9.TabIndex = 11;
-            this.label9.Text = "广告图片大小为 650 * 50";
+            this.label9.Text = "广告图片大小为 680 * 50";
             // 
             // cboProvince
             // 

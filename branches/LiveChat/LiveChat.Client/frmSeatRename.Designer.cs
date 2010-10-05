@@ -93,6 +93,7 @@
             this.Name = "frmSeatRename";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "修改备注姓名";
+            this.Load += new System.EventHandler(this.frmSeatRename_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -13,7 +13,7 @@ namespace LiveChat.Service.Manager
     public class SessionManager
     {
         private DbSession dbSession;
-        private Timer timer;
+        private Timer timer, chatTimer;
         private static readonly object syncobj = new object();
         private static Dictionary<string, Session> dictSession = new Dictionary<string, Session>();
         private static Dictionary<string, Session> closeSession = new Dictionary<string, Session>();
@@ -29,6 +29,47 @@ namespace LiveChat.Service.Manager
             this.timer.AutoReset = true;
             this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             this.timer.Start();
+
+            this.chatTimer = new Timer();
+            this.chatTimer.Interval = TimeSpan.FromMinutes(1).TotalMilliseconds;
+            this.chatTimer.AutoReset = true;
+            this.chatTimer.Elapsed += new ElapsedEventHandler(chatTimer_Elapsed);
+            this.chatTimer.Start();
+        }
+
+        void chatTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            chatTimer.Stop();
+
+            try
+            {
+                foreach (Session session in dictSession.Values)
+                {
+                    if (session is P2SSession)
+                    {
+                        P2SSession s = session as P2SSession;
+                        if (s.Seat == null) continue;
+
+                        //检测会话超时(超时半小时未回话，自动关闭会话)
+                        if (s.State == SessionState.Closed)
+                        {
+                            CloseSession(s.SessionID);
+                        }
+                        else if (s.State == SessionState.Talking && DateTime.Now.Subtract(s.RefreshTime).TotalMinutes > 30)
+                        {
+                            CloseSession(s.SessionID);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.WriteLog(ex.Message);
+            }
+            finally
+            {
+                chatTimer.Start();
+            }
         }
 
         /// <summary>
@@ -380,28 +421,6 @@ namespace LiveChat.Service.Manager
         #region 会话操作
 
         /// <summary>
-        /// 准备关闭会话，客户端操作
-        /// </summary>
-        /// <param name="sessionID"></param>
-        public void ClosingSession(string sessionID)
-        {
-            lock (syncobj)
-            {
-                if (dictSession.ContainsKey(sessionID))
-                {
-                    //改变状态
-                    Session session = dictSession[sessionID];
-                    P2SSession ps = session as P2SSession;
-                    if (ps.State != SessionState.Closed)
-                    {
-                        ps.EndTime = DateTime.Now;
-                        ps.State = SessionState.Closed;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// 结束会话
         /// </summary>
         /// <param name="sessionID"></param>
@@ -418,11 +437,8 @@ namespace LiveChat.Service.Manager
                         if (session is P2SSession)
                         {
                             P2SSession ps = session as P2SSession;
-                            if (ps.State != SessionState.Closed)
-                            {
-                                ps.EndTime = DateTime.Now;
-                                ps.State = SessionState.Closed;
-                            }
+                            ps.EndTime = DateTime.Now;
+                            ps.State = SessionState.Closed;
                             closeSession[sessionID] = ps;
 
                             ps.Seat.RemoveSession(ps);

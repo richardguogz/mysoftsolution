@@ -7,6 +7,22 @@ using System.Runtime.Serialization;
 namespace LiveChat.Utils
 {
     [Serializable]
+    public class LiveChatTimeoutException : LiveChatException
+    {
+        public LiveChatTimeoutException() { }
+        public LiveChatTimeoutException(string message) : base(message) { }
+        public LiveChatTimeoutException(string message, Exception inner) : base(message, inner) { }
+        protected LiveChatTimeoutException(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
+
+        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+        }
+    }
+
+    [Serializable]
     public class LiveChatException : Exception, ISerializable
     {
         public LiveChatException() { }

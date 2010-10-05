@@ -212,20 +212,15 @@ namespace LiveChat.Service
                     throw new LiveChatException("会话ID不能为空！");
                 }
 
+                //如果会话不存在，表示已经结束
                 if (!SessionManager.Instance.ExistsSession(sessionID))
                 {
-                    return new List<Message>();
-                }
-
-                P2SSession session = SessionManager.Instance.GetSession(sessionID) as P2SSession;
-
-                //检测会话超时(超时半小时未回话，自动关闭会话)
-                if (DateTime.Now.Subtract(session.RefreshTime).TotalMinutes > 30)
-                {
-                    CloseSession(session.SessionID);
                     string msg = "您已经半小时未回复，系统自动关闭当前会话！";
-                    throw new LiveChatException(msg);
+                    throw new LiveChatTimeoutException(msg);
                 }
+
+                //正常会话状态
+                P2SSession session = SessionManager.Instance.GetSession(sessionID) as P2SSession;
 
                 User user = session.User;
                 IList<Message> msgs = session.Messages;
@@ -244,6 +239,10 @@ namespace LiveChat.Service
                 user[session.SessionID] = DateTime.Now;
 
                 return list;
+            }
+            catch (LiveChatTimeoutException ex)
+            {
+                throw ex;
             }
             catch (Exception ex)
             {
@@ -414,7 +413,7 @@ namespace LiveChat.Service
         {
             try
             {
-                SessionManager.Instance.ClosingSession(sessionID);
+                SessionManager.Instance.CloseSession(sessionID);
             }
             catch (Exception ex)
             {

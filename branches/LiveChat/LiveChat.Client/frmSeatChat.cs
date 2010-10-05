@@ -375,6 +375,7 @@ namespace LiveChat.Client
             else
             {
                 panel2.Visible = true;
+                txtFile.Text = string.Empty;
                 button3.Focus();
             }
         }
@@ -409,6 +410,7 @@ namespace LiveChat.Client
         {
             if (value == null) return;
             string content = null;
+            string message = null;
             var msgType = MessageType.Text;
 
             string fileName = value.ToString();
@@ -426,15 +428,18 @@ namespace LiveChat.Client
                 string[] imageUrl = service.UploadImage(buffer, extension);
                 msgType = MessageType.Picture;
                 content = "<a href='" + imageUrl[1] + "' target='_blank'><img border='0px' alt='查看大图' src='" + imageUrl[0] + "' /></a>";
+                message = content;
             }
             else
             {
                 string fileURL = service.UploadFile(buffer, extension);
                 msgType = MessageType.File;
                 content = "<a href='" + fileURL + "' target='_blank'>" + Path.GetFileName(fileName) + "</a>";
+                message = "文件" + fileURL + "传送成功！";
             }
 
             //发送消息
+            service.SendS2SMessage(msgType, toSeat.SeatID, fromSeat.SeatID, null, message);
             service.SendS2SMessage(msgType, fromSeat.SeatID, toSeat.SeatID, null, content);
 
             if (this.InvokeRequired)
@@ -488,6 +493,7 @@ namespace LiveChat.Client
         private void txtMessage_Click(object sender, EventArgs e)
         {
             panel4.Visible = false;
+            panel2.Visible = false;
         }
     }
 }

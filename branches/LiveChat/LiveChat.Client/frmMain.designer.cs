@@ -21,12 +21,6 @@
                 chattimer = null;
             }
 
-            if (msgtimer != null)
-            {
-                msgtimer.Stop();
-                msgtimer = null;
-            }
-
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -58,7 +52,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cboTalkCount = new System.Windows.Forms.ComboBox();
             this.chkAutoAccept = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.dgvTalks = new System.Windows.Forms.DataGridView();
             this.UserName1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RequestSeat = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -209,7 +202,6 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.cboTalkCount);
             this.panel1.Controls.Add(this.chkAutoAccept);
-            this.panel1.Controls.Add(this.checkBox2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 526);
             this.panel1.Name = "panel1";
@@ -219,7 +211,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(311, 12);
+            this.label1.Location = new System.Drawing.Point(148, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(221, 12);
             this.label1.TabIndex = 8;
@@ -235,7 +227,7 @@
             "10",
             "15",
             "20"});
-            this.cboTalkCount.Location = new System.Drawing.Point(245, 8);
+            this.cboTalkCount.Location = new System.Drawing.Point(85, 8);
             this.cboTalkCount.Name = "cboTalkCount";
             this.cboTalkCount.Size = new System.Drawing.Size(58, 20);
             this.cboTalkCount.TabIndex = 7;
@@ -243,25 +235,12 @@
             // chkAutoAccept
             // 
             this.chkAutoAccept.AutoSize = true;
-            this.chkAutoAccept.Location = new System.Drawing.Point(172, 11);
+            this.chkAutoAccept.Location = new System.Drawing.Point(12, 11);
             this.chkAutoAccept.Name = "chkAutoAccept";
             this.chkAutoAccept.Size = new System.Drawing.Size(72, 16);
             this.chkAutoAccept.TabIndex = 6;
             this.chkAutoAccept.Text = "自动接受";
             this.chkAutoAccept.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.BackColor = System.Drawing.Color.Transparent;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(12, 10);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(144, 16);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "有新消息来时自动提示";
-            this.checkBox2.UseVisualStyleBackColor = false;
             // 
             // dgvTalks
             // 
@@ -553,7 +532,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "frmMain";
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "会话主窗口";
             this.Load += new System.EventHandler(this.Main_Load);
@@ -586,7 +564,6 @@
         private System.Windows.Forms.CheckBox chkSelectTalk;
         private System.Windows.Forms.CheckBox chkChangeTalk;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tssiCurrentCompany;
         private System.Windows.Forms.ToolStripStatusLabel tssiCurrentUser;

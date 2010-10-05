@@ -74,7 +74,7 @@ namespace LiveChat.Web
             WebUtils.SaveSession(key, id);
 
             //保存一个小时
-            WebUtils.SaveCookie(key, id, CookieExpiresType.Day, 1);
+            WebUtils.SaveCookie(key, id, CookieExpiresType.Hour, 1);
         }
 
         /// <summary>
