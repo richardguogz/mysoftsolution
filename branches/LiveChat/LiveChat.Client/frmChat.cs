@@ -32,7 +32,7 @@ namespace LiveChat.Client
         private Company company;
         private Seat seat;
         private Timer msgtimer;
-        private int MessageCount;
+        private int messageCount;
 
         [DllImport("user32.dll")]
         public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
@@ -148,7 +148,7 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    if (MessageCount != list.Count)
+                    if (messageCount != list.Count)
                     {
                         element.InnerHtml = string.Empty;
 
@@ -196,7 +196,7 @@ namespace LiveChat.Client
 
                         element.ScrollIntoView(false);
 
-                        MessageCount = list.Count;
+                        messageCount = list.Count;
 
                         if (isflash)
                         {

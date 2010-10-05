@@ -316,17 +316,17 @@ namespace LiveChat.Client
                                 return chat;
                             });
                         }
-                        else if (tip.Target is Seat)
+                        else if (tip.Target is SeatFriend)
                         {
-                            Seat toSeat = tip.Target as Seat;
+                            SeatFriend toSeat = tip.Target as SeatFriend;
                             SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
                             {
-                                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, currentFont, currentColor);
+                                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
                                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
                                 return frmSeatChat;
                             });
                         }
-                        else if (tip.Target is Group)
+                        else if (tip.Target is SeatGroup)
                         {
                             SeatGroup group = tip.Target as SeatGroup;
                             SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
@@ -966,7 +966,7 @@ namespace LiveChat.Client
                 return;
             }
 
-            Seat toSeat = (Seat)e.Node.Tag;
+            SeatFriend toSeat = (SeatFriend)e.Node.Tag;
             if (toSeat.SeatID == loginSeat.SeatID)
             {
                 ClientUtils.ShowMessage("不能自己与自己聊天！");
@@ -976,7 +976,7 @@ namespace LiveChat.Client
             string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
             SingletonMul.Show(key, () =>
             {
-                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, currentFont, currentColor);
+                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
                 return frmSeatChat;
             });
@@ -1321,19 +1321,17 @@ namespace LiveChat.Client
             lvSearchName.Visible = false;
             tvLinkman.Refresh();
 
-            string seatID = ((Seat)lvSearchName.SelectedItems[0].Tag).SeatID;
-            if (seatID == loginSeat.SeatID)
+            SeatFriend friend = (SeatFriend)lvSearchName.SelectedItems[0].Tag;
+            if (friend.SeatID == loginSeat.SeatID)
             {
                 ClientUtils.ShowMessage("不能自己与自己聊天！");
                 return;
             }
 
-            string key = string.Format("CHAT_{0}_{1}", loginSeat.SeatID, seatID);
-
+            string key = string.Format("CHAT_{0}_{1}", loginSeat.SeatID, friend.SeatID);
             SingletonMul.Show(key, () =>
             {
-                Seat toSeat = service.GetSeat(seatID);
-                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, currentFont, currentColor);
+                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, friend, friend.MemoName, currentFont, currentColor);
                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
                 return frmSeatChat;
             });
@@ -1356,7 +1354,6 @@ namespace LiveChat.Client
             }
 
             P2SSession session = tvSession.SelectedNode.Tag as P2SSession;
-
             if (MessageBox.Show(string.Format("确定结束与【{0}】的会话吗？", session.User.UserID), "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 try

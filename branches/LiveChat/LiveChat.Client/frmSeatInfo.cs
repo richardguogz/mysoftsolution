@@ -98,6 +98,7 @@ namespace LiveChat.Client
                 frmAddSeatConfirm frm = new frmAddSeatConfirm(service, company, owner, friend);
                 return frm;
             });
+            this.Close();
         }
     }
 }

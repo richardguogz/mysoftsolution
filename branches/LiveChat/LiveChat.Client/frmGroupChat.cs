@@ -32,7 +32,7 @@ namespace LiveChat.Client
         private Color currentColor;
         private Font currentFont;
         private DateTime currentTime;
-        private int MessageCount;
+        private int messageCount;
 
         public frmGroupChat(ISeatService service, Company company, Seat seat, SeatGroup group, Font useFont, Color useColor)
         {
@@ -201,7 +201,7 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    if (MessageCount != list.Count)
+                    if (messageCount != list.Count)
                     {
                         element.InnerHtml = string.Empty;
 
@@ -239,7 +239,7 @@ namespace LiveChat.Client
 
                         element.ScrollIntoView(false);
 
-                        MessageCount = list.Count;
+                        messageCount = list.Count;
 
                         if (isflash)
                         {
