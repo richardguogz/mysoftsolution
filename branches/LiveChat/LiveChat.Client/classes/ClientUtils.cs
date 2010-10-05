@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace LiveChat.Client
 {
@@ -104,9 +105,14 @@ namespace LiveChat.Client
         /// </summary>
         public static void ExitApplication()
         {
-            Application.Exit();
-            Application.ExitThread();
-            Environment.Exit(Environment.ExitCode);
+            try
+            {
+                Application.Exit();
+                Application.ExitThread();
+                Environment.Exit(Environment.ExitCode);
+                Thread.CurrentThread.Abort();
+            }
+            catch { }
         }
 
         #endregion

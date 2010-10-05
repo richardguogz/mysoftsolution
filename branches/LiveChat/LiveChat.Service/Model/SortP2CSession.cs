@@ -57,5 +57,27 @@ namespace LiveChat.Service
             return -1;
         }
     }
+
+    /// <summary>
+    /// 对Message进行排序
+    /// </summary>
+    public class SortTimeMessage : IComparer<Message>
+    {
+        /// <summary>
+        /// Sort by StartTime
+        /// </summary>
+        /// <param name="session1"></param>
+        /// <param name="session2"></param>
+        /// <returns></returns>
+        public int Compare(Message message1, Message message2)
+        {
+            if (message1 != null && message2 != null)
+            {
+                return DateTime.Compare(message2.SendTime, message1.SendTime);
+            }
+
+            return -1;
+        }
+    }
 }
 

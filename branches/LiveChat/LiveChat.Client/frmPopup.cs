@@ -10,8 +10,11 @@ namespace LiveChat.Client
 {
     public partial class frmPopup : Form
     {
-        //关闭窗口事件
-        public event CallbackEventHandler Callback;
+        //查看事件
+        public event CallbackEventHandler CallbackView;
+
+        //取消事件
+        public event CallbackEventHandler CallbackCancel;
 
         private IntPtr HWND_TOPMOST = new IntPtr(-1);
         private TipInfo tip;
@@ -36,7 +39,13 @@ namespace LiveChat.Client
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Callback != null) Callback(tip);
+            if (CallbackView != null) CallbackView(tip);
+            this.Close();
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (CallbackCancel != null) CallbackCancel(tip);
             this.Close();
         }
     }

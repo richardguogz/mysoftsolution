@@ -134,10 +134,10 @@ namespace LiveChat.Client
                             {
                                 p.SetAttribute("className", "operator");
                                 if (msg.Type == MessageType.Picture)
-                                    sb.Append("您向" + ((P2PMessage)msg).ReceiverName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
+                                    sb.Append("您向" + ((IReceiver)msg).ReceiverName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                 else if (msg.Type == MessageType.File)
                                 {
-                                    sb.Append("您向" + ((P2PMessage)msg).ReceiverName + "传送了一个文件 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
+                                    sb.Append("您向" + ((IReceiver)msg).ReceiverName + "传送了一个文件 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                     msg.Content = "点击下载:" + msg.Content;
                                 }
                                 else
@@ -164,7 +164,10 @@ namespace LiveChat.Client
                 }
             }
             catch (SocketException ex) { }
-            catch { }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
         }
 
         //文本格式设置
@@ -399,6 +402,13 @@ namespace LiveChat.Client
             }
 
             string fileName = txtFile.Text.Trim();
+            FileInfo file = new FileInfo(fileName);
+            if (file.Length > 1024 * 1024 * 4)
+            {
+                ClientUtils.ShowMessage("当前选择的文件大于4M，不能进行传送！");
+                return;
+            }
+
             string message = string.Format("正在传送文件{0}，请稍候......", fileName);
             service.SendS2SMessage(MessageType.Text, fromSeat.SeatID, toSeat.SeatID, null, message);
             LoadMessage(false);
@@ -410,7 +420,6 @@ namespace LiveChat.Client
         {
             if (value == null) return;
             string content = null;
-            string message = null;
             var msgType = MessageType.Text;
 
             string fileName = value.ToString();
@@ -428,18 +437,16 @@ namespace LiveChat.Client
                 string[] imageUrl = service.UploadImage(buffer, extension);
                 msgType = MessageType.Picture;
                 content = "<a href='" + imageUrl[1] + "' target='_blank'><img border='0px' alt='查看大图' src='" + imageUrl[0] + "' /></a>";
-                message = content;
             }
             else
             {
                 string fileURL = service.UploadFile(buffer, extension);
                 msgType = MessageType.File;
                 content = "<a href='" + fileURL + "' target='_blank'>" + Path.GetFileName(fileName) + "</a>";
-                message = "文件" + fileURL + "传送成功！";
+                //message = "文件" + fileURL + "传送成功！";
             }
 
             //发送消息
-            service.SendS2SMessage(msgType, toSeat.SeatID, fromSeat.SeatID, null, message);
             service.SendS2SMessage(msgType, fromSeat.SeatID, toSeat.SeatID, null, content);
 
             if (this.InvokeRequired)
@@ -448,10 +455,10 @@ namespace LiveChat.Client
                 RefreshMessage(false);
         }
 
-        private void RefreshMessage(object obj)
+        private void RefreshMessage(object args)
         {
             panel2.Visible = false;
-            LoadMessage(Convert.ToBoolean(obj));
+            LoadMessage(Convert.ToBoolean(args));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -485,7 +492,7 @@ namespace LiveChat.Client
         {
             Singleton.Show<frmSeatInfo>(() =>
             {
-                frmSeatInfo frm = new frmSeatInfo(service, toSeat, false);
+                frmSeatInfo frm = new frmSeatInfo(service, company, fromSeat, toSeat);
                 return frm;
             });
         }

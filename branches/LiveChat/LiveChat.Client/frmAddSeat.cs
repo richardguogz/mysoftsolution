@@ -94,12 +94,12 @@ namespace LiveChat.Client
         private void listSeats_DoubleClick(object sender, EventArgs e)
         {
             if (listSeats.SelectedItems.Count == 0) return;
-            Seat config = listSeats.SelectedItems[0].Tag as Seat;
+            Seat friend = listSeats.SelectedItems[0].Tag as Seat;
 
-            string key = string.Format("Config_{0}", config.SeatID);
+            string key = string.Format("Config_{0}", friend.SeatID);
             SingletonMul.Show<frmSeatInfo>(key, () =>
             {
-                frmSeatInfo frm = new frmSeatInfo(service, config, false);
+                frmSeatInfo frm = new frmSeatInfo(service, company, seat, friend);
                 return frm;
             });
         }

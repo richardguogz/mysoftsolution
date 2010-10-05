@@ -249,9 +249,11 @@ namespace LiveChat.Client
                     }
                 }
             }
-            catch { }
-
-            //textBox1.Focus();
+            catch (SocketException ex) { }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
         }
 
         //文本格式设置

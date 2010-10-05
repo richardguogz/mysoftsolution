@@ -15,32 +15,39 @@ namespace LiveChat.Client
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
-        private Seat seat;
-        private bool isSelf;
-        public frmSeatInfo(ISeatService service, Seat seat, bool isSelf)
+        private Company company;
+        private Seat owner, friend;
+
+        public frmSeatInfo(ISeatService service, Company company, Seat owner, Seat friend)
         {
             this.service = service;
-            this.seat = seat;
-            this.isSelf = isSelf;
+            this.company = company;
+            this.owner = owner;
+            this.friend = friend;
 
             InitializeComponent();
         }
 
         private void frmSeatInfo_Load(object sender, EventArgs e)
         {
-            lblSeatCode.Text = seat.SeatCode;
-            txtSeatName.Text = seat.SeatName;
-            txtTelephone.Text = seat.Telephone;
-            txtMobileNumber.Text = seat.MobileNumber;
-            txtEmail.Text = seat.Email;
-            txtSign.Text = seat.Sign;
-            txtRemark.Text = seat.Introduction;
+            lblSeatCode.Text = friend.SeatCode;
+            txtSeatName.Text = friend.SeatName;
+            txtTelephone.Text = friend.Telephone;
+            txtMobileNumber.Text = friend.MobileNumber;
+            txtEmail.Text = friend.Email;
+            txtSign.Text = friend.Sign;
+            txtRemark.Text = friend.Introduction;
 
-            if (!isSelf)
+            if (owner.SeatID != friend.SeatID)
             {
-                this.Text = string.Format("【{0}】的个人资料", seat.SeatName);
+                this.Text = string.Format("【{0}】的个人资料", friend.SeatName);
                 groupBox1.Enabled = false;
                 button1.Visible = false;
+                button3.Visible = true;
+            }
+            else
+            {
+                button3.Visible = false;
             }
         }
 
@@ -65,11 +72,11 @@ namespace LiveChat.Client
                 //提示是否需要提交数据
                 if (MessageBox.Show("确定修改吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
 
-                service.UpdateSeat(seat.SeatID, seatName, email, phone, mobile, sign, remark, seat.SeatType);
-                seat.SeatName = seatName;
-                seat.Sign = sign;
-                seat.Introduction = remark;
-                if (Callback != null) Callback(seat);
+                service.UpdateSeat(friend.SeatID, seatName, email, phone, mobile, sign, remark, friend.SeatType);
+                friend.SeatName = seatName;
+                friend.Sign = sign;
+                friend.Introduction = remark;
+                if (Callback != null) Callback(friend);
                 this.Close();
             }
             catch (Exception ex)
@@ -81,6 +88,16 @@ namespace LiveChat.Client
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //发送请求加对方为好友
+            Singleton.Show<frmAddSeatConfirm>(() =>
+            {
+                frmAddSeatConfirm frm = new frmAddSeatConfirm(service, company, owner, friend);
+                return frm;
+            });
         }
     }
 }

@@ -59,30 +59,24 @@ namespace LiveChat.Entity
     [Serializable]
     public class MessageInfo
     {
+        private int _Count;
         /// <summary>
         /// 消息数
         /// </summary>
         public int Count
         {
-            get { return _Messages.Count; }
+            get { return _Count; }
+            set { _Count = value; }
         }
 
-        private IList<Message> _Messages;
+        private Message _Message;
         /// <summary>
-        /// 消息列表
+        /// 最后消息
         /// </summary>
-        public IList<Message> Messages
+        public Message Message
         {
-            get { return _Messages; }
-            set { _Messages = value; }
-        }
-
-        /// <summary>
-        /// 实例化消息
-        /// </summary>
-        public MessageInfo()
-        {
-            this._Messages = new List<Message>();
+            get { return _Message; }
+            set { _Message = value; }
         }
     }
 }

@@ -244,11 +244,8 @@ namespace LiveChat.Client
                     sbMsg.AppendLine();
                     sbMsg.AppendLine();
 
-                    foreach (var msg in kv.Value.Messages)
-                    {
-                        sbMsg.AppendFormat(msg.Content + "[{0}]", msg.SendTime.ToLongTimeString());
-                        sbMsg.AppendLine();
-                    }
+                    sbMsg.AppendFormat("[{0}]" + kv.Value.Message.Content, kv.Value.Message.SendTime.ToLongTimeString());
+                    sbMsg.AppendLine();
 
                     TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
                     tip.Key = string.Format("UserMessage_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
@@ -269,11 +266,8 @@ namespace LiveChat.Client
                     sbMsg.AppendLine();
                     sbMsg.AppendLine();
 
-                    foreach (var msg in kv.Value.Messages)
-                    {
-                        sbMsg.AppendFormat(msg.Content + "[{0}]", msg.SendTime.ToLongTimeString());
-                        sbMsg.AppendLine();
-                    }
+                    sbMsg.AppendFormat("[{0}]" + kv.Value.Message.Content, kv.Value.Message.SendTime.ToLongTimeString());
+                    sbMsg.AppendLine();
 
                     TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
                     tip.Key = string.Format("SeatMessage_{0}_{1}", loginSeat.SeatID, kv.Key.SeatID);
@@ -294,11 +288,8 @@ namespace LiveChat.Client
                     sbMsg.AppendLine();
                     sbMsg.AppendLine();
 
-                    foreach (var msg in kv.Value.Messages)
-                    {
-                        sbMsg.AppendFormat(msg.Content + "[{0}]", msg.SendTime.ToLongTimeString());
-                        sbMsg.AppendLine();
-                    }
+                    sbMsg.AppendFormat("[{0}]" + kv.Value.Message.Content, kv.Value.Message.SendTime.ToLongTimeString());
+                    sbMsg.AppendLine();
 
                     TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
                     tip.Key = string.Format("GroupMessage_{0}_{1}", loginSeat.SeatID, kv.Key.GroupID);
@@ -312,7 +303,7 @@ namespace LiveChat.Client
             {
                 foreach (var tip in tiplist)
                 {
-                    ShowTip(tip, p =>
+                    ShowTip(tip, p1 =>
                     {
                         if (tip.Target is P2SSession)
                         {
@@ -345,18 +336,36 @@ namespace LiveChat.Client
                                 return frmGroupChat;
                             });
                         }
+                    }, p2 =>
+                    {
+                        if (tip.Target is P2SSession)
+                        {
+                            P2SSession session = tip.Target as P2SSession;
+                            service.GetP2SMessages(session.SessionID);
+                        }
+                        else if (tip.Target is Seat)
+                        {
+                            Seat toSeat = tip.Target as Seat;
+                            service.GetS2SHistoryMessages(loginSeat.SeatID, toSeat.SeatID);
+                        }
+                        else if (tip.Target is Group)
+                        {
+                            SeatGroup group = tip.Target as SeatGroup;
+                            service.GetSGHistoryMessages(group.GroupID, loginSeat.SeatID);
+                        }
                     });
                 }
             }
         }
 
         //显示提示信息
-        private void ShowTip(TipInfo tip, CallbackEventHandler handler)
+        private void ShowTip(TipInfo tip, CallbackEventHandler viewHandler, CallbackEventHandler cancelHandler)
         {
             SingletonMul.Show<frmPopup>(tip.Key, () =>
             {
                 frmPopup frm = new frmPopup(tip);
-                frm.Callback += handler;
+                frm.CallbackView += viewHandler;
+                frm.CallbackCancel += cancelHandler;
                 return frm;
             });
         }
@@ -785,8 +794,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                Seat seat = service.GetSeat(loginSeat.SeatID);
-                frmSeatInfo frm = new frmSeatInfo(service, seat, true);
+                frmSeatInfo frm = new frmSeatInfo(service, loginCompany, loginSeat, loginSeat);
                 frm.Callback += new CallbackEventHandler(frm_Callback);
                 return frm;
             });
@@ -1060,8 +1068,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                Seat seat = service.GetSeat(loginSeat.SeatID);
-                frmSeatInfo frm = new frmSeatInfo(service, seat, true);
+                frmSeatInfo frm = new frmSeatInfo(service, loginCompany, loginSeat, loginSeat);
                 frm.Callback += new CallbackEventHandler(frm_Callback);
                 return frm;
             });
@@ -1418,8 +1425,7 @@ namespace LiveChat.Client
             Seat friend = tvLinkman.SelectedNode.Tag as Seat;
             Singleton.Show<frmSeatInfo>(() =>
             {
-                Seat seat = service.GetSeat(friend.SeatID);
-                frmSeatInfo frm = new frmSeatInfo(service, seat, false);
+                frmSeatInfo frm = new frmSeatInfo(service, loginCompany, loginSeat, friend);
                 return frm;
             });
         }

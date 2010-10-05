@@ -664,7 +664,7 @@ namespace LiveChat.Service
                             return false;
                     });
 
-                    info.GroupMessages[group] = new MessageInfo() { Messages = list };
+                    info.GroupMessages[group] = new MessageInfo { Count = list.Count, Message = GetMessage(list) };
                 }
 
                 //添加会话消息
@@ -693,7 +693,7 @@ namespace LiveChat.Service
                         session.NoReadMessageCount = list.Count;
 
                         P2SSession p2s = session as P2SSession;
-                        info.SessionMessages[p2s] = new MessageInfo() { Messages = list };
+                        info.SessionMessages[p2s] = new MessageInfo { Count = list.Count, Message = GetMessage(list) };
                     }
                 }
 
@@ -725,7 +725,8 @@ namespace LiveChat.Service
                                 //处理未读消息数
                                 session.NoReadMessageCount = list.Count;
 
-                                seatInfo.Messages = list;
+                                seatInfo.Count = list.Count;
+                                seatInfo.Message = GetMessage(list);
                                 info.SeatMessages[friend] = seatInfo;
 
                                 break;
@@ -743,6 +744,18 @@ namespace LiveChat.Service
             {
                 throw new LiveChatException(ex.Message, ex);
             }
+        }
+
+        /// <summary>
+        /// 获取单条信息
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        private Message GetMessage(IList<Message> list)
+        {
+            if (list.Count == 0) return null;
+            (list as List<Message>).Sort(new SortTimeMessage());
+            return list[0];
         }
 
         /// <summary>

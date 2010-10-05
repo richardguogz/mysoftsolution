@@ -324,7 +324,7 @@ namespace LiveChat.Client
             SingletonMul.Show<frmPopup>(tip.Key, () =>
             {
                 frmPopup frm = new frmPopup(tip);
-                frm.Callback += handler;
+                frm.CallbackView += handler;
                 return frm;
             });
         }

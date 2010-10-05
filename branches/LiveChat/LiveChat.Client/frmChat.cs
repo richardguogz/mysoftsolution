@@ -207,7 +207,10 @@ namespace LiveChat.Client
                 }
             }
             catch (SocketException ex) { }
-            catch { }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
         }
 
         void BindFastReply()
@@ -542,6 +545,13 @@ namespace LiveChat.Client
             }
 
             string fileName = txtFile.Text.Trim();
+            FileInfo file = new FileInfo(fileName);
+            if (file.Length > 1024 * 1024 * 4)
+            {
+                ClientUtils.ShowMessage("当前选择的文件大于4M，不能进行传送！");
+                return;
+            }
+
             string message = string.Format("正在传送文件{0}，请稍候......", fileName);
             service.SendP2SMessage(MessageType.Text, session.SessionID, seat.SeatID, null, message);
             LoadMessage(false);
@@ -587,10 +597,10 @@ namespace LiveChat.Client
                 RefreshMessage(false);
         }
 
-        private void RefreshMessage(object obj)
+        private void RefreshMessage(object args)
         {
             panel2.Visible = false;
-            LoadMessage(Convert.ToBoolean(obj));
+            LoadMessage(Convert.ToBoolean(args));
         }
 
         private void button1_Click(object sender, EventArgs e)
