@@ -35,7 +35,10 @@
             this.button3 = new System.Windows.Forms.Button();
             this.txtFile = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button4 = new System.Windows.Forms.Button();
+            this.pbDefault = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -99,6 +102,29 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // button4
+            // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Location = new System.Drawing.Point(224, 49);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(80, 21);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "默认头像";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // pbDefault
+            // 
+            this.pbDefault.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pbDefault.Image = ((System.Drawing.Image)(resources.GetObject("pbDefault.Image")));
+            this.pbDefault.Location = new System.Drawing.Point(96, 59);
+            this.pbDefault.Name = "pbDefault";
+            this.pbDefault.Size = new System.Drawing.Size(60, 60);
+            this.pbDefault.TabIndex = 21;
+            this.pbDefault.TabStop = false;
+            this.pbDefault.Visible = false;
+            // 
             // frmSeatFace
             // 
             this.AcceptButton = this.button1;
@@ -106,10 +132,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(381, 142);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.txtFile);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.pbDefault);
             this.Controls.Add(this.pbSeatFace);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -119,6 +147,7 @@
             this.Text = "修改头像";
             this.Load += new System.EventHandler(this.frmSeatFace_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDefault)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +161,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox txtFile;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.PictureBox pbDefault;
     }
 }

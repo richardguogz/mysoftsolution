@@ -55,7 +55,6 @@ namespace LiveChat.Client
             catch (Exception ex)
             {
                 ClientUtils.ShowError(ex);
-
             }
         }
 
@@ -94,6 +93,24 @@ namespace LiveChat.Client
                     pbSeatFace.Image = img;
                 }
                 catch { }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("确定将您的头像重置为默认头像吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                pbSeatFace.Image = pbDefault.Image;
+
+                try
+                {
+                    service.UpdateSeatFace(seat.SeatID, null);
+                    if (Callback != null) Callback(pbSeatFace.Image);
+                }
+                catch (Exception ex)
+                {
+                    ClientUtils.ShowError(ex);
+                }
             }
         }
 
