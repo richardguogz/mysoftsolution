@@ -73,6 +73,7 @@
             this.留言ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.系统设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.在线升级ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.版本信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.更换用户ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -155,7 +156,10 @@
             this.消息记录ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem34 = new System.Windows.Forms.ToolStripMenuItem();
-            this.在线升级ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip6 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.查看个人资料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.修改头像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).BeginInit();
@@ -175,6 +179,7 @@
             this.contextMenuStrip3.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
             this.contextMenuStrip5.SuspendLayout();
+            this.contextMenuStrip6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -283,6 +288,8 @@
             // pbSeatFace
             // 
             this.pbSeatFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pbSeatFace.ContextMenuStrip = this.contextMenuStrip6;
+            this.pbSeatFace.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbSeatFace.Image = ((System.Drawing.Image)(resources.GetObject("pbSeatFace.Image")));
             this.pbSeatFace.Location = new System.Drawing.Point(11, 10);
             this.pbSeatFace.Name = "pbSeatFace";
@@ -376,14 +383,14 @@
             // 个人资料ToolStripMenuItem
             // 
             this.个人资料ToolStripMenuItem.Name = "个人资料ToolStripMenuItem";
-            this.个人资料ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.个人资料ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.个人资料ToolStripMenuItem.Text = "个人资料";
             this.个人资料ToolStripMenuItem.Click += new System.EventHandler(this.个人资料ToolStripMenuItem_Click);
             // 
             // 修改密码ToolStripMenuItem
             // 
             this.修改密码ToolStripMenuItem.Name = "修改密码ToolStripMenuItem";
-            this.修改密码ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.修改密码ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.修改密码ToolStripMenuItem.Text = "修改密码";
             this.修改密码ToolStripMenuItem.Click += new System.EventHandler(this.修改密码ToolStripMenuItem_Click);
             // 
@@ -398,7 +405,7 @@
             this.toolStripMenuItem31,
             this.toolStripMenuItem32});
             this.皮肤切换ToolStripMenuItem.Name = "皮肤切换ToolStripMenuItem";
-            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.皮肤切换ToolStripMenuItem.Text = "皮肤切换";
             // 
             // toolStripMenuItem26
@@ -460,57 +467,64 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
             // 
             // 历史记录ToolStripMenuItem
             // 
             this.历史记录ToolStripMenuItem.Name = "历史记录ToolStripMenuItem";
-            this.历史记录ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.历史记录ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.历史记录ToolStripMenuItem.Text = "消息记录";
             this.历史记录ToolStripMenuItem.Click += new System.EventHandler(this.历史记录ToolStripMenuItem_Click);
             // 
             // 留言ToolStripMenuItem
             // 
             this.留言ToolStripMenuItem.Name = "留言ToolStripMenuItem";
-            this.留言ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.留言ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.留言ToolStripMenuItem.Text = "留言管理";
             this.留言ToolStripMenuItem.Click += new System.EventHandler(this.留言ToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(121, 6);
             // 
             // 系统设置ToolStripMenuItem
             // 
             this.系统设置ToolStripMenuItem.Name = "系统设置ToolStripMenuItem";
-            this.系统设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.系统设置ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.系统设置ToolStripMenuItem.Text = "系统设置";
             this.系统设置ToolStripMenuItem.Click += new System.EventHandler(this.系统设置ToolStripMenuItem_Click);
+            // 
+            // 在线升级ToolStripMenuItem
+            // 
+            this.在线升级ToolStripMenuItem.Name = "在线升级ToolStripMenuItem";
+            this.在线升级ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.在线升级ToolStripMenuItem.Text = "在线升级";
+            this.在线升级ToolStripMenuItem.Click += new System.EventHandler(this.在线升级ToolStripMenuItem_Click);
             // 
             // 版本信息ToolStripMenuItem
             // 
             this.版本信息ToolStripMenuItem.Name = "版本信息ToolStripMenuItem";
-            this.版本信息ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.版本信息ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.版本信息ToolStripMenuItem.Text = "关于我们";
             this.版本信息ToolStripMenuItem.Click += new System.EventHandler(this.版本信息ToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(121, 6);
             // 
             // 更换用户ToolStripMenuItem1
             // 
             this.更换用户ToolStripMenuItem1.Name = "更换用户ToolStripMenuItem1";
-            this.更换用户ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.更换用户ToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.更换用户ToolStripMenuItem1.Text = "更换用户";
             this.更换用户ToolStripMenuItem1.Click += new System.EventHandler(this.更换用户ToolStripMenuItem_Click);
             // 
             // 退出系统ToolStripMenuItem
             // 
             this.退出系统ToolStripMenuItem.Name = "退出系统ToolStripMenuItem";
-            this.退出系统ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.退出系统ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.退出系统ToolStripMenuItem.Text = "退出系统";
             this.退出系统ToolStripMenuItem.Click += new System.EventHandler(this.退出系统ToolStripMenuItem_Click);
             // 
@@ -1180,12 +1194,33 @@
             this.toolStripMenuItem34.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem34.Text = "刷新";
             // 
-            // 在线升级ToolStripMenuItem
+            // contextMenuStrip6
             // 
-            this.在线升级ToolStripMenuItem.Name = "在线升级ToolStripMenuItem";
-            this.在线升级ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.在线升级ToolStripMenuItem.Text = "在线升级";
-            this.在线升级ToolStripMenuItem.Click += new System.EventHandler(this.在线升级ToolStripMenuItem_Click);
+            this.contextMenuStrip6.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.查看个人资料ToolStripMenuItem,
+            this.toolStripSeparator11,
+            this.修改头像ToolStripMenuItem});
+            this.contextMenuStrip6.Name = "contextMenuStrip6";
+            this.contextMenuStrip6.Size = new System.Drawing.Size(149, 54);
+            // 
+            // 查看个人资料ToolStripMenuItem
+            // 
+            this.查看个人资料ToolStripMenuItem.Name = "查看个人资料ToolStripMenuItem";
+            this.查看个人资料ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.查看个人资料ToolStripMenuItem.Text = "查看个人资料";
+            this.查看个人资料ToolStripMenuItem.Click += new System.EventHandler(this.查看个人资料ToolStripMenuItem_Click);
+            // 
+            // 修改头像ToolStripMenuItem
+            // 
+            this.修改头像ToolStripMenuItem.Name = "修改头像ToolStripMenuItem";
+            this.修改头像ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.修改头像ToolStripMenuItem.Text = "修改头像";
+            this.修改头像ToolStripMenuItem.Click += new System.EventHandler(this.修改头像ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(145, 6);
             // 
             // frmNavigate
             // 
@@ -1227,6 +1262,7 @@
             this.contextMenuStrip3.ResumeLayout(false);
             this.contextMenuStrip4.ResumeLayout(false);
             this.contextMenuStrip5.ResumeLayout(false);
+            this.contextMenuStrip6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1348,5 +1384,9 @@
         private System.Windows.Forms.ToolStripMenuItem 消息记录ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 消息记录ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 在线升级ToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip6;
+        private System.Windows.Forms.ToolStripMenuItem 查看个人资料ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem 修改头像ToolStripMenuItem;
     }
 }

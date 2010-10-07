@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using LiveChat.Interface;
 using LiveChat.Entity;
+using System.IO;
 
 namespace LiveChat.Client
 {
@@ -37,6 +38,13 @@ namespace LiveChat.Client
             txtEmail.Text = friend.Email;
             txtSign.Text = friend.Sign;
             txtRemark.Text = friend.Introduction;
+
+            if (friend.FaceImage != null)
+            {
+                MemoryStream ms = new MemoryStream(friend.FaceImage);
+                Image img = BitmapManipulator.ResizeBitmap((Bitmap)Bitmap.FromStream(ms), 60, 60);
+                pbSeatFace.Image = img;
+            }
 
             if (owner.SeatID != friend.SeatID)
             {

@@ -1506,6 +1506,28 @@ namespace LiveChat.Service
         }
 
         /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public bool UpdateSeatFace(string seatID, byte[] buffer)
+        {
+            try
+            {
+                Seat seat = GetSeat(seatID);
+                if (seat == null) return false;
+
+                seat.FaceImage = buffer;
+                return SeatManager.Instance.UpdateSeatFace(seat);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
         /// 删除客服
         /// </summary>
         /// <param name="seatID"></param>

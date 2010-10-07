@@ -176,6 +176,22 @@ namespace LiveChat.Service.Manager
 
         #region 修改客服信息
 
+        public bool UpdateSeatFace(Seat cf)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_Seat._.CompanyID == cf.CompanyID && t_Seat._.SeatCode == cf.SeatCode;
+                bool ret = dbSession.Update<t_Seat>(t_Seat._.FaceImage, cf.FaceImage, where) > 0;
+                if (ret)
+                {
+                    Seat seat = SeatManager.Instance.GetSeat(cf.SeatID);
+                    seat.FaceImage = cf.FaceImage;
+                }
+
+                return ret;
+            }
+        }
+
         /// <summary>
         /// 修改配置信息
         /// </summary>

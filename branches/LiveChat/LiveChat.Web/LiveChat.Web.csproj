@@ -79,6 +79,7 @@
     <Content Include="Admin\Logout.aspx" />
     <Content Include="Admin\Total.aspx" />
     <Content Include="AutoUpdate\LiveChat.Client.exe" />
+    <Content Include="AutoUpdate\LiveChat.Interface.dll" />
     <Content Include="AutoUpdate\UpdateList.xml" />
     <Content Include="Javascript\common.js" />
     <Content Include="Javascript\datepicker\calendar.js" />

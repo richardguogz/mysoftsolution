@@ -209,6 +209,12 @@
     <Compile Include="frmSeatChat.Designer.cs">
       <DependentUpon>frmSeatChat.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSeatFace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSeatFace.Designer.cs">
+      <DependentUpon>frmSeatFace.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSeatInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -300,6 +306,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSeatChat.resx">
       <DependentUpon>frmSeatChat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSeatFace.resx">
+      <DependentUpon>frmSeatFace.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSeatInfo.resx">
       <DependentUpon>frmSeatInfo.cs</DependentUpon>

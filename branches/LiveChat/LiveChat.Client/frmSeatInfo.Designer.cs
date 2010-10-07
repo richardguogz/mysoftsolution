@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSeatInfo));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pbSeatFace = new System.Windows.Forms.PictureBox();
             this.txtSeatName = new System.Windows.Forms.TextBox();
             this.txtRemark = new System.Windows.Forms.TextBox();
             this.txtSign = new System.Windows.Forms.TextBox();
@@ -48,10 +49,12 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.pbSeatFace);
             this.groupBox1.Controls.Add(this.txtSeatName);
             this.groupBox1.Controls.Add(this.txtRemark);
             this.groupBox1.Controls.Add(this.txtSign);
@@ -73,53 +76,63 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "基本资料";
             // 
+            // pbSeatFace
+            // 
+            this.pbSeatFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pbSeatFace.Image = ((System.Drawing.Image)(resources.GetObject("pbSeatFace.Image")));
+            this.pbSeatFace.Location = new System.Drawing.Point(343, 62);
+            this.pbSeatFace.Name = "pbSeatFace";
+            this.pbSeatFace.Size = new System.Drawing.Size(60, 60);
+            this.pbSeatFace.TabIndex = 20;
+            this.pbSeatFace.TabStop = false;
+            // 
             // txtSeatName
             // 
-            this.txtSeatName.Location = new System.Drawing.Point(133, 62);
+            this.txtSeatName.Location = new System.Drawing.Point(120, 62);
             this.txtSeatName.Name = "txtSeatName";
-            this.txtSeatName.Size = new System.Drawing.Size(246, 21);
+            this.txtSeatName.Size = new System.Drawing.Size(204, 21);
             this.txtSeatName.TabIndex = 0;
             // 
             // txtRemark
             // 
-            this.txtRemark.Location = new System.Drawing.Point(133, 202);
+            this.txtRemark.Location = new System.Drawing.Point(120, 202);
             this.txtRemark.Multiline = true;
             this.txtRemark.Name = "txtRemark";
-            this.txtRemark.Size = new System.Drawing.Size(246, 55);
+            this.txtRemark.Size = new System.Drawing.Size(283, 55);
             this.txtRemark.TabIndex = 5;
             // 
             // txtSign
             // 
-            this.txtSign.Location = new System.Drawing.Point(133, 174);
+            this.txtSign.Location = new System.Drawing.Point(120, 174);
             this.txtSign.Name = "txtSign";
-            this.txtSign.Size = new System.Drawing.Size(246, 21);
+            this.txtSign.Size = new System.Drawing.Size(283, 21);
             this.txtSign.TabIndex = 4;
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(133, 146);
+            this.txtEmail.Location = new System.Drawing.Point(120, 146);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(246, 21);
+            this.txtEmail.Size = new System.Drawing.Size(283, 21);
             this.txtEmail.TabIndex = 3;
             // 
             // txtMobileNumber
             // 
-            this.txtMobileNumber.Location = new System.Drawing.Point(133, 118);
+            this.txtMobileNumber.Location = new System.Drawing.Point(120, 118);
             this.txtMobileNumber.Name = "txtMobileNumber";
-            this.txtMobileNumber.Size = new System.Drawing.Size(246, 21);
+            this.txtMobileNumber.Size = new System.Drawing.Size(204, 21);
             this.txtMobileNumber.TabIndex = 2;
             // 
             // txtTelephone
             // 
-            this.txtTelephone.Location = new System.Drawing.Point(133, 90);
+            this.txtTelephone.Location = new System.Drawing.Point(120, 90);
             this.txtTelephone.Name = "txtTelephone";
-            this.txtTelephone.Size = new System.Drawing.Size(246, 21);
+            this.txtTelephone.Size = new System.Drawing.Size(204, 21);
             this.txtTelephone.TabIndex = 1;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(62, 93);
+            this.label8.Location = new System.Drawing.Point(49, 93);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 12);
             this.label8.TabIndex = 0;
@@ -128,7 +141,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(62, 205);
+            this.label6.Location = new System.Drawing.Point(49, 205);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 12);
             this.label6.TabIndex = 0;
@@ -137,7 +150,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(62, 149);
+            this.label9.Location = new System.Drawing.Point(49, 149);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(65, 12);
             this.label9.TabIndex = 0;
@@ -146,7 +159,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(62, 121);
+            this.label7.Location = new System.Drawing.Point(49, 121);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(65, 12);
             this.label7.TabIndex = 0;
@@ -155,7 +168,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(62, 177);
+            this.label5.Location = new System.Drawing.Point(49, 177);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(65, 12);
             this.label5.TabIndex = 0;
@@ -164,7 +177,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(62, 65);
+            this.label3.Location = new System.Drawing.Point(49, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 0;
@@ -173,7 +186,7 @@
             // lblSeatCode
             // 
             this.lblSeatCode.AutoSize = true;
-            this.lblSeatCode.Location = new System.Drawing.Point(133, 37);
+            this.lblSeatCode.Location = new System.Drawing.Point(120, 37);
             this.lblSeatCode.Name = "lblSeatCode";
             this.lblSeatCode.Size = new System.Drawing.Size(41, 12);
             this.lblSeatCode.TabIndex = 1;
@@ -182,7 +195,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(62, 37);
+            this.label1.Location = new System.Drawing.Point(49, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 0;
@@ -243,6 +256,7 @@
             this.Load += new System.EventHandler(this.frmSeatInfo_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -267,5 +281,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox txtSeatName;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.PictureBox pbSeatFace;
     }
 }

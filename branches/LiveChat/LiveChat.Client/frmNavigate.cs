@@ -1480,5 +1480,34 @@ namespace LiveChat.Client
             //刷新好友
             BindSeatFriend();
         }
+
+        private void 查看个人资料ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Singleton.Show(() =>
+            {
+                frmSeatInfo frm = new frmSeatInfo(service, loginCompany, loginSeat, loginSeat);
+                frm.Callback += new CallbackEventHandler(frm_Callback);
+                return frm;
+            });
+        }
+
+        private void 修改头像ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Singleton.Show(() =>
+            {
+                frmSeatFace frmFace = new frmSeatFace(service, loginCompany, loginSeat);
+                frmFace.Callback += new CallbackEventHandler(frmFace_Callback);
+                return frmFace;
+            });
+        }
+
+        void frmFace_Callback(object obj)
+        {
+            if (obj != null)
+            {
+                Image img = obj as Image;
+                pbSeatFace.Image = img;
+            }
+        }
     }
 }

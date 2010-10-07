@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using LiveChat.Interface;
 using LiveChat.Entity;
 using LiveChat.Utils;
+using System.IO;
 
 namespace LiveChat.Client
 {
@@ -38,6 +39,13 @@ namespace LiveChat.Client
             lblEmail.Text = friend.Email;
 
             lblRequest.Text = "　　" + request.Request;
+
+            if (friend.FaceImage != null)
+            {
+                MemoryStream ms = new MemoryStream(friend.FaceImage);
+                Image img = BitmapManipulator.ResizeBitmap((Bitmap)Bitmap.FromStream(ms), 60, 60);
+                pbSeatFace.Image = img;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

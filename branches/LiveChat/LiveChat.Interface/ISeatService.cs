@@ -414,6 +414,14 @@ namespace LiveChat.Interface
         bool AddSeat(string companyID, string seatCode, string seatName, string password, string email, string telephone, string mobilenumber, string sign, string remark, SeatType seattype);
 
         /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        bool UpdateSeatFace(string seatID, byte[] buffer);
+
+        /// <summary>
         /// 修改配置信息
         /// </summary>
         /// <param name="seatID"></param>
