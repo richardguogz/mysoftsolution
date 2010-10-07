@@ -12,6 +12,8 @@ using LiveChat.Remoting;
 using MySoft.Core;
 using System.IO;
 using MySoft.Core.Security;
+using System.Net.Sockets;
+using System.Diagnostics;
 
 namespace LiveChat.Client
 {
@@ -71,6 +73,27 @@ namespace LiveChat.Client
 
             try
             {
+                if (string.IsNullOrEmpty(companyID))
+                {
+                    ClientUtils.ShowMessage("请输入公司ID");
+                    txtCompanyID.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(userID))
+                {
+                    ClientUtils.ShowMessage("请输入用户ID");
+                    txtClientID.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(password))
+                {
+                    ClientUtils.ShowMessage("请输入密码");
+                    txtPassword.Focus();
+                    return;
+                }
+
                 IMResult result = service.Login(clientID, companyID, userID, password);
 
                 switch (result)
@@ -243,6 +266,17 @@ namespace LiveChat.Client
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             string style = item.ToString();
             this.skinEngine1.SkinFile = CoreUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
+        }
+
+        private void 在线升级ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("在线升级时需要退出当前应用程序，确定退出？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                ClientUtils.ExitApplication();
+
+                ProcessStartInfo process = new ProcessStartInfo(CoreUtils.GetFullPath("AutoUpdate.exe"));
+                Process p = Process.Start(process);
+            }
         }
     }
 }

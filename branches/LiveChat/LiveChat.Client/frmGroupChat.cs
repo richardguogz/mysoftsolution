@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using MySoft.Core;
+using System.Drawing.Imaging;
 
 namespace LiveChat.Client
 {
@@ -290,21 +291,33 @@ namespace LiveChat.Client
 
         private void tsbScreenCaptrue_Click(object sender, EventArgs e)
         {
+            if (tsbHideScreen.Checked)
+            {
+                DisplayAllForm(false);
+            }
+
+            Singleton.Show<FormBack>(() =>
+            {
+                FormBack frm = new FormBack();
+                //frm.Callback += new CallbackEventHandler(frm_Callback);
+                return frm;
+            });
+        }
+
+        void frm_Callback(object obj)
+        {
             try
             {
-                SL.IImageUtil2 iu = new SL.ImageUtil2Class();
-
-                if (tsbHideScreen.Checked)
-                {
-                    DisplayAllForm(false);
-                }
-
-                if (iu.CaptureScreenPreview())
+                if (obj != null)
                 {
                     try
                     {
-                        string base64String = iu.GetImageInBase64((int)SL.ImgType.IMAGE_JPEG);
-                        byte[] buffer = Convert.FromBase64String(base64String);
+                        //string base64String = iu.GetImageInBase64((int)SL.ImgType.IMAGE_JPEG);
+                        //byte[] buffer = Convert.FromBase64String(base64String);
+                        Image img = obj as Image;
+                        MemoryStream ms = new MemoryStream();
+                        img.Save(ms, ImageFormat.Jpeg);
+                        byte[] buffer = ms.ToArray();
                         string[] urls = service.UploadImage(buffer, ".jpg");
 
                         string content = "<a href='" + urls[1] + "' target='_blank'><img border='0px' alt='查看大图' src='" + urls[0] + "' /></a>";

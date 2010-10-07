@@ -4,6 +4,8 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
+using System.Runtime.Remoting;
+using System.Net.Sockets;
 
 namespace LiveChat.Client
 {
@@ -34,6 +36,10 @@ namespace LiveChat.Client
     {
         /// <summary>
         /// 消息ID
+        /// </summary>
+        public string Id { get; set; }
+        /// <summary>
+        /// 消息KEY
         /// </summary>
         public string Key { get; set; }
 
@@ -79,7 +85,18 @@ namespace LiveChat.Client
         /// <param name="ex"></param>
         public static void ShowError(Exception ex)
         {
-            MessageBox.Show(ex.Message, "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (ex is RemotingException)
+            {
+                MessageBox.Show("服务端产生异常，请检测服务状态或服务是否为最新版本！", "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ex is SocketException)
+            {
+                MessageBox.Show("链接服务器失败，请检测网络配置！", "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show(ex.Message, "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -105,14 +122,8 @@ namespace LiveChat.Client
         /// </summary>
         public static void ExitApplication()
         {
-            try
-            {
-                Application.Exit();
-                Application.ExitThread();
-                Environment.Exit(Environment.ExitCode);
-                Thread.CurrentThread.Abort();
-            }
-            catch { }
+            Application.ExitThread();
+            Application.Exit();
         }
 
         #endregion

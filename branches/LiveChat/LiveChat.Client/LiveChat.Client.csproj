@@ -89,6 +89,18 @@
     <Compile Include="EmotionDropdown.designer.cs">
       <DependentUpon>EmotionDropdown.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormBack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBack.designer.cs">
+      <DependentUpon>FormBack.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCatcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCatcher.designer.cs">
+      <DependentUpon>FormCatcher.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +241,12 @@
     <EmbeddedResource Include="EmotionDropdown.resx">
       <DependentUpon>EmotionDropdown.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormBack.resx">
+      <DependentUpon>FormBack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCatcher.resx">
+      <DependentUpon>FormCatcher.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -299,6 +317,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\chat.ico" />
+    <Content Include="cur.cur" />
     <Content Include="images\face\face1.gif" />
     <Content Include="images\face\face10.gif" />
     <Content Include="images\face\face11.gif" />
@@ -334,6 +353,7 @@
     <Content Include="images\icon\sendpic16.ico" />
     <Content Include="images\logo.jpg" />
     <Content Include="images\personal.ico" />
+    <Content Include="images\qq.jpg" />
     <Content Include="images\software.jpg" />
     <Content Include="images\userhead.jpg" />
     <Content Include="images\users.ico" />
@@ -403,16 +423,6 @@
       <Project>{DA2EFC21-634B-4263-B9E5-10397ABB3674}</Project>
       <Name>LiveChat.Interface</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="SL">
-      <Guid>{F3E2E566-1FB6-410A-84CC-F13DCF7258CD}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

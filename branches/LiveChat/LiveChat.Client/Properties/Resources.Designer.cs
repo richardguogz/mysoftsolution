@@ -326,6 +326,13 @@ namespace LiveChat.Client.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap qq {
+            get {
+                object obj = ResourceManager.GetObject("qq", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap quickrep {
             get {
                 object obj = ResourceManager.GetObject("quickrep", resourceCulture);

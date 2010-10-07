@@ -14,6 +14,14 @@ namespace LiveChat.Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            //Singleton.Show<FormBack>(() =>
+            //{
+            //    FormBack frm = new FormBack();
+            //    //frm.Callback += new CallbackEventHandler(frm_Callback);
+            //    return frm;
+            //});
+
             Singleton.Show<frmLogin>(() =>
             {
                 frmLogin frm = new frmLogin(false);

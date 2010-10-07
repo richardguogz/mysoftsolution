@@ -78,23 +78,36 @@ namespace LiveChat.Client
             //wbFriendChat.IsWebBrowserContextMenuEnabled = false;
 
             dgvSessions.AutoGenerateColumns = false;
+            tvLinkman.MouseDown += new MouseEventHandler(tvLinkman_MouseDown);
 
-            dtpStartTime.Value = DateTime.Today.AddDays(-7);
+            dtpStartTime.Value = DateTime.Parse(DateTime.Today.ToString("yyyy-MM-01"));
             dtpEndTime.Value = DateTime.Today.AddHours(23).AddMinutes(59);
 
-            dateTimePicker1.Value = DateTime.Today;
-            dateTimePicker2.Value = DateTime.Today;
+            dateTimePicker1.Value = DateTime.Parse(DateTime.Today.ToString("yyyy-MM-01"));
+            dateTimePicker2.Value = DateTime.Today.AddHours(23).AddMinutes(59);
 
             BindSeatFriend();
 
             if (toSeat != null) tabControl1.SelectedTab = tabPage3;
         }
 
+        void tvLinkman_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var node = tvLinkman.GetNodeAt(e.X, e.Y);
+                if (node != null && node.Tag != null)
+                {
+                    tvLinkman.SelectedNode = node;
+                }
+            }
+        }
+
         void wbChatHistory_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             if (toSeat == null) return;
 
-            var view = service.GetS2SHistoryMessagesFromDB(seat.SeatID, toSeat.SeatID, DateTime.Today, DateTime.Today.AddDays(1), 1, 1000);
+            var view = service.GetS2SHistoryMessagesFromDB(seat.SeatID, toSeat.SeatID, dateTimePicker1.Value, dateTimePicker2.Value, 1, 1000);
             if (view.RowCount > 0)
             {
                 var msgs = (view.DataSource as List<S2SMessage>).ConvertAll<Entity.Message>(p => (Entity.Message)p);
@@ -367,21 +380,21 @@ namespace LiveChat.Client
         {
             if (e.Node.Tag == null) return;
 
-            string friendID = ((SeatFriend)e.Node.Tag).SeatID;
+            var friend = ((SeatFriend)e.Node.Tag);
             wbChatHistory.Tag = e.Node.Tag;
 
             try
             {
-                var view = service.GetS2SHistoryMessagesFromDB(seat.SeatID, friendID, dateTimePicker1.Value.Date, dateTimePicker2.Value.Date.AddDays(1), 1, 1000);
+                var view = service.GetS2SHistoryMessagesFromDB(seat.SeatID, friend.SeatID, dateTimePicker1.Value.Date, dateTimePicker2.Value.Date.AddDays(1), 1, 1000);
 
                 if (view.RowCount > 0)
                 {
                     var list = (view.DataSource as List<S2SMessage>).ConvertAll<Entity.Message>(p => (Entity.Message)p);
-                    LoadMessage(wbFriendChat, seat.SeatID, list);
+                    LoadMessage(wbFriendChat, friend.SeatID, list);
                 }
                 else
                 {
-                    LoadMessage(wbFriendChat, seat.SeatID, new List<Entity.Message>());
+                    LoadMessage(wbFriendChat, friend.SeatID, new List<Entity.Message>());
                 }
             }
             catch (Exception ex)

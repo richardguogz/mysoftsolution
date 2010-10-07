@@ -65,7 +65,6 @@ namespace AutoUpdate
             Dispose(false);
         }
 
-
         /// <summary>
         /// 检查更新文件
         /// </summary>

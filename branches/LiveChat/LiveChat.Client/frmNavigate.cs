@@ -11,6 +11,7 @@ using MySoft.Core;
 using System.Runtime.InteropServices;
 using System.IO;
 using MySoft.Data;
+using System.Diagnostics;
 
 namespace LiveChat.Client
 {
@@ -209,9 +210,6 @@ namespace LiveChat.Client
                 //绑定我的好友
                 RefreshSeatFriend();
 
-                //刷新用户请求
-                RefreshFriendRequest();
-
                 //显示消息提示
                 ShowMessage();
             }
@@ -231,6 +229,29 @@ namespace LiveChat.Client
         {
             IList<TipInfo> tiplist = new List<TipInfo>();
 
+            //请求信息
+            foreach (KeyValuePair<Seat, RequestInfo> kv in seatInfo.RequestMessages)
+            {
+                if (kv.Value.ConfirmState == 0)
+                {
+                    string msgText = string.Format("客服【{0}】请求加您为好友！", kv.Key.ShowName);
+
+                    StringBuilder sbMsg = new StringBuilder(msgText);
+                    sbMsg.AppendLine();
+                    sbMsg.AppendLine();
+
+                    sbMsg.AppendFormat("[{0}]" + kv.Value.Request, kv.Value.AddTime.ToLongTimeString());
+                    sbMsg.AppendLine();
+
+                    TipInfo tip = new TipInfo() { Title = "请求添加好友", Message = sbMsg.ToString() };
+                    tip.Id = string.Format("Message_{0}", kv.Value.ID);
+                    tip.Key = string.Format("SeatRequest_{0}_{1}", loginSeat.SeatID, kv.Key.SeatID);
+                    tip.Target = kv;
+
+                    tiplist.Add(tip);
+                }
+            }
+
             //会话消息
             foreach (KeyValuePair<P2SSession, MessageInfo> kv in seatInfo.SessionMessages)
             {
@@ -248,7 +269,8 @@ namespace LiveChat.Client
                     sbMsg.AppendLine();
 
                     TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
-                    tip.Key = string.Format("UserMessage_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
+                    tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
+                    tip.Key = string.Format("UserChat_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
                     tip.Target = kv.Key;
 
                     tiplist.Add(tip);
@@ -270,7 +292,8 @@ namespace LiveChat.Client
                     sbMsg.AppendLine();
 
                     TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
-                    tip.Key = string.Format("SeatMessage_{0}_{1}", loginSeat.SeatID, kv.Key.SeatID);
+                    tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
+                    tip.Key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, kv.Key.SeatID);
                     tip.Target = kv.Key;
 
                     tiplist.Add(tip);
@@ -292,7 +315,8 @@ namespace LiveChat.Client
                     sbMsg.AppendLine();
 
                     TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
-                    tip.Key = string.Format("GroupMessage_{0}_{1}", loginSeat.SeatID, kv.Key.GroupID);
+                    tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
+                    tip.Key = string.Format("GroupChat_{0}_{1}", loginSeat.SeatID, kv.Key.GroupID);
                     tip.Target = kv.Key;
 
                     tiplist.Add(tip);
@@ -308,7 +332,7 @@ namespace LiveChat.Client
                         if (tip.Target is P2SSession)
                         {
                             P2SSession session = tip.Target as P2SSession;
-                            SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
+                            SingletonMul.Show(tip.Key, () =>
                             {
                                 frmChat chat = new frmChat(service, session, loginCompany, loginSeat, currentFont, currentColor);
                                 chat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
@@ -319,7 +343,7 @@ namespace LiveChat.Client
                         else if (tip.Target is SeatFriend)
                         {
                             SeatFriend toSeat = tip.Target as SeatFriend;
-                            SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
+                            SingletonMul.Show(tip.Key, () =>
                             {
                                 frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
                                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
@@ -329,11 +353,21 @@ namespace LiveChat.Client
                         else if (tip.Target is SeatGroup)
                         {
                             SeatGroup group = tip.Target as SeatGroup;
-                            SingletonMul.Show(tip.Key.Replace("Message", "Chat"), () =>
+                            SingletonMul.Show(tip.Key, () =>
                             {
                                 frmGroupChat frmGroupChat = new frmGroupChat(service, loginCompany, loginSeat, group, currentFont, currentColor);
                                 frmGroupChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
                                 return frmGroupChat;
+                            });
+                        }
+                        else if (tip.Target is KeyValuePair<Seat, RequestInfo>)
+                        {
+                            KeyValuePair<Seat, RequestInfo> request = (KeyValuePair<Seat, RequestInfo>)tip.Target;
+                            SingletonMul.Show<frmConfirmFriend>(tip.Key, () =>
+                            {
+                                frmConfirmFriend frmFriend = new frmConfirmFriend(service, loginCompany, request.Key, request.Value);
+                                frmFriend.Callback += new CallbackEventHandler(frmFriend_Callback);
+                                return frmFriend;
                             });
                         }
                     }, p2 =>
@@ -343,12 +377,12 @@ namespace LiveChat.Client
                             P2SSession session = tip.Target as P2SSession;
                             service.GetP2SMessages(session.SessionID);
                         }
-                        else if (tip.Target is Seat)
+                        else if (tip.Target is SeatFriend)
                         {
-                            Seat toSeat = tip.Target as Seat;
+                            SeatFriend toSeat = tip.Target as SeatFriend;
                             service.GetS2SHistoryMessages(loginSeat.SeatID, toSeat.SeatID);
                         }
-                        else if (tip.Target is Group)
+                        else if (tip.Target is SeatGroup)
                         {
                             SeatGroup group = tip.Target as SeatGroup;
                             service.GetSGHistoryMessages(group.GroupID, loginSeat.SeatID);
@@ -361,29 +395,13 @@ namespace LiveChat.Client
         //显示提示信息
         private void ShowTip(TipInfo tip, CallbackEventHandler viewHandler, CallbackEventHandler cancelHandler)
         {
-            SingletonMul.Show<frmPopup>(tip.Key, () =>
+            SingletonMul.Show<frmPopup>(tip.Id, () =>
             {
                 frmPopup frm = new frmPopup(tip);
                 frm.CallbackView += viewHandler;
                 frm.CallbackCancel += cancelHandler;
                 return frm;
             });
-        }
-
-        private void RefreshFriendRequest()
-        {
-            if (seatInfo == null) return;
-
-            foreach (var request in seatInfo.RequestMessages)
-            {
-                string key = string.Format("Request_{0}", request.Key.SeatID);
-                SingletonMul.Show<frmConfirmFriend>(key, () =>
-                {
-                    frmConfirmFriend frmFriend = new frmConfirmFriend(service, loginCompany, request.Key, request.Value);
-                    frmFriend.Callback += new CallbackEventHandler(frmFriend_Callback);
-                    return frmFriend;
-                });
-            }
         }
 
         void frmFriend_Callback(object obj)
@@ -1408,6 +1426,17 @@ namespace LiveChat.Client
                 {
                     ClientUtils.ShowError(ex);
                 }
+            }
+        }
+
+        private void 在线升级ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("在线升级时需要退出当前应用程序，确定退出？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                ClientUtils.ExitApplication();
+
+                ProcessStartInfo process = new ProcessStartInfo(CoreUtils.GetFullPath("AutoUpdate.exe"));
+                Process p = Process.Start(process);
             }
         }
 

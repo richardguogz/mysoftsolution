@@ -9,6 +9,7 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 //源码下载www.52netweb.com
 namespace AutoUpdate
@@ -233,20 +234,21 @@ namespace AutoUpdate
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(144, 184);
+            this.label4.Location = new System.Drawing.Point(164, 184);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 16);
             this.label4.TabIndex = 13;
-            this.label4.Text = "中国亿万电器网";
+            this.label4.Text = "全球面料网";
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Location = new System.Drawing.Point(136, 208);
+            this.linkLabel1.Location = new System.Drawing.Point(116, 208);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(128, 16);
             this.linkLabel1.TabIndex = 12;
+            this.linkLabel1.AutoSize = true;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://www.e10000.cn";
+            this.linkLabel1.Text = "http://www.globalfabric.com";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label3
@@ -342,13 +344,13 @@ namespace AutoUpdate
         [STAThread]
         static void Main()
         {
+            Form.CheckForIllegalCrossThreadCalls = false;
             Application.Run(new FrmUpdate());
         }
 
         #region Load事件
         private void FrmUpdate_Load(object sender, System.EventArgs e)
         {
-
             panel2.Visible = false;
             btnFinish.Visible = false;
 
@@ -423,7 +425,7 @@ namespace AutoUpdate
         {
             if (availableUpdate > 0)
             {
-                Thread threadDown = new Thread(new ThreadStart(DownUpdateFile));
+                Thread threadDown = new Thread(DownUpdateFile);
                 threadDown.IsBackground = true;
                 threadDown.Start();
             }
@@ -436,6 +438,7 @@ namespace AutoUpdate
         }
         private void DownUpdateFile()
         {
+
             //this.Cursor = Cursors.WaitCursor;
             mainAppExe = updaterXmlFiles.GetNodeValue("//EntryPoint");
             Process[] allProcess = Process.GetProcesses();
@@ -451,23 +454,24 @@ namespace AutoUpdate
                     //break;
                 }
             }
+
             WebClient wcClient = new WebClient();
             for (int i = 0; i < this.lvUpdateList.Items.Count; i++)
             {
                 string UpdateFile = lvUpdateList.Items[i].Text.Trim();
-                string updateFileUrl = updateUrl + lvUpdateList.Items[i].Text.Trim();
+                string updateFileUrl = updateUrl + UpdateFile;
                 long fileLength = 0;
-
-                WebRequest webReq = WebRequest.Create(updateFileUrl);
-                WebResponse webRes = webReq.GetResponse();
-                fileLength = webRes.ContentLength;
-
-                lbState.Text = "正在下载更新文件,请稍后...";
-                pbDownFile.Value = 0;
-                pbDownFile.Maximum = (int)fileLength;
 
                 try
                 {
+                    WebRequest webReq = WebRequest.Create(updateFileUrl);
+                    WebResponse webRes = webReq.GetResponse();
+                    fileLength = webRes.ContentLength;
+
+                    lbState.Text = "正在下载更新文件,请稍后...";
+                    pbDownFile.Value = 0;
+                    pbDownFile.Maximum = (int)fileLength;
+
                     Stream srm = webRes.GetResponseStream();
                     StreamReader srmReader = new StreamReader(srm);
                     byte[] bufferbyte = new byte[fileLength];
@@ -475,7 +479,6 @@ namespace AutoUpdate
                     int startByte = 0;
                     while (fileLength > 0)
                     {
-                        Application.DoEvents();
                         int downByte = srm.Read(bufferbyte, startByte, allByte);
                         if (downByte == 0) { break; };
                         startByte += downByte;
@@ -484,10 +487,9 @@ namespace AutoUpdate
 
                         float part = (float)startByte / 1024;
                         float total = (float)bufferbyte.Length / 1024;
+
                         int percent = Convert.ToInt32((part / total) * 100);
-
                         this.lvUpdateList.Items[i].SubItems[2].Text = percent.ToString() + "%";
-
                     }
 
                     string tempPath = tempUpdatePath + UpdateFile;
@@ -497,14 +499,13 @@ namespace AutoUpdate
                     srm.Close();
                     srmReader.Close();
                     fs.Close();
-
-
                 }
                 catch (WebException ex)
                 {
                     MessageBox.Show("更新文件下载失败！" + ex.Message.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
             InvalidateControl();
             //this.Cursor = Cursors.Default;
         }

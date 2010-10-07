@@ -145,11 +145,17 @@
   <data name="msg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\msg.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="截屏" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\截屏.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="face19" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face19.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="find" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\find.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="人" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\人.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="face7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face7.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,6 +169,9 @@
   <data name="quickrep" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\quickrep.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="face14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\face\face14.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="face15" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face15.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -172,11 +181,17 @@
   <data name="status" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\status.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="树打开" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\树打开.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="喇叭" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\喇叭.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="face1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face1.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\delete.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tool1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tool1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="last" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\last.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -187,6 +202,9 @@
   <data name="file" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\file.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="face23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\face\face23.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="face5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face5.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -196,20 +214,23 @@
   <data name="face6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face6.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="人_灰色" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\人_灰色.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="font" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\font.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tool3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tool3.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="face11" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\face\face11.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\refresh.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tool2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tool2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="喇叭2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\喇叭2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="face9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face9.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -232,6 +253,9 @@
   <data name="face8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face8.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="字体格式" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\字体格式.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="face21" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face21.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -241,14 +265,17 @@
   <data name="face12" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face12.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="face20" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\face\face20.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="字体颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\字体颜色.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="face22" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face22.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="face23" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\face\face23.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="face20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\face\face20.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="树第一级" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\树第一级.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="face17" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face17.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -256,43 +283,19 @@
   <data name="face" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\face.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="face14" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\face\face14.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="face11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\face\face11.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="face4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\face\face4.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tool1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\tool1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tool4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tool4.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="截屏" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\截屏.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="人" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\人.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="字体颜色" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\字体颜色.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="字体格式" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\字体格式.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="喇叭" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\喇叭.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="喇叭2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\喇叭2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="树打开" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\树打开.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="树第一级" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\树第一级.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="人_灰色" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\人_灰色.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="qq" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\qq.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
