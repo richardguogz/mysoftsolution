@@ -31,7 +31,7 @@ namespace LiveChat.Client
         {
             this.Text = tip.Title;
 
-            tip.Message = new Regex("<img[^>]+>").Replace(tip.Message, "[图片]");
+            tip.Message = new Regex("<img[^>]+>").Replace(tip.Message, "[表情]");
             this.label1.Text = tip.Message;
 
             Win32.SetWindowPos(this.Handle, Win32.HWND_TOPMOST, Screen.PrimaryScreen.Bounds.Width - this.Width,

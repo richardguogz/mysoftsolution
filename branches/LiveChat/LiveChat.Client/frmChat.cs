@@ -97,13 +97,27 @@ namespace LiveChat.Client
 
             try
             {
-                if (session.Seat != null)
+                if (session.Seat == null)
+                {
+                    var s = service.GetSession(session.SessionID);
+                    if (s == null) //表示会话被其它人接受
+                    {
+                        msgtimer.Stop();
+
+                        ClientUtils.ShowMessage("当前会话已经被其它客服接受，将强制关闭本窗口！");
+                        if (Callback != null) Callback(session.SessionID);
+                        this.Close();
+                        this.Dispose();
+
+                        return;
+                    }
+                }
+                else if (session.Seat != null)
                 {
                     var s = service.GetSession(session.SessionID);
                     if (s == null)  //表示会话已经被关闭
                     {
                         msgtimer.Stop();
-                        msgtimer = null;
 
                         ClientUtils.ShowMessage("当前会话已经被用户结束，将强制关闭本窗口！");
                         if (Callback != null) Callback(session.SessionID);

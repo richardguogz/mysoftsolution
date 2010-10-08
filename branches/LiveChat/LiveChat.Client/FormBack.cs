@@ -17,6 +17,8 @@ using System.Drawing.Drawing2D;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
+using MySoft.Core;
+using System.IO;
 
 namespace LiveChat.Client
 {
@@ -53,7 +55,10 @@ namespace LiveChat.Client
 
         private void FormBack_Load(object sender, EventArgs e)
         {
-            this.Cursor = new Cursor("cur.cur");
+            string path = CoreUtils.GetFullPath("cur.cur");
+            if (File.Exists(path))
+                this.Cursor = new Cursor(new FileStream(path, FileMode.Open));
+
             //设置位置和背景
             this.Bounds = Screen.PrimaryScreen.Bounds;
             this.screenImage = this.GetScreenImage();
@@ -77,7 +82,7 @@ namespace LiveChat.Client
             if (!this.catcher.Visible)
             {
                 this.label_CatcherWidth.Text = "宽度     0";
-                this.label_CatcherHeight.Text = "高度    0 ";
+                this.label_CatcherHeight.Text = "高度     0";
             }
         }
 

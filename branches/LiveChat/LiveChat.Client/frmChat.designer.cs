@@ -13,8 +13,8 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            wbChatBox.Dispose();
-            msgtimer.Dispose();
+            if (wbChatBox != null) wbChatBox.Dispose();
+            if (msgtimer != null) msgtimer.Dispose();
 
             if (disposing && (components != null))
             {

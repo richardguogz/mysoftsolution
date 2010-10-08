@@ -196,7 +196,7 @@ namespace LiveChat.Client
                     }
                     s.RequestSeat = session.RequestCode;
                     s.Message = session.RequestMessage;
-                    if (!string.IsNullOrEmpty(s.Message)) s.Message = new Regex("<img[^>]+>").Replace(s.Message, "[Õº∆¨]");
+                    if (!string.IsNullOrEmpty(s.Message)) s.Message = new Regex("<img[^>]+>").Replace(s.Message, "[±Ì«È]");
                     s.From = session.FromAddress;
                     s.IP = session.FromIP;
                     s.RequestTime = session.StartTime.ToString();

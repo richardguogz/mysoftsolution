@@ -13,8 +13,8 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            wbChatBox.Dispose();
-            msgtimer.Dispose();
+            if (wbChatBox != null) wbChatBox.Dispose();
+            if (msgtimer != null) msgtimer.Dispose();
 
             if (disposing && (components != null))
             {
@@ -396,6 +396,7 @@
             this.listSeats.TabIndex = 5;
             this.listSeats.UseCompatibleStateImageBehavior = false;
             this.listSeats.View = System.Windows.Forms.View.Details;
+            this.listSeats.DoubleClick += new System.EventHandler(this.listSeats_DoubleClick);
             // 
             // columnHeader7
             // 
@@ -414,7 +415,7 @@
             // columnHeader10
             // 
             this.columnHeader10.Text = "电话";
-            this.columnHeader10.Width = 120;
+            this.columnHeader10.Width = 80;
             // 
             // columnHeader11
             // 

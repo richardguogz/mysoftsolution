@@ -253,7 +253,7 @@ namespace LiveChat.Client
                         sbMsg.AppendLine();
 
                         TipInfo tip = new TipInfo() { Title = "您有新的请求", Message = sbMsg.ToString() };
-                        tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
+                        tip.Id = string.Format("Message_{0}", kv.Key.SessionID);
                         tip.Key = string.Format("UserRequest_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
                         tip.Target = kv.Key;
 
@@ -335,6 +335,14 @@ namespace LiveChat.Client
                         if (tip.Target is P2SSession)
                         {
                             P2SSession session = tip.Target as P2SSession;
+
+                            //会话不存了就返回
+                            if (service.GetSession(session.SessionID) == null)
+                            {
+                                ClientUtils.ShowMessage("当前会话已经被其它客服接受或会话已失效！");
+                                return;
+                            }
+
                             SingletonMul.Show(tip.Key, () =>
                             {
                                 frmChat chat = new frmChat(service, session, loginCompany, loginSeat, currentFont, currentColor);

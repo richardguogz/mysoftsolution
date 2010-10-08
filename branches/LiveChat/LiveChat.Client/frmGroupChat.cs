@@ -88,7 +88,22 @@ namespace LiveChat.Client
             {
                 //if (info.SeatType == SeatType.Super) continue;
 
-                string state = info.State == OnlineState.Online ? "在线" : "离线";
+                string state = string.Empty;
+                switch (info.State)
+                {
+                    case OnlineState.Online:
+                        state = "在线";
+                        break;
+                    case OnlineState.Leave:
+                        state = "离开";
+                        break;
+                    case OnlineState.Busy:
+                        state = "忙碌";
+                        break;
+                    case OnlineState.Offline:
+                        state = "离线";
+                        break;
+                }
                 ListViewItem item = new ListViewItem(new string[] { state, info.SeatCode, info.SeatName, info.Telephone, info.MobileNumber, info.Email });
                 item.Tag = info;
                 listSeats.Items.Add(item);
@@ -413,6 +428,19 @@ namespace LiveChat.Client
         private void txtMessage_Click(object sender, EventArgs e)
         {
             panel1.Visible = false;
+        }
+
+        private void listSeats_DoubleClick(object sender, EventArgs e)
+        {
+            if (listSeats.SelectedItems.Count == 0) return;
+            Seat friend = listSeats.SelectedItems[0].Tag as Seat;
+
+            string key = string.Format("Config_{0}", friend.SeatID);
+            SingletonMul.Show<frmSeatInfo>(key, () =>
+            {
+                frmSeatInfo frm = new frmSeatInfo(service, company, seat, friend);
+                return frm;
+            });
         }
     }
 }
