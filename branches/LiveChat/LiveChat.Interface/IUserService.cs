@@ -8,6 +8,13 @@ namespace LiveChat.Interface
 {
     public interface IUserService : ICommonService
     {
+        /// <summary>
+        /// 添加公司
+        /// </summary>
+        /// <param name="company"></param>
+        /// <returns></returns>
+        bool AddCompany(Company company);
+
         #region 登录相关
 
         /// <summary>

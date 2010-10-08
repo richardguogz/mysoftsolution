@@ -100,21 +100,12 @@ namespace LiveChat.Interface
         IList<P2SSession> GetP2SSessions(string seatID);
 
         /// <summary>
-        /// 获取所有客服所有会话
-        /// </summary>
-        /// <param name="companyID"></param>
-        /// <returns></returns>
-        IList<SeatSession> GetSeatSessions(string companyID);
-
-        /// <summary>
         /// 获取请求的会话列表
         /// </summary>
         /// <param name="seatID"></param>
         /// <param name="sortType"></param>
-        /// <param name="pIndex"></param>
-        /// <param name="pSize"></param>
         /// <returns></returns>
-        DataView<IList<P2CSession>> GetRequestSessions(string seatID, SortType sortType, int pIndex, int pSize);
+        IList<P2CSession> GetP2CSessions(string seatID, SortType sortType);
 
         /// <summary>
         /// 自动接入给我的会话(每次一个)
