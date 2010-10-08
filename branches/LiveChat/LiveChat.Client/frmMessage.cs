@@ -111,11 +111,11 @@ namespace LiveChat.Client
             if (view.RowCount > 0)
             {
                 var msgs = (view.DataSource as List<S2SMessage>).ConvertAll<Entity.Message>(p => (Entity.Message)p);
-                LoadMessage(wbFriendChat, seat.SeatID, msgs);
+                LoadMessage(wbFriendChat, toSeat.SeatID, msgs);
             }
             else
             {
-                LoadMessage(wbFriendChat, seat.SeatID, new List<Entity.Message>());
+                LoadMessage(wbFriendChat, toSeat.SeatID, new List<Entity.Message>());
             }
         }
 

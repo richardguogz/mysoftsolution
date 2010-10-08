@@ -322,7 +322,7 @@ namespace LiveChat.Client
             Singleton.Show<FormBack>(() =>
             {
                 FormBack frm = new FormBack();
-                //frm.Callback += new CallbackEventHandler(frm_Callback);
+                frm.Callback += new CallbackEventHandler(frm_Callback);
                 return frm;
             });
         }
@@ -517,6 +517,7 @@ namespace LiveChat.Client
         {
             panel4.Visible = false;
             txtMessage.Text += "{" + string.Format("FACE#{0}#", e.Item.Text) + "}";
+            txtMessage.Select(txtMessage.TextLength, 0);
             txtMessage.Focus();
         }
 

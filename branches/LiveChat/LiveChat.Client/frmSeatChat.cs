@@ -367,6 +367,8 @@ namespace LiveChat.Client
             //throw new NotImplementedException();
             panel4.Visible = false;
             txtMessage.Text += "{" + string.Format("FACE#{0}#", e.Item.Text) + "}";
+            txtMessage.Select(txtMessage.TextLength, 0);
+            txtMessage.Focus();
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)

@@ -38,11 +38,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(130, 49);
+            this.label1.Location = new System.Drawing.Point(74, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 12);
+            this.label1.Size = new System.Drawing.Size(185, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "面料QQ v2.0";
+            this.label1.Text = "面料QQ v2.0.0.1 Build 20101008";
             // 
             // label2
             // 
@@ -51,7 +51,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(251, 12);
             this.label2.TabIndex = 1;
-            this.label2.Text = "(c) 2010 mysoft Inc. All rights reserved!";
+            this.label2.Text = "(c) 2010 Fabric Inc. All rights reserved!";
             // 
             // label3
             // 

@@ -114,7 +114,8 @@ namespace LiveChat.Client
         public static void Show<T>()
             where T : Form
         {
-            WinForm<T>.Instance.Show();
+            if (WinForm<T>.Instance != null)
+                WinForm<T>.Instance.Show();
         }
 
         /// <summary>
@@ -144,7 +145,8 @@ namespace LiveChat.Client
         public static void Hide<T>()
             where T : Form
         {
-            WinForm<T>.Instance.Hide();
+            if (WinForm<T>.Instance != null)
+                WinForm<T>.Instance.Hide();
         }
 
         /// <summary>
@@ -154,7 +156,8 @@ namespace LiveChat.Client
         public static void Close<T>()
             where T : Form
         {
-            WinForm<T>.Instance.Close();
+            if (WinForm<T>.Instance != null)
+                WinForm<T>.Instance.Close();
         }
 
         /// <summary>

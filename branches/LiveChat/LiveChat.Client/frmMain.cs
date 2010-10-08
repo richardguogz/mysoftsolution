@@ -10,19 +10,14 @@ using LiveChat.Interface;
 using LiveChat.Utils;
 using MySoft.Core;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LiveChat.Client
 {
     public partial class frmMain : Form
     {
-        [DllImport("user32.dll")]
-        public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
-
         //关闭窗口事件
-        public event CallbackEventHandler CallbackClose;
-
-        //会话事件
-        public event CallbackEventHandler CallbackSession;
+        public event CallbackEventHandler CloseCallback;
 
         #region private member
 
@@ -35,7 +30,6 @@ namespace LiveChat.Client
         private Seat seat;
         private Guid clientID;
         private Timer chattimer;
-        private List<RequestSession> reqSessions;
 
         #endregion
 
@@ -189,60 +183,8 @@ namespace LiveChat.Client
         {
             try
             {
-                bool exists = false;
-                IList<P2CSession> list = service.GetRequestSessions(seat.SeatID, SortType.Vip, 1, 100).DataSource;
-                if (reqSessions == null)
-                {
-                    reqSessions = new List<RequestSession>();
-                }
-                else
-                {
-                    IList<TipInfo> tiplist = new List<TipInfo>();
-                    foreach (P2CSession s in list)
-                    {
-                        if (!reqSessions.Exists(p => p.SessionID == s.SessionID))
-                        {
-                            exists = true;
-                            string msgText = string.Format("访客【{0}】请求与您会话，请及时处理！\t来自：{1}", s.User.UserName, s.FromAddress);
-
-                            StringBuilder sbMsg = new StringBuilder(msgText);
-                            sbMsg.AppendLine();
-                            sbMsg.AppendLine();
-                            sbMsg.Append(s.RequestMessage);
-
-                            TipInfo tip = new TipInfo() { Title = "您有新的请求", Message = sbMsg.ToString() };
-                            tip.Key = string.Format("UserRequest_{0}", s.User.UserID);
-                            tip.Target = s;
-
-                            tiplist.Add(tip);
-                        }
-                    }
-
-                    if (tiplist.Count > 0)
-                    {
-                        foreach (var tip in tiplist)
-                        {
-                            //回调
-                            ShowTip(tip, p =>
-                            {
-                                P2SSession session = tip.Target as P2SSession;
-                                SingletonMul.Show(session.SessionID, () =>
-                                {
-                                    frmChat chat = new frmChat(service, session, company, seat, currentFont, currentColor);
-                                    chat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
-                                    chat.Callback += new CallbackEventHandler(chat_Callback);
-                                    return chat;
-                                });
-                            });
-                        }
-
-                        //闪屏
-                        FlashWindow(this.Handle, true);
-                    }
-
-                    reqSessions.Clear();
-                }
-
+                IList<P2CSession> list = service.GetP2CSessions(seat.SeatID, SortType.Vip);
+                IList<RequestSession> requestSessions = new List<RequestSession>();
                 (list as List<P2CSession>).ForEach(delegate(P2CSession session)
                 {
                     RequestSession s = new RequestSession();
@@ -254,21 +196,16 @@ namespace LiveChat.Client
                     }
                     s.RequestSeat = session.RequestCode;
                     s.Message = session.RequestMessage;
+                    if (!string.IsNullOrEmpty(s.Message)) s.Message = new Regex("<img[^>]+>").Replace(s.Message, "[图片]");
                     s.From = session.FromAddress;
                     s.IP = session.FromIP;
                     s.RequestTime = session.StartTime.ToString();
-                    reqSessions.Add(s);
+                    requestSessions.Add(s);
                 });
-
-                if (exists)
-                {
-                    //回调事件
-                    if (CallbackSession != null) CallbackSession(list);
-                }
 
                 #region 定位选择的行
 
-                if (reqSessions.Count == 0)
+                if (requestSessions.Count == 0)
                 {
                     dgvTalks.DataSource = null;
                     return 0;
@@ -288,7 +225,7 @@ namespace LiveChat.Client
                 }
 
                 dgvTalks.DataSource = null;
-                dgvTalks.DataSource = reqSessions;
+                dgvTalks.DataSource = requestSessions;
 
                 if (dgvTalks.DataSource != null)
                 {
@@ -350,15 +287,11 @@ namespace LiveChat.Client
                     talkSessions.Add(s);
                 });
 
-                //回调事件
-                if (CallbackSession != null) CallbackSession(reqSessions);
-
                 #region 定位选择的行
 
                 if (talkSessions.Count == 0)
                 {
                     dgvClients.DataSource = null;
-
                     return 0;
                 }
 
@@ -408,8 +341,8 @@ namespace LiveChat.Client
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (CloseCallback != null) CloseCallback(null);
             e.Cancel = true;
-            if (CallbackClose != null) CallbackClose(null);
             this.Hide();
         }
 
@@ -636,8 +569,27 @@ namespace LiveChat.Client
 
         private void tsbExit_Click(object sender, EventArgs e)
         {
-            if (CallbackClose != null) CallbackClose(null);
+            if (CloseCallback != null) CloseCallback(null);
             this.Hide();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            if (toolStripButton2.Checked)
+            {
+                panel2.Visible = false;
+                splitContainer1.Visible = true;
+                toolStripButton2.Checked = false;
+            }
+            else
+            {
+                panel2.Visible = true;
+                splitContainer1.Visible = false;
+                toolStripButton2.Checked = true;
+
+                string url = Path.Combine(company.ChatWebSite, "admin/total.aspx");
+                webBrowser1.Navigate(url);
+            }
         }
     }
 }

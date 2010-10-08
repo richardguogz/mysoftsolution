@@ -52,6 +52,10 @@
             this.离开ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.忙碌ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbSeatFace = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip6 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.查看个人资料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.修改头像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblUserName = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
@@ -156,13 +160,10 @@
             this.消息记录ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem34 = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip6 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.查看个人资料ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.修改头像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).BeginInit();
+            this.contextMenuStrip6.SuspendLayout();
             this.panel2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -179,7 +180,6 @@
             this.contextMenuStrip3.SuspendLayout();
             this.contextMenuStrip4.SuspendLayout();
             this.contextMenuStrip5.SuspendLayout();
-            this.contextMenuStrip6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -220,7 +220,7 @@
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button3.Image = global::LiveChat.Client.Properties.Resources.visitor;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button3.Location = new System.Drawing.Point(188, 8);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(30, 27);
@@ -298,6 +298,34 @@
             this.pbSeatFace.TabStop = false;
             this.toolTip1.SetToolTip(this.pbSeatFace, "双击头像修改个人资料");
             this.pbSeatFace.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
+            // 
+            // contextMenuStrip6
+            // 
+            this.contextMenuStrip6.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.查看个人资料ToolStripMenuItem,
+            this.toolStripSeparator11,
+            this.修改头像ToolStripMenuItem});
+            this.contextMenuStrip6.Name = "contextMenuStrip6";
+            this.contextMenuStrip6.Size = new System.Drawing.Size(149, 54);
+            // 
+            // 查看个人资料ToolStripMenuItem
+            // 
+            this.查看个人资料ToolStripMenuItem.Name = "查看个人资料ToolStripMenuItem";
+            this.查看个人资料ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.查看个人资料ToolStripMenuItem.Text = "查看个人资料";
+            this.查看个人资料ToolStripMenuItem.Click += new System.EventHandler(this.查看个人资料ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(145, 6);
+            // 
+            // 修改头像ToolStripMenuItem
+            // 
+            this.修改头像ToolStripMenuItem.Name = "修改头像ToolStripMenuItem";
+            this.修改头像ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.修改头像ToolStripMenuItem.Text = "修改头像";
+            this.修改头像ToolStripMenuItem.Click += new System.EventHandler(this.修改头像ToolStripMenuItem_Click);
             // 
             // lblUserName
             // 
@@ -1194,34 +1222,6 @@
             this.toolStripMenuItem34.Size = new System.Drawing.Size(124, 22);
             this.toolStripMenuItem34.Text = "刷新";
             // 
-            // contextMenuStrip6
-            // 
-            this.contextMenuStrip6.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.查看个人资料ToolStripMenuItem,
-            this.toolStripSeparator11,
-            this.修改头像ToolStripMenuItem});
-            this.contextMenuStrip6.Name = "contextMenuStrip6";
-            this.contextMenuStrip6.Size = new System.Drawing.Size(149, 54);
-            // 
-            // 查看个人资料ToolStripMenuItem
-            // 
-            this.查看个人资料ToolStripMenuItem.Name = "查看个人资料ToolStripMenuItem";
-            this.查看个人资料ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.查看个人资料ToolStripMenuItem.Text = "查看个人资料";
-            this.查看个人资料ToolStripMenuItem.Click += new System.EventHandler(this.查看个人资料ToolStripMenuItem_Click);
-            // 
-            // 修改头像ToolStripMenuItem
-            // 
-            this.修改头像ToolStripMenuItem.Name = "修改头像ToolStripMenuItem";
-            this.修改头像ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.修改头像ToolStripMenuItem.Text = "修改头像";
-            this.修改头像ToolStripMenuItem.Click += new System.EventHandler(this.修改头像ToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(145, 6);
-            // 
             // frmNavigate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1243,6 +1243,7 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).EndInit();
+            this.contextMenuStrip6.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -1262,7 +1263,6 @@
             this.contextMenuStrip3.ResumeLayout(false);
             this.contextMenuStrip4.ResumeLayout(false);
             this.contextMenuStrip5.ResumeLayout(false);
-            this.contextMenuStrip6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

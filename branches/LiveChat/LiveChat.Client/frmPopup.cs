@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace LiveChat.Client
 {
@@ -29,6 +30,8 @@ namespace LiveChat.Client
         private void frmPopup_Load(object sender, EventArgs e)
         {
             this.Text = tip.Title;
+
+            tip.Message = new Regex("<img[^>]+>").Replace(tip.Message, "[图片]");
             this.label1.Text = tip.Message;
 
             Win32.SetWindowPos(this.Handle, Win32.HWND_TOPMOST, Screen.PrimaryScreen.Bounds.Width - this.Width,

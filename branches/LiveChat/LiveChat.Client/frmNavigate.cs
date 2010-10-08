@@ -17,9 +17,6 @@ namespace LiveChat.Client
 {
     public partial class frmNavigate : Form
     {
-        [DllImport("user32.dll")]
-        public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
-
         public event CallbackEventHandler Callback;
 
         #region private member
@@ -38,7 +35,7 @@ namespace LiveChat.Client
         private IList<Area> areaList;
         private Timer refreshtime;
         private SeatMessage seatInfo;
-        private bool isMainShow = true;
+        private bool isMainShow = false;
         private IList<SeatFriend> myfriends;
 
         #endregion
@@ -82,19 +79,6 @@ namespace LiveChat.Client
                 }
 
                 #endregion
-
-                Singleton.Show(() =>
-                {
-                    int left = this.Left + this.Width;
-                    if (this.Left > Screen.PrimaryScreen.Bounds.Width / 2)
-                        left = this.Left - 800;
-
-                    Rectangle rect = new Rectangle(left, this.Top, 10000, this.Height);
-                    frmMain main = new frmMain(service, loginCompany, loginSeat, clientID, SystemFonts.DefaultFont, SystemColors.WindowText, rect);
-                    main.CallbackClose += new CallbackEventHandler(main_Callback);
-                    main.CallbackSession += new CallbackEventHandler(main_CallbackSession);
-                    return main;
-                });
             }
             catch (Exception ex)
             {
@@ -116,7 +100,7 @@ namespace LiveChat.Client
         {
             this.Left = point.X;
             this.Top = point.Y;
-            this.button3.ImageAlign = ContentAlignment.MiddleRight;
+            this.button3.ImageAlign = ContentAlignment.BottomLeft;
 
             int width = (tabControl1.Width - 5) / 3;
             tabControl1.ItemSize = new Size(width, 24);
@@ -255,25 +239,44 @@ namespace LiveChat.Client
             //会话消息
             foreach (KeyValuePair<P2SSession, MessageInfo> kv in seatInfo.SessionMessages)
             {
-                if (kv.Key.Seat == null) continue;
-
                 if (kv.Value.Count > 0)
                 {
-                    string msgText = string.Format("访客【{0}】给您发送了【{1}】条新消息！", kv.Key.User.UserName, kv.Value.Count);
+                    if (kv.Key.Seat == null)
+                    {
+                        string msgText = string.Format("访客【{0}】请求与您会话！\t来自：{1}", kv.Key.User.UserName, kv.Key.FromAddress);
 
-                    StringBuilder sbMsg = new StringBuilder(msgText);
-                    sbMsg.AppendLine();
-                    sbMsg.AppendLine();
+                        StringBuilder sbMsg = new StringBuilder(msgText);
+                        sbMsg.AppendLine();
+                        sbMsg.AppendLine();
 
-                    sbMsg.AppendFormat("[{0}]" + kv.Value.Message.Content, kv.Value.Message.SendTime.ToLongTimeString());
-                    sbMsg.AppendLine();
+                        sbMsg.AppendFormat("[{0}]" + kv.Value.Message.Content, kv.Value.Message.SendTime.ToLongTimeString());
+                        sbMsg.AppendLine();
 
-                    TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
-                    tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
-                    tip.Key = string.Format("UserChat_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
-                    tip.Target = kv.Key;
+                        TipInfo tip = new TipInfo() { Title = "您有新的请求", Message = sbMsg.ToString() };
+                        tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
+                        tip.Key = string.Format("UserRequest_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
+                        tip.Target = kv.Key;
 
-                    tiplist.Add(tip);
+                        tiplist.Add(tip);
+                    }
+                    else
+                    {
+                        string msgText = string.Format("访客【{0}】给您发送了【{1}】条新消息！", kv.Key.User.UserName, kv.Value.Count);
+
+                        StringBuilder sbMsg = new StringBuilder(msgText);
+                        sbMsg.AppendLine();
+                        sbMsg.AppendLine();
+
+                        sbMsg.AppendFormat("[{0}]" + kv.Value.Message.Content, kv.Value.Message.SendTime.ToLongTimeString());
+                        sbMsg.AppendLine();
+
+                        TipInfo tip = new TipInfo() { Title = "您有新的消息", Message = sbMsg.ToString() };
+                        tip.Id = string.Format("Message_{0}", kv.Value.Message.ID);
+                        tip.Key = string.Format("UserChat_{0}_{1}", loginSeat.SeatID, kv.Key.User.UserID);
+                        tip.Target = kv.Key;
+
+                        tiplist.Add(tip);
+                    }
                 }
             }
 
@@ -375,7 +378,8 @@ namespace LiveChat.Client
                         if (tip.Target is P2SSession)
                         {
                             P2SSession session = tip.Target as P2SSession;
-                            service.GetP2SMessages(session.SessionID);
+                            if (session.Seat != null)
+                                service.GetP2SMessages(session.SessionID);
                         }
                         else if (tip.Target is SeatFriend)
                         {
@@ -455,7 +459,7 @@ namespace LiveChat.Client
 
         private void BindRequest()
         {
-            var list = service.GetRequestSessions(loginSeat.SeatID, SortType.Vip, 1, 100).DataSource;
+            var list = service.GetP2CSessions(loginSeat.SeatID, SortType.Vip);
             TreeNode node = tvSession.Nodes[0];
             node.Nodes.Clear();
             node.Text = string.Format("会话请求({0})", list.Count);
@@ -850,8 +854,7 @@ namespace LiveChat.Client
                 Singleton.Show(() =>
                 {
                     frmMain main = new frmMain(service, loginCompany, loginSeat, clientID, currentFont, currentColor);
-                    main.CallbackClose += new CallbackEventHandler(main_Callback);
-                    main.CallbackSession += new CallbackEventHandler(main_CallbackSession);
+                    main.CloseCallback += new CallbackEventHandler(main_Callback);
                     return main;
                 }, rect);
 
@@ -866,25 +869,10 @@ namespace LiveChat.Client
             }
         }
 
-        void main_CallbackSession(object obj)
-        {
-            if (obj != null)
-            {
-                if (seatInfo != null)
-                {
-                    //判断当前会话中是否存在
-                    IList<P2CSession> list = obj as List<P2CSession>;
-
-                }
-            }
-
-            RefreshRequest();
-            RefreshSession();
-        }
-
         void main_Callback(object obj)
         {
             button3.ImageAlign = ContentAlignment.MiddleLeft;
+            isMainShow = false;
         }
 
         private void 退出系统ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -934,11 +922,18 @@ namespace LiveChat.Client
                     return;
                 }
 
-                //获取会话列表
-                int talkCount = service.GetSeat(loginSeat.SeatID).UserSessionCount;
-                string prefix = talkCount > 0 ? string.Format("当前有{0}个访客正在与您会话！\n", talkCount) : "";
-                int requestCount = service.GetRequestSessions(loginSeat.SeatID, SortType.None, 1, 10).RowCount;
-                prefix += requestCount > 0 ? string.Format("当前有{0}个访客正在请求会话！\n", requestCount) : "";
+                string prefix = string.Empty;
+                if (seatInfo != null)
+                {
+                    List<P2SSession> list = new List<P2SSession>(seatInfo.SessionMessages.Keys);
+
+                    //获取会话列表
+                    int talkCount = list.FindAll(p => p.Seat != null).Count;
+                    prefix = talkCount > 0 ? string.Format("当前有{0}个访客正在与您会话！\n", talkCount) : "";
+
+                    int requestCount = list.FindAll(p => p.Seat == null).Count;
+                    prefix += requestCount > 0 ? string.Format("当前有{0}个访客正在请求会话！\n", requestCount) : "";
+                }
 
                 if (MessageBox.Show(prefix + "确定退出客服系统吗？", "退出系统", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
                 {
@@ -1203,6 +1198,8 @@ namespace LiveChat.Client
 
         private void frmNavigate_LocationChanged(object sender, EventArgs e)
         {
+            if (!isMainShow) return;
+
             frmMain main = Singleton.GetForm<frmMain>();
             if (main == null) return;
             main.Top = this.Top;
