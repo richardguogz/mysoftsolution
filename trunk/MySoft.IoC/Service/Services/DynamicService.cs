@@ -123,9 +123,27 @@ namespace MySoft.IoC.Service.Services
                         byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
                         //将数据进行压缩
-                        if (container.Compress)
+                        if (container.Compress != CompressType.NONE)
                         {
-                            resMsg.Data = CompressionManager.Compress7Zip(buffer);
+                            switch (container.Compress)
+                            {
+                                case CompressType.ZIP7:
+                                    resMsg.Data = CompressionManager.Compress7Zip(buffer);
+                                    break;
+                                case CompressType.GZIP:
+                                    resMsg.Data = CompressionManager.CompressGZip(buffer);
+                                    break;
+                                case CompressType.AUTO:
+                                    if (buffer.Length > 1024 * 1024 * 5) //5兆才压缩
+                                    {
+                                        resMsg.Data = CompressionManager.Compress7Zip(buffer);
+                                    }
+                                    else
+                                    {
+                                        resMsg.Data = buffer;
+                                    }
+                                    break;
+                            }
                         }
                         else
                         {
@@ -136,9 +154,27 @@ namespace MySoft.IoC.Service.Services
                         string jsonString = SerializationManager.SerializeJSON(returnValue);
 
                         //将数据进行压缩
-                        if (container.Compress)
+                        if (container.Compress != CompressType.NONE)
                         {
-                            resMsg.Data = CompressionManager.Compress7Zip(jsonString);
+                            switch (container.Compress)
+                            {
+                                case CompressType.ZIP7:
+                                    resMsg.Data = CompressionManager.Compress7Zip(jsonString);
+                                    break;
+                                case CompressType.GZIP:
+                                    resMsg.Data = CompressionManager.CompressGZip(jsonString);
+                                    break;
+                                case CompressType.AUTO:
+                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024 * 5) //5兆才压缩
+                                    {
+                                        resMsg.Data = CompressionManager.Compress7Zip(jsonString);
+                                    }
+                                    else
+                                    {
+                                        resMsg.Data = jsonString;
+                                    }
+                                    break;
+                            }
                         }
                         else
                         {
@@ -149,9 +185,27 @@ namespace MySoft.IoC.Service.Services
                         string xmlString = SerializationManager.SerializeXML(returnValue);
 
                         //将数据进行压缩
-                        if (container.Compress)
+                        if (container.Compress != CompressType.NONE)
                         {
-                            resMsg.Data = CompressionManager.Compress7Zip(xmlString);
+                            switch (container.Compress)
+                            {
+                                case CompressType.ZIP7:
+                                    resMsg.Data = CompressionManager.Compress7Zip(xmlString);
+                                    break;
+                                case CompressType.GZIP:
+                                    resMsg.Data = CompressionManager.CompressGZip(xmlString);
+                                    break;
+                                case CompressType.AUTO:
+                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024 * 5) //5兆才压缩
+                                    {
+                                        resMsg.Data = CompressionManager.Compress7Zip(xmlString);
+                                    }
+                                    else
+                                    {
+                                        resMsg.Data = xmlString;
+                                    }
+                                    break;
+                            }
                         }
                         else
                         {

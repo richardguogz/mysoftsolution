@@ -37,4 +37,27 @@ namespace MySoft.Core.Remoting
         /// </summary>
         XML
     }
+
+    /// <summary>
+    /// 压缩方式
+    /// </summary>
+    public enum CompressType
+    {
+        /// <summary>
+        /// 不压缩
+        /// </summary>
+        NONE,
+        /// <summary>
+        /// GZIP压缩方式
+        /// </summary>
+        GZIP,
+        /// <summary>
+        /// 7ZIP压缩方式
+        /// </summary>
+        ZIP7,
+        /// <summary>
+        /// AUTO压缩方式
+        /// </summary>
+        AUTO
+    }
 }

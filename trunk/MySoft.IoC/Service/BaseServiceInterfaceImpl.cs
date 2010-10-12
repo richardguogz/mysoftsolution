@@ -123,9 +123,23 @@ namespace MySoft.IoC.Service
                         byte[] buffer = (byte[])resMsg.Data;
 
                         //将数据进行解压缩
-                        if (container.Compress)
+                        if (container.Compress != CompressType.NONE)
                         {
-                            buffer = CompressionManager.Decompress7Zip(buffer);
+                            switch (container.Compress)
+                            {
+                                case CompressType.GZIP:
+                                    buffer = CompressionManager.DecompressGZip(buffer);
+                                    break;
+                                case CompressType.ZIP7:
+                                    buffer = CompressionManager.Decompress7Zip(buffer);
+                                    break;
+                                case CompressType.AUTO:
+                                    if (buffer.Length > 1024 * 1024 * 5) //5兆才压缩
+                                    {
+                                        buffer = CompressionManager.Decompress7Zip(buffer);
+                                    }
+                                    break;
+                            }
                         }
 
                         return SerializationManager.DeserializeBin(buffer);
@@ -133,9 +147,23 @@ namespace MySoft.IoC.Service
                         string jsonString = resMsg.Data.ToString();
 
                         //将数据进行解压缩
-                        if (container.Compress)
+                        if (container.Compress != CompressType.NONE)
                         {
-                            jsonString = CompressionManager.Decompress7Zip(jsonString);
+                            switch (container.Compress)
+                            {
+                                case CompressType.GZIP:
+                                    jsonString = CompressionManager.DecompressGZip(jsonString);
+                                    break;
+                                case CompressType.ZIP7:
+                                    jsonString = CompressionManager.Decompress7Zip(jsonString);
+                                    break;
+                                case CompressType.AUTO:
+                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024 * 5) //5兆才压缩
+                                    {
+                                        jsonString = CompressionManager.Decompress7Zip(jsonString);
+                                    }
+                                    break;
+                            }
                         }
 
                         return SerializationManager.DeserializeJSON(returnType, jsonString);
@@ -143,9 +171,23 @@ namespace MySoft.IoC.Service
                         string xmlString = resMsg.Data.ToString();
 
                         //将数据进行解压缩
-                        if (container.Compress)
+                        if (container.Compress != CompressType.NONE)
                         {
-                            xmlString = CompressionManager.Decompress7Zip(xmlString);
+                            switch (container.Compress)
+                            {
+                                case CompressType.GZIP:
+                                    xmlString = CompressionManager.DecompressGZip(xmlString);
+                                    break;
+                                case CompressType.ZIP7:
+                                    xmlString = CompressionManager.Decompress7Zip(xmlString);
+                                    break;
+                                case CompressType.AUTO:
+                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024 * 5) //5兆才压缩
+                                    {
+                                        xmlString = CompressionManager.Decompress7Zip(xmlString);
+                                    }
+                                    break;
+                            }
                         }
 
                         return SerializationManager.DeserializeXML(returnType, xmlString);

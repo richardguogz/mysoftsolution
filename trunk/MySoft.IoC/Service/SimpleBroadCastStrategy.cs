@@ -45,10 +45,10 @@ namespace MySoft.IoC.Service
             {
                 List<Guid> clientIdList = new List<Guid>(handlers.Keys);
                 Random random = new Random();
-                int start = random.Next(handlers.Count);
-                for (int i = 0; i < handlers.Count; i++)
+                int start = random.Next(clientIdList.Count);
+                for (int i = 0; i < clientIdList.Count; i++)
                 {
-                    Guid tempClientId = clientIdList[(i + start) % handlers.Count];
+                    Guid tempClientId = clientIdList[(i + start) % clientIdList.Count];
                     ServiceRequestNotifyHandler tempHandler = handlers[tempClientId];
                     if (tempHandler != null)
                     {

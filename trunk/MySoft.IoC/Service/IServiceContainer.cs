@@ -101,6 +101,6 @@ namespace MySoft.IoC.Service
         /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
         /// </summary>
         /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        bool Compress { get; set; }
+        CompressType Compress { get; set; }
     }
 }

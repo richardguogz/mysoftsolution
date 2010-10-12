@@ -37,8 +37,8 @@ namespace MySoft.IoC.Service
         private Castle.Windsor.IWindsorContainer container;
         private ServiceProxy serviceProxy;
         private IServiceMQ mq;
-        private bool compress = false;
-        private RemotingDataType transfer;
+        private CompressType compress = CompressType.NONE;
+        private RemotingDataType transfer = RemotingDataType.BINARY;
 
         private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
         {
@@ -371,7 +371,7 @@ namespace MySoft.IoC.Service
         /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
         /// </summary>
         /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        public bool Compress
+        public CompressType Compress
         {
             get
             {

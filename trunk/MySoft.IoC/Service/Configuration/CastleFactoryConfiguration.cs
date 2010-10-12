@@ -17,12 +17,12 @@ namespace MySoft.IoC.Service
         private ServiceFactoryType type = ServiceFactoryType.Local;
         private RemotingChannelType protocol = RemotingChannelType.TCP;
         private RemotingDataType transfer = RemotingDataType.BINARY;
+        private CompressType compress = CompressType.NONE;
 
         private string server = "127.0.0.1";
         private int port = 8888;
         private string serviceMQName = "MMQ";
         private bool debug = true;
-        private bool compress = false;
         private int timeout = -1;
         private int maxTry = SimpleServiceContainer.DEFAULT_MAX_TRY_NUMBER;
 
@@ -67,7 +67,7 @@ namespace MySoft.IoC.Service
                 }
             }
 
-            if (node.Attributes["transfer"] != null && node.Attributes["transfer"].Value != null)
+            if (node.Attributes["transfer"] != null && node.Attributes["transfer"].Value.Trim() != string.Empty)
             {
                 switch (node.Attributes["transfer"].Value.ToLower())
                 {
@@ -86,6 +86,28 @@ namespace MySoft.IoC.Service
                 }
             }
 
+            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value.Trim() != string.Empty)
+            {
+                switch (node.Attributes["compress"].Value.ToLower())
+                {
+                    case "none":
+                        compress = CompressType.NONE;
+                        break;
+                    case "zip7":
+                        compress = CompressType.ZIP7;
+                        break;
+                    case "gzip":
+                        compress = CompressType.GZIP;
+                        break;
+                    case "auto":
+                        compress = CompressType.AUTO;
+                        break;
+                    default:
+                        compress = CompressType.NONE;
+                        break;
+                }
+            }
+
             if (node.Attributes["server"] != null && node.Attributes["server"].Value.Trim() != string.Empty)
                 server = node.Attributes["server"].Value;
 
@@ -97,9 +119,6 @@ namespace MySoft.IoC.Service
 
             if (node.Attributes["debug"] != null && node.Attributes["debug"].Value.Trim() != string.Empty)
                 debug = Convert.ToBoolean(node.Attributes["debug"].Value);
-
-            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value.Trim() != string.Empty)
-                compress = Convert.ToBoolean(node.Attributes["compress"].Value);
 
             if (node.Attributes["maxTry"] != null && node.Attributes["maxTry"].Value.Trim() != string.Empty)
                 maxTry = Convert.ToInt32(node.Attributes["maxTry"].Value);
@@ -182,7 +201,7 @@ namespace MySoft.IoC.Service
         /// Gets or sets a value indicating whether data dispatched by this service factory is compressed.
         /// </summary>
         /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        public bool Compress
+        public CompressType Compress
         {
             get { return compress; }
             set { compress = value; }
