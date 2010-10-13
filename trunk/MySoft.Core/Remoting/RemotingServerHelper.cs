@@ -18,10 +18,10 @@ namespace MySoft.Core.Remoting
     /// <summary>
     /// The Remoting Service Helper.
     /// </summary>
-    public sealed class RemotingServerHelper : RemotingServiceHelper
+    public sealed class RemotingService : RemotingServerHelper
     {
         private RemotingServerConfiguration cfg;
-        public RemotingServerHelper(RemotingServerConfiguration cfg)
+        public RemotingService(RemotingServerConfiguration cfg)
             : base(cfg.ChannelType, cfg.ServerAddress, cfg.Port)
         {
             this.cfg = cfg;
@@ -65,7 +65,7 @@ namespace MySoft.Core.Remoting
     /// <summary>
     /// The Remoting Service Helper.
     /// </summary>
-    public class RemotingServiceHelper : IDisposable, ILogable
+    public class RemotingServerHelper : IDisposable, ILogable
     {
         #region Private Members
 
@@ -108,7 +108,7 @@ namespace MySoft.Core.Remoting
         /// <param name="channelType">Type of the channel.</param>
         /// <param name="serverAddress">The server address.</param>
         /// <param name="serverPort">The server port.</param>
-        public RemotingServiceHelper(RemotingChannelType channelType, string serverAddress, int serverPort)
+        public RemotingServerHelper(RemotingChannelType channelType, string serverAddress, int serverPort)
         {
             this.channelType = channelType;
             this.serverAddress = serverAddress;
