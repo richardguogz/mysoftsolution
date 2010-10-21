@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Remoting.Aop
+namespace MySoft.Aop
 {
     /// <summary>
     /// IAspectProcessorWrap 对某一Aspect类型和对应的AspectClassArgument进行封装

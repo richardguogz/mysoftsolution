@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Remoting.Proxies;
 
-namespace MySoft.Remoting.Aop
+namespace MySoft.Aop
 {
     /// <summary>
     /// AspectAttribute 把被修饰类的实例委托给代理AspectChainProxy ，如此可以截获被修饰类的方法调用    

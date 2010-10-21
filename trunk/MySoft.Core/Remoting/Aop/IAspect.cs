@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Remoting.Messaging;
 
-namespace MySoft.Remoting.Aop
+namespace MySoft.Aop
 {
     /// <summary>
     /// 切面接口

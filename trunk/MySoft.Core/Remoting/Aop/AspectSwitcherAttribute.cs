@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Remoting.Aop
+namespace MySoft.Aop
 {
     /// <summary>
     /// Aop选择器

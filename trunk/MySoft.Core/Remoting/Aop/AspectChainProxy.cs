@@ -8,7 +8,7 @@ using System.Runtime.Remoting.Activation;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Services;
 
-namespace MySoft.Remoting.Aop
+namespace MySoft.Aop
 {
     /// <summary>
     /// 代理
