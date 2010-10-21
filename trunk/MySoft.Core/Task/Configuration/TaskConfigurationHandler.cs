@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 
-namespace MySoft.Core.Task
+namespace MySoft.Task
 {
     /// <summary>
     /// 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// RemotingHost µÃÂ¿‡

@@ -4,7 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Configuration;
 
-namespace MySoft.Core.Service
+namespace MySoft.Service
 {
     /// <summary>
     /// 创建本地服务

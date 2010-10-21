@@ -1,6 +1,6 @@
 using System;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// TypeMismatchedException

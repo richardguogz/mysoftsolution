@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Xml;
-using MySoft.IoC.Service;
-using MySoft.Core.Remoting;
+using MySoft.IoC;
+using MySoft.Remoting;
 using MySoft.Core;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The service factory configuration.
     /// </summary>
     public class CastleFactoryConfiguration : ConfigurationBase
     {
-        private ServiceFactoryType type = ServiceFactoryType.Local;
-        private RemotingChannelType protocol = RemotingChannelType.TCP;
-        private RemotingDataType transfer = RemotingDataType.BINARY;
-        private CompressType compress = CompressType.NONE;
+        private CastleFactoryType type = CastleFactoryType.Local;
+        private RemotingChannelType protocol = RemotingChannelType.Tcp;
+        private RemotingDataType transfer = RemotingDataType.Binary;
+        private CompressType compress = CompressType.None;
 
         private string server = "127.0.0.1";
         private int port = 8888;
@@ -49,20 +49,20 @@ namespace MySoft.IoC.Service
             if (node == null) return;
 
             if (node.Attributes["type"] != null && node.Attributes["type"].Value.Trim() != string.Empty)
-                type = (ServiceFactoryType)Enum.Parse(typeof(ServiceFactoryType), node.Attributes["type"].Value);
+                type = (CastleFactoryType)Enum.Parse(typeof(CastleFactoryType), node.Attributes["type"].Value);
 
             if (node.Attributes["protocol"] != null && node.Attributes["protocol"].Value != null)
             {
                 switch (node.Attributes["protocol"].Value.ToLower())
                 {
                     case "http":
-                        protocol = RemotingChannelType.HTTP;
+                        protocol = RemotingChannelType.Http;
                         break;
                     case "tcp":
-                        protocol = RemotingChannelType.TCP;
+                        protocol = RemotingChannelType.Tcp;
                         break;
                     default:
-                        protocol = RemotingChannelType.TCP;
+                        protocol = RemotingChannelType.Tcp;
                         break;
                 }
             }
@@ -72,16 +72,16 @@ namespace MySoft.IoC.Service
                 switch (node.Attributes["transfer"].Value.ToLower())
                 {
                     case "binary":
-                        transfer = RemotingDataType.BINARY;
+                        transfer = RemotingDataType.Binary;
                         break;
                     case "json":
-                        transfer = RemotingDataType.JSON;
+                        transfer = RemotingDataType.Json;
                         break;
                     case "xml":
-                        transfer = RemotingDataType.XML;
+                        transfer = RemotingDataType.Xml;
                         break;
                     default:
-                        transfer = RemotingDataType.BINARY;
+                        transfer = RemotingDataType.Binary;
                         break;
                 }
             }
@@ -91,19 +91,19 @@ namespace MySoft.IoC.Service
                 switch (node.Attributes["compress"].Value.ToLower())
                 {
                     case "none":
-                        compress = CompressType.NONE;
+                        compress = CompressType.None;
                         break;
-                    case "zip7":
-                        compress = CompressType.ZIP7;
+                    case "zip":
+                        compress = CompressType.Zip;
                         break;
                     case "gzip":
-                        compress = CompressType.GZIP;
+                        compress = CompressType.GZip;
                         break;
                     case "auto":
-                        compress = CompressType.AUTO;
+                        compress = CompressType.Auto;
                         break;
                     default:
-                        compress = CompressType.NONE;
+                        compress = CompressType.None;
                         break;
                 }
             }
@@ -131,7 +131,7 @@ namespace MySoft.IoC.Service
         /// Gets or sets the type.
         /// </summary>
         /// <value>The type.</value>
-        public ServiceFactoryType Type
+        public CastleFactoryType Type
         {
             get { return type; }
             set { type = value; }

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using MySoft.Core.Json;
+using MySoft.Json;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The parameter collection type used by request msg.

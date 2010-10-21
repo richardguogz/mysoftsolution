@@ -4,9 +4,9 @@ using Castle.MicroKernel;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.SubSystems.Conversion;
 using Castle.Core;
-using MySoft.IoC.Service.Services;
+using MySoft.IoC.Services;
 
-namespace MySoft.IoC.Service.Facilities
+namespace MySoft.IoC.Facilities
 {
     /// <summary>
     /// The facility is used to automatically subscribe msg reqyest to specified services.

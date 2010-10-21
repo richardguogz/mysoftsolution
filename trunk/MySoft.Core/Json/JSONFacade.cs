@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
 
-namespace MySoft.Core.Json
+namespace MySoft.Json
 {
 	/// <summary>
 	/// Summary description for JsonFacade.

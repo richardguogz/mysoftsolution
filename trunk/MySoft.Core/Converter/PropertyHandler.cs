@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using MySoft.Core;
 
-namespace MySoft.Core.Converter
+namespace MySoft.Converter
 {
     public class PropertyHandler
     {

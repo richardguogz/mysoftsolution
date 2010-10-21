@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
+using MySoft.Core;
 
-namespace MySoft.Core.Security
+namespace MySoft.Security
 {
     /// <summary> 
     /// DESEncrypt加密

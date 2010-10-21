@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// Remoting Channel Type
@@ -12,11 +12,11 @@ namespace MySoft.Core.Remoting
         /// <summary>
         /// TCP
         /// </summary>
-        TCP,
+        Tcp,
         /// <summary>
         /// HTTP
         /// </summary>
-        HTTP
+        Http
     }
 
     /// <summary>
@@ -27,15 +27,15 @@ namespace MySoft.Core.Remoting
         /// <summary>
         /// 二进制
         /// </summary>
-        BINARY,
+        Binary,
         /// <summary>
         /// json格式
         /// </summary>
-        JSON,
+        Json,
         /// <summary>
         /// xml格式
         /// </summary>
-        XML
+        Xml
     }
 
     /// <summary>
@@ -46,18 +46,18 @@ namespace MySoft.Core.Remoting
         /// <summary>
         /// 不压缩
         /// </summary>
-        NONE,
+        None,
         /// <summary>
         /// GZIP压缩方式
         /// </summary>
-        GZIP,
+        GZip,
         /// <summary>
         /// 7ZIP压缩方式
         /// </summary>
-        ZIP7,
+        Zip,
         /// <summary>
         /// AUTO压缩方式
         /// </summary>
-        AUTO
+        Auto
     }
 }

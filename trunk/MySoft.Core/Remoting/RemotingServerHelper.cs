@@ -12,19 +12,20 @@ using System.Reflection;
 using System.Net;
 using System.Runtime.Remoting.Messaging;
 using System.IO;
+using MySoft.Core;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// The Remoting Service Helper.
     /// </summary>
-    public sealed class RemotingService : RemotingServerHelper
+    public sealed class RemotingServiceHelper : RemotingServerHelper
     {
-        private RemotingServerConfiguration cfg;
-        public RemotingService(RemotingServerConfiguration cfg)
-            : base(cfg.ChannelType, cfg.ServerAddress, cfg.Port)
+        private RemotingServerConfiguration config;
+        public RemotingServiceHelper(RemotingServerConfiguration config)
+            : base(config.ChannelType, config.ServerAddress, config.Port)
         {
-            this.cfg = cfg;
+            this.config = config;
         }
 
         /// <summary>
@@ -32,9 +33,9 @@ namespace MySoft.Core.Remoting
         /// </summary>
         public void PublishWellKnownServiceInstance()
         {
-            if (cfg != null)
+            if (config != null)
             {
-                List<ServiceModule> list = cfg.Modules;
+                List<ServiceModule> list = config.Modules;
 
                 foreach (ServiceModule m in list)
                 {
@@ -129,7 +130,7 @@ namespace MySoft.Core.Remoting
                 props["name"] = AppDomain.CurrentDomain.FriendlyName;
                 props["port"] = serverPort;
 
-                if (channelType == RemotingChannelType.TCP)
+                if (channelType == RemotingChannelType.Tcp)
                 {
                     serviceChannel = new TcpChannel(props, clientProvider, serverProvider);
                 }

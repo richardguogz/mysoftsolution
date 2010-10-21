@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Configuration;
+using MySoft.Core;
 
-namespace MySoft.Core.Task
+namespace MySoft.Task
 {
     /// <summary>
     /// 计划任务配置
@@ -13,7 +14,7 @@ namespace MySoft.Core.Task
     /// <configuration>
     ///     <configSections>
     /// 	    <sectionGroup name="serviceFramework">
-    /// 		    <section name="task" type="MySoft.Core.Task.TaskConfigurationHandler, MySoft.Core"/>
+    /// 		    <section name="task" type="MySoft.Task.TaskConfigurationHandler, MySoft.Core"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///        ......

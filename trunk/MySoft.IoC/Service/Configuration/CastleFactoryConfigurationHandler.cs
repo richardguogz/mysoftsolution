@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// 服务配置类

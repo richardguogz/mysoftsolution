@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// Service facrory type
     /// </summary>
-    public enum ServiceFactoryType
+    public enum CastleFactoryType
     {
         /// <summary>
         /// Local

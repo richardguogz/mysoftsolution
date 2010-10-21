@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using MySoft.Core;
 
-namespace MySoft.Core.Task
+namespace MySoft.Task
 {
     /// <summary>
     /// 计划任务执行者

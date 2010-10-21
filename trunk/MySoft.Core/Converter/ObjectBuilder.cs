@@ -1,4 +1,4 @@
-﻿namespace MySoft.Core.Converter
+﻿namespace MySoft.Converter
 {
     using System;
     using System.Collections.Generic;

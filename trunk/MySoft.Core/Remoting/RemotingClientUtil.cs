@@ -5,8 +5,9 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Collections;
 using System.Runtime.Remoting.Channels.Http;
+using MySoft.Core;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// Remoting客户端工具类

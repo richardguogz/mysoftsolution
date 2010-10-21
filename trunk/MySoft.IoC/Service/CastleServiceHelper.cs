@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
-    /// CastleService
+    /// CastleServiceHelper
     /// </summary>
-    public class CastleService : RemotingServerHelper
+    public class CastleServiceHelper : RemotingServerHelper
     {
         private CastleFactoryConfiguration config;
-        public CastleService(CastleFactoryConfiguration config)
+        public CastleServiceHelper(CastleFactoryConfiguration config)
             : base(config.Protocol, config.Server, config.Port)
         {
             this.config = config;

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Remoting;
-using MySoft.Core.Service;
+using MySoft.Service;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// 业务模块实体类

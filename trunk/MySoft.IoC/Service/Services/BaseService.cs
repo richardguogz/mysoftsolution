@@ -4,7 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using MySoft.Core;
 
-namespace MySoft.IoC.Service.Services
+namespace MySoft.IoC.Services
 {
     /// <summary>
     /// The base class of services.

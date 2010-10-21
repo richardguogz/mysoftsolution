@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace MySoft.IoC.Service.Services
+namespace MySoft.IoC.Services
 {
     /// <summary>
     /// The base class of all auto service.

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service.Services
+namespace MySoft.IoC.Services
 {
     /// <summary>
     /// sample math service interface.

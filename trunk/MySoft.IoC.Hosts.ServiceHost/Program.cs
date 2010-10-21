@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MySoft.IoC.Service;
-using MySoft.Core.Service;
+using MySoft.IoC;
 using MySoft.Core;
 using System.Collections;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
 namespace MySoft.IoC.Hosts.ServiceHost
 {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Reflection;
+using MySoft.Core;
 
-namespace MySoft.Core.Task
+namespace MySoft.Task
 {
     /// <summary>
     /// 任务实体

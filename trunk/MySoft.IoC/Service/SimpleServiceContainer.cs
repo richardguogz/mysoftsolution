@@ -12,11 +12,11 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor.Configuration.Interpreters;
 using Castle.Facilities.Startable;
 
-using MySoft.IoC.Service.Services;
+using MySoft.IoC.Services;
 using MySoft.Core;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The simple service container.
@@ -37,8 +37,8 @@ namespace MySoft.IoC.Service
         private Castle.Windsor.IWindsorContainer container;
         private ServiceProxy serviceProxy;
         private IServiceMQ mq;
-        private CompressType compress = CompressType.NONE;
-        private RemotingDataType transfer = RemotingDataType.BINARY;
+        private CompressType compress = CompressType.None;
+        private RemotingDataType transfer = RemotingDataType.Binary;
 
         private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
         {
@@ -52,7 +52,7 @@ namespace MySoft.IoC.Service
             }
             container.AddFacility("startable", new StartableFacility());
             this.mq = mq;
-            container.Kernel.AddComponentInstance("MySoft.IoC.Service.IServiceMQ", typeof(IServiceMQ), mq);
+            container.Kernel.AddComponentInstance("MySoft.IoC.IServiceMQ", typeof(IServiceMQ), mq);
             container.AddFacility("service subscribe message reqMsg", new Facilities.ServiceSubscribeMessageRequestFacility(mq));
 
             if (serviceKeyTypes != null && serviceKeyTypes.Count > 0)
@@ -320,7 +320,7 @@ namespace MySoft.IoC.Service
         /// Gets the service nodes.
         /// </summary>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.Service.ServiceNodeInfo[] GetServiceNodes()
+        public MySoft.IoC.ServiceNodeInfo[] GetServiceNodes()
         {
             return ParseServiceNodes(Kernel.GraphNodes);
         }
@@ -330,7 +330,7 @@ namespace MySoft.IoC.Service
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.Service.ServiceNodeInfo[] GetDependerServiceNodes(string key)
+        public MySoft.IoC.ServiceNodeInfo[] GetDependerServiceNodes(string key)
         {
             ComponentModel node = GetComponentModelByKey(key);
             if (node == null)
@@ -345,7 +345,7 @@ namespace MySoft.IoC.Service
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.Service.ServiceNodeInfo[] GetDependentServiceNodes(string key)
+        public MySoft.IoC.ServiceNodeInfo[] GetDependentServiceNodes(string key)
         {
             ComponentModel node = GetComponentModelByKey(key);
             if (node == null)

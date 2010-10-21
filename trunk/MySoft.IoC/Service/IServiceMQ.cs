@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using MySoft.IoC.Service;
+using MySoft.IoC;
 using MySoft.Core;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The ServiceRequestNotifyHandler

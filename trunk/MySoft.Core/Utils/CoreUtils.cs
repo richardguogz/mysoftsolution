@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MySoft.Core.Converter;
+using MySoft.Converter;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;

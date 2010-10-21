@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.IoC.Service.Services
+namespace MySoft.IoC.Services
 {
     /// <summary>
     /// The MessageRequestCallbackHandler.

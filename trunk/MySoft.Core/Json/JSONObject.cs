@@ -47,7 +47,7 @@ using System.Globalization;
  * 4. Add unit testing
  * 5. Add log4net
  */
-namespace MySoft.Core.Json
+namespace MySoft.Json
 {
   /// <summary>
   /// <para>

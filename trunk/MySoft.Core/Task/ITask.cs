@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Core.Task
+namespace MySoft.Task
 {
     /// <summary>
     /// 任务接口

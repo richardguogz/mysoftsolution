@@ -7,10 +7,10 @@ using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.SubSystems.Conversion;
 using Castle.Core;
 
-using MySoft.IoC.Service.Services;
-using MySoft.Core.Remoting;
+using MySoft.IoC.Services;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service.Facilities
+namespace MySoft.IoC.Facilities
 {
     /// <summary>
     /// The facility is used toautomatically discover services from castle config.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 using System.Data;
 
 namespace MySoft.IoC.Dll

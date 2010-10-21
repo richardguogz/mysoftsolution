@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using MySoft.Core;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The base impl class of the service interface, this class is used by service factory to emit service interface impl automatically at runtime.
@@ -119,21 +119,21 @@ namespace MySoft.IoC.Service
 
                 switch (container.Transfer)
                 {
-                    case RemotingDataType.BINARY:
+                    case RemotingDataType.Binary:
                         byte[] buffer = (byte[])resMsg.Data;
 
                         //将数据进行解压缩
-                        if (container.Compress != CompressType.NONE)
+                        if (container.Compress != CompressType.None)
                         {
                             switch (container.Compress)
                             {
-                                case CompressType.GZIP:
+                                case CompressType.GZip:
                                     buffer = CompressionManager.DecompressGZip(buffer);
                                     break;
-                                case CompressType.ZIP7:
+                                case CompressType.Zip:
                                     buffer = CompressionManager.Decompress7Zip(buffer);
                                     break;
-                                case CompressType.AUTO:
+                                case CompressType.Auto:
                                     if (buffer.Length > 1024 * 1024 * 5) //5兆才压缩
                                     {
                                         buffer = CompressionManager.Decompress7Zip(buffer);
@@ -143,21 +143,21 @@ namespace MySoft.IoC.Service
                         }
 
                         return SerializationManager.DeserializeBin(buffer);
-                    case RemotingDataType.JSON:
+                    case RemotingDataType.Json:
                         string jsonString = resMsg.Data.ToString();
 
                         //将数据进行解压缩
-                        if (container.Compress != CompressType.NONE)
+                        if (container.Compress != CompressType.None)
                         {
                             switch (container.Compress)
                             {
-                                case CompressType.GZIP:
+                                case CompressType.GZip:
                                     jsonString = CompressionManager.DecompressGZip(jsonString);
                                     break;
-                                case CompressType.ZIP7:
+                                case CompressType.Zip:
                                     jsonString = CompressionManager.Decompress7Zip(jsonString);
                                     break;
-                                case CompressType.AUTO:
+                                case CompressType.Auto:
                                     if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024 * 5) //5兆才压缩
                                     {
                                         jsonString = CompressionManager.Decompress7Zip(jsonString);
@@ -167,21 +167,21 @@ namespace MySoft.IoC.Service
                         }
 
                         return SerializationManager.DeserializeJSON(returnType, jsonString);
-                    case RemotingDataType.XML:
+                    case RemotingDataType.Xml:
                         string xmlString = resMsg.Data.ToString();
 
                         //将数据进行解压缩
-                        if (container.Compress != CompressType.NONE)
+                        if (container.Compress != CompressType.None)
                         {
                             switch (container.Compress)
                             {
-                                case CompressType.GZIP:
+                                case CompressType.GZip:
                                     xmlString = CompressionManager.DecompressGZip(xmlString);
                                     break;
-                                case CompressType.ZIP7:
+                                case CompressType.Zip:
                                     xmlString = CompressionManager.Decompress7Zip(xmlString);
                                     break;
-                                case CompressType.AUTO:
+                                case CompressType.Auto:
                                     if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024 * 5) //5兆才压缩
                                     {
                                         xmlString = CompressionManager.Decompress7Zip(xmlString);

@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySoft.Core;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// 文件管理Remoting服务
@@ -34,7 +35,7 @@ namespace MySoft.Core.Remoting
     /// <summary>
     /// Remoting Service Log File Manager
     /// </summary>
-    public class RemotingLogFileManager : MarshalByRefObject, MySoft.Core.Remoting.IRemotingLogFileManager
+    public class RemotingLogFileManager : MarshalByRefObject, MySoft.Remoting.IRemotingLogFileManager
     {
         static string logDir = CoreUtils.GetFullPath("log");
 

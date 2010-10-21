@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using MySoft.Core.Remoting;
-using MySoft.IoC.Service;
+using MySoft.Remoting;
+using MySoft.IoC;
 using System.Diagnostics;
 using MySoft.IoC.Dll;
 

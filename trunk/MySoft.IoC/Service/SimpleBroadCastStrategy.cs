@@ -5,7 +5,7 @@ using System.Diagnostics;
 using MySoft.Core;
 using System.Net.Sockets;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// SimpleBroadCastStrategy for service request.

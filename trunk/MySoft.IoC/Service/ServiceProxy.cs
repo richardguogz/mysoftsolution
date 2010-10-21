@@ -7,7 +7,7 @@ using System.Diagnostics;
 using Castle.Windsor;
 using MySoft.Core;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     internal sealed class ServiceProxy : ILogable
     {

@@ -7,9 +7,9 @@ using System.Reflection.Emit;
 using System.Configuration;
 using MySoft.IoC;
 using MySoft.Core;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The service factory.
@@ -22,7 +22,7 @@ namespace MySoft.IoC.Service
         private static AssemblyBuilder assBuilder = null;
         private static ModuleBuilder modBuilder = null;
 
-        private const string DYNAMIC_INTERFACEIMPL_NAMESPACE = "MySoft.IoC.Service.DynamicInterfaceImpl";
+        private const string DYNAMIC_INTERFACEIMPL_NAMESPACE = "MySoft.IoC.DynamicInterfaceImpl";
 
         private static ResolveEventHandler _ResolveEventHandler = null;
 
@@ -244,7 +244,7 @@ namespace MySoft.IoC.Service
             {
                 CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
-                if (config.Type == ServiceFactoryType.Local)
+                if (config.Type == CastleFactoryType.Local)
                 {
                     singleton = new CastleFactory(new SimpleServiceContainer());
                 }
@@ -302,7 +302,7 @@ namespace MySoft.IoC.Service
         /// <returns></returns>
         public IServiceInterfaceType GetService<IServiceInterfaceType>(string key)
         {
-            Exception ex = new ArgumentException("Generic parameter type - IServiceInterfaceType must be an interface implementing MySoft.IoC.Service.IServiceInterface or marked with ServiceContractAttribute.");
+            Exception ex = new ArgumentException("Generic parameter type - IServiceInterfaceType must be an interface implementing MySoft.IoC.IServiceInterface or marked with ServiceContractAttribute.");
             if (!typeof(IServiceInterfaceType).IsInterface)
             {
                 throw ex;

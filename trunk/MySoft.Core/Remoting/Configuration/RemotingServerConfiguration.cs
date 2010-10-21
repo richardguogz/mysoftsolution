@@ -5,8 +5,9 @@ using System.Xml;
 using System.Configuration;
 using System.Collections.Specialized;
 using System.Runtime.Remoting;
+using MySoft.Core;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// Remoting服务端配置
@@ -15,7 +16,7 @@ namespace MySoft.Core.Remoting
     /// <configuration>
     ///     <configSections>
     /// 	    <sectionGroup name="serviceFramework">
-    /// 		    <section name="remotingServer" type="MySoft.Core.Remoting.RemotingServerConfigurationHandler, MySoft.Core"/>
+    /// 		    <section name="remotingServer" type="MySoft.Remoting.RemotingServerConfigurationHandler, MySoft.Core"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///     <system.web>
@@ -58,7 +59,7 @@ namespace MySoft.Core.Remoting
             get { return _Modules; }
         }
 
-        private RemotingChannelType _ChannelType = RemotingChannelType.TCP;
+        private RemotingChannelType _ChannelType = RemotingChannelType.Tcp;
 
         /// <summary>
         /// 通道类型
@@ -126,7 +127,7 @@ namespace MySoft.Core.Remoting
                 if (n.Name == "server")
                 {
                     XmlAttributeCollection ac = n.Attributes;
-                    this._ChannelType = ac["channelType"].Value.ToLower() == "tcp" ? RemotingChannelType.TCP : RemotingChannelType.HTTP;
+                    this._ChannelType = ac["channelType"].Value.ToLower() == "tcp" ? RemotingChannelType.Tcp : RemotingChannelType.Http;
                     this._ServerAddress = ac["serverAddress"].Value;
                     this._Port = Convert.ToInt32(ac["port"].Value);
                 }

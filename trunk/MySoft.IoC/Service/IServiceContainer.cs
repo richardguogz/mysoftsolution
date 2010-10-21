@@ -6,9 +6,9 @@ using System.Text;
 using Castle.Core;
 using Castle.MicroKernel;
 using MySoft.Core;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
-namespace MySoft.IoC.Service
+namespace MySoft.IoC
 {
     /// <summary>
     /// The service container interface.

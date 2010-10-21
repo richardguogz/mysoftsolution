@@ -8,8 +8,9 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Runtime.Serialization.Formatters;
+using MySoft.Core;
 
-namespace MySoft.Core.Remoting
+namespace MySoft.Remoting
 {
     /// <summary>
     /// The Remoting Client Helper
@@ -100,7 +101,7 @@ namespace MySoft.Core.Remoting
                 props["port"] = callbackPort;
                 props["timeout"] = timeout; //1000 * 60 * 5; //5∑÷÷”≥¨ ±
 
-                if (channelType == RemotingChannelType.TCP)
+                if (channelType == RemotingChannelType.Tcp)
                 {
                     clientChannel = new TcpChannel(props, clientProvider, serverProvider);
                 }

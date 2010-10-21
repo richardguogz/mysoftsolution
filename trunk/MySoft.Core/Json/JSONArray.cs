@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace MySoft.Core.Json
+namespace MySoft.Json
 {
   /// <summary>
   /// <para>

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Configuration;
-using MySoft.IoC.Service;
+using MySoft.IoC;
 using MySoft.Core;
 
-namespace MySoft.IoC.Mvp
+namespace MySoft.Mvp
 {
     /// <summary>
     /// Presenter Factory

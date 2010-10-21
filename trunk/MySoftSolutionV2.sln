@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Controls", "MySoft.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.IoC", "MySoft.IoC\MySoft.IoC.csproj", "{3B83A695-C929-47E8-BCC3-A2F33D8A44B5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoCService", "IoCService", "{5388B4A9-02FF-49DE-BCFE-EE4029D3F245}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CastleService", "CastleService", "{5388B4A9-02FF-49DE-BCFE-EE4029D3F245}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.IoC.Hosts.ServiceHost", "MySoft.IoC.Hosts.ServiceHost\MySoft.IoC.Hosts.ServiceHost.csproj", "{7018EC36-D675-48A3-BE1B-31154697E949}"
 EndProject

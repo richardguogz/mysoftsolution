@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MySoft.IoC.Service;
+using MySoft.IoC;
 using MySoft.Core;
-using MySoft.Core.Remoting;
+using MySoft.Remoting;
 
 namespace MySoft.IoC.Servers.ServiceMQServer
 {
@@ -17,7 +17,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
             MemoryServiceMQ mq = new MemoryServiceMQ();
             mq.OnLog += logger;
 
-            CastleService cs = new CastleService(config);
+            CastleServiceHelper cs = new CastleServiceHelper(config);
             cs.OnLog += logger;
             cs.PublishWellKnownServiceInstance(mq);
 

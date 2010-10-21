@@ -1,23 +1,21 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Task
+namespace MySoft.Remoting.Aop
 {
     /// <summary>
-    /// ÈÎÎñ×´Ì¬
+    /// é€‰æ‹©å™¨
     /// </summary>
-    [Serializable]
-    public enum JobState
+    public enum AspectSwitcherState
     {
         /// <summary>
-        /// ÕıÔÚÔËĞĞ
+        /// å¯ç”¨
         /// </summary>
-        Running = 0,
-
+        On,
         /// <summary>
-        /// Í£Ö¹
+        /// å…³é—­
         /// </summary>
-        Stop = 1
+        Off
     }
 }

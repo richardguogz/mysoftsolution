@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
+using MySoft.Core;
 
-namespace MySoft.Core.Security
+namespace MySoft.Security
 {
     /// <summary> 
     /// AESEncrypt加密

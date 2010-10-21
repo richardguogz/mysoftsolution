@@ -4,7 +4,7 @@ using System.Text;
 using System.Configuration;
 using System.Xml;
 
-namespace MySoft.Core.Service
+namespace MySoft.Service
 {
     /// <summary>
     /// 服务工厂

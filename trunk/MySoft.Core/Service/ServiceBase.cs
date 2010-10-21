@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MySoft.Core.Service
+namespace MySoft.Service
 {
 
     /// <summary>

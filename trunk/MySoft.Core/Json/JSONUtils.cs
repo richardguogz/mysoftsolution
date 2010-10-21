@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace MySoft.Core.Json
+namespace MySoft.Json
 {  
   /// <summary>
   ///  Public Domain 2002 JSON.org
