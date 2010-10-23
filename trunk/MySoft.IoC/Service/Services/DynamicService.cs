@@ -134,7 +134,7 @@ namespace MySoft.IoC.Services
                                     resMsg.Data = CompressionManager.CompressGZip(buffer);
                                     break;
                                 case CompressType.Auto:
-                                    if (buffer.Length > 1024 * 1024 * 5) //5兆才压缩
+                                    if (buffer.Length > 1024 * 1024) //大于1兆才压缩
                                     {
                                         resMsg.Data = CompressionManager.Compress7Zip(buffer);
                                     }
@@ -165,7 +165,7 @@ namespace MySoft.IoC.Services
                                     resMsg.Data = CompressionManager.CompressGZip(jsonString);
                                     break;
                                 case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024 * 5) //5兆才压缩
+                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024) //大于1兆才压缩
                                     {
                                         resMsg.Data = CompressionManager.Compress7Zip(jsonString);
                                     }
@@ -196,7 +196,7 @@ namespace MySoft.IoC.Services
                                     resMsg.Data = CompressionManager.CompressGZip(xmlString);
                                     break;
                                 case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024 * 5) //5兆才压缩
+                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024) //大于1兆才压缩
                                     {
                                         resMsg.Data = CompressionManager.Compress7Zip(xmlString);
                                     }

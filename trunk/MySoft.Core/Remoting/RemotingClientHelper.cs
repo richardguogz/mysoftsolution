@@ -91,11 +91,6 @@ namespace MySoft.Remoting
         {
             if (clientChannel == null)
             {
-                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-                serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
-                serverProvider.Next = new ClientIPServerSinkProvider();
-
                 IDictionary props = new Hashtable();
                 props["name"] = AppDomain.CurrentDomain.FriendlyName;
                 props["port"] = callbackPort;
@@ -103,11 +98,19 @@ namespace MySoft.Remoting
 
                 if (channelType == RemotingChannelType.Tcp)
                 {
-                    clientChannel = new TcpChannel(props, clientProvider, serverProvider);
+                    BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
+                    BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
+                    binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                    clientChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
                 }
                 else
                 {
-                    clientChannel = new HttpChannel(props, clientProvider, serverProvider);
+                    SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
+                    SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
+                    soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                    clientChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
                 }
 
                 ChannelServices.RegisterChannel(clientChannel, false);

@@ -134,7 +134,7 @@ namespace MySoft.IoC
                                     buffer = CompressionManager.Decompress7Zip(buffer);
                                     break;
                                 case CompressType.Auto:
-                                    if (buffer.Length > 1024 * 1024 * 5) //5兆才压缩
+                                    if (buffer.Length > 1024 * 1024) //大于1兆才压缩
                                     {
                                         buffer = CompressionManager.Decompress7Zip(buffer);
                                     }
@@ -158,7 +158,7 @@ namespace MySoft.IoC
                                     jsonString = CompressionManager.Decompress7Zip(jsonString);
                                     break;
                                 case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024 * 5) //5兆才压缩
+                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024) //大于1兆才压缩
                                     {
                                         jsonString = CompressionManager.Decompress7Zip(jsonString);
                                     }
@@ -182,7 +182,7 @@ namespace MySoft.IoC
                                     xmlString = CompressionManager.Decompress7Zip(xmlString);
                                     break;
                                 case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024 * 5) //5兆才压缩
+                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024) //大于1兆才压缩
                                     {
                                         xmlString = CompressionManager.Decompress7Zip(xmlString);
                                     }
