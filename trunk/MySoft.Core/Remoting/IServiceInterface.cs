@@ -14,6 +14,8 @@ namespace MySoft.Remoting
     /// <summary>
     /// Attribute used to mark service interfaces.
     /// </summary>
+    [Serializable]
+    [AttributeUsage(AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
     public class ServiceContractAttribute : Attribute
     {
     }
