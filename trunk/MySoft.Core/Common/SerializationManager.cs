@@ -51,11 +51,14 @@ namespace MySoft.Core
         {
             if (obj == null) return new byte[0];
 
+            byte[] serializedObject;
             MemoryStream ms = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(ms, obj);
-
-            return ms.ToArray();
+            BinaryFormatter b = new BinaryFormatter();
+            b.Serialize(ms, obj);
+            ms.Seek(0, 0);
+            serializedObject = ms.ToArray();
+            ms.Close();
+            return serializedObject;
         }
 
         /// <summary>
@@ -111,11 +114,15 @@ namespace MySoft.Core
         /// <returns></returns>
         public static object DeserializeBin(byte[] data)
         {
-            if (data == null) return null;
+            if (data == null || data.Length == 0) return null;
 
-            MemoryStream ms = new MemoryStream(data);
-            BinaryFormatter formatter = new BinaryFormatter();
-            return formatter.Deserialize(ms);
+            MemoryStream ms = new MemoryStream();
+            ms.Write(data, 0, data.Length);
+            ms.Seek(0, 0);
+            BinaryFormatter b = new BinaryFormatter();
+            Object obj = b.Deserialize(ms);
+            ms.Close();
+            return obj;
         }
 
         /// <summary>
@@ -219,7 +226,9 @@ namespace MySoft.Core
                     XmlSerializer serializer = new XmlSerializer(obj.GetType());
                     serializer.Serialize(xw, obj);
                     xw.Close();
-                    return encoding.GetString(ms.ToArray());
+                    var serializedObject = ms.ToArray();
+                    ms.Close();
+                    return encoding.GetString(serializedObject);
                 }
             }
         }
