@@ -25,22 +25,29 @@ namespace MySort.IoC.WinFormTest
         private void button1_Click(object sender, EventArgs e)
         {
             //CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(WriteMessage);
-            IUserService service = CastleFactory.Create().GetService<IUserService>("service");
-
-            //DataTable dt = service.GetDataTable();
-            //return;
-
-            richTextBox1.AppendText("测试：" + service.GetUserInfo("test") + "\r\n");
-
-            int count = (int)numericUpDown1.Value;
-
-            for (int i = 0; i < count; i++)
+            CastleFactoryConfiguration config = new CastleFactoryConfiguration()
             {
-                Thread thread = new Thread(DoWork);
-                thread.Name = string.Format("Thread-->{0}", i);
-                thread.IsBackground = true;
-                thread.Start(service);
-            }
+            };
+
+            IUserService service = CastleFactory.Create().GetService<IUserService>("service");
+            var user = service.GetUserInfo("maoyong");
+            richTextBox1.AppendText(user.Description);
+
+
+            ////DataTable dt = service.GetDataTable();
+            ////return;
+
+            //richTextBox1.AppendText("测试：" + service.GetUserInfo("test") + "\r\n");
+
+            //int count = (int)numericUpDown1.Value;
+
+            //for (int i = 0; i < count; i++)
+            //{
+            //    Thread thread = new Thread(DoWork);
+            //    thread.Name = string.Format("Thread-->{0}", i);
+            //    thread.IsBackground = true;
+            //    thread.Start(service);
+            //}
         }
 
         private void DoWork(object value)

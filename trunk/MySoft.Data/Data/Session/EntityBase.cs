@@ -123,7 +123,7 @@ namespace MySoft.Data
         {
             lock (this)
             {
-                return CoreUtils.CloneObject(this);
+                return DataUtils.CloneObject(this);
             }
         }
 
