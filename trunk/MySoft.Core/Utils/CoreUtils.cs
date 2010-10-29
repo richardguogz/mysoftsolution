@@ -43,41 +43,6 @@ namespace MySoft.Core
             }
         }
 
-        /// <summary>
-        /// 克隆一个Object对象
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public static T CloneObject<T>(T entity)
-            where T : class
-        {
-            if (entity == null) return default(T);
-            Type type = entity.GetType();
-            object t = GetFastInstanceCreator(type)();
-            var fiels = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-            var list = new List<FieldInfo>(fiels);
-            foreach (PropertyInfo p in type.GetProperties())
-            {
-                if (!CanUseType(p.PropertyType)) continue; //shallow only
-                object value = GetPropertyValue(entity, p.Name);
-                if (value == null) continue;
-
-                //对属性赋值
-                FieldInfo field = list.Find(f => f.Name == "_" + p.Name);
-                if (field != null) field.SetValue(t, value);
-            }
-
-            return (T)t;
-        }
-
-        private static bool CanUseType(Type propertyType)
-        {
-            //only strings and value types
-            if (propertyType.IsArray) return false;
-            if (!propertyType.IsValueType && propertyType != typeof(string)) return false;
-            return true;
-        }
-
         #endregion
 
         #region DynamicCalls

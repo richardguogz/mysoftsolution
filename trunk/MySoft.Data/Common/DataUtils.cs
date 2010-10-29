@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Reflection;
 using MySoft.Core;
+using System.Data;
 
 namespace MySoft.Data
 {
@@ -12,11 +13,22 @@ namespace MySoft.Data
     /// </summary>
     public static class DataUtils
     {
-        #region 外部方法
+        #region 数据转换
+
+        /// <summary>
+        /// 克隆对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T CloneObject<T>(T obj)
+        {
+            return ConvertType<T, T>(obj);
+        }
 
         /// <summary>
         /// 从对象obj中获取值传给当前实体,TOutput必须为class或接口
-        /// TInput可以为class、IRowReader、NameValueCollection
+        /// TInput可以为class、NameValueCollection、IDictionary、IRowReader、DataRow
         /// </summary>
         /// <typeparam name="TInput"></typeparam>
         /// <typeparam name="TOutput"></typeparam>
@@ -26,7 +38,7 @@ namespace MySoft.Data
         {
             if (obj == null) return default(TOutput);
 
-            if (obj is TOutput)
+            if (obj is TOutput && typeof(TOutput).IsInterface)
             {
                 return (TOutput)(obj as object);
             }
@@ -53,16 +65,29 @@ namespace MySoft.Data
                     foreach (PropertyInfo p in typeof(TOutput).GetProperties())
                     {
                         object value = null;
-                        if (obj is IRowReader)
+                        if (obj is NameValueCollection)
+                        {
+                            NameValueCollection reader = obj as NameValueCollection;
+                            if (reader[p.Name] == null) continue;
+                            value = reader[p.Name];
+                        }
+                        else if (obj is IDictionary)
+                        {
+                            IDictionary reader = obj as IDictionary;
+                            if (!reader.Contains(p.Name)) continue;
+                            if (reader[p.Name] == null) continue;
+                            value = reader[p.Name];
+                        }
+                        else if (obj is IRowReader)
                         {
                             IRowReader reader = obj as IRowReader;
                             if (reader.IsDBNull(p.Name)) continue;
                             value = reader[p.Name];
                         }
-                        else if (obj is NameValueCollection)
+                        else if (obj is DataRow)
                         {
-                            NameValueCollection reader = obj as NameValueCollection;
-                            if (reader[p.Name] == null) continue;
+                            IRowReader reader = new SourceRow(obj as DataRow);
+                            if (reader.IsDBNull(p.Name)) continue;
                             value = reader[p.Name];
                         }
                         else

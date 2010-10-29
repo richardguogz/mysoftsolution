@@ -48,7 +48,6 @@ namespace MySoft.Data
             }
         }
 
-
         /// <summary>
         /// 返回一个行阅读对象
         /// </summary>
