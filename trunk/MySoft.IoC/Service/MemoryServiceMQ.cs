@@ -13,8 +13,8 @@ namespace MySoft.IoC
     {
         #region Private Members
 
-        private IDictionary requests = Hashtable.Synchronized(new Hashtable());
-        private IDictionary responses = Hashtable.Synchronized(new Hashtable());
+        private Dictionary<Guid, RequestMessage> requests = new Dictionary<Guid, RequestMessage>();
+        private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private Dictionary<string, Dictionary<Guid, ServiceRequestNotifyHandler>> onServiceRequests = new Dictionary<string, Dictionary<Guid, ServiceRequestNotifyHandler>>();
         private IBroadCastStrategy broadCastStrategy;
 
@@ -33,28 +33,6 @@ namespace MySoft.IoC
                     return null;
                 }
             }
-        }
-
-        private object GetData(IDictionary map, string serviceName)
-        {
-            object retMsg = null;
-
-            if (serviceName != null)
-            {
-                lock (map)
-                {
-                    foreach (RequestMessage msg in map.Values)
-                    {
-                        if (msg.ServiceName == serviceName)
-                        {
-                            retMsg = map[msg.TransactionId];
-                            map.Remove(msg.TransactionId);
-                        }
-                    }
-                }
-            }
-
-            return retMsg;
         }
 
         private void BroadCast(RequestMessage reqMsg)
@@ -78,7 +56,7 @@ namespace MySoft.IoC
         {
             lock (requests)
             {
-                if (!requests.Contains(tid))
+                if (!requests.ContainsKey(tid))
                 {
                     requests.Add(tid, msg);
                 }
@@ -98,7 +76,7 @@ namespace MySoft.IoC
         {
             lock (responses)
             {
-                if (!responses.Contains(tid))
+                if (!responses.ContainsKey(tid))
                 {
                     responses.Add(tid, msg);
                 }
@@ -269,8 +247,8 @@ namespace MySoft.IoC
                 OnLog(message);
             else
             {
-                message = "[" + DateTime.Now.ToString() + "] " + message;
-                Console.WriteLine(message);
+                string msg = "[" + DateTime.Now.ToString() + "] " + message;
+                Console.WriteLine(msg);
             }
         }
 
@@ -284,12 +262,12 @@ namespace MySoft.IoC
             lock (requests)
             {
                 List<RequestMessage> reqList = new List<RequestMessage>();
-                foreach (object key in requests.Keys)
+                foreach (Guid key in requests.Keys)
                 {
                     RequestMessage reqMsg = (RequestMessage)requests[key];
                     if (reqMsg == null || reqMsg.Expiration < DateTime.Now)
                     {
-                        reqList.Add(reqMsg);
+                        if (reqMsg != null) reqList.Add(reqMsg);
                         requests.Remove(key);
                     }
                 }
@@ -299,12 +277,12 @@ namespace MySoft.IoC
             lock (responses)
             {
                 List<ResponseMessage> resList = new List<ResponseMessage>();
-                foreach (object key in responses.Keys)
+                foreach (Guid key in responses.Keys)
                 {
                     ResponseMessage resMsg = (ResponseMessage)responses[key];
                     if (resMsg == null || resMsg.Expiration < DateTime.Now)
                     {
-                        resList.Add(resMsg);
+                        if (resMsg != null) resList.Add(resMsg);
                         responses.Remove(key);
                     }
                 }
