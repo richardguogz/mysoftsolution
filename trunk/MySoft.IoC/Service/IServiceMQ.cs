@@ -16,7 +16,7 @@ namespace MySoft.IoC
     /// <summary>
     /// interface of service mq.
     /// </summary>
-    public interface IServiceMQ : ILogable
+    public interface IServiceMQ : ILogable, IErrorLogable
     {
         /// <summary>
         /// Sends the request to queue.

@@ -8,8 +8,7 @@ namespace MySoft.Core
     /// A delegate used for exception.
     /// </summary>
     /// <param name="exception"></param>
-    /// <param name="log"></param>
-    public delegate void ErrorLogEventHandler(Exception exception, string log);
+    public delegate void ErrorLogEventHandler(Exception exception);
 
     /// <summary>
     /// Mark a implementing class as loggable.

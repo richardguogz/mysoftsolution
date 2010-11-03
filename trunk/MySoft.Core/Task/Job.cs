@@ -251,7 +251,7 @@ namespace MySoft.Task
                         }
 
                         _ExceptionCount = _ExceptionCount + 1;
-                        _LatestException = new MySoftException("Task任务执行失败！", ex);
+                        _LatestException = new MySoftException(ExceptionType.TaskException, "Task任务执行失败！", ex);
 
                         WriteLog(string.Format("执行任务[{0}]失败，错误：{1}！", this.Name, ex.Message));
                     }

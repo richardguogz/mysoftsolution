@@ -82,7 +82,8 @@ namespace MySoft.IoC
 
             if (mi == null)
             {
-                return errorReturnValue;
+                //return errorReturnValue;
+                throw new Exception("Method not found " + subServiceName + "!");
             }
 
             ParameterInfo[] pis = mi.GetParameters();
@@ -113,91 +114,86 @@ namespace MySoft.IoC
                 return errorReturnValue;
             }
 
-            try
+            if (resMsg.Data == null) return resMsg.Data;
+
+            switch (container.Transfer)
             {
-                if (resMsg.Data == null) return resMsg.Data;
+                case RemotingDataType.Binary:
+                    byte[] buffer = (byte[])resMsg.Data;
 
-                switch (container.Transfer)
-                {
-                    case RemotingDataType.Binary:
-                        byte[] buffer = (byte[])resMsg.Data;
-
-                        //将数据进行解压缩
-                        if (container.Compress != CompressType.None)
+                    //将数据进行解压缩
+                    if (container.Compress != CompressType.None)
+                    {
+                        switch (container.Compress)
                         {
-                            switch (container.Compress)
-                            {
-                                case CompressType.GZip:
-                                    buffer = CompressionManager.DecompressGZip(buffer);
-                                    break;
-                                case CompressType.Zip:
+                            case CompressType.GZip:
+                                buffer = CompressionManager.DecompressGZip(buffer);
+                                break;
+                            case CompressType.Zip:
+                                buffer = CompressionManager.Decompress7Zip(buffer);
+                                break;
+                            case CompressType.Auto:
+                                if (buffer.Length > 1024 * 1024) //大于1兆才压缩
+                                {
                                     buffer = CompressionManager.Decompress7Zip(buffer);
-                                    break;
-                                case CompressType.Auto:
-                                    if (buffer.Length > 1024 * 1024) //大于1兆才压缩
-                                    {
-                                        buffer = CompressionManager.Decompress7Zip(buffer);
-                                    }
-                                    break;
-                            }
+                                }
+                                break;
                         }
+                    }
 
-                        return SerializationManager.DeserializeBin(buffer);
-                    case RemotingDataType.Json:
-                        string jsonString = resMsg.Data.ToString();
+                    return SerializationManager.DeserializeBin(buffer);
+                case RemotingDataType.Json:
+                    string jsonString = resMsg.Data.ToString();
 
-                        //将数据进行解压缩
-                        if (container.Compress != CompressType.None)
+                    //将数据进行解压缩
+                    if (container.Compress != CompressType.None)
+                    {
+                        switch (container.Compress)
                         {
-                            switch (container.Compress)
-                            {
-                                case CompressType.GZip:
-                                    jsonString = CompressionManager.DecompressGZip(jsonString);
-                                    break;
-                                case CompressType.Zip:
+                            case CompressType.GZip:
+                                jsonString = CompressionManager.DecompressGZip(jsonString);
+                                break;
+                            case CompressType.Zip:
+                                jsonString = CompressionManager.Decompress7Zip(jsonString);
+                                break;
+                            case CompressType.Auto:
+                                if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024) //大于1兆才压缩
+                                {
                                     jsonString = CompressionManager.Decompress7Zip(jsonString);
-                                    break;
-                                case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024) //大于1兆才压缩
-                                    {
-                                        jsonString = CompressionManager.Decompress7Zip(jsonString);
-                                    }
-                                    break;
-                            }
+                                }
+                                break;
                         }
+                    }
 
-                        return SerializationManager.DeserializeJSON(returnType, jsonString);
-                    case RemotingDataType.Xml:
-                        string xmlString = resMsg.Data.ToString();
+                    return SerializationManager.DeserializeJSON(returnType, jsonString);
+                case RemotingDataType.Xml:
+                    string xmlString = resMsg.Data.ToString();
 
-                        //将数据进行解压缩
-                        if (container.Compress != CompressType.None)
+                    //将数据进行解压缩
+                    if (container.Compress != CompressType.None)
+                    {
+                        switch (container.Compress)
                         {
-                            switch (container.Compress)
-                            {
-                                case CompressType.GZip:
-                                    xmlString = CompressionManager.DecompressGZip(xmlString);
-                                    break;
-                                case CompressType.Zip:
+                            case CompressType.GZip:
+                                xmlString = CompressionManager.DecompressGZip(xmlString);
+                                break;
+                            case CompressType.Zip:
+                                xmlString = CompressionManager.Decompress7Zip(xmlString);
+                                break;
+                            case CompressType.Auto:
+                                if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024) //大于1兆才压缩
+                                {
                                     xmlString = CompressionManager.Decompress7Zip(xmlString);
-                                    break;
-                                case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024) //大于1兆才压缩
-                                    {
-                                        xmlString = CompressionManager.Decompress7Zip(xmlString);
-                                    }
-                                    break;
-                            }
+                                }
+                                break;
                         }
+                    }
 
-                        return SerializationManager.DeserializeXML(returnType, xmlString);
-                }
-            }
-            catch
-            {
+                    return SerializationManager.DeserializeXML(returnType, xmlString);
             }
 
             return errorReturnValue;
+
         }
     }
 }

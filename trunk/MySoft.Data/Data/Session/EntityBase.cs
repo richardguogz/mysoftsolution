@@ -66,7 +66,7 @@ namespace MySoft.Data
                 }
                 catch (Exception ex)
                 {
-                    throw new MySoftException("数据转换失败！", ex);
+                    throw new MySoftException(ExceptionType.DataException, "数据转换失败！", ex);
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace MySoft.Data
             }
             catch (Exception ex)
             {
-                throw new MySoftException("数据转换失败！", ex);
+                throw new MySoftException(ExceptionType.DataException, "数据转换失败！", ex);
             }
         }
 
@@ -291,7 +291,7 @@ namespace MySoft.Data
 
                 if (fields.Length != values.Length)
                 {
-                    throw new MySoftException("字段与值无法对应！");
+                    throw new MySoftException(ExceptionType.DataException, "字段与值无法对应！");
                 }
 
                 int index = 0;

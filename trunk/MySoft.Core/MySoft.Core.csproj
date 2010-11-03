@@ -101,6 +101,7 @@
     <Compile Include="Remoting\CompressionSink\myHelper.cs" />
     <Compile Include="Remoting\CompressionSink\myServerSink.cs" />
     <Compile Include="Remoting\CompressionSink\myServerSinkProvider.cs" />
+    <Compile Include="Remoting\RemotingException.cs" />
     <Compile Include="Remoting\IServiceInterface.cs" />
     <Compile Include="Security\AESEncrypt.cs" />
     <Compile Include="Security\DESEncrypt.cs" />

@@ -27,7 +27,7 @@ namespace MySoft.Data
 
             if (batchSize < 0 || batchSize > 100)
             {
-                throw new MySoftException("请设置batchSize的值在1-100之间！");
+                throw new MySoftException(ExceptionType.DataException, "请设置batchSize的值在1-100之间！");
             }
         }
 
@@ -39,16 +39,6 @@ namespace MySoft.Data
         }
 
         #region Trans操作
-
-        /// <summary>
-        /// 执行批处理操作
-        /// </summary>
-        /// <returns></returns>
-        public int Execute()
-        {
-            IList<MySoftException> errors;
-            return Execute(out errors);
-        }
 
         /// <summary>
         /// 执行批处理操作
@@ -79,7 +69,7 @@ namespace MySoft.Data
                     }
                     catch (DbException ex)
                     {
-                        errors.Add(new MySoftException(ex.Message, ex));
+                        errors.Add(new MySoftException(ExceptionType.DataException, ex.Message, ex));
                     }
 
                     //执行一次休眠一下
@@ -125,7 +115,7 @@ namespace MySoft.Data
                     }
                     catch (DbException ex)
                     {
-                        errors.Add(new MySoftException(ex.Message, ex));
+                        errors.Add(new MySoftException(ExceptionType.DataException, ex.Message, ex));
                     }
 
                     //执行一次休眠一下
@@ -167,7 +157,7 @@ namespace MySoft.Data
                     msgs.Add(msg.Split('|')[0]);
                 }
                 string message = string.Join("\r\n", msgs.ToArray());
-                throw new MySoftException(message);
+                throw new MySoftException(ExceptionType.DataException, message);
             }
 
             #endregion

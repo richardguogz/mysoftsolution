@@ -52,7 +52,7 @@ namespace MySoft.Data
                 }
                 catch (Exception ex)
                 {
-                    throw new MySoftException(string.Format("创建类型对象【{0}】出错，可能不存在构造函数！", typeof(TOutput).FullName), ex);
+                    throw new MySoftException(ExceptionType.DataException, string.Format("创建类型对象【{0}】出错，可能不存在构造函数！", typeof(TOutput).FullName), ex);
                 }
 
                 //如果当前实体为Entity，数据源为IRowReader的话，可以通过内部方法赋值
@@ -240,13 +240,13 @@ namespace MySoft.Data
             //如果值为null，则返回不等条件
             if (values == null)
             {
-                throw new MySoftException("传入的数据不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "传入的数据不能为null！");
             }
 
             //如果长度为0，则返回不等条件
             if (values.Length == 0)
             {
-                throw new MySoftException("传入的数据个数不能为0！");
+                throw new MySoftException(ExceptionType.DataException, "传入的数据个数不能为0！");
             }
 
             //如果传的类型不是object,则强制转换
@@ -258,7 +258,7 @@ namespace MySoft.Data
                 }
                 catch
                 {
-                    throw new MySoftException("传入的数据不能正确被解析！");
+                    throw new MySoftException(ExceptionType.DataException, "传入的数据不能正确被解析！");
                 }
             }
 
@@ -312,12 +312,12 @@ namespace MySoft.Data
         {
             if (fields == null || values == null)
             {
-                throw new MySoftException("字段及值不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "字段及值不能为null！");
             }
 
             if (fields.Length != values.Length)
             {
-                throw new MySoftException("字段及值长度不一致！");
+                throw new MySoftException(ExceptionType.DataException, "字段及值长度不一致！");
             }
 
             int index = 0;

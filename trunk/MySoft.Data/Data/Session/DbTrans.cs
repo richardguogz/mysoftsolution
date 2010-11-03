@@ -798,7 +798,7 @@ namespace MySoft.Data
         {
             if (creator.Table == null)
             {
-                throw new MySoftException("用创建器操作时，表不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
             object retVal;
@@ -818,12 +818,12 @@ namespace MySoft.Data
 
             if (creator.Table == null)
             {
-                throw new MySoftException("用创建器操作时，表不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
             if ((IField)creator.IdentityField == null)
             {
-                throw new MySoftException("返回主键值时需要设置KeyField！");
+                throw new MySoftException(ExceptionType.DataException, "返回主键值时需要设置KeyField！");
             }
 
             object retVal;
@@ -842,12 +842,12 @@ namespace MySoft.Data
         {
             if (creator.Table == null)
             {
-                throw new MySoftException("用创建器操作时，表不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
             if (DataUtils.IsNullOrEmpty(creator.Where))
             {
-                throw new MySoftException("用删除创建器操作时，条件不能为空！");
+                throw new MySoftException(ExceptionType.DataException, "用删除创建器操作时，条件不能为空！");
             }
 
             return Delete<ViewEntity>(creator.Table, creator.Where);
@@ -862,12 +862,12 @@ namespace MySoft.Data
         {
             if (creator.Table == null)
             {
-                throw new MySoftException("用创建器操作时，表不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
             if (DataUtils.IsNullOrEmpty(creator.Where))
             {
-                throw new MySoftException("用更新创建器操作时，条件不能为空！");
+                throw new MySoftException(ExceptionType.DataException, "用更新创建器操作时，条件不能为空！");
             }
 
             return Update<ViewEntity>(creator.Table, creator.Fields, creator.Values, creator.Where);
@@ -881,7 +881,7 @@ namespace MySoft.Data
         {
             if (creator.Table == null)
             {
-                throw new MySoftException("用创建器操作时，表不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
             FromSection<ViewEntity> f = this.From<ViewEntity>(creator.Table);

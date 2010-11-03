@@ -37,7 +37,7 @@ namespace MySoft.IoC
             ResponseMessage retMsg = null;
 
             //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Run reqMsg for {0} to service mq. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
+            if (OnLog != null) OnLog(string.Format("Run reqMsg for {0} to service mq. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
             Guid tid = mq.SendRequestToQueue(serviceName, msg);
             for (int i = 0; i < maxTryNum; i++)
             {
@@ -70,7 +70,7 @@ namespace MySoft.IoC
         public ResponseMessage CallMethod(string serviceName, RequestMessage msg)
         {
             //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Receive reqMsg for service:{0}. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
+            if (OnLog != null) OnLog(string.Format("Receive reqMsg for service:{0}. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
 
             long t1 = System.Environment.TickCount;
             ResponseMessage retMsg = Run(serviceName, msg);

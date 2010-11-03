@@ -10,7 +10,7 @@ namespace MySoft.IoC.Services
     /// The base class of services.
     /// </summary>
     [Serializable]
-    public abstract class BaseService : MarshalByRefObject, IService, ILogable
+    public abstract class BaseService : MarshalByRefObject, IService, ILogable, IErrorLogable
     {
         private Guid clientId;
 
@@ -72,8 +72,8 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} process. -->(name:{2} parameters:{3})", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
+            string log = string.Format("Dynamic service ({0}):{1} process. -->(name:{2} parameters:{3})", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
+            if (OnLog != null) OnLog(log);
             ResponseMessage retMsg = null;
             try
             {
@@ -81,11 +81,17 @@ namespace MySoft.IoC.Services
             }
             catch (Exception ex)
             {
-                if (OnLog != null) OnLog(string.Format("Error occured at ({0}):{1}. -->(error:{2})", clientId, serviceName, ex.Message));
+                string error = string.Format("Dynamic service error occured at ({0}):{1}. -->(error:{2})", clientId, serviceName, ex.Message);
+                if (OnLog != null) OnLog(error);
+
+                var exception = new IoCException(log + "\r\n" + error, ex);
+                if (OnError != null) OnError(exception);
+
                 return null;
             }
             //SerializationManager.Serialize(retMsg)
             if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Message));
+
             return retMsg;
         }
 
@@ -114,6 +120,15 @@ namespace MySoft.IoC.Services
         /// OnLog event.
         /// </summary>
         public event LogEventHandler OnLog;
+
+        #endregion
+
+        #region IErrorLogable Members
+
+        /// <summary>
+        /// OnError event.
+        /// </summary>
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

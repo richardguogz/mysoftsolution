@@ -14,13 +14,14 @@ namespace MySoft.IoC
     /// <summary>
     /// The service factory.
     /// </summary>
-    public class CastleFactory : ILogable
+    public class CastleFactory : ILogable, IErrorLogable
     {
         #region Emit DynamicServiceImpl
 
         private object syncObj = new object();
         private static AssemblyBuilder assBuilder = null;
         private static ModuleBuilder modBuilder = null;
+        private static CastleFactoryConfiguration config = null;
 
         private const string DYNAMIC_INTERFACEIMPL_NAMESPACE = "MySoft.IoC.DynamicInterfaceImpl";
 
@@ -238,11 +239,11 @@ namespace MySoft.IoC
         /// Creates this instance.
         /// </summary>
         /// <returns>The service factoru singleton instance.</returns>
-        public static CastleFactory Create()
+        public static CastleFactory Create(CastleFactoryConfiguration config)
         {
             if (singleton == null)
             {
-                CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
+                CastleFactory.config = config;
 
                 if (config.Type == CastleFactoryType.Local)
                 {
@@ -250,12 +251,13 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0, config.Timeout);
+                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
                     helper.OnLog += new LogEventHandler(msg_OnLog);
 
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
                     IServiceContainer container = new SimpleServiceContainer(mq);
                     container.OnLog += new LogEventHandler(msg_OnLog);
+                    container.OnError += new ErrorLogEventHandler(container_OnError);
 
                     singleton = new CastleFactory(container);
                 }
@@ -263,6 +265,22 @@ namespace MySoft.IoC
                 singleton.ServiceContainer.Transfer = config.Transfer;
                 singleton.ServiceContainer.Compress = config.Compress;
                 singleton.ServiceContainer.MaxTryNum = config.MaxTry;
+            }
+
+            return singleton;
+        }
+
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <returns>The service factoru singleton instance.</returns>
+        public static CastleFactory Create()
+        {
+            if (singleton == null)
+            {
+                config = CastleFactoryConfiguration.GetConfig();
+
+                return Create(config);
             }
 
             return singleton;
@@ -277,7 +295,22 @@ namespace MySoft.IoC
             else
             {
                 //未设置委托之前，从控制台输出
+                log = "[" + DateTime.Now.ToString() + "] " + log;
                 Console.WriteLine(log);
+            }
+        }
+
+        static void container_OnError(Exception exception)
+        {
+            if (singleton != null)
+            {
+                if (singleton.OnError != null) singleton.OnError(exception);
+            }
+            else
+            {
+                //未设置委托之前，从控制台输出
+                string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
+                Console.WriteLine(message);
             }
         }
 
@@ -358,6 +391,15 @@ namespace MySoft.IoC
         /// OnLog event.
         /// </summary>
         public event LogEventHandler OnLog;
+
+        #endregion
+
+        #region IErrorLogable Members
+
+        /// <summary>
+        /// OnError event.
+        /// </summary>
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

@@ -10,7 +10,7 @@ namespace MySoft.IoC
     /// <summary>
     /// SimpleBroadCastStrategy for service request.
     /// </summary>
-    public class SimpleBroadCastStrategy : IBroadCastStrategy, ILogable
+    public class SimpleBroadCastStrategy : IBroadCastStrategy, ILogable, IErrorLogable
     {
         #region Private Members
 
@@ -52,10 +52,11 @@ namespace MySoft.IoC
                     ServiceRequestNotifyHandler tempHandler = handlers[tempClientId];
                     if (tempHandler != null)
                     {
+                        string log = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "].";
                         try
                         {
                             IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
-                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "]");
+                            if (OnLog != null) OnLog(log);
                             tempHandler(reqMsg);
 
                             //if calling ok, skip other subscribers, easily exit loop
@@ -65,18 +66,30 @@ namespace MySoft.IoC
                         {
                             if (handlers.Count > 1)
                             {
-                                if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason:" + ex.Message);
+                                string error = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.Message;
+                                if (OnLog != null) OnLog(error);
+
+                                var exception = new IoCException(log + "\r\n" + error, ex);
+                                if (OnError != null) OnError(exception);
                                 handlers[tempClientId] = null;
                                 needCleanHandlers = true;
                             }
                             else
                             {
-                                if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason:" + ex.Message);
+                                string error = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ex.Message;
+                                if (OnLog != null) OnLog(error);
+
+                                var exception = new IoCException(log + "\r\n" + error, ex);
+                                if (OnError != null) OnError(exception);
                             }
                         }
                         catch (Exception ex)
                         {
-                            if (OnLog != null) OnLog("[" + DateTime.Now.ToString() + "] Service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason:" + ex.Message);
+                            string error = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ex.Message;
+                            if (OnLog != null) OnLog(error);
+
+                            var exception = new IoCException(log + "\r\n" + error, ex);
+                            if (OnError != null) OnError(exception);
                         }
                     }
                     else
@@ -118,7 +131,10 @@ namespace MySoft.IoC
             }
             else
             {
-                if (OnLog != null) OnLog("have not any subscriber!");
+                string error = "Call service " + reqMsg.ServiceName + " error. have not any subscriber!";
+                if (OnLog != null) OnLog(error);
+
+                if (OnError != null) OnError(new IoCException(error));
             }
         }
 
@@ -130,6 +146,15 @@ namespace MySoft.IoC
         /// OnLog event.
         /// </summary>
         public event LogEventHandler OnLog;
+
+        #endregion
+
+        #region IErrorLogable Members
+
+        /// <summary>
+        /// OnError event.
+        /// </summary>
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

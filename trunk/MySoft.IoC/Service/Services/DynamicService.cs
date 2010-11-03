@@ -29,9 +29,11 @@ namespace MySoft.IoC.Services
             : base(serviceInterfaceType.FullName, container.MQ)
         {
             this.container = container;
-            this.OnLog += new LogEventHandler(container.WriteLog);
+            this.OnLog += container.WriteLog;
+            this.OnError += container.WriteError;
             this.serviceInterfaceType = serviceInterfaceType;
         }
+
 
         /// <summary>
         /// Runs the specified MSG.
@@ -45,20 +47,13 @@ namespace MySoft.IoC.Services
                 return null;
             }
 
-            object service = default(object);
-
+            object service = null;
             try
             {
                 service = container[serviceInterfaceType];
             }
-            catch
-            {
-            }
-
-            if (service == null)
-            {
-                return null;
-            }
+            catch { }
+            if (service == null) return null;
 
             MethodInfo mi = null;
             foreach (MethodInfo item in serviceInterfaceType.GetMethods())
@@ -87,7 +82,7 @@ namespace MySoft.IoC.Services
 
             if (mi == null)
             {
-                throw new Exception("Method not found!");
+                throw new Exception("Method not found " + msg.SubServiceName + "!");
             }
 
             ParameterInfo[] pis = mi.GetParameters();

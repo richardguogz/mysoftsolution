@@ -22,7 +22,7 @@ namespace MySoft.Web
 
         public static event LogEventHandler OnLog;
 
-        public static event ExceptionLogEventHandler OnError;
+        public static event ErrorLogEventHandler OnError;
 
         //静态页生成项
         private static List<IStaticPageItem> staticPageItems = new List<IStaticPageItem>();
@@ -76,7 +76,8 @@ namespace MySoft.Web
                         }
                         catch (Exception ex)
                         {
-                            if (OnError != null) OnError(ex, "执行页面生成出现异常：" + ex.Message);
+                            var exception = new WebException("执行页面生成出现异常：" + ex.Message, ex);
+                            if (OnError != null) OnError(exception);
                         }
                     }
                 }
@@ -386,7 +387,8 @@ namespace MySoft.Web
         {
             if (OnError != null)
             {
-                OnError(ex, log);
+                var exception = new WebException(log, ex);
+                OnError(exception);
             }
         }
 

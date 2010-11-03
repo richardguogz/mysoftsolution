@@ -24,14 +24,15 @@ namespace MySort.IoC.WinFormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //CastleFactory.Create().OnLog += new MySoft.Core.LogEventHandler(WriteMessage);
-            CastleFactoryConfiguration config = new CastleFactoryConfiguration()
-            {
-            };
-
+            CastleFactory.Create().OnError += new MySoft.Core.ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
+
             var user = service.GetUserInfo("maoyong");
-            richTextBox1.AppendText(user.Description);
+
+            if (user != null)
+            {
+                richTextBox1.AppendText(user.Description);
+            }
 
 
             ////DataTable dt = service.GetDataTable();
@@ -48,6 +49,11 @@ namespace MySort.IoC.WinFormTest
             //    thread.IsBackground = true;
             //    thread.Start(service);
             //}
+        }
+
+        void frmMain_OnError(Exception exception)
+        {
+            WriteMessage(exception.Message);
         }
 
         private void DoWork(object value)

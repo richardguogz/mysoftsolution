@@ -49,7 +49,7 @@ namespace MySoft.Data
             }
             catch
             {
-                throw new MySoftException("初始化DbSession失败，请检查配置是否正确！");
+                throw new MySoftException(ExceptionType.DataException, "初始化DbSession失败，请检查配置是否正确！");
             }
         }
 
@@ -248,7 +248,7 @@ namespace MySoft.Data
         /// 注册一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlExceptionLogger(ExceptionLogEventHandler handler)
+        public void RegisterSqlExceptionLogger(ErrorLogEventHandler handler)
         {
             dbProvider.OnError += handler;
         }
@@ -257,7 +257,7 @@ namespace MySoft.Data
         /// 取消一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlExceptionLogger(ExceptionLogEventHandler handler)
+        public void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler)
         {
             dbProvider.OnError -= handler;
         }
@@ -1179,7 +1179,7 @@ namespace MySoft.Data
             }
             catch
             {
-                throw new MySoftException("CacheConfig配置加载失败！");
+                throw new MySoftException(ExceptionType.DataException, "CacheConfig配置加载失败！");
             }
             #endregion
         }

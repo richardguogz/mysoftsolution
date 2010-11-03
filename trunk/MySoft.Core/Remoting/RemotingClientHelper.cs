@@ -23,7 +23,6 @@ namespace MySoft.Remoting
         private string serverAddress;
         private int serverPort;
         private int callbackPort;
-        private int timeout = -1;
         private IChannel clientChannel;
 
         private void WriteLog(string log)
@@ -67,53 +66,42 @@ namespace MySoft.Remoting
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemotingClientHelper"/> class.
-        /// </summary>
-        /// <param name="channelType">Type of the channel.</param>
-        /// <param name="serverAddress">The server address.</param>
-        /// <param name="serverPort">The server port.</param>
-        /// <param name="callbackPort">The callback port.</param>
-        public RemotingClientHelper(RemotingChannelType channelType, string serverAddress, int serverPort, int callbackPort, int timeout)
-        {
-            this.channelType = channelType;
-            this.serverAddress = serverAddress;
-            this.serverPort = serverPort;
-            this.callbackPort = callbackPort;
-            this.timeout = timeout;
-
-            Init();
-        }
-
-        /// <summary>
         /// Inits this instance.
         /// </summary>
         private void Init()
         {
             if (clientChannel == null)
             {
-                IDictionary props = new Hashtable();
-                props["name"] = AppDomain.CurrentDomain.FriendlyName;
-                props["port"] = callbackPort;
-                props["timeout"] = timeout; //1000 * 60 * 5; //5分钟超时
-
-                if (channelType == RemotingChannelType.Tcp)
+                try
                 {
-                    BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
-                    BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
-                    binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+                    IDictionary props = new Hashtable();
+                    props["name"] = AppDomain.CurrentDomain.FriendlyName;
+                    props["port"] = callbackPort;
+                    props["timeout"] = 1000 * 60 * 5; //默认5分钟超时
 
-                    clientChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
+                    if (channelType == RemotingChannelType.Tcp)
+                    {
+                        BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
+                        BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
+                        binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                        clientChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
+                    }
+                    else
+                    {
+                        SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
+                        SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
+                        soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                        clientChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
+                    }
+
+                    ChannelServices.RegisterChannel(clientChannel, false);
                 }
-                else
+                catch (Exception ex)
                 {
-                    SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
-                    SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
-                    soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
-
-                    clientChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
+                    throw new RemotingException(ex.Message, ex);
                 }
-
-                ChannelServices.RegisterChannel(clientChannel, false);
             }
         }
 

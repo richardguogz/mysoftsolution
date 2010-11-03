@@ -13,12 +13,8 @@ namespace MySoft.IoC
     /// <summary>
     /// The service container interface.
     /// </summary>
-    public interface IServiceContainer : IDisposable, ILogable
+    public interface IServiceContainer : IDisposable, ILogable, IErrorLogable
     {
-        /// <summary>
-        /// Gets or sets the transfer.
-        /// </summary>
-        RemotingDataType Transfer { get; set; }
         /// <summary>
         /// Gets or sets the max try num.
         /// </summary>
@@ -96,7 +92,15 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="logInfo">The log info.</param>
         void WriteLog(string logInfo);
-
+        /// <summary>
+        /// Writes the exception.
+        /// </summary>
+        /// <param name="exception">The exception info.</param>
+        void WriteError(Exception exception);
+        /// <summary>
+        /// Gets or sets the transfer.
+        /// </summary>
+        RemotingDataType Transfer { get; set; }
         /// <summary>
         /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
         /// </summary>

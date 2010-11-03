@@ -29,8 +29,8 @@ namespace MySoft.Data
         void RegisterSqlLogger(LogEventHandler handler);
         void UnregisterSqlLogger(LogEventHandler handler);
 
-        void RegisterSqlExceptionLogger(ExceptionLogEventHandler handler);
-        void UnregisterSqlExceptionLogger(ExceptionLogEventHandler handler);
+        void RegisterSqlExceptionLogger(ErrorLogEventHandler handler);
+        void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler);
 
         void RegisterOnStartHandler(ExcutingEventHandler handler);
         void UnregisterOnStartHandler(ExcutingEventHandler handler);

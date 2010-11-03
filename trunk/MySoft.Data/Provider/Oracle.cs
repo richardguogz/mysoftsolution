@@ -196,7 +196,7 @@ namespace MySoft.Data.Oracle
 
                     if ((IField)pagingField == null)
                     {
-                        throw new MySoftException("请设置当前实体主键字段或指定排序！");
+                        throw new MySoftException(ExceptionType.DataException, "请设置当前实体主键字段或指定排序！");
                     }
 
                     query.OrderBy(pagingField.Asc);

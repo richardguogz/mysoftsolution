@@ -13,18 +13,31 @@ namespace MySoft.IoC.Servers.ServiceMQServer
         {
             CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
-            LogEventHandler logger = (config.Debug ? new LogEventHandler(Console.WriteLine) : null);
+            LogEventHandler logger = Console.WriteLine;
             MemoryServiceMQ mq = new MemoryServiceMQ();
-            mq.OnLog += logger;
+            mq.OnLog += new LogEventHandler(mq_OnLog);
+            //mq.OnError += new ErrorLogEventHandler(mq_OnError);
 
             CastleServiceHelper cs = new CastleServiceHelper(config);
             cs.OnLog += logger;
             cs.PublishWellKnownServiceInstance(mq);
 
             Console.WriteLine("Service MQ Server started...");
-            Console.WriteLine("Logger Status: " + (config.Debug ? "On" : "Off"));
+            Console.WriteLine("Logger Status: On");
             Console.WriteLine("Press any key to exit and stop server...");
             Console.ReadLine();
+        }
+
+        static void mq_OnLog(string log)
+        {
+            string message = "[" + DateTime.Now.ToString() + "] " + log;
+            Console.WriteLine(message);
+        }
+
+        static void mq_OnError(Exception exception)
+        {
+            string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
+            Console.WriteLine(message);
         }
     }
 }

@@ -108,7 +108,7 @@ namespace MySoft.Data
             {
                 if (connectionString.ToLower().IndexOf("data source") < 0)
                 {
-                    throw new MySoftException("ConnectionString的格式有错误，请查证！");
+                    throw new MySoftException(ExceptionType.DataException, "ConnectionString的格式有错误，请查证！");
                 }
                 string mdbPath = connectionString.Substring(connectionString.ToLower().IndexOf("data source") + "data source".Length + 1).TrimStart(' ', '=');
                 if (mdbPath.ToLower().StartsWith("|datadirectory|"))

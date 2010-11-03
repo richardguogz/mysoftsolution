@@ -494,12 +494,12 @@ namespace MySoft.Data
         {
             if (!typeof(TOutput).IsClass)
             {
-                throw new MySoftException("TOutput必须是Class类型！");
+                throw new MySoftException(ExceptionType.DataException, "TOutput必须是Class类型！");
             }
 
             if (!typeof(IOutput).IsInterface)
             {
-                throw new MySoftException("IOutput必须是Interface类型！");
+                throw new MySoftException(ExceptionType.DataException, "IOutput必须是Interface类型！");
             }
 
             //进行两次转换后返回

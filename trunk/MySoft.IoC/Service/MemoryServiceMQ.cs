@@ -18,11 +18,6 @@ namespace MySoft.IoC
         private Dictionary<string, Dictionary<Guid, ServiceRequestNotifyHandler>> onServiceRequests = new Dictionary<string, Dictionary<Guid, ServiceRequestNotifyHandler>>();
         private IBroadCastStrategy broadCastStrategy;
 
-        private void WriteLog(string logInfo)
-        {
-            if (OnLog != null) OnLog(logInfo);
-        }
-
         private object GetData(IDictionary map, Guid transactionId)
         {
             lock (map)
@@ -144,8 +139,19 @@ namespace MySoft.IoC
         public MemoryServiceMQ()
         {
             SimpleBroadCastStrategy strategy = new SimpleBroadCastStrategy();
-            strategy.OnLog += new LogEventHandler(WriteLog);
+            strategy.OnLog += new LogEventHandler(strategy_OnLog);
+            strategy.OnError += new ErrorLogEventHandler(strategy_OnError);
             this.broadCastStrategy = strategy;
+        }
+
+        void strategy_OnError(Exception exception)
+        {
+            if (OnError != null) OnError(exception);
+        }
+
+        void strategy_OnLog(string log)
+        {
+            if (OnLog != null) OnLog(log);
         }
 
         /// <summary>
@@ -176,7 +182,7 @@ namespace MySoft.IoC
 
             AddRequestToQueue(msg.TransactionId, msg);
 
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddRequestToQueue({0}):{1}. -->(name:{2} parameters:{3})", msg.TransactionId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
+            if (OnLog != null) OnLog(string.Format("AddRequestToQueue({0}):{1}. -->(name:{2} parameters:{3})", msg.TransactionId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
 
             BroadCast(msg);
 
@@ -189,14 +195,12 @@ namespace MySoft.IoC
         /// <param name="msg">The MSG.</param>
         public void SendResponseToQueue(ResponseMessage msg)
         {
-            if (msg == null)
+            if (msg != null)
             {
-                return;
+                AddResponseToQueue(msg.TransactionId, msg);
+
+                if (OnLog != null) OnLog(string.Format("AddResponseToQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message));
             }
-
-            AddResponseToQueue(msg.TransactionId, msg);
-
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] AddResponseToQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message)); 
         }
 
         /// <summary>
@@ -210,7 +214,7 @@ namespace MySoft.IoC
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetRequestFromQueue({0}):{1}. -->(name:{2} parameters:{3})", transactionId, msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
+                if (OnLog != null) OnLog(string.Format("GetRequestFromQueue({0}):{1}. -->(name:{2} parameters:{3})", transactionId, msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
             }
 
             return msg;
@@ -227,7 +231,7 @@ namespace MySoft.IoC
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] GetResponseFromQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message)); 
+                if (OnLog != null) OnLog(string.Format("GetResponseFromQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message));
             }
 
             return msg;
@@ -243,6 +247,11 @@ namespace MySoft.IoC
         {
             if (handler == null)
             {
+                if (OnError != null)
+                {
+                    var exception = new IoCException("Service " + serviceName + " subscribing failed!");
+                    OnError(exception);
+                }
                 return;
             }
 
@@ -255,7 +264,14 @@ namespace MySoft.IoC
             }
             onServiceRequests[serviceName].Add(clientId, handler);
 
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Added new service reqMsg subscribing: {0}[{1}]", serviceName, clientId));
+            string message = string.Format("Added new service reqMsg subscribing: {0}[{1}]", serviceName, clientId);
+            if (OnLog != null)
+                OnLog(message);
+            else
+            {
+                message = "[" + DateTime.Now.ToString() + "] " + message;
+                Console.WriteLine(message);
+            }
         }
 
         /// <summary>
@@ -330,6 +346,15 @@ namespace MySoft.IoC
         /// OnLog event.
         /// </summary>
         public event LogEventHandler OnLog;
+
+        #endregion
+
+        #region IErrorLogable Members
+
+        /// <summary>
+        /// OnError event.
+        /// </summary>
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

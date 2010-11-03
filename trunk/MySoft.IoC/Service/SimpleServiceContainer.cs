@@ -61,9 +61,14 @@ namespace MySoft.IoC
             }
 
             serviceProxy = new ServiceProxy(mq, DEFAULT_MAX_TRY_NUMBER);
-            serviceProxy.OnLog += new LogEventHandler(WriteLog);
+            serviceProxy.OnLog += new LogEventHandler(serviceProxy_OnLog);
 
             this.DiscoverServices();
+        }
+
+        void serviceProxy_OnLog(string log)
+        {
+            if (OnLog != null) OnLog(log);
         }
 
         private static ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
@@ -307,12 +312,12 @@ namespace MySoft.IoC
 
             if (localService != null)
             {
-                if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Calling local service ({0}):{1}.", localService.ClientId, serviceName));
+                if (OnLog != null) OnLog(string.Format("Calling local service ({0}):{1}.", localService.ClientId, serviceName));
                 return localService.CallService(msg);
             }
 
             //if no local service, call remote service
-            if (OnLog != null) OnLog(string.Format("[" + DateTime.Now.ToString() + "] Calling remote service {0}.", serviceName));
+            if (OnLog != null) OnLog(string.Format("Calling remote service {0}.", serviceName));
             return serviceProxy.CallMethod(serviceName, msg);
         }
 
@@ -356,18 +361,6 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Writes the log.
-        /// </summary>
-        /// <param name="logInfo">The log info.</param>
-        public void WriteLog(string logInfo)
-        {
-            if (OnLog != null)
-            {
-                OnLog(logInfo);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
         /// </summary>
         /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
@@ -403,6 +396,37 @@ namespace MySoft.IoC
         /// OnLog event.
         /// </summary>
         public event LogEventHandler OnLog;
+
+        #endregion
+
+        #region IErrorLogable Members
+
+        /// <summary>
+        /// OnError event.
+        /// </summary>
+        public event ErrorLogEventHandler OnError;
+
+        #endregion
+
+        #region IServiceContainer 成员
+
+        /// <summary>
+        /// 输出日志
+        /// </summary>
+        /// <param name="logInfo"></param>
+        public void WriteLog(string logInfo)
+        {
+            if (OnLog != null) OnLog(logInfo);
+        }
+
+        /// <summary>
+        /// 输出错误
+        /// </summary>
+        /// <param name="exception"></param>
+        public void WriteError(Exception exception)
+        {
+            if (OnError != null) OnError(exception);
+        }
 
         #endregion
     }

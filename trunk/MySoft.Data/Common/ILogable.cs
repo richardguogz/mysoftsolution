@@ -17,7 +17,7 @@ namespace MySoft.Data
         /// <summary>
         /// OnDbException event;
         /// </summary>
-        event ExceptionLogEventHandler OnError;
+        event ErrorLogEventHandler OnError;
 
         /// <summary>
         /// 开始事件

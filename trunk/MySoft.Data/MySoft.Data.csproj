@@ -120,6 +120,7 @@
     <Compile Include="Design\Description.cs" />
     <Compile Include="Data\Session\DbProvider.cs" />
     <Compile Include="Data\Cache\DataCache.cs" />
+    <Compile Include="DataException.cs" />
     <Compile Include="Provider\Oracle.cs" />
     <Compile Include="Provider\SqlServer.cs" />
     <Compile Include="Provider\MsAccess.cs" />

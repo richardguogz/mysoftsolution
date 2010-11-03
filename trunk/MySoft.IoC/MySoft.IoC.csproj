@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IoCException.cs" />
     <Compile Include="Mvp\Presenter\Presenter.cs" />
     <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

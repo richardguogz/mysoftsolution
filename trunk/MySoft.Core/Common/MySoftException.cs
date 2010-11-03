@@ -14,27 +14,32 @@ namespace MySoft.Core
         /// <summary>
         /// 未知异常
         /// </summary>
-        Unknown = 0,
+        Unknown,
 
         /// <summary>
         /// Data异常
         /// </summary>
-        DataException = 1,
+        DataException,
 
         /// <summary>
         /// Web异常
         /// </summary>
-        WebException = 2,
+        WebException,
 
         /// <summary>
         /// Remoting异常
         /// </summary>
-        RemotingException = 3,
+        RemotingException,
 
         /// <summary>
         /// IoC异常
         /// </summary>
-        IoCException = 4
+        IoCException,
+
+        /// <summary>
+        /// Task异常
+        /// </summary>
+        TaskException
     }
 
     /// <summary>
@@ -54,33 +59,24 @@ namespace MySoft.Core
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public MySoftException()
-            : base("IoC Component Error.")
-        {
-
-        }
-
-        /// <summary>
-        /// 
+        /// 构造函数
         /// </summary>
         /// <param name="msg"></param>
         public MySoftException(string msg)
             : base(msg)
         {
-
+            this.exceptionType = ExceptionType.Unknown;
         }
 
         /// <summary>
-        /// 
+        /// 构造函数
         /// </summary>
         /// <param name="msg"></param>
-        /// <param name="ex"></param>
-        public MySoftException(string msg, Exception ex)
-            : base(msg, ex)
+        /// <param name="inner"></param>
+        public MySoftException(string msg, Exception inner)
+            : base(msg, inner)
         {
-
+            this.exceptionType = ExceptionType.Unknown;
         }
 
         /// <summary>
@@ -88,7 +84,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="t">异常类型</param>
         public MySoftException(ExceptionType t)
-            : base()
+            : base("MySoft Component Error.")
         {
             this.exceptionType = t;
         }

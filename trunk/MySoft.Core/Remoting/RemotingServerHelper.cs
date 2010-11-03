@@ -121,28 +121,35 @@ namespace MySoft.Remoting
         {
             if (serviceChannel == null)
             {
-                IDictionary props = new Hashtable();
-                props["name"] = AppDomain.CurrentDomain.FriendlyName;
-                props["port"] = serverPort;
-
-                if (channelType == RemotingChannelType.Tcp)
+                try
                 {
-                    BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
-                    BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
-                    binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+                    IDictionary props = new Hashtable();
+                    props["name"] = AppDomain.CurrentDomain.FriendlyName;
+                    props["port"] = serverPort;
 
-                    serviceChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
+                    if (channelType == RemotingChannelType.Tcp)
+                    {
+                        BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
+                        BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
+                        binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                        serviceChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
+                    }
+                    else
+                    {
+                        SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
+                        SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
+                        soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                        serviceChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
+                    }
+
+                    ChannelServices.RegisterChannel(serviceChannel, false);
                 }
-                else
+                catch (Exception ex)
                 {
-                    SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
-                    SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
-                    soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
-
-                    serviceChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
+                    throw new RemotingException(ex.Message, ex);
                 }
-
-                ChannelServices.RegisterChannel(serviceChannel, false);
             }
         }
 

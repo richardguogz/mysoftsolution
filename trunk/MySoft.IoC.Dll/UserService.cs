@@ -10,6 +10,8 @@ namespace MySoft.IoC.Dll
     {
         public UserInfo GetUserInfo(string username)
         {
+            throw new Exception("出错了！");
+
             return new UserInfo()
             {
                 Name = username,

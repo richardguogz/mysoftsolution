@@ -255,7 +255,7 @@ namespace MySoft.Data
         public void SetOrdinal(string name, int index)
         {
             if (!this.Columns.Contains(name))
-                throw new MySoftException(string.Format("当前表中不存在字段【{0}】！", name));
+                throw new MySoftException(ExceptionType.DataException, string.Format("当前表中不存在字段【{0}】！", name));
 
             this.Columns[name].SetOrdinal(index);
         }
@@ -293,13 +293,13 @@ namespace MySoft.Data
         public void Rename(string oldname, string newname)
         {
             if (!this.Columns.Contains(oldname))
-                throw new MySoftException(string.Format("当前表中不存在字段【{0}】！", oldname));
+                throw new MySoftException(ExceptionType.DataException, string.Format("当前表中不存在字段【{0}】！", oldname));
 
             if (string.IsNullOrEmpty(newname))
-                throw new MySoftException("设置的新列名不能为null或空！");
+                throw new MySoftException(ExceptionType.DataException, "设置的新列名不能为null或空！");
 
             if (this.Columns.Contains(newname))
-                throw new MySoftException(string.Format("当前表中已存在字段【{0}】！", newname));
+                throw new MySoftException(ExceptionType.DataException, string.Format("当前表中已存在字段【{0}】！", newname));
 
             DataColumn column = this.Columns[oldname];
             column.ColumnName = newname;
@@ -315,10 +315,10 @@ namespace MySoft.Data
         public void Revalue<T>(string readName, string changeName, ReturnValue<T> revalue)
         {
             if (!this.Columns.Contains(readName))
-                throw new MySoftException(string.Format("当前表中不存在字段【{0}】！", readName));
+                throw new MySoftException(ExceptionType.DataException, string.Format("当前表中不存在字段【{0}】！", readName));
 
             if (!this.Columns.Contains(changeName))
-                throw new MySoftException(string.Format("当前表中不存在字段【{0}】！", changeName));
+                throw new MySoftException(ExceptionType.DataException, string.Format("当前表中不存在字段【{0}】！", changeName));
 
             //按要求改变值
             foreach (DataRow row in this.Rows)
@@ -344,11 +344,11 @@ namespace MySoft.Data
 
             if (!this.Columns.Contains(parentName))
             {
-                throw new MySoftException(string.Format("当前表中不存在字段【{0}】！", parentName));
+                throw new MySoftException(ExceptionType.DataException, string.Format("当前表中不存在字段【{0}】！", parentName));
             }
             if (!source.Columns.Contains(childName))
             {
-                throw new MySoftException(string.Format("关联表中不存在字段【{0}】！", childName));
+                throw new MySoftException(ExceptionType.DataException, string.Format("关联表中不存在字段【{0}】！", childName));
             }
 
             //为当前Table添加上相应的列
@@ -357,7 +357,7 @@ namespace MySoft.Data
                 //判断表中是否存在字段
                 if (!source.Columns.Contains(fillNames[i]))
                 {
-                    throw new MySoftException(string.Format("关联表中不存在字段【{0}】！", fillNames[i]));
+                    throw new MySoftException(ExceptionType.DataException, string.Format("关联表中不存在字段【{0}】！", fillNames[i]));
                 }
 
                 if (!this.Columns.Contains(fillNames[i]))
@@ -411,12 +411,12 @@ namespace MySoft.Data
         {
             if (!typeof(TOutput).IsClass)
             {
-                throw new MySoftException("TOutput必须是Class类型！");
+                throw new MySoftException(ExceptionType.DataException, "TOutput必须是Class类型！");
             }
 
             if (!typeof(IOutput).IsInterface)
             {
-                throw new MySoftException("IOutput必须是Interface类型！");
+                throw new MySoftException(ExceptionType.DataException, "IOutput必须是Interface类型！");
             }
 
             //进行两次转换后返回

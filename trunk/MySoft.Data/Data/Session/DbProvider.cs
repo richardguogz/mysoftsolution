@@ -477,7 +477,7 @@ namespace MySoft.Data
 
             if (entity.GetReadOnly())
             {
-                throw new MySoftException("只读实体" + typeof(T).Name + "只能用于查询！");
+                throw new MySoftException(ExceptionType.DataException, "只读实体" + typeof(T).Name + "只能用于查询！");
             }
 
             //移除缓存
@@ -569,12 +569,12 @@ namespace MySoft.Data
 
             if (entity.GetReadOnly())
             {
-                throw new MySoftException("只读实体" + typeof(T).Name + "只能用于查询！");
+                throw new MySoftException(ExceptionType.DataException, "只读实体" + typeof(T).Name + "只能用于查询！");
             }
 
             if ((object)where == null)
             {
-                throw new MySoftException("删除条件不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "删除条件不能为null！");
             }
 
             //移除缓存
@@ -613,12 +613,12 @@ namespace MySoft.Data
 
             if (entity.GetReadOnly())
             {
-                throw new MySoftException("只读实体" + typeof(T).Name + "只能用于查询！");
+                throw new MySoftException(ExceptionType.DataException, "只读实体" + typeof(T).Name + "只能用于查询！");
             }
 
             if ((object)where == null)
             {
-                throw new MySoftException("更新条件不能为null！");
+                throw new MySoftException(ExceptionType.DataException, "更新条件不能为null！");
             }
 
             //移除缓存
@@ -760,7 +760,8 @@ namespace MySoft.Data
         {
             if (OnError != null)
             {
-                OnError(ex, GetLog(command));
+                var exception = new MySoftException(ExceptionType.DataException, GetLog(command), ex);
+                OnError(exception);
             }
         }
 
@@ -798,7 +799,7 @@ namespace MySoft.Data
         /// <summary>
         /// OnExceptionLog event.
         /// </summary>
-        public event ExceptionLogEventHandler OnError;
+        public event ErrorLogEventHandler OnError;
 
         /// <summary>
         /// 开始事件
@@ -872,7 +873,7 @@ namespace MySoft.Data
 
                 if ((IField)pagingField == null)
                 {
-                    throw new MySoftException("SqlServer2000或Access请使用SetPagingField设定分页主键！");
+                    throw new MySoftException(ExceptionType.DataException, "SqlServer2000或Access请使用SetPagingField设定分页主键！");
                 }
 
                 QuerySection<T> jquery = query.CreateQuery<T>();

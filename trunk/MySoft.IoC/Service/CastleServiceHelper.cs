@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySoft.Remoting;
+using System.Runtime.Remoting;
 
 namespace MySoft.IoC
 {
@@ -23,7 +24,7 @@ namespace MySoft.IoC
         /// <param name="mq"></param>
         public void PublishWellKnownServiceInstance(MemoryServiceMQ mq)
         {
-            base.PublishWellKnownServiceInstance(config.ServiceMQName, typeof(IServiceMQ), mq, System.Runtime.Remoting.WellKnownObjectMode.SingleCall);
+            base.PublishWellKnownServiceInstance(config.ServiceMQName, typeof(IServiceMQ), mq, WellKnownObjectMode.SingleCall);
         }
     }
 }
