@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\MySoftException.cs" />
     <Compile Include="NZipLib\Checksums\Adler32.cs" />
     <Compile Include="NZipLib\Checksums\Crc32.cs" />
     <Compile Include="NZipLib\Checksums\IChecksum.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="Converter\ToULongArray.cs" />
     <Compile Include="Common\Assembler.cs" />
     <Compile Include="Common\EnumDescription.cs" />
-    <Compile Include="Common\MySoftException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CacheUtils.cs" />
     <Compile Include="Common\Comparer.cs" />
@@ -212,6 +212,7 @@
     <Compile Include="Utils\DynamicCalls.cs" />
     <Compile Include="Common\IDataPage.cs" />
     <Compile Include="Utils\EmitUtils.cs" />
+    <Compile Include="Utils\IErrorLogable.cs" />
     <Compile Include="Utils\ILogable.cs" />
     <Compile Include="Common\SerializationManager.cs" />
     <Compile Include="Utils\XmlHelper.cs" />

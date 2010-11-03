@@ -5,13 +5,6 @@ using System.Text;
 namespace MySoft.Core
 {
     /// <summary>
-    /// A delegate used for exception.
-    /// </summary>
-    /// <param name="exception"></param>
-    /// <param name="log"></param>
-    public delegate void ExceptionLogEventHandler(Exception exception, string log);
-
-    /// <summary>
     /// A delegate used for log.
     /// </summary>
     /// <param name="log">The msg to write to log.</param>
