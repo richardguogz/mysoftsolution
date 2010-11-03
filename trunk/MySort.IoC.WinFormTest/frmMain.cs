@@ -27,28 +27,22 @@ namespace MySort.IoC.WinFormTest
             CastleFactory.Create().OnError += new MySoft.Core.ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
-            var user = service.GetUserInfo("maoyong");
+            //var user = service.GetUserInfo("maoyong");
 
-            if (user != null)
-            {
-                richTextBox1.AppendText(user.Description);
-            }
-
-
-            ////DataTable dt = service.GetDataTable();
-            ////return;
-
-            //richTextBox1.AppendText("测试：" + service.GetUserInfo("test") + "\r\n");
-
-            //int count = (int)numericUpDown1.Value;
-
-            //for (int i = 0; i < count; i++)
+            //if (user != null)
             //{
-            //    Thread thread = new Thread(DoWork);
-            //    thread.Name = string.Format("Thread-->{0}", i);
-            //    thread.IsBackground = true;
-            //    thread.Start(service);
+            //    richTextBox1.AppendText(user.Description);
             //}
+
+            int count = (int)numericUpDown1.Value;
+
+            for (int i = 0; i < count; i++)
+            {
+                Thread thread = new Thread(DoWork);
+                thread.Name = string.Format("Thread-->{0}", i);
+                thread.IsBackground = true;
+                thread.Start(service);
+            }
         }
 
         void frmMain_OnError(Exception exception)
