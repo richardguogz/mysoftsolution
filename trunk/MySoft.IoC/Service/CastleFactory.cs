@@ -21,7 +21,6 @@ namespace MySoft.IoC
         private object syncObj = new object();
         private static AssemblyBuilder assBuilder = null;
         private static ModuleBuilder modBuilder = null;
-        private static CastleFactoryConfiguration config = null;
 
         private const string DYNAMIC_INTERFACEIMPL_NAMESPACE = "MySoft.IoC.DynamicInterfaceImpl";
 
@@ -238,14 +237,29 @@ namespace MySoft.IoC
         /// <summary>
         /// Creates this instance.
         /// </summary>
+        /// <returns></returns>
+        public static CastleFactory Create()
+        {
+            if (singleton == null)
+            {
+                var config = CastleFactoryConfiguration.GetConfig();
+                singleton = Create(config);
+            }
+
+            return singleton;
+        }
+
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <param name="config"></param>
         /// <returns>The service factoru singleton instance.</returns>
         public static CastleFactory Create(CastleFactoryConfiguration config)
         {
             if (singleton == null)
             {
-                CastleFactory.config = config;
-
-                if (config.Type == CastleFactoryType.Local)
+                //±¾µØÆ¥Åä½Ú
+                if (config == null || config.Type == CastleFactoryType.Local)
                 {
                     singleton = new CastleFactory(new SimpleServiceContainer());
                 }
@@ -265,22 +279,6 @@ namespace MySoft.IoC
                 singleton.ServiceContainer.Transfer = config.Transfer;
                 singleton.ServiceContainer.Compress = config.Compress;
                 singleton.ServiceContainer.MaxTryNum = config.MaxTry;
-            }
-
-            return singleton;
-        }
-
-        /// <summary>
-        /// Creates this instance.
-        /// </summary>
-        /// <returns>The service factoru singleton instance.</returns>
-        public static CastleFactory Create()
-        {
-            if (singleton == null)
-            {
-                config = CastleFactoryConfiguration.GetConfig();
-
-                return Create(config);
             }
 
             return singleton;

@@ -100,7 +100,7 @@ namespace MySoft.IoC
         /// <summary>
         /// Gets or sets the transfer.
         /// </summary>
-        RemotingDataType Transfer { get; set; }
+        TransferType Transfer { get; set; }
         /// <summary>
         /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
         /// </summary>

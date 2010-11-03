@@ -16,7 +16,7 @@ namespace MySoft.IoC
     {
         private CastleFactoryType type = CastleFactoryType.Local;
         private RemotingChannelType protocol = RemotingChannelType.Tcp;
-        private RemotingDataType transfer = RemotingDataType.Binary;
+        private TransferType transfer = TransferType.Binary;
         private CompressType compress = CompressType.None;
 
         private string server = "127.0.0.1";
@@ -70,16 +70,16 @@ namespace MySoft.IoC
                 switch (node.Attributes["transfer"].Value.ToLower())
                 {
                     case "binary":
-                        transfer = RemotingDataType.Binary;
+                        transfer = TransferType.Binary;
                         break;
                     case "json":
-                        transfer = RemotingDataType.Json;
+                        transfer = TransferType.Json;
                         break;
                     case "xml":
-                        transfer = RemotingDataType.Xml;
+                        transfer = TransferType.Xml;
                         break;
                     default:
-                        transfer = RemotingDataType.Binary;
+                        transfer = TransferType.Binary;
                         break;
                 }
             }
@@ -143,7 +143,7 @@ namespace MySoft.IoC
         /// Gets or sets the transfer.
         /// </summary>
         /// <value>The transfer.</value>
-        public RemotingDataType Transfer
+        public TransferType Transfer
         {
             get { return transfer; }
             set { transfer = value; }

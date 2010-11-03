@@ -38,7 +38,7 @@ namespace MySoft.IoC
         private ServiceProxy serviceProxy;
         private IServiceMQ mq;
         private CompressType compress = CompressType.None;
-        private RemotingDataType transfer = RemotingDataType.Binary;
+        private TransferType transfer = TransferType.Binary;
 
         private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
         {
@@ -187,7 +187,7 @@ namespace MySoft.IoC
         /// <summary>
         /// Gets or sets the transfer.
         /// </summary>
-        public RemotingDataType Transfer
+        public TransferType Transfer
         {
             get
             {

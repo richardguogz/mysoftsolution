@@ -22,7 +22,7 @@ namespace MySoft.Remoting
     /// <summary>
     /// Remoting Data Type
     /// </summary>
-    public enum RemotingDataType
+    public enum TransferType
     {
         /// <summary>
         /// ¶þ½øÖÆ

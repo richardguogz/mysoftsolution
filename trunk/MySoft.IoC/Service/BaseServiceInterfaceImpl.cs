@@ -118,7 +118,7 @@ namespace MySoft.IoC
 
             switch (container.Transfer)
             {
-                case RemotingDataType.Binary:
+                case TransferType.Binary:
                     byte[] buffer = (byte[])resMsg.Data;
 
                     //将数据进行解压缩
@@ -142,7 +142,7 @@ namespace MySoft.IoC
                     }
 
                     return SerializationManager.DeserializeBin(buffer);
-                case RemotingDataType.Json:
+                case TransferType.Json:
                     string jsonString = resMsg.Data.ToString();
 
                     //将数据进行解压缩
@@ -166,7 +166,7 @@ namespace MySoft.IoC
                     }
 
                     return SerializationManager.DeserializeJSON(returnType, jsonString);
-                case RemotingDataType.Xml:
+                case TransferType.Xml:
                     string xmlString = resMsg.Data.ToString();
 
                     //将数据进行解压缩

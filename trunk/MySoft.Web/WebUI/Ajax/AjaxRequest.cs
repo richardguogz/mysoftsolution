@@ -97,7 +97,7 @@ namespace MySoft.Web.UI
                         }
                         else
                         {
-                            throw new WebException("Control \"" + AjaxControlPath + "\" Is Load Error！");
+                            throw new AjaxException("Control \"" + AjaxControlPath + "\" Is Load Error！");
                         }
                     }
                     else
@@ -113,7 +113,7 @@ namespace MySoft.Web.UI
                         }
                         else
                         {
-                            throw new WebException("Method \"" + AjaxMethodName + "\" Is Invoke Error！");
+                            throw new AjaxException("Method \"" + AjaxMethodName + "\" Is Invoke Error！");
                         }
                     }
                 }
@@ -220,12 +220,16 @@ namespace MySoft.Web.UI
                 }
                 else
                 {
-                    throw new WebException(string.Format("未找到服务器端方法{0}！", MethodName));
+                    throw new AjaxException(string.Format("未找到服务器端方法{0}！", MethodName));
                 }
+            }
+            catch (AjaxException ex)
+            {
+                throw ex;
             }
             catch (Exception ex)
             {
-                throw new WebException(ex.Message, ex);
+                throw new AjaxException(ex.Message, ex);
             }
         }
 
@@ -283,7 +287,7 @@ namespace MySoft.Web.UI
             }
             catch (Exception ex)
             {
-                throw new WebException(ex.Message, ex);
+                throw new AjaxException(ex.Message, ex);
             }
         }
 

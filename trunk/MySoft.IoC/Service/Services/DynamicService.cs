@@ -114,7 +114,7 @@ namespace MySoft.IoC.Services
                 Type returnType = mi.ReturnType;
                 switch (container.Transfer)
                 {
-                    case RemotingDataType.Binary:
+                    case TransferType.Binary:
                         byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
                         //将数据进行压缩
@@ -145,7 +145,7 @@ namespace MySoft.IoC.Services
                             resMsg.Data = buffer;
                         }
                         break;
-                    case RemotingDataType.Json:
+                    case TransferType.Json:
                         string jsonString = SerializationManager.SerializeJSON(returnValue);
 
                         //将数据进行压缩
@@ -176,7 +176,7 @@ namespace MySoft.IoC.Services
                             resMsg.Data = jsonString;
                         }
                         break;
-                    case RemotingDataType.Xml:
+                    case TransferType.Xml:
                         string xmlString = SerializationManager.SerializeXML(returnValue);
 
                         //将数据进行压缩
