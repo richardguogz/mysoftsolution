@@ -262,6 +262,11 @@ namespace MySoft.IoC
                 if (config == null || config.Type == CastleFactoryType.Local)
                 {
                     singleton = new CastleFactory(new SimpleServiceContainer());
+
+                    if (config == null)
+                    {
+                        config = new CastleFactoryConfiguration();
+                    }
                 }
                 else
                 {
