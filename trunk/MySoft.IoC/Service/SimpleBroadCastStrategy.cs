@@ -62,26 +62,16 @@ namespace MySoft.IoC
                             //if calling ok, skip other subscribers, easily exit loop
                             break;
                         }
-                        catch (SocketException ex) //如果socket错误，表示连接失败
+                        catch (SocketException ex)  //如果socket错误，表示连接失败
                         {
-                            if (handlers.Count > 1)
-                            {
-                                string error = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.Message;
-                                if (OnLog != null) OnLog(error);
+                            string error = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.Message;
+                            if (OnLog != null) OnLog(error);
 
-                                var exception = new IoCException(log + "\r\n" + error, ex);
-                                if (OnError != null) OnError(exception);
-                                handlers[tempClientId] = null;
-                                needCleanHandlers = true;
-                            }
-                            else
-                            {
-                                string error = "Notify service host: (" + reqMsg.ServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ex.Message;
-                                if (OnLog != null) OnLog(error);
+                            var exception = new IoCException(log + "\r\n" + error, ex);
+                            if (OnError != null) OnError(exception);
 
-                                var exception = new IoCException(log + "\r\n" + error, ex);
-                                if (OnError != null) OnError(exception);
-                            }
+                            handlers[tempClientId] = null;
+                            needCleanHandlers = true;
                         }
                         catch (Exception ex)
                         {

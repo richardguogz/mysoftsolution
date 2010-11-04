@@ -10,6 +10,8 @@ namespace MySoft.IoC.Dll
     {
         public UserInfo GetUserInfo(string username)
         {
+            System.Threading.Thread.Sleep(1000);
+
             return new UserInfo()
             {
                 Name = username,
