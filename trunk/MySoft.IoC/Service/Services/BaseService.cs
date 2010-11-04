@@ -78,6 +78,9 @@ namespace MySoft.IoC.Services
             try
             {
                 retMsg = Run(msg);
+
+                //SerializationManager.Serialize(retMsg)
+                if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Message));
             }
             catch (Exception ex)
             {
@@ -86,11 +89,7 @@ namespace MySoft.IoC.Services
 
                 var exception = new IoCException(log + "\r\n" + error, ex);
                 if (OnError != null) OnError(exception);
-
-                return null;
             }
-            //SerializationManager.Serialize(retMsg)
-            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Message));
 
             return retMsg;
         }
