@@ -11,7 +11,6 @@ namespace MySoft.Aop
     /// AOP代理特性，如果一个类想实现具体的AOP，只要实现AopProxyBase和IAopProxyFactory，然后加上该特性即可。
     /// 2010.11.09
     /// </summary>
-
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class AopProxyAttribute : ProxyAttribute
     {
