@@ -364,14 +364,30 @@ namespace MySoft.IoC
             {
                 if (container.Kernel.HasComponent(key))
                 {
-                    return (IServiceInterfaceType)container[key];
+                    var service = container[key];
+
+                    //处理拦截代理
+                    if (service != null)
+                    {
+                        service = AspectManager.GetAopService(service.GetType());
+                    }
+
+                    return (IServiceInterfaceType)service;
                 }
             }
             else
             {
                 if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
                 {
-                    return (IServiceInterfaceType)container[typeof(IServiceInterfaceType)];
+                    var service = container[typeof(IServiceInterfaceType)];
+
+                    //处理拦截代理
+                    if (service != null)
+                    {
+                        service = AspectManager.GetAopService(service.GetType());
+                    }
+
+                    return (IServiceInterfaceType)service;
                 }
             }
 
