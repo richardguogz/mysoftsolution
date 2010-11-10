@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Security.Cryptography;
+using System.Linq;
 
 namespace MySoft.Core
 {
@@ -259,6 +260,54 @@ namespace MySoft.Core
         /// 获取自定义属性
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <param name="pi"></param>
+        /// <returns></returns>
+        public static T[] GetPropertyAttributes<T>(PropertyInfo pi)
+        {
+            object[] attrs = pi.GetCustomAttributes(typeof(T), false);
+            if (attrs != null && attrs.Length > 0)
+            {
+                return attrs.Cast<T>().ToArray();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 获取自定义属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static T[] GetMethodAttributes<T>(MethodInfo method)
+        {
+            object[] attrs = method.GetCustomAttributes(typeof(T), false);
+            if (attrs != null && attrs.Length > 0)
+            {
+                return attrs.Cast<T>().ToArray();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 获取自定义属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static T GetMethodAttribute<T>(MethodInfo method)
+        {
+            object[] attrs = method.GetCustomAttributes(typeof(T), false);
+            if (attrs != null && attrs.Length > 0)
+            {
+                return (T)attrs[0];
+            }
+            return default(T);
+        }
+
+        /// <summary>
+        /// 获取自定义属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="type"></param>
         /// <returns></returns>
         public static T GetTypeAttribute<T>(Type type)
@@ -269,6 +318,22 @@ namespace MySoft.Core
                 return (T)attrs[0];
             }
             return default(T);
+        }
+
+        /// <summary>
+        /// 获取自定义属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static T[] GetTypeAttributes<T>(Type type)
+        {
+            object[] attrs = type.GetCustomAttributes(typeof(T), false);
+            if (attrs != null && attrs.Length > 0)
+            {
+                return attrs.Cast<T>().ToArray();
+            }
+            return null;
         }
 
         #endregion

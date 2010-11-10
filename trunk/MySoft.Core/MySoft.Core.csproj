@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aop\AopProxyAttribute.cs" />
+    <Compile Include="Aop\AopProxyBase.cs" />
+    <Compile Include="Aop\AopSwitcherAttribute.cs" />
+    <Compile Include="Aop\IAopOperator.cs" />
+    <Compile Include="Aop\IAopProxyFactory.cs" />
     <Compile Include="Common\MySoftException.cs" />
     <Compile Include="NZipLib\Checksums\Adler32.cs" />
     <Compile Include="NZipLib\Checksums\Crc32.cs" />
@@ -67,13 +72,6 @@
     <Compile Include="NZipLib\Zip\ZipEntry.cs" />
     <Compile Include="NZipLib\Zip\ZipInputStream.cs" />
     <Compile Include="NZipLib\Zip\ZipOutputStream.cs" />
-    <Compile Include="Remoting\Aop\AspectAttribute.cs" />
-    <Compile Include="Remoting\Aop\AspectCaller.cs" />
-    <Compile Include="Remoting\Aop\AspectChainProxy.cs" />
-    <Compile Include="Remoting\Aop\AspectSwitcherAttribute.cs" />
-    <Compile Include="Remoting\Aop\AspectSwitcherState.cs" />
-    <Compile Include="Remoting\Aop\IAspect.cs" />
-    <Compile Include="Remoting\Aop\IAspectProcessorWrap.cs" />
     <Compile Include="Common\CompressionManager.cs" />
     <Compile Include="Common\Compression\SevenZip\Common\CommandLineParser.cs" />
     <Compile Include="Common\Compression\SevenZip\Common\CRC.cs" />
