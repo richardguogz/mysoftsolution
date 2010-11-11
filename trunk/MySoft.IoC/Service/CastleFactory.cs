@@ -369,7 +369,8 @@ namespace MySoft.IoC
                     //处理拦截代理
                     if (service != null)
                     {
-                        service = AspectManager.GetAopService(service.GetType());
+                        var aspect = AspectManager.GetService(service.GetType());
+                        if (aspect != null) service = aspect;
                     }
 
                     return (IServiceInterfaceType)service;
@@ -384,7 +385,8 @@ namespace MySoft.IoC
                     //处理拦截代理
                     if (service != null)
                     {
-                        service = AspectManager.GetAopService(service.GetType());
+                        var aspect = AspectManager.GetService(service.GetType());
+                        if (aspect != null) service = aspect;
                     }
 
                     return (IServiceInterfaceType)service;
