@@ -7,35 +7,35 @@ using MySoft.Core;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// Aop代理管理器
+    /// Aspect代理管理器
     /// </summary>
     public static class AspectManager
     {
-        private readonly static IDictionary<Type, object> aopServices = new Dictionary<Type, object>();
+        private readonly static IDictionary<Type, object> aspectServices = new Dictionary<Type, object>();
 
         /// <summary>
-        /// 获取Aop服务
+        /// 获取Aspect服务
         /// </summary>
         /// <typeparam name="ServiceType"></typeparam>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public static IServiceType GetAopService<IServiceType>(Type serviceType)
+        public static IServiceType GetService<IServiceType>(Type serviceType)
         {
-            return (IServiceType)GetAopService(serviceType);
+            return (IServiceType)GetService(serviceType);
         }
 
         /// <summary>
-        /// 获取Aop服务
+        /// 获取Aspect服务
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public static object GetAopService(Type serviceType)
+        public static object GetService(Type serviceType)
         {
             object service = null;
 
-            if (aopServices.ContainsKey(serviceType))
+            if (aspectServices.ContainsKey(serviceType))
             {
-                return aopServices[serviceType];
+                return aspectServices[serviceType];
             }
             else
             {
@@ -68,7 +68,7 @@ namespace MySoft.IoC
                     var interceptors = list.Cast<AspectInterceptor>();
                     service = AspectFactory.CreateProxy(serviceType, interceptors.ToArray());
 
-                    aopServices.Add(serviceType, service);
+                    aspectServices.Add(serviceType, service);
                 }
             }
 
