@@ -19,6 +19,7 @@ namespace MySoft.IoC
         #region Emit DynamicServiceImpl
 
         private object syncObj = new object();
+        private static bool localService = false;
         private static AssemblyBuilder assBuilder = null;
         private static ModuleBuilder modBuilder = null;
 
@@ -261,6 +262,7 @@ namespace MySoft.IoC
                 //本地匹配节
                 if (config == null || config.Type == CastleFactoryType.Local)
                 {
+                    localService = true;
                     singleton = new CastleFactory(new SimpleServiceContainer());
 
                     if (config == null)
@@ -381,11 +383,15 @@ namespace MySoft.IoC
                 }
             }
 
-            lock (this)
+                        //如果不是本地服务
+            if (!localService)
             {
-                if (container != null)
+                lock (this)
                 {
-                    return DynamicServiceImpl<IServiceInterfaceType>();
+                    if (container != null)
+                    {
+                        return DynamicServiceImpl<IServiceInterfaceType>();
+                    }
                 }
             }
 
