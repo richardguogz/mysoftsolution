@@ -366,14 +366,8 @@ namespace MySoft.IoC
                 {
                     var service = container[key];
 
-                    //处理拦截代理
-                    if (service != null)
-                    {
-                        var aspect = AspectManager.GetService(service.GetType());
-                        if (aspect != null) service = aspect;
-                    }
-
-                    return (IServiceInterfaceType)service;
+                    //返回拦截服务
+                    return AspectManager.GetService<IServiceInterfaceType>(service);
                 }
             }
             else
@@ -382,14 +376,8 @@ namespace MySoft.IoC
                 {
                     var service = container[typeof(IServiceInterfaceType)];
 
-                    //处理拦截代理
-                    if (service != null)
-                    {
-                        var aspect = AspectManager.GetService(service.GetType());
-                        if (aspect != null) service = aspect;
-                    }
-
-                    return (IServiceInterfaceType)service;
+                    //返回拦截服务
+                    return AspectManager.GetService<IServiceInterfaceType>(service);
                 }
             }
 

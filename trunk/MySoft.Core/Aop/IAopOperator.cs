@@ -16,13 +16,13 @@ namespace MySoft.Aop
         /// 前置处理
         /// </summary>
         /// <param name="requestMsg"></param>
-        void PreProcess(IMethodCallMessage requestMsg);
+        void PreProceed(IMethodCallMessage requestMsg);
 
         /// <summary>
         /// 后置处理
         /// </summary>
         /// <param name="requestMsg"></param>
         /// <param name="respondMsg"></param>
-        void PostProcess(IMethodCallMessage requestMsg, ref IMethodReturnMessage respondMsg);
+        void PostProceed(IMethodCallMessage requestMsg, ref IMethodReturnMessage respondMsg);
     }
 }

@@ -47,7 +47,7 @@ namespace MySoft.Aop
 
             if (useAspect)
             {
-                this.PreProcess(call);
+                this.PreProceed(call);
             }
 
             //如果触发的是构造函数，此时target的构建还未开始
@@ -67,7 +67,7 @@ namespace MySoft.Aop
 
             if (useAspect)
             {
-                this.PostProcess(call, ref result_msg);
+                this.PostProceed(call, ref result_msg);
             }
 
             return result_msg;
@@ -82,14 +82,14 @@ namespace MySoft.Aop
         /// 抽象PreProcess方法
         /// </summary>
         /// <param name="requestMsg"></param>
-        public abstract void PreProcess(IMethodCallMessage requestMsg);
+        public abstract void PreProceed(IMethodCallMessage requestMsg);
 
         /// <summary>
         /// 抽象PostProcess方法
         /// </summary>
         /// <param name="requestMsg"></param>
         /// <param name="respondMsg"></param>
-        public abstract void PostProcess(IMethodCallMessage requestMsg, ref IMethodReturnMessage respondMsg);
+        public abstract void PostProceed(IMethodCallMessage requestMsg, ref IMethodReturnMessage respondMsg);
 
         #endregion
 

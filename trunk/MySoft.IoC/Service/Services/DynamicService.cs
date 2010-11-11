@@ -106,12 +106,8 @@ namespace MySoft.IoC.Services
             resMsg.Timestamp = DateTime.Now;
             resMsg.TransactionId = msg.TransactionId;
 
-            //处理拦截代理
-            if (service != null)
-            {
-                var aspect = AspectManager.GetService(service.GetType());
-                if (aspect != null) service = aspect;
-            }
+            //返回拦截服务
+            service = AspectManager.GetService(service);
 
             object returnValue = DynamicCalls.GetMethodInvoker(mi).Invoke(service, parms);
             //returnValue = mi.Invoke(service, parms);
