@@ -21,7 +21,7 @@ namespace MySoft.Security
         /// <returns></returns>
         public static string Encode(string encryptString, string encryptKey)
         {
-            encryptKey = CoreUtils.GetSubString(encryptKey, 32, "");
+            encryptKey = CoreHelper.GetSubString(encryptKey, 32, "");
             encryptKey = encryptKey.PadRight(32, ' ');
 
             RijndaelManaged rijndaelProvider = new RijndaelManaged();
@@ -45,7 +45,7 @@ namespace MySoft.Security
         {
             try
             {
-                decryptKey = CoreUtils.GetSubString(decryptKey, 32, "");
+                decryptKey = CoreHelper.GetSubString(decryptKey, 32, "");
                 decryptKey = decryptKey.PadRight(32, ' ');
 
                 RijndaelManaged rijndaelProvider = new RijndaelManaged();

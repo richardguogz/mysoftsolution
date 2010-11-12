@@ -11,7 +11,7 @@ namespace MySoft.Data
     /// <summary>
     /// 数据服务类
     /// </summary>
-    public static class DataUtils
+    public static class DataHelper
     {
         #region 数据转换
 
@@ -48,7 +48,7 @@ namespace MySoft.Data
 
                 try
                 {
-                    t = CoreUtils.CreateInstance<TOutput>();
+                    t = CoreHelper.CreateInstance<TOutput>();
                 }
                 catch (Exception ex)
                 {
@@ -92,11 +92,11 @@ namespace MySoft.Data
                         }
                         else
                         {
-                            value = CoreUtils.GetPropertyValue(obj, p.Name);
+                            value = CoreHelper.GetPropertyValue(obj, p.Name);
                         }
 
                         if (value == null) continue;
-                        CoreUtils.SetPropertyValue(t, p, value);
+                        CoreHelper.SetPropertyValue(t, p, value);
                     }
                 }
 
@@ -269,7 +269,7 @@ namespace MySoft.Data
             where T : Entity
         {
             WhereClip where = null;
-            List<FieldValue> list = CoreUtils.CreateInstance<T>().GetFieldValues();
+            List<FieldValue> list = CoreHelper.CreateInstance<T>().GetFieldValues();
             pkValues = CheckAndReturnValues(pkValues);
 
             list.ForEach(fv =>

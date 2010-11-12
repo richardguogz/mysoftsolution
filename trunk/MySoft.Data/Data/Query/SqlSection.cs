@@ -187,7 +187,7 @@ namespace MySoft.Data
         {
             object obj = this.ToScalar();
             if (obj == null) return default(TResult);
-            return CoreUtils.ConvertValue<TResult>(obj);
+            return CoreHelper.ConvertValue<TResult>(obj);
         }
 
         #region Ë½ÓÐ·½·¨
@@ -200,7 +200,7 @@ namespace MySoft.Data
                 using (ISourceReader reader = dbProvider.ExecuteReader(cmd, dbTran))
                 {
                     SourceList<T> list = new SourceList<T>();
-                    FastCreateInstanceHandler creator = CoreUtils.GetFastInstanceCreator(typeof(T));
+                    FastCreateInstanceHandler creator = CoreHelper.GetFastInstanceCreator(typeof(T));
 
                     while (reader.Read())
                     {

@@ -34,7 +34,7 @@ namespace MySoft.Aop
 
             //查询目标方法是否使用了启用AOP的AopSwitcherAttribute
             //默认为使用Aspect
-            var attr = CoreUtils.GetMemberAttribute<AopSwitcherAttribute>(call.MethodBase);
+            var attr = CoreHelper.GetMemberAttribute<AopSwitcherAttribute>(call.MethodBase);
             if (attr != null)
             {
                 useAspect = attr.UseAspect;

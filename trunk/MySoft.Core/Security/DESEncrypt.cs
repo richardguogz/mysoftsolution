@@ -24,7 +24,7 @@ namespace MySoft.Security
         /// <returns>加密成功返回加密后的字符串,失败返回源串</returns>
         public static string Encode(string encryptString, string encryptKey)
         {
-            encryptKey = CoreUtils.GetSubString(encryptKey, 8, "");
+            encryptKey = CoreHelper.GetSubString(encryptKey, 8, "");
             encryptKey = encryptKey.PadRight(8, ' ');
             byte[] rgbKey = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 8));
             byte[] rgbIV = Keys;
@@ -48,7 +48,7 @@ namespace MySoft.Security
         {
             try
             {
-                decryptKey = CoreUtils.GetSubString(decryptKey, 8, "");
+                decryptKey = CoreHelper.GetSubString(decryptKey, 8, "");
                 decryptKey = decryptKey.PadRight(8, ' ');
                 byte[] rgbKey = Encoding.UTF8.GetBytes(decryptKey);
                 byte[] rgbIV = Keys;

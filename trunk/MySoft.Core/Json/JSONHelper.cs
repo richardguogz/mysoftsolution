@@ -9,7 +9,7 @@ namespace MySoft.Json
   ///  @version 0.1
   ///  Ported to C# by Are Bjolseth, teleplan.no
   /// </summary>
-	public sealed class JSONUtils
+	public sealed class JSONHelper
 	{
 		/// <summary>
 		/// Produce a string in double quotes with backslash sequences in all the right places.

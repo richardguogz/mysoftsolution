@@ -360,7 +360,7 @@ namespace MySoft.Json
         //    //    bool b = (bool)o;
         //    //    return b;
         //    //}
-        //    //string msg = string.Format("JSONObject[{0}] is not a Boolean",JSONUtils.Enquote(key));
+        //    //string msg = string.Format("JSONObject[{0}] is not a Boolean",JSONHelper.Enquote(key));
         //    //throw new Exception(msg);
 
         //    return (bool)getValue(key);
@@ -383,7 +383,7 @@ namespace MySoft.Json
         //    //{
         //    //    return Convert.ToDouble(o);
         //    //}
-        //    //string msg = string.Format("JSONObject[{0}] is not a double",JSONUtils.Enquote(key));
+        //    //string msg = string.Format("JSONObject[{0}] is not a double",JSONHelper.Enquote(key));
         //    //throw new Exception(msg);
 
         //    return (double)getValue(key);
@@ -406,7 +406,7 @@ namespace MySoft.Json
         //    //{
         //    //    return Convert.ToInt32(o);
         //    //}
-        //    //string msg = string.Format("JSONObject[{0}] is not a int",JSONUtils.Enquote(key));
+        //    //string msg = string.Format("JSONObject[{0}] is not a int",JSONHelper.Enquote(key));
         //    //throw new Exception(msg);
 
         //    return (int)getValue(key);
@@ -813,13 +813,13 @@ namespace MySoft.Json
                 obj = myHashMap[key];
                 if (obj != null)
                 {
-                    sb.Append(JSONUtils.Enquote(key));
+                    sb.Append(JSONHelper.Enquote(key));
                     sb.Append(':');
 
                     Type t = obj.GetType();
                     if (t == typeof(string))
                     {
-                        sb.Append(JSONUtils.Enquote((string)obj));
+                        sb.Append(JSONHelper.Enquote((string)obj));
                     }
                     else if (t == typeof(byte[]))
                     {
@@ -827,7 +827,7 @@ namespace MySoft.Json
                     }
                     else if (t == typeof(Guid))
                     {
-                        sb.Append(JSONUtils.Enquote(obj.ToString()));
+                        sb.Append(JSONHelper.Enquote(obj.ToString()));
                     }
                     else if (t == typeof(JSONObject) || t == typeof(JSONArray))
                     {
@@ -835,7 +835,7 @@ namespace MySoft.Json
                     }
                     else
                     {
-                        sb.Append(JSONUtils.Enquote(obj.ToString()));
+                        sb.Append(JSONHelper.Enquote(obj.ToString()));
                     }
                 }
             }

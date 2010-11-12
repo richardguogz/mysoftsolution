@@ -19,7 +19,7 @@ namespace MySoft.IoC
         {
             if (interceptors == null) return interceptors;
 
-            var att = CoreUtils.GetMemberAttribute<AspectSwitcherAttribute>(method);
+            var att = CoreHelper.GetMemberAttribute<AspectSwitcherAttribute>(method);
             if (att == null)
             {
                 return interceptors;

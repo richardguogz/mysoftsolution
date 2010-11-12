@@ -270,10 +270,10 @@ namespace MySoft.Web
                 string content = null;
 
                 if (isRemote)
-                    content = StaticPageUtils.GetRemotePageString(dynamicurl, inEncoding, validateString);
+                    content = StaticPageManager.GetRemotePageString(dynamicurl, inEncoding, validateString);
                 else
                 {
-                    content = StaticPageUtils.GetLocalPageString(dynamicurl, query, inEncoding, validateString);
+                    content = StaticPageManager.GetLocalPageString(dynamicurl, query, inEncoding, validateString);
 
                     if (!string.IsNullOrEmpty(query))
                         dynamicurl = string.Format("{0}?{1}", dynamicurl, query);
@@ -301,14 +301,14 @@ namespace MySoft.Web
                                         createTime.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
 
-                StaticPageUtils.SaveFile(content, staticurl, outEncoding);
+                StaticPageManager.SaveFile(content, staticurl, outEncoding);
 
                 //结束生成
                 if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
             }
             catch (Exception ex)
             {
-                StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
+                StaticPageManager.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                 //如果出错，则继续往下执行
             }
             finally
@@ -612,12 +612,12 @@ namespace MySoft.Web
 
                         if (isRemote)
                         {
-                            content = StaticPageUtils.GetRemotePageString(dynamicurl, inEncoding, validateString);
+                            content = StaticPageManager.GetRemotePageString(dynamicurl, inEncoding, validateString);
                         }
                         else
                         {
                             string queryurl = GetRealPath(query);
-                            content = StaticPageUtils.GetLocalPageString(dynamicurl, queryurl, inEncoding, validateString);
+                            content = StaticPageManager.GetLocalPageString(dynamicurl, queryurl, inEncoding, validateString);
 
                             if (!string.IsNullOrEmpty(queryurl))
                                 dynamicurl = string.Format("{0}?{1}", dynamicurl, queryurl);
@@ -645,14 +645,14 @@ namespace MySoft.Web
                                                 createTime.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                         }
 
-                        StaticPageUtils.SaveFile(content, staticurl, outEncoding);
+                        StaticPageManager.SaveFile(content, staticurl, outEncoding);
 
                         //结束生成
                         if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
                     }
                     catch (Exception ex)
                     {
-                        StaticPageUtils.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
+                        StaticPageManager.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                         //如果出错，则继续往下执行
                     }
                     finally
@@ -663,7 +663,7 @@ namespace MySoft.Web
             }
             catch (Exception ex)
             {
-                StaticPageUtils.SaveError(ex, "调用静态页生成方法Update时发生异常：" + ex.Message);
+                StaticPageManager.SaveError(ex, "调用静态页生成方法Update时发生异常：" + ex.Message);
                 //如果出错，则继续往下执行
             }
             finally

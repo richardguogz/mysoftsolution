@@ -10,7 +10,7 @@ namespace MySoft.Common
     /// <summary>
     /// WebUtility : 基于System.Web的拓展类。
     /// </summary>
-    public abstract class CommonUtils
+    public abstract class CommonHelper
     {
         /// <summary>
         /// 检测指定的 Uri 是否有效
@@ -366,7 +366,7 @@ namespace MySoft.Common
             string[] extName = null;
             if (!Object.Equals(limitType, null) || Object.Equals(limitType, ""))
             {
-                extName = FunctionUtils.SplitArray(limitType, ',');
+                extName = FunctionHelper.SplitArray(limitType, ',');
             }
 
             int fileSize = upfile.ContentLength;								// 上传文件大小
@@ -384,13 +384,13 @@ namespace MySoft.Common
             else
             {
                 string fileType = upfile.ContentType;								// 上传文件的MIME类型
-                string[] array = FunctionUtils.SplitArray(fileFullName, '.');
+                string[] array = FunctionHelper.SplitArray(fileFullName, '.');
                 string fileExt = array[array.Length - 1];							// 上传文件后缀符
                 int fileNameLength = fileFullName.Length - fileExt.Length - 1;
                 string fileName = "";												// 上传文件名（不包括后缀符）
                 if (autoName)
                 {
-                    fileName = "_" + FunctionUtils.Text.MakeName();
+                    fileName = "_" + FunctionHelper.Text.MakeName();
                 }
                 else
                 {
@@ -439,7 +439,7 @@ namespace MySoft.Common
                         FileOperate.WriteFile(savefile, "临时文件");
                         upfile.SaveAs(savefile);
                         strResult[4] = "成功";
-                        //strResult[4] = "成功<!--" + FunctionUtils.GetRealPath(savepath) + savename + "-->";
+                        //strResult[4] = "成功<!--" + FunctionHelper.GetRealPath(savepath) + savename + "-->";
                     }
                     catch (Exception exc)
                     {

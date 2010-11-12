@@ -48,15 +48,15 @@ namespace MySoft.Web.UI
                 bool AjaxProcess = WebHelper.GetRequestParam<bool>(info.CurrentPage.Request, "X-Ajax-Process", false);
                 if (!AjaxProcess)
                 {
-                    WebUtils.RegisterPageCssFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.pager.css"));
+                    WebHelper.RegisterPageCssFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.pager.css"));
 
                     //需要启用模板加载
                     if (info.EnableAjaxTemplate)
                     {
-                        WebUtils.RegisterPageJsFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.template.js"));
+                        WebHelper.RegisterPageJsFile(info.CurrentPage, info.CurrentPage.ClientScript.GetWebResourceUrl(typeof(AjaxPage), "MySoft.Web.Resources.template.js"));
                     }
 
-                    WebUtils.RegisterPageForAjax(info.CurrentPage, info.CurrentPage.Request.Path);
+                    WebHelper.RegisterPageForAjax(info.CurrentPage, info.CurrentPage.Request.Path);
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace MySoft.Web.UI
         private bool CheckHeader(string AjaxKey)
         {
             string ajaxKey = "AjaxProcess";
-            bool ret = AjaxKey == WebUtils.MD5Encrypt(ajaxKey);
+            bool ret = AjaxKey == WebHelper.MD5Encrypt(ajaxKey);
 
             return ret;
         }

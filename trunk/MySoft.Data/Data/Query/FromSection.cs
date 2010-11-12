@@ -31,7 +31,7 @@ namespace MySoft.Data
 
         internal FromSection()
         {
-            this.fromEntity = CoreUtils.CreateInstance<T>();
+            this.fromEntity = CoreHelper.CreateInstance<T>();
             this.fromTable = this.fromEntity.GetTable();
         }
 
@@ -597,7 +597,7 @@ namespace MySoft.Data
         private FromSection<T> Join<TJoin>(TableRelation<TJoin> relation, string aliasName, WhereClip onWhere, JoinType joinType)
             where TJoin : Entity
         {
-            TJoin entity = CoreUtils.CreateInstance<TJoin>();
+            TJoin entity = CoreHelper.CreateInstance<TJoin>();
             //entity.GetTable().As(aliasName);
             this.entityList.AddRange(relation.Section.entityList);
 
@@ -635,7 +635,7 @@ namespace MySoft.Data
         private FromSection<T> Join<TJoin>(Table table, WhereClip onWhere, JoinType joinType)
             where TJoin : Entity
         {
-            TJoin entity = CoreUtils.CreateInstance<TJoin>();
+            TJoin entity = CoreHelper.CreateInstance<TJoin>();
             this.entityList.Add(entity);
 
             if ((IField)query.PagingField == null)
@@ -667,7 +667,7 @@ namespace MySoft.Data
             where TJoin : Entity
         {
 
-            TJoin entity = CoreUtils.CreateInstance<TJoin>();
+            TJoin entity = CoreHelper.CreateInstance<TJoin>();
             entity.GetTable().As(aliasName);
             this.entityList.Add(entity);
 

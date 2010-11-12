@@ -44,7 +44,7 @@ namespace MySoft.Data
         {
             get
             {
-                if (DataUtils.IsNullOrEmpty(queryWhere))
+                if (DataHelper.IsNullOrEmpty(queryWhere))
                 {
                     return null;
                 }
@@ -57,7 +57,7 @@ namespace MySoft.Data
             get
             {
                 WhereClip where = queryWhere && pageWhere;
-                if (DataUtils.IsNullOrEmpty(where))
+                if (DataHelper.IsNullOrEmpty(where))
                 {
                     return null;
                 }
@@ -69,7 +69,7 @@ namespace MySoft.Data
         {
             get
             {
-                if (DataUtils.IsNullOrEmpty(groupBy))
+                if (DataHelper.IsNullOrEmpty(groupBy))
                 {
                     return null;
                 }
@@ -81,7 +81,7 @@ namespace MySoft.Data
         {
             get
             {
-                if (DataUtils.IsNullOrEmpty(havingWhere))
+                if (DataHelper.IsNullOrEmpty(havingWhere))
                 {
                     return null;
                 }
@@ -100,7 +100,7 @@ namespace MySoft.Data
                 }
                 else
                 {
-                    if (DataUtils.IsNullOrEmpty(groupBy) && distinctString == null)
+                    if (DataHelper.IsNullOrEmpty(groupBy) && distinctString == null)
                     {
                         sql = string.Format(formatString, null, null, "count(*) as row_count",
                             null, SqlString, countWhereString, null, null, null, null);
@@ -282,7 +282,7 @@ namespace MySoft.Data
         {
             get
             {
-                if (DataUtils.IsNullOrEmpty(orderBy))
+                if (DataHelper.IsNullOrEmpty(orderBy))
                 {
                     return null;
                 }
@@ -464,7 +464,7 @@ namespace MySoft.Data
         public QuerySection<TSub> SubQuery<TSub>(string aliasName)
             where TSub : Entity
         {
-            TSub entity = CoreUtils.CreateInstance<TSub>();
+            TSub entity = CoreHelper.CreateInstance<TSub>();
             string tableName = entity.GetTable().Name;
             QuerySection<TSub> query = new QuerySection<TSub>(new FromSection<TSub>(tableName, aliasName), dbProvider, dbTran, pagingField);
             query.SqlString = "(" + QueryString + ") " + (aliasName != null ? "{0}" + aliasName + "{1}" : tableName);
@@ -864,7 +864,7 @@ namespace MySoft.Data
         public TResult ToScalar<TResult>()
         {
             object obj = this.ToScalar();
-            return CoreUtils.ConvertValue<TResult>(obj);
+            return CoreHelper.ConvertValue<TResult>(obj);
         }
 
         /// <summary>
@@ -928,7 +928,7 @@ namespace MySoft.Data
             object obj = GetCache<T>("Count", cacheKey);
             if (obj != null)
             {
-                return CoreUtils.ConvertValue<int>(obj);
+                return CoreHelper.ConvertValue<int>(obj);
             }
 
             //添加参数到Command中
@@ -936,7 +936,7 @@ namespace MySoft.Data
 
             object value = dbProvider.ExecuteScalar(queryCommand, dbTran);
 
-            int ret = CoreUtils.ConvertValue<int>(value);
+            int ret = CoreHelper.ConvertValue<int>(value);
 
             SetCache<T>("Count", cacheKey, ret);
 
@@ -1025,7 +1025,7 @@ namespace MySoft.Data
                 {
                     SourceList<TResult> list = new SourceList<TResult>();
 
-                    FastCreateInstanceHandler creator = CoreUtils.GetFastInstanceCreator(typeof(TResult));
+                    FastCreateInstanceHandler creator = CoreHelper.GetFastInstanceCreator(typeof(TResult));
 
                     while (reader.Read())
                     {
@@ -1173,7 +1173,7 @@ namespace MySoft.Data
             if (parameters == null) return sql;
             foreach (var p in parameters)
             {
-                sql = sql.Replace(p.Name, DataUtils.FormatValue(p.Value));
+                sql = sql.Replace(p.Name, DataHelper.FormatValue(p.Value));
             }
             return sql;
         }

@@ -42,15 +42,15 @@ namespace MySoft.Data
 
         public static GroupByClip operator &(GroupByClip leftGroup, GroupByClip rightGroup)
         {
-            if (DataUtils.IsNullOrEmpty(leftGroup) && DataUtils.IsNullOrEmpty(rightGroup))
+            if (DataHelper.IsNullOrEmpty(leftGroup) && DataHelper.IsNullOrEmpty(rightGroup))
             {
                 return GroupByClip.None;
             }
-            if (DataUtils.IsNullOrEmpty(leftGroup))
+            if (DataHelper.IsNullOrEmpty(leftGroup))
             {
                 return rightGroup;
             }
-            if (DataUtils.IsNullOrEmpty(rightGroup))
+            if (DataHelper.IsNullOrEmpty(rightGroup))
             {
                 return leftGroup;
             }

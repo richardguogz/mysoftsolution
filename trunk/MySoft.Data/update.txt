@@ -285,7 +285,7 @@
 	IList<IUser> list = DbSession.Default.From<User>().ToList().ConvertTo<IUser>();
 	DbSession.Default.Save(IUser as User);
 	
-5.新增了DataUtils.ConvertType<T,TOutput>方法，支持字符串数据类型的转换
+5.新增了DataHelper.ConvertType<T,TOutput>方法，支持字符串数据类型的转换
 
 	public class User1 {
 		public string UserID { get;set;}
@@ -300,7 +300,7 @@
 	}
 	
 	User1 user1 = new User1() { UserID = "1", UserName = "test", BornDate = "2009-09-10" };
-	User2 user2 = DataUtils.ConvertType<User1,User2>(user1);
+	User2 user2 = DataHelper.ConvertType<User1,User2>(user1);
 
 
 版本号：2.6.6
@@ -407,7 +407,7 @@ IList<IUserGroupInfo> ilist = list.ConvertTo<IUserGroupInfo>();
 
 6.强化了ISourceTable的处理，增加了自定义选择列、排序，筛选，多条关联赋值等一系列处理。
 
-7.对DataUtils.ConvertType进行加强处理，修正了内部一个转换出错的bug
+7.对DataHelper.ConvertType进行加强处理，修正了内部一个转换出错的bug
 
 8.修正了一个ISourceTable转Entity时，Entity的属性在Table中对应的列不存在时转换报错的bug
 

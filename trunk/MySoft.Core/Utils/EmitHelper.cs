@@ -5,9 +5,9 @@ using System.Reflection.Emit;
 
 namespace MySoft.Core
 {
-    public sealed class EmitUtils
+    public sealed class EmitHelper
     {
-        private EmitUtils() { }
+        private EmitHelper() { }
 
         public static void LoadInt32(ILGenerator gen, int value)
         {

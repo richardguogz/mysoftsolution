@@ -129,11 +129,11 @@ namespace MySoft.Core
         /// <returns></returns>
         private int CompareProperty(T x, T y, SortProperty property)
         {
-            object value1 = CoreUtils.GetPropertyValue(x, property.PropertyName);
-            object value2 = CoreUtils.GetPropertyValue(y, property.PropertyName);
+            object value1 = CoreHelper.GetPropertyValue(x, property.PropertyName);
+            object value2 = CoreHelper.GetPropertyValue(y, property.PropertyName);
 
             //比较两个值的大小
-            int ret = CoreUtils.Compare(value1, value2);
+            int ret = CoreHelper.Compare(value1, value2);
 
             if (property.IsDesc) return -ret;
             return ret;

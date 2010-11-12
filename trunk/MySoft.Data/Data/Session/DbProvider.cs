@@ -416,7 +416,7 @@ namespace MySoft.Data
             where T : Entity
         {
             retVal = null;
-            T entity = CoreUtils.CreateInstance<T>();
+            T entity = CoreHelper.CreateInstance<T>();
 
             int returnValue = 0;
             DbCommand cmd = CreateInsert<T>(table, fvlist, identityfield, autoIncrementName);
@@ -473,7 +473,7 @@ namespace MySoft.Data
         internal DbCommand CreateInsert<T>(Table table, List<FieldValue> fvlist, Field identityfield, string autoIncrementName)
             where T : Entity
         {
-            T entity = CoreUtils.CreateInstance<T>();
+            T entity = CoreHelper.CreateInstance<T>();
 
             if (entity.GetReadOnly())
             {
@@ -525,13 +525,13 @@ namespace MySoft.Data
                 sbsql.Append(fv.Field.At((string)null).Name);
                 if (CheckValue(fv.Value))
                 {
-                    sbparam.Append(DataUtils.FormatValue(fv.Value));
+                    sbparam.Append(DataHelper.FormatValue(fv.Value));
                 }
                 else
                 {
                     SQLParameter p = null;
                     if (CheckStruct(fv.Value))
-                        p = CreateOrmParameter(DataUtils.FormatValue(fv.Value));
+                        p = CreateOrmParameter(DataHelper.FormatValue(fv.Value));
                     else
                         p = CreateOrmParameter(fv.Value);
 
@@ -565,7 +565,7 @@ namespace MySoft.Data
         internal DbCommand CreateDelete<T>(Table table, WhereClip where)
             where T : Entity
         {
-            T entity = CoreUtils.CreateInstance<T>();
+            T entity = CoreHelper.CreateInstance<T>();
 
             if (entity.GetReadOnly())
             {
@@ -584,7 +584,7 @@ namespace MySoft.Data
             string tableName = table == null ? entity.GetTable().Name : table.Name;
             sb.Append("delete from " + tableName);
 
-            if (!DataUtils.IsNullOrEmpty(where))
+            if (!DataHelper.IsNullOrEmpty(where))
             {
                 sb.Append(" where " + where.ToString());
             }
@@ -609,7 +609,7 @@ namespace MySoft.Data
         internal DbCommand CreateUpdate<T>(Table table, List<FieldValue> fvlist, WhereClip where)
             where T : Entity
         {
-            T entity = CoreUtils.CreateInstance<T>();
+            T entity = CoreHelper.CreateInstance<T>();
 
             if (entity.GetReadOnly())
             {
@@ -639,13 +639,13 @@ namespace MySoft.Data
                 {
                     if (CheckValue(fv.Value))
                     {
-                        sb.Append(fv.Field.At((string)null).Name + " = " + DataUtils.FormatValue(fv.Value));
+                        sb.Append(fv.Field.At((string)null).Name + " = " + DataHelper.FormatValue(fv.Value));
                     }
                     else
                     {
                         SQLParameter p = null;
                         if (CheckStruct(fv.Value))
-                            p = CreateOrmParameter(DataUtils.FormatValue(fv.Value));
+                            p = CreateOrmParameter(DataHelper.FormatValue(fv.Value));
                         else
                             p = CreateOrmParameter(fv.Value);
 
@@ -659,7 +659,7 @@ namespace MySoft.Data
 
             sb.Remove(sb.Length - 1, 1);
 
-            if (!DataUtils.IsNullOrEmpty(where))
+            if (!DataHelper.IsNullOrEmpty(where))
             {
                 sb.Append(" where " + where.ToString());
                 plist.AddRange(where.Parameters);
@@ -677,7 +677,7 @@ namespace MySoft.Data
         /// <returns></returns>
         internal protected string Serialization(string sql)
         {
-            return DataUtils.FormatSQL(sql, leftToken, rightToken, AccessProvider);
+            return DataHelper.FormatSQL(sql, leftToken, rightToken, AccessProvider);
         }
 
         internal DbCommand CreateSqlCommand(string cmdText)
@@ -938,7 +938,7 @@ namespace MySoft.Data
         /// <returns></returns>
         private SQLParameter CreateOrmParameter(object value)
         {
-            string pName = CoreUtils.MakeUniqueKey(30, "$p");
+            string pName = CoreHelper.MakeUniqueKey(30, "$p");
             return new SQLParameter(pName, value);
         }
 

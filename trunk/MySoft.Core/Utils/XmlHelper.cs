@@ -7,20 +7,36 @@ using System.IO;
 namespace MySoft.Core
 {
     /// <summary>
-    /// XmlNodeHelper 的摘要说明
+    /// Xml工具
     /// </summary>
-    public class XmlNodeHelper
+    public static class XmlHelper
+    {
+        /// <summary>
+        /// 创建一个根节点
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static XmlRootNode CreateRoot(string path)
+        {
+            return new XmlRootNode(path);
+        }
+    }
+
+    /// <summary>
+    /// XmlChildNode 的摘要说明
+    /// </summary>
+    public class XmlChildNode
     {
         private XmlDocument doc;
         private string element;
         private XmlNode node;
 
         /// <summary>
-        /// 实例化 XmlNodeHelper
+        /// 实例化 XmlChildNode
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="node"></param>
-        public XmlNodeHelper(XmlDocument doc, XmlNode node)
+        public XmlChildNode(XmlDocument doc, XmlNode node)
         {
             this.doc = doc;
             this.element = node.Name;
@@ -32,7 +48,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public XmlNodeHelper GetNode(string element)
+        public XmlChildNode GetNode(string element)
         {
             string el = null;
             if (string.IsNullOrEmpty(this.element))
@@ -43,7 +59,7 @@ namespace MySoft.Core
             var node = doc.SelectSingleNode(el);
             if (node == null) return null;
 
-            return new XmlNodeHelper(doc, node);
+            return new XmlChildNode(doc, node);
         }
 
         #region 根据属性获取值
@@ -94,7 +110,7 @@ namespace MySoft.Core
         /// <param name="attribute"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public XmlNodeHelper[] GetNodesByAttributeValue(string attribute, string value)
+        public XmlChildNode[] GetNodesByAttributeValue(string attribute, string value)
         {
             return GetNodesByAttributeValue(new string[] { attribute }, new string[] { value });
         }
@@ -105,9 +121,9 @@ namespace MySoft.Core
         /// <param name="attributes"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        public XmlNodeHelper[] GetNodesByAttributeValue(string[] attributes, string[] values)
+        public XmlChildNode[] GetNodesByAttributeValue(string[] attributes, string[] values)
         {
-            var list = new List<XmlNodeHelper>();
+            var list = new List<XmlChildNode>();
 
             foreach (XmlNode nd in node.ChildNodes)
             {
@@ -124,7 +140,7 @@ namespace MySoft.Core
 
                 if (count == attributes.Length)
                 {
-                    var helper = new XmlNodeHelper(doc, nd);
+                    var helper = new XmlChildNode(doc, nd);
                     list.Add(helper);
                 }
             }
@@ -139,14 +155,14 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public XmlNodeHelper[] GetNodes(string element)
+        public XmlChildNode[] GetNodes(string element)
         {
-            var list = new List<XmlNodeHelper>();
+            var list = new List<XmlChildNode>();
             foreach (XmlNode nd in node.ChildNodes)
             {
                 if (nd.Name == element)
                 {
-                    var helper = new XmlNodeHelper(doc, nd);
+                    var helper = new XmlChildNode(doc, nd);
                     list.Add(helper);
                 }
             }
@@ -190,7 +206,7 @@ namespace MySoft.Core
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Create(string element)
+        public XmlChildNode Create(string element)
         {
             return Insert(element, (string[])null, (string[])null);
         }
@@ -199,7 +215,7 @@ namespace MySoft.Core
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Create(string element, string value)
+        public XmlChildNode Create(string element, string value)
         {
             var node = Create(element);
             node.Text = value;
@@ -213,7 +229,7 @@ namespace MySoft.Core
         /// <param name="attribute"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public XmlNodeHelper Insert(string attribute, string value)
+        public XmlChildNode Insert(string attribute, string value)
         {
             return Insert(null, attribute, value);
         }
@@ -223,7 +239,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="attributes"></param>
         /// <param name="values"></param>
-        public XmlNodeHelper Insert(string[] attributes, string[] values)
+        public XmlChildNode Insert(string[] attributes, string[] values)
         {
             return Insert(null, attributes, values);
         }
@@ -234,7 +250,7 @@ namespace MySoft.Core
         /// <param name="element"></param>
         /// <param name="attribute"></param>
         /// <param name="value"></param>
-        public XmlNodeHelper Insert(string element, string attribute, string value)
+        public XmlChildNode Insert(string element, string attribute, string value)
         {
             return Insert(element, new string[] { attribute }, new string[] { value });
         }
@@ -245,7 +261,7 @@ namespace MySoft.Core
         /// <param name="element"></param>
         /// <param name="attributes"></param>
         /// <param name="values"></param>
-        public XmlNodeHelper Insert(string element, string[] attributes, string[] values)
+        public XmlChildNode Insert(string element, string[] attributes, string[] values)
         {
             try
             {
@@ -276,7 +292,7 @@ namespace MySoft.Core
                 else
                 {
                     node.AppendChild(xe);
-                    return new XmlNodeHelper(doc, (XmlNode)xe);
+                    return new XmlChildNode(doc, (XmlNode)xe);
                 }
             }
             catch (Exception ex)
@@ -294,7 +310,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="attribute"></param>
         /// <param name="value"></param>
-        public XmlNodeHelper Update(string attribute, string value)
+        public XmlChildNode Update(string attribute, string value)
         {
             return Update(new string[] { attribute }, new string[] { value });
         }
@@ -304,7 +320,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="attributes"></param>
         /// <param name="values"></param>
-        public XmlNodeHelper Update(string[] attributes, string[] values)
+        public XmlChildNode Update(string[] attributes, string[] values)
         {
             try
             {
@@ -331,7 +347,7 @@ namespace MySoft.Core
         /// <summary>
         /// 删除节点
         /// </summary>
-        public XmlNodeHelper Delete()
+        public XmlChildNode Delete()
         {
             return Delete(null);
         }
@@ -340,7 +356,7 @@ namespace MySoft.Core
         /// 删除属性
         /// </summary>
         /// <param name="attribute"></param>
-        public XmlNodeHelper Delete(string attribute)
+        public XmlChildNode Delete(string attribute)
         {
             try
             {
@@ -388,19 +404,19 @@ namespace MySoft.Core
     }
 
     /// <summary>
-    /// XmlHelper 的摘要说明
+    /// XmlRootNode 的摘要说明
     /// </summary>
-    public class XmlHelper : IDisposable
+    public class XmlRootNode : IDisposable
     {
         XmlDocument doc = new XmlDocument();
         private string path;
         private string content;
 
         /// <summary>
-        /// 实例化XmlHelper
+        /// 实例化XmlRootNode
         /// </summary>
         /// <param name="path"></param>
-        public XmlHelper(string path)
+        public XmlRootNode(string path)
         {
             this.path = path;
 
@@ -419,7 +435,7 @@ namespace MySoft.Core
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Create(string element)
+        public XmlChildNode Create(string element)
         {
             return Create(element, (string[])null, (string[])null);
         }
@@ -428,7 +444,7 @@ namespace MySoft.Core
         /// 创建element根节点
         /// </summary>
         /// <param name="element"></param>
-        public XmlNodeHelper Create(string element, string value)
+        public XmlChildNode Create(string element, string value)
         {
             var node = Create(element);
             node.Text = value;
@@ -443,7 +459,7 @@ namespace MySoft.Core
         /// <param name="attribute"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public XmlNodeHelper Create(string element, string attribute, string value)
+        public XmlChildNode Create(string element, string attribute, string value)
         {
             return Create(element, new string[] { attribute }, new string[] { value });
         }
@@ -455,7 +471,7 @@ namespace MySoft.Core
         /// <param name="attributes"></param>
         /// <param name="values"></param>
         /// <returns></returns>
-        public XmlNodeHelper Create(string element, string[] attributes, string[] values)
+        public XmlChildNode Create(string element, string[] attributes, string[] values)
         {
             try
             {
@@ -488,7 +504,7 @@ namespace MySoft.Core
                 ms.Close();
                 xw.Close();
 
-                return new XmlNodeHelper(doc, (XmlNode)doc.DocumentElement);
+                return new XmlChildNode(doc, (XmlNode)doc.DocumentElement);
             }
             catch (Exception ex)
             {
@@ -501,7 +517,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public XmlNodeHelper this[string element]
+        public XmlChildNode this[string element]
         {
             get
             {
@@ -514,14 +530,14 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public XmlNodeHelper GetNode(string element)
+        public XmlChildNode GetNode(string element)
         {
             if (doc.ChildNodes.Count == 0) return null;
 
             //如果只有2个节点，说明是要节点
             if (doc.ChildNodes.Count == 2)
             {
-                return new XmlNodeHelper(doc, (XmlNode)doc.DocumentElement);
+                return new XmlChildNode(doc, (XmlNode)doc.DocumentElement);
             }
 
             string[] elements = element.Split(new char[] { '.', '/', '|' });
@@ -530,17 +546,17 @@ namespace MySoft.Core
                 var node = doc.SelectSingleNode(elements[0]);
                 if (node == null) return null;
 
-                return new XmlNodeHelper(doc, node);
+                return new XmlChildNode(doc, node);
             }
 
-            XmlNodeHelper help = null;
+            XmlChildNode help = null;
             foreach (string el in elements)
             {
                 var node = doc.SelectSingleNode(elements[0]);
                 if (node == null) return null;
 
                 if (help == null)
-                    help = new XmlNodeHelper(doc, node);
+                    help = new XmlChildNode(doc, node);
                 else
                     help = help.GetNode(el);
             }

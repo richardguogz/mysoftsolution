@@ -8,7 +8,7 @@ namespace MySoft.Web
     /// </summary>
     /// <remarks>This class is marked as internal, meaning only classes in the same assembly will be
     /// able to access its methods.</remarks>
-    internal class PageUtils
+    internal class PageHelper
     {
         #region RewriteUrl
         /// <summary>

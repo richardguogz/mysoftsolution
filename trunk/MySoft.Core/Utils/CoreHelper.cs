@@ -13,7 +13,7 @@ namespace MySoft.Core
     /// <summary>
     /// 常用方法
     /// </summary>
-    public static class CoreUtils
+    public static class CoreHelper
     {
         /// <summary>
         /// 获取当前某文件绝对路径

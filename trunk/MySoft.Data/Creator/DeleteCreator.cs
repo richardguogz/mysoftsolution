@@ -104,7 +104,7 @@ namespace MySoft.Data
         /// <param name="where"></param>
         public DeleteCreator AddWhere(WhereClip where)
         {
-            if (DataUtils.IsNullOrEmpty(where)) return this;
+            if (DataHelper.IsNullOrEmpty(where)) return this;
 
             //不存在条件，则加入
             whereList.Add(where);

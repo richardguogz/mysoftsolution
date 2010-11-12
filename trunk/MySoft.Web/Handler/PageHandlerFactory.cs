@@ -34,7 +34,7 @@ namespace MySoft.Web
             string sendToUrl = context.Request.Url.PathAndQuery;
             string filePath = pathTranslated;
             string sendToUrlLessQString;
-            PageUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
+            PageHelper.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
             return PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
         }
 

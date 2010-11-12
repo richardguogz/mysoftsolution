@@ -128,7 +128,7 @@ namespace MySoft.Data
 
             if (useKeyWhere)
             {
-                WhereClip where = DataUtils.GetPkWhere<T>(entity.GetTable(), entity);
+                WhereClip where = DataHelper.GetPkWhere<T>(entity.GetTable(), entity);
 
                 //返回加入值及条件的对象
                 return this.From<T>().AddWhere(where);
@@ -149,7 +149,7 @@ namespace MySoft.Data
         /// <param name="where"></param>
         public UpdateCreator AddWhere(WhereClip where)
         {
-            if (DataUtils.IsNullOrEmpty(where)) return this;
+            if (DataHelper.IsNullOrEmpty(where)) return this;
 
             //不存在条件，则加入
             whereList.Add(where);

@@ -146,7 +146,7 @@ namespace MySoft.Data
                 }
                 else
                 {
-                    Table table = CoreUtils.CreateInstance<T>().GetTable();
+                    Table table = CoreHelper.CreateInstance<T>().GetTable();
                     dictTable.Add(typeof(T), table);
 
                     return table;

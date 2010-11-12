@@ -48,7 +48,7 @@ namespace MySoft.IoC
 
         private static void EmitLoadInt32Value(ILGenerator methodIL, int int32Value)
         {
-            EmitUtils.LoadInt32(methodIL, int32Value);
+            EmitHelper.LoadInt32(methodIL, int32Value);
         }
 
         private static void EmitMethods<IServiceInterfaceType>(TypeBuilder typeBuilder, Type baseType, MethodInfo[] mis)
@@ -94,7 +94,7 @@ namespace MySoft.IoC
                             methodIL.Emit(OpCodes.Ldloc_0);
                             EmitLoadInt32Value(methodIL, i);
 
-                            EmitUtils.LoadArgument(methodIL, i + 1);
+                            EmitHelper.LoadArgument(methodIL, i + 1);
 
                             if (paramInfos[i].ParameterType.IsValueType)
                             {

@@ -426,7 +426,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(field.Name + " + " + DataUtils.FormatValue(value)).As(field.OriginalName);
+            return new Field(field.Name + " + " + DataHelper.FormatValue(value)).As(field.OriginalName);
         }
 
         public static Field operator -(Field field, object value)
@@ -435,7 +435,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(field.Name + " - " + DataUtils.FormatValue(value)).As(field.OriginalName);
+            return new Field(field.Name + " - " + DataHelper.FormatValue(value)).As(field.OriginalName);
         }
 
         public static Field operator *(Field field, object value)
@@ -444,7 +444,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(field.Name + " * " + DataUtils.FormatValue(value)).As(field.OriginalName);
+            return new Field(field.Name + " * " + DataHelper.FormatValue(value)).As(field.OriginalName);
         }
 
         public static Field operator /(Field field, object value)
@@ -453,7 +453,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(field.Name + " / " + DataUtils.FormatValue(value)).As(field.OriginalName);
+            return new Field(field.Name + " / " + DataHelper.FormatValue(value)).As(field.OriginalName);
         }
 
         public static Field operator %(Field field, object value)
@@ -462,7 +462,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(field.Name + " % " + DataUtils.FormatValue(value)).As(field.OriginalName);
+            return new Field(field.Name + " % " + DataHelper.FormatValue(value)).As(field.OriginalName);
         }
 
         public static Field operator +(object value, Field field)
@@ -471,7 +471,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(DataUtils.FormatValue(value) + " + " + field.Name).As(field.OriginalName);
+            return new Field(DataHelper.FormatValue(value) + " + " + field.Name).As(field.OriginalName);
         }
 
         public static Field operator -(object value, Field field)
@@ -480,7 +480,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(DataUtils.FormatValue(value) + " - " + field.Name).As(field.OriginalName);
+            return new Field(DataHelper.FormatValue(value) + " - " + field.Name).As(field.OriginalName);
         }
 
         public static Field operator *(object value, Field field)
@@ -489,7 +489,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(DataUtils.FormatValue(value) + " * " + field.Name).As(field.OriginalName);
+            return new Field(DataHelper.FormatValue(value) + " * " + field.Name).As(field.OriginalName);
         }
 
         public static Field operator /(object value, Field field)
@@ -498,7 +498,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(DataUtils.FormatValue(value) + " / " + field.Name).As(field.OriginalName);
+            return new Field(DataHelper.FormatValue(value) + " / " + field.Name).As(field.OriginalName);
         }
 
         public static Field operator %(object value, Field field)
@@ -507,7 +507,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(DataUtils.FormatValue(value) + " % " + field.Name).As(field.OriginalName);
+            return new Field(DataHelper.FormatValue(value) + " % " + field.Name).As(field.OriginalName);
         }
 
         #endregion
@@ -737,7 +737,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public WhereClip In(params object[] values)
         {
-            values = DataUtils.CheckAndReturnValues(values);
+            values = DataHelper.CheckAndReturnValues(values);
 
             //如果值只有一个的时候，直接使用相等处理
             if (values.Length == 1)
@@ -750,7 +750,7 @@ namespace MySoft.Data
                 StringBuilder sb = new StringBuilder();
                 foreach (object value in values)
                 {
-                    string pName = CoreUtils.MakeUniqueKey(30, "$p");
+                    string pName = CoreHelper.MakeUniqueKey(30, "$p");
                     SQLParameter p = new SQLParameter(pName);
                     p.Value = value;
 
@@ -827,7 +827,7 @@ namespace MySoft.Data
                     throw new MySoftException(ExceptionType.DataException, "当值为null时只能应用于=与<>操作！");
             }
 
-            string pName = CoreUtils.MakeUniqueKey(30, "$p");
+            string pName = CoreHelper.MakeUniqueKey(30, "$p");
             SQLParameter p = new SQLParameter(pName);
             p.Value = value;
 

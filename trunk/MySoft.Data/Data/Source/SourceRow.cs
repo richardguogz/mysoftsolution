@@ -94,7 +94,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public TResult GetValue<TResult>(int index)
         {
-            return CoreUtils.ConvertValue<TResult>(GetValue(index));
+            return CoreHelper.ConvertValue<TResult>(GetValue(index));
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public TResult GetValue<TResult>(string name)
         {
-            return CoreUtils.ConvertValue<TResult>(GetValue(name));
+            return CoreHelper.ConvertValue<TResult>(GetValue(name));
         }
 
         /// <summary>

@@ -46,7 +46,7 @@ namespace MySoft.Web.UI
         /// <returns></returns>
         public T To<T>(T defvalue)
         {
-            return CoreUtils.ConvertTo<T>(this.keyValue, defvalue);
+            return CoreHelper.ConvertTo<T>(this.keyValue, defvalue);
         }
 
         /// <summary>

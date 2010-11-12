@@ -176,12 +176,12 @@ namespace MySoft.Data
                 //给标识列赋值
                 if (retVal != null)
                 {
-                    CoreUtils.SetPropertyValue(entity, entity.IdentityField.PropertyName, retVal);
+                    CoreHelper.SetPropertyValue(entity, entity.IdentityField.PropertyName, retVal);
                 }
             }
             else
             {
-                where = DataUtils.GetPkWhere<T>(entity.GetTable(), entity);
+                where = DataHelper.GetPkWhere<T>(entity.GetTable(), entity);
                 fvlist.RemoveAll(fv => !fv.IsChanged || fv.IsIdentity || fv.IsPrimaryKey);
 
                 value = Update<T>(table, fvlist, where);
@@ -201,7 +201,7 @@ namespace MySoft.Data
         public int Insert<T>(Table table, Field[] fields, object[] values)
             where T : Entity
         {
-            List<FieldValue> fvlist = DataUtils.CreateFieldValue(fields, values, true);
+            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, true);
             object retVal;
             return Insert<T>(table, fvlist, out retVal);
         }
@@ -216,10 +216,10 @@ namespace MySoft.Data
         public int Insert<T, TResult>(Table table, Field[] fields, object[] values, out TResult retVal)
             where T : Entity
         {
-            List<FieldValue> fvlist = DataUtils.CreateFieldValue(fields, values, true);
+            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, true);
             object retValue;
             int ret = Insert<T>(table, fvlist, out retValue);
-            retVal = CoreUtils.ConvertValue<TResult>(retValue);
+            retVal = CoreHelper.ConvertValue<TResult>(retValue);
 
             return ret;
         }
@@ -249,7 +249,7 @@ namespace MySoft.Data
             int val = 0;
             retVal = null;
 
-            T entity = CoreUtils.CreateInstance<T>();
+            T entity = CoreHelper.CreateInstance<T>();
             if (useBatch)
             {
                 DbCommand cmd = dbProvider.CreateInsert<T>(table, fvlist, entity.IdentityField, entity.SequenceName);
@@ -300,7 +300,7 @@ namespace MySoft.Data
         public int Delete<T>(Table table, T entity)
              where T : Entity
         {
-            WhereClip where = DataUtils.GetPkWhere<T>(table, entity);
+            WhereClip where = DataHelper.GetPkWhere<T>(table, entity);
             int val = 0;
             if (useBatch)
             {
@@ -323,7 +323,7 @@ namespace MySoft.Data
         public int Delete<T>(Table table, params object[] pkValues)
             where T : Entity
         {
-            WhereClip where = DataUtils.GetPkWhere<T>(table, pkValues);
+            WhereClip where = DataHelper.GetPkWhere<T>(table, pkValues);
             return dbProvider.Delete<T>(table, where, dbTrans);
         }
 
@@ -436,7 +436,7 @@ namespace MySoft.Data
         private bool Exists<T>(Table table, T entity)
             where T : Entity
         {
-            WhereClip where = DataUtils.GetPkWhere<T>(table, entity);
+            WhereClip where = DataHelper.GetPkWhere<T>(table, entity);
             FromSection<T> fs = new FromSection<T>(dbProvider, dbTrans, table);
             return fs.Where(where).Count() > 0;
         }

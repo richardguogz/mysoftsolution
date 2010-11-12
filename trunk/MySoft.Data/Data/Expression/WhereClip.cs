@@ -82,7 +82,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public static WhereClip operator !(WhereClip where)
         {
-            if (DataUtils.IsNullOrEmpty(where))
+            if (DataHelper.IsNullOrEmpty(where))
             {
                 return null;
             }
@@ -96,15 +96,15 @@ namespace MySoft.Data
         /// <returns></returns>
         public static WhereClip operator &(WhereClip leftWhere, WhereClip rightWhere)
         {
-            if (DataUtils.IsNullOrEmpty(leftWhere) && DataUtils.IsNullOrEmpty(rightWhere))
+            if (DataHelper.IsNullOrEmpty(leftWhere) && DataHelper.IsNullOrEmpty(rightWhere))
             {
                 return WhereClip.All;
             }
-            if (DataUtils.IsNullOrEmpty(leftWhere))
+            if (DataHelper.IsNullOrEmpty(leftWhere))
             {
                 return rightWhere;
             }
-            if (DataUtils.IsNullOrEmpty(rightWhere))
+            if (DataHelper.IsNullOrEmpty(rightWhere))
             {
                 return leftWhere;
             }
@@ -123,15 +123,15 @@ namespace MySoft.Data
         /// <returns></returns>
         public static WhereClip operator |(WhereClip leftWhere, WhereClip rightWhere)
         {
-            if (DataUtils.IsNullOrEmpty(leftWhere) && DataUtils.IsNullOrEmpty(rightWhere))
+            if (DataHelper.IsNullOrEmpty(leftWhere) && DataHelper.IsNullOrEmpty(rightWhere))
             {
                 return WhereClip.All;
             }
-            if (DataUtils.IsNullOrEmpty(leftWhere))
+            if (DataHelper.IsNullOrEmpty(leftWhere))
             {
                 return rightWhere;
             }
-            if (DataUtils.IsNullOrEmpty(rightWhere))
+            if (DataHelper.IsNullOrEmpty(rightWhere))
             {
                 return leftWhere;
             }

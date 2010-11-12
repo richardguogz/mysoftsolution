@@ -69,7 +69,7 @@ namespace MySoft.Data
             var dict = new Dictionary<TResult, T>();
             foreach (var t in this)
             {
-                var key = CoreUtils.GetPropertyValue(t, propertyName);
+                var key = CoreHelper.GetPropertyValue(t, propertyName);
 
                 if (dict.ContainsKey((TResult)key))
                 {
@@ -131,7 +131,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public SourceList<TOutput> ConvertTo<TOutput>()
         {
-            return this.ConvertAll<TOutput>(p => DataUtils.ConvertType<T, TOutput>(p));
+            return this.ConvertAll<TOutput>(p => DataHelper.ConvertType<T, TOutput>(p));
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace MySoft.Data
 
             foreach (T t in this)
             {
-                object obj = CoreUtils.GetPropertyValue(t, groupName);
-                TResult value = CoreUtils.ConvertValue<TResult>(obj);
+                object obj = CoreHelper.GetPropertyValue(t, groupName);
+                TResult value = CoreHelper.ConvertValue<TResult>(obj);
                 if (!group.ContainsKey(value))
                 {
                     group.Add(value, new SourceList<T>());
@@ -276,7 +276,7 @@ namespace MySoft.Data
                 DataRow dtRow = dt.NewRow();
                 foreach (PropertyInfo p in plist)
                 {
-                    object value = CoreUtils.GetPropertyValue(t, p.Name);
+                    object value = CoreHelper.GetPropertyValue(t, p.Name);
                     dtRow[p.Name] = value == null ? DBNull.Value : value;
                 }
                 dt.Rows.Add(dtRow);

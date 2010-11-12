@@ -320,7 +320,7 @@ namespace MySoft.Data
         public T Single<T>(Table table, params object[] pkValues)
             where T : Entity
         {
-            WhereClip where = DataUtils.GetPkWhere<T>(table, pkValues);
+            WhereClip where = DataHelper.GetPkWhere<T>(table, pkValues);
             return Single<T>(table, where);
         }
 
@@ -345,7 +345,7 @@ namespace MySoft.Data
         public bool Exists<T>(Table table, T entity)
             where T : Entity
         {
-            WhereClip where = DataUtils.GetPkWhere<T>(table, entity);
+            WhereClip where = DataHelper.GetPkWhere<T>(table, entity);
             return Exists<T>(table, where);
         }
 
@@ -358,7 +358,7 @@ namespace MySoft.Data
         public bool Exists<T>(Table table, params object[] pkValues)
             where T : Entity
         {
-            WhereClip where = DataUtils.GetPkWhere<T>(table, pkValues);
+            WhereClip where = DataHelper.GetPkWhere<T>(table, pkValues);
             return Exists<T>(table, where);
         }
 
@@ -828,7 +828,7 @@ namespace MySoft.Data
 
             object retVal;
             int ret = dbProvider.Insert<ViewEntity>(creator.Table, creator.FieldValues, this, creator.IdentityField, creator.SequenceName, true, out retVal);
-            identityValue = CoreUtils.ConvertValue<TResult>(retVal);
+            identityValue = CoreHelper.ConvertValue<TResult>(retVal);
 
             return ret;
         }
@@ -845,7 +845,7 @@ namespace MySoft.Data
                 throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
-            if (DataUtils.IsNullOrEmpty(creator.Where))
+            if (DataHelper.IsNullOrEmpty(creator.Where))
             {
                 throw new MySoftException(ExceptionType.DataException, "用删除创建器操作时，条件不能为空！");
             }
@@ -865,7 +865,7 @@ namespace MySoft.Data
                 throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
             }
 
-            if (DataUtils.IsNullOrEmpty(creator.Where))
+            if (DataHelper.IsNullOrEmpty(creator.Where))
             {
                 throw new MySoftException(ExceptionType.DataException, "用更新创建器操作时，条件不能为空！");
             }
@@ -997,7 +997,7 @@ namespace MySoft.Data
         public int Update<T>(Table table, Field[] fields, object[] values, WhereClip where)
             where T : Entity
         {
-            List<FieldValue> fvlist = DataUtils.CreateFieldValue(fields, values, false);
+            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, false);
             return dbProvider.Update<T>(table, fvlist, where, this);
         }
 

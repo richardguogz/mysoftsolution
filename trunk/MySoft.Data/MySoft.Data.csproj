@@ -148,7 +148,7 @@
     <Compile Include="Data\Query\ProcSection.cs" />
     <Compile Include="Design\IEntity.cs" />
     <Compile Include="Data\Session\IDbSession.cs" />
-    <Compile Include="Common\DataUtils.cs" />
+    <Compile Include="Common\DataHelper.cs" />
     <Compile Include="Data\Session\DbTrans.cs" />
   </ItemGroup>
   <ItemGroup>

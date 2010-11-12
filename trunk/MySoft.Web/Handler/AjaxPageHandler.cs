@@ -37,15 +37,15 @@ namespace MySoft.Web
             string ajaxKey = "AjaxProcess", url = string.Empty, space = string.Empty;
             string[] split = context.Request.Url.Query.Remove(0, 1).Split(';');
 
-            url = CoreUtils.Decrypt(split[0], ajaxKey);
+            url = CoreHelper.Decrypt(split[0], ajaxKey);
             url = (url.IndexOf('/') >= 0 ? url : "/" + url);
-            if (split.Length > 1) space = CoreUtils.Decrypt(split[1], ajaxKey);
+            if (split.Length > 1) space = CoreHelper.Decrypt(split[1], ajaxKey);
             if (string.IsNullOrEmpty(space)) space = "AjaxMethods";
 
             StringBuilder sb = new StringBuilder();
             sb.Append("var ajaxRequestInfo = { \r\n");
             sb.Append("\t\turl : '" + url + "',\r\n");
-            sb.Append("\t\tkey : '" + WebUtils.MD5Encrypt(ajaxKey) + "'\r\n");
+            sb.Append("\t\tkey : '" + WebHelper.MD5Encrypt(ajaxKey) + "'\r\n");
             sb.Append("\t};\r\n\r\n");
             sb.Append(string.Format("var {0} = Ajax.registerPage(this);", space));
 

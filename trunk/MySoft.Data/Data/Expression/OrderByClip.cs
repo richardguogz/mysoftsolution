@@ -32,15 +32,15 @@ namespace MySoft.Data
 
         public static OrderByClip operator &(OrderByClip leftOrder, OrderByClip rightOrder)
         {
-            if (DataUtils.IsNullOrEmpty(leftOrder) && DataUtils.IsNullOrEmpty(rightOrder))
+            if (DataHelper.IsNullOrEmpty(leftOrder) && DataHelper.IsNullOrEmpty(rightOrder))
             {
                 return OrderByClip.Default;
             }
-            if (DataUtils.IsNullOrEmpty(leftOrder))
+            if (DataHelper.IsNullOrEmpty(leftOrder))
             {
                 return rightOrder;
             }
-            if (DataUtils.IsNullOrEmpty(rightOrder))
+            if (DataHelper.IsNullOrEmpty(rightOrder))
             {
                 return leftOrder;
             }

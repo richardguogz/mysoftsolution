@@ -8,13 +8,13 @@ namespace MySoft.Core
     /// <summary>
     /// 缓存操作
     /// </summary>
-    public static class CacheUtils
+    public static class CacheHelper
     {
         private static IDictionary<Type, object> mItemCaches = new Dictionary<Type, object>();
 
-        static CacheUtils()
+        static CacheHelper()
         {
-            Timer timer = new Timer(new TimerCallback(CacheUtils.DoClear), null, 3600000, 3600000);
+            Timer timer = new Timer(new TimerCallback(CacheHelper.DoClear), null, 3600000, 3600000);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MySoft.Core
 
         private static void DoClear(object state)
         {
-            lock (typeof(CacheUtils))
+            lock (typeof(CacheHelper))
             {
                 foreach (Type type in mItemCaches.Keys)
                 {
@@ -76,7 +76,7 @@ namespace MySoft.Core
             {
                 return (TypeCache<T>)mItemCaches[key];
             }
-            lock (typeof(CacheUtils))
+            lock (typeof(CacheHelper))
             {
                 if (mItemCaches.ContainsKey(key))
                 {
@@ -124,16 +124,16 @@ namespace MySoft.Core
 
         private class TypeCache<T> : IDisposable
         {
-            private IDictionary<string, CacheUtils.CacheItem<T>> mCache;
+            private IDictionary<string, CacheHelper.CacheItem<T>> mCache;
 
             public TypeCache()
             {
-                this.mCache = new Dictionary<string, CacheUtils.CacheItem<T>>();
+                this.mCache = new Dictionary<string, CacheHelper.CacheItem<T>>();
             }
 
             public void Dispose()
             {
-                lock (((CacheUtils.TypeCache<T>)this))
+                lock (((CacheHelper.TypeCache<T>)this))
                 {
                     string[] array = new string[this.mCache.Keys.Count];
                     this.mCache.Keys.CopyTo(array, 0);
@@ -149,7 +149,7 @@ namespace MySoft.Core
 
             public void Remove(string key)
             {
-                lock (((CacheUtils.TypeCache<T>)this))
+                lock (((CacheHelper.TypeCache<T>)this))
                 {
                     this.mCache.Remove(key);
                 }
@@ -157,7 +157,7 @@ namespace MySoft.Core
 
             public void RemoveAll()
             {
-                lock (((CacheUtils.TypeCache<T>)this))
+                lock (((CacheHelper.TypeCache<T>)this))
                 {
                     this.mCache.Clear();
                 }
@@ -167,7 +167,7 @@ namespace MySoft.Core
             {
                 get
                 {
-                    lock (((CacheUtils.TypeCache<T>)this))
+                    lock (((CacheHelper.TypeCache<T>)this))
                     {
                         if (this.mCache.ContainsKey(key))
                         {
@@ -178,7 +178,7 @@ namespace MySoft.Core
                 }
                 set
                 {
-                    lock (((CacheUtils.TypeCache<T>)this))
+                    lock (((CacheHelper.TypeCache<T>)this))
                     {
                         if (this.mCache.ContainsKey(key))
                         {
@@ -186,7 +186,7 @@ namespace MySoft.Core
                         }
                         else
                         {
-                            this.mCache.Add(key, new CacheUtils.CacheItem<T>(value));
+                            this.mCache.Add(key, new CacheHelper.CacheItem<T>(value));
                         }
                     }
                 }

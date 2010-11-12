@@ -21,7 +21,7 @@ namespace MySoft.Web.UI
         /// <param name="jsfiles"></param>
         protected void RegisterPageJsFile(params string[] jsfiles)
         {
-            WebUtils.RegisterPageJsFile(this.Page, jsfiles);
+            WebHelper.RegisterPageJsFile(this.Page, jsfiles);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace MySoft.Web.UI
         /// <param name="jsfiles"></param>
         protected void RegisterPageCssFile(params string[] cssfiles)
         {
-            WebUtils.RegisterPageCssFile(this.Page, cssfiles);
+            WebHelper.RegisterPageCssFile(this.Page, cssfiles);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace MySoft.Web.UI
         /// </summary>
         protected void RegisterPageScript(params string[] scripts)
         {
-            WebUtils.RegisterPageScript(this.Page, scripts);
+            WebHelper.RegisterPageScript(this.Page, scripts);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace MySoft.Web.UI
         /// <param name="path"></param>
         protected void RegisterPageForAjax(string url)
         {
-            WebUtils.RegisterPageForAjax(this.Page, url);
+            WebHelper.RegisterPageForAjax(this.Page, url);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace MySoft.Web.UI
         /// <param name="path"></param>
         protected void RegisterPageForAjax(Type urlType, string url)
         {
-            WebUtils.RegisterPageForAjax(this.Page, urlType, url);
+            WebHelper.RegisterPageForAjax(this.Page, urlType, url);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace MySoft.Web.UI
                     sb.Append(SerializationManager.SerializeJSON(values) + ";\r\n");
                 }
             }
-            WebUtils.RegisterPageScript(this.Page, sb.ToString());
+            WebHelper.RegisterPageScript(this.Page, sb.ToString());
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace MySoft.Web.UI
                 index++;
             }
             sb.Append("\r\n\t};\r\n");
-            WebUtils.RegisterPageScript(this.Page, sb.ToString());
+            WebHelper.RegisterPageScript(this.Page, sb.ToString());
         }
         #endregion
 
@@ -141,7 +141,7 @@ namespace MySoft.Web.UI
         /// <returns></returns>
         public static T ConvertTo<T>(string value, T outValue)
         {
-            return CoreUtils.ConvertTo<T>(value, outValue);
+            return CoreHelper.ConvertTo<T>(value, outValue);
         }
 
         /// <summary>

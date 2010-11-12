@@ -250,7 +250,7 @@ namespace MySoft.Common
 
 
 
-                RsaDESSTRING = FunctionUtils.CheckValiable(Request.Headers["CS_DESSTRING"]) ? Request.Headers["CS_DESSTRING"] : "";
+                RsaDESSTRING = FunctionHelper.CheckValiable(Request.Headers["CS_DESSTRING"]) ? Request.Headers["CS_DESSTRING"] : "";
 
                 return strResult;
 
@@ -290,7 +290,7 @@ namespace MySoft.Common
 
 
 
-                RsaDESSTRING = FunctionUtils.CheckValiable(Request.Headers["CS_DESSTRING"]) ? Request.Headers["CS_DESSTRING"] : "";
+                RsaDESSTRING = FunctionHelper.CheckValiable(Request.Headers["CS_DESSTRING"]) ? Request.Headers["CS_DESSTRING"] : "";
 
                 return buffer;
 
@@ -358,7 +358,7 @@ namespace MySoft.Common
         {
             string strResult = "";
 
-            if (FunctionUtils.CheckValiable(publicKey))
+            if (FunctionHelper.CheckValiable(publicKey))
             {
                 // DES加密内容
                 DESCrypto DC = new DESCrypto();
@@ -394,7 +394,7 @@ namespace MySoft.Common
         {
             byte[] byteResult = null;
 
-            if (FunctionUtils.CheckValiable(publicKey))
+            if (FunctionHelper.CheckValiable(publicKey))
             {
                 // DES加密内容
                 DESCrypto DC = new DESCrypto();
@@ -431,7 +431,7 @@ namespace MySoft.Common
         {
             string strResult = "";
 
-            if (FunctionUtils.CheckValiable(publicKey))
+            if (FunctionHelper.CheckValiable(publicKey))
             {
                 // DES加密内容
                 DESCrypto DC = new DESCrypto();
@@ -467,7 +467,7 @@ namespace MySoft.Common
         {
             byte[] byteResult = null;
 
-            if (FunctionUtils.CheckValiable(publicKey))
+            if (FunctionHelper.CheckValiable(publicKey))
             {
                 // DES加密内容
                 DESCrypto DC = new DESCrypto();
@@ -505,14 +505,14 @@ namespace MySoft.Common
         {
             string strResult = "";
 
-            if (FunctionUtils.CheckValiable(rsaDes))
+            if (FunctionHelper.CheckValiable(rsaDes))
             {
                 // 解密DES密钥和初始化向量
                 RSACrypto RC = new RSACrypto();
 
                 string des = RC.RSADecrypt(privateKey, rsaDes);
 
-                string[] desArray = FunctionUtils.SplitArray(des, '§');
+                string[] desArray = FunctionHelper.SplitArray(des, '§');
 
                 desKey = desArray[0];
                 desIV = desArray[1];
@@ -548,14 +548,14 @@ namespace MySoft.Common
         {
             byte[] byteResult = null;
 
-            if (FunctionUtils.CheckValiable(rsaDes))
+            if (FunctionHelper.CheckValiable(rsaDes))
             {
                 // 解密DES密钥和初始化向量
                 RSACrypto RC = new RSACrypto();
 
                 string des = RC.RSADecrypt(privateKey, rsaDes);
 
-                string[] desArray = FunctionUtils.SplitArray(des, '§');
+                string[] desArray = FunctionHelper.SplitArray(des, '§');
 
                 desKey = desArray[0];
                 desIV = desArray[1];

@@ -24,7 +24,7 @@ namespace MySoft.Data
             else
                 this.section = new FromSection<T>(null, null, table);
 
-            this.section.EntityList.Add(CoreUtils.CreateInstance<T>());
+            this.section.EntityList.Add(CoreHelper.CreateInstance<T>());
         }
 
         #region 不带别名

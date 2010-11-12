@@ -60,7 +60,7 @@ namespace MySoft.IoC
             }
             else
             {
-                var attributes = CoreUtils.GetTypeAttributes<AspectAttribute>(serviceType);
+                var attributes = CoreHelper.GetTypeAttributes<AspectAttribute>(serviceType);
                 if (attributes != null && attributes.Length > 0)
                 {
                     IList<object> list = new List<object>();

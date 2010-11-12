@@ -1088,7 +1088,7 @@ namespace MySoft.Data
             string sql = dbProvider.Serialization(where.ToString());
             foreach (SQLParameter p in where.Parameters)
             {
-                sql = sql.Replace(p.Name, DataUtils.FormatValue(p.Value));
+                sql = sql.Replace(p.Name, DataHelper.FormatValue(p.Value));
             }
             return sql;
         }

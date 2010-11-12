@@ -110,7 +110,7 @@
     <Compile Include="Json\JSONFacade.cs" />
     <Compile Include="Json\JSONObject.cs" />
     <Compile Include="Json\JSONTokener.cs" />
-    <Compile Include="Json\JSONUtils.cs" />
+    <Compile Include="Json\JSONHelper.cs" />
     <Compile Include="Json\Newtonsoft.Json\Converters\AspNetAjaxDateTimeConverter.cs" />
     <Compile Include="Json\Newtonsoft.Json\Converters\HtmlColorConverter.cs" />
     <Compile Include="Json\Newtonsoft.Json\Converters\XmlNodeConverter.cs" />
@@ -167,7 +167,7 @@
     <Compile Include="Task\JobState.cs" />
     <Compile Include="Task\TaskRunner.cs" />
     <Compile Include="Task\TaskThreadPool.cs" />
-    <Compile Include="Utils\CoreUtils.cs" />
+    <Compile Include="Utils\CoreHelper.cs" />
     <Compile Include="Converter\ConverterFactory.cs" />
     <Compile Include="Converter\IStringConverter.cs" />
     <Compile Include="Converter\ObjectBuilder.cs" />
@@ -208,12 +208,12 @@
     <Compile Include="Common\Assembler.cs" />
     <Compile Include="Common\EnumDescription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\CacheUtils.cs" />
+    <Compile Include="Utils\CacheHelper.cs" />
     <Compile Include="Common\Comparer.cs" />
     <Compile Include="Common\DataPage.cs" />
     <Compile Include="Utils\DynamicCalls.cs" />
     <Compile Include="Common\IDataPage.cs" />
-    <Compile Include="Utils\EmitUtils.cs" />
+    <Compile Include="Utils\EmitHelper.cs" />
     <Compile Include="Utils\IErrorLogable.cs" />
     <Compile Include="Utils\ILogable.cs" />
     <Compile Include="Common\SerializationManager.cs" />

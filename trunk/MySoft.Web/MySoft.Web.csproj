@@ -58,10 +58,10 @@
     <Compile Include="WebException.cs" />
     <Compile Include="Utils\CookieExpiresType.cs" />
     <Compile Include="Utils\HtmlPager.cs" />
-    <Compile Include="Utils\WebUtils.cs" />
+    <Compile Include="Utils\WebHelper.cs" />
     <Compile Include="WebUI\Ajax\AjaxNamespaceAttribute.cs" />
     <Compile Include="Static\UpdateDependency.cs" />
-    <Compile Include="Static\StaticPageUtils.cs" />
+    <Compile Include="Static\StaticPageManager.cs" />
     <Compile Include="Static\StaticPageItem.cs" />
     <Compile Include="Handler\AjaxPageHandler.cs" />
     <Compile Include="WebUI\Ajax\AjaxCallbackParam.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="Config\StaticPageConfiguration.cs" />
     <Compile Include="Config\StaticPageRule.cs" />
     <Compile Include="Config\StaticPageRuleCollection.cs" />
-    <Compile Include="Handler\PageUtils.cs" />
+    <Compile Include="Handler\PageHelper.cs" />
     <Compile Include="Handler\StaticPageHandler.cs" />
     <Compile Include="Handler\PageHandlerFactory.cs" />
     <Compile Include="Handler\ResponseFilter.cs" />
@@ -85,7 +85,6 @@
     <Compile Include="WebUI\MasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebUI\WebHelper.cs" />
     <Compile Include="WebUI\Ajax\AjaxPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -74,7 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FunctionUtils.cs" />
+    <Compile Include="FunctionHelper.cs" />
     <Compile Include="CryptoService\DESCrypto.cs" />
     <Compile Include="CryptoService\RSACrypto.cs" />
     <Compile Include="CryptoService\SymmCrypto.cs" />
@@ -87,8 +87,8 @@
     <Compile Include="ServiceClient.cs" />
     <Compile Include="ServiceMethod.cs" />
     <Compile Include="WebGDI.cs" />
-    <Compile Include="CommonUtils.cs" />
-    <Compile Include="XmlOperate.cs" />
+    <Compile Include="CommonHelper.cs" />
+    <Compile Include="XmlHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

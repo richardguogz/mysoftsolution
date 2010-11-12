@@ -44,7 +44,7 @@ namespace MySoft.Data
         {
             lock (this)
             {
-                return DataUtils.ConvertType<IEntityBase, TEntity>(this);
+                return DataHelper.ConvertType<IEntityBase, TEntity>(this);
             }
         }
 
@@ -82,7 +82,7 @@ namespace MySoft.Data
                 IDictionary<string, object> dict = new Dictionary<string, object>();
                 foreach (Field f in GetFields())
                 {
-                    object value = CoreUtils.GetPropertyValue(this, f.PropertyName);
+                    object value = CoreHelper.GetPropertyValue(this, f.PropertyName);
                     dict[f.OriginalName] = value;
                 }
                 return dict;
@@ -123,7 +123,7 @@ namespace MySoft.Data
         {
             lock (this)
             {
-                return DataUtils.CloneObject(this);
+                return DataHelper.CloneObject(this);
             }
         }
 

@@ -13,7 +13,7 @@ namespace MySoft.Common
     /// <summary>
     /// Function ：功能函数类，字符串处理类等
     /// </summary>
-    public abstract class FunctionUtils
+    public abstract class FunctionHelper
     {
         #region 正则表达式的使用
 
@@ -416,7 +416,7 @@ namespace MySoft.Common
         /// <returns>string</returns>
         public static string GetFileName(string url)
         {
-            //string[] Name = FunctionUtils.SplitArray(url,'/');
+            //string[] Name = FunctionHelper.SplitArray(url,'/');
             //return Name[Name.Length - 1];
 
             return System.IO.Path.GetFileName(url);

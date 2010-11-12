@@ -339,7 +339,7 @@ namespace MySoft.Json
                     Type t = obj.GetType();
                     if (t == typeof(string))
                     {
-                        sb.Append(JSONUtils.Enquote((string)obj));
+                        sb.Append(JSONHelper.Enquote((string)obj));
                     }
                     else if (t == typeof(byte[]))
                     {
@@ -347,7 +347,7 @@ namespace MySoft.Json
                     }
                     else if (t == typeof(Guid))
                     {
-                        sb.Append(JSONUtils.Enquote(obj.ToString()));
+                        sb.Append(JSONHelper.Enquote(obj.ToString()));
                     }
                     else if (t == typeof(JSONObject) || t == typeof(JSONArray))
                     {
@@ -355,7 +355,7 @@ namespace MySoft.Json
                     }
                     else
                     {
-                        sb.Append(JSONUtils.Enquote(obj.ToString()));
+                        sb.Append(JSONHelper.Enquote(obj.ToString()));
                     }
                 }
 			}

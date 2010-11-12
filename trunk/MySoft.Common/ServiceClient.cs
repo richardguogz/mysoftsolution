@@ -26,9 +26,9 @@ namespace MySoft.Common
         {
             if (IsEncryptoSend)
             {
-                string publicKey = FileOperate.ReadFile(FunctionUtils.GetRealFile(FunctionUtils.GetAppSettings("publicKey")));
+                string publicKey = FileOperate.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
 
-                string desKey = FunctionUtils.Text.RandomSTR(8);
+                string desKey = FunctionHelper.Text.RandomSTR(8);
                 string desIV = desKey;
 
                 string rsaDes = "";
@@ -62,9 +62,9 @@ namespace MySoft.Common
 
             if (IsEncryptoSend)
             {
-                string publicKey = FileOperate.ReadFile(FunctionUtils.GetRealFile(FunctionUtils.GetAppSettings("publicKey")));
+                string publicKey = FileOperate.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
 
-                string desKey = FunctionUtils.Text.RandomSTR(8);
+                string desKey = FunctionHelper.Text.RandomSTR(8);
                 string desIV = desKey;
 
                 string rsaDes = "";
@@ -92,7 +92,7 @@ namespace MySoft.Common
         /// <returns>string</returns>
         public static string GetResponseContent(WebResponse res, out string CS_RESULT)
         {
-            CS_RESULT = FunctionUtils.CheckValiable(res.Headers["CS_RESULT"]) ? res.Headers["CS_RESULT"] : "";
+            CS_RESULT = FunctionHelper.CheckValiable(res.Headers["CS_RESULT"]) ? res.Headers["CS_RESULT"] : "";
 
             return cs.GetResponseStream(res);
         }

@@ -37,7 +37,7 @@ namespace MySoft.Remoting
     /// </summary>
     public class RemotingLogFileManager : MarshalByRefObject, MySoft.Remoting.IRemotingLogFileManager
     {
-        static string logDir = CoreUtils.GetFullPath("log");
+        static string logDir = CoreHelper.GetFullPath("log");
 
         /// <summary>
         /// 

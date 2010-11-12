@@ -323,7 +323,7 @@ namespace MySoft.Data
             //按要求改变值
             foreach (DataRow row in this.Rows)
             {
-                row[changeName] = revalue(CoreUtils.ConvertValue<T>(row[readName]));
+                row[changeName] = revalue(CoreHelper.ConvertValue<T>(row[readName]));
             }
         }
 
@@ -397,7 +397,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public SourceList<TOutput> ConvertTo<TOutput>()
         {
-            return this.ConvertAll<TOutput>(p => DataUtils.ConvertType<IRowReader, TOutput>(p));
+            return this.ConvertAll<TOutput>(p => DataHelper.ConvertType<IRowReader, TOutput>(p));
         }
 
         /// <summary>

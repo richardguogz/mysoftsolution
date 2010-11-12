@@ -265,7 +265,7 @@ namespace MySoft.Data
         public TResult ToScalar<TResult>()
         {
             object obj = this.ToScalar();
-            return CoreUtils.ConvertValue<TResult>(obj);
+            return CoreHelper.ConvertValue<TResult>(obj);
         }
         #endregion
 
@@ -388,7 +388,7 @@ namespace MySoft.Data
         public TResult ToScalar<TResult>(out IDictionary<string, object> outValues)
         {
             object obj = this.ToScalar(out outValues);
-            return CoreUtils.ConvertValue<TResult>(obj);
+            return CoreHelper.ConvertValue<TResult>(obj);
         }
 
         /// <summary>
@@ -414,7 +414,7 @@ namespace MySoft.Data
                 using (ISourceReader reader = dbProvider.ExecuteReader(cmd, dbTran))
                 {
                     SourceList<T> list = new SourceList<T>();
-                    FastCreateInstanceHandler creator = CoreUtils.GetFastInstanceCreator(typeof(T));
+                    FastCreateInstanceHandler creator = CoreHelper.GetFastInstanceCreator(typeof(T));
 
                     while (reader.Read())
                     {

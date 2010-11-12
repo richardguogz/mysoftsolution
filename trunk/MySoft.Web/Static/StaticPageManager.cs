@@ -16,7 +16,7 @@ namespace MySoft.Web
     /// <summary>
     /// æ≤Ã¨“≥¥¶¿Ì¿‡
     /// </summary>
-    public abstract class StaticPageUtils
+    public abstract class StaticPageManager
     {
         private const int Interval = 60000;
 

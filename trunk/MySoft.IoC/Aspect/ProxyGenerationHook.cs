@@ -18,7 +18,7 @@ namespace MySoft.IoC
 
         public bool ShouldInterceptMethod(Type type, MethodInfo methodInfo)
         {
-            var att = CoreUtils.GetMemberAttribute<AspectSwitcherAttribute>(methodInfo);
+            var att = CoreHelper.GetMemberAttribute<AspectSwitcherAttribute>(methodInfo);
             if (att == null) return true;
             return att.UseAspect;
         }

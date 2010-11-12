@@ -292,7 +292,7 @@ namespace MySoft.Data
         /// <param name="where"></param>
         public QueryCreator AddWhere(WhereClip where)
         {
-            if (DataUtils.IsNullOrEmpty(where)) return this;
+            if (DataHelper.IsNullOrEmpty(where)) return this;
 
             //不存在条件，则加入
             whereList.Add(where);
@@ -369,7 +369,7 @@ namespace MySoft.Data
         /// <param name="order"></param>
         public QueryCreator AddOrder(OrderByClip order)
         {
-            if (DataUtils.IsNullOrEmpty(order)) return this;
+            if (DataHelper.IsNullOrEmpty(order)) return this;
 
             if (orderList.Exists(o =>
             {
