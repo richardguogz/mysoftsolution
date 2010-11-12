@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Services;
 using System.Runtime.Remoting.Activation;
+using MySoft.Core;
 
 namespace MySoft.Aop
 {
@@ -32,17 +33,15 @@ namespace MySoft.Aop
             IMethodCallMessage call = (IMethodCallMessage)msg;
 
             //查询目标方法是否使用了启用AOP的AopSwitcherAttribute
-            foreach (Attribute attr in call.MethodBase.GetCustomAttributes(false))
+            //默认为使用Aspect
+            var attr = CoreUtils.GetMemberAttribute<AopSwitcherAttribute>(call.MethodBase);
+            if (attr != null)
             {
-                AopSwitcherAttribute mehodAopAttr = attr as AopSwitcherAttribute;
-                if (mehodAopAttr != null)
-                {
-                    if (mehodAopAttr.UseAspect)
-                    {
-                        useAspect = true;
-                        break;
-                    }
-                }
+                useAspect = attr.UseAspect;
+            }
+            else
+            {
+                useAspect = true;
             }
 
             if (useAspect)

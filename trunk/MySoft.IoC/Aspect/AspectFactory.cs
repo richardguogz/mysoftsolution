@@ -33,7 +33,8 @@ namespace MySoft.IoC
             else
             {
                 ProxyGenerator proxy = new ProxyGenerator();
-                var service = proxy.CreateClassProxy<TServiceType>(interceptors);
+                ProxyGenerationOptions options = new ProxyGenerationOptions(new ProxyGenerationHook());
+                var service = proxy.CreateClassProxy<TServiceType>(options, interceptors);
                 services.Add(typeof(TServiceType), service);
 
                 return service;
@@ -55,7 +56,8 @@ namespace MySoft.IoC
             else
             {
                 ProxyGenerator proxy = new ProxyGenerator();
-                var service = proxy.CreateClassProxy(serviceType, interceptors);
+                ProxyGenerationOptions options = new ProxyGenerationOptions(new ProxyGenerationHook());
+                var service = proxy.CreateClassProxy(serviceType, options, interceptors);
                 services.Add(serviceType, service);
 
                 return service;

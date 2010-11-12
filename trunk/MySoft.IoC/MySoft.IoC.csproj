@@ -60,6 +60,8 @@
     <Compile Include="Aspect\AspectFactory.cs" />
     <Compile Include="Aspect\AspectInterceptor.cs" />
     <Compile Include="Aspect\AspectManager.cs" />
+    <Compile Include="Aspect\AspectSwitcherAttribute.cs" />
+    <Compile Include="Aspect\ProxyGenerationHook.cs" />
     <Compile Include="IoCException.cs" />
     <Compile Include="Mvp\Presenter\Presenter.cs" />
     <Compile Include="Mvp\Presenter\PresenterFactory.cs" />

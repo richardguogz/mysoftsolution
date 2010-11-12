@@ -244,27 +244,11 @@ namespace MySoft.Core
         /// 获取自定义属性
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="pi"></param>
+        /// <param name="member"></param>
         /// <returns></returns>
-        public static T GetPropertyAttribute<T>(PropertyInfo pi)
+        public static T[] GetMemberAttributes<T>(MemberInfo member)
         {
-            object[] attrs = pi.GetCustomAttributes(typeof(T), false);
-            if (attrs != null && attrs.Length > 0)
-            {
-                return (T)attrs[0];
-            }
-            return default(T);
-        }
-
-        /// <summary>
-        /// 获取自定义属性
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="pi"></param>
-        /// <returns></returns>
-        public static T[] GetPropertyAttributes<T>(PropertyInfo pi)
-        {
-            object[] attrs = pi.GetCustomAttributes(typeof(T), false);
+            object[] attrs = member.GetCustomAttributes(typeof(T), false);
             if (attrs != null && attrs.Length > 0)
             {
                 return attrs.Cast<T>().ToArray();
@@ -276,27 +260,11 @@ namespace MySoft.Core
         /// 获取自定义属性
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="method"></param>
+        /// <param name="member"></param>
         /// <returns></returns>
-        public static T[] GetMethodAttributes<T>(MethodInfo method)
+        public static T GetMemberAttribute<T>(MemberInfo member)
         {
-            object[] attrs = method.GetCustomAttributes(typeof(T), false);
-            if (attrs != null && attrs.Length > 0)
-            {
-                return attrs.Cast<T>().ToArray();
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 获取自定义属性
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        public static T GetMethodAttribute<T>(MethodInfo method)
-        {
-            object[] attrs = method.GetCustomAttributes(typeof(T), false);
+            object[] attrs = member.GetCustomAttributes(typeof(T), false);
             if (attrs != null && attrs.Length > 0)
             {
                 return (T)attrs[0];
