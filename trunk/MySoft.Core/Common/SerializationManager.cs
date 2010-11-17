@@ -136,7 +136,6 @@ namespace MySoft.Core
             return (T)DeserializeBin(data);
         }
 
-
         /// <summary>
         /// 将字符串反系列化成对象
         /// </summary>
@@ -146,6 +145,11 @@ namespace MySoft.Core
         public static object DeserializeJSON(Type returnType, string data)
         {
             if (string.IsNullOrEmpty(data)) return null;
+
+            if (returnType.IsEnum)
+            {
+                return Enum.Parse(returnType, data);
+            }
 
             if (returnType.IsArray && data != null && !data.StartsWith("["))
             {
