@@ -102,7 +102,7 @@ namespace MySoft.IoC
                         continue;
                     }
 
-                    string val = SerializationManager.SerializeJSON(paramValues[i]);
+                    string val = SerializationManager.SerializeJson(paramValues[i]);
 
                     reqMsg.Parameters[pis[i].Name] = val;
                 }
@@ -132,12 +132,6 @@ namespace MySoft.IoC
                             case CompressType.Zip:
                                 buffer = CompressionManager.Decompress7Zip(buffer);
                                 break;
-                            case CompressType.Auto:
-                                if (buffer.Length > 1024 * 1024) //大于1兆才压缩
-                                {
-                                    buffer = CompressionManager.Decompress7Zip(buffer);
-                                }
-                                break;
                         }
                     }
 
@@ -156,16 +150,10 @@ namespace MySoft.IoC
                             case CompressType.Zip:
                                 jsonString = CompressionManager.Decompress7Zip(jsonString);
                                 break;
-                            case CompressType.Auto:
-                                if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024) //大于1兆才压缩
-                                {
-                                    jsonString = CompressionManager.Decompress7Zip(jsonString);
-                                }
-                                break;
                         }
                     }
 
-                    return SerializationManager.DeserializeJSON(returnType, jsonString);
+                    return SerializationManager.DeserializeJson(returnType, jsonString);
                 case TransferType.Xml:
                     string xmlString = resMsg.Data.ToString();
 
@@ -180,16 +168,10 @@ namespace MySoft.IoC
                             case CompressType.Zip:
                                 xmlString = CompressionManager.Decompress7Zip(xmlString);
                                 break;
-                            case CompressType.Auto:
-                                if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024) //大于1兆才压缩
-                                {
-                                    xmlString = CompressionManager.Decompress7Zip(xmlString);
-                                }
-                                break;
                         }
                     }
 
-                    return SerializationManager.DeserializeXML(returnType, xmlString);
+                    return SerializationManager.DeserializeXml(returnType, xmlString);
             }
 
             return errorReturnValue;

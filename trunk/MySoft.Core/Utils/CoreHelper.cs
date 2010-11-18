@@ -204,7 +204,7 @@ namespace MySoft.Core
             if (CheckStruct(type))
             {
                 //如果字段为结构，则进行系列化操作
-                return SerializationManager.DeserializeJSON(type, value.ToString());
+                return SerializationManager.DeserializeJson(type, value.ToString());
             }
             else
             {

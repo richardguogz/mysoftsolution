@@ -92,7 +92,7 @@ namespace MySoft.IoC.Services
             {
                 Type type = pis[i].ParameterType;
 
-                object val = SerializationManager.DeserializeJSON(type, msg.Parameters[pis[i].Name]);
+                object val = SerializationManager.DeserializeJson(type, msg.Parameters[pis[i].Name]);
 
                 parms[i] = val;
             }
@@ -131,16 +131,6 @@ namespace MySoft.IoC.Services
                                 case CompressType.GZip:
                                     resMsg.Data = CompressionManager.CompressGZip(buffer);
                                     break;
-                                case CompressType.Auto:
-                                    if (buffer.Length > 1024 * 1024) //大于1兆才压缩
-                                    {
-                                        resMsg.Data = CompressionManager.Compress7Zip(buffer);
-                                    }
-                                    else
-                                    {
-                                        resMsg.Data = buffer;
-                                    }
-                                    break;
                             }
                         }
                         else
@@ -149,7 +139,7 @@ namespace MySoft.IoC.Services
                         }
                         break;
                     case TransferType.Json:
-                        string jsonString = SerializationManager.SerializeJSON(returnValue);
+                        string jsonString = SerializationManager.SerializeJson(returnValue);
 
                         //将数据进行压缩
                         if (container.Compress != CompressType.None)
@@ -162,16 +152,6 @@ namespace MySoft.IoC.Services
                                 case CompressType.GZip:
                                     resMsg.Data = CompressionManager.CompressGZip(jsonString);
                                     break;
-                                case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(jsonString) > 1024 * 1024) //大于1兆才压缩
-                                    {
-                                        resMsg.Data = CompressionManager.Compress7Zip(jsonString);
-                                    }
-                                    else
-                                    {
-                                        resMsg.Data = jsonString;
-                                    }
-                                    break;
                             }
                         }
                         else
@@ -180,7 +160,7 @@ namespace MySoft.IoC.Services
                         }
                         break;
                     case TransferType.Xml:
-                        string xmlString = SerializationManager.SerializeXML(returnValue);
+                        string xmlString = SerializationManager.SerializeXml(returnValue);
 
                         //将数据进行压缩
                         if (container.Compress != CompressType.None)
@@ -192,16 +172,6 @@ namespace MySoft.IoC.Services
                                     break;
                                 case CompressType.GZip:
                                     resMsg.Data = CompressionManager.CompressGZip(xmlString);
-                                    break;
-                                case CompressType.Auto:
-                                    if (Encoding.Default.GetByteCount(xmlString) > 1024 * 1024) //大于1兆才压缩
-                                    {
-                                        resMsg.Data = CompressionManager.Compress7Zip(xmlString);
-                                    }
-                                    else
-                                    {
-                                        resMsg.Data = xmlString;
-                                    }
                                     break;
                             }
                         }

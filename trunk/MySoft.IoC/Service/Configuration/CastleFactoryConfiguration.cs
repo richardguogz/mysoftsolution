@@ -97,9 +97,6 @@ namespace MySoft.IoC
                     case "gzip":
                         compress = CompressType.GZip;
                         break;
-                    case "auto":
-                        compress = CompressType.Auto;
-                        break;
                     default:
                         compress = CompressType.None;
                         break;

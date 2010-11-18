@@ -66,7 +66,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string SerializeJSON(object obj)
+        public static string SerializeJson(object obj)
         {
             if (obj == null) return "null";
 
@@ -75,21 +75,9 @@ namespace MySoft.Core
             {
                 return JavaScriptConvert.ToString((Enum)obj);
             }
-            else if (type == typeof(string))
+            else if (obj is IConvertible)
             {
-                return JavaScriptConvert.ToString(obj.ToString());
-            }
-            else if (type == typeof(DateTime))
-            {
-                return JavaScriptConvert.ToString((DateTime)obj);
-            }
-            else if (type == typeof(bool))
-            {
-                return JavaScriptConvert.ToString((bool)obj);
-            }
-            else if (type.IsValueType)
-            {
-                return obj.ToString();
+                return JavaScriptConvert.ToString(obj);
             }
 
             //处理DataRow，DataTable，DataSet的系列化
@@ -142,7 +130,7 @@ namespace MySoft.Core
         /// <param name="returnType"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static object DeserializeJSON(Type returnType, string data)
+        public static object DeserializeJson(Type returnType, string data)
         {
             if (string.IsNullOrEmpty(data)) return null;
 
@@ -177,9 +165,9 @@ namespace MySoft.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static T DeserializeJSON<T>(string data)
+        public static T DeserializeJson<T>(string data)
         {
-            return (T)DeserializeJSON(typeof(T), data);
+            return (T)DeserializeJson(typeof(T), data);
         }
 
         #endregion
@@ -189,9 +177,9 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static string SerializeXML(object obj)
+        public static string SerializeXml(object obj)
         {
-            return SerializeXML(obj, Encoding.Default);
+            return SerializeXml(obj, Encoding.Default);
         }
 
         /// <summary>
@@ -199,7 +187,7 @@ namespace MySoft.Core
         /// </summary>
         /// <param name="obj">The obj.</param>
         /// <returns></returns>
-        public static string SerializeXML(object obj, Encoding encoding)
+        public static string SerializeXml(object obj, Encoding encoding)
         {
             if (obj == null)
             {
@@ -243,9 +231,9 @@ namespace MySoft.Core
         /// <param name="returnType">Type of the return.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static T DeserializeXML<T>(string data)
+        public static T DeserializeXml<T>(string data)
         {
-            return (T)DeserializeXML(typeof(T), data);
+            return (T)DeserializeXml(typeof(T), data);
         }
 
         /// <summary>
@@ -254,7 +242,7 @@ namespace MySoft.Core
         /// <param name="returnType">Type of the return.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static object DeserializeXML(Type returnType, string data)
+        public static object DeserializeXml(Type returnType, string data)
         {
             if (data == null)
             {

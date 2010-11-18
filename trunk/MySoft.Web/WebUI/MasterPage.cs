@@ -70,18 +70,18 @@ namespace MySoft.Web.UI
             sb.Append("var " + ObjectName + " = ");
             if (values == null)
             {
-                sb.Append(SerializationManager.SerializeJSON(values) + ";\r\n");
+                sb.Append(SerializationManager.SerializeJson(values) + ";\r\n");
             }
             else
             {
                 if (values.Length == 1)
                 {
                     object value = values[0];
-                    sb.Append(SerializationManager.SerializeJSON(values[0]) + ";\r\n");
+                    sb.Append(SerializationManager.SerializeJson(values[0]) + ";\r\n");
                 }
                 else
                 {
-                    sb.Append(SerializationManager.SerializeJSON(values) + ";\r\n");
+                    sb.Append(SerializationManager.SerializeJson(values) + ";\r\n");
                 }
             }
             WebHelper.RegisterPageScript(this.Page, sb.ToString());

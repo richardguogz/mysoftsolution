@@ -574,7 +574,7 @@ namespace MySoft.Core
         {
             try
             {
-                string xml = SerializationManager.SerializeXML(value);
+                string xml = SerializationManager.SerializeXml(value);
                 doc.InnerXml = xml;
             }
             catch { }

@@ -54,10 +54,6 @@ namespace MySoft.Remoting
         /// <summary>
         /// 7ZIP压缩方式
         /// </summary>
-        Zip,
-        /// <summary>
-        /// AUTO压缩方式
-        /// </summary>
-        Auto
+        Zip
     }
 }

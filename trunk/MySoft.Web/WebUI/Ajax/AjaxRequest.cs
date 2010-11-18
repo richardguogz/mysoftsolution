@@ -275,7 +275,7 @@ namespace MySoft.Web.UI
                         if (info.EnableAjaxTemplate && templatePath != null)
                         {
                             string templateString = LoadTemplate(templatePath);
-                            html = "{ data : " + html + ",\r\njst : " + SerializationManager.SerializeJSON(templateString) + " }";
+                            html = "{ data : " + html + ",\r\njst : " + SerializationManager.SerializeJson(templateString) + " }";
                         }
 
                         //将数据放入缓存
@@ -394,7 +394,7 @@ namespace MySoft.Web.UI
         /// </summary>
         private object GetObject(Type type, string paramsKey)
         {
-            return SerializationManager.DeserializeJSON(type, WebHelper.GetRequestParam<string>(info.CurrentPage.Request, paramsKey, ""));
+            return SerializationManager.DeserializeJson(type, WebHelper.GetRequestParam<string>(info.CurrentPage.Request, paramsKey, ""));
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace MySoft.Web.UI
             info.CurrentPage.Response.Clear();
 
             if (param != null)
-                info.CurrentPage.Response.Write(SerializationManager.SerializeJSON(param));
+                info.CurrentPage.Response.Write(SerializationManager.SerializeJson(param));
             else
                 info.CurrentPage.Response.ContentType = "image/gif";
 
@@ -422,7 +422,7 @@ namespace MySoft.Web.UI
         private void WriteToBuffer(AjaxMethodInfo[] methods)
         {
             info.CurrentPage.Response.Clear();
-            info.CurrentPage.Response.Write(SerializationManager.SerializeJSON(methods));
+            info.CurrentPage.Response.Write(SerializationManager.SerializeJson(methods));
             info.CurrentPage.Response.Cache.SetNoStore();
             info.CurrentPage.Response.Flush();
             info.CurrentPage.Response.End();
