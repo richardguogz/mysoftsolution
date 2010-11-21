@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="宋体" Size="9" />
+  <Class Name="CSharpWin.EditorServiceContext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>EditorServiceContext.cs</FileName>
+      <HashCode>CAAAAQgAAACCAQRAAAQAAUAEAAAAAAAACAgAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSharpWin.EmotionContainer">
+    <Position X="1.5" Y="3.25" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>EmotionContainer.cs</FileName>
+      <HashCode>AaCgAQEIECABiAAgAAAACAgAAlACAgAgCgADBAoAQSA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="CSharpWin.EmotionContainer.EmotionItemCollection" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>EmotionContainer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+  </Class>
+  <Class Name="CSharpWin.EmotionContainerDesigner" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>EmotionContainer.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABAAEAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.EmotionItem" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>EmotionItem.cs</FileName>
+      <HashCode>AEAAgADgASAgAIAAAAgAAAgQAACAQBAIAQAACAAAAiA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSharpWin.EmotionItemConverter" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>EmotionItem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAIAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.EmotionItemMouseClickEventArgs">
+    <Position X="5.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>EventArgs.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.GifBox" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GifBox.cs</FileName>
+      <HashCode>AACABAAAIDABIAAAAAIAAAACAAAIQBAIACAAAAAAEIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.ItemCollectionBase&lt;TParent, TItem&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ItemCollectionBase.cs</FileName>
+      <HashCode>AkIAgECACIAEABARCAAABCQQQAUAAQAESAAAAABUIAI=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSharpWin.ItemEventCollectionBase&lt;TParent, TItem&gt;" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ItemCollectionBase.cs</FileName>
+      <HashCode>AEYAgECAAAAAAAAwCAAAhAEAAAAAAhAAAAAAAAAUIAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.CollectionBase&lt;TItem&gt;" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ItemCollectionBase.cs</FileName>
+      <HashCode>AgYEAAAACpQEABAxBAEQADUSQAUAAgAASEQAAABEAQI=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSharpWin.PanelDesigner" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>PanelDesigner.cs</FileName>
+      <HashCode>AAAAAAAAIAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.Popup" Collapsed="true">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Popup.cs</FileName>
+      <HashCode>LgCCAIQsggABhACIDEAAIAgAAIQHEAQAAAgiQwCBMYA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnsafeMethods" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Nativemethods.cs</FileName>
+      <HashCode>BIBACAEEQAIgAhAAhGAEAAAAIECABAAAAAEIECgsAyA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.Properties.Resources" Collapsed="true">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSharpWin.Properties.Settings" Collapsed="true">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="CSharpWin.GripBounds" Collapsed="true">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GripBounds.cs</FileName>
+      <HashCode>AgAAAAAoAAAAIBAAAAAQEAAAAAAIAAAACCCAAAAAAEA=</HashCode>
+    </TypeIdentifier>
+  </Struct>
+  <Delegate Name="CSharpWin.EmotionItemMouseEventHandler">
+    <Position X="6" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>EventArgs.cs</FileName>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Delegate>
+</ClassDiagram>

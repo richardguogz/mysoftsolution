@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>安装Web截屏插件</title>
+
+    <script>
+function toTry(){
+	try{
+		if(shyslysky.getversion()=='1001'){
+		        document.getElementById("wait").innerHTML="";
+				alert("Web截屏插件安装完毕,你已经可以使用截屏功能!点击'确定'关闭本页面。");
+				try{
+				  window.opener.focus();
+				  window.close();
+				}catch(e){
+				  window.close();
+				}  
+		}
+	}
+	catch(e){
+		window.setTimeout("toTry()",500);
+	}
+}
+    </script>
+
+    <style type="text/css">
+        .STYLE2
+        {
+            color: #C00;
+            float: left;
+            padding-left: 20px;
+            padding-top: 10px;
+        }
+        .STYLE3
+        {
+            color: #666;
+            padding-top: 10px;
+            font-size: 12px;
+        }
+        a
+        {
+            color: #00F;
+            text-decoration: none;
+        }
+        a:hover
+        {
+            color: #C00;
+            text-decoration: underline;
+        }
+        BODY
+        {
+            font: "宋体";
+            font-size: 14px;
+        }
+    </style>
+    <meta content="MSHTML 6.00.2900.3268" name="GENERATOR" />
+</head>
+<body onload="toTry();">
+
+    <object id="shyslysky" classid="clsid:cbce19ea-85e3-46b7-8fc6-32d2e7cf5316" codebase="sl.image.cab#version=1,0,0,1"
+        align="center" width="0" height="0">
+        <param name="interval" value="1000">
+        <param name="enabled" value="1">
+    </object>
+    
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="70" valign="top">
+                <div class="STYLE2" id="wait">
+                    Web截屏插件正在下载中，请等待...........
+                    <div class="STYLE3">
+                        <img src="/Images/dot.gif" width="9" height="9">
+                        如果下载没有开始，<a href="/setup.rar" target="_blank">请单击此处手动下载</a> 然后单击“打开”</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td height="20" colspan="3" background="/Images/bg.jpg">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="padding-left: 50px;">
+                <strong>安装步骤下图所示</strong> ：
+                <br />
+                <br />
+                <img src="/Images/1.gif" align="absmiddle">
+                请等待IE页面上方出现的提示条，然后选中“安装ActiveX控件”单击。<br />
+                <br />
+                <img src="/Images/screen_1.gif">
+                <br />
+                <br />
+                <img src="/Images/2.gif" align="absmiddle">
+                在弹出的提示框里，单击“安装”按钮。<br />
+                <br />
+                <img src="/Images/screen_2.gif"><br />
+                <br />
+                <img src="/Images/3.gif" align="absmiddle">
+                过一分钟左右，弹出提示框，提示“安装完毕！”，至此Web截屏插件安装完成。<br />
+                <br />
+                <img src="/Images/screen_3.gif"><br />
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center" class="STYLE3">
+                <hr size="1" color="#E7E7E7" />
+                Copyright &copy; 2010
+            </td>
+        </tr>
+    </table>
+    <!-- 
+<div id="wait"  onmousedown=popDivMoveStart() style="position:absolute;left:190px;top:88px;width:439px;height=160px;z-index:4;background-color:#FF9933;layer-background-color:#FF9933;cursor:move;border:1px none #000000; text-align:center;" class="drag">
+<table style="background-repeat:no-repeat" width="439" height="160" border="0" cellpadding="0" cellspacing="0" background="images/yellow_invite_bg.gif">
+ <tr>
+  <td colspan="7" width="439" height="27">
+  <span class="STYLE2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;截屏程序正在下载中,请等待IE页面上方的ActiveX控件提 示框并安装live800截屏插件</span>
+  </td>
+</tr>
+</table>
+</div>
+-->
+</body>
+</html>

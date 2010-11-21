@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>UploadFile</title>
+
+<style type="text/css"> 
+body {
+	BORDER-RIGHT: 0px;
+	PADDING-RIGHT: 0px;
+	BORDER-TOP: 0px;
+	PADDING-LEFT: 0px;
+	FONT-SIZE: 9pt;
+	PADDING-BOTTOM: 0px;
+	MARGIN: 0px;
+	BORDER-LEFT: 0px;
+	PADDING-TOP: 1px;
+	BORDER-BOTTOM: 0px;
+	FONT-FAMILY: Tahoma;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	overflow: hidden;	
+}
+td { 
+	FONT-SIZE: 9pt; 
+	FONT-FAMILY: Tahoma 
+}
+input.text
+{
+	border: 1px solid #70B4E0;
+	background-color: #D4EEFF;
+	color: #007AC8;
+	font-size: 12px
+}
+input.btn
+{
+	height:18px;
+	border: 1px solid #70B4E0;
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+</style>
+<script type="text/JavaScript" language="JavaScript">
+function getObj(objId)
+{
+	if (document.getElementById) 
+		return document.getElementById(objId); 
+	else if (document.all) 
+		return document.all(objId);	
+}
+
+function CheckUpload(){
+ 
+	if(document.uploadFileForm.myFile.value.length<1){
+		alert("请选择要传送的文件！");
+		document.uploadFileForm.myFile.focus();
+		return false;
+	}else
+	{
+        try {
+		    getObj('uploadFileForm').action = parent.uploadFileOnSubmit(document.uploadFileForm.myFile.value);
+		    return true;
+		}
+		catch(e) {
+		    return false;
+		}
+	}
+	
+}
+</script>
+
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/></head><body> 
+<table cellspacing="0" cellpadding="0" border="0"> 
+  <tbody><tr> 
+  <td width="50"/>
+    <td width="574" align="left"> 
+        <form enctype="multipart/form-data" action="" method="post" onsubmit="return CheckUpload();"  id="uploadFileForm" name="uploadFileForm"> 
+        <input type="file" onkeydown="return false;" class="text" size="28" id="myFile" name="myFile"/> 
+  
+        <input type="submit" class="btn" value="传送"/> 
+		<input type="button" value="关闭" onclick="parent.hideUploadFileForm();" class="btn" name="Submit2"/> 
+      </form></td> 
+  </tr> 
+</tbody></table> 
+</body>
+</html>

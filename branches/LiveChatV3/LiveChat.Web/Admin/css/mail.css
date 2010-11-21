@@ -1,0 +1,258 @@
+body{
+	padding:0px;
+	margin:0px;
+	font-size:12px;
+	color:#2f3b85;
+}
+
+a:link, a:visited{
+	color:#0044dd;
+	text-decoration:none;
+}
+a:hover, a:active{
+	color:#f50;
+	text-decoration:none;
+}
+
+img{
+	border:0px;
+}
+
+.logo{
+	padding:3px 0px 0px 6px;
+	text-align:left;
+}
+
+.login{
+	width:490px;
+	height:219px;
+	background:url(../images/mainBg.jpg) left top no-repeat;
+	margin:110px 0px 0px 0px;
+	padding:144px 0px 0px 0px;
+}
+
+.loginLine{
+	margin:0px 0px 3px 0px;
+}
+
+.login input.align{
+	width:150px;
+	height:16px;
+}
+
+.btn{
+	padding:10px 0px 0px 0px;
+}
+
+.loginBtn{
+	width:79px;
+	height:28px;
+	background:url(../images/loginBtn.jpg) left top no-repeat;
+	display:block;
+	cursor:pointer;
+	border:0px;
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	padding:4px 0px 0px 10px;
+}
+
+.btm{
+	padding:10px;
+	line-height:2.0;
+	color:#c2d8ec;
+	font-size:12px
+}
+
+/* list style css  */
+
+.listBg{
+	background:url(../images/listBg.jpg) left top repeat-x #5b9acf;
+}
+
+.logoList{
+	padding:3px 0px 0px 6px;
+	text-align:left;
+	width:300px;
+	float:left;
+}
+
+.rightInfo{
+	text-align:right;
+	float:right;
+	width:400px;
+	padding:12px 20px 0px 0px;
+}
+
+.hack{
+	height:26px;
+	clear:both;
+}
+
+div.rounde{
+	background: #fff;
+	height:auto
+}
+
+b.rtop, b.rbottom{
+	display:block;
+	background: #5b9acf
+}
+
+b.rtop b, b.rbottom b{
+	display:block;
+	height: 1px;
+	overflow: hidden; 
+	background: #fff
+}
+
+b.r1{
+	margin: 0 5px
+}
+
+b.r2{
+	margin: 0 3px
+}
+
+b.r3{
+	margin: 0 2px
+}
+
+b.rtop b.r4, b.rbottom b.r4{
+	margin: 0 1px;
+	height: 2px
+}
+
+.listBtn{
+	width:79px;
+	height:28px;
+	background:url(../images/listBtn.jpg) left top no-repeat;
+	cursor:pointer;
+	border:0px;
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	padding:4px 0px 0px 4px;
+}
+
+.listInfo{
+	width:98%;
+	padding:4px 0px 12px 0px;
+	text-align:left;
+
+}
+
+.listLine{
+	height:4px;
+	margin-top:10px;
+	background:url(../images/lineTop.jpg) left top repeat-x;
+}
+
+.hack2{
+	height:6px;
+	font-size:0px;
+}
+
+.listTitle{
+	font-size:16px;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+
+.listTab{
+	border-left:1px solid #cde5fa;
+	border-top:1px solid #cde5fa;
+}
+
+.listTab td{
+	border-right:1px solid #cde5fa;
+	border-bottom:1px solid #cde5fa;
+	padding:5px 0px 4px 0px;
+	text-align:center;
+}
+
+.listTab td.tdTitle{
+	background-color:#e6eef5;
+	color:#2e75ba;
+	font-weight:bold;
+}
+
+.listTab td.tdInfo{
+	background-color:#f7f9fb;
+}
+
+.page{
+	padding:8px 0px;
+	text-align:center;
+}
+
+.red{
+	color:#CC0000
+}
+\
+#htmlPager.custom
+{
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 8px;
+    text-align: center;
+}
+#htmlPager.custom a
+{
+    border-right: #eee 1px solid;
+    padding-right: 5px;
+    border-top: #eee 1px solid;
+    padding-left: 5px;
+    padding-bottom: 2px;
+    margin: 2px;
+    border-left: #eee 1px solid;
+    color: #036cb4;
+    padding-top: 2px;
+    border-bottom: #eee 1px solid;
+    text-decoration: none;
+}
+#htmlPager.custom a:hover
+{
+    border-right: #999 1px solid;
+    border-top: #999 1px solid;
+    border-left: #999 1px solid;
+    color: #666;
+    border-bottom: #999 1px solid;
+}
+#htmlPager.custom a:active
+{
+    border-right: #999 1px solid;
+    border-top: #999 1px solid;
+    border-left: #999 1px solid;
+    color: #666;
+    border-bottom: #999 1px solid;
+}
+#htmlPager.custom .current
+{
+    border-right: #036cb4 1px solid;
+    padding-right: 5px;
+    border-top: #036cb4 1px solid;
+    padding-left: 5px;
+    font-weight: bold;
+    padding-bottom: 2px;
+    margin: 2px;
+    border-left: #036cb4 1px solid;
+    color: #fff;
+    padding-top: 2px;
+    border-bottom: #036cb4 1px solid;
+    background-color: #036cb4;
+}
+#htmlPager.custom .disabled
+{
+    border-right: #eee 1px solid;
+    padding-right: 5px;
+    border-top: #eee 1px solid;
+    padding-left: 5px;
+    padding-bottom: 2px;
+    margin: 2px;
+    border-left: #eee 1px solid;
+    color: #ddd;
+    padding-top: 2px;
+    border-bottom: #eee 1px solid;
+}

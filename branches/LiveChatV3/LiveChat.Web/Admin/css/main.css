@@ -1,0 +1,189 @@
+
+body
+{
+	/*border:1px solid #000;*/
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+}
+
+#queryInfo table
+{
+	border-left: solid 1px #7592a8;
+	border-top: solid 1px #7592a8;
+}
+#queryInfo table tr
+{
+	line-height: 25px;
+}
+#queryInfo table td
+{
+	border-right: solid 1px #7592a8;
+	border-bottom: solid 1px #7592a8;
+	font-size: 13px;
+	line-height: 30px;
+}
+
+#queryInfo table .total td
+{
+	font-weight: bold;
+	background-color: #f9f9f9;
+}
+
+#queryInfo .mail
+{
+	text-align: left;
+	padding-left: 10px;
+}
+
+#queryInfo .title
+{
+	border: #7592a8 1px solid;
+}
+#queryInfo .title td
+{
+	background-color: #0D5D9B; /* #76b2e4;*/
+	vertical-align: middle;
+	color: White;
+}
+.title
+{
+	padding: 2px 2px 5px 2px;
+}
+
+div
+{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+#wrapper
+{
+	width: 99%;
+	height: 100%;
+	padding: 5px;
+}
+
+#tongji .fail a
+{
+	text-decoration: underline;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#tongji .tdcontent
+{
+	text-align: left;
+	padding: 0px 5px 0px 5px;
+}
+
+#tongji .tab
+{
+	background-color: #EEEEEE;
+	border: 1px solid #CCCCCC;
+	bottom: -1px;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 30px;
+	position: relative;
+	text-align: center;
+	width: 130px;
+}
+
+#tongji .onhand
+{
+	background-color: #FFFFFF;
+	border-color: #CCCCCC rgb(204, 204, 204) rgb(255, 255, 255);
+	border-style: solid;
+	border-width: 1px;
+	bottom: -1px;
+	display: block;
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 30px;
+	position: relative;
+	text-align: center;
+	width: 130px;
+}
+
+#tongji .content
+{
+	background: white;
+	border: 1px solid #CCCCCC;
+	clear: both !important;
+	width: 100%;
+}
+
+#tongji table
+{
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 12px;
+	color: #004477;
+	border: 1px solid #ccc;
+	background: #fcfcfc;
+}
+#tongji caption
+{
+	font-size: 15px;
+	font-weight: bold;
+	color: #000;
+	text-align: left;
+	padding: 20px;
+}
+
+#tongji td
+{
+	background: #fff;
+	text-align: center;
+	padding-bottom: 0px;
+	vertical-align: bottom;
+}
+
+#tongji p
+{
+	margin-bottom: 5px;
+}
+.chartcaption
+{
+	color: #000;
+	font-weight: bold;
+}
+.tdbg
+{
+	width: 16px;
+	margin: 0 auto;
+	background: #1C86EE;
+	padding: 0;
+}
+
+.tdbgpic
+{
+	width: 16px;
+	margin: 0 auto;
+	background: url(/admin/images/tubg.jpg);
+	padding: 0;
+}
+
+.title
+{
+	font-size: 13px;
+	color: #000;
+	font-weight: bold;
+	padding: 0;
+	margin: 0;
+	padding-bottom: 0px;
+}
+
+.line
+{
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px dotted #004477;
+	width: 60%;
+}
