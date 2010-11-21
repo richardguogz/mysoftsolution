@@ -31,14 +31,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ToolStripButton tsbExit;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGroupChat));
+            System.Windows.Forms.ToolStripButton toolStripButton4;
             this.lblGroupInfo = new System.Windows.Forms.Label();
             this.plChat = new System.Windows.Forms.Panel();
             this.btnSend = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnSendMessage = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             this.wbChatBox = new System.Windows.Forms.WebBrowser();
@@ -59,26 +59,59 @@
             this.按ControlEnter键发送消息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listSeats = new LiveChat.Client.DoubleBufferListView();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader12 = new System.Windows.Forms.ColumnHeader();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            tsbExit = new System.Windows.Forms.ToolStripButton();
+            toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.plChat.SuspendLayout();
             this.panel7.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tsChatTools.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // tsbExit
+            // 
+            tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
+            tsbExit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            tsbExit.Name = "tsbExit";
+            tsbExit.Size = new System.Drawing.Size(60, 53);
+            tsbExit.Text = "关闭窗口";
+            tsbExit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripButton4
+            // 
+            toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            toolStripButton4.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton4.Name = "toolStripButton4";
+            toolStripButton4.Size = new System.Drawing.Size(60, 53);
+            toolStripButton4.Text = "关闭窗口";
+            toolStripButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
             // lblGroupInfo
             // 
@@ -136,39 +169,14 @@
             this.btnSendMessage.Text = "发送";
             this.btnSendMessage.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.ItemSize = new System.Drawing.Size(120, 24);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(584, 412);
-            this.tabControl1.TabIndex = 6;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.panel1);
-            this.tabPage3.Controls.Add(this.wbChatBox);
-            this.tabPage3.Controls.Add(this.panel2);
-            this.tabPage3.Location = new System.Drawing.Point(4, 28);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(576, 380);
-            this.tabPage3.TabIndex = 0;
-            this.tabPage3.Text = "客服群聊天（1/10）";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.emotionDropdown1);
-            this.panel1.Location = new System.Drawing.Point(2, 189);
+            this.panel1.Location = new System.Drawing.Point(1, 9);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(226, 87);
+            this.panel1.Size = new System.Drawing.Size(396, 256);
             this.panel1.TabIndex = 13;
             this.panel1.Visible = false;
             // 
@@ -176,20 +184,21 @@
             // 
             this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
-            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(226, 87);
-            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(226, 87);
+            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(401, 291);
+            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(401, 291);
             this.emotionDropdown1.Name = "emotionDropdown1";
-            this.emotionDropdown1.Size = new System.Drawing.Size(226, 87);
+            this.emotionDropdown1.Root = null;
+            this.emotionDropdown1.Size = new System.Drawing.Size(401, 291);
             this.emotionDropdown1.TabIndex = 0;
             // 
             // wbChatBox
             // 
             this.wbChatBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wbChatBox.Location = new System.Drawing.Point(3, 3);
+            this.wbChatBox.Location = new System.Drawing.Point(0, 0);
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(570, 274);
+            this.wbChatBox.Size = new System.Drawing.Size(468, 266);
             this.wbChatBox.TabIndex = 9;
             // 
             // panel2
@@ -200,16 +209,16 @@
             this.panel2.Controls.Add(this.tsChatTools);
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 277);
+            this.panel2.Location = new System.Drawing.Point(0, 266);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(570, 100);
+            this.panel2.Size = new System.Drawing.Size(468, 100);
             this.panel2.TabIndex = 8;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(482, 33);
+            this.button1.Location = new System.Drawing.Point(380, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(77, 59);
             this.button1.TabIndex = 1;
@@ -225,7 +234,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(468, 66);
+            this.txtMessage.Size = new System.Drawing.Size(366, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -245,7 +254,7 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(568, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(466, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
@@ -366,33 +375,17 @@
             this.button2.Text = "发送";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.listSeats);
-            this.tabPage1.Location = new System.Drawing.Point(4, 28);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(576, 380);
-            this.tabPage1.TabIndex = 1;
-            this.tabPage1.Text = "群成员";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
             // listSeats
             // 
             this.listSeats.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader7,
-            this.columnHeader8,
-            this.columnHeader9,
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12});
-            this.listSeats.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.columnHeader7});
             this.listSeats.FullRowSelect = true;
             this.listSeats.GridLines = true;
             this.listSeats.HideSelection = false;
-            this.listSeats.Location = new System.Drawing.Point(0, 0);
+            this.listSeats.Location = new System.Drawing.Point(0, 3);
             this.listSeats.MultiSelect = false;
             this.listSeats.Name = "listSeats";
-            this.listSeats.Size = new System.Drawing.Size(576, 380);
+            this.listSeats.Size = new System.Drawing.Size(498, 309);
             this.listSeats.TabIndex = 5;
             this.listSeats.UseCompatibleStateImageBehavior = false;
             this.listSeats.View = System.Windows.Forms.View.Details;
@@ -400,39 +393,148 @@
             // 
             // columnHeader7
             // 
-            this.columnHeader7.Text = "状态";
+            this.columnHeader7.Text = "群信息 (1/1)";
+            this.columnHeader7.Width = 200;
             // 
-            // columnHeader8
+            // splitContainer1
             // 
-            this.columnHeader8.Text = "客服代码";
-            this.columnHeader8.Width = 80;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 56);
+            this.splitContainer1.Name = "splitContainer1";
             // 
-            // columnHeader9
+            // splitContainer1.Panel1
             // 
-            this.columnHeader9.Text = "客服名称";
-            this.columnHeader9.Width = 100;
+            this.splitContainer1.Panel1.Controls.Add(this.panel1);
+            this.splitContainer1.Panel1.Controls.Add(this.wbChatBox);
+            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             // 
-            // columnHeader10
+            // splitContainer1.Panel2
             // 
-            this.columnHeader10.Text = "电话";
-            this.columnHeader10.Width = 80;
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(624, 366);
+            this.splitContainer1.SplitterDistance = 468;
+            this.splitContainer1.TabIndex = 7;
             // 
-            // columnHeader11
+            // splitContainer2
             // 
-            this.columnHeader11.Text = "手机";
-            this.columnHeader11.Width = 100;
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // columnHeader12
+            // splitContainer2.Panel1
             // 
-            this.columnHeader12.Text = "Email";
-            this.columnHeader12.Width = 150;
+            this.splitContainer2.Panel1.Controls.Add(this.textBox1);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.listSeats);
+            this.splitContainer2.Size = new System.Drawing.Size(152, 366);
+            this.splitContainer2.SplitterDistance = 123;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Location = new System.Drawing.Point(0, 23);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(152, 100);
+            this.textBox1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(152, 23);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "群动态";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsbAcceptTalk
+            // 
+            this.tsbAcceptTalk.Image = global::LiveChat.Client.Properties.Resources.tool2;
+            this.tsbAcceptTalk.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsbAcceptTalk.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAcceptTalk.Name = "tsbAcceptTalk";
+            this.tsbAcceptTalk.Size = new System.Drawing.Size(60, 53);
+            this.tsbAcceptTalk.Text = "好友资料";
+            this.tsbAcceptTalk.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
+            // 
+            // tsbChatMessage
+            // 
+            this.tsbChatMessage.Image = global::LiveChat.Client.Properties.Resources.tool1;
+            this.tsbChatMessage.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsbChatMessage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbChatMessage.Name = "tsbChatMessage";
+            this.tsbChatMessage.Size = new System.Drawing.Size(60, 53);
+            this.tsbChatMessage.Text = "消息记录";
+            this.tsbChatMessage.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 56);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripSeparator1,
+            this.toolStripButton3,
+            this.toolStripSeparator3,
+            toolStripButton4});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(624, 56);
+            this.toolStrip1.TabIndex = 19;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Image = global::LiveChat.Client.Properties.Resources.tool2;
+            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(60, 53);
+            this.toolStripButton1.Text = "好友资料";
+            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 56);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.tool1;
+            this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(60, 53);
+            this.toolStripButton3.Text = "消息记录";
+            this.toolStripButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
             // 
             // frmGroupChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 412);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(624, 422);
+            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmGroupChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -441,16 +543,23 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGroupChat_FormClosing);
             this.plChat.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tsChatTools.ResumeLayout(false);
             this.tsChatTools.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -461,8 +570,6 @@
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Button btnSendMessage;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Panel panel1;
         private EmotionDropdown emotionDropdown1;
         private System.Windows.Forms.WebBrowser wbChatBox;
@@ -485,13 +592,20 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.FontDialog fontDialog1;
-        private System.Windows.Forms.TabPage tabPage1;
         private DoubleBufferListView listSeats;
         private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.ColumnHeader columnHeader9;
-        private System.Windows.Forms.ColumnHeader columnHeader10;
-        private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ToolStripButton tsbAcceptTalk;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton tsbChatMessage;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }

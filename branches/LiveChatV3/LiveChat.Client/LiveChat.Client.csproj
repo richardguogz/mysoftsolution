@@ -495,7 +495,6 @@
     <Content Include="images\face\98.gif" />
     <Content Include="images\face\99.gif" />
     <Content Include="images\face\face.gif" />
-    <Content Include="images\face\face13.gif" />
     <Content Include="images\icon\captrue16.ico" />
     <Content Include="images\icon\face16.ico" />
     <Content Include="images\icon\font16.ico" />

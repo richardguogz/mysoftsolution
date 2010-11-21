@@ -70,7 +70,6 @@ namespace LiveChat.Client
             if (currentColor != null) txtMessage.ForeColor = currentColor;
 
             //获取点击的表情。
-            panel4.Size = new Size(500, 300);
             emotionDropdown1.Root = AppDomain.CurrentDomain.BaseDirectory;
             emotionDropdown1.EmotionContainer.ItemClick += new EmotionItemMouseEventHandler(EmotionContainer_ItemClick);
 
