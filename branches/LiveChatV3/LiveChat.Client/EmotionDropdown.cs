@@ -14,14 +14,15 @@ namespace LiveChat.Client
     public partial class EmotionDropdown : UserControl
     {
         private Popup _popup;
+        private static Image[] _images;
 
         public EmotionDropdown()
         {
             InitializeComponent();
             _popup = new Popup(this);
 
-            EmotionContainer.Row = 9;
-            EmotionContainer.Columns = 15;
+            EmotionContainer.Row = 15;
+            EmotionContainer.Columns = 9;
             EmotionContainer.ItemClick +=
                 new EmotionItemMouseEventHandler(EmotionContainerItemClick);
         }
@@ -52,11 +53,24 @@ namespace LiveChat.Client
         {
             if (!string.IsNullOrEmpty(Root))
             {
-                for (int i = 0; i < 135; i++)
+                if (_images == null)
                 {
-                    var image = Image.FromFile(Path.Combine(Root, string.Format("images/face/{0}.gif", i)));
-                    var item = new EmotionItem(i.ToString(), image);
-                    EmotionContainer.Items.Add(item);
+                    _images = new Image[136];
+                    for (int i = 0; i < 135; i++)
+                    {
+                        var image = Image.FromFile(Path.Combine(Root, string.Format("images/face/{0}.gif", i)));
+                        _images[i] = image;
+                        var item = new EmotionItem(i.ToString(), image);
+                        EmotionContainer.Items.Add(item);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 135; i++)
+                    {
+                        var item = new EmotionItem(i.ToString(), _images[i]);
+                        EmotionContainer.Items.Add(item);
+                    }
                 }
             }
         }

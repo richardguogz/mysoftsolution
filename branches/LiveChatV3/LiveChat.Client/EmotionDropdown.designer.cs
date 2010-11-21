@@ -47,7 +47,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.emotionContainer1);
             this.Name = "EmotionDropdown";
-            this.Size = new System.Drawing.Size(401, 291);
+            this.Size = new System.Drawing.Size(531, 350);
             this.Load += new System.EventHandler(this.EmotionDropdown_Load);
             this.ResumeLayout(false);
 

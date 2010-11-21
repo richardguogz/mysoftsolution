@@ -95,6 +95,7 @@ namespace LiveChat.Client
             if (company != null)
             {
                 txtCompanyCode.Enabled = false;
+                txtCompanyName.Focus();
 
                 txtCompanyCode.Text = company.CompanyID;
                 txtCompanyName.Text = company.CompanyName;
@@ -103,6 +104,10 @@ namespace LiveChat.Client
                 txtChatWebSite.Text = company.ChatWebSite;
 
                 btnSaveCompany.Text = "修改(&U)";
+            }
+            else
+            {
+                txtCompanyCode.Focus();
             }
         }
     }

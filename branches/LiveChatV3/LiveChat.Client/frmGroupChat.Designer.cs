@@ -59,14 +59,14 @@
             this.按ControlEnter键发送消息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.listSeats = new LiveChat.Client.DoubleBufferListView();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.listSeats = new LiveChat.Client.DoubleBufferListView();
+            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
@@ -112,6 +112,7 @@
             toolStripButton4.Size = new System.Drawing.Size(60, 53);
             toolStripButton4.Text = "关闭窗口";
             toolStripButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
             // 
             // lblGroupInfo
             // 
@@ -198,7 +199,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(468, 266);
+            this.wbChatBox.Size = new System.Drawing.Size(466, 266);
             this.wbChatBox.TabIndex = 9;
             // 
             // panel2
@@ -211,14 +212,14 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 266);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(468, 100);
+            this.panel2.Size = new System.Drawing.Size(466, 100);
             this.panel2.TabIndex = 8;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(380, 33);
+            this.button1.Location = new System.Drawing.Point(378, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(77, 59);
             this.button1.TabIndex = 1;
@@ -234,7 +235,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(366, 66);
+            this.txtMessage.Size = new System.Drawing.Size(364, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -254,7 +255,7 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(466, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(464, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
@@ -375,30 +376,10 @@
             this.button2.Text = "发送";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // listSeats
-            // 
-            this.listSeats.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader7});
-            this.listSeats.FullRowSelect = true;
-            this.listSeats.GridLines = true;
-            this.listSeats.HideSelection = false;
-            this.listSeats.Location = new System.Drawing.Point(0, 3);
-            this.listSeats.MultiSelect = false;
-            this.listSeats.Name = "listSeats";
-            this.listSeats.Size = new System.Drawing.Size(498, 309);
-            this.listSeats.TabIndex = 5;
-            this.listSeats.UseCompatibleStateImageBehavior = false;
-            this.listSeats.View = System.Windows.Forms.View.Details;
-            this.listSeats.DoubleClick += new System.EventHandler(this.listSeats_DoubleClick);
-            // 
-            // columnHeader7
-            // 
-            this.columnHeader7.Text = "群信息 (1/1)";
-            this.columnHeader7.Width = 200;
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(0, 56);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -411,13 +392,14 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(624, 366);
-            this.splitContainer1.SplitterDistance = 468;
+            this.splitContainer1.Size = new System.Drawing.Size(644, 366);
+            this.splitContainer1.SplitterDistance = 466;
             this.splitContainer1.TabIndex = 7;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -430,7 +412,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listSeats);
-            this.splitContainer2.Size = new System.Drawing.Size(152, 366);
+            this.splitContainer2.Size = new System.Drawing.Size(174, 366);
             this.splitContainer2.SplitterDistance = 123;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -440,7 +422,7 @@
             this.textBox1.Location = new System.Drawing.Point(0, 23);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(152, 100);
+            this.textBox1.Size = new System.Drawing.Size(174, 100);
             this.textBox1.TabIndex = 1;
             // 
             // label1
@@ -449,10 +431,32 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 23);
+            this.label1.Size = new System.Drawing.Size(174, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "群动态";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // listSeats
+            // 
+            this.listSeats.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader7});
+            this.listSeats.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listSeats.FullRowSelect = true;
+            this.listSeats.GridLines = true;
+            this.listSeats.HideSelection = false;
+            this.listSeats.Location = new System.Drawing.Point(0, 0);
+            this.listSeats.MultiSelect = false;
+            this.listSeats.Name = "listSeats";
+            this.listSeats.Size = new System.Drawing.Size(174, 239);
+            this.listSeats.TabIndex = 5;
+            this.listSeats.UseCompatibleStateImageBehavior = false;
+            this.listSeats.View = System.Windows.Forms.View.Details;
+            this.listSeats.DoubleClick += new System.EventHandler(this.listSeats_DoubleClick);
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "群信息 (1/1)";
+            this.columnHeader7.Width = 150;
             // 
             // tsbAcceptTalk
             // 
@@ -494,7 +498,7 @@
             toolStripButton4});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(624, 56);
+            this.toolStrip1.Size = new System.Drawing.Size(644, 56);
             this.toolStrip1.TabIndex = 19;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -504,9 +508,10 @@
             this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(60, 53);
-            this.toolStripButton1.Text = "好友资料";
+            this.toolStripButton1.Size = new System.Drawing.Size(48, 53);
+            this.toolStripButton1.Text = "群资料";
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator1
             // 
@@ -515,13 +520,14 @@
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.tool1;
+            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.tool6;
             this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(60, 53);
-            this.toolStripButton3.Text = "消息记录";
+            this.toolStripButton3.Text = "退出该群";
             this.toolStripButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // toolStripSeparator3
             // 
@@ -532,7 +538,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 422);
+            this.ClientSize = new System.Drawing.Size(644, 422);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

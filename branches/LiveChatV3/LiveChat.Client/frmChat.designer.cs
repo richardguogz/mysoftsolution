@@ -37,14 +37,14 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.panel12 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.txtFile = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             this.wbChatBox = new System.Windows.Forms.WebBrowser();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
@@ -81,8 +81,8 @@
             this.panel9.SuspendLayout();
             this.panel12.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.plChat.SuspendLayout();
             this.tsChatTools.SuspendLayout();
@@ -106,7 +106,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(624, 422);
+            this.panel1.Size = new System.Drawing.Size(584, 422);
             this.panel1.TabIndex = 3;
             // 
             // panel9
@@ -116,7 +116,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(624, 422);
+            this.panel9.Size = new System.Drawing.Size(584, 422);
             this.panel9.TabIndex = 2;
             // 
             // panel12
@@ -125,7 +125,7 @@
             this.panel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel12.Location = new System.Drawing.Point(0, 0);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(622, 420);
+            this.panel12.Size = new System.Drawing.Size(582, 420);
             this.panel12.TabIndex = 5;
             // 
             // panel3
@@ -138,8 +138,30 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(622, 420);
+            this.panel3.Size = new System.Drawing.Size(582, 420);
             this.panel3.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.emotionDropdown1);
+            this.panel4.Location = new System.Drawing.Point(1, 63);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(396, 256);
+            this.panel4.TabIndex = 12;
+            this.panel4.Visible = false;
+            // 
+            // emotionDropdown1
+            // 
+            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
+            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.Name = "emotionDropdown1";
+            this.emotionDropdown1.Root = null;
+            this.emotionDropdown1.Size = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.TabIndex = 0;
             // 
             // panel2
             // 
@@ -212,26 +234,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "文件大小限制在4M以内！";
             // 
-            // panel4
-            // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.emotionDropdown1);
-            this.panel4.Location = new System.Drawing.Point(1, 63);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(396, 256);
-            this.panel4.TabIndex = 12;
-            this.panel4.Visible = false;
-            // 
-            // emotionDropdown1
-            // 
-            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
-            this.emotionDropdown1.Name = "emotionDropdown1";
-            this.emotionDropdown1.Root = null;
-            this.emotionDropdown1.Size = new System.Drawing.Size(394, 254);
-            this.emotionDropdown1.TabIndex = 0;
-            // 
             // wbChatBox
             // 
             this.wbChatBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -239,7 +241,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(622, 264);
+            this.wbChatBox.Size = new System.Drawing.Size(582, 264);
             this.wbChatBox.TabIndex = 7;
             // 
             // toolStrip1
@@ -253,7 +255,7 @@
             tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(622, 56);
+            this.toolStrip1.Size = new System.Drawing.Size(582, 56);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -312,14 +314,14 @@
             this.plChat.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.plChat.Location = new System.Drawing.Point(0, 320);
             this.plChat.Name = "plChat";
-            this.plChat.Size = new System.Drawing.Size(622, 100);
+            this.plChat.Size = new System.Drawing.Size(582, 100);
             this.plChat.TabIndex = 7;
             // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.Location = new System.Drawing.Point(534, 33);
+            this.btnSend.Location = new System.Drawing.Point(494, 33);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(77, 59);
             this.btnSend.TabIndex = 1;
@@ -335,7 +337,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(520, 66);
+            this.txtMessage.Size = new System.Drawing.Size(480, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -359,7 +361,7 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(620, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(580, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
@@ -518,7 +520,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 422);
+            this.ClientSize = new System.Drawing.Size(584, 422);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmChat";
@@ -531,9 +533,9 @@
             this.panel12.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.panel4.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.plChat.ResumeLayout(false);

@@ -75,7 +75,7 @@ namespace LiveChat.WindowsService
             }
             catch (Exception ex)
             {
-                srv_OnLog("聊天服务启动失败：" + ex.Message);
+                srv_OnLog("聊天服务启动失败：" + ex.ToString());
             }
         }
 

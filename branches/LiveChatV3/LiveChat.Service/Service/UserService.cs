@@ -705,9 +705,13 @@ namespace LiveChat.Service
         {
             try
             {
-                UserGroup group = GroupManager.Instance.GetUserGroup(groupID);
-                User user = UserManager.Instance.GetUser(userID);
-                group.RemoveUser(user);
+                bool success = GroupManager.Instance.ExitUserGroup(userID, groupID);
+                if (success)
+                {
+                    UserGroup group = GroupManager.Instance.GetUserGroup(groupID);
+                    User user = UserManager.Instance.GetUser(userID);
+                    group.RemoveUser(user);
+                }
             }
             catch (Exception ex)
             {

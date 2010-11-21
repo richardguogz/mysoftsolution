@@ -51,12 +51,13 @@ namespace LiveChat.Client
         private void frmGroupChat_Load(object sender, EventArgs e)
         {
             this.Text = string.Format("【{0}】聊天中...", group.GroupName);
+            textBox1.Text = group.Notification;
 
             IList<Seat> seats = service.GetGroupSeats(group.GroupID);
             LoadSeatInfo(seats);
 
             int onlineCount = (seats as List<Seat>).FindAll(p => p.State == OnlineState.Online).Count;
-            listSeats.Columns[0].Text = string.Format("{0}({1}/{2})", group.GroupName, onlineCount, seats.Count);
+            listSeats.Columns[0].Text = string.Format("群成员 ({0}/{1})", onlineCount, seats.Count);
 
             if (currentFont != null) txtMessage.Font = currentFont;
             if (currentColor != null) txtMessage.ForeColor = currentColor;
@@ -90,7 +91,7 @@ namespace LiveChat.Client
                 //if (info.SeatType == SeatType.Super) continue;
 
                 //ListViewItem item = new ListViewItem(new string[] { state, info.SeatCode, info.SeatName, info.Telephone, info.MobileNumber, info.Email });
-                ListViewItem item = new ListViewItem(new string[] { info.SeatName });
+                ListViewItem item = new ListViewItem(new string[] { string.Format("{0}({1})", info.SeatName, info.SeatCode) });
                 switch (info.State)
                 {
                     case OnlineState.Online:
@@ -442,6 +443,36 @@ namespace LiveChat.Client
                 frmSeatInfo frm = new frmSeatInfo(service, company, seat, friend);
                 return frm;
             });
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            //群资料
+            Singleton.Show(() =>
+            {
+                frmGroup frmGroup = new frmGroup(service, company, seat, group);
+                frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
+                return frmGroup;
+            });
+        }
+
+        void frmGroup_Callback(object obj)
+        {
+            //
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            //退出该群
+            if (MessageBox.Show("确定退出群【" + group.GroupName + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+
+            service.ExitGroup(seat.SeatID, group.GroupID);
+            this.Close();
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

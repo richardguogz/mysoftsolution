@@ -15,13 +15,21 @@ namespace LiveChat.Client
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
-        private SGroup group;
+        private SeatGroup group;
         private Company company;
-        public frmGroup(ISeatService service, Company company, SGroup group)
+        private Seat seat;
+        private bool edit;
+
+        public frmGroup(ISeatService service, Company company, Seat seat, SeatGroup group)
         {
             this.service = service;
             this.company = company;
             this.group = group;
+            this.seat = seat;
+            this.edit = false;
+
+            if (group != null)
+                this.edit = group.ManagerID == seat.SeatID;
 
             InitializeComponent();
         }
@@ -57,12 +65,12 @@ namespace LiveChat.Client
                 if (group == null)
                 {
                     service.AddSeatGroup(company.CompanyID, groupName, maxCount, createID, managerID, notification, description);
-                    if (Callback != null) Callback(typeof(SGroup));
+                    if (Callback != null) Callback(null);
                 }
                 else
                 {
                     service.UpdateSeatGroup(group.GroupID, groupName, maxCount, notification, description);
-                    if (Callback != null) Callback(company.CompanyID);
+                    if (Callback != null) Callback(null);
                 }
 
                 this.Close();
@@ -85,7 +93,40 @@ namespace LiveChat.Client
                 textBox1.Text = group.GroupName;
                 numericUpDown1.Value = group.MaxPerson;
 
+                if (!string.IsNullOrEmpty(group.CreateID))
+                {
+                    textBox4.Text = service.GetSeat(group.CreateID).SeatName;
+                    textBox4.Tag = group.CreateID;
+                }
+
+                if (!string.IsNullOrEmpty(group.ManagerID))
+                {
+                    textBox5.Text = service.GetSeat(group.ManagerID).SeatName;
+                    textBox5.Tag = group.CreateID;
+                }
+
+                textBox2.Text = group.Notification;
+                textBox3.Text = group.Description;
+
                 btnSave.Text = "修改(&U)";
+            }
+            else
+            {
+                textBox4.Text = seat.SeatName;
+                textBox5.Text = seat.SeatName;
+                textBox4.Tag = seat.SeatID;
+                textBox5.Tag = seat.SeatID;
+            }
+
+            if (!edit)
+            {
+                textBox1.Enabled = false;
+                textBox2.Enabled = false;
+                textBox2.Enabled = false;
+                textBox4.Enabled = false;
+                textBox5.Enabled = false;
+
+                btnSave.Enabled = false;
             }
         }
     }

@@ -252,6 +252,15 @@ namespace LiveChat.Interface
         IList<SeatGroup> GetSeatGroups(string seatID);
 
         /// <summary>
+        /// 修改群名称
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        bool UpdateSeatGroupName(string seatID, Guid groupID, string groupName);
+
+        /// <summary>
         /// 获取公司下所有客服
         /// </summary>
         /// <param name="companyID"></param>

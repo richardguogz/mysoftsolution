@@ -47,8 +47,6 @@
     <Compile Include="Data\Ad.cs" />
     <Compile Include="Data\Area.cs" />
     <Compile Include="Data\Leave.cs" />
-    <Compile Include="Group\SGroup.cs" />
-    <Compile Include="Group\UGroup.cs" />
     <Compile Include="Message\S2SMessage.cs" />
     <Compile Include="Person\RequestInfo.cs" />
     <Compile Include="Person\SeatFriend.cs" />

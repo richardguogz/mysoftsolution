@@ -628,6 +628,18 @@ namespace LiveChat.Client
                 tn.SelectedImageIndex = 2;
                 tn.ImageIndex = 2;
                 tn.ContextMenuStrip = contextMenuStrip8;
+
+                if (group.CreateID == loginSeat.SeatID)
+                {
+                    退出群QToolStripMenuItem.Visible = false;
+                    解散群JToolStripMenuItem.Visible = true;
+                }
+                else
+                {
+                    退出群QToolStripMenuItem.Visible = true;
+                    解散群JToolStripMenuItem.Visible = false;
+                }
+
                 tn.Tag = group;
 
                 tvSeatGroup.Nodes.Add(tn);
@@ -1775,6 +1787,68 @@ namespace LiveChat.Client
             {
                 ClientUtils.ShowError(ex);
             }
+        }
+
+        private void 查找添加群SToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Singleton.Show(() =>
+            {
+                frmAddGroup frmAddGroup = new frmAddGroup(service);
+                frmAddGroup.Callback += new CallbackEventHandler(frmAddGroup_Callback);
+                return frmAddGroup;
+            });
+        }
+
+        void frmAddGroup_Callback(object obj)
+        {
+            BindSeatGroup();
+        }
+
+        private void toolStripMenuItem35_Click(object sender, EventArgs e)
+        {
+            Singleton.Show(() =>
+            {
+                frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, null);
+                frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
+                return frmGroup;
+            });
+        }
+
+        void frmGroup_Callback(object obj)
+        {
+            BindSeatGroup();
+        }
+
+        private void 修改群信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tvSeatGroup.SelectedNode == null)
+            {
+                ClientUtils.ShowMessage("请选中要操作的群！");
+                return;
+            }
+
+            SeatGroup group = (SeatGroup)tvSeatGroup.SelectedNode.Tag;
+            Singleton.Show(() =>
+            {
+                frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, group);
+                frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
+                return frmGroup;
+            });
+        }
+
+        private void 修改备注名称MToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 退出群QToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 解散群JToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

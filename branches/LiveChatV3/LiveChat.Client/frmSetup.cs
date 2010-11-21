@@ -266,14 +266,14 @@ namespace LiveChat.Client
                 case "setup4":
                     tabControl1.SelectedIndex = 3;
                     break;
-                case "setup5":
+                //case "setup5":
+                //    tabControl1.SelectedIndex = 4;
+                //    break;
+                case "setup6":
                     tabControl1.SelectedIndex = 4;
                     break;
-                case "setup6":
-                    tabControl1.SelectedIndex = 5;
-                    break;
                 case "setup7":
-                    tabControl1.SelectedIndex = 6;
+                    tabControl1.SelectedIndex = 5;
                     break;
             }
 

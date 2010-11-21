@@ -1112,7 +1112,7 @@ namespace LiveChat.Service
         {
             try
             {
-                SGroup group = new SGroup()
+                t_SGroup group = new t_SGroup()
                 {
                     GroupID = Guid.NewGuid(),
                     GroupName = groupName,
@@ -1142,7 +1142,7 @@ namespace LiveChat.Service
         {
             try
             {
-                SGroup group = new SGroup()
+                t_SGroup group = new t_SGroup()
                 {
                     GroupID = groupID,
                     GroupName = groupName,
@@ -1185,6 +1185,32 @@ namespace LiveChat.Service
             try
             {
                 return GroupManager.Instance.GetSeatGroups(seatID);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 修改群名称
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public bool UpdateSeatGroupName(string seatID, Guid groupID, string groupName)
+        {
+            try
+            {
+                t_GroupSeat gs = new t_GroupSeat()
+                {
+                    SeatID = seatID,
+                    GroupID = groupID,
+                    MemoName = groupName
+                };
+
+                return GroupManager.Instance.UpdateSeatGroup(gs);
             }
             catch (Exception ex)
             {
@@ -1298,9 +1324,13 @@ namespace LiveChat.Service
         {
             try
             {
-                SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
-                Seat seat = SeatManager.Instance.GetSeat(seatID);
-                group.RemoveSeat(seat);
+                bool success = GroupManager.Instance.ExitSeatGroup(seatID, groupID);
+                if (success)
+                {
+                    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                    Seat seat = SeatManager.Instance.GetSeat(seatID);
+                    group.RemoveSeat(seat);
+                }
             }
             catch (Exception ex)
             {
