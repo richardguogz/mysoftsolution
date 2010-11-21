@@ -30,6 +30,8 @@ namespace LiveChat.Client
 
             if (group != null)
                 this.edit = group.ManagerID == seat.SeatID;
+            else
+                this.edit = true;
 
             InitializeComponent();
         }
@@ -116,13 +118,16 @@ namespace LiveChat.Client
                 textBox5.Text = seat.SeatName;
                 textBox4.Tag = seat.SeatID;
                 textBox5.Tag = seat.SeatID;
+
+                this.Text = "创建群";
             }
 
             if (!edit)
             {
+                numericUpDown1.Enabled = false;
                 textBox1.Enabled = false;
                 textBox2.Enabled = false;
-                textBox2.Enabled = false;
+                textBox3.Enabled = false;
                 textBox4.Enabled = false;
                 textBox5.Enabled = false;
 
