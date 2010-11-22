@@ -31,6 +31,42 @@ namespace LiveChat.Service.Manager
             this.timer.Start();
         }
 
+        /// <summary>
+        /// 加载用户
+        /// </summary>
+        public void LoadUser()
+        {
+            //清除
+            dictUser.Clear();
+
+            List<t_User> list = dbSession.From<t_User>().ToList();
+            list.ForEach(delegate(t_User u)
+            {
+                User user = DataUtils.ConvertType<t_User, User>(u);
+
+                //如果不是匿名用户，则加载扩展信息
+                //if (user.UserType != UserType.TempUser)
+                //{
+                //    E.User u1 = M.UserManager.Instance.GetUser(u.UserID);
+                //    user.IsVIP = u1.IsEndow;
+
+                //    UserExtend extend = DataUtils.ConvertType<t_User, UserExtend>(u);
+                //    extend.Email = u1.Email;
+                //    extend.MyAsset = u1.Money;
+
+                //    user.Extend = extend;
+                //}
+
+                dictUser[user.UserID] = user;
+            });
+
+            //把新用户加载入字典中
+            (this.newUsers as List<User>).ForEach(delegate(User user)
+            {
+                dictUser[user.UserID] = user;
+            });
+        }
+
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             timer.Stop();
@@ -41,7 +77,7 @@ namespace LiveChat.Service.Manager
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog(ex.Message);
+                Logger.Instance.WriteLog(ex.ToString());
             }
             timer.Start();
         }
@@ -52,10 +88,13 @@ namespace LiveChat.Service.Manager
         /// <param name="user"></param>
         public void AddUser(User user)
         {
-            if (!dictUser.ContainsKey(user.UserID))
+            lock (syncobj)
             {
-                dictUser.Add(user.UserID, user);
-                this.newUsers.Add(user);
+                if (!dictUser.ContainsKey(user.UserID))
+                {
+                    dictUser[user.UserID] = user;
+                    this.newUsers.Add(user);
+                }
             }
         }
 
@@ -122,93 +161,60 @@ namespace LiveChat.Service.Manager
         #region 实现ITimerTask接口
 
         /// <summary>
-        /// 加载用户
-        /// </summary>
-        public void LoadUser()
-        {
-            //清除
-            dictUser.Clear();
-
-            List<t_User> list = dbSession.From<t_User>().ToList();
-            list.ForEach(delegate(t_User u)
-            {
-                User user = DataUtils.ConvertType<t_User, User>(u);
-
-                //如果不是匿名用户，则加载扩展信息
-                //if (user.UserType != UserType.TempUser)
-                //{
-                //    E.User u1 = M.UserManager.Instance.GetUser(u.UserID);
-                //    user.IsVIP = u1.IsEndow;
-
-                //    UserExtend extend = DataUtils.ConvertType<t_User, UserExtend>(u);
-                //    extend.Email = u1.Email;
-                //    extend.MyAsset = u1.Money;
-
-                //    user.Extend = extend;
-                //}
-
-                dictUser.Add(user.UserID, user);
-            });
-
-            //把新用户加载入字典中
-            (this.newUsers as List<User>).ForEach(delegate(User user)
-            {
-                dictUser.Add(user.UserID, user);
-            });
-        }
-
-        /// <summary>
         /// 保存用户信息
         /// </summary>
         public void SaveUser()
         {
-            if (this.newUsers.Count > 0)
+            lock (syncobj)
             {
-                using (DbTrans trans = dbSession.BeginTrans())
+                if (this.newUsers.Count > 0)
                 {
-                    try
+                    using (DbTrans trans = dbSession.BeginTrans())
                     {
-                        DbBatch batch = trans.BeginBatch(10);
-                        foreach (User user in this.newUsers)
+                        try
                         {
-                            t_User u = DataUtils.ConvertType<User, t_User>(user);
-
-                            //如果不是匿名用户，则还需要从扩展信息中获取
-                            if (user.UserType != UserType.TempUser)
+                            DbBatch batch = trans.BeginBatch(10);
+                            foreach (User user in this.newUsers)
                             {
-                                u.ChatCount = user.ChatCount;
-                                u.LastChatTime = user.LastChatTime;
+                                t_User u = DataUtils.ConvertType<User, t_User>(user);
+
+                                //如果不是匿名用户，则还需要从扩展信息中获取
+                                if (user.UserType != UserType.TempUser)
+                                {
+                                    u.ChatCount = user.ChatCount;
+                                    u.LastChatTime = user.LastChatTime;
+                                }
+
+                                batch.Save<t_User>(u);
                             }
 
-                            batch.Save<t_User>(u);
+                            IList<MySoftException> exps;
+                            batch.Execute(out exps);
+
+                            if (exps.Count > 0)
+                            {
+                                //将错误写入日志中
+                                foreach (Exception exp in exps)
+                                {
+                                    Logger.Instance.WriteLog(exp.ToString());
+                                }
+
+                                //回滚事务
+                                trans.Rollback();
+                            }
+                            else
+                            {
+                                //提交事务
+                                trans.Commit();
+
+                                //保存成功，则清除新增用户
+                                this.newUsers.Clear();
+                            }
                         }
-
-                        IList<MySoftException> exps;
-                        batch.Execute(out exps);
-
-                        if (exps.Count > 0)
+                        catch
                         {
-                            //将错误写入日志中
-                            foreach (Exception exp in exps)
-                            {
-                                Logger.Instance.WriteLog(exp.Message);
-                            }
-
-                            //回滚事务
                             trans.Rollback();
                         }
-                        else
-                        {
-                            //提交事务
-                            trans.Commit();
-
-                            //保存成功，则清除新增用户
-                            this.newUsers.Clear();
-                        }
-                    }
-                    catch
-                    {
-                        trans.Rollback();
                     }
                 }
             }

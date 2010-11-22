@@ -67,7 +67,7 @@ namespace LiveChat.Service.Manager
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog(ex.Message);
+                Logger.Instance.WriteLog(ex.ToString());
             }
             finally
             {
@@ -89,7 +89,7 @@ namespace LiveChat.Service.Manager
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog(ex.Message);
+                Logger.Instance.WriteLog(ex.ToString());
             }
             finally
             {
@@ -213,7 +213,7 @@ namespace LiveChat.Service.Manager
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog(ex.Message);
+                Logger.Instance.WriteLog(ex.ToString());
             }
         }
 
@@ -252,7 +252,7 @@ namespace LiveChat.Service.Manager
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog(ex.Message);
+                Logger.Instance.WriteLog(ex.ToString());
             }
         }
 
@@ -329,7 +329,7 @@ namespace LiveChat.Service.Manager
                 }
                 catch (Exception ex)
                 {
-                    Logger.Instance.WriteLog(ex.Message);
+                    Logger.Instance.WriteLog(ex.ToString());
 
                     //回滚事务
                     trans.Rollback();

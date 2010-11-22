@@ -51,7 +51,7 @@ namespace LiveChat.Service.Manager
             }
             catch (Exception ex)
             {
-                Logger.Instance.WriteLog(ex.Message);
+                Logger.Instance.WriteLog(ex.ToString());
             }
             finally
             {

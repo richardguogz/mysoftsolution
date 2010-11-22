@@ -777,7 +777,7 @@ namespace LiveChat.Service
                 }
                 catch (Exception ex)
                 {
-                    Logger.Instance.WriteLog(ex.Message);
+                    Logger.Instance.WriteLog(ex.ToString());
                 }
 
                 return info;
