@@ -134,7 +134,7 @@ function sendMessage() {
     addMsgToChat('您&nbsp;说:<br/><span>' + text + '</span>', true);
 
     var content = msg.value;
-    content = content.replace(/{FACE#([\d]+)#}/ig, '<img border="0" src="' + chatWebSite + '/images/face/face$1.gif" />');
+    content = content.replace(/{FACE#([\d]+)#}/ig, '<img border="0" src="' + chatWebSite + '/images/face/$1.gif" />');
 
     //发送到服务器端
     AjaxMethods.SendMessage(MessageType.Text, sessionID, seatCode, content, function(ssid) {
