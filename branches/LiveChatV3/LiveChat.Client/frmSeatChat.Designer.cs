@@ -428,7 +428,6 @@
             this.emotionDropdown1.MaximumSize = new System.Drawing.Size(531, 350);
             this.emotionDropdown1.MinimumSize = new System.Drawing.Size(531, 350);
             this.emotionDropdown1.Name = "emotionDropdown1";
-            this.emotionDropdown1.Root = null;
             this.emotionDropdown1.Size = new System.Drawing.Size(531, 350);
             this.emotionDropdown1.TabIndex = 0;
             // 

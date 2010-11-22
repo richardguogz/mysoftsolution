@@ -43,15 +43,9 @@ namespace LiveChat.Client
             _popup.Show(owner, true);
         }
 
-        public string Root
+        public void LoadImages(string dir)
         {
-            get;
-            set;
-        }
-
-        private void EmotionDropdown_Load(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(Root))
+            if (!string.IsNullOrEmpty(dir))
             {
                 if (_images == null)
                 {
@@ -60,7 +54,7 @@ namespace LiveChat.Client
                         _images = new Image[136];
                         for (int i = 0; i < 135; i++)
                         {
-                            var image = Image.FromFile(Path.Combine(Root, string.Format(@"images\face\{0}.gif", i)));
+                            var image = Image.FromFile(Path.Combine(dir, string.Format(@"images\face\{0}.gif", i)));
                             if (image != null) _images[i] = image;
                             var item = new EmotionItem(i.ToString(), image);
                             EmotionContainer.Items.Add(item);
