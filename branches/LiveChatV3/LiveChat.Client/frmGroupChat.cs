@@ -14,12 +14,15 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using MySoft.Core;
 using System.Drawing.Imaging;
+using LiveChat.Utils;
 
 namespace LiveChat.Client
 {
     public partial class frmGroupChat : Form
     {
         public event CallbackFontColorEventHandler CallbackFontColor;
+
+        public event CallbackEventHandler Callback;
 
         [DllImport("user32.dll")]
         public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
@@ -50,7 +53,7 @@ namespace LiveChat.Client
 
         private void frmGroupChat_Load(object sender, EventArgs e)
         {
-            this.Text = string.Format("【{0}】聊天中...", group.GroupName);
+            this.Text = string.Format("【{0}】聊天中...", (group.MemoName ?? group.GroupName));
             textBox1.Text = group.Notification;
 
             if (seat.SeatID == group.CreateID)
@@ -64,8 +67,17 @@ namespace LiveChat.Client
                 toolStripButton3.Visible = true;
             }
 
-            IList<Seat> seats = service.GetGroupSeats(group.GroupID);
-            LoadSeatInfo(seats);
+            IList<Seat> seats = new List<Seat>();
+            try
+            {
+                seats = service.GetGroupSeats(group.GroupID);
+                LoadSeatInfo(seats);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException == null)
+                    this.Enabled = false;
+            }
 
             int onlineCount = (seats as List<Seat>).FindAll(p => p.State == OnlineState.Online).Count;
             listSeats.Columns[0].Text = string.Format("群成员 ({0}/{1})", onlineCount, seats.Count);
@@ -137,7 +149,6 @@ namespace LiveChat.Client
 
         void EmotionContainer_ItemClick(object sender, EmotionItemMouseClickEventArgs e)
         {
-            //throw new NotImplementedException();
             panel1.Visible = false;
             txtMessage.Text += "{" + string.Format("FACE#{0}#", e.Item.Text) + "}";
             txtMessage.Select(txtMessage.TextLength, 0);
@@ -162,6 +173,13 @@ namespace LiveChat.Client
             }
             catch (Exception ex)
             {
+                if (ex.InnerException == null)
+                {
+                    msgtimer.Stop();
+                    ClientUtils.ShowError(ex);
+                    this.Close();
+                }
+
                 ClientUtils.ShowError(ex);
             }
 
@@ -255,7 +273,7 @@ namespace LiveChat.Client
                             {
                                 p.SetAttribute("className", "operator");
                                 if (msg.Type == MessageType.Picture)
-                                    sb.Append("您向" + group.GroupName + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
+                                    sb.Append("您向" + (group.MemoName ?? group.GroupName) + "发送了一个图片 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
                                 else
                                     sb.Append("您&nbsp;说 <font style=\"font-weight: normal;\">" + msg.SendTime.ToString("yyyy/MM/dd HH:mm:ss") + "</font>:");
 
@@ -477,9 +495,10 @@ namespace LiveChat.Client
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             //退出该群
-            if (MessageBox.Show("确定退出群【" + group.GroupName + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+            if (MessageBox.Show("确定退出群【" + (group.MemoName ?? group.GroupName) + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
 
             service.ExitGroup(seat.SeatID, group.GroupID);
+            if (Callback != null) Callback(null);
             this.Close();
         }
 
@@ -491,11 +510,11 @@ namespace LiveChat.Client
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             //退出该群
-            if (MessageBox.Show("确定解散群【" + group.GroupName + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+            if (MessageBox.Show("确定解散群【" + (group.MemoName ?? group.GroupName) + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
 
             service.DismissGroup(seat.SeatID, group.GroupID);
+            if (Callback != null) Callback(null);
             this.Close();
-
         }
     }
 }

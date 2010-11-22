@@ -170,6 +170,8 @@ namespace LiveChat.Service.Manager
                     if (dictGroup.ContainsKey(group.GroupID))
                     {
                         var g = dictGroup[group.GroupID] as UserGroup;
+                        g.PersonCount = g.Users.Count;
+                        g.PersonOnlineCount = g.Users.FindAll(p => p.State != OnlineState.Offline).Count;
                         g.MemoName = group.MemoName;
                         list.Add(g);
                     }
@@ -194,6 +196,8 @@ namespace LiveChat.Service.Manager
                     if (dictGroup.ContainsKey(group.GroupID))
                     {
                         var g = dictGroup[group.GroupID] as SeatGroup;
+                        g.PersonCount = g.Seats.Count;
+                        g.PersonOnlineCount = g.Seats.FindAll(p => p.State != OnlineState.Offline).Count;
                         g.MemoName = group.MemoName;
                         list.Add(g);
                     }
@@ -308,6 +312,72 @@ namespace LiveChat.Service.Manager
             {
                 return dbSession.Delete<t_GroupUser>(t_GroupUser._.UserID == userID
                     && t_GroupUser._.GroupID == groupID) > 0;
+            }
+        }
+
+        /// <summary>
+        /// 解散群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        public void DismissSeatGroup(string seatID, Guid groupID)
+        {
+            lock (syncobj)
+            {
+                using (var trans = dbSession.BeginTrans())
+                {
+                    try
+                    {
+                        var group = GetSeatGroup(groupID);
+                        if (group.CreateID == seatID)
+                        {
+                            dbSession.Delete<t_SGroup>(t_SGroup._.GroupID == groupID);
+                            dbSession.Delete<t_GroupSeat>(t_GroupSeat._.GroupID == groupID);
+
+                            trans.Commit();
+
+                            if (dictGroup.ContainsKey(groupID))
+                                dictGroup.Remove(groupID);
+                        }
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 解散群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        public void DismissUserGroup(string userID, Guid groupID)
+        {
+            lock (syncobj)
+            {
+                using (var trans = dbSession.BeginTrans())
+                {
+                    try
+                    {
+                        var group = GetUserGroup(groupID);
+                        if (group.CreateID == userID)
+                        {
+                            dbSession.Delete<t_UGroup>(t_UGroup._.GroupID == groupID);
+                            dbSession.Delete<t_GroupUser>(t_GroupUser._.GroupID == groupID);
+
+                            trans.Commit();
+
+                            if (dictGroup.ContainsKey(groupID))
+                                dictGroup.Remove(groupID);
+                        }
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                    }
+                }
             }
         }
 

@@ -55,13 +55,20 @@ namespace LiveChat.Client
             {
                 if (_images == null)
                 {
-                    _images = new Image[136];
-                    for (int i = 0; i < 135; i++)
+                    try
                     {
-                        var image = Image.FromFile(Path.Combine(Root, string.Format("images/face/{0}.gif", i)));
-                        _images[i] = image;
-                        var item = new EmotionItem(i.ToString(), image);
-                        EmotionContainer.Items.Add(item);
+                        _images = new Image[136];
+                        for (int i = 0; i < 135; i++)
+                        {
+                            var image = Image.FromFile(Path.Combine(Root, string.Format(@"images\face\{0}.gif", i)));
+                            if (image != null) _images[i] = image;
+                            var item = new EmotionItem(i.ToString(), image);
+                            EmotionContainer.Items.Add(item);
+                        }
+                    }
+                    catch
+                    {
+                        _images = null;
                     }
                 }
                 else

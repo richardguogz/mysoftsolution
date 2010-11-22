@@ -112,6 +112,26 @@ namespace LiveChat.Entity
             {
                 return _PersonCount;
             }
+            set
+            {
+                _PersonCount = value;
+            }
+        }
+
+        protected int _PersonOnlineCount;
+        /// <summary>
+        /// 群在线人数
+        /// </summary>
+        public int PersonOnlineCount
+        {
+            get
+            {
+                return _PersonOnlineCount;
+            }
+            set
+            {
+                _PersonOnlineCount = value;
+            }
         }
 
         private string _CreateID;

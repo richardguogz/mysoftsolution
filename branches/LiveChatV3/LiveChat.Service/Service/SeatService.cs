@@ -1296,10 +1296,16 @@ namespace LiveChat.Service
         {
             try
             {
-                return GroupManager.Instance.GetSeatGroup(groupID).Seats;
+                var group = GroupManager.Instance.GetSeatGroup(groupID);
+                if (group == null) throw new ArgumentNullException("当前群已经被解散！");
+
+                return group.Seats;
             }
             catch (Exception ex)
             {
+                if (ex is ArgumentNullException)
+                    throw ex;
+
                 throw new LiveChatException(ex.Message, ex);
             }
         }
@@ -1368,13 +1374,7 @@ namespace LiveChat.Service
         {
             try
             {
-                //bool success = GroupManager.Instance.ExitSeatGroup(seatID, groupID);
-                //if (success)
-                //{
-                //    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
-                //    Seat seat = SeatManager.Instance.GetSeat(seatID);
-                //    group.RemoveSeat(seat);
-                //}
+                GroupManager.Instance.DismissSeatGroup(seatID, groupID);
             }
             catch (Exception ex)
             {

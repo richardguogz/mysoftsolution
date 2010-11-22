@@ -417,6 +417,7 @@ namespace LiveChat.Client
                             {
                                 frmGroupChat frmGroupChat = new frmGroupChat(service, loginCompany, loginSeat, group, currentFont, currentColor);
                                 frmGroupChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                frmGroupChat.Callback += new CallbackEventHandler(frmGroupChat_Callback);
                                 return frmGroupChat;
                             });
                         }
@@ -604,9 +605,11 @@ namespace LiveChat.Client
                 if (tn != null)
                 {
                     if (kv.Value.Count > 0)
-                        tn.Text = string.Format("{0}({1})", kv.Key.GroupName, kv.Value.Count);
+                        tn.Text = string.Format("{0} [{1}/{2}]({3})", kv.Key.MemoName ?? kv.Key.GroupName,
+                            kv.Key.PersonOnlineCount, kv.Key.PersonCount, kv.Value.Count);
                     else
-                        tn.Text = string.Format("{0}", kv.Key.GroupName);
+                        tn.Text = string.Format("{0} [{1}/{2}]", kv.Key.MemoName ?? kv.Key.GroupName,
+                            kv.Key.PersonOnlineCount, kv.Key.PersonCount);
 
                     tn.Tag = kv.Key;
                 }
@@ -621,9 +624,8 @@ namespace LiveChat.Client
             IList<SeatGroup> list = service.GetSeatGroups(loginSeat.SeatID);
             foreach (var group in list)
             {
-                var seats = service.GetGroupSeats(group.GroupID);
                 TreeNode tn = new TreeNode(string.Format("{0} [{1}/{2}]", group.MemoName ?? group.GroupName,
-                    new List<Seat>(seats).FindAll(p => p.State != OnlineState.Offline).Count, list.Count));
+                    group.PersonOnlineCount, group.PersonCount));
 
                 tn.SelectedImageIndex = 2;
                 tn.ImageIndex = 2;
@@ -790,7 +792,8 @@ namespace LiveChat.Client
                 node.SelectedImageIndex = 3;
                 node.ImageIndex = 3;
                 node.Tag = kv.Value;
-                node.Text = string.Format("{0} [{2}/{1}]", kv.Value.GroupName, list.Count, list.FindAll(p => p.State != OnlineState.Offline).Count);
+                node.Text = string.Format("{0} [{1}/{2}]", kv.Value.GroupName,
+                    list.FindAll(p => p.State != OnlineState.Offline).Count, list.Count);
 
                 if (kv.Key != Guid.Empty)
                     node.ContextMenuStrip = contextMenuStrip7;
@@ -1148,8 +1151,14 @@ namespace LiveChat.Client
             {
                 frmGroupChat frmGroupChat = new frmGroupChat(service, loginCompany, loginSeat, group, currentFont, currentColor);
                 frmGroupChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                frmGroupChat.Callback += new CallbackEventHandler(frmGroupChat_Callback);
                 return frmGroupChat;
             });
+        }
+
+        void frmGroupChat_Callback(object obj)
+        {
+            BindSeatGroup();
         }
 
         private void tvSession_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -1863,12 +1872,34 @@ namespace LiveChat.Client
 
         private void 退出群QToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (tvSeatGroup.SelectedNode == null)
+            {
+                ClientUtils.ShowMessage("请选中要操作的群！");
+                return;
+            }
 
+            SeatGroup group = (SeatGroup)tvSeatGroup.SelectedNode.Tag;
+            //退出该群
+            if (MessageBox.Show("确定退出群【" + (group.MemoName ?? group.GroupName) + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+
+            service.ExitGroup(loginSeat.SeatID, group.GroupID);
+            BindSeatGroup();
         }
 
         private void 解散群JToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (tvSeatGroup.SelectedNode == null)
+            {
+                ClientUtils.ShowMessage("请选中要操作的群！");
+                return;
+            }
 
+            SeatGroup group = (SeatGroup)tvSeatGroup.SelectedNode.Tag;
+            //退出该群
+            if (MessageBox.Show("确定解散群【" + (group.MemoName ?? group.GroupName) + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+
+            service.DismissGroup(loginSeat.SeatID, group.GroupID);
+            BindSeatGroup();
         }
     }
 }

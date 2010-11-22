@@ -66,6 +66,7 @@ namespace LiveChat.Entity
             if (this._Seats.Exists(seat))
             {
                 this._Seats.Remove(seat);
+                this._PersonCount = this._Seats.Count;
             }
         }
 
