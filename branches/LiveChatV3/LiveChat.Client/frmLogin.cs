@@ -304,5 +304,15 @@ namespace LiveChat.Client
         {
             ClientUtils.ExitApplication();
         }
+
+        private void txtCompanyID_TextChanged(object sender, EventArgs e)
+        {
+            txtClientID.Text = string.Empty;
+        }
+
+        private void txtClientID_TextChanged(object sender, EventArgs e)
+        {
+            txtPassword.Text = string.Empty;
+        }
     }
 }

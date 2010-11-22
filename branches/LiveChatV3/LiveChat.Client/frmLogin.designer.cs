@@ -55,10 +55,10 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.在线升级ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于我们ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.退出系统ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
-            this.退出系统ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -97,6 +97,7 @@
             this.txtClientID.Name = "txtClientID";
             this.txtClientID.Size = new System.Drawing.Size(134, 21);
             this.txtClientID.TabIndex = 1;
+            this.txtClientID.TextChanged += new System.EventHandler(this.txtClientID_TextChanged);
             // 
             // txtPassword
             // 
@@ -137,6 +138,7 @@
             this.txtCompanyID.Name = "txtCompanyID";
             this.txtCompanyID.Size = new System.Drawing.Size(134, 21);
             this.txtCompanyID.TabIndex = 0;
+            this.txtCompanyID.TextChanged += new System.EventHandler(this.txtCompanyID_TextChanged);
             // 
             // skinEngine1
             // 
@@ -210,7 +212,7 @@
             this.rOYALEToolStripMenuItem,
             this.dEEPToolStripMenuItem});
             this.皮肤切换ToolStripMenuItem.Name = "皮肤切换ToolStripMenuItem";
-            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.皮肤切换ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.皮肤切换ToolStripMenuItem.Text = "皮肤切换";
             // 
             // OFFICE2007ToolStripMenuItem
@@ -272,28 +274,40 @@
             // 网络设置ToolStripMenuItem
             // 
             this.网络设置ToolStripMenuItem.Name = "网络设置ToolStripMenuItem";
-            this.网络设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.网络设置ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.网络设置ToolStripMenuItem.Text = "网络设置";
             this.网络设置ToolStripMenuItem.Click += new System.EventHandler(this.网络设置ToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
             // 
             // 在线升级ToolStripMenuItem
             // 
             this.在线升级ToolStripMenuItem.Name = "在线升级ToolStripMenuItem";
-            this.在线升级ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.在线升级ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.在线升级ToolStripMenuItem.Text = "在线升级";
             this.在线升级ToolStripMenuItem.Click += new System.EventHandler(this.在线升级ToolStripMenuItem_Click);
             // 
             // 关于我们ToolStripMenuItem
             // 
             this.关于我们ToolStripMenuItem.Name = "关于我们ToolStripMenuItem";
-            this.关于我们ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.关于我们ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.关于我们ToolStripMenuItem.Text = "关于我们";
             this.关于我们ToolStripMenuItem.Click += new System.EventHandler(this.关于我们ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(121, 6);
+            // 
+            // 退出系统ToolStripMenuItem
+            // 
+            this.退出系统ToolStripMenuItem.Name = "退出系统ToolStripMenuItem";
+            this.退出系统ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.退出系统ToolStripMenuItem.Text = "退出系统";
+            this.退出系统ToolStripMenuItem.Click += new System.EventHandler(this.退出系统ToolStripMenuItem_Click);
             // 
             // linkLabel1
             // 
@@ -315,18 +329,6 @@
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 9;
             this.label4.Text = "企业注册";
-            // 
-            // 退出系统ToolStripMenuItem
-            // 
-            this.退出系统ToolStripMenuItem.Name = "退出系统ToolStripMenuItem";
-            this.退出系统ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.退出系统ToolStripMenuItem.Text = "退出系统";
-            this.退出系统ToolStripMenuItem.Click += new System.EventHandler(this.退出系统ToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // frmLogin
             // 

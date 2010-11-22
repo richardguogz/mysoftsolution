@@ -295,8 +295,14 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                return dbSession.Delete<t_GroupSeat>(t_GroupSeat._.SeatID == seatID
+                bool success = dbSession.Delete<t_GroupSeat>(t_GroupSeat._.SeatID == seatID
                     && t_GroupSeat._.GroupID == groupID) > 0;
+
+                if (success)
+                {
+                    groupSeats.RemoveAll(p => p.SeatID == seatID && p.GroupID == groupID);
+                }
+                return success;
             }
         }
 
@@ -310,8 +316,14 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                return dbSession.Delete<t_GroupUser>(t_GroupUser._.UserID == userID
-                    && t_GroupUser._.GroupID == groupID) > 0;
+                bool success = dbSession.Delete<t_GroupUser>(t_GroupUser._.UserID == userID
+                   && t_GroupUser._.GroupID == groupID) > 0;
+
+                if (success)
+                {
+                    groupUsers.RemoveAll(p => p.UserID == userID && p.GroupID == groupID);
+                }
+                return success;
             }
         }
 
@@ -337,7 +349,10 @@ namespace LiveChat.Service.Manager
                             trans.Commit();
 
                             if (dictGroup.ContainsKey(groupID))
+                            {
+                                groupSeats.RemoveAll(p => p.GroupID == groupID);
                                 dictGroup.Remove(groupID);
+                            }
                         }
                     }
                     catch
@@ -370,7 +385,10 @@ namespace LiveChat.Service.Manager
                             trans.Commit();
 
                             if (dictGroup.ContainsKey(groupID))
+                            {
+                                groupUsers.RemoveAll(p => p.GroupID == groupID);
                                 dictGroup.Remove(groupID);
+                            }
                         }
                     }
                     catch

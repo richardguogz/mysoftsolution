@@ -1297,14 +1297,16 @@ namespace LiveChat.Service
             try
             {
                 var group = GroupManager.Instance.GetSeatGroup(groupID);
-                if (group == null) throw new ArgumentNullException("当前群已经被解散！");
+                if (group == null) throw new InvalidOperationException("当前群已经被解散！");
 
                 return group.Seats;
             }
             catch (Exception ex)
             {
-                if (ex is ArgumentNullException)
-                    throw ex;
+                if (ex is InvalidOperationException)
+                {
+                    throw new LiveChatException(ex.Message);
+                }
 
                 throw new LiveChatException(ex.Message, ex);
             }

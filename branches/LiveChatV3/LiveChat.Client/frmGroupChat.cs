@@ -176,11 +176,13 @@ namespace LiveChat.Client
                 if (ex.InnerException == null)
                 {
                     msgtimer.Stop();
-                    ClientUtils.ShowError(ex);
+                    ClientUtils.ShowMessage(ex.Message);
                     this.Close();
                 }
-
-                ClientUtils.ShowError(ex);
+                else
+                {
+                    ClientUtils.ShowError(ex);
+                }
             }
 
             msgtimer.Start();
