@@ -222,11 +222,10 @@ namespace LiveChat.Interface
         /// <summary>
         /// 添加客服群
         /// </summary>
-        /// <param name="companyID"></param>
         /// <param name="groupName"></param>
         /// <param name="maxCount"></param>
         /// <returns></returns>
-        bool AddSeatGroup(string companyID, string groupName, int maxCount, string createID, string managerID, string notification, string description);
+        bool AddSeatGroup(string groupName, int maxCount, string createID, string managerID, string notification, string description);
 
         /// <summary>
         /// 修改客服群
@@ -250,6 +249,13 @@ namespace LiveChat.Interface
         /// <param name="seatID"></param>
         /// <returns></returns>
         IList<SeatGroup> GetSeatGroups(string seatID);
+
+        /// <summary>
+        /// 获取某个客服的所有群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        IList<SeatGroup> GetSeatNoJoinGroups(string seatID);
 
         /// <summary>
         /// 修改群名称
@@ -287,7 +293,7 @@ namespace LiveChat.Interface
         /// </summary>
         /// <param name="seatID"></param>
         /// <param name="groupID"></param>
-        void AddToGroup(string seatID, Guid groupID);
+        void JoinGroup(string seatID, Guid groupID);
 
         /// <summary>
         /// 退出指定的群
@@ -295,6 +301,13 @@ namespace LiveChat.Interface
         /// <param name="seatID"></param>
         /// <param name="groupID"></param>
         void ExitGroup(string seatID, Guid groupID);
+
+        /// <summary>
+        /// 解散群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        void DismissGroup(string seatID, Guid groupID);
 
         /// <summary>
         /// 获取会话中所有消息

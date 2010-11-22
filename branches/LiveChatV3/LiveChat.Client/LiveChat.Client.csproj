@@ -262,14 +262,20 @@
     </Compile>
     <Compile Include="classes\RemotingUtil.cs" />
     <Compile Include="classes\Singleton.cs" />
+    <Compile Include="frmFriendGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFriendGroup.Designer.cs">
+      <DependentUpon>frmFriendGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="update\AppUpdater.cs" />
+    <Compile Include="update\XmlFiles.cs" />
     <Compile Include="frmGroupRename.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmGroupRename.Designer.cs">
       <DependentUpon>frmGroupRename.cs</DependentUpon>
     </Compile>
-    <Compile Include="update\AppUpdater.cs" />
-    <Compile Include="update\XmlFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmotionDropdown.resx">
@@ -359,6 +365,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFriendGroup.resx">
+      <DependentUpon>frmFriendGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmGroupRename.resx">
       <DependentUpon>frmGroupRename.cs</DependentUpon>

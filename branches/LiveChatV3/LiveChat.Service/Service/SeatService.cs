@@ -1104,11 +1104,10 @@ namespace LiveChat.Service
         /// <summary>
         /// 添加客服群
         /// </summary>
-        /// <param name="companyID"></param>
         /// <param name="groupName"></param>
         /// <param name="maxCount"></param>
         /// <returns></returns>
-        public bool AddSeatGroup(string companyID, string groupName, int maxCount, string createID, string managerID, string notification, string description)
+        public bool AddSeatGroup(string groupName, int maxCount, string createID, string managerID, string notification, string description)
         {
             try
             {
@@ -1123,6 +1122,7 @@ namespace LiveChat.Service
                     Notification = notification,
                     AddTime = DateTime.Now
                 };
+
                 return GroupManager.Instance.SaveSeatGroup(group, false) > 0;
             }
             catch (Exception ex)
@@ -1185,6 +1185,23 @@ namespace LiveChat.Service
             try
             {
                 return GroupManager.Instance.GetSeatGroups(seatID);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取某个客服的所有群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        public IList<SeatGroup> GetSeatNoJoinGroups(string seatID)
+        {
+            try
+            {
+                return GroupManager.Instance.GetSeatNoJoinGroups(seatID);
             }
             catch (Exception ex)
             {
@@ -1292,17 +1309,21 @@ namespace LiveChat.Service
         /// </summary>
         /// <param name="seatID"></param>
         /// <param name="groupID"></param>
-        public void AddToGroup(string seatID, Guid groupID)
+        public void JoinGroup(string seatID, Guid groupID)
         {
             try
             {
                 SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
                 if (group.Seats.Count < group.MaxPerson)
                 {
-                    Seat seat = SeatManager.Instance.GetSeat(seatID);
+                    bool success = GroupManager.Instance.JoinSeatGroup(seatID, groupID);
+                    if (success)
+                    {
+                        Seat seat = SeatManager.Instance.GetSeat(seatID);
 
-                    //将客服添加到群中
-                    group.AddSeat(seat);
+                        //将客服添加到群中
+                        group.AddSeat(seat);
+                    }
                 }
                 else
                 {
@@ -1331,6 +1352,29 @@ namespace LiveChat.Service
                     Seat seat = SeatManager.Instance.GetSeat(seatID);
                     group.RemoveSeat(seat);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 解散群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        public void DismissGroup(string seatID, Guid groupID)
+        {
+            try
+            {
+                //bool success = GroupManager.Instance.ExitSeatGroup(seatID, groupID);
+                //if (success)
+                //{
+                //    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                //    Seat seat = SeatManager.Instance.GetSeat(seatID);
+                //    group.RemoveSeat(seat);
+                //}
             }
             catch (Exception ex)
             {

@@ -53,6 +53,17 @@ namespace LiveChat.Client
             this.Text = string.Format("【{0}】聊天中...", group.GroupName);
             textBox1.Text = group.Notification;
 
+            if (seat.SeatID == group.CreateID)
+            {
+                toolStripButton5.Visible = true;
+                toolStripButton3.Visible = false;
+            }
+            else
+            {
+                toolStripButton5.Visible = false;
+                toolStripButton3.Visible = true;
+            }
+
             IList<Seat> seats = service.GetGroupSeats(group.GroupID);
             LoadSeatInfo(seats);
 
@@ -268,7 +279,7 @@ namespace LiveChat.Client
                     }
                 }
             }
-            catch (SocketException ex) { }
+            catch (SocketException) { }
             catch (Exception ex)
             {
                 ClientUtils.ShowError(ex);
@@ -448,9 +459,10 @@ namespace LiveChat.Client
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             //群资料
-            Singleton.Show(() =>
+            string key = string.Format("SeatGroup_{0}", group.GroupID);
+            SingletonMul.Show(key, () =>
             {
-                frmGroup frmGroup = new frmGroup(service, company, seat, group);
+                frmGroup frmGroup = new frmGroup(service, seat, group);
                 frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
                 return frmGroup;
             });
@@ -458,7 +470,8 @@ namespace LiveChat.Client
 
         void frmGroup_Callback(object obj)
         {
-            //
+            if (obj == null) return;
+            textBox1.Text = obj.ToString();
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
@@ -473,6 +486,16 @@ namespace LiveChat.Client
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            //退出该群
+            if (MessageBox.Show("确定解散群【" + group.GroupName + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
+
+            service.DismissGroup(seat.SeatID, group.GroupID);
+            this.Close();
+
         }
     }
 }

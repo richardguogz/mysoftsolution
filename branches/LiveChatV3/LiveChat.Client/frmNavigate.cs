@@ -106,7 +106,7 @@ namespace LiveChat.Client
                     url = "http://www.globalfabric.com/mini.asp";
                 }
                 string xy = ConfigurationManager.AppSettings["DefaultPageSize"];
-                Size size = new Size(560, 560);
+                Size size = new Size(560, 580);
                 if (!string.IsNullOrEmpty(xy))
                 {
                     var arr = xy.Split('*');
@@ -219,6 +219,8 @@ namespace LiveChat.Client
                 bool isSuccess = service.ValidateClient(loginSeat.SeatID, clientID);
                 if (!isSuccess)
                 {
+                    isRelogin = true;
+
                     this.Close();
                     ClientUtils.ShowMessage("您当前的ID号在其它地方登录，将强制退出！");
                     ClientUtils.ExitApplication();
@@ -622,7 +624,7 @@ namespace LiveChat.Client
             foreach (var group in list)
             {
                 var seats = service.GetGroupSeats(group.GroupID);
-                TreeNode tn = new TreeNode(string.Format("{0} [{1}/{2}]", group.GroupName,
+                TreeNode tn = new TreeNode(string.Format("{0} [{1}/{2}]", group.MemoName ?? group.GroupName,
                     new List<Seat>(seats).FindAll(p => p.State != OnlineState.Offline).Count, list.Count));
 
                 tn.SelectedImageIndex = 2;
@@ -1242,7 +1244,9 @@ namespace LiveChat.Client
 
         private void 隐藏窗口ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            隐藏窗口ToolStripMenuItem.Visible = false;
+            tsmiShowForm.Visible = true;
         }
 
         private void frmNavigate_SizeChanged(object sender, EventArgs e)
@@ -1660,7 +1664,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                frmGroupRename frmFriendGroup = new frmGroupRename(service, loginSeat, null);
+                frmFriendGroup frmFriendGroup = new frmFriendGroup(service, loginSeat, null);
                 frmFriendGroup.Callback += new CallbackEventHandler(frmFriendGroup_Callback);
                 return frmFriendGroup;
             });
@@ -1677,7 +1681,7 @@ namespace LiveChat.Client
             SeatFriendGroup group = tvLinkman.SelectedNode.Tag as SeatFriendGroup;
             Singleton.Show(() =>
             {
-                frmGroupRename frmFriendGroup = new frmGroupRename(service, loginSeat, group);
+                frmFriendGroup frmFriendGroup = new frmFriendGroup(service, loginSeat, group);
                 frmFriendGroup.Callback += new CallbackEventHandler(frmFriendGroup_Callback);
                 return frmFriendGroup;
             });
@@ -1733,7 +1737,7 @@ namespace LiveChat.Client
                     url = "http://www.globalfabric.com/mini.asp";
                 }
                 string xy = ConfigurationManager.AppSettings["DefaultPageSize"];
-                Size size = new Size(560, 560);
+                Size size = new Size(560, 580);
                 if (!string.IsNullOrEmpty(xy))
                 {
                     var arr = xy.Split('*');
@@ -1793,7 +1797,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                frmAddGroup frmAddGroup = new frmAddGroup(service);
+                frmAddGroup frmAddGroup = new frmAddGroup(service, loginSeat);
                 frmAddGroup.Callback += new CallbackEventHandler(frmAddGroup_Callback);
                 return frmAddGroup;
             });
@@ -1808,7 +1812,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, null);
+                frmGroup frmGroup = new frmGroup(service, loginSeat, null);
                 frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
                 return frmGroup;
             });
@@ -1828,9 +1832,10 @@ namespace LiveChat.Client
             }
 
             SeatGroup group = (SeatGroup)tvSeatGroup.SelectedNode.Tag;
-            Singleton.Show(() =>
+            string key = string.Format("SeatGroup_{0}", group.GroupID);
+            SingletonMul.Show(key, () =>
             {
-                frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, group);
+                frmGroup frmGroup = new frmGroup(service, loginSeat, group);
                 frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
                 return frmGroup;
             });
@@ -1838,7 +1843,24 @@ namespace LiveChat.Client
 
         private void 修改备注名称MToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (tvSeatGroup.SelectedNode == null)
+            {
+                ClientUtils.ShowMessage("请选中要操作的群！");
+                return;
+            }
 
+            SeatGroup group = (SeatGroup)tvSeatGroup.SelectedNode.Tag;
+            Singleton.Show(() =>
+            {
+                frmGroupRename frmGroupRename = new frmGroupRename(service, loginSeat, group);
+                frmGroupRename.Callback += new CallbackEventHandler(frmGroupRename_Callback);
+                return frmGroupRename;
+            });
+        }
+
+        void frmGroupRename_Callback(object obj)
+        {
+            BindSeatGroup();
         }
 
         private void 退出群QToolStripMenuItem_Click(object sender, EventArgs e)

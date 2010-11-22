@@ -150,7 +150,7 @@ namespace LiveChat.Client
                 tssiInfo.Text = string.Format("当前有{0}个会话请求", requestCount);
                 tssiInfo.Text += string.Format("，有{0}个正在进行中的会话", sessionCount);
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
                 SetOnlineState(false);
             }

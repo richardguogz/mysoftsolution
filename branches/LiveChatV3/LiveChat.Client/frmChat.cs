@@ -222,7 +222,7 @@ namespace LiveChat.Client
                     }
                 }
             }
-            catch (SocketException ex) { }
+            catch (SocketException) { }
             catch (Exception ex)
             {
                 ClientUtils.ShowError(ex);

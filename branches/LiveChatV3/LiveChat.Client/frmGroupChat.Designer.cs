@@ -31,6 +31,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ToolStripButton tsbExit;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGroupChat));
             System.Windows.Forms.ToolStripButton toolStripButton4;
@@ -67,6 +68,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.listSeats = new LiveChat.Client.DoubleBufferListView();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
@@ -75,6 +77,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             tsbExit = new System.Windows.Forms.ToolStripButton();
             toolStripButton4 = new System.Windows.Forms.ToolStripButton();
@@ -123,7 +126,7 @@
             this.lblGroupInfo.Name = "lblGroupInfo";
             this.lblGroupInfo.Size = new System.Drawing.Size(435, 24);
             this.lblGroupInfo.TabIndex = 10;
-            this.lblGroupInfo.Text = "客服群聊天（1/10）";
+            this.lblGroupInfo.Text = "群聊天（1/10）";
             this.lblGroupInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // plChat
@@ -419,6 +422,7 @@
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(0, 23);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
@@ -448,6 +452,7 @@
             this.listSeats.MultiSelect = false;
             this.listSeats.Name = "listSeats";
             this.listSeats.Size = new System.Drawing.Size(174, 239);
+            this.listSeats.SmallImageList = this.imgList;
             this.listSeats.TabIndex = 5;
             this.listSeats.UseCompatibleStateImageBehavior = false;
             this.listSeats.View = System.Windows.Forms.View.Details;
@@ -457,6 +462,19 @@
             // 
             this.columnHeader7.Text = "群信息 (1/1)";
             this.columnHeader7.Width = 150;
+            // 
+            // imgList
+            // 
+            this.imgList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgList.ImageStream")));
+            this.imgList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgList.Images.SetKeyName(0, "人.png");
+            this.imgList.Images.SetKeyName(1, "单人灰不在线.png");
+            this.imgList.Images.SetKeyName(2, "群.png");
+            this.imgList.Images.SetKeyName(3, "树第一级.png");
+            this.imgList.Images.SetKeyName(4, "树打开.bmp");
+            this.imgList.Images.SetKeyName(5, "人.png");
+            this.imgList.Images.SetKeyName(6, "人.ico");
+            this.imgList.Images.SetKeyName(7, "离开.ico");
             // 
             // tsbAcceptTalk
             // 
@@ -494,6 +512,7 @@
             this.toolStripButton1,
             this.toolStripSeparator1,
             this.toolStripButton3,
+            this.toolStripButton5,
             this.toolStripSeparator3,
             toolStripButton4});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -529,6 +548,17 @@
             this.toolStripButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
+            // toolStripButton5
+            // 
+            this.toolStripButton5.Image = global::LiveChat.Client.Properties.Resources.tool6;
+            this.toolStripButton5.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton5.Name = "toolStripButton5";
+            this.toolStripButton5.Size = new System.Drawing.Size(60, 53);
+            this.toolStripButton5.Text = "解散该群";
+            this.toolStripButton5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -544,7 +574,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmGroupChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "客服群会话";
+            this.Text = "群会话";
             this.Load += new System.EventHandler(this.frmGroupChat_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGroupChat_FormClosing);
             this.plChat.ResumeLayout(false);
@@ -613,5 +643,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripButton5;
+        private System.Windows.Forms.ImageList imgList;
     }
 }

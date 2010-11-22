@@ -34,10 +34,8 @@ namespace LiveChat.Service.Manager
 
             List<t_UGroup> ugroups = GetUserGroupsFromDB();
             List<t_SGroup> sgroups = GetSeatGroupsFromDB();
-            List<t_GroupUser> gusers = GetGroupUsersFromDB();
-            List<t_GroupSeat> gseats = GetGroupSeatsFromDB();
-            groupUsers = gusers;
-            groupSeats = gseats;
+            groupUsers = GetGroupUsersFromDB();
+            groupSeats = GetGroupSeatsFromDB();
 
             //加载用户群
             ugroups.ForEach(p =>
@@ -54,7 +52,7 @@ namespace LiveChat.Service.Manager
                 };
 
                 //加载用户到群里
-                foreach (var guser in gusers.FindAll(g => g.GroupID == p.GroupID))
+                foreach (var guser in groupUsers.FindAll(g => g.GroupID == p.GroupID))
                 {
                     var user = UserManager.Instance.GetUser(guser.UserID);
                     ug.Users.Add(user);
@@ -79,7 +77,7 @@ namespace LiveChat.Service.Manager
                 };
 
                 //加载客服到群里
-                foreach (var gseat in gseats.FindAll(g => g.GroupID == p.GroupID))
+                foreach (var gseat in groupSeats.FindAll(g => g.GroupID == p.GroupID))
                 {
                     var seat = SeatManager.Instance.GetSeat(gseat.SeatID);
                     sg.Seats.Add(seat);
@@ -90,6 +88,72 @@ namespace LiveChat.Service.Manager
         }
 
         #region IGroupManager 成员
+
+        /// <summary>
+        /// 获取用户未加入的群
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public IList<UserGroup> GetUserNoJoinGroups(string userID)
+        {
+            lock (syncobj)
+            {
+                var ugroups = groupUsers.FindAll(p => p.UserID != userID);
+                IList<Guid> guidList = new List<Guid>();
+                foreach (var group in ugroups)
+                {
+                    if (!guidList.Contains(group.GroupID))
+                    {
+                        guidList.Add(group.GroupID);
+                    }
+                }
+
+                IList<UserGroup> list = new List<UserGroup>();
+                foreach (var guid in guidList)
+                {
+                    if (dictGroup.ContainsKey(guid))
+                    {
+                        var g = dictGroup[guid] as UserGroup;
+                        list.Add(g);
+                    }
+                }
+
+                return list;
+            }
+        }
+
+        /// <summary>
+        /// 获取客服未加入的群
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public IList<SeatGroup> GetSeatNoJoinGroups(string seatID)
+        {
+            lock (syncobj)
+            {
+                var sgroups = groupSeats.FindAll(p => p.SeatID != seatID);
+                IList<Guid> guidList = new List<Guid>();
+                foreach (var group in sgroups)
+                {
+                    if (!guidList.Contains(group.GroupID))
+                    {
+                        guidList.Add(group.GroupID);
+                    }
+                }
+
+                IList<SeatGroup> list = new List<SeatGroup>();
+                foreach (var guid in guidList)
+                {
+                    if (dictGroup.ContainsKey(guid))
+                    {
+                        var g = dictGroup[guid] as SeatGroup;
+                        list.Add(g);
+                    }
+                }
+
+                return list;
+            }
+        }
 
         /// <summary>
         /// 获取用户组列表
@@ -149,7 +213,37 @@ namespace LiveChat.Service.Manager
             lock (syncobj)
             {
                 group.AttachSet(t_GroupSeat._.MemoName);
-                return dbSession.Save(group) > 0;
+                bool ret = dbSession.Save(group) > 0;
+
+                if (ret)
+                {
+                    var item = groupSeats.Find(p => p.SeatID == group.SeatID && p.GroupID == group.GroupID);
+                    if (item != null) item.MemoName = group.MemoName;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 修改群名称
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public bool UpdateUserGroup(t_GroupUser group)
+        {
+            lock (syncobj)
+            {
+                group.AttachSet(t_GroupUser._.MemoName);
+                bool ret = dbSession.Save(group) > 0;
+
+                if (ret)
+                {
+                    var item = groupUsers.Find(p => p.UserID == group.UserID && p.GroupID == group.GroupID);
+                    if (item != null) item.MemoName = group.MemoName;
+                }
+
+                return ret;
             }
         }
 
@@ -214,6 +308,62 @@ namespace LiveChat.Service.Manager
             {
                 return dbSession.Delete<t_GroupUser>(t_GroupUser._.UserID == userID
                     && t_GroupUser._.GroupID == groupID) > 0;
+            }
+        }
+
+        /// <summary>
+        /// 加入客服群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public bool JoinSeatGroup(string seatID, Guid groupID)
+        {
+            lock (syncobj)
+            {
+                //把自己添加到群中
+                t_GroupSeat gs = new t_GroupSeat()
+                {
+                    SeatID = seatID,
+                    GroupID = groupID,
+                    AddTime = DateTime.Now
+                };
+
+                bool ret = dbSession.Save(gs) > 0;
+                if (ret)
+                {
+                    groupSeats.Add(gs);
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 加入用户群
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public bool JoinUserGroup(string userID, Guid groupID)
+        {
+            lock (syncobj)
+            {
+                //把自己添加到群中
+                t_GroupUser gu = new t_GroupUser()
+                {
+                    UserID = userID,
+                    GroupID = groupID,
+                    AddTime = DateTime.Now
+                };
+
+                bool ret = dbSession.Save(gu) > 0;
+                if (ret)
+                {
+                    groupUsers.Add(gu);
+                }
+
+                return ret;
             }
         }
 
@@ -327,7 +477,18 @@ namespace LiveChat.Service.Manager
 
                         dictGroup.Add(ssg.GroupID, ssg);
 
-                        groupSeats = GetGroupSeatsFromDB();
+                        //添加到客服列表中
+                        t_GroupSeat ts = new t_GroupSeat()
+                        {
+                            SeatID = ssg.CreateID,
+                            GroupID = ssg.GroupID,
+                            AddTime = ssg.AddTime
+                        };
+
+                        if (!groupSeats.Exists(p => p.SeatID == ts.SeatID && p.GroupID == ts.GroupID))
+                        {
+                            groupSeats.Add(ts);
+                        }
                     }
 
                     return ret;
@@ -345,7 +506,18 @@ namespace LiveChat.Service.Manager
                     };
                     sg.Attach();
 
-                    return dbSession.Save(sg);
+                    int ret = dbSession.Save(sg);
+
+                    if (ret > 0)
+                    {
+                        var g = dictGroup[sg.GroupID];
+                        g.GroupName = group.GroupName;
+                        g.MaxPerson = group.MaxPerson;
+                        g.Description = group.Description;
+                        dictGroup[sg.GroupID].Notification = group.Notification;
+                    }
+
+                    return ret;
                 }
             }
         }
@@ -412,7 +584,18 @@ namespace LiveChat.Service.Manager
 
                         dictGroup.Add(uug.GroupID, uug);
 
-                        groupUsers = GetGroupUsersFromDB();
+                        //添加到用户列表中
+                        t_GroupUser tu = new t_GroupUser()
+                        {
+                            UserID = uug.CreateID,
+                            GroupID = uug.GroupID,
+                            AddTime = uug.AddTime
+                        };
+
+                        if (!groupUsers.Exists(p => p.UserID == tu.UserID && p.GroupID == tu.GroupID))
+                        {
+                            groupUsers.Add(tu);
+                        }
                     }
 
                     return ret;
@@ -429,9 +612,20 @@ namespace LiveChat.Service.Manager
                         //AddTime = group.AddTime
                     };
                     ug.Attach();
-                }
 
-                return dbSession.Save(ug);
+                    int ret = dbSession.Save(ug);
+
+                    if (ret > 0)
+                    {
+                        var g = dictGroup[ug.GroupID];
+                        g.GroupName = group.GroupName;
+                        g.MaxPerson = group.MaxPerson;
+                        g.Description = group.Description;
+                        g.Notification = group.Notification;
+                    }
+
+                    return ret;
+                }
             }
         }
 

@@ -38,6 +38,13 @@ namespace LiveChat.Interface
         IList<UserGroup> GetUserGroups(string userID);
 
         /// <summary>
+        /// 获取用户的群列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        IList<UserGroup> GetUserNoJoinGroups(string userID);
+
+        /// <summary>
         /// 用户登录
         /// </summary>
         /// <param name="userType"></param>
@@ -109,7 +116,7 @@ namespace LiveChat.Interface
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="groupID"></param>
-        void AddToGroup(string userID, Guid groupID);
+        void JoinGroup(string userID, Guid groupID);
 
         /// <summary>
         /// 退出指定的群
@@ -117,6 +124,13 @@ namespace LiveChat.Interface
         /// <param name="userID"></param>
         /// <param name="groupID"></param>
         void ExitGroup(string userID, Guid groupID);
+
+        /// <summary>
+        /// 解散群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        void DismissGroup(string seatID, Guid groupID);
 
         /// <summary>
         /// 获取会话中所有消息

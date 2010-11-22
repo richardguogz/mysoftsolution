@@ -483,6 +483,23 @@ namespace LiveChat.Service
         }
 
         /// <summary>
+        /// 获取用户的群列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public IList<UserGroup> GetUserNoJoinGroups(string userID)
+        {
+            try
+            {
+                return GroupManager.Instance.GetUserNoJoinGroups(userID);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
         /// 通过公司ID和Code获取一个客服
         /// </summary>
         /// <param name="companyID"></param>
@@ -672,17 +689,21 @@ namespace LiveChat.Service
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="groupID"></param>
-        public void AddToGroup(string userID, Guid groupID)
+        public void JoinGroup(string userID, Guid groupID)
         {
             try
             {
                 UserGroup group = GroupManager.Instance.GetUserGroup(groupID);
                 if (group.Users.Count < group.MaxPerson)
                 {
-                    User user = UserManager.Instance.GetUser(userID);
+                    bool success = GroupManager.Instance.JoinUserGroup(userID, groupID);
+                    if (success)
+                    {
+                        User user = UserManager.Instance.GetUser(userID);
 
-                    //将用户添加到群中
-                    group.AddUser(user);
+                        //将用户添加到群中
+                        group.AddUser(user);
+                    }
                 }
                 else
                 {
@@ -712,6 +733,29 @@ namespace LiveChat.Service
                     User user = UserManager.Instance.GetUser(userID);
                     group.RemoveUser(user);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 解散群
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        public void DismissGroup(string seatID, Guid groupID)
+        {
+            try
+            {
+                //bool success = GroupManager.Instance.ExitSeatGroup(seatID, groupID);
+                //if (success)
+                //{
+                //    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                //    Seat seat = SeatManager.Instance.GetSeat(seatID);
+                //    group.RemoveSeat(seat);
+                //}
             }
             catch (Exception ex)
             {

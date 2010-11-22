@@ -10,19 +10,19 @@ using LiveChat.Entity;
 
 namespace LiveChat.Client
 {
-    public partial class frmGroupRename : Form
+    public partial class frmFriendGroup : Form
     {
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
         private Seat seat;
-        private SeatGroup group;
+        private SeatFriendGroup group;
 
-        public frmGroupRename(ISeatService service, Seat seat, SeatGroup group)
+        public frmFriendGroup(ISeatService service, Seat seat, SeatFriendGroup group)
         {
             this.service = service;
-            this.group = group;
             this.seat = seat;
+            this.group = group;
 
             InitializeComponent();
         }
@@ -35,7 +35,20 @@ namespace LiveChat.Client
 
             try
             {
-                bool success = service.UpdateSeatGroupName(seat.SeatID, group.GroupID, name);
+                bool success = false;
+                if (group == null)
+                {
+                    group = new SeatFriendGroup()
+                    {
+                        GroupID = Guid.NewGuid(),
+                        GroupName = name
+                    };
+                    success = service.AddFriendGroup(seat.SeatID, group);
+                }
+                else
+                {
+                    success = service.UpdateFriendGroupName(seat.SeatID, group.GroupID, name);
+                }
                 if (success) Callback(name);
                 this.Close();
             }
@@ -52,7 +65,14 @@ namespace LiveChat.Client
 
         private void frmGroupRename_Load(object sender, EventArgs e)
         {
-            this.textBox1.Text = group.MemoName;
+            if (group == null)
+            {
+                this.Text = "新建好友组名";
+            }
+            else
+            {
+                this.textBox1.Text = group.GroupName;
+            }
         }
     }
 }

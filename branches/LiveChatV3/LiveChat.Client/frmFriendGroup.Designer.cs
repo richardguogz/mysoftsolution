@@ -1,6 +1,6 @@
 ﻿namespace LiveChat.Client
 {
-    partial class frmGroupRename
+    partial class frmFriendGroup
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGroupRename));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSeatRename));
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -40,9 +40,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(31, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 12);
+            this.label1.Size = new System.Drawing.Size(95, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "请输入群名称:";
+            this.label1.Text = "请输入好友组名:";
             // 
             // textBox1
             // 
@@ -74,7 +74,7 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // frmGroupRename
+            // frmSeatRename
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -90,9 +90,9 @@
             this.MaximumSize = new System.Drawing.Size(334, 180);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(334, 180);
-            this.Name = "frmGroupRename";
+            this.Name = "frmSeatRename";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "修改群名称";
+            this.Text = "修改好友组名";
             this.Load += new System.EventHandler(this.frmGroupRename_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

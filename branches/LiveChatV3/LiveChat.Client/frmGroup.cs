@@ -16,14 +16,12 @@ namespace LiveChat.Client
 
         private ISeatService service;
         private SeatGroup group;
-        private Company company;
         private Seat seat;
         private bool edit;
 
-        public frmGroup(ISeatService service, Company company, Seat seat, SeatGroup group)
+        public frmGroup(ISeatService service, Seat seat, SeatGroup group)
         {
             this.service = service;
-            this.company = company;
             this.group = group;
             this.seat = seat;
             this.edit = false;
@@ -47,14 +45,14 @@ namespace LiveChat.Client
 
             if (string.IsNullOrEmpty(groupName))
             {
-                ClientUtils.ShowMessage("客服群名称不能为空！");
+                ClientUtils.ShowMessage("群名称不能为空！");
                 textBox1.Focus();
                 return;
             }
 
             if (maxCount < 10 || maxCount > 100)
             {
-                ClientUtils.ShowMessage("客服群人数应该在10-100人之间！");
+                ClientUtils.ShowMessage("群人数应该在10-100人之间！");
                 numericUpDown1.Focus();
                 return;
             }
@@ -66,13 +64,13 @@ namespace LiveChat.Client
             {
                 if (group == null)
                 {
-                    service.AddSeatGroup(company.CompanyID, groupName, maxCount, createID, managerID, notification, description);
+                    service.AddSeatGroup(groupName, maxCount, createID, managerID, notification, description);
                     if (Callback != null) Callback(null);
                 }
                 else
                 {
                     service.UpdateSeatGroup(group.GroupID, groupName, maxCount, notification, description);
-                    if (Callback != null) Callback(null);
+                    if (Callback != null) Callback(notification);
                 }
 
                 this.Close();

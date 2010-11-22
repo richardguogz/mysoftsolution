@@ -58,6 +58,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.nextPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.firstPanel.SuspendLayout();
@@ -165,6 +166,7 @@
             // 
             // nextPanel
             // 
+            this.nextPanel.Controls.Add(this.label6);
             this.nextPanel.Controls.Add(this.pictureBox1);
             this.nextPanel.Controls.Add(this.label1);
             this.nextPanel.Controls.Add(this.button2);
@@ -347,19 +349,28 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 316);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(149, 12);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "双击客服可以查看详细信息";
+            // 
             // frmAddSeat
             // 
             this.AcceptButton = this.button4;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button5;
-            this.ClientSize = new System.Drawing.Size(543, 362);
-            this.Controls.Add(this.firstPanel);
+            this.ClientSize = new System.Drawing.Size(543, 372);
             this.Controls.Add(this.nextPanel);
+            this.Controls.Add(this.firstPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(559, 400);
-            this.MinimumSize = new System.Drawing.Size(559, 400);
+            this.MaximumSize = new System.Drawing.Size(559, 410);
+            this.MinimumSize = new System.Drawing.Size(559, 410);
             this.Name = "frmAddSeat";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -410,5 +421,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }
