@@ -85,6 +85,15 @@ namespace LiveChat.Client
             XmlNodeList oldNodeList = localXmlFiles.GetNodeList("AutoUpdater/Files");//5+1+a+s+p+x
             Hashtable updateFileList = new Hashtable();
 
+            string newVersion = serverXmlFiles.GetNodeValue("AutoUpdater/Application/Version");
+            string oldVersion = localXmlFiles.GetNodeValue("AutoUpdater/Application/Version");
+
+            currVersion = newVersion;
+            if (string.Compare(oldVersion, newVersion) >= 0)
+            {
+                return false;
+            }
+
             int k = 0;
             for (int i = 0; i < newNodeList.Count; i++)
             {
@@ -92,7 +101,6 @@ namespace LiveChat.Client
 
                 string newFileName = newNodeList.Item(i).Attributes["Name"].Value.Trim();
                 string newVer = newNodeList.Item(i).Attributes["Ver"].Value.Trim();
-                currVersion = newVer;
 
                 ArrayList oldFileAl = new ArrayList();
                 for (int j = 0; j < oldNodeList.Count; j++)

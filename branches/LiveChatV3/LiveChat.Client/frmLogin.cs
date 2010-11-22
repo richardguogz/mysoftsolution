@@ -21,7 +21,6 @@ namespace LiveChat.Client
     {
         private ISeatService service;
         private string style;
-        private bool isExit = true;
         private bool isNewForm = false;
         private string path;
         private bool isRelogin;
@@ -156,7 +155,6 @@ namespace LiveChat.Client
                             return frmNav;
                         });
 
-                        isExit = false;
                         this.Close();
                         break;
                 }
@@ -242,14 +240,6 @@ namespace LiveChat.Client
             ClientUtils.ExitApplication();
         }
 
-        private void frmLogin_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (isExit)
-            {
-
-            }
-        }
-
         void frm_Callback(object obj)
         {
             service = RemotingUtil.GetRemotingSeatService();
@@ -308,6 +298,11 @@ namespace LiveChat.Client
             {
                 ClientUtils.ShowError(ex);
             }
+        }
+
+        private void ÍË³öÏµÍ³ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ClientUtils.ExitApplication();
         }
     }
 }

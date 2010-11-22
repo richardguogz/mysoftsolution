@@ -83,7 +83,7 @@ namespace LiveChat.Client
                 #endregion
 
                 urlTimer = new Timer();
-                urlTimer.Interval = (int)TimeSpan.FromSeconds(30).TotalMilliseconds;
+                urlTimer.Interval = (int)TimeSpan.FromSeconds(20).TotalMilliseconds;
                 urlTimer.Tick += new EventHandler(urlTimer_Tick);
                 urlTimer.Start();
 
@@ -251,8 +251,6 @@ namespace LiveChat.Client
             catch (Exception ex)
             {
                 ClientUtils.ShowError(ex);
-
-                //throw ex;
 
                 System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1));
             }
