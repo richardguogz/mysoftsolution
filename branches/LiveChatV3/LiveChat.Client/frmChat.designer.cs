@@ -21,6 +21,8 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+
+            SingletonMul.RemoveDisposedForm<frmChat>();
         }
 
         #region Windows Form Designer generated code
@@ -526,7 +528,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "正在与 xxx 聊天中...";
             this.Load += new System.EventHandler(this.frmChat_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmChat_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.panel12.ResumeLayout(false);

@@ -108,8 +108,6 @@ namespace LiveChat.Client
                         ClientUtils.ShowMessage("当前会话已经被其它客服接受，将强制关闭本窗口！");
                         if (Callback != null) Callback(session.SessionID);
                         this.Close();
-                        this.Dispose();
-
                         return;
                     }
                 }
@@ -123,8 +121,6 @@ namespace LiveChat.Client
                         ClientUtils.ShowMessage("当前会话已经被用户结束，将强制关闭本窗口！");
                         if (Callback != null) Callback(session.SessionID);
                         this.Close();
-                        this.Dispose();
-
                         return;
                     }
                 }
@@ -667,12 +663,6 @@ namespace LiveChat.Client
                 frmMessage frm = new frmMessage(service, company, seat, session);
                 return frm;
             });
-        }
-
-        private void frmChat_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //e.Cancel = true;
-            //this.Hide();
         }
 
         private void txtMessage_Click(object sender, EventArgs e)

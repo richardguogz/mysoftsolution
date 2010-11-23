@@ -83,7 +83,7 @@ namespace LiveChat.Client
                 #endregion
 
                 urlTimer = new Timer();
-                urlTimer.Interval = (int)TimeSpan.FromSeconds(20).TotalMilliseconds;
+                urlTimer.Interval = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
                 urlTimer.Tick += new EventHandler(urlTimer_Tick);
                 urlTimer.Start();
 
@@ -457,6 +457,9 @@ namespace LiveChat.Client
         //显示提示信息
         private void ShowTip(TipInfo tip, CallbackEventHandler viewHandler, CallbackEventHandler cancelHandler)
         {
+            //如果窗口已经打开，则返回
+            if (SingletonMul.ExistForm(tip.Key)) return;
+
             SingletonMul.Show<frmPopup>(tip.Id, () =>
             {
                 frmPopup frm = new frmPopup(tip);

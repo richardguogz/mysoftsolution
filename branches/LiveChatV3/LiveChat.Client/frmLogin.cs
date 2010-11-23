@@ -74,11 +74,11 @@ namespace LiveChat.Client
 
             AppUpdater updater = new AppUpdater();
 
-            string newVersion;
-            bool isUpdate = updater.CheckForUpdate(out newVersion);
+            string newVersion, oldVersion;
+            bool isUpdate = updater.CheckForUpdate(out newVersion, out oldVersion);
             if (isUpdate)
             {
-                if (MessageBox.Show("发现版本号为" + newVersion + "的面料QQ软件，是否立即升级？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                if (MessageBox.Show("发现新版本【" + newVersion + "】的面料QQ软件，是否立即升级？\r\n目前使用的版本【" + oldVersion + "】", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
                     在线升级ToolStripMenuItem_Click(null, null);
                 }

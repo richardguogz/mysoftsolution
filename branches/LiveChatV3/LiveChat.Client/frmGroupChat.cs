@@ -76,7 +76,9 @@ namespace LiveChat.Client
             catch (Exception ex)
             {
                 if (ex.InnerException == null)
+                {
                     this.Enabled = false;
+                }
             }
 
             int onlineCount = (seats as List<Seat>).FindAll(p => p.State == OnlineState.Online).Count;
@@ -175,9 +177,9 @@ namespace LiveChat.Client
             {
                 if (ex.InnerException == null)
                 {
-                    msgtimer.Stop();
                     ClientUtils.ShowMessage(ex.Message);
                     this.Close();
+                    return;
                 }
                 else
                 {
@@ -450,12 +452,6 @@ namespace LiveChat.Client
         {
             按Control键发送消息ToolStripMenuItem.Checked = false;
             按ControlEnter键发送消息ToolStripMenuItem.Checked = true;
-        }
-
-        private void frmGroupChat_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //e.Cancel = true;
-            //this.Hide();
         }
 
         private void txtMessage_Click(object sender, EventArgs e)

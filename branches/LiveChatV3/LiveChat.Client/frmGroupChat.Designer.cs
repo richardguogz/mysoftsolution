@@ -21,6 +21,8 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+
+            SingletonMul.RemoveDisposedForm<frmGroupChat>();
         }
 
         #region Windows Form Designer generated code
@@ -575,7 +577,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "群会话";
             this.Load += new System.EventHandler(this.frmGroupChat_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmGroupChat_FormClosing);
             this.plChat.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

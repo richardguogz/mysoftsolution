@@ -507,12 +507,6 @@ namespace LiveChat.Client
             });
         }
 
-        private void frmSeatChat_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //e.Cancel = true;
-            //this.Hide();
-        }
-
         private void tsbExit_Click(object sender, EventArgs e)
         {
             this.Close();

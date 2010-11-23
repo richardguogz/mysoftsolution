@@ -21,6 +21,8 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+
+            SingletonMul.RemoveDisposedForm<frmSeatChat>();
         }
 
         #region Windows Form Designer generated code
@@ -54,6 +56,7 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnSendMessage = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -68,7 +71,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             tsbExit = new System.Windows.Forms.ToolStripButton();
             this.plChat.SuspendLayout();
             this.tsChatTools.SuspendLayout();
@@ -300,6 +302,16 @@
             this.panel4.TabIndex = 15;
             this.panel4.Visible = false;
             // 
+            // emotionDropdown1
+            // 
+            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
+            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.Name = "emotionDropdown1";
+            this.emotionDropdown1.Size = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.TabIndex = 0;
+            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -421,16 +433,6 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 56);
             // 
-            // emotionDropdown1
-            // 
-            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
-            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(531, 350);
-            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(531, 350);
-            this.emotionDropdown1.Name = "emotionDropdown1";
-            this.emotionDropdown1.Size = new System.Drawing.Size(531, 350);
-            this.emotionDropdown1.TabIndex = 0;
-            // 
             // frmSeatChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -446,7 +448,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "客服与客服会话";
             this.Load += new System.EventHandler(this.frmSeatChat_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSeatChat_FormClosing);
             this.plChat.ResumeLayout(false);
             this.plChat.PerformLayout();
             this.tsChatTools.ResumeLayout(false);

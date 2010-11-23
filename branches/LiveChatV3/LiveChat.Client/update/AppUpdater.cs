@@ -35,12 +35,14 @@ namespace LiveChat.Client
         /// 检查更新文件
         /// </summary>
         /// <returns></returns>
-        public bool CheckForUpdate(out string currVersion)
+        public bool CheckForUpdate(out string newVersion, out string oldVersion)
         {
             string localXmlFile = Application.StartupPath + "\\UpdateList.xml";
             string serverXmlFile = string.Empty;
             XmlFiles updaterXmlFiles = null;
-            currVersion = null;
+
+            newVersion = null;
+            oldVersion = null;
 
             try
             {
@@ -85,10 +87,9 @@ namespace LiveChat.Client
             XmlNodeList oldNodeList = localXmlFiles.GetNodeList("AutoUpdater/Files");//5+1+a+s+p+x
             Hashtable updateFileList = new Hashtable();
 
-            string newVersion = serverXmlFiles.GetNodeValue("AutoUpdater/Application/Version");
-            string oldVersion = localXmlFiles.GetNodeValue("AutoUpdater/Application/Version");
+            newVersion = serverXmlFiles.GetNodeValue("AutoUpdater/Application/Version");
+            oldVersion = localXmlFiles.GetNodeValue("AutoUpdater/Application/Version");
 
-            currVersion = newVersion;
             if (string.Compare(oldVersion, newVersion) >= 0)
             {
                 return false;

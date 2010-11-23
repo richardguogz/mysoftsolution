@@ -8,10 +8,10 @@ using System.Drawing;
 namespace LiveChat.Client
 {
     /// <summary>
-    /// 获取Form委托
+    /// 创建实例Form委托
     /// </summary>
     /// <returns></returns>
-    public delegate T GetInstanceEventHandler<T>() where T : Form;
+    public delegate T CreateFormEventHandler<T>() where T : Form;
 
     /// <summary>
     /// 多个单例
@@ -19,6 +19,33 @@ namespace LiveChat.Client
     public class SingletonMul
     {
         private static Dictionary<string, object> dict = new Dictionary<string, object>();
+        private static readonly object syncobj = new object();
+
+        /// <summary>
+        /// 移除已经失效的窗口
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static void RemoveDisposedForm<T>()
+            where T : Form
+        {
+            lock (syncobj)
+            {
+                foreach (var key in new List<string>(dict.Keys))
+                {
+                    if (dict[key] == null)
+                    {
+                        dict.Remove(key);
+                        continue;
+                    }
+
+                    var winform = dict[key] as WinForm<T>;
+                    if (winform.IsDisposed)
+                    {
+                        dict.Remove(key);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// 多单例显示
@@ -26,27 +53,39 @@ namespace LiveChat.Client
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="form"></param>
-        public static void Show<T>(string key, GetInstanceEventHandler<T> form)
+        public static void Show<T>(string key, CreateFormEventHandler<T> form)
             where T : Form
         {
-            if (dict.ContainsKey(key))
+            lock (syncobj)
             {
-                var winform = dict[key] as WinForm<T>;
-                if (winform.IsDisposed)
+                if (dict.ContainsKey(key))
                 {
-                    winform = new WinForm<T>(form());
-                    dict[key] = winform;
+                    var winform = dict[key] as WinForm<T>;
+                    if (winform.IsDisposed)
+                    {
+                        winform = new WinForm<T>(form());
+                        dict[key] = winform;
+                    }
+
+                    winform.Show();
                 }
+                else
+                {
+                    var t = new WinForm<T>(form());
+                    dict.Add(key, t);
 
-                winform.Show();
+                    t.Show();
+                }
             }
-            else
-            {
-                var t = new WinForm<T>(form());
-                dict.Add(key, t);
+        }
 
-                t.Show();
-            }
+        /// <summary>
+        /// 判断是否存在窗体
+        /// </summary>
+        /// <param name="key"></param>
+        public static bool ExistForm(string key)
+        {
+            return dict.ContainsKey(key);
         }
 
         /// <summary>
@@ -55,9 +94,12 @@ namespace LiveChat.Client
         /// <param name="key"></param>
         public static void RemoveKey(string key)
         {
-            if (dict.ContainsKey(key))
+            lock (syncobj)
             {
-                dict.Remove(key);
+                if (dict.ContainsKey(key))
+                {
+                    dict.Remove(key);
+                }
             }
         }
 
@@ -68,10 +110,13 @@ namespace LiveChat.Client
         /// <param name="newKey"></param>
         public static void RenameKey(string oldKey, string newKey)
         {
-            if (dict.ContainsKey(oldKey))
+            lock (syncobj)
             {
-                dict[newKey] = dict[oldKey];
-                dict.Remove(oldKey);
+                if (dict.ContainsKey(oldKey))
+                {
+                    dict[newKey] = dict[oldKey];
+                    dict.Remove(oldKey);
+                }
             }
         }
 
@@ -82,9 +127,12 @@ namespace LiveChat.Client
         public static void Hide<T>(string key)
             where T : Form
         {
-            if (dict.ContainsKey(key))
+            lock (syncobj)
             {
-                (dict[key] as WinForm<T>).Hide();
+                if (dict.ContainsKey(key))
+                {
+                    (dict[key] as WinForm<T>).Hide();
+                }
             }
         }
 
@@ -95,10 +143,13 @@ namespace LiveChat.Client
         public static void Close<T>(string key)
             where T : Form
         {
-            if (dict.ContainsKey(key))
+            lock (syncobj)
             {
-                (dict[key] as WinForm<T>).Close();
-                dict.Remove(key);
+                if (dict.ContainsKey(key))
+                {
+                    (dict[key] as WinForm<T>).Close();
+                    dict.Remove(key);
+                }
             }
         }
     }
@@ -122,7 +173,7 @@ namespace LiveChat.Client
         /// 显示窗体
         /// </summary>
         /// <param name="form"></param>
-        public static void Show<T>(GetInstanceEventHandler<T> form)
+        public static void Show<T>(CreateFormEventHandler<T> form)
             where T : Form
         {
             WinForm<T>.GetInstance(form).Show();
@@ -132,7 +183,7 @@ namespace LiveChat.Client
         /// 显示窗体
         /// </summary>
         /// <param name="form"></param>
-        public static void Show<T>(GetInstanceEventHandler<T> form, Rectangle rect)
+        public static void Show<T>(CreateFormEventHandler<T> form, Rectangle rect)
             where T : Form
         {
             WinForm<T>.GetInstance(form).Show(rect);
@@ -181,7 +232,7 @@ namespace LiveChat.Client
          where T : Form
     {
         private static volatile WinForm<T> _instance;    //volatile是为了让编译器对此代码编译后的位置不进行调整
-        private static object lockHelper = new object();    //辅助器，不参与对象构建
+        private static object syncobj = new object();    //辅助器，不参与对象构建
         private T form;
         public T Form
         {
@@ -275,11 +326,11 @@ namespace LiveChat.Client
         /// <summary>
         /// 单例
         /// </summary>
-        public static WinForm<T> GetInstance(GetInstanceEventHandler<T> form)
+        public static WinForm<T> GetInstance(CreateFormEventHandler<T> form)
         {
             if (_instance == null || _instance.IsDisposed)
             {
-                lock (lockHelper)
+                lock (syncobj)
                 {
                     if (_instance == null || _instance.IsDisposed)       //双检查
                     {
