@@ -227,6 +227,10 @@ namespace LiveChat.Client
 
                     return;
                 }
+                else
+                {
+                    service.ChangeSeatState(loginSeat.SeatID, loginSeat.State);
+                }
 
                 #endregion
 
@@ -1379,6 +1383,7 @@ namespace LiveChat.Client
             try
             {
                 service.ChangeSeatState(loginSeat.SeatID, OnlineState.Online);
+                loginSeat.State = OnlineState.Online;
                 lblUserName.Text = string.Format("{0}(在线)", loginSeat.SeatName);
             }
             catch { }
@@ -1389,6 +1394,7 @@ namespace LiveChat.Client
             try
             {
                 service.ChangeSeatState(loginSeat.SeatID, OnlineState.Leave);
+                loginSeat.State = OnlineState.Leave;
                 lblUserName.Text = string.Format("{0}(离开)", loginSeat.SeatName);
             }
             catch { }
@@ -1399,6 +1405,7 @@ namespace LiveChat.Client
             try
             {
                 service.ChangeSeatState(loginSeat.SeatID, OnlineState.Busy);
+                loginSeat.State = OnlineState.Busy;
                 lblUserName.Text = string.Format("{0}(忙碌)", loginSeat.SeatName);
             }
             catch { }

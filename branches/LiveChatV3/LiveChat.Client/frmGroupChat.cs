@@ -77,7 +77,9 @@ namespace LiveChat.Client
             {
                 if (ex.InnerException == null)
                 {
-                    this.Enabled = false;
+                    this.splitContainer1.Enabled = false;
+                    this.toolStrip1.Enabled = false;
+                    this.Text += "【此群已经被解散】";
                 }
             }
 
@@ -139,6 +141,8 @@ namespace LiveChat.Client
 
         void wbChatBox_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+            if (!this.toolStrip1.Enabled) return;
+
             LoadMessage(false);
 
             msgtimer = new Timer();

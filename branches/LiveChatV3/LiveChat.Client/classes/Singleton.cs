@@ -39,7 +39,7 @@ namespace LiveChat.Client
                     }
 
                     var winform = dict[key] as WinForm<T>;
-                    if (winform.IsDisposed)
+                    if (winform == null || winform.IsDisposed)
                     {
                         dict.Remove(key);
                     }
