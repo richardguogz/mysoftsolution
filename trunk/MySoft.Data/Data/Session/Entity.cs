@@ -222,7 +222,7 @@ namespace MySoft.Data
                         }
                         catch (Exception ex)
                         {
-                            throw new MySoftException(ExceptionType.DataException, ex.Message);
+                            throw new DataException(ex.Message);
                         }
                     }
                 }

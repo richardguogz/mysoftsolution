@@ -49,7 +49,7 @@ namespace MySoft.Data
             }
             catch
             {
-                throw new MySoftException(ExceptionType.DataException, "≥ı ºªØDbSession ß∞‹£¨«ÎºÏ≤È≈‰÷√ «∑Ò’˝»∑£°");
+                throw new DataException("≥ı ºªØDbSession ß∞‹£¨«ÎºÏ≤È≈‰÷√ «∑Ò’˝»∑£°");
             }
         }
 
@@ -1179,7 +1179,7 @@ namespace MySoft.Data
             }
             catch
             {
-                throw new MySoftException(ExceptionType.DataException, "CacheConfig≈‰÷√º”‘ÿ ß∞‹£°");
+                throw new DataException("CacheConfig≈‰÷√º”‘ÿ ß∞‹£°");
             }
             #endregion
         }

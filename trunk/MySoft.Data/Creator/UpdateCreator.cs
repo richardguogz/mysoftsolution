@@ -257,12 +257,12 @@ namespace MySoft.Data
         {
             if (fields == null || values == null)
             {
-                throw new MySoftException(ExceptionType.DataException, "字段和值不能为null;");
+                throw new DataException("字段和值不能为null;");
             }
 
             if (fields.Length != values.Length)
             {
-                throw new MySoftException(ExceptionType.DataException, "字段和值的数量必须一致;");
+                throw new DataException("字段和值的数量必须一致;");
             }
 
             int index = 0;
@@ -284,12 +284,12 @@ namespace MySoft.Data
         {
             if (fieldNames == null || values == null)
             {
-                throw new MySoftException(ExceptionType.DataException, "字段和值不能为null;");
+                throw new DataException("字段和值不能为null;");
             }
 
             if (fieldNames.Length != values.Length)
             {
-                throw new MySoftException(ExceptionType.DataException, "字段和值的数量必须一致;");
+                throw new DataException("字段和值的数量必须一致;");
             }
 
             int index = 0;
@@ -338,7 +338,7 @@ namespace MySoft.Data
 
                 if (count == 0)
                 {
-                    throw new MySoftException(ExceptionType.DataException, "指定的字段不存在于Update列表中！");
+                    throw new DataException("指定的字段不存在于Update列表中！");
                 }
             }
 

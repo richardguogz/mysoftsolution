@@ -735,7 +735,7 @@ namespace MySoft.Data
                 Field[] fields = entity.GetFields();
                 if (fields == null || fields.Length == 0)
                 {
-                    throw new MySoftException(ExceptionType.DataException, "没有任何被选中的字段列表！");
+                    throw new DataException("没有任何被选中的字段列表！");
                 }
                 else
                 {

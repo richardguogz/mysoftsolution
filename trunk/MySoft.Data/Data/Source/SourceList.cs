@@ -73,7 +73,7 @@ namespace MySoft.Data
 
                 if (dict.ContainsKey((TResult)key))
                 {
-                    throw new MySoftException(ExceptionType.DataException, "属性值必须是唯一才能生成字典！");
+                    throw new DataException("属性值必须是唯一才能生成字典！");
                 }
 
                 dict.Add((TResult)key, t);
@@ -190,12 +190,12 @@ namespace MySoft.Data
         {
             if (!typeof(TOutput).IsClass)
             {
-                throw new MySoftException(ExceptionType.DataException, "TOutput必须是Class类型！");
+                throw new DataException("TOutput必须是Class类型！");
             }
 
             if (!typeof(IOutput).IsInterface)
             {
-                throw new MySoftException(ExceptionType.DataException, "IOutput必须是Interface类型！");
+                throw new DataException("IOutput必须是Interface类型！");
             }
 
             //进行两次转换后返回

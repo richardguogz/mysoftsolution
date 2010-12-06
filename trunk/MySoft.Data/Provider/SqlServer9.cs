@@ -40,7 +40,7 @@ namespace MySoft.Data.SqlServer9
 
                     if ((IField)pagingField == null)
                     {
-                        throw new MySoftException(ExceptionType.DataException, "请指定分页主键或设置排序！");
+                        throw new DataException("请指定分页主键或设置排序！");
                     }
 
                     query.OrderBy(pagingField.Asc);

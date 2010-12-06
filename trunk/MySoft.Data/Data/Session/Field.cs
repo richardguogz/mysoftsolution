@@ -785,7 +785,7 @@ namespace MySoft.Data
         {
             if (creator.Table == null)
             {
-                throw new MySoftException(ExceptionType.DataException, "用创建器操作时，表不能为null！");
+                throw new DataException("用创建器操作时，表不能为null！");
             }
 
             FromSection<ViewEntity> f = new FromSection<ViewEntity>(creator.Table);
@@ -824,7 +824,7 @@ namespace MySoft.Data
                 else if (join == "<>")
                     return new WhereClip(field.Name + " is not null");
                 else
-                    throw new MySoftException(ExceptionType.DataException, "当值为null时只能应用于=与<>操作！");
+                    throw new DataException("当值为null时只能应用于=与<>操作！");
             }
 
             string pName = CoreHelper.MakeUniqueKey(30, "$p");

@@ -8,8 +8,30 @@ namespace MySoft.Common
     /// <summary>
     /// CommonMethod 的摘要说明
     /// </summary>
-    public abstract class ImageOperate
+    public abstract class ImageHelper
     {
+        /// <summary>
+        /// 缩放格式
+        /// </summary>
+        public enum ZoomMode
+        {
+            /// <summary>
+            /// 指定高宽缩放（可能变形）
+            /// </summary>
+            HW,
+            /// <summary>
+            /// 指定宽，高按比例
+            /// </summary>
+            W,
+            /// <summary>
+            /// 指定高，宽按比例
+            /// </summary>
+            H,
+            /// <summary>
+            /// 指定高宽裁减（不变形） 
+            /// </summary>
+            CUT
+        }
 
         /// <summary>
         /// 生成缩略图
@@ -19,7 +41,7 @@ namespace MySoft.Common
         /// <param name="width">缩略图宽度</param>
         /// <param name="height">缩略图高度</param>
         /// <param name="mode">生成缩略图的方式</param>    
-        public static void MakeThumbnail(string originalImagePath, string thumbnailPath, int width, int height, string mode)
+        public static void MakeThumbnail(string originalImagePath, string thumbnailPath, int width, int height, ZoomMode mode)
         {
             System.Drawing.Image originalImage = System.Drawing.Image.FromFile(originalImagePath);
 
@@ -33,15 +55,15 @@ namespace MySoft.Common
 
             switch (mode)
             {
-                case "HW"://指定高宽缩放（可能变形）                
+                case ZoomMode.HW://指定高宽缩放（可能变形）                
                     break;
-                case "W"://指定宽，高按比例                    
+                case ZoomMode.W://指定宽，高按比例                    
                     toheight = originalImage.Height * width / originalImage.Width;
                     break;
-                case "H"://指定高，宽按比例
+                case ZoomMode.H://指定高，宽按比例
                     towidth = originalImage.Width * height / originalImage.Height;
                     break;
-                case "Cut"://指定高宽裁减（不变形）                
+                case ZoomMode.CUT://指定高宽裁减（不变形）                
                     if ((double)originalImage.Width / (double)originalImage.Height > (double)towidth / (double)toheight)
                     {
                         oh = originalImage.Height;

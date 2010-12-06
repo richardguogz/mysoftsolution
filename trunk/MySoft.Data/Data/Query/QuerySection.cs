@@ -557,7 +557,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public TopSection<T> GetTop(int topSize)
         {
-            if (topSize <= 0) throw new MySoftException(ExceptionType.DataException, "选取前N条数据值不能小于等于0！");
+            if (topSize <= 0) throw new DataException("选取前N条数据值不能小于等于0！");
 
             String topString = dbProvider.CreatePageQuery<T>(this, topSize, 0).QueryString;
             TopSection<T> top = new TopSection<T>(topString, fromSection, dbProvider, dbTran, pagingField, topSize);
