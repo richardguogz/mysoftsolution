@@ -293,6 +293,7 @@ namespace LiveChat.Client
             companyID = companyID ?? company.CompanyID;
             IList<Ad> list = service.GetAds(companyID, DateTime.Today.AddMonths(-1), DateTime.Today.AddDays(1));
             listAds.Items.Clear();
+            if (list == null) return;
             int index = 1;
             foreach (Ad info in list)
             {
@@ -308,6 +309,7 @@ namespace LiveChat.Client
             companyID = companyID ?? company.CompanyID;
             IList<Seat> list = service.GetCompanySeats(companyID);
             listSeats.Items.Clear();
+            if (list == null) return;
             int index = 1;
             foreach (Seat info in list)
             {
@@ -323,21 +325,20 @@ namespace LiveChat.Client
         private void LoadCompanyInfo()
         {
             IList<Company> list = service.GetCompanies();
+            listCompany.Items.Clear();
+            if (list == null) return;
 
             //添加列表中的公司信息
-            {
-                cboAdCompany.DisplayMember = "CompanyName";
-                cboAdCompany.ValueMember = "CompanyID";
-                cboAdCompany.DataSource = list;
-                cboAdCompany.SelectedValue = company.CompanyID;
+            cboAdCompany.DisplayMember = "CompanyName";
+            cboAdCompany.ValueMember = "CompanyID";
+            cboAdCompany.DataSource = list;
+            cboAdCompany.SelectedValue = company.CompanyID;
 
-                cboSeatCompany.DisplayMember = "CompanyName";
-                cboSeatCompany.ValueMember = "CompanyID";
-                cboSeatCompany.DataSource = new List<Company>(list);
-                cboSeatCompany.SelectedValue = company.CompanyID;
-            }
+            cboSeatCompany.DisplayMember = "CompanyName";
+            cboSeatCompany.ValueMember = "CompanyID";
+            cboSeatCompany.DataSource = new List<Company>(list);
+            cboSeatCompany.SelectedValue = company.CompanyID;
 
-            listCompany.Items.Clear();
             int index = 1;
             foreach (Company info in list)
             {
@@ -352,6 +353,7 @@ namespace LiveChat.Client
         {
             IList<Reply> list = service.GetReplys(company.CompanyID);
             listReply.Items.Clear();
+            if (list == null) return;
             int index = 1;
             foreach (Reply info in list)
             {
@@ -366,6 +368,7 @@ namespace LiveChat.Client
         {
             IList<Link> list = service.GetLinks(company.CompanyID);
             listURL.Items.Clear();
+            if (list == null) return;
             int index = 1;
             foreach (Link info in list)
             {

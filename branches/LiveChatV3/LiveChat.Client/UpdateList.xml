@@ -3,12 +3,12 @@
   <description>面料QQ在线客服软件</description>
   <Updater>
     <Url>http://chat.zgsxw.com/AutoUpdate/</Url>
-    <LastUpdateTime>2010-10-05</LastUpdateTime>
+    <LastUpdateTime>2010-11-24</LastUpdateTime>
   </Updater>
   <Application applicationId="LiveChat">
     <EntryPoint>LiveChat.Client.exe</EntryPoint>
     <Location>.</Location>
-    <Version>2.1.1.0</Version>
+    <Version>2.1.1.5</Version>
   </Application>
   <Files/>
 </AutoUpdater>

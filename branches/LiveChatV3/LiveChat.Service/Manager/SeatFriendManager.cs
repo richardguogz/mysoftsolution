@@ -34,11 +34,11 @@ namespace LiveChat.Service.Manager
                 WhereClip where = t_SeatFriendRequest._.FriendID == seatID && t_SeatFriendRequest._.ConfirmState == 0;
                 var list = dbSession.From<t_SeatFriendRequest>().Where(where).ToList();
 
-                var friendlist = list.ConvertAll<KeyValuePair<Seat, RequestInfo>>(p =>
+                IDictionary<Seat, RequestInfo> items = new Dictionary<Seat, RequestInfo>();
+                list.ForEach(p =>
                 {
                     var seat = SeatManager.Instance.GetSeat(p.SeatID);
-
-                    if (seat == null) return new KeyValuePair<Seat, RequestInfo>();
+                    if (seat == null) return;
 
                     var request = new RequestInfo()
                     {
@@ -49,14 +49,8 @@ namespace LiveChat.Service.Manager
                         AddTime = p.AddTime
                     };
 
-                    return new KeyValuePair<Seat, RequestInfo>(seat, request);
+                    items[seat] = request;
                 });
-
-                IDictionary<Seat, RequestInfo> items = new Dictionary<Seat, RequestInfo>();
-                foreach (var item in friendlist)
-                {
-                    items.Add(item);
-                }
 
                 return items;
             }

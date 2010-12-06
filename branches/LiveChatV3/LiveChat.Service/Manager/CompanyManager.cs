@@ -85,6 +85,11 @@ namespace LiveChat.Service.Manager
                     int ret = dbSession.Save(c);
                     if (ret > 0)
                     {
+                        if (company.Seats == null)
+                        {
+                            company.Seats = new SeatList();
+                        }
+
                         dictCompany.Add(company.CompanyID, company);
                     }
                 }
@@ -104,10 +109,24 @@ namespace LiveChat.Service.Manager
             {
                 if (dictCompany.ContainsKey(companyID))
                 {
-                    int ret = dbSession.Delete<t_Company>(t_Company._.CompanyID == companyID);
-                    if (ret > 0)
+                    using (var trans = dbSession.BeginTrans())
                     {
-                        dictCompany.Remove(companyID);
+                        try
+                        {
+                            int ret = trans.Delete<t_Seat>(t_Seat._.CompanyID == companyID);
+                            ret += trans.Delete<t_Company>(t_Company._.CompanyID == companyID);
+
+                            if (ret > 0)
+                            {
+                                dictCompany.Remove(companyID);
+                            }
+
+                            trans.Commit();
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                        }
                     }
                 }
 

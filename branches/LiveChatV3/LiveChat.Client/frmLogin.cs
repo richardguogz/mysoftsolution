@@ -21,6 +21,7 @@ namespace LiveChat.Client
     {
         private ISeatService service;
         private string style;
+        private Size size;
         private bool isNewForm = false;
         private string path;
         private bool isRelogin;
@@ -150,7 +151,8 @@ namespace LiveChat.Client
                         Singleton.Show(() =>
                         {
                             Point point = new Point(this.Left, this.Top);
-                            frmNavigate frmNav = new frmNavigate(service, company, seat, clientID, point);
+                            Rectangle rect = new Rectangle(point, this.size);
+                            frmNavigate frmNav = new frmNavigate(service, company, seat, clientID, rect);
                             frmNav.Callback += new CallbackEventHandler(frmNav_Callback);
                             return frmNav;
                         });
@@ -197,6 +199,9 @@ namespace LiveChat.Client
                 this.checkBox1.Checked = Convert.ToBoolean(Decode(ini.ReadString(section, "chkpassword", Encode(false))));
                 this.checkBox2.Checked = Convert.ToBoolean(Decode(ini.ReadString(section, "chkautologin", Encode(false))));
                 this.style = Decode(ini.ReadString(section, "formstyle", null));
+
+                string s = Decode(ini.ReadString(section, "formsize", null));
+                this.size = new Size(Convert.ToInt32(s.Split('*')[0]), Convert.ToInt32(s.Split('*')[1]));
             }
             catch { }
 

@@ -27,7 +27,7 @@ namespace LiveChat.Client
         private bool isRelogin;
         private Color currentColor;
         private Font currentFont;
-        private Point point;
+        private Rectangle rect;
 
         private ISeatService service;
         private Company loginCompany;
@@ -42,13 +42,13 @@ namespace LiveChat.Client
 
         #endregion
 
-        public frmNavigate(ISeatService service, Company company, Seat seat, Guid clientID, Point point)
+        public frmNavigate(ISeatService service, Company company, Seat seat, Guid clientID, Rectangle rect)
         {
             this.service = service;
             this.loginCompany = company;
             this.loginSeat = seat;
             this.clientID = clientID;
-            this.point = point;
+            this.rect = rect;
 
             InitializeComponent();
         }
@@ -132,8 +132,10 @@ namespace LiveChat.Client
 
         private void InitSystemInfo()
         {
-            this.Left = point.X;
-            this.Top = point.Y;
+            this.Left = rect.X;
+            this.Top = rect.Y;
+            this.Width = rect.Width;
+            this.Height = rect.Height;
             this.button3.ImageAlign = ContentAlignment.BottomLeft;
 
             int width = (tabControl1.Width - 5) / 3;

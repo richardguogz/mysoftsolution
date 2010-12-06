@@ -45,25 +45,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B2145771F532298E4287FA26B784468"
-        "OwnerKey" = "8:_0D508930BA94426595F44128929D2475"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0B2145771F532298E4287FA26B784468"
-        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0BAEF92493A04ED69374DFE4939A47BC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0D508930BA94426595F44128929D2475"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -177,12 +159,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2788ED3E791FAAED8D4880E9C522BE7D"
-        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2791D8DC1F5F486088FB1B49C1D2A40C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -225,6 +201,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_32D6895A518DEB90AE370481F01F439D"
+        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_371C89389681455282981E417698A625"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -245,12 +227,6 @@
         {
         "MsmKey" = "8:_39238159FCB642CA9AB538B11F5290E3"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_39551530604D353A336B73E175B93F69"
-        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -387,6 +363,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4EC7A28563D94FE9BF89F8CC9F6854C2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4F93D82DE2E14B19B3665D6C49E9FF8F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -435,6 +417,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_59FF196284EB3562B495F0906A5A4DA3"
+        "OwnerKey" = "8:_4EC7A28563D94FE9BF89F8CC9F6854C2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_59FF196284EB3562B495F0906A5A4DA3"
+        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5A0AEF7D2B88459BBCB884EFFF8A1EF5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -477,6 +471,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6EBC7DCEB0746A29F15E7175201940EB"
+        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6EEB3DC700E9486586E56ECD91512A84"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -497,12 +497,6 @@
         {
         "MsmKey" = "8:_75BC08EBE2874C15AED5431CE9CFCCAF"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7687B464419D89F2FF89E065251150DA"
-        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -539,18 +533,6 @@
         {
         "MsmKey" = "8:_7F6EE022DEBF4C3282B20864C4B9D69E"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8131D4AABBE48001D52DBF6D87C6D6AB"
-        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8131D4AABBE48001D52DBF6D87C6D6AB"
-        "OwnerKey" = "8:_39551530604D353A336B73E175B93F69"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -669,6 +651,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A88BDC138CD20EEBA27E7D31F8C04361"
+        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A88BDC138CD20EEBA27E7D31F8C04361"
+        "OwnerKey" = "8:_32D6895A518DEB90AE370481F01F439D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A88DA29F3A66467DACD6F2FB95462579"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -695,12 +689,6 @@
         {
         "MsmKey" = "8:_AD9B0642631749CC99E142D067BB24C7"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ADE0A1D1C47180001338273977FC2D2B"
-        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -903,6 +891,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DFB9B471A8462F1DA8DBCF7C686363BB"
+        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DFCCE85EC3D9405BB5E13AA595676F64"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -911,6 +905,12 @@
         {
         "MsmKey" = "8:_E26688B6191B4C15937B34FB2BB54709"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E38FD17550D9177BB18A4971E8B581FD"
+        "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1000,55 +1000,55 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0D508930BA94426595F44128929D2475"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E8698B3943624E01A47A51A6EA056F4C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_39551530604D353A336B73E175B93F69"
+        "OwnerKey" = "8:_32D6895A518DEB90AE370481F01F439D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2788ED3E791FAAED8D4880E9C522BE7D"
+        "OwnerKey" = "8:_DFB9B471A8462F1DA8DBCF7C686363BB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8131D4AABBE48001D52DBF6D87C6D6AB"
+        "OwnerKey" = "8:_A88BDC138CD20EEBA27E7D31F8C04361"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ADE0A1D1C47180001338273977FC2D2B"
+        "OwnerKey" = "8:_E38FD17550D9177BB18A4971E8B581FD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7687B464419D89F2FF89E065251150DA"
+        "OwnerKey" = "8:_6EBC7DCEB0746A29F15E7175201940EB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_59FF196284EB3562B495F0906A5A4DA3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4EC7A28563D94FE9BF89F8CC9F6854C2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2791D8DC1F5F486088FB1B49C1D2A40C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0B2145771F532298E4287FA26B784468"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1143,7 +1143,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "Version" = "8:2.0.50727"
+                "FrameworkVersion" = "8:2.0.50727"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -1258,11 +1258,6 @@
             "AssemblyAsmDisplayName" = "8:MySoft.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0B2145771F532298E4287FA26B784468"
-                    {
-                    "Name" = "8:MySoft.Core.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MySoft.Core.DLL"
             "TargetName" = "8:"
@@ -1288,37 +1283,6 @@
             "TargetName" = "8:117.gif"
             "Tag" = "8:"
             "Folder" = "8:_99D6167A27884C9BBC23DBCDE7D1724A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0D508930BA94426595F44128929D2475"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MySoft.Data, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_0D508930BA94426595F44128929D2475"
-                    {
-                    "Name" = "8:MySoft.Data.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:E:\\CommonDLL\\MySoft\\MySoft.Data.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1700,11 +1664,6 @@
             "AssemblyAsmDisplayName" = "8:LiveChat.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_2788ED3E791FAAED8D4880E9C522BE7D"
-                    {
-                    "Name" = "8:LiveChat.Framework.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LiveChat.Framework.DLL"
             "TargetName" = "8:"
@@ -1728,7 +1687,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AutoUpdate, Version=1.0.3978.28447, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:AutoUpdate, Version=1.0.3980.20005, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_2791D8DC1F5F486088FB1B49C1D2A40C"
@@ -1875,6 +1834,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_32D6895A518DEB90AE370481F01F439D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:LiveChat.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_32D6895A518DEB90AE370481F01F439D"
+                    {
+                    "Name" = "8:LiveChat.Interface.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:LiveChat.Interface.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_371C89389681455282981E417698A625"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\131.gif"
@@ -1962,11 +1952,6 @@
             "AssemblyAsmDisplayName" = "8:LiveChat.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_39551530604D353A336B73E175B93F69"
-                    {
-                    "Name" = "8:LiveChat.Interface.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LiveChat.Interface.DLL"
             "TargetName" = "8:"
@@ -2426,6 +2411,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4EC7A28563D94FE9BF89F8CC9F6854C2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MySoft.Data, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4EC7A28563D94FE9BF89F8CC9F6854C2"
+                    {
+                    "Name" = "8:MySoft.Data.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:E:\\SOURCE_SVN\\MyReference\\MySoft\\MySoft.Data.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4F93D82DE2E14B19B3665D6C49E9FF8F"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\67.gif"
@@ -2586,6 +2602,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_59FF196284EB3562B495F0906A5A4DA3"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MySoft.Core, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_59FF196284EB3562B495F0906A5A4DA3"
+                    {
+                    "Name" = "8:MySoft.Core.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MySoft.Core.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A0AEF7D2B88459BBCB884EFFF8A1EF5"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\73.gif"
@@ -2726,6 +2773,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6EBC7DCEB0746A29F15E7175201940EB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:EmotionPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_6EBC7DCEB0746A29F15E7175201940EB"
+                    {
+                    "Name" = "8:EmotionPanel.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:EmotionPanel.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6EEB3DC700E9486586E56ECD91512A84"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\31.gif"
@@ -2813,11 +2891,6 @@
             "AssemblyAsmDisplayName" = "8:EmotionPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7687B464419D89F2FF89E065251150DA"
-                    {
-                    "Name" = "8:EmotionPanel.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:EmotionPanel.DLL"
             "TargetName" = "8:"
@@ -2964,11 +3037,6 @@
             "AssemblyAsmDisplayName" = "8:LiveChat.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_8131D4AABBE48001D52DBF6D87C6D6AB"
-                    {
-                    "Name" = "8:LiveChat.Entity.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LiveChat.Entity.DLL"
             "TargetName" = "8:"
@@ -3368,6 +3436,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A88BDC138CD20EEBA27E7D31F8C04361"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:LiveChat.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A88BDC138CD20EEBA27E7D31F8C04361"
+                    {
+                    "Name" = "8:LiveChat.Entity.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:LiveChat.Entity.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A88DA29F3A66467DACD6F2FB95462579"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\bin\\Debug\\images\\Fabric.ico"
@@ -3475,11 +3574,6 @@
             "AssemblyAsmDisplayName" = "8:IrisSkin2, Version=2006.3.22.45, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_ADE0A1D1C47180001338273977FC2D2B"
-                    {
-                    "Name" = "8:IrisSkin2.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:IrisSkin2.DLL"
             "TargetName" = "8:"
@@ -4159,6 +4253,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DFB9B471A8462F1DA8DBCF7C686363BB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:LiveChat.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DFB9B471A8462F1DA8DBCF7C686363BB"
+                    {
+                    "Name" = "8:LiveChat.Framework.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:LiveChat.Framework.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DFCCE85EC3D9405BB5E13AA595676F64"
             {
             "SourcePath" = "8:..\\LiveChat.Client\\images\\face\\51.gif"
@@ -4199,11 +4324,42 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E38FD17550D9177BB18A4971E8B581FD"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:IrisSkin2, Version=2006.3.22.45, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E38FD17550D9177BB18A4971E8B581FD"
+                    {
+                    "Name" = "8:IrisSkin2.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:IrisSkin2.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_DDEDB3784061402FA90BB6C4A8669B6E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E8698B3943624E01A47A51A6EA056F4C"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LiveChat.Client, Version=2.1.0.30271, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:LiveChat.Client, Version=2.1.0.20010, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_E8698B3943624E01A47A51A6EA056F4C"
@@ -4615,6 +4771,7 @@
         "ProductCode" = "8:{72C50954-4D73-4F08-91F5-0C90F0CD8339}"
         "PackageCode" = "8:{8337EDD2-05BB-4352-9F6A-26345EC91B54}"
         "UpgradeCode" = "8:{1F8946E4-FCD6-4F8D-9BD6-E44A03791A18}"
+        "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
