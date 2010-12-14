@@ -78,6 +78,7 @@ namespace LiveChat.Client
             if (Callback != null)
             {
                 Callback(config);
+                this.Close();
             }
             else
             {

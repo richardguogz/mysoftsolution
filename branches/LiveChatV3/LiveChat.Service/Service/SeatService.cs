@@ -1136,6 +1136,11 @@ namespace LiveChat.Service
                 {
                     SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
                     Seat seat = SeatManager.Instance.GetSeat(seatID);
+
+                    if (group.Exists(seat))
+                    {
+                        throw new LiveChatException("【" + seat.SeatName + "】已经是群内成员！");
+                    }
                     group.AddSeat(seat);
                 }
             }
@@ -1674,9 +1679,7 @@ namespace LiveChat.Service
         {
             try
             {
-                Seat seat = GetSeat(seatID);
-                if (seat == null) return false;
-
+                t_Seat seat = new t_Seat();
                 seat.SeatType = seattype;
                 seat.Telephone = telephone;
                 seat.MobileNumber = mobilenumber;
@@ -1685,7 +1688,7 @@ namespace LiveChat.Service
                 seat.Sign = sign;
                 seat.Introduction = introduction;
 
-                return SeatManager.Instance.UpdateSeat(seat);
+                return SeatManager.Instance.UpdateSeat(seatID, seat);
             }
             catch (Exception ex)
             {
@@ -1703,11 +1706,10 @@ namespace LiveChat.Service
         {
             try
             {
-                Seat seat = GetSeat(seatID);
-                if (seat == null) return false;
-
+                t_Seat seat = new t_Seat();
                 seat.FaceImage = buffer;
-                return SeatManager.Instance.UpdateSeatFace(seat);
+
+                return SeatManager.Instance.UpdateSeatFace(seatID, seat);
             }
             catch (Exception ex)
             {

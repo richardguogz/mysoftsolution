@@ -133,15 +133,18 @@ namespace LiveChat.Service.Manager
 
         #region 修改客服信息
 
-        public bool UpdateSeatFace(Seat cf)
+        public bool UpdateSeatFace(string seatID, t_Seat cf)
         {
             lock (syncobj)
             {
-                WhereClip where = t_Seat._.CompanyID == cf.CompanyID && t_Seat._.SeatCode == cf.SeatCode;
+                string companyID = seatID.Split('_')[0];
+                string seatCode = seatID.Split('_')[1];
+
+                WhereClip where = t_Seat._.CompanyID == companyID && t_Seat._.SeatCode == seatCode;
                 bool ret = dbSession.Update<t_Seat>(t_Seat._.FaceImage, cf.FaceImage, where) > 0;
                 if (ret)
                 {
-                    Seat seat = SeatManager.Instance.GetSeat(cf.SeatID);
+                    Seat seat = SeatManager.Instance.GetSeat(seatID);
                     seat.FaceImage = cf.FaceImage;
                 }
 
@@ -153,18 +156,21 @@ namespace LiveChat.Service.Manager
         /// 修改配置信息
         /// </summary>
         /// <returns></returns>
-        public bool UpdateSeat(Seat cf)
+        public bool UpdateSeat(string seatID, t_Seat cf)
         {
             lock (syncobj)
             {
-                WhereClip where = t_Seat._.CompanyID == cf.CompanyID && t_Seat._.SeatCode == cf.SeatCode;
+                string companyID = seatID.Split('_')[0];
+                string seatCode = seatID.Split('_')[1];
+
+                WhereClip where = t_Seat._.CompanyID == companyID && t_Seat._.SeatCode == seatCode;
                 bool ret = dbSession.Update<t_Seat>
                     (new Field[] { t_Seat._.SeatName, t_Seat._.Email, t_Seat._.Telephone, t_Seat._.MobileNumber, t_Seat._.Sign, t_Seat._.Introduction, t_Seat._.SeatType },
                     new object[] { cf.SeatName, cf.Email, cf.Telephone, cf.MobileNumber, cf.Sign, cf.Introduction, cf.SeatType }, where) > 0;
 
                 if (ret)
                 {
-                    Seat seat = SeatManager.Instance.GetSeat(cf.SeatID);
+                    Seat seat = SeatManager.Instance.GetSeat(seatID);
                     seat.SeatName = cf.SeatName;
                     seat.Email = cf.Email;
                     seat.Telephone = cf.Telephone;

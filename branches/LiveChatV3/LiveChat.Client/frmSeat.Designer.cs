@@ -85,6 +85,7 @@
             // txtSeatCode
             // 
             this.txtSeatCode.Location = new System.Drawing.Point(109, 36);
+            this.txtSeatCode.MaxLength = 50;
             this.txtSeatCode.Name = "txtSeatCode";
             this.txtSeatCode.Size = new System.Drawing.Size(148, 21);
             this.txtSeatCode.TabIndex = 0;
@@ -101,6 +102,7 @@
             // txtSeatName
             // 
             this.txtSeatName.Location = new System.Drawing.Point(372, 36);
+            this.txtSeatName.MaxLength = 50;
             this.txtSeatName.Name = "txtSeatName";
             this.txtSeatName.Size = new System.Drawing.Size(148, 21);
             this.txtSeatName.TabIndex = 1;
@@ -117,6 +119,7 @@
             // txtPassword
             // 
             this.txtPassword.Location = new System.Drawing.Point(109, 68);
+            this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(148, 21);
             this.txtPassword.TabIndex = 2;
@@ -133,6 +136,7 @@
             // txtRemark
             // 
             this.txtRemark.Location = new System.Drawing.Point(109, 195);
+            this.txtRemark.MaxLength = 200;
             this.txtRemark.Multiline = true;
             this.txtRemark.Name = "txtRemark";
             this.txtRemark.Size = new System.Drawing.Size(411, 100);
@@ -150,6 +154,7 @@
             // txtTelephone
             // 
             this.txtTelephone.Location = new System.Drawing.Point(109, 100);
+            this.txtTelephone.MaxLength = 50;
             this.txtTelephone.Name = "txtTelephone";
             this.txtTelephone.Size = new System.Drawing.Size(148, 21);
             this.txtTelephone.TabIndex = 4;
@@ -166,6 +171,7 @@
             // txtSign
             // 
             this.txtSign.Location = new System.Drawing.Point(109, 163);
+            this.txtSign.MaxLength = 100;
             this.txtSign.Name = "txtSign";
             this.txtSign.Size = new System.Drawing.Size(411, 21);
             this.txtSign.TabIndex = 7;
@@ -182,6 +188,7 @@
             // txtEmail
             // 
             this.txtEmail.Location = new System.Drawing.Point(372, 68);
+            this.txtEmail.MaxLength = 50;
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(148, 21);
             this.txtEmail.TabIndex = 3;
@@ -207,6 +214,7 @@
             // txtMobileNumber
             // 
             this.txtMobileNumber.Location = new System.Drawing.Point(372, 100);
+            this.txtMobileNumber.MaxLength = 50;
             this.txtMobileNumber.Name = "txtMobileNumber";
             this.txtMobileNumber.Size = new System.Drawing.Size(148, 21);
             this.txtMobileNumber.TabIndex = 5;

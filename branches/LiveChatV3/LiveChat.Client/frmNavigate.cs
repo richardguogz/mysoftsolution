@@ -457,6 +457,11 @@ namespace LiveChat.Client
                             SeatGroup group = tip.Target as SeatGroup;
                             service.GetSGHistoryMessages(group.GroupID, loginSeat.SeatID);
                         }
+                        else if (tip.Target is KeyValuePair<Seat, RequestInfo>)
+                        {
+                            KeyValuePair<Seat, RequestInfo> request = (KeyValuePair<Seat, RequestInfo>)tip.Target;
+                            service.ConfirmAddSeatFriend(request.Value.ID, AcceptType.Cancel, null);
+                        }
                     });
                 }
             }

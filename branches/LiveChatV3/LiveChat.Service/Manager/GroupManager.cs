@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using LiveChat.Entity;
 using MySoft.Data;
+using LiveChat.Utils;
 
 namespace LiveChat.Service.Manager
 {
@@ -216,6 +217,12 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
+                WhereClip where = t_GroupSeat._.SeatID == group.SeatID && t_GroupSeat._.MemoName == group.MemoName;
+                if (dbSession.Exists<t_GroupSeat>(where))
+                {
+                    throw new LiveChatException("存在此备注名称的群名");
+                }
+
                 group.AttachSet(t_GroupSeat._.MemoName);
                 bool ret = dbSession.Save(group) > 0;
 

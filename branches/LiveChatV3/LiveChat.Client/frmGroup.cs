@@ -183,7 +183,18 @@ namespace LiveChat.Client
             {
                 if (listSeats.SelectedItems.Count == 0) return;
                 Seat friend = listSeats.SelectedItems[0].Tag as Seat;
-                service.SetSeatOnGroupManager(group.GroupID, seat.SeatID);
+
+                if (group.CreateID == friend.SeatID || group.ManagerID == friend.SeatID)
+                {
+                    ClientUtils.ShowMessage(friend.SeatName + "已经是管理员。");
+                    return;
+                }
+
+                if (MessageBox.Show("确定将【" + friend.SeatName + "】设置为管理员吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.OK)
+                {
+                    service.SetSeatOnGroupManager(group.GroupID, friend.SeatID);
+                    group.ManagerID = friend.SeatID;
+                }
             }
             catch (Exception ex)
             {
@@ -207,8 +218,8 @@ namespace LiveChat.Client
         {
             try
             {
-                Seat seat = obj as Seat;
-                service.AddSeatToGroup(group.GroupID, seat.SeatID);
+                Seat friend = obj as Seat;
+                service.AddSeatToGroup(group.GroupID, friend.SeatID);
 
                 //重新加载客服
                 LoadGroupSeats();
@@ -226,10 +237,20 @@ namespace LiveChat.Client
             {
                 if (listSeats.SelectedItems.Count == 0) return;
                 Seat friend = listSeats.SelectedItems[0].Tag as Seat;
-                service.RemoveSeatFromGroup(group.GroupID, seat.SeatID);
 
-                //重新加载客服
-                LoadGroupSeats();
+                if (group.ManagerID == friend.SeatID || group.CreateID == friend.SeatID)
+                {
+                    ClientUtils.ShowMessage("创建者与管理员不能被删除！");
+                    return;
+                }
+
+                if (MessageBox.Show("确定将【" + friend.SeatName + "】删除吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.OK)
+                {
+                    service.RemoveSeatFromGroup(group.GroupID, friend.SeatID);
+
+                    //重新加载客服
+                    LoadGroupSeats();
+                }
             }
             catch (Exception ex)
             {

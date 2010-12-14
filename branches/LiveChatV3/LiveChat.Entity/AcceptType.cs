@@ -20,6 +20,10 @@ namespace LiveChat.Entity
         /// <summary>
         /// 拒绝
         /// </summary>
-        Refuse
+        Refuse,
+        /// <summary>
+        /// 取消
+        /// </summary>
+        Cancel
     }
 }

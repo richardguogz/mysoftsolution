@@ -43,13 +43,13 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.lblCompanyName = new System.Windows.Forms.Label();
             this.lblSeatCode = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblCompanyName = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).BeginInit();
             this.SuspendLayout();
@@ -93,6 +93,7 @@
             // txtSeatName
             // 
             this.txtSeatName.Location = new System.Drawing.Point(120, 62);
+            this.txtSeatName.MaxLength = 50;
             this.txtSeatName.Name = "txtSeatName";
             this.txtSeatName.Size = new System.Drawing.Size(204, 21);
             this.txtSeatName.TabIndex = 0;
@@ -100,6 +101,7 @@
             // txtRemark
             // 
             this.txtRemark.Location = new System.Drawing.Point(120, 202);
+            this.txtRemark.MaxLength = 200;
             this.txtRemark.Multiline = true;
             this.txtRemark.Name = "txtRemark";
             this.txtRemark.Size = new System.Drawing.Size(283, 55);
@@ -108,6 +110,7 @@
             // txtSign
             // 
             this.txtSign.Location = new System.Drawing.Point(120, 174);
+            this.txtSign.MaxLength = 100;
             this.txtSign.Name = "txtSign";
             this.txtSign.Size = new System.Drawing.Size(283, 21);
             this.txtSign.TabIndex = 4;
@@ -115,6 +118,7 @@
             // txtEmail
             // 
             this.txtEmail.Location = new System.Drawing.Point(120, 146);
+            this.txtEmail.MaxLength = 50;
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(283, 21);
             this.txtEmail.TabIndex = 3;
@@ -122,6 +126,7 @@
             // txtMobileNumber
             // 
             this.txtMobileNumber.Location = new System.Drawing.Point(120, 118);
+            this.txtMobileNumber.MaxLength = 50;
             this.txtMobileNumber.Name = "txtMobileNumber";
             this.txtMobileNumber.Size = new System.Drawing.Size(204, 21);
             this.txtMobileNumber.TabIndex = 2;
@@ -129,6 +134,7 @@
             // txtTelephone
             // 
             this.txtTelephone.Location = new System.Drawing.Point(120, 90);
+            this.txtTelephone.MaxLength = 50;
             this.txtTelephone.Name = "txtTelephone";
             this.txtTelephone.Size = new System.Drawing.Size(204, 21);
             this.txtTelephone.TabIndex = 1;
@@ -187,6 +193,15 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "客服名称：";
             // 
+            // lblCompanyName
+            // 
+            this.lblCompanyName.AutoSize = true;
+            this.lblCompanyName.Location = new System.Drawing.Point(274, 37);
+            this.lblCompanyName.Name = "lblCompanyName";
+            this.lblCompanyName.Size = new System.Drawing.Size(41, 12);
+            this.lblCompanyName.TabIndex = 1;
+            this.lblCompanyName.Text = "label2";
+            // 
             // lblSeatCode
             // 
             this.lblSeatCode.AutoSize = true;
@@ -195,6 +210,15 @@
             this.lblSeatCode.Size = new System.Drawing.Size(41, 12);
             this.lblSeatCode.TabIndex = 1;
             this.lblSeatCode.Text = "label2";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(203, 37);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "公司名称：";
             // 
             // label1
             // 
@@ -238,24 +262,6 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(203, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "公司名称：";
-            // 
-            // lblCompanyName
-            // 
-            this.lblCompanyName.AutoSize = true;
-            this.lblCompanyName.Location = new System.Drawing.Point(274, 37);
-            this.lblCompanyName.Name = "lblCompanyName";
-            this.lblCompanyName.Size = new System.Drawing.Size(41, 12);
-            this.lblCompanyName.TabIndex = 1;
-            this.lblCompanyName.Text = "label2";
             // 
             // frmSeatInfo
             // 

@@ -67,7 +67,7 @@ namespace LiveChat.Service.Manager
             lock (syncobj)
             {
                 WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
-                return dbSession.Update<t_SeatFriend>(t_SeatFriend._.MemoName, name, where) > 0;
+                return dbSession.Update<t_SeatFriend>(t_SeatFriend._.MemoName.Set(name), where) > 0;
             }
         }
 
@@ -116,6 +116,12 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
+                WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupName == group.GroupName;
+                if (dbSession.Exists<t_SeatFriendGroup>(where))
+                {
+                    throw new LiveChatException("存在此名称的组名");
+                }
+
                 t_SeatFriendGroup g = DataHelper.ConvertType<SeatFriendGroup, t_SeatFriendGroup>(group);
                 g.SeatID = seatID;
                 g.AddTime = DateTime.Now;
@@ -135,8 +141,14 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupID == groupID;
-                return dbSession.Update<t_SeatFriendGroup>(t_SeatFriendGroup._.GroupName, groupName, where) > 0;
+                WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupName == groupName;
+                if (dbSession.Exists<t_SeatFriendGroup>(where))
+                {
+                    throw new LiveChatException("存在此名称的组名");
+                }
+
+                where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupID == groupID;
+                return dbSession.Update<t_SeatFriendGroup>(t_SeatFriendGroup._.GroupName.Set(groupName), where) > 0;
             }
         }
 
@@ -362,6 +374,14 @@ namespace LiveChat.Service.Manager
                     return dbSession.Update<t_SeatFriendRequest>(
                         new Field[] { t_SeatFriendRequest._.Refuse, t_SeatFriendRequest._.ConfirmState },
                        new object[] { refuse, -1 }, where) > 0;
+                }
+                else if (type == AcceptType.Cancel)
+                {
+                    //处理拒绝
+                    WhereClip where = t_SeatFriendRequest._.RequestID == requestID;
+
+                    return dbSession.Update<t_SeatFriendRequest>(
+                       t_SeatFriendRequest._.ConfirmState, -2, where) > 0;
                 }
 
                 return false;

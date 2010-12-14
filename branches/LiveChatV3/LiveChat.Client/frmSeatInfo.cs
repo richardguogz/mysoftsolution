@@ -83,6 +83,9 @@ namespace LiveChat.Client
 
                 service.UpdateSeat(friend.SeatID, seatName, email, phone, mobile, sign, remark, friend.SeatType);
                 friend.SeatName = seatName;
+                friend.Email = email;
+                friend.Telephone = phone;
+                friend.MobileNumber = mobile;
                 friend.Sign = sign;
                 friend.Introduction = remark;
                 if (Callback != null) Callback(friend);
