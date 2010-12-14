@@ -9,6 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using MySoft.Web.UI;
+using MySoft.Web;
 using LiveChat.Entity;
 
 namespace LiveChat.Web

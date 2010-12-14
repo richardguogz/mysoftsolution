@@ -36,7 +36,7 @@ namespace LiveChat.Service.Manager
             List<t_Seat> list1 = dbSession.From<t_Seat>().ToList();
             list.ForEach(delegate(t_Company cp)
             {
-                Company company = DataUtils.ConvertType<t_Company, Company>(cp);
+                Company company = DataHelper.ConvertType<t_Company, Company>(cp);
                 dictCompany.Add(company.CompanyID, company);
 
                 List<t_Seat> l = list1.FindAll(delegate(t_Seat st)
@@ -50,7 +50,7 @@ namespace LiveChat.Service.Manager
 
                 l.ForEach(delegate(t_Seat st)
                 {
-                    Seat seat = DataUtils.ConvertType<t_Seat, Seat>(st);
+                    Seat seat = DataHelper.ConvertType<t_Seat, Seat>(st);
                     if (string.IsNullOrEmpty(seat.Introduction))
                     {
                         seat.Introduction = string.Format("您好，我是{0}客服，很高兴为您在线服务！", company.CompanyName);

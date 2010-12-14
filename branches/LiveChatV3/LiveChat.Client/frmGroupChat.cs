@@ -474,6 +474,14 @@ namespace LiveChat.Client
                 frmSeatInfo frm = new frmSeatInfo(service, company, seat, friend);
                 return frm;
             });
+
+            //string key = string.Format("SeatChat_{0}_{1}", seat.SeatID, friend.SeatID);
+            //SingletonMul.Show(key, () =>
+            //{
+            //    frmSeatChat frmSeatChat = new frmSeatChat(service, company, seat, friend, friend.MemoName, currentFont, currentColor);
+            //    frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+            //    return frmSeatChat;
+            //});
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -482,7 +490,7 @@ namespace LiveChat.Client
             string key = string.Format("SeatGroup_{0}", group.GroupID);
             SingletonMul.Show(key, () =>
             {
-                frmGroup frmGroup = new frmGroup(service, seat, group);
+                frmGroup frmGroup = new frmGroup(service, company, seat, group);
                 frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
                 return frmGroup;
             });

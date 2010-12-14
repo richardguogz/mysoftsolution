@@ -33,7 +33,7 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                t_Leave msg = DataUtils.ConvertType<Leave, t_Leave>(leave);
+                t_Leave msg = DataHelper.ConvertType<Leave, t_Leave>(leave);
                 return dbSession.Save(msg);
             }
         }

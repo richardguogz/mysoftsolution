@@ -5,6 +5,7 @@ using MySoft.Web.UI;
 using LiveChat.Entity;
 using MySoft.Web;
 using LiveChat.Interface;
+using MySoft.Core;
 
 namespace LiveChat.Web
 {
@@ -48,16 +49,16 @@ namespace LiveChat.Web
         /// <returns></returns>
         protected string GetIDValue(string key)
         {
-            string id = WebUtils.GetSession<string>(key);
+            string id = WebHelper.GetSession<string>(key);
             if (string.IsNullOrEmpty(id))
             {
-                HttpCookie cookie = WebUtils.GetCookie(key);
+                HttpCookie cookie = WebHelper.GetCookie(key);
                 if (cookie != null)
                 {
                     id = cookie.Value;
                     if (!string.IsNullOrEmpty(id))
                     {
-                        WebUtils.SaveSession(key, id);
+                        WebHelper.SaveSession(key, id);
                     }
                 }
             }
@@ -71,10 +72,10 @@ namespace LiveChat.Web
         /// <param name="id"></param>
         protected void SaveIDValue(string key, string id)
         {
-            WebUtils.SaveSession(key, id);
+            WebHelper.SaveSession(key, id);
 
             //保存一个小时
-            WebUtils.SaveCookie(key, id, CookieExpiresType.Hour, 1);
+            WebHelper.SaveCookie(key, id, CookieExpiresType.Hour, 1);
         }
 
         /// <summary>

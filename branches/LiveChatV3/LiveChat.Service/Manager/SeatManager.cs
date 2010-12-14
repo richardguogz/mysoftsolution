@@ -232,7 +232,7 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                t_Seat s = DataUtils.ConvertType<Seat, t_Seat>(seat);
+                t_Seat s = DataHelper.ConvertType<Seat, t_Seat>(seat);
                 s.AddTime = DateTime.Now;
 
                 bool ret = dbSession.Save(s) > 0;

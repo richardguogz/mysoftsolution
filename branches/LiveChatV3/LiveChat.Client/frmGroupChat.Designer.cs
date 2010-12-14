@@ -69,7 +69,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.listSeats = new LiveChat.Client.DoubleBufferListView();
-            this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();

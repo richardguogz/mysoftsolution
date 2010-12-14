@@ -29,7 +29,7 @@ namespace LiveChat.Service.Manager
             lock (syncobj)
             {
                 t_Link reply = dbSession.Single<t_Link>(t_Link._.LinkID == replyID);
-                Link rLink = DataUtils.ConvertType<t_Link, Link>(reply);
+                Link rLink = DataHelper.ConvertType<t_Link, Link>(reply);
                 return rLink;
             }
         }
@@ -47,7 +47,7 @@ namespace LiveChat.Service.Manager
                 IList<Link> replies = new List<Link>();
                 foreach (t_Link reply in list)
                 {
-                    Link rLink = DataUtils.ConvertType<t_Link, Link>(reply);
+                    Link rLink = DataHelper.ConvertType<t_Link, Link>(reply);
                     replies.Add(rLink);
                 }
                 return replies;

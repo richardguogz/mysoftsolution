@@ -32,7 +32,7 @@ namespace LiveChat.Service.Manager
             lock (syncobj)
             {
                 t_Reply reply = dbSession.Single<t_Reply>(t_Reply._.ReplyID == replyID);
-                Reply rReply = DataUtils.ConvertType<t_Reply, Reply>(reply);
+                Reply rReply = DataHelper.ConvertType<t_Reply, Reply>(reply);
                 return rReply;
             }
         }
@@ -50,7 +50,7 @@ namespace LiveChat.Service.Manager
                 IList<Reply> replies = new List<Reply>();
                 foreach (t_Reply reply in list)
                 {
-                    Reply rReply = DataUtils.ConvertType<t_Reply, Reply>(reply);
+                    Reply rReply = DataHelper.ConvertType<t_Reply, Reply>(reply);
                     replies.Add(rReply);
                 }
                 return replies;

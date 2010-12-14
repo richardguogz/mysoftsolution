@@ -42,7 +42,7 @@ namespace LiveChat.Service.Manager
             List<t_User> list = dbSession.From<t_User>().ToList();
             list.ForEach(delegate(t_User u)
             {
-                User user = DataUtils.ConvertType<t_User, User>(u);
+                User user = DataHelper.ConvertType<t_User, User>(u);
 
                 //如果不是匿名用户，则加载扩展信息
                 //if (user.UserType != UserType.TempUser)
@@ -50,7 +50,7 @@ namespace LiveChat.Service.Manager
                 //    E.User u1 = M.UserManager.Instance.GetUser(u.UserID);
                 //    user.IsVIP = u1.IsEndow;
 
-                //    UserExtend extend = DataUtils.ConvertType<t_User, UserExtend>(u);
+                //    UserExtend extend = DataHelper.ConvertType<t_User, UserExtend>(u);
                 //    extend.Email = u1.Email;
                 //    extend.MyAsset = u1.Money;
 
@@ -176,7 +176,7 @@ namespace LiveChat.Service.Manager
                             DbBatch batch = trans.BeginBatch(10);
                             foreach (User user in this.newUsers)
                             {
-                                t_User u = DataUtils.ConvertType<User, t_User>(user);
+                                t_User u = DataHelper.ConvertType<User, t_User>(user);
 
                                 //如果不是匿名用户，则还需要从扩展信息中获取
                                 if (user.UserType != UserType.TempUser)

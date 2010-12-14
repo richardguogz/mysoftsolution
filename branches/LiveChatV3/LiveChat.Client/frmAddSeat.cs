@@ -13,6 +13,8 @@ namespace LiveChat.Client
 {
     public partial class frmAddSeat : Form
     {
+        public event CallbackEventHandler Callback;
+
         private ISeatService service;
         private Company company;
         private Seat seat;
@@ -73,11 +75,18 @@ namespace LiveChat.Client
 
             Seat config = listSeats.SelectedItems[0].Tag as Seat;
 
-            Singleton.Show<frmAddSeatConfirm>(() =>
+            if (Callback != null)
             {
-                frmAddSeatConfirm frm = new frmAddSeatConfirm(service, company, seat, config);
-                return frm;
-            });
+                Callback(config);
+            }
+            else
+            {
+                Singleton.Show<frmAddSeatConfirm>(() =>
+                {
+                    frmAddSeatConfirm frm = new frmAddSeatConfirm(service, company, seat, config);
+                    return frm;
+                });
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

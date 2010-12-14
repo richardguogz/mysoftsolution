@@ -1102,6 +1102,73 @@ namespace LiveChat.Service
         #region 客服群管理
 
         /// <summary>
+        /// 设置客服为群管理员
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="seatID"></param>
+        public void SetSeatOnGroupManager(Guid groupID, string seatID)
+        {
+            try
+            {
+                if (GroupManager.Instance.SetGroupManager(groupID, seatID) > 0)
+                {
+                    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                    group.ManagerID = seatID;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 添加客服到群
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        public void AddSeatToGroup(Guid groupID, string seatID)
+        {
+            try
+            {
+                if (GroupManager.Instance.SaveSeatToGroup(groupID, seatID) > 0)
+                {
+                    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                    Seat seat = SeatManager.Instance.GetSeat(seatID);
+                    group.AddSeat(seat);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 从群中移除客服
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        public void RemoveSeatFromGroup(Guid groupID, string seatID)
+        {
+            try
+            {
+                if (GroupManager.Instance.DeleteSeatFromGroup(groupID, seatID) > 0)
+                {
+                    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                    Seat seat = SeatManager.Instance.GetSeat(seatID);
+                    group.RemoveSeat(seat);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
         /// 添加客服群
         /// </summary>
         /// <param name="groupName"></param>

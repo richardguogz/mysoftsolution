@@ -11,6 +11,7 @@ using MySoft.Web.UI;
 using LiveChat.Service;
 using LiveChat.Entity;
 using System.Text;
+using MySoft.Web;
 
 namespace LiveChat.Web.Admin
 {

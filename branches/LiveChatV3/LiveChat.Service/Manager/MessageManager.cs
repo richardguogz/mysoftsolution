@@ -233,7 +233,7 @@ namespace LiveChat.Service.Manager
                 IList<P2SMessage> list = new List<P2SMessage>();
                 foreach (t_P2SMessage msg in msgs)
                 {
-                    P2SMessage pm = DataUtils.ConvertType<t_P2SMessage, P2SMessage>(msg);
+                    P2SMessage pm = DataHelper.ConvertType<t_P2SMessage, P2SMessage>(msg);
                     list.Add(pm);
                 }
                 return list;
@@ -282,7 +282,7 @@ namespace LiveChat.Service.Manager
                 IList<S2SMessage> list = new List<S2SMessage>();
                 foreach (t_S2SMessage msg in msgs)
                 {
-                    S2SMessage pm = DataUtils.ConvertType<t_S2SMessage, S2SMessage>(msg);
+                    S2SMessage pm = DataHelper.ConvertType<t_S2SMessage, S2SMessage>(msg);
                     list.Add(pm);
                 }
                 return list;

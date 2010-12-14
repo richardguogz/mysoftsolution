@@ -31,7 +31,7 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                t_Ad msg = DataUtils.ConvertType<Ad, t_Ad>(ad);
+                t_Ad msg = DataHelper.ConvertType<Ad, t_Ad>(ad);
                 return dbSession.Save(msg);
             }
         }
@@ -45,7 +45,7 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                t_Ad msg = DataUtils.ConvertType<Ad, t_Ad>(ad);
+                t_Ad msg = DataHelper.ConvertType<Ad, t_Ad>(ad);
                 msg.Attach();
                 return dbSession.Save(msg);
             }

@@ -16,18 +16,20 @@ namespace LiveChat.Client
 
         private ISeatService service;
         private SeatGroup group;
+        private Company company;
         private Seat seat;
         private bool edit;
 
-        public frmGroup(ISeatService service, Seat seat, SeatGroup group)
+        public frmGroup(ISeatService service, Company company, Seat seat, SeatGroup group)
         {
             this.service = service;
             this.group = group;
+            this.company = company;
             this.seat = seat;
             this.edit = false;
 
             if (group != null)
-                this.edit = group.ManagerID == seat.SeatID;
+                this.edit = (group.CreateID == seat.SeatID || group.ManagerID == seat.SeatID);
             else
                 this.edit = true;
 
@@ -88,6 +90,10 @@ namespace LiveChat.Client
 
         private void frmGroup_Load(object sender, EventArgs e)
         {
+            ImageList imgList = new ImageList();
+            imgList.ImageSize = new Size(1, 24);//分别是宽和高
+            listSeats.SmallImageList = imgList;   //这里设置listView的SmallImageList 
+
             if (group != null)
             {
                 textBox1.Text = group.GroupName;
@@ -102,13 +108,29 @@ namespace LiveChat.Client
                 if (!string.IsNullOrEmpty(group.ManagerID))
                 {
                     textBox5.Text = service.GetSeat(group.ManagerID).SeatName;
-                    textBox5.Tag = group.CreateID;
+                    textBox5.Tag = group.ManagerID;
                 }
 
                 textBox2.Text = group.Notification;
                 textBox3.Text = group.Description;
 
                 btnSave.Text = "修改(&U)";
+
+                LoadGroupSeats();
+
+                if (group.CreateID == seat.SeatID)
+                {
+                    panel1.Visible = true;
+                }
+                else if (group.ManagerID == seat.SeatID)
+                {
+                    button3.Visible = false;
+                    panel1.Visible = true;
+                }
+                else
+                {
+                    panel1.Visible = false;
+                }
             }
             else
             {
@@ -118,6 +140,9 @@ namespace LiveChat.Client
                 textBox5.Tag = seat.SeatID;
 
                 this.Text = "创建群";
+
+                //如果是创建群，则移除第二个选项卡
+                this.tabControl1.TabPages.RemoveAt(1);
             }
 
             if (!edit)
@@ -131,6 +156,98 @@ namespace LiveChat.Client
 
                 btnSave.Enabled = false;
             }
+        }
+
+        private void LoadGroupSeats()
+        {
+            //加载群成员
+            IList<Seat> seats = service.GetGroupSeats(group.GroupID);
+            listSeats.Items.Clear();
+            if (seats != null)
+            {
+                int index = 1;
+                foreach (Seat info in seats)
+                {
+                    ListViewItem item = new ListViewItem(new string[] { index.ToString(), info.SeatCode, info.SeatName, info.Telephone, info.MobileNumber, info.Email });
+                    item.Tag = info;
+                    listSeats.Items.Add(item);
+                    index++;
+                }
+            }
+        }
+
+        //设为管理员
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listSeats.SelectedItems.Count == 0) return;
+                Seat friend = listSeats.SelectedItems[0].Tag as Seat;
+                service.SetSeatOnGroupManager(group.GroupID, seat.SeatID);
+            }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
+        }
+
+        //添加成员
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Singleton.Show(() =>
+            {
+                frmAddSeat frmadd = new frmAddSeat(service, company, seat);
+                frmadd.Callback += new CallbackEventHandler(frmadd_Callback);
+                return frmadd;
+            });
+        }
+
+        //添加好友后返回
+        void frmadd_Callback(object obj)
+        {
+            try
+            {
+                Seat seat = obj as Seat;
+                service.AddSeatToGroup(group.GroupID, seat.SeatID);
+
+                //重新加载客服
+                LoadGroupSeats();
+            }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
+        }
+
+        //删除成员
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listSeats.SelectedItems.Count == 0) return;
+                Seat friend = listSeats.SelectedItems[0].Tag as Seat;
+                service.RemoveSeatFromGroup(group.GroupID, seat.SeatID);
+
+                //重新加载客服
+                LoadGroupSeats();
+            }
+            catch (Exception ex)
+            {
+                ClientUtils.ShowError(ex);
+            }
+        }
+
+        private void listSeats_DoubleClick(object sender, EventArgs e)
+        {
+            if (listSeats.SelectedItems.Count == 0) return;
+            Seat friend = listSeats.SelectedItems[0].Tag as Seat;
+
+            string key = string.Format("Config_{0}", friend.SeatID);
+            SingletonMul.Show<frmSeatInfo>(key, () =>
+            {
+                frmSeatInfo frm = new frmSeatInfo(service, company, seat, friend);
+                return frm;
+            });
         }
     }
 }

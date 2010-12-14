@@ -276,7 +276,7 @@ namespace LiveChat.Service.Manager
                                 P2SSession ps = session as P2SSession;
 
                                 //客服与用户会话
-                                t_P2SSession pss = DataUtils.ConvertType<P2SSession, t_P2SSession>(ps);
+                                t_P2SSession pss = DataHelper.ConvertType<P2SSession, t_P2SSession>(ps);
                                 pss.UserID = ps.User.UserID;
 
                                 if (ps.Seat != null)
@@ -289,7 +289,7 @@ namespace LiveChat.Service.Manager
                                 S2SSession ss = session as S2SSession;
 
                                 //客服与客服会话
-                                t_S2SSession sss = DataUtils.ConvertType<S2SSession, t_S2SSession>(ss);
+                                t_S2SSession sss = DataHelper.ConvertType<S2SSession, t_S2SSession>(ss);
                                 sss.SeatID = ss.Owner.SeatID;
                                 sss.FriendID = ss.Friend.SeatID;
 
@@ -308,7 +308,7 @@ namespace LiveChat.Service.Manager
                                 P2SMessage pmsg = msg as P2SMessage;
 
                                 //客服与用户消息
-                                t_P2SMessage tmsg = DataUtils.ConvertType<P2SMessage, t_P2SMessage>(pmsg);
+                                t_P2SMessage tmsg = DataHelper.ConvertType<P2SMessage, t_P2SMessage>(pmsg);
                                 trans.InsertOrUpdate(tmsg);
                             }
                             else if (msg is S2SMessage)
@@ -316,7 +316,7 @@ namespace LiveChat.Service.Manager
                                 S2SMessage smsg = msg as S2SMessage;
 
                                 //客服与用户消息
-                                t_S2SMessage tmsg = DataUtils.ConvertType<S2SMessage, t_S2SMessage>(smsg);
+                                t_S2SMessage tmsg = DataHelper.ConvertType<S2SMessage, t_S2SMessage>(smsg);
                                 trans.InsertOrUpdate(tmsg);
                             }
                         }
@@ -594,7 +594,7 @@ namespace LiveChat.Service.Manager
             IList<P2SSession> list = new List<P2SSession>();
             foreach (t_P2SSession session in sessions)
             {
-                P2SSession ps = DataUtils.ConvertType<t_P2SSession, P2SSession>(session);
+                P2SSession ps = DataHelper.ConvertType<t_P2SSession, P2SSession>(session);
                 ps.User = UserManager.Instance.GetUser(session.UserID);
 
                 if (!string.IsNullOrEmpty(session.SeatID))
@@ -616,7 +616,7 @@ namespace LiveChat.Service.Manager
             IList<S2SSession> list = new List<S2SSession>();
             foreach (t_S2SSession session in sessions)
             {
-                S2SSession ps = DataUtils.ConvertType<t_S2SSession, S2SSession>(session);
+                S2SSession ps = DataHelper.ConvertType<t_S2SSession, S2SSession>(session);
                 ps.Owner = SeatManager.Instance.GetSeat(session.SeatID);
                 ps.Friend = SeatManager.Instance.GetSeat(session.FriendID);
 

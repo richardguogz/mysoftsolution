@@ -20,6 +20,8 @@ namespace LiveChat.Client
     {
         public event CallbackEventHandler Callback;
 
+        public event CallbackEventHandler SizeChangedCallback;
+
         #region private member
 
         private const int maxAcceptCount = 20;
@@ -929,9 +931,9 @@ namespace LiveChat.Client
 
                 if (tn.Tag == null) continue;
                 T target = (T)tn.Tag;
-                object value1 = CoreUtils.GetPropertyValue(target, propertyName);
-                object value2 = CoreUtils.GetPropertyValue(entity, propertyName);
-                int ret = CoreUtils.Compare<object>(value1, value2);
+                object value1 = CoreHelper.GetPropertyValue(target, propertyName);
+                object value2 = CoreHelper.GetPropertyValue(entity, propertyName);
+                int ret = CoreHelper.Compare<object>(value1, value2);
                 if (ret == 0) return tn;
             }
 
@@ -1294,36 +1296,48 @@ namespace LiveChat.Client
         {
             e.Node.ImageIndex = 4;
             e.Node.SelectedImageIndex = 4;
+
+            tvSeatGroup.SelectedNode = e.Node;
         }
 
         private void tvLinkman_AfterExpand(object sender, TreeViewEventArgs e)
         {
             e.Node.ImageIndex = 4;
             e.Node.SelectedImageIndex = 4;
+
+            tvLinkman.SelectedNode = e.Node;
         }
 
         private void tvSession_AfterExpand(object sender, TreeViewEventArgs e)
         {
             e.Node.ImageIndex = 4;
             e.Node.SelectedImageIndex = 4;
+
+            tvSession.SelectedNode = e.Node;
         }
 
         private void tvSession_AfterCollapse(object sender, TreeViewEventArgs e)
         {
             e.Node.ImageIndex = 3;
             e.Node.SelectedImageIndex = 3;
+
+            tvSession.SelectedNode = e.Node;
         }
 
         private void tvLinkman_AfterCollapse(object sender, TreeViewEventArgs e)
         {
             e.Node.ImageIndex = 3;
             e.Node.SelectedImageIndex = 3;
+
+            tvLinkman.SelectedNode = e.Node;
         }
 
         private void tvSeatGroup_AfterCollapse(object sender, TreeViewEventArgs e)
         {
             e.Node.ImageIndex = 3;
             e.Node.SelectedImageIndex = 3;
+
+            tvSeatGroup.SelectedNode = e.Node;
         }
 
         private void 更换用户ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1560,7 +1574,7 @@ namespace LiveChat.Client
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             string style = item.ToString();
             if (Callback != null) Callback(style);
-            //this.skinEngine1.SkinFile = CoreUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
+            //this.skinEngine1.SkinFile = CoreHelper.GetFullPath(string.Format("/skin/{0}.ssk", style));
         }
 
         private void toolStripMenuItem33_Click(object sender, EventArgs e)
@@ -1604,7 +1618,7 @@ namespace LiveChat.Client
             {
                 ClientUtils.ExitApplication();
 
-                ProcessStartInfo process = new ProcessStartInfo(CoreUtils.GetFullPath("AutoUpdate.exe"));
+                ProcessStartInfo process = new ProcessStartInfo(CoreHelper.GetFullPath("AutoUpdate.exe"));
                 Process p = Process.Start(process);
             }
         }
@@ -1816,7 +1830,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                frmAddGroup frmAddGroup = new frmAddGroup(service, loginSeat);
+                frmAddGroup frmAddGroup = new frmAddGroup(service, loginCompany, loginSeat);
                 frmAddGroup.Callback += new CallbackEventHandler(frmAddGroup_Callback);
                 return frmAddGroup;
             });
@@ -1831,7 +1845,7 @@ namespace LiveChat.Client
         {
             Singleton.Show(() =>
             {
-                frmGroup frmGroup = new frmGroup(service, loginSeat, null);
+                frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, null);
                 frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
                 return frmGroup;
             });
@@ -1854,7 +1868,7 @@ namespace LiveChat.Client
             string key = string.Format("SeatGroup_{0}", group.GroupID);
             SingletonMul.Show(key, () =>
             {
-                frmGroup frmGroup = new frmGroup(service, loginSeat, group);
+                frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, group);
                 frmGroup.Callback += new CallbackEventHandler(frmGroup_Callback);
                 return frmGroup;
             });
@@ -1912,6 +1926,12 @@ namespace LiveChat.Client
 
             service.DismissGroup(loginSeat.SeatID, group.GroupID);
             BindSeatGroup();
+        }
+
+        private void frmNavigate_ResizeEnd(object sender, EventArgs e)
+        {
+            if (SizeChangedCallback != null)
+                SizeChangedCallback(this.Size);
         }
     }
 }

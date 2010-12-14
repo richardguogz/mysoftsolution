@@ -228,6 +228,29 @@ namespace LiveChat.Interface
         bool AddSeatGroup(string groupName, int maxCount, string createID, string managerID, string notification, string description);
 
         /// <summary>
+        /// 添加客服到群
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        void AddSeatToGroup(Guid groupID, string seatID);
+
+        /// <summary>
+        /// 从群中移除客服
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        void RemoveSeatFromGroup(Guid groupID, string seatID);
+
+        /// <summary>
+        /// 设置客服为群管理员
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="seatID"></param>
+        void SetSeatOnGroupManager(Guid groupID, string seatID);
+
+        /// <summary>
         /// 修改客服群
         /// </summary>
         /// <param name="companyID"></param>

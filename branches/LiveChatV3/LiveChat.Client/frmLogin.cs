@@ -37,7 +37,7 @@ namespace LiveChat.Client
         {
             this.Left = 50;
             this.Top = (Screen.PrimaryScreen.Bounds.Height - this.Height - 50) / 2;
-            this.path = CoreUtils.GetFullPath("/user.dat");
+            this.path = CoreHelper.GetFullPath("/user.dat");
 
             if (service == null)
             {
@@ -154,6 +154,7 @@ namespace LiveChat.Client
                             Rectangle rect = new Rectangle(point, this.size);
                             frmNavigate frmNav = new frmNavigate(service, company, seat, clientID, rect);
                             frmNav.Callback += new CallbackEventHandler(frmNav_Callback);
+                            frmNav.SizeChangedCallback += new CallbackEventHandler(frmNav_SizeChangedCallback);
                             return frmNav;
                         });
 
@@ -165,6 +166,20 @@ namespace LiveChat.Client
             {
                 ClientUtils.ShowError(ex);
             }
+        }
+
+        void frmNav_SizeChangedCallback(object obj)
+        {
+            if (obj == null) return;
+            Size size = (Size)obj;
+
+            try
+            {
+                IniFiles ini = new IniFiles(path);
+                string section = "userinfo";
+                ini.WriteString(section, "formsize", Encode(string.Format("{0}*{1}", size.Width, size.Height)));
+            }
+            catch { }
         }
 
         void frmNav_Callback(object obj)
@@ -181,7 +196,7 @@ namespace LiveChat.Client
             }
             catch { }
 
-            this.skinEngine1.SkinFile = CoreUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
+            this.skinEngine1.SkinFile = CoreHelper.GetFullPath(string.Format("/skin/{0}.ssk", style));
         }
 
         private void ReadUserInfoForFile()
@@ -201,7 +216,10 @@ namespace LiveChat.Client
                 this.style = Decode(ini.ReadString(section, "formstyle", null));
 
                 string s = Decode(ini.ReadString(section, "formsize", null));
-                this.size = new Size(Convert.ToInt32(s.Split('*')[0]), Convert.ToInt32(s.Split('*')[1]));
+                if (string.IsNullOrEmpty(s))
+                    this.size = this.Size;
+                else
+                    this.size = new Size(Convert.ToInt32(s.Split('*')[0]), Convert.ToInt32(s.Split('*')[1]));
             }
             catch { }
 
@@ -275,7 +293,7 @@ namespace LiveChat.Client
         {
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             string style = item.ToString();
-            this.skinEngine1.SkinFile = CoreUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
+            this.skinEngine1.SkinFile = CoreHelper.GetFullPath(string.Format("/skin/{0}.ssk", style));
         }
 
         private void ÔÚÏßÉý¼¶ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -284,7 +302,7 @@ namespace LiveChat.Client
             {
                 ClientUtils.ExitApplication();
 
-                ProcessStartInfo process = new ProcessStartInfo(CoreUtils.GetFullPath("AutoUpdate.exe"));
+                ProcessStartInfo process = new ProcessStartInfo(CoreHelper.GetFullPath("AutoUpdate.exe"));
                 Process p = Process.Start(process);
             }
         }

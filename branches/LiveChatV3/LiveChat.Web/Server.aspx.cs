@@ -38,7 +38,7 @@ namespace LiveChat.Web
                 dir = System.IO.Path.Combine(dir, "history");
                 var filePath = System.IO.Path.Combine(dir, fileName);
 
-                if (StaticPageUtils.CreateLocalPage(url, query, filePath, "聊天记录", Encoding.UTF8, Encoding.UTF8))
+                if (StaticPageManager.CreateLocalPage(url, query, filePath, "聊天记录", Encoding.UTF8, Encoding.UTF8))
                 {
                     url = string.Format("/history/{0}", fileName);
                     return Server.UrlEncode(url);

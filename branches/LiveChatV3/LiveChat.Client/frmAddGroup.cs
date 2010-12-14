@@ -15,10 +15,12 @@ namespace LiveChat.Client
         public event CallbackEventHandler Callback;
 
         private ISeatService service;
+        private Company company;
         private Seat seat;
-        public frmAddGroup(ISeatService service, Seat seat)
+        public frmAddGroup(ISeatService service, Company company, Seat seat)
         {
             this.service = service;
+            this.company = company;
             this.seat = seat;
 
             InitializeComponent();
@@ -70,7 +72,7 @@ namespace LiveChat.Client
             string key = string.Format("SeatGroup_{0}", group.GroupID);
             SingletonMul.Show<frmGroup>(key, () =>
             {
-                frmGroup frm = new frmGroup(service, seat, group);
+                frmGroup frm = new frmGroup(service, company, seat, group);
                 return frm;
             });
         }

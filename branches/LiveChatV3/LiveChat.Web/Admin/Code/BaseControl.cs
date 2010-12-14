@@ -39,7 +39,7 @@ namespace LiveChat.Web.Admin
         /// <returns></returns>
         protected T GetSession<T>(string key)
         {
-            return WebUtils.GetSession<T>(key);
+            return WebHelper.GetSession<T>(key);
         }
 
 

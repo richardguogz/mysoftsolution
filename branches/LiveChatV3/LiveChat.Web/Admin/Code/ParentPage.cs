@@ -10,6 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using MySoft.Web.UI;
 using MySoft.Web;
 using LiveChat.Interface;
+using MySoft.Core;
 
 namespace LiveChat.Web.Admin
 {
@@ -37,7 +38,7 @@ namespace LiveChat.Web.Admin
         /// <param name="value"></param>
         protected void SaveSession(string key, object value)
         {
-            WebUtils.SaveSession(key, value);
+            WebHelper.SaveSession(key, value);
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace LiveChat.Web.Admin
         /// <returns></returns>
         protected T GetSession<T>(string key)
         {
-            return WebUtils.GetSession<T>(key);
+            return WebHelper.GetSession<T>(key);
         }
     }
 }

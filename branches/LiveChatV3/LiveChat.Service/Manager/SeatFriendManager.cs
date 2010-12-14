@@ -116,7 +116,7 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                t_SeatFriendGroup g = DataUtils.ConvertType<SeatFriendGroup, t_SeatFriendGroup>(group);
+                t_SeatFriendGroup g = DataHelper.ConvertType<SeatFriendGroup, t_SeatFriendGroup>(group);
                 g.SeatID = seatID;
                 g.AddTime = DateTime.Now;
 

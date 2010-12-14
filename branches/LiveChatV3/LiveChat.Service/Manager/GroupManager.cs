@@ -503,6 +503,40 @@ namespace LiveChat.Service.Manager
             }
         }
 
+        public int SetGroupManager(Guid groupID, string seatID)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_SGroup._.GroupID == groupID; ;
+                return dbSession.Update<t_SGroup>(t_SGroup._.ManagerID.Set(seatID), where);
+            }
+        }
+
+        public int SaveSeatToGroup(Guid groupID, string seatID)
+        {
+            lock (syncobj)
+            {
+                //把自己添加到群中
+                t_GroupSeat gs = new t_GroupSeat()
+                {
+                    SeatID = seatID,
+                    GroupID = groupID,
+                    AddTime = DateTime.Now
+                };
+
+                return dbSession.Save(gs);
+            }
+        }
+
+        public int DeleteSeatFromGroup(Guid groupID, string seatID)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_GroupSeat._.GroupID == groupID && t_GroupSeat._.SeatID == seatID;
+                return dbSession.Delete<t_GroupSeat>(where);
+            }
+        }
+
         public int SaveSeatGroup(t_SGroup group, bool isUpdate)
         {
             lock (syncobj)

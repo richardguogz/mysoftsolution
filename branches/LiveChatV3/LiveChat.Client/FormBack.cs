@@ -55,7 +55,7 @@ namespace LiveChat.Client
 
         private void FormBack_Load(object sender, EventArgs e)
         {
-            string path = CoreUtils.GetFullPath("cur.cur");
+            string path = CoreHelper.GetFullPath("cur.cur");
             if (File.Exists(path))
                 this.Cursor = new Cursor(new FileStream(path, FileMode.Open));
 
