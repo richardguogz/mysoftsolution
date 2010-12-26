@@ -271,7 +271,7 @@ namespace LiveChat.Client
             IList<TipInfo> tiplist = new List<TipInfo>();
 
             //请求信息
-            foreach (KeyValuePair<Seat, RequestInfo> kv in seatInfo.RequestMessages)
+            foreach (KeyValuePair<Seat, RequestInfo> kv in seatInfo.FriendRequests)
             {
                 if (kv.Value.ConfirmState == 0)
                 {
@@ -287,6 +287,29 @@ namespace LiveChat.Client
                     TipInfo tip = new TipInfo() { Title = "请求添加好友", Message = sbMsg.ToString() };
                     tip.Id = string.Format("Message_{0}", kv.Value.ID);
                     tip.Key = string.Format("SeatRequest_{0}_{1}", loginSeat.SeatID, kv.Key.SeatID);
+                    tip.Target = kv;
+
+                    tiplist.Add(tip);
+                }
+            }
+
+            //请求信息
+            foreach (KeyValuePair<SeatGroup, GroupInfo> kv in seatInfo.GroupRequests)
+            {
+                if (kv.Value.ConfirmState == 0)
+                {
+                    string msgText = string.Format("客服【{0}】请求加入群【{1}】！", kv.Value.Seat.ShowName, kv.Key.GroupName);
+
+                    StringBuilder sbMsg = new StringBuilder(msgText);
+                    sbMsg.AppendLine();
+                    sbMsg.AppendLine();
+
+                    sbMsg.AppendFormat("[{0}]" + kv.Value.Request, kv.Value.AddTime.ToLongTimeString());
+                    sbMsg.AppendLine();
+
+                    TipInfo tip = new TipInfo() { Title = "请求添加好友", Message = sbMsg.ToString() };
+                    tip.Id = string.Format("ReqMessage_{0}", kv.Value.ID);
+                    tip.Key = string.Format("GroupRequest_{0}_{1}", loginSeat.SeatID, kv.Key.GroupID);
                     tip.Target = kv;
 
                     tiplist.Add(tip);
@@ -435,8 +458,16 @@ namespace LiveChat.Client
                             SingletonMul.Show<frmConfirmFriend>(tip.Key, () =>
                             {
                                 frmConfirmFriend frmFriend = new frmConfirmFriend(service, loginCompany, request.Key, request.Value);
-                                frmFriend.Callback += new CallbackEventHandler(frmFriend_Callback);
                                 return frmFriend;
+                            });
+                        }
+                        else if (tip.Target is KeyValuePair<SeatGroup, GroupInfo>)
+                        {
+                            KeyValuePair<SeatGroup, GroupInfo> request = (KeyValuePair<SeatGroup, GroupInfo>)tip.Target;
+                            SingletonMul.Show<frmConfirmGroup>(tip.Key, () =>
+                            {
+                                frmConfirmGroup frmGroupConfirms = new frmConfirmGroup(service, loginCompany, request.Key, request.Value);
+                                return frmGroupConfirms;
                             });
                         }
                     }, p2 =>
@@ -462,6 +493,11 @@ namespace LiveChat.Client
                             KeyValuePair<Seat, RequestInfo> request = (KeyValuePair<Seat, RequestInfo>)tip.Target;
                             service.ConfirmAddSeatFriend(request.Value.ID, AcceptType.Cancel, null);
                         }
+                        else if (tip.Target is KeyValuePair<SeatGroup, GroupInfo>)
+                        {
+                            KeyValuePair<SeatGroup, GroupInfo> request = (KeyValuePair<SeatGroup, GroupInfo>)tip.Target;
+                            service.ConfirmAddSeatGroup(request.Value.ID, AcceptType.Cancel, null);
+                        }
                     });
                 }
             }
@@ -480,15 +516,6 @@ namespace LiveChat.Client
                 frm.CallbackCancel += cancelHandler;
                 return frm;
             });
-        }
-
-        void frmFriend_Callback(object obj)
-        {
-            //重新绑定好友
-            BindSeatFriend();
-
-            //处理定时刷新
-            seatInfo = service.GetSeatMessage(loginSeat.SeatID);
         }
 
         private void RefreshRequest()
@@ -1836,18 +1863,19 @@ namespace LiveChat.Client
             Singleton.Show(() =>
             {
                 frmAddGroup frmAddGroup = new frmAddGroup(service, loginCompany, loginSeat);
-                frmAddGroup.Callback += new CallbackEventHandler(frmAddGroup_Callback);
                 return frmAddGroup;
             });
         }
 
-        void frmAddGroup_Callback(object obj)
-        {
-            BindSeatGroup();
-        }
-
         private void toolStripMenuItem35_Click(object sender, EventArgs e)
         {
+            var count = service.GetSeatCreateGroups(loginSeat.SeatID);
+            if (count >= 10)
+            {
+                ClientUtils.ShowMessage("您创建的群上限为10个！");
+                return;
+            }
+
             Singleton.Show(() =>
             {
                 frmGroup frmGroup = new frmGroup(service, loginCompany, loginSeat, null);

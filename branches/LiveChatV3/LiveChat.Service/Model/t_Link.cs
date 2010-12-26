@@ -187,4 +187,3 @@ namespace LiveChat.Service {
             }
         }
     }
-    

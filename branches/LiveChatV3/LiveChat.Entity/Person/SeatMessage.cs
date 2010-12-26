@@ -26,8 +26,13 @@ namespace LiveChat.Entity
         public IDictionary<SeatGroup, MessageInfo> GroupMessages { get; set; }
 
         /// <summary>
-        /// 请求消息
+        /// 好友请求消息
         /// </summary>
-        public IDictionary<Seat, RequestInfo> RequestMessages { get; set; }
+        public IDictionary<Seat, RequestInfo> FriendRequests { get; set; }
+
+        /// <summary>
+        /// 群请求信息
+        /// </summary>
+        public IDictionary<SeatGroup, GroupInfo> GroupRequests { get; set; }
     }
 }

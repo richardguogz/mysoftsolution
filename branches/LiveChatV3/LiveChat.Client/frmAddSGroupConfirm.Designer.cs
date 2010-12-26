@@ -1,6 +1,6 @@
 ﻿namespace LiveChat.Client
 {
-    partial class frmAddSeatConfirm
+    partial class frmAddSGroupConfirm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddSeatConfirm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddSGroupConfirm));
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -75,9 +75,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(104, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 6;
-            this.label1.Text = "客服代码：";
+            this.label1.Text = "群名称：";
             // 
             // pbSeatFace
             // 
@@ -112,41 +112,41 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(104, 48);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(65, 12);
+            this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 12;
-            this.label8.Text = "固定电话：";
+            this.label8.Text = "创建人：";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(104, 72);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 12);
+            this.label9.Size = new System.Drawing.Size(53, 12);
             this.label9.TabIndex = 11;
-            this.label9.Text = "电子邮箱：";
+            this.label9.Text = "群简介：";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(266, 48);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 12);
+            this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 10;
-            this.label7.Text = "手机号码：";
+            this.label7.Text = "管理人：";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(266, 24);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 6;
-            this.label3.Text = "客服名称：";
+            this.label3.Text = "群人数：";
             // 
             // lblSeatCode
             // 
             this.lblSeatCode.AutoSize = true;
-            this.lblSeatCode.Location = new System.Drawing.Point(166, 24);
+            this.lblSeatCode.Location = new System.Drawing.Point(157, 24);
             this.lblSeatCode.Name = "lblSeatCode";
             this.lblSeatCode.Size = new System.Drawing.Size(41, 12);
             this.lblSeatCode.TabIndex = 13;
@@ -155,7 +155,7 @@
             // lblTelephone
             // 
             this.lblTelephone.AutoSize = true;
-            this.lblTelephone.Location = new System.Drawing.Point(166, 48);
+            this.lblTelephone.Location = new System.Drawing.Point(157, 48);
             this.lblTelephone.Name = "lblTelephone";
             this.lblTelephone.Size = new System.Drawing.Size(41, 12);
             this.lblTelephone.TabIndex = 13;
@@ -164,7 +164,7 @@
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(166, 72);
+            this.lblEmail.Location = new System.Drawing.Point(157, 72);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(41, 12);
             this.lblEmail.TabIndex = 13;
@@ -173,7 +173,7 @@
             // lblSeatName
             // 
             this.lblSeatName.AutoSize = true;
-            this.lblSeatName.Location = new System.Drawing.Point(328, 24);
+            this.lblSeatName.Location = new System.Drawing.Point(319, 24);
             this.lblSeatName.Name = "lblSeatName";
             this.lblSeatName.Size = new System.Drawing.Size(41, 12);
             this.lblSeatName.TabIndex = 13;
@@ -182,13 +182,13 @@
             // lblMobileNumber
             // 
             this.lblMobileNumber.AutoSize = true;
-            this.lblMobileNumber.Location = new System.Drawing.Point(329, 48);
+            this.lblMobileNumber.Location = new System.Drawing.Point(320, 48);
             this.lblMobileNumber.Name = "lblMobileNumber";
             this.lblMobileNumber.Size = new System.Drawing.Size(41, 12);
             this.lblMobileNumber.TabIndex = 13;
             this.lblMobileNumber.Text = "label4";
             // 
-            // frmAddSeatConfirm
+            // frmAddSGroupConfirm
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -215,10 +215,10 @@
             this.MaximumSize = new System.Drawing.Size(468, 286);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(468, 286);
-            this.Name = "frmAddSeatConfirm";
+            this.Name = "frmAddSGroupConfirm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "添加好友";
-            this.Load += new System.EventHandler(this.frmAddSeatConfirm_Load);
+            this.Text = "请求加入群";
+            this.Load += new System.EventHandler(this.frmAddSGroupConfirm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbSeatFace)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

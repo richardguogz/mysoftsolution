@@ -163,7 +163,9 @@
     <Compile Include="Model\t_SeatFriendGroup.cs" />
     <Compile Include="Model\t_SeatFriendRequest.cs" />
     <Compile Include="Model\t_SGroup.cs" />
+    <Compile Include="Model\t_SGroupRequest.cs" />
     <Compile Include="Model\t_UGroup.cs" />
+    <Compile Include="Model\t_UGroupRequest.cs" />
     <Compile Include="Model\t_User.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="Service\SeatService.cs" />

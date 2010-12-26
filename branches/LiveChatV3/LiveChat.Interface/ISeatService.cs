@@ -267,6 +267,13 @@ namespace LiveChat.Interface
         bool DeleteSeatGroup(Guid groupID);
 
         /// <summary>
+        /// 获取我创建群的总数
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        int GetSeatCreateGroups(string seatID);
+
+        /// <summary>
         /// 获取客服的群列表
         /// </summary>
         /// <param name="seatID"></param>
@@ -660,11 +667,28 @@ namespace LiveChat.Interface
         /// <summary>
         /// 添加好友
         /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="gropuID"></param>
+        /// <returns></returns>
+        bool AddSeatGroupRequest(string seatID, Guid gropuID, string request);
+
+        /// <summary>
+        /// 添加好友
+        /// </summary>
         /// <param name="requestID"></param>
         /// <param name="type"></param>
         /// <param name="refuse"></param>
         /// <returns></returns>
         bool ConfirmAddSeatFriend(int requestID, AcceptType type, string refuse);
+
+        /// <summary>
+        /// 添加群
+        /// </summary>
+        /// <param name="requestID"></param>
+        /// <param name="type"></param>
+        /// <param name="refuse"></param>
+        /// <returns></returns>
+        bool ConfirmAddSeatGroup(int requestID, AcceptType type, string refuse);
 
         /// <summary>
         /// 删除好友

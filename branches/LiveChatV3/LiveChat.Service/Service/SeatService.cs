@@ -685,7 +685,8 @@ namespace LiveChat.Service
                 info.GroupMessages = new Dictionary<SeatGroup, MessageInfo>();
                 info.SeatMessages = new Dictionary<SeatFriend, SeatInfo>();
                 info.SessionMessages = new Dictionary<P2SSession, MessageInfo>();
-                info.RequestMessages = new Dictionary<Seat, RequestInfo>();
+                info.FriendRequests = new Dictionary<Seat, RequestInfo>();
+                info.GroupRequests = new Dictionary<SeatGroup, GroupInfo>();
 
                 //添加组消息
                 var groups = GroupManager.Instance.GetSeatGroups(seatID);
@@ -772,8 +773,11 @@ namespace LiveChat.Service
 
                 try
                 {
-                    //请求信息
-                    info.RequestMessages = SeatFriendManager.Instance.GetRequestFriends(seatID);
+                    //好友请求信息
+                    info.FriendRequests = SeatFriendManager.Instance.GetRequestFriends(seatID);
+
+                    //群请求信息
+                    info.GroupRequests = GroupManager.Instance.GetRequestGroups(seatID);
                 }
                 catch (Exception ex)
                 {
@@ -1132,15 +1136,15 @@ namespace LiveChat.Service
         {
             try
             {
+                SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
+                Seat seat = SeatManager.Instance.GetSeat(seatID);
+                if (group.Exists(seat))
+                {
+                    throw new LiveChatException("【" + seat.ShowName + "】已经是群内成员！");
+                }
+
                 if (GroupManager.Instance.SaveSeatToGroup(groupID, seatID) > 0)
                 {
-                    SeatGroup group = GroupManager.Instance.GetSeatGroup(groupID);
-                    Seat seat = SeatManager.Instance.GetSeat(seatID);
-
-                    if (group.Exists(seat))
-                    {
-                        throw new LiveChatException("【" + seat.SeatName + "】已经是群内成员！");
-                    }
                     group.AddSeat(seat);
                 }
             }
@@ -1240,6 +1244,24 @@ namespace LiveChat.Service
             try
             {
                 return GroupManager.Instance.DeleteSeatGroup(groupID) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取我创建群的总数
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        public int GetSeatCreateGroups(string seatID)
+        {
+            try
+            {
+                var groups = GroupManager.Instance.GetSeatGroups(seatID);
+                return new List<SeatGroup>(groups).FindAll(p => p.CreateID == seatID).Count;
             }
             catch (Exception ex)
             {
@@ -2328,6 +2350,24 @@ namespace LiveChat.Service
         /// <summary>
         /// 添加好友
         /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public bool AddSeatGroupRequest(string seatID, Guid groupID, string reqeust)
+        {
+            try
+            {
+                return GroupManager.Instance.AddGroupRequest(seatID, groupID, reqeust);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 添加好友
+        /// </summary>
         /// <param name="requestID"></param>
         /// <returns></returns>
         public bool ConfirmAddSeatFriend(int requestID, AcceptType type, string refuse)
@@ -2335,6 +2375,23 @@ namespace LiveChat.Service
             try
             {
                 return SeatFriendManager.Instance.AcceptFriend(requestID, type, refuse);
+            }
+            catch (Exception ex)
+            {
+                throw new LiveChatException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// 添加好友
+        /// </summary>
+        /// <param name="requestID"></param>
+        /// <returns></returns>
+        public bool ConfirmAddSeatGroup(int requestID, AcceptType type, string refuse)
+        {
+            try
+            {
+                return GroupManager.Instance.AcceptGroup(requestID, type, refuse);
             }
             catch (Exception ex)
             {

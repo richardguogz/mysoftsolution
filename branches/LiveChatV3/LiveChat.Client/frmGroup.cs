@@ -158,6 +158,16 @@ namespace LiveChat.Client
             }
         }
 
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            if (textBox1.Enabled)
+            {
+                textBox1.Focus();
+            }
+        }
+
         private void LoadGroupSeats()
         {
             //加载群成员

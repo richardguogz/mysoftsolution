@@ -404,8 +404,6 @@ namespace LiveChat.Service.Manager
                     throw new LiveChatException("此客服已经是您的好友，不能重复添加！");
                 }
 
-                Seat seat = SeatManager.Instance.GetSeat(friendID);
-
                 //把对方加为好友
                 t_SeatFriendRequest friend = new t_SeatFriendRequest()
                 {

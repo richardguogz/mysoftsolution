@@ -346,6 +346,18 @@
     <Compile Include="frmGroupRename.Designer.cs">
       <DependentUpon>frmGroupRename.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmAddSGroupConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddSGroupConfirm.Designer.cs">
+      <DependentUpon>frmAddSGroupConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConfirmGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfirmGroup.Designer.cs">
+      <DependentUpon>frmConfirmGroup.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmotionDropdown.resx">
@@ -441,6 +453,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGroupRename.resx">
       <DependentUpon>frmGroupRename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddSGroupConfirm.resx">
+      <DependentUpon>frmAddSGroupConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfirmGroup.resx">
+      <DependentUpon>frmConfirmGroup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -12,35 +12,33 @@ using System.IO;
 
 namespace LiveChat.Client
 {
-    public partial class frmAddSeatConfirm : Form
+    public partial class frmAddSGroupConfirm : Form
     {
         private ISeatService service;
         private Company company;
-        private Seat seat, friend;
-        public frmAddSeatConfirm(ISeatService service, Company company, Seat seat, Seat friend)
+        private Seat seat;
+        private SeatGroup group;
+        public frmAddSGroupConfirm(ISeatService service, Company company, Seat seat, SeatGroup group)
         {
             this.service = service;
             this.company = company;
             this.seat = seat;
-            this.friend = friend;
+            this.group = group;
 
             InitializeComponent();
         }
 
-        private void frmAddSeatConfirm_Load(object sender, EventArgs e)
+        private void frmAddSGroupConfirm_Load(object sender, EventArgs e)
         {
-            lblSeatCode.Text = friend.SeatCode;
-            lblSeatName.Text = friend.SeatName;
-            lblTelephone.Text = friend.Telephone;
-            lblMobileNumber.Text = friend.MobileNumber;
-            lblEmail.Text = friend.Email;
+            lblSeatCode.Text = group.GroupName;
+            lblSeatName.Text = string.Format("{0}人", group.PersonCount);
 
-            if (friend.FaceImage != null)
-            {
-                MemoryStream ms = new MemoryStream(friend.FaceImage);
-                Image img = BitmapManipulator.ResizeBitmap((Bitmap)Bitmap.FromStream(ms), 60, 60);
-                pbSeatFace.Image = img;
-            }
+            Seat seat1 = service.GetSeat(group.CreateID);
+            Seat seat2 = service.GetSeat(group.ManagerID);
+            lblTelephone.Text = seat1.SeatName;
+            lblMobileNumber.Text = seat2.SeatName;
+            lblEmail.Text = group.Description;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -48,10 +46,10 @@ namespace LiveChat.Client
             try
             {
                 string request = textBox1.Text.Trim();
-                bool ret = service.AddSeatFriendRequest(seat.SeatID, friend.SeatID, request);
+                bool ret = service.AddSeatGroupRequest(seat.SeatID, group.GroupID, request);
                 if (ret)
                 {
-                    ClientUtils.ShowMessage("好友请求信息发送成功！");
+                    ClientUtils.ShowMessage("群请求信息发送成功！");
                 }
                 this.Close();
             }

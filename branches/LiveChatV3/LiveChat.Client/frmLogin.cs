@@ -201,7 +201,11 @@ namespace LiveChat.Client
 
         private void ReadUserInfoForFile()
         {
-            if (!File.Exists(path)) return;
+            if (!File.Exists(path))
+            {
+                this.size = this.Size;
+                return;
+            }
 
             try
             {

@@ -12,8 +12,6 @@ namespace LiveChat.Client
 {
     public partial class frmAddGroup : Form
     {
-        public event CallbackEventHandler Callback;
-
         private ISeatService service;
         private Company company;
         private Seat seat;
@@ -45,13 +43,18 @@ namespace LiveChat.Client
             if (listGroups.SelectedItems.Count == 0) return;
             SeatGroup group = listGroups.SelectedItems[0].Tag as SeatGroup;
 
-            if (MessageBox.Show("确定加入群【" + group.GroupName + "】吗？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel) return;
-
             try
             {
-                service.JoinGroup(seat.SeatID, group.GroupID);
-                if (Callback != null) Callback(null);
-                this.Close();
+                //service.JoinGroup(seat.SeatID, group.GroupID);
+                //if (Callback != null) Callback(null);
+                //this.Close();
+
+                string key = string.Format("AddToGroup_{0}", group.GroupID);
+                SingletonMul.Show<frmAddSGroupConfirm>(key, () =>
+                {
+                    frmAddSGroupConfirm frm = new frmAddSGroupConfirm(service, company, seat, group);
+                    return frm;
+                });
             }
             catch (Exception ex)
             {

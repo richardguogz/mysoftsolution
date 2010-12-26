@@ -12,35 +12,37 @@ using System.IO;
 
 namespace LiveChat.Client
 {
-    public partial class frmConfirmFriend : Form
+    public partial class frmConfirmGroup : Form
     {
         private ISeatService service;
         private Company company;
-        private Seat friend;
-        private RequestInfo request;
-        public frmConfirmFriend(ISeatService service, Company company, Seat friend, RequestInfo request)
+        private SeatGroup group;
+        private GroupInfo request;
+        public frmConfirmGroup(ISeatService service, Company company, SeatGroup group, GroupInfo request)
         {
             this.service = service;
             this.company = company;
-            this.friend = friend;
+            this.group = group;
             this.request = request;
 
             InitializeComponent();
         }
 
-        private void frmConfirmFriend_Load(object sender, EventArgs e)
+        private void frmConfirmGroup_Load(object sender, EventArgs e)
         {
-            lblSeatCode.Text = friend.SeatCode;
-            lblSeatName.Text = friend.SeatName;
-            lblTelephone.Text = friend.Telephone;
-            lblMobileNumber.Text = friend.MobileNumber;
-            lblEmail.Text = friend.Email;
+            lblSeatCode.Text = request.Seat.SeatCode;
+            lblSeatName.Text = request.Seat.SeatName;
+            lblTelephone.Text = request.Seat.Telephone;
+            lblMobileNumber.Text = request.Seat.MobileNumber;
+            lblEmail.Text = request.Seat.Email;
 
             lblRequest.Text = "　　" + request.Request;
 
-            if (friend.FaceImage != null)
+            label2.Text = string.Format("请求加入群【{0}】：", group.GroupName);
+
+            if (request.Seat.FaceImage != null)
             {
-                MemoryStream ms = new MemoryStream(friend.FaceImage);
+                MemoryStream ms = new MemoryStream(request.Seat.FaceImage);
                 Image img = BitmapManipulator.ResizeBitmap((Bitmap)Bitmap.FromStream(ms), 60, 60);
                 pbSeatFace.Image = img;
             }
@@ -57,11 +59,10 @@ namespace LiveChat.Client
             {
                 string refuse = textBox1.Text.Trim();
                 AcceptType type = AcceptType.Accept;
-                if (radioButton1.Checked) type = AcceptType.AcceptAdd;
-                else if (radioButton2.Checked) type = AcceptType.Accept;
+                if (radioButton2.Checked) type = AcceptType.Accept;
                 else if (radioButton3.Checked) type = AcceptType.Refuse;
 
-                service.ConfirmAddSeatFriend(request.ID, type, refuse);
+                service.ConfirmAddSeatGroup(request.ID, type, refuse);
                 this.Close();
             }
             catch (LiveChatException ex)

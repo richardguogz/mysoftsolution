@@ -37,6 +37,15 @@ namespace LiveChat.Entity
     }
 
     /// <summary>
+    /// 群信息
+    /// </summary>
+    [Serializable]
+    public class GroupInfo : RequestInfo
+    {
+        public Seat Seat { get; set; }
+    }
+
+    /// <summary>
     /// 客服信息
     /// </summary>
     [Serializable]

@@ -44,7 +44,7 @@ namespace LiveChat.Service.Manager
 
             try
             {
-                foreach (Session session in dictSession.Values)
+                foreach (Session session in new List<Session>(dictSession.Values))
                 {
                     if (session is P2SSession)
                     {

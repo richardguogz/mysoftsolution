@@ -99,22 +99,24 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                var ugroups = groupUsers.FindAll(p => p.UserID != userID);
-                IList<Guid> guidList = new List<Guid>();
+                var dict = new Dictionary<Guid, Group>(dictGroup);
+                var ugroups = groupUsers.FindAll(p => p.UserID == userID);
                 foreach (var group in ugroups)
                 {
-                    if (!guidList.Contains(group.GroupID))
+                    if (dict.ContainsKey(group.GroupID))
                     {
-                        guidList.Add(group.GroupID);
+                        dict.Remove(group.GroupID);
                     }
                 }
 
                 IList<UserGroup> list = new List<UserGroup>();
-                foreach (var guid in guidList)
+                foreach (var kv in dict)
                 {
-                    if (dictGroup.ContainsKey(guid))
+                    if (kv.Value is UserGroup)
                     {
-                        var g = dictGroup[guid] as UserGroup;
+                        var g = kv.Value as UserGroup;
+                        g.PersonCount = g.Users.Count;
+                        g.PersonOnlineCount = g.Users.FindAll(p => p.State != OnlineState.Offline).Count;
                         list.Add(g);
                     }
                 }
@@ -132,22 +134,24 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                var sgroups = groupSeats.FindAll(p => p.SeatID != seatID);
-                IList<Guid> guidList = new List<Guid>();
+                var dict = new Dictionary<Guid, Group>(dictGroup);
+                var sgroups = groupSeats.FindAll(p => p.SeatID == seatID);
                 foreach (var group in sgroups)
                 {
-                    if (!guidList.Contains(group.GroupID))
+                    if (dict.ContainsKey(group.GroupID))
                     {
-                        guidList.Add(group.GroupID);
+                        dict.Remove(group.GroupID);
                     }
                 }
 
                 IList<SeatGroup> list = new List<SeatGroup>();
-                foreach (var guid in guidList)
+                foreach (var kv in dict)
                 {
-                    if (dictGroup.ContainsKey(guid))
+                    if (kv.Value is SeatGroup)
                     {
-                        var g = dictGroup[guid] as SeatGroup;
+                        var g = kv.Value as SeatGroup;
+                        g.PersonCount = g.Seats.Count;
+                        g.PersonOnlineCount = g.Seats.FindAll(p => p.State != OnlineState.Offline).Count;
                         list.Add(g);
                     }
                 }
@@ -217,10 +221,13 @@ namespace LiveChat.Service.Manager
         {
             lock (syncobj)
             {
-                WhereClip where = t_GroupSeat._.SeatID == group.SeatID && t_GroupSeat._.MemoName == group.MemoName;
-                if (dbSession.Exists<t_GroupSeat>(where))
+                if (!string.IsNullOrEmpty(group.MemoName))
                 {
-                    throw new LiveChatException("存在此备注名称的群名");
+                    WhereClip where = t_GroupSeat._.SeatID == group.SeatID && t_GroupSeat._.MemoName == group.MemoName;
+                    if (dbSession.Exists<t_GroupSeat>(where))
+                    {
+                        throw new LiveChatException("存在此备注名称的群名");
+                    }
                 }
 
                 group.AttachSet(t_GroupSeat._.MemoName);
@@ -551,6 +558,12 @@ namespace LiveChat.Service.Manager
                 t_SGroup sg = null;
                 if (!isUpdate)
                 {
+                    WhereClip where = t_SGroup._.CreateID == group.CreateID && t_SGroup._.GroupName == group.GroupName;
+                    if (dbSession.Exists<t_SGroup>(where))
+                    {
+                        throw new LiveChatException("存在此名称的群名");
+                    }
+
                     sg = new t_SGroup()
                     {
                         GroupID = group.GroupID,
@@ -658,6 +671,12 @@ namespace LiveChat.Service.Manager
                 t_UGroup ug = null;
                 if (!isUpdate)
                 {
+                    WhereClip where = t_UGroup._.CreateID == group.CreateID && t_UGroup._.GroupName == group.GroupName;
+                    if (dbSession.Exists<t_UGroup>(where))
+                    {
+                        throw new LiveChatException("存在此名称的群名");
+                    }
+
                     ug = new t_UGroup()
                     {
                         GroupID = group.GroupID,
@@ -813,6 +832,164 @@ namespace LiveChat.Service.Manager
 
                     return ret;
                 }
+            }
+        }
+
+        #endregion
+
+        #region 群请求
+
+        /// <summary>
+        /// 确定添加
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="friendID"></param>
+        /// <returns></returns>
+        public bool AcceptGroup(int requestID, AcceptType type, string refuse)
+        {
+            lock (syncobj)
+            {
+                //获取请求对象
+                t_SGroupRequest request = dbSession.Single<t_SGroupRequest>(t_SGroupRequest._.RequestID == requestID);
+
+                if (type == AcceptType.Accept)
+                {
+                    int ret = 0;
+
+                    using (DbTrans trans = dbSession.BeginTrans())
+                    {
+                        try
+                        {
+                            //处理接受
+                            WhereClip where = t_GroupSeat._.SeatID == request.SeatID && t_GroupSeat._.GroupID == request.GroupID;
+
+                            if (!trans.Exists<t_GroupSeat>(where))
+                            {
+                                //把对方加为好友
+                                t_GroupSeat friend = new t_GroupSeat()
+                                {
+                                    SeatID = request.SeatID,
+                                    GroupID = request.GroupID,
+                                    AddTime = DateTime.Now
+                                };
+
+                                ret = trans.Save(friend);
+
+                                if (ret > 0)
+                                {
+                                    //把客服添加到群
+                                    var group = GetSeatGroup(request.GroupID);
+                                    var seat = SeatManager.Instance.GetSeat(request.SeatID);
+                                    group.AddSeat(seat);
+
+                                    //把当前客服添加到群列表中
+                                    groupSeats.Add(friend);
+                                }
+                            }
+
+                            WhereClip where1 = t_SGroupRequest._.RequestID == requestID;
+                            ret = trans.Update<t_SGroupRequest>(t_SGroupRequest._.ConfirmState, 1, where1);
+
+                            trans.Commit();
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                        }
+                    }
+
+                    return ret > 0;
+                }
+                else if (type == AcceptType.Refuse)
+                {
+                    //处理拒绝
+                    WhereClip where = t_SGroupRequest._.RequestID == requestID;
+
+                    return dbSession.Update<t_SGroupRequest>(
+                        new Field[] { t_SGroupRequest._.Refuse, t_SGroupRequest._.ConfirmState },
+                       new object[] { refuse, -1 }, where) > 0;
+                }
+                else if (type == AcceptType.Cancel)
+                {
+                    //处理拒绝
+                    WhereClip where = t_SGroupRequest._.RequestID == requestID;
+
+                    return dbSession.Update<t_SGroupRequest>(
+                       t_SGroupRequest._.ConfirmState, -2, where) > 0;
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 添加好友
+        /// </summary>
+        /// <param name="seatID"></param>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public bool AddGroupRequest(string seatID, Guid groupID, string request)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_GroupSeat._.SeatID == seatID && t_GroupSeat._.GroupID == groupID;
+                if (dbSession.Exists<t_GroupSeat>(where))
+                {
+                    throw new LiveChatException("您已经加入此群，不能重复添加！");
+                }
+
+                //把对方加为好友
+                t_SGroupRequest friend = new t_SGroupRequest()
+                {
+                    SeatID = seatID,
+                    GroupID = groupID,
+                    Request = request,
+                    ConfirmState = 0,
+                    AddTime = DateTime.Now
+                };
+
+                return dbSession.Save(friend) > 0;
+            }
+        }
+
+
+        /// <summary>
+        /// 获取客服的好友
+        /// </summary>
+        /// <param name="companyID"></param>
+        /// <param name="seatID"></param>
+        /// <returns></returns>
+        public IDictionary<SeatGroup, GroupInfo> GetRequestGroups(string seatID)
+        {
+            lock (syncobj)
+            {
+                WhereClip where = t_SGroupRequest._.GroupID.In(Table.From<t_SGroup>()
+                    .Where(t_SGroup._.CreateID == seatID || t_SGroup._.ManagerID == seatID)
+                    .Select(t_SGroup._.GroupID)) && t_SGroupRequest._.ConfirmState == 0;
+
+                var list = dbSession.From<t_SGroupRequest>().Where(where).ToList();
+
+                IDictionary<SeatGroup, GroupInfo> items = new Dictionary<SeatGroup, GroupInfo>();
+                list.ForEach(p =>
+                {
+                    var group = GetSeatGroup(p.GroupID);
+                    var seat = SeatManager.Instance.GetSeat(p.SeatID);
+                    if (group == null) return;
+
+                    var request = new GroupInfo()
+                    {
+                        ID = p.RequestID,
+                        ConfirmState = p.ConfirmState,
+                        Request = p.Request,
+                        Refuse = p.Refuse,
+                        AddTime = p.AddTime,
+                        Seat = seat
+                    };
+
+                    items[group] = request;
+                });
+
+                return items;
             }
         }
 
