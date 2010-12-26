@@ -82,12 +82,37 @@ namespace MySoft.Data
         #region 按条件操作
 
         int Delete<T>(WhereClip where) where T : Entity;
+        int Insert<T>(Field[] fields, object[] values) where T : Entity;
+        int Insert<T, TResult>(Field[] fields, object[] values, out TResult retVal) where T : Entity;
         int Update<T>(Field field, object value, WhereClip where) where T : Entity;
         int Update<T>(Field[] fields, object[] values, WhereClip where) where T : Entity;
 
         int Delete<T>(Table table, WhereClip where) where T : Entity;
+        int Insert<T>(Table table, Field[] fields, object[] values) where T : Entity;
+        int Insert<T, TResult>(Table table, Field[] fields, object[] values, out TResult retVal) where T : Entity;
         int Update<T>(Table table, Field field, object value, WhereClip where) where T : Entity;
         int Update<T>(Table table, Field[] fields, object[] values, WhereClip where) where T : Entity;
+
+        #endregion
+
+        #region 支持FieldValue方式
+
+        int Insert<T>(FieldValue[] fvs) where T : Entity;
+        int Insert<T, TResult>(FieldValue[] fvs, out TResult retVal) where T : Entity;
+        int Update<T>(FieldValue fv, WhereClip where) where T : Entity;
+        int Update<T>(FieldValue[] fvs, WhereClip where) where T : Entity;
+
+        int Insert<T>(Table table, FieldValue[] fvs) where T : Entity;
+        int Insert<T, TResult>(Table table, FieldValue[] fvs, out TResult retVal) where T : Entity;
+        int Update<T>(Table table, FieldValue fv, WhereClip where) where T : Entity;
+        int Update<T>(Table table, FieldValue[] fvs, WhereClip where) where T : Entity;
+
+        #endregion
+
+        #region 插入时返回标识列
+
+        int Insert<T, TResult>(T entity, out TResult retVal) where T : Entity;
+        int Insert<T, TResult>(Table table, T entity, out TResult retVal) where T : Entity;
 
         #endregion
     }

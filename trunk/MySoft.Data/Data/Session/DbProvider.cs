@@ -500,7 +500,7 @@ namespace MySoft.Data
                     {
                         if (fv.IsIdentity)
                         {
-                            fv.Value = new SysValue(identityName);
+                            fv.Value = new DBValue(identityName);
                             fv.IsIdentity = false;
                             exist = true;
                         }
@@ -508,7 +508,7 @@ namespace MySoft.Data
 
                     if (!exist)
                     {
-                        object value = new SysValue(identityName);
+                        object value = new DBValue(identityName);
                         FieldValue fv = new FieldValue(identityfield, value);
                         fvlist.Insert(0, fv);
                     }
@@ -949,7 +949,7 @@ namespace MySoft.Data
         /// <returns></returns>
         private bool CheckValue(object value)
         {
-            if (value == null || value == DBNull.Value || value is Field || value is SysValue)
+            if (value == null || value == DBNull.Value || value is Field || value is DBValue)
             {
                 return true;
             }

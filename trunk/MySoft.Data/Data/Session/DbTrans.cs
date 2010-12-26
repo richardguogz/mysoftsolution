@@ -123,6 +123,7 @@ namespace MySoft.Data
             return dbBatch.Save<T>(table, entity);
         }
 
+
         /// <summary>
         ///  插入一个实体
         /// </summary>
@@ -133,7 +134,9 @@ namespace MySoft.Data
         public int Insert<T>(Table table, Field[] fields, object[] values)
             where T : Entity
         {
-            return dbBatch.Insert<T>(table, fields, values);
+            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, true);
+            object retVal;
+            return dbBatch.Insert<T>(table, fvlist, out retVal);
         }
 
         /// <summary>
@@ -146,7 +149,12 @@ namespace MySoft.Data
         public int Insert<T, TResult>(Table table, Field[] fields, object[] values, out TResult retVal)
             where T : Entity
         {
-            return dbBatch.Insert<T, TResult>(table, fields, values, out retVal);
+            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, true);
+            object retValue;
+            int ret = dbBatch.Insert<T>(table, fvlist, out retValue);
+            retVal = CoreHelper.ConvertValue<TResult>(retValue);
+
+            return ret;
         }
 
         /// <summary>
@@ -199,7 +207,7 @@ namespace MySoft.Data
         public int Insert<T>(Field[] fields, object[] values)
             where T : Entity
         {
-            return dbBatch.Insert<T>(fields, values);
+            return Insert<T>(null, fields, values);
         }
 
         /// <summary>
@@ -212,7 +220,7 @@ namespace MySoft.Data
         public int Insert<T, TResult>(Field[] fields, object[] values, out TResult retVal)
             where T : Entity
         {
-            return dbBatch.Insert<T, TResult>(fields, values, out retVal);
+            return Insert<T, TResult>(null, fields, values, out retVal);
         }
 
         /// <summary>
@@ -999,6 +1007,187 @@ namespace MySoft.Data
         {
             List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, false);
             return dbProvider.Update<T>(table, fvlist, where, this);
+        }
+
+        #endregion
+
+        #region 支持FieldValue方式
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <returns></returns>
+        public int Insert<T>(FieldValue[] fvs)
+            where T : Entity
+        {
+            return Insert<T>(null, fvs);
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(FieldValue[] fvs, out TResult retVal)
+            where T : Entity
+        {
+            return Insert<T, TResult>(null, fvs, out retVal);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fv"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(FieldValue fv, WhereClip where)
+            where T : Entity
+        {
+            return Update<T>(null, fv, where);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return Update<T>(null, fvs, where);
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fvs"></param>
+        /// <returns></returns>
+        public int Insert<T>(Table table, FieldValue[] fvs)
+            where T : Entity
+        {
+            List<FieldValue> list = new List<FieldValue>(fvs);
+            list.ForEach(p =>
+            {
+                if (p.Field is Field) p.IsIdentity = true;
+            });
+
+            object retVal;
+            return dbBatch.Insert<T>(table, list, out retVal);
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fvs"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(Table table, FieldValue[] fvs, out TResult retVal)
+            where T : Entity
+        {
+            List<FieldValue> list = new List<FieldValue>(fvs);
+            list.ForEach(p =>
+            {
+                if (p.Field is Field) p.IsIdentity = true;
+            });
+
+            object retValue;
+            int ret = dbBatch.Insert<T>(table, list, out retValue);
+            retVal = CoreHelper.ConvertValue<TResult>(retValue);
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fv"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(Table table, FieldValue fv, WhereClip where)
+            where T : Entity
+        {
+            return Update<T>(table, new FieldValue[] { fv }, where);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(Table table, FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            List<FieldValue> list = new List<FieldValue>(fvs);
+            list.ForEach(p =>
+            {
+                p.IsChanged = true;
+            });
+
+            return dbProvider.Update<T>(table, list, where, this);
+        }
+
+        #endregion
+
+        #region 插入时返回标识列
+
+        /// <summary>
+        /// 插入实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(T entity, out TResult retVal)
+            where T : Entity
+        {
+            return Insert<T, TResult>(null, entity, out retVal);
+        }
+
+        /// <summary>
+        /// 插入实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="entity"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(Table table, T entity, out TResult retVal)
+            where T : Entity
+        {
+            entity.Detach();
+            int ret = Save<T>(table, entity);
+            retVal = default(TResult);
+
+            if ((IField)entity.IdentityField != null)
+            {
+                object val = CoreHelper.GetPropertyValue(entity, entity.IdentityField.PropertyName);
+                if (val != null)
+                {
+                    retVal = CoreHelper.ConvertValue<TResult>(val);
+                }
+            }
+
+            return ret;
         }
 
         #endregion

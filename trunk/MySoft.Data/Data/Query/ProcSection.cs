@@ -489,7 +489,7 @@ namespace MySoft.Data
 
                     //获取返回值
                     if (p.Direction == ParameterDirection.ReturnValue)
-                        returnValue = Convert.ToInt32(p.Value);
+                        returnValue = CoreHelper.ConvertValue<int>(p.Value);
 
                     outValues.Add(p.ParameterName.Substring(1), p.Value);
                 }

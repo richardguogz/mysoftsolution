@@ -44,6 +44,104 @@ namespace MySoft.Data
         protected string fieldName;
         protected string aliasName;
 
+        #region 创建FieldValue
+
+        /// <summary>
+        /// 创建一个FieldValue
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public FieldValue Set(object value)
+        {
+            return new FieldValue(this, value);
+        }
+
+        /// <summary>
+        /// 创建一个FieldValue
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public FieldValue Set(DBValue value)
+        {
+            return new FieldValue(this, value);
+        }
+
+        /// <summary>
+        /// 创建一个FieldValue
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public FieldValue Set(Field field)
+        {
+            return new FieldValue(this, field);
+        }
+
+        #endregion
+
+        #region 创建内联字段
+
+        /// <summary>
+        /// 创建一个自定义字段
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public Field Create(string fieldName)
+        {
+            return new Field(fieldName);
+        }
+
+        /// <summary>
+        /// 创建一个内联字段
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="creator"></param>
+        /// <returns></returns>
+        public Field Create(string fieldName, QueryCreator creator)
+        {
+            return new SysField(fieldName, creator);
+        }
+
+        /// <summary>
+        /// 创建一个内联字段
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fieldName"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public Field Create<T>(string fieldName, QuerySection<T> query)
+            where T : Entity
+        {
+            return new SysField<T>(fieldName, query);
+        }
+
+        /// <summary>
+        /// 创建一个内联字段
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fieldName"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
+        public Field Create<T>(string fieldName, TopSection<T> top)
+            where T : Entity
+        {
+            return new SysField<T>(fieldName, top);
+        }
+
+        /// <summary>
+        /// 创建一个内联字段
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fieldName"></param>
+        /// <param name="relation"></param>
+        /// <returns></returns>
+        public Field Create<T>(string fieldName, TableRelation<T> relation)
+            where T : Entity
+        {
+            return new SysField<T>(fieldName, relation);
+        }
+
+        #endregion
+
         #region 内联字段
 
         internal string FullName

@@ -120,6 +120,9 @@ namespace MySoft.Data.FireBird
             //replace "N'" to "'"
             cmd.CommandText = cmd.CommandText.Replace("N'", "'");
 
+            //替换系统日期值
+            cmd.CommandText = cmd.CommandText.Replace("getdate()", "current_timestamp");
+
             foreach (FbParameter p in cmd.Parameters)
             {
                 if (p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue) continue;

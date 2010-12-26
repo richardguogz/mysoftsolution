@@ -191,39 +191,6 @@ namespace MySoft.Data
             return value;
         }
 
-        /// <summary>
-        ///  插入一个实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fields"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public int Insert<T>(Table table, Field[] fields, object[] values)
-            where T : Entity
-        {
-            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, true);
-            object retVal;
-            return Insert<T>(table, fvlist, out retVal);
-        }
-
-        /// <summary>
-        ///  插入一个实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fields"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public int Insert<T, TResult>(Table table, Field[] fields, object[] values, out TResult retVal)
-            where T : Entity
-        {
-            List<FieldValue> fvlist = DataHelper.CreateFieldValue(fields, values, true);
-            object retValue;
-            int ret = Insert<T>(table, fvlist, out retValue);
-            retVal = CoreHelper.ConvertValue<TResult>(retValue);
-
-            return ret;
-        }
-
         #region 私有方法
 
         /// <summary>
@@ -243,7 +210,7 @@ namespace MySoft.Data
         /// <param name="fvlist"></param>
         /// <param name="retVal"></param>
         /// <returns></returns>
-        private int Insert<T>(Table table, List<FieldValue> fvlist, out object retVal)
+        internal int Insert<T>(Table table, List<FieldValue> fvlist, out object retVal)
             where T : Entity
         {
             int val = 0;
@@ -358,32 +325,6 @@ namespace MySoft.Data
             where T : Entity
         {
             return Save<T>(null, entity);
-        }
-
-        /// <summary>
-        ///  插入一个实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fields"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public int Insert<T>(Field[] fields, object[] values)
-            where T : Entity
-        {
-            return Insert<T>(null, fields, values);
-        }
-
-        /// <summary>
-        ///  插入一个实体
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fields"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public int Insert<T, TResult>(Field[] fields, object[] values, out TResult retVal)
-            where T : Entity
-        {
-            return Insert<T, TResult>(null, fields, values, out retVal);
         }
 
         /// <summary>

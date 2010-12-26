@@ -70,6 +70,9 @@ namespace MySoft.Data.SQLite
         /// <returns></returns>
         protected override DbCommand PrepareCommand(DbCommand cmd)
         {
+            //替换系统日期值
+            cmd.CommandText = cmd.CommandText.Replace("getdate()", "current_timestamp");
+
             foreach (SQLiteParameter p in cmd.Parameters)
             {
                 if (p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue) continue;

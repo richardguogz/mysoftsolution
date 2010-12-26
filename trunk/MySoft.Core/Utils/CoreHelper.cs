@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Security.Cryptography;
-using System.Linq;
 
 namespace MySoft.Core
 {
@@ -251,7 +250,7 @@ namespace MySoft.Core
             object[] attrs = member.GetCustomAttributes(typeof(T), false);
             if (attrs != null && attrs.Length > 0)
             {
-                return attrs.Cast<T>().ToArray();
+                return new List<object>(attrs).ConvertAll<T>(p => (T)p).ToArray();
             }
             return null;
         }
@@ -299,7 +298,7 @@ namespace MySoft.Core
             object[] attrs = type.GetCustomAttributes(typeof(T), false);
             if (attrs != null && attrs.Length > 0)
             {
-                return attrs.Cast<T>().ToArray();
+                return new List<object>(attrs).ConvertAll<T>(p => (T)p).ToArray();
             }
             return null;
         }

@@ -7,15 +7,22 @@ namespace MySoft.Data
     /// <summary>
     /// 字段及值
     /// </summary>
-    internal class FieldValue
+    [Serializable]
+    public class FieldValue
     {
         private Field field;
+        /// <summary>
+        /// 字段
+        /// </summary>
         public Field Field
         {
             get { return field; }
         }
 
         private object fvalue;
+        /// <summary>
+        /// 值
+        /// </summary>
         public object Value
         {
             get { return fvalue; }
@@ -23,21 +30,30 @@ namespace MySoft.Data
         }
 
         private bool isIdentity;
-        public bool IsIdentity
+        /// <summary>
+        /// 是否标识列
+        /// </summary>
+        internal bool IsIdentity
         {
             get { return isIdentity; }
             set { isIdentity = value; }
         }
 
         private bool isPrimaryKey;
-        public bool IsPrimaryKey
+        /// <summary>
+        /// 是否主键
+        /// </summary>
+        internal bool IsPrimaryKey
         {
             get { return isPrimaryKey; }
             set { isPrimaryKey = value; }
         }
 
         private bool isChanged;
-        public bool IsChanged
+        /// <summary>
+        /// 是否更改
+        /// </summary>
+        internal bool IsChanged
         {
             get { return isChanged; }
             set { isChanged = value; }

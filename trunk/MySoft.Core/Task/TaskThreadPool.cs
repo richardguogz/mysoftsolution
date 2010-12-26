@@ -26,21 +26,20 @@ namespace MySoft.Task
             set { _Threads = value; }
         }
 
-        System.Timers.Timer t = new System.Timers.Timer(10000);
-        Dictionary<string,Job> jobs = TaskConfiguration.GetConfig().Jobs;
+        Dictionary<string, Job> jobs = TaskConfiguration.GetConfig().Jobs;
 
         private TaskThreadPool()
         {
             _Threads = new Dictionary<string, Thread>();
-            t.Enabled = true;
-            t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
-            t.Start();
+
+            Thread thread = new Thread(RunTask);
+            thread.Start();
         }
 
-        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void RunTask()
         {
             //检查线程状态
-            foreach (KeyValuePair<string,Job> kvp in jobs)
+            foreach (KeyValuePair<string, Job> kvp in jobs)
             {
                 Job job = kvp.Value;
 
@@ -56,13 +55,16 @@ namespace MySoft.Task
             }
 
             //检查线程池，删除无用线程
-            foreach (KeyValuePair<string,Thread> kvp in _Threads)
+            foreach (KeyValuePair<string, Thread> kvp in _Threads)
             {
                 if (!jobs.ContainsKey(kvp.Key))
                 {
                     _Threads.Remove(kvp.Key);
                 }
             }
+
+            //间隔10秒
+            Thread.Sleep(10000);
         }
     }
 }

@@ -107,6 +107,9 @@ namespace MySoft.Data.MsAccess
         /// <returns></returns>
         protected override DbCommand PrepareCommand(DbCommand cmd)
         {
+            //替换系统日期值
+            cmd.CommandText = cmd.CommandText.Replace("getdate()", "date()");
+
             foreach (OleDbParameter p in cmd.Parameters)
             {
                 if (p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue) continue;

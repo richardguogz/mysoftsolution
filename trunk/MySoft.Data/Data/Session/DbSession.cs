@@ -1186,6 +1186,151 @@ namespace MySoft.Data
 
         #endregion
 
+        #region 支持FieldValue方式
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <returns></returns>
+        public int Insert<T>(FieldValue[] fvs)
+            where T : Entity
+        {
+            return dbTrans.Insert<T>(fvs);
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(FieldValue[] fvs, out TResult retVal)
+            where T : Entity
+        {
+            return dbTrans.Insert<T, TResult>(fvs, out retVal);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fv"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(FieldValue fv, WhereClip where)
+            where T : Entity
+        {
+            return dbTrans.Update<T>(fv, where);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return dbTrans.Update<T>(fvs, where);
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fvs"></param>
+        /// <returns></returns>
+        public int Insert<T>(Table table, FieldValue[] fvs)
+            where T : Entity
+        {
+            return dbTrans.Insert<T>(table, fvs);
+        }
+
+        /// <summary>
+        /// 插入数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fvs"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(Table table, FieldValue[] fvs, out TResult retVal)
+            where T : Entity
+        {
+            return dbTrans.Insert<T, TResult>(table, fvs, out retVal);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fv"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(Table table, FieldValue fv, WhereClip where)
+            where T : Entity
+        {
+            return dbTrans.Update<T>(table, fv, where);
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int Update<T>(Table table, FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return dbTrans.Update<T>(table, fvs, where);
+        }
+
+        #endregion
+
+        #region 插入时返回标识列
+
+        /// <summary>
+        /// 插入实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(T entity, out TResult retVal)
+            where T : Entity
+        {
+            return dbTrans.Insert<T, TResult>(entity, out retVal);
+        }
+
+        /// <summary>
+        /// 插入实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="entity"></param>
+        /// <param name="retVal"></param>
+        /// <returns></returns>
+        public int Insert<T, TResult>(Table table, T entity, out TResult retVal)
+            where T : Entity
+        {
+            return dbTrans.Insert<T, TResult>(table, entity, out retVal);
+        }
+
+        #endregion
+
         #endregion
     }
 }

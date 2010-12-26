@@ -67,6 +67,9 @@ namespace MySoft.Data.MySql
         /// <returns></returns>
         protected override DbCommand PrepareCommand(DbCommand cmd)
         {
+            //替换系统日期值
+            cmd.CommandText = cmd.CommandText.Replace("getdate()", "now()");
+
             foreach (MySqlParameter p in cmd.Parameters)
             {
                 if (p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.ReturnValue) continue;

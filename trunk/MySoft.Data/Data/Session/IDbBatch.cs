@@ -10,9 +10,6 @@ namespace MySoft.Data
     {
         #region 增删改操作
 
-        int Insert<T>(Field[] fields, object[] values) where T : Entity;
-        int Insert<T, TResult>(Field[] fields, object[] values, out TResult retVal) where T : Entity;
-
         int Save<T>(T entity) where T : Entity;
         int Delete<T>(T entity) where T : Entity;
         int Delete<T>(params object[] pkValues) where T : Entity;
@@ -28,9 +25,6 @@ namespace MySoft.Data
         #endregion
 
         #region 增删改操作(分表处理)
-
-        int Insert<T>(Table table, Field[] fields, object[] values) where T : Entity;
-        int Insert<T, TResult>(Table table, Field[] fields, object[] values, out TResult retVal) where T : Entity;
 
         int Save<T>(Table table, T entity) where T : Entity;
         int Delete<T>(Table table, T entity) where T : Entity;

@@ -58,16 +58,16 @@ namespace MySoft.Service
         /// <summary>
         /// 获取服务
         /// </summary>
-        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="ServiceType"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        public TService GetService<TService>(string name)
+        public ServiceType GetService<ServiceType>(string name)
         {
             try
             {
                 if (services.ContainsKey(name))
                 {
-                    return (TService)services[name];
+                    return (ServiceType)services[name];
                 }
                 else
                 {
@@ -83,17 +83,27 @@ namespace MySoft.Service
         /// <summary>
         /// 获取服务
         /// </summary>
-        /// <typeparam name="TService"></typeparam>
+        /// <typeparam name="ServiceType"></typeparam>
         /// <returns></returns>
-        public TService GetService<TService>()
+        public ServiceType GetService<ServiceType>()
         {
-            Type interfaceType = typeof(TService);
+            Type interfaceType = typeof(ServiceType);
             if (!interfaceType.IsInterface)
             {
                 throw new Exception(interfaceType.FullName + "必须必须是接口类型！");
             }
-
-            return GetService<TService>(interfaceType.FullName);
+            else
+            {
+                var service = GetService<ServiceType>(interfaceType.FullName);
+                if (service.GetType().GetInterface(interfaceType.Name) != null)
+                {
+                    return service;
+                }
+                else
+                {
+                    throw new Exception(service.GetType().FullName + "必须继承自" + interfaceType.FullName + "接口类型！");
+                }
+            }
         }
     }
 }

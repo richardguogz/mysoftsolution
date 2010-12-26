@@ -184,9 +184,9 @@ namespace MySoft.Data
             {
                 return ((Field)val).Name;
             }
-            else if (val is SysValue)
+            else if (val is DBValue)
             {
-                return ((SysValue)val).Value;
+                return ((DBValue)val).Value;
             }
             else if (type.IsEnum)
             {
@@ -271,6 +271,12 @@ namespace MySoft.Data
             WhereClip where = null;
             List<FieldValue> list = CoreHelper.CreateInstance<T>().GetFieldValues();
             pkValues = CheckAndReturnValues(pkValues);
+
+            int pkCount = list.FindAll(p => p.IsPrimaryKey).Count;
+            if (pkValues.Length != pkCount)
+            {
+                throw new DataException("传入的数据与主键无法对应，应该传入【" + pkCount + "】个主键值！");
+            }
 
             list.ForEach(fv =>
             {

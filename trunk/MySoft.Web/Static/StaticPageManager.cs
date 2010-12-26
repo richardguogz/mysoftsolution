@@ -18,7 +18,7 @@ namespace MySoft.Web
     /// </summary>
     public abstract class StaticPageManager
     {
-        private const int Interval = 60000;
+        private const int INTERVAL = 60000;
 
         public static event LogEventHandler OnLog;
 
@@ -34,7 +34,15 @@ namespace MySoft.Web
         /// </summary>
         public static void Start()
         {
-            Start(Interval);
+            Start(INTERVAL);
+        }
+
+        /// <summary>
+        /// 启动静态管理类
+        /// </summary>
+        public static void Start(bool isStartUpdate)
+        {
+            Start(INTERVAL, isStartUpdate);
         }
 
         /// <summary>
@@ -43,9 +51,59 @@ namespace MySoft.Web
         /// <param name="interval">检测间隔时间(默认为一分钟)</param>
         public static void Start(int interval)
         {
+            Start(interval, false);
+        }
+
+        /// <summary>
+        /// 启动静态管理类
+        /// </summary>
+        /// <param name="interval">检测间隔时间</param>
+        public static void Start(double interval, bool isStartUpdate)
+        {
+            if (isStartUpdate)
+            {
+                ThreadPool.QueueUserWorkItem(StartUpdate);
+            }
+
             Thread thread = new Thread(DoWork);
-            thread.IsBackground = true;
             thread.Start(interval);
+        }
+
+        //开始生成
+        static void StartUpdate(object value)
+        {
+            RunUpdate(DateTime.MaxValue);
+        }
+
+        static void RunUpdate(DateTime updateTime)
+        {
+            lock (staticPageItems)
+            {
+                foreach (IStaticPageItem sti in staticPageItems)
+                {
+                    try
+                    {
+                        //需要生成才启动线程
+                        if (sti.NeedUpdate(updateTime))
+                        {
+                            System.Threading.ThreadPool.QueueUserWorkItem(obj =>
+                            {
+                                if (obj == null) return;
+
+                                ArrayList arr = obj as ArrayList;
+                                IStaticPageItem item = arr[0] as IStaticPageItem;
+                                DateTime time = (DateTime)arr[1];
+                                item.Update(time);
+                            }, new ArrayList { sti, updateTime });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var exception = new WebException("执行页面生成出现异常：" + ex.Message, ex);
+                        if (OnError != null) OnError(exception);
+                    }
+                }
+            }
         }
 
         //执行生成事件
@@ -53,34 +111,7 @@ namespace MySoft.Web
         {
             while (true)
             {
-                lock (staticPageItems)
-                {
-                    DateTime dateTime = DateTime.Now;
-                    foreach (IStaticPageItem sti in staticPageItems)
-                    {
-                        try
-                        {
-                            //需要生成才启动线程
-                            if (sti.NeedUpdate(dateTime))
-                            {
-                                System.Threading.ThreadPool.QueueUserWorkItem(obj =>
-                                {
-                                    if (obj == null) return;
-
-                                    ArrayList arr = obj as ArrayList;
-                                    IStaticPageItem item = arr[0] as IStaticPageItem;
-                                    DateTime time = (DateTime)arr[1];
-                                    item.Update(time);
-                                }, new ArrayList { sti, dateTime });
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            var exception = new WebException("执行页面生成出现异常：" + ex.Message, ex);
-                            if (OnError != null) OnError(exception);
-                        }
-                    }
-                }
+                RunUpdate(DateTime.Now);
 
                 //休眠间隔
                 Thread.Sleep(Convert.ToInt32(value));

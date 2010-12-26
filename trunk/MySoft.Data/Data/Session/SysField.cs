@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 系统字段
     /// </summary>
     [Serializable]
-    public class SysField : Field
+    internal class SysField : Field
     {
         public SysField(string fieldName, QueryCreator creator)
             : base(fieldName)
@@ -30,7 +30,7 @@ namespace MySoft.Data
     /// 系统字段
     /// </summary>
     [Serializable]
-    public class SysField<T> : Field
+    internal class SysField<T> : Field
         where T : Entity
     {
         public SysField(string fieldName, QuerySection<T> query)

@@ -120,6 +120,9 @@ namespace MySoft.Data.Oracle
             //将sql转换成大写
             cmd.CommandText = cmd.CommandText.ToUpper();
 
+            //替换系统日期值
+            cmd.CommandText = cmd.CommandText.Replace("getdate()", "sysdate");
+
             foreach (OracleParameter p in cmd.Parameters)
             {
                 p.ParameterName = p.ParameterName.ToUpper();
