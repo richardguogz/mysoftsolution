@@ -101,7 +101,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public ProcSection AddOutputParameter(string parameterName, DbType dbType, int size)
         {
-            dbProvider.AddInputParameter(dbCommand, parameterName, dbType, size);
+            dbProvider.AddOutputParameter(dbCommand, parameterName, dbType, size);
             return this;
         }
 
