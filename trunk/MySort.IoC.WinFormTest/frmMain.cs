@@ -36,7 +36,9 @@ namespace MySort.IoC.WinFormTest
             //var objectType = CreateDynamicType(item.GetType());
             //var items = Activator.CreateInstance(objectType);
 
-            var item2 = MySoft.Core.SerializationManager.DeserializeJson(json, item);
+            var item2 = MySoft.Core.SerializationManager.DeserializeJson(json, new { Name = string.Empty, Age = 0 });
+
+            var a = item2.Name;
             return;
 
             CastleFactory.Create().OnError += new MySoft.Core.ErrorLogEventHandler(frmMain_OnError);
