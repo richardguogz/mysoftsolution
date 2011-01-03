@@ -1,10 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
-
-using Castle.Windsor;
 using MySoft.Core;
 
 namespace MySoft.IoC
@@ -32,20 +26,20 @@ namespace MySoft.IoC
             this.maxTryNum = maxTryNum;
         }
 
-        private ResponseMessage Run(string serviceName, RequestMessage msg)
+        public ResponseMessage CallMethod(string serviceName, RequestMessage msg)
         {
+            long t1 = System.Environment.TickCount;
             ResponseMessage retMsg = null;
 
             //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("Run reqMsg for {0} to service mq. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
+            if (OnLog != null) OnLog(string.Format("Run reqMsg for ({0},{1}) to service mq. -->{2}", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
             Guid tid = mq.SendRequestToQueue(serviceName, msg);
             for (int i = 0; i < maxTryNum; i++)
             {
                 retMsg = mq.ReceieveResponseFromQueue(tid);
                 if (retMsg == null)
                 {
-                    if (OnLog != null) OnLog(string.Format("Try {0} Run (name:{1} parameters:{2})...", (i + 1), msg.SubServiceName, msg.Parameters.SerializedData));
-                    Thread.Sleep(100);
+                    if (OnLog != null) OnLog(string.Format("Try {0} running ({1},{2}) -->{3}", (i + 1), serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
                 }
                 else
                 {
@@ -53,29 +47,17 @@ namespace MySoft.IoC
                 }
             }
 
+            long t2 = System.Environment.TickCount - t1;
             if (retMsg != null)
             {
                 //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog(string.Format("Result: {0}", retMsg.Message));
+                if (OnLog != null) OnLog(string.Format("Result -->{0}\r\n{1}", retMsg.Message, "Spent time: (" + t2.ToString() + ") ms"));
             }
             else
             {
                 //delete the reqMsg message from mq if no service host can process it
                 mq.ReceiveRequestFromQueue(msg.TransactionId);
             }
-
-            return retMsg;
-        }
-
-        public ResponseMessage CallMethod(string serviceName, RequestMessage msg)
-        {
-            //SerializationManager.Serialize(msg)
-            if (OnLog != null) OnLog(string.Format("Receive reqMsg for service:{0}. -->(name:{1} parameters:{2})", serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
-
-            long t1 = System.Environment.TickCount;
-            ResponseMessage retMsg = Run(serviceName, msg);
-            long t2 = System.Environment.TickCount - t1;
-            if (OnLog != null) OnLog("Spent time: (" + t2.ToString() + ") ms");
 
             return retMsg;
         }

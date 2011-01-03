@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using MySoft.Core;
 
 namespace MySoft.IoC
@@ -56,6 +55,15 @@ namespace MySoft.IoC
         {
             lock (requests)
             {
+                //foreach (Guid key in requests.Keys)
+                //{
+                //    RequestMessage reqMsg = (RequestMessage)requests[key];
+                //    if (reqMsg == null || reqMsg.Expiration < DateTime.Now)
+                //    {
+                //        requests.Remove(key);
+                //    }
+                //}
+
                 if (!requests.ContainsKey(tid))
                 {
                     requests.Add(tid, msg);
@@ -76,6 +84,15 @@ namespace MySoft.IoC
         {
             lock (responses)
             {
+                //foreach (Guid key in responses.Keys)
+                //{
+                //    ResponseMessage resMsg = (ResponseMessage)responses[key];
+                //    if (resMsg == null || resMsg.Expiration < DateTime.Now)
+                //    {
+                //        responses.Remove(key);
+                //    }
+                //}
+
                 if (!responses.ContainsKey(tid))
                 {
                     responses.Add(tid, msg);
@@ -160,7 +177,7 @@ namespace MySoft.IoC
 
             AddRequestToQueue(msg.TransactionId, msg);
 
-            if (OnLog != null) OnLog(string.Format("AddRequestToQueue({0}):{1}. -->(name:{2} parameters:{3})", msg.TransactionId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
+            if (OnLog != null) OnLog(string.Format("AddRequestToQueue({0}:{1},{2}). -->{3}", msg.TransactionId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
 
             BroadCast(msg);
 
@@ -176,8 +193,7 @@ namespace MySoft.IoC
             if (msg != null)
             {
                 AddResponseToQueue(msg.TransactionId, msg);
-
-                if (OnLog != null) OnLog(string.Format("AddResponseToQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message));
+                if (OnLog != null) OnLog(string.Format("AddResponseToQueue({0}:{1},{2}). -->(result success)", msg.TransactionId, msg.ServiceName, msg.SubServiceName));
             }
         }
 
@@ -192,7 +208,7 @@ namespace MySoft.IoC
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("GetRequestFromQueue({0}):{1}. -->(name:{2} parameters:{3})", transactionId, msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
+                if (OnLog != null) OnLog(string.Format("GetRequestFromQueue({0}:{1},{2}). -->{3}", transactionId, msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
             }
 
             return msg;
@@ -209,7 +225,7 @@ namespace MySoft.IoC
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("GetResponseFromQueue({0}):{1}. -->(result:{2})", msg.TransactionId, msg.ServiceName, msg.Message));
+                if (OnLog != null) OnLog(string.Format("GetResponseFromQueue({0}:{1},{2}). -->(result success)", msg.TransactionId, msg.ServiceName, msg.SubServiceName));
             }
 
             return msg;
@@ -242,51 +258,13 @@ namespace MySoft.IoC
             }
             onServiceRequests[serviceName].Add(clientId, handler);
 
-            string message = string.Format("Added new service reqMsg subscribing: {0}[{1}]", serviceName, clientId);
+            string message = string.Format("Added new service reqMsg subscribing: {0} [{1}]", serviceName, clientId);
             if (OnLog != null)
                 OnLog(message);
             else
             {
                 string msg = "[" + DateTime.Now.ToString() + "] " + message;
                 Console.WriteLine(msg);
-            }
-        }
-
-        /// <summary>
-        /// Cleans the expired messages.
-        /// </summary>
-        /// <param name="expiredRequests">The expired requests.</param>
-        /// <param name="expiredResponses">The expired responses.</param>
-        public virtual void CleanExpiredMessages(out RequestMessage[] expiredRequests, out ResponseMessage[] expiredResponses)
-        {
-            lock (requests)
-            {
-                List<RequestMessage> reqList = new List<RequestMessage>();
-                foreach (Guid key in requests.Keys)
-                {
-                    RequestMessage reqMsg = (RequestMessage)requests[key];
-                    if (reqMsg == null || reqMsg.Expiration < DateTime.Now)
-                    {
-                        if (reqMsg != null) reqList.Add(reqMsg);
-                        requests.Remove(key);
-                    }
-                }
-                expiredRequests = reqList.ToArray();
-            }
-
-            lock (responses)
-            {
-                List<ResponseMessage> resList = new List<ResponseMessage>();
-                foreach (Guid key in responses.Keys)
-                {
-                    ResponseMessage resMsg = (ResponseMessage)responses[key];
-                    if (resMsg == null || resMsg.Expiration < DateTime.Now)
-                    {
-                        if (resMsg != null) resList.Add(resMsg);
-                        responses.Remove(key);
-                    }
-                }
-                expiredResponses = resList.ToArray();
             }
         }
 

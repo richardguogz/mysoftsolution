@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Web;
 using System.Threading;
+using System.Web;
 
 namespace MySoft.Common
 {
@@ -293,7 +293,7 @@ namespace MySoft.Common
 
             int bufferSize = 102400;
             byte[] buffer = new byte[bufferSize];
-            FileOperate.WriteFile(saveurl, "temp");
+            FileHelper.WriteFile(saveurl, "temp");
             // 建立一个写入文件的流对象
             FileStream saveFile = File.Create(saveurl, bufferSize);
             int bytesRead;
@@ -320,7 +320,7 @@ namespace MySoft.Common
 
             try
             {
-                FileOperate.WriteFile(saveurl, "temp");
+                FileHelper.WriteFile(saveurl, "temp");
                 wc.DownloadFile(url, saveurl);
             }
             catch
@@ -436,7 +436,7 @@ namespace MySoft.Common
                     try
                     {
                         string savefile = savepath + savename;
-                        FileOperate.WriteFile(savefile, "临时文件");
+                        FileHelper.WriteFile(savefile, "临时文件");
                         upfile.SaveAs(savefile);
                         strResult[4] = "成功";
                         //strResult[4] = "成功<!--" + FunctionHelper.GetRealPath(savepath) + savename + "-->";

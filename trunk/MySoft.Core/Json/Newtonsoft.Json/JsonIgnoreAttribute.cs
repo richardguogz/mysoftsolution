@@ -24,13 +24,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Newtonsoft.Json
 {
-  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-  public sealed class JsonIgnoreAttribute : Attribute
-  {
-  }
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class JsonIgnoreAttribute : Attribute
+    {
+    }
 }

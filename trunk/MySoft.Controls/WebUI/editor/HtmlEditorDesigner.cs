@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Web.UI.Design;
 
 namespace MySoft.Web.UI.Controls

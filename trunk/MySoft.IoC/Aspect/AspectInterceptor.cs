@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Castle.Core.Interceptor;
+﻿using Castle.Core.Interceptor;
 
 namespace MySoft.IoC
 {

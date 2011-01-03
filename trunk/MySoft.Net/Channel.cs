@@ -3,7 +3,6 @@
     using System;
     using System.Collections;
     using System.Net.Sockets;
-    using System.Runtime.CompilerServices;
 
     public class Channel : IChannel
     {

@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MySoft.Tools.EntityDesign.Properties {
-    using System;
-    
-    
+namespace MySoft.Tools.EntityDesign.Properties
+{
+
+
     /// <summary>
     ///   一个强类型的资源类，用于查找本地化的字符串等。
     /// </summary>

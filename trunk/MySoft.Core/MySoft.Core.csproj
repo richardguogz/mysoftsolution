@@ -122,7 +122,7 @@
     <Compile Include="Remoting\CompressionSink\myServerSink.cs" />
     <Compile Include="Remoting\CompressionSink\myServerSinkProvider.cs" />
     <Compile Include="Remoting\RemotingException.cs" />
-    <Compile Include="Remoting\IServiceInterface.cs" />
+    <Compile Include="Remoting\ServiceContract.cs" />
     <Compile Include="Security\AESEncrypt.cs" />
     <Compile Include="Security\DESEncrypt.cs" />
     <Compile Include="Json\JSONArray.cs" />
@@ -230,6 +230,7 @@
     <Compile Include="Utils\CacheHelper.cs" />
     <Compile Include="Common\Comparer.cs" />
     <Compile Include="Common\DataPage.cs" />
+    <Compile Include="Utils\DnsHelper.cs" />
     <Compile Include="Utils\DynamicCalls.cs" />
     <Compile Include="Common\IDataPage.cs" />
     <Compile Include="Utils\EmitHelper.cs" />

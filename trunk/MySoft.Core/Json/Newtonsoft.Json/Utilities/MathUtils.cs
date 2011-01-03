@@ -23,38 +23,35 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Newtonsoft.Json.Utilities
 {
-  internal class MathUtils
-  {
-    public static int HexToInt(char h)
+    internal class MathUtils
     {
-      if ((h >= '0') && (h <= '9'))
-      {
-        return (h - '0');
-      }
-      if ((h >= 'a') && (h <= 'f'))
-      {
-        return ((h - 'a') + 10);
-      }
-      if ((h >= 'A') && (h <= 'F'))
-      {
-        return ((h - 'A') + 10);
-      }
-      return -1;
-    }
+        public static int HexToInt(char h)
+        {
+            if ((h >= '0') && (h <= '9'))
+            {
+                return (h - '0');
+            }
+            if ((h >= 'a') && (h <= 'f'))
+            {
+                return ((h - 'a') + 10);
+            }
+            if ((h >= 'A') && (h <= 'F'))
+            {
+                return ((h - 'A') + 10);
+            }
+            return -1;
+        }
 
-    public static char IntToHex(int n)
-    {
-      if (n <= 9)
-      {
-        return (char)(n + 48);
-      }
-      return (char)((n - 10) + 97);
+        public static char IntToHex(int n)
+        {
+            if (n <= 9)
+            {
+                return (char)(n + 48);
+            }
+            return (char)((n - 10) + 97);
+        }
     }
-  }
 }

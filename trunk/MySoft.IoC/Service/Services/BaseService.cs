@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
 using MySoft.Core;
 
 namespace MySoft.IoC.Services
@@ -72,24 +69,25 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            string log = string.Format("Dynamic service ({0}):{1} process. -->(name:{2} parameters:{3})", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
+            string log = string.Format("Dynamic service ({0}:{1},{2}) process. -->{3}", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
             if (OnLog != null) OnLog(log);
-            ResponseMessage retMsg = null;
-            try
-            {
-                retMsg = Run(msg);
 
-                //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog(string.Format("Dynamic service ({0}):{1} return. -->(result:{2})", clientId, serviceName, retMsg.Message));
-            }
-            catch (Exception ex)
+            long t1 = System.Environment.TickCount;
+            ResponseMessage retMsg = Run(msg);
+            if (retMsg != null && retMsg.Data is Exception)
             {
-                string error = string.Format("Dynamic service error occured at ({0}):{1}. -->(error:{2})", clientId, serviceName, ex.Message);
+                var ex = retMsg.Data as Exception;
+
+                string error = string.Format("Dynamic service error occured at ({0}:{1},{2}). -->{3}", clientId, serviceName, msg.SubServiceName, ex.Message);
                 if (OnLog != null) OnLog(error);
 
                 var exception = new IoCException(log + "\r\n" + error, ex);
                 if (OnError != null) OnError(exception);
             }
+
+            long t2 = System.Environment.TickCount - t1;
+            //SerializationManager.Serialize(retMsg)
+            if (OnLog != null) OnLog(string.Format("Dynamic service ({0}:{1},{2}). -->{3}\r\nResult -->{4}", clientId, serviceName, msg.SubServiceName, "spent time: (" + t2.ToString() + ") ms.", retMsg.Message));
 
             return retMsg;
         }

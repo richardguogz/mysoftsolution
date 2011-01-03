@@ -1,10 +1,8 @@
 using System;
 using System.Data;
-using System.Data.OleDb;
-using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.OleDb;
 using System.Text;
-using MySoft.Data.SqlServer;
 
 namespace MySoft.Data.MsAccess
 {

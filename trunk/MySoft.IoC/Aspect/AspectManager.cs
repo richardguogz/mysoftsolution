@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MySoft.Core;
 
 namespace MySoft.IoC
@@ -60,7 +59,7 @@ namespace MySoft.IoC
             }
             else
             {
-                var attributes = CoreHelper.GetTypeAttributes<AspectAttribute>(serviceType);
+                var attributes = CoreHelper.GetTypeAttributes<AspectProxyAttribute>(serviceType);
                 if (attributes != null && attributes.Length > 0)
                 {
                     IList<object> list = new List<object>();

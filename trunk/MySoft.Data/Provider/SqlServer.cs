@@ -1,8 +1,7 @@
 using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace MySoft.Data.SqlServer

@@ -23,20 +23,18 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
 
 namespace Newtonsoft.Json
 {
-  public class JavaScriptParameters : ReadOnlyCollection<object>
-  {
-    public static readonly JavaScriptParameters Empty = new JavaScriptParameters(new List<object>());
-
-    public JavaScriptParameters(IList<object> list)
-      : base(list)
+    public class JavaScriptParameters : ReadOnlyCollection<object>
     {
+        public static readonly JavaScriptParameters Empty = new JavaScriptParameters(new List<object>());
+
+        public JavaScriptParameters(IList<object> list)
+            : base(list)
+        {
+        }
     }
-  }
 }

@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Http;
+using System.Runtime.Remoting.Channels.Tcp;
 using MySoft.Core;
 
 namespace MySoft.Remoting
@@ -56,9 +55,6 @@ namespace MySoft.Remoting
                 thread.IsBackground = true;
                 thread.Start();
             }
-
-            //注册超时信道
-            this.RegisterChannelWithTimeout(_RemotingConfiguration.Timeout);
         }
 
         void DoWork()
@@ -193,23 +189,6 @@ namespace MySoft.Remoting
         {
             IRemotingTest t = RemotingClientUtil<IRemotingTest>.Instance.GetWellKnownClientInstance(serverUrl.TrimEnd('/') + "/RemotingTest");
             return t.GetDate();
-        }
-
-        private void RegisterChannelWithTimeout(int timeout)
-        {
-            BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-            BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-
-            IDictionary props = new Hashtable();
-            props["name"] = AppDomain.CurrentDomain.FriendlyName;
-            props["port"] = 0;
-            props["timeout"] = timeout; //1000 * 60 * 5; //5分钟超时
-
-            IChannel channel1 = new TcpChannel(props, clientProvider, serverProvider);
-            IChannel channel2 = new HttpChannel(props, clientProvider, serverProvider);
-
-            ChannelServices.RegisterChannel(channel1, false);
-            ChannelServices.RegisterChannel(channel2, false);
         }
 
         /// <summary>

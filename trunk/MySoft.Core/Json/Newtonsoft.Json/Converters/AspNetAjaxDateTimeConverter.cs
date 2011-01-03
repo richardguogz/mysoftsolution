@@ -25,35 +25,33 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Globalization;
 
 namespace Newtonsoft.Json.Converters
 {
-  public class AspNetAjaxDateTimeConverter : JsonConverter
-  {
-    public override void WriteJson(JsonWriter writer, object value)
+    public class AspNetAjaxDateTimeConverter : JsonConverter
     {
-      DateTime dateTime = (DateTime)value;
-      long javaScriptTicks = JavaScriptConvert.ConvertDateTimeToJavaScriptTicks(dateTime);
+        public override void WriteJson(JsonWriter writer, object value)
+        {
+            DateTime dateTime = (DateTime)value;
+            long javaScriptTicks = JavaScriptConvert.ConvertDateTimeToJavaScriptTicks(dateTime);
 
-      writer.WriteValue("@" + javaScriptTicks.ToString(null, CultureInfo.InvariantCulture) + "@");
+            writer.WriteValue("@" + javaScriptTicks.ToString(null, CultureInfo.InvariantCulture) + "@");
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType)
+        {
+            string dateTimeText = (string)reader.Value;
+            dateTimeText = dateTimeText.Substring(1, dateTimeText.Length - 2);
+
+            long javaScriptTicks = Convert.ToInt64(dateTimeText);
+
+            return JavaScriptConvert.ConvertJavaScriptTicksToDateTime(javaScriptTicks);
+        }
+
+        public override bool CanConvert(Type valueType)
+        {
+            return typeof(DateTime).IsAssignableFrom(valueType);
+        }
     }
-
-    public override object ReadJson(JsonReader reader, Type objectType)
-    {
-      string dateTimeText = (string)reader.Value;
-      dateTimeText = dateTimeText.Substring(1, dateTimeText.Length - 2);
-
-      long javaScriptTicks = Convert.ToInt64(dateTimeText);
-
-      return JavaScriptConvert.ConvertJavaScriptTicksToDateTime(javaScriptTicks);
-    }
-
-    public override bool CanConvert(Type valueType)
-    {
-      return typeof(DateTime).IsAssignableFrom(valueType);
-    }
-  }
 }

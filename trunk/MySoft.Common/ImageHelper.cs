@@ -1,14 +1,10 @@
-﻿using System;
-using System.Data;
-using System.Web;
-using System.Configuration;
-
+﻿
 namespace MySoft.Common
 {
     /// <summary>
-    /// CommonMethod 的摘要说明
+    /// ImageHelper 的摘要说明
     /// </summary>
-    public abstract class ImageHelper
+    public class ImageHelper
     {
         /// <summary>
         /// 缩放格式

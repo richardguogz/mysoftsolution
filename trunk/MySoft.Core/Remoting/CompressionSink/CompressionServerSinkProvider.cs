@@ -1,6 +1,5 @@
-using System;
-using System.Runtime.Remoting.Channels;
 using System.Collections;
+using System.Runtime.Remoting.Channels;
 
 namespace CompressionSink
 {

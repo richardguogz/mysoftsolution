@@ -1,9 +1,7 @@
-using System;
-using System.IO;
-using System.Web.UI;
-using System.Web;
-using MySoft.URLRewriter.Config;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using MySoft.URLRewriter.Config;
 
 namespace MySoft.URLRewriter
 {

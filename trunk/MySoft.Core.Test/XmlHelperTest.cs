@@ -1,5 +1,4 @@
-﻿using MySoft.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MySoft.Core.Test
 {
 

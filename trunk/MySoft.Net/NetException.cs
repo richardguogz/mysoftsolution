@@ -4,7 +4,8 @@
 
     public class NetException : Exception
     {
-        public NetException(string err) : base(err)
+        public NetException(string err)
+            : base(err)
         {
         }
     }

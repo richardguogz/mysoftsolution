@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using System.Security.Permissions;
-using System.Web;
-using System.IO;
 
 namespace MySoft.Data
 {

@@ -1,19 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-
-using Castle.MicroKernel;
 using Castle.Core;
-using Castle.Core.Configuration;
-using Castle.Windsor;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor.Configuration.Interpreters;
 using Castle.Facilities.Startable;
-
-using MySoft.IoC.Services;
+using Castle.Windsor;
+using Castle.Windsor.Configuration.Interpreters;
 using MySoft.Core;
+using MySoft.IoC.Services;
 using MySoft.Remoting;
 
 namespace MySoft.IoC
@@ -129,18 +122,13 @@ namespace MySoft.IoC
             GraphNode[] nodes = this.Kernel.GraphNodes;
             foreach (ComponentModel model in nodes)
             {
-                bool markedWithServiceContract = typeof(IServiceInterface).IsAssignableFrom(model.Service);
-                if (!markedWithServiceContract)
+                bool markedWithServiceContract = false;
+                var attr = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(model.Service);
+                if (attr != null)
                 {
-                    foreach (object attr in model.Service.GetCustomAttributes(true))
-                    {
-                        if (attr.ToString().EndsWith("ServiceContractAttribute"))
-                        {
-                            markedWithServiceContract = true;
-                            break;
-                        }
-                    }
+                    markedWithServiceContract = true;
                 }
+
                 if (markedWithServiceContract)
                 {
                     DynamicService service = new DynamicService(this, model.Service);
@@ -307,18 +295,27 @@ namespace MySoft.IoC
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(string serviceName, RequestMessage msg)
         {
-            //check local service first
-            IService localService = (IService)GetLocalService(serviceName);
-
-            if (localService != null)
+            try
             {
-                if (OnLog != null) OnLog(string.Format("Calling local service ({0}):{1}.", localService.ClientId, serviceName));
-                return localService.CallService(msg);
-            }
+                //check local service first
+                IService localService = (IService)GetLocalService(serviceName);
 
-            //if no local service, call remote service
-            if (OnLog != null) OnLog(string.Format("Calling remote service {0}.", serviceName));
-            return serviceProxy.CallMethod(serviceName, msg);
+                if (localService != null)
+                {
+                    if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1}). --> {2}", serviceName, msg.SubServiceName, localService.ClientId));
+                    return localService.CallService(msg);
+                }
+
+                //if no local service, call remote service
+                if (OnLog != null) OnLog(string.Format("Calling remote service ({0},{1}).", serviceName, msg.SubServiceName));
+                return serviceProxy.CallMethod(serviceName, msg);
+            }
+            catch (Exception ex)
+            {
+                if (OnLog != null) OnLog(string.Format("Calling service ({0},{1}) error occured. --> {2}", serviceName, msg.SubServiceName, ex.Message));
+
+                throw ex;
+            }
         }
 
         /// <summary>

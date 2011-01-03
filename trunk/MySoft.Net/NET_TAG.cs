@@ -1,6 +1,5 @@
 ﻿namespace MySoft.Net
 {
-    using System;
 
     internal class NET_TAG
     {

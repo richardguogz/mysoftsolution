@@ -1,8 +1,6 @@
 ﻿namespace MySoft.Net
 {
-    using System;
     using System.Collections;
-    using System.Reflection;
 
     public class ClientPool
     {

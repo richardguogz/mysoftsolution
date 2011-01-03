@@ -1,6 +1,4 @@
-using System;
 using System.Text.RegularExpressions;
-using System.Configuration;
 using MySoft.URLRewriter.Config;
 
 namespace MySoft.URLRewriter

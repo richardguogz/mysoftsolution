@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Web.UI;
 using System.Text;
-using MySoft.Web;
+using System.Web.UI;
 using MySoft.Core;
 
 namespace MySoft.Web.UI

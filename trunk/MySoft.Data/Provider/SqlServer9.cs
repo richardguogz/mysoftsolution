@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
-using MySoft.Data.SqlServer;
 using MySoft.Data.Design;
-using MySoft.Core;
+using MySoft.Data.SqlServer;
 
 namespace MySoft.Data.SqlServer9
 {

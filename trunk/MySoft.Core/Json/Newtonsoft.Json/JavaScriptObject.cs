@@ -23,33 +23,31 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Newtonsoft.Json
 {
-  /// <summary>
-  /// Represents a JavaScript object.
-  /// </summary>
-  public class JavaScriptObject : Dictionary<string, object>
-  {
     /// <summary>
-    /// Initializes a new instance of the <see cref="JavaScriptObject"/> class.
+    /// Represents a JavaScript object.
     /// </summary>
-    public JavaScriptObject()
-      : base(EqualityComparer<string>.Default)
+    public class JavaScriptObject : Dictionary<string, object>
     {
-    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JavaScriptObject"/> class.
+        /// </summary>
+        public JavaScriptObject()
+            : base(EqualityComparer<string>.Default)
+        {
+        }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="JavaScriptObject"/> class that
-    /// contains values copied from the specified <see cref="JavaScriptObject"/>.
-    /// </summary>
-    /// <param name="javaScriptObject">The <see cref="JavaScriptObject"/> whose elements are copied to the new object.</param>
-    public JavaScriptObject(JavaScriptObject javaScriptObject)
-      : base(javaScriptObject, EqualityComparer<string>.Default)
-    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JavaScriptObject"/> class that
+        /// contains values copied from the specified <see cref="JavaScriptObject"/>.
+        /// </summary>
+        /// <param name="javaScriptObject">The <see cref="JavaScriptObject"/> whose elements are copied to the new object.</param>
+        public JavaScriptObject(JavaScriptObject javaScriptObject)
+            : base(javaScriptObject, EqualityComparer<string>.Default)
+        {
+        }
     }
-  }
 }

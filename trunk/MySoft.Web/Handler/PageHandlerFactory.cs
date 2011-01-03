@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web;
-using System.Web.UI;
 using System.Web.SessionState;
-using System.IO;
+using System.Web.UI;
 
 namespace MySoft.Web
 {

@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Data;
-using System.Web;
 using System.Net;
-using System.Text;
 
 namespace MySoft.Common
 {
@@ -26,7 +23,7 @@ namespace MySoft.Common
         {
             if (IsEncryptoSend)
             {
-                string publicKey = FileOperate.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
+                string publicKey = FileHelper.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
 
                 string desKey = FunctionHelper.Text.RandomSTR(8);
                 string desIV = desKey;
@@ -62,7 +59,7 @@ namespace MySoft.Common
 
             if (IsEncryptoSend)
             {
-                string publicKey = FileOperate.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
+                string publicKey = FileHelper.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
 
                 string desKey = FunctionHelper.Text.RandomSTR(8);
                 string desIV = desKey;

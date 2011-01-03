@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data;
+using System.Linq;
 using System.Reflection;
 using MySoft.Core;
 using MySoft.Remoting;
@@ -13,6 +12,11 @@ namespace MySoft.IoC.Services
     /// </summary>
     public class DynamicService : BaseService
     {
+        /// <summary>
+        /// 保存方法
+        /// </summary>
+        private static readonly Dictionary<string, MethodInfo> dictMethods = new Dictionary<string, MethodInfo>();
+
         /// <summary>
         /// The default  message expire minutes.
         /// </summary>
@@ -47,83 +51,99 @@ namespace MySoft.IoC.Services
                 return null;
             }
 
+            ResponseMessage resMsg = new ResponseMessage();
+            resMsg.Request = msg;
+            resMsg.Expiration = DateTime.Now.AddMinutes(DefaultExpireMinutes);
+            resMsg.MessageId = Guid.NewGuid();
+            resMsg.ServiceName = serviceInterfaceType.FullName;
+            resMsg.SubServiceName = msg.SubServiceName;
+            resMsg.Timestamp = DateTime.Now;
+            resMsg.TransactionId = msg.TransactionId;
+            resMsg.Transfer = msg.Transfer;
+            resMsg.Compress = msg.Compress;
+
             object service = null;
             try
             {
                 service = container[serviceInterfaceType];
             }
             catch { }
-            if (service == null) return null;
-
-            MethodInfo mi = null;
-            foreach (MethodInfo item in serviceInterfaceType.GetMethods())
+            if (service == null)
             {
-                if (msg.SubServiceName == item.ToString())
-                {
-                    mi = item;
-                    break;
-                }
+                resMsg.Data = new Exception(string.Format("服务端未找到对应的服务({0}).", resMsg.ServiceName));
+                return resMsg;
             }
 
-            if (mi == null)
+            MethodInfo method = null;
+            if (dictMethods.ContainsKey(msg.SubServiceName))
             {
-                foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
+                method = dictMethods[msg.SubServiceName];
+            }
+            else
+            {
+                method = serviceInterfaceType.GetMethods()
+                           .Where(p => p.ToString() == msg.SubServiceName)
+                           .FirstOrDefault();
+
+                if (method == null)
                 {
-                    foreach (MethodInfo item in inheritedInterface.GetMethods())
+                    foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
                     {
-                        if (item.ToString() == msg.SubServiceName)
-                        {
-                            mi = item;
-                            break;
-                        }
+                        method = inheritedInterface.GetMethods()
+                                .Where(p => p.ToString() == msg.SubServiceName)
+                                .FirstOrDefault();
+
+                        if (method != null) break;
                     }
                 }
+
+                if (method == null)
+                {
+                    resMsg.Data = new Exception(string.Format("服务端未找到调用的方法({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
+                    return resMsg;
+                }
+                else
+                {
+                    dictMethods[msg.SubServiceName] = method;
+                }
             }
 
-            if (mi == null)
-            {
-                throw new Exception("Method not found " + msg.SubServiceName + "!");
-            }
-
-            ParameterInfo[] pis = mi.GetParameters();
+            ParameterInfo[] pis = method.GetParameters();
             object[] parms = new object[pis.Length];
 
             for (int i = 0; i < pis.Length; i++)
             {
                 Type type = pis[i].ParameterType;
-
                 object val = SerializationManager.DeserializeJson(type, msg.Parameters[pis[i].Name]);
-
                 parms[i] = val;
             }
 
-            ResponseMessage resMsg = new ResponseMessage();
-            resMsg.Request = msg;
-            resMsg.Expiration = DateTime.Now.AddMinutes(DefaultExpireMinutes);
-            resMsg.MessageId = Guid.NewGuid();
-            resMsg.ServiceName = serviceInterfaceType.FullName;
-            resMsg.SubServiceName = mi.Name;
-            resMsg.Timestamp = DateTime.Now;
-            resMsg.TransactionId = msg.TransactionId;
-
             //返回拦截服务
             service = AspectManager.GetService(service);
-
-            object returnValue = DynamicCalls.GetMethodInvoker(mi).Invoke(service, parms);
+            object returnValue = null;
+            try
+            {
+                returnValue = DynamicCalls.GetMethodInvoker(method).Invoke(service, parms);
+            }
+            catch (Exception ex)
+            {
+                resMsg.Data = ex;
+                return resMsg;
+            }
             //returnValue = mi.Invoke(service, parms);
 
             if (returnValue != null)
             {
-                Type returnType = mi.ReturnType;
-                switch (container.Transfer)
+                Type returnType = method.ReturnType;
+                switch (resMsg.Transfer)
                 {
                     case TransferType.Binary:
                         byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
                         //将数据进行压缩
-                        if (container.Compress != CompressType.None)
+                        if (resMsg.Compress != CompressType.None)
                         {
-                            switch (container.Compress)
+                            switch (resMsg.Compress)
                             {
                                 case CompressType.Zip:
                                     resMsg.Data = CompressionManager.Compress7Zip(buffer);
@@ -142,9 +162,9 @@ namespace MySoft.IoC.Services
                         string jsonString = SerializationManager.SerializeJson(returnValue);
 
                         //将数据进行压缩
-                        if (container.Compress != CompressType.None)
+                        if (resMsg.Compress != CompressType.None)
                         {
-                            switch (container.Compress)
+                            switch (resMsg.Compress)
                             {
                                 case CompressType.Zip:
                                     resMsg.Data = CompressionManager.Compress7Zip(jsonString);
@@ -163,9 +183,9 @@ namespace MySoft.IoC.Services
                         string xmlString = SerializationManager.SerializeXml(returnValue);
 
                         //将数据进行压缩
-                        if (container.Compress != CompressType.None)
+                        if (resMsg.Compress != CompressType.None)
                         {
-                            switch (container.Compress)
+                            switch (resMsg.Compress)
                             {
                                 case CompressType.Zip:
                                     resMsg.Data = CompressionManager.Compress7Zip(xmlString);

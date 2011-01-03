@@ -1,7 +1,6 @@
-using System;
+using System.IO;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Messaging;
-using System.IO;
 
 namespace CompressionSink
 {

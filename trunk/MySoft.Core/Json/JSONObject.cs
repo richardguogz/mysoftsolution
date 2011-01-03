@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Specialized;
 using System.Text;
-using System.Globalization;
 
 /*
  * A JSONObject is an unordered collection of name/value pairs. Its
@@ -49,65 +47,65 @@ using System.Globalization;
  */
 namespace MySoft.Json
 {
-  /// <summary>
-  /// <para>
-  /// A JSONArray is an ordered sequence of values. Its external form is a string
-  /// wrapped in square brackets with commas between the values. The internal form
-  /// is an object having get() and opt() methods for accessing the values by
-  /// index, and put() methods for adding or replacing values. The values can be
-  /// any of these types: Boolean, JSONArray, JSONObject, Number, String, or the
-  /// JSONObject.NULL object.
-  /// </para>
-  /// <para>
-  /// The constructor can convert a JSON external form string into an
-  /// internal form Java object. The toString() method creates an external
-  /// form string.
-  /// </para>
-  /// <para>
-  /// A get() method returns a value if one can be found, and throws an exception
-  /// if one cannot be found. An opt() method returns a default value instead of
-  /// throwing an exception, and so is useful for obtaining optional values.
-  /// </para>
-  /// <para>
-  /// The generic get() and opt() methods return an object which you can cast or
-  /// query for type. There are also typed get() and opt() methods that do typing
-  /// checking and type coersion for you.
-  ///</para>
-  /// <para>
-  /// The texts produced by the toString() methods are very strict.
-  /// The constructors are more forgiving in the texts they will accept.
-  /// </para>
-  /// <para>
-  /// <list type="bullet">
-  /// <item><description>An extra comma may appear just before the closing bracket.</description></item>
-  /// <item><description>Strings may be quoted with single quotes.</description></item>
-  /// <item><description>Strings do not need to be quoted at all if they do not contain leading
-  ///     or trailing spaces, and if they do not contain any of these characters:
-  ///     { } [ ] / \ : , </description></item>
-  /// <item><description>Numbers may have the 0- (octal) or 0x- (hex) prefix.</description></item>
-  /// </list>
-  /// </para>
-  /// <para>
-  /// Public Domain 2002 JSON.org
-  /// @author JSON.org
-  /// @version 0.1
-  ///</para>
-  /// Ported to C# by Are Bjolseth, teleplan.no
-  /// TODO:
-  /// 1. Implement Custom exceptions
-  /// 2. Add indexer JSONObject[i] = object,     and object = JSONObject[i];
-  /// 3. Add indexer JSONObject["key"] = object, and object = JSONObject["key"]
-  /// 4. Add unit testing
-  /// 5. Add log4net
-  /// 6. Make get/put methods private, to force use of indexer instead?
-  /// </summary>
+    /// <summary>
+    /// <para>
+    /// A JSONArray is an ordered sequence of values. Its external form is a string
+    /// wrapped in square brackets with commas between the values. The internal form
+    /// is an object having get() and opt() methods for accessing the values by
+    /// index, and put() methods for adding or replacing values. The values can be
+    /// any of these types: Boolean, JSONArray, JSONObject, Number, String, or the
+    /// JSONObject.NULL object.
+    /// </para>
+    /// <para>
+    /// The constructor can convert a JSON external form string into an
+    /// internal form Java object. The toString() method creates an external
+    /// form string.
+    /// </para>
+    /// <para>
+    /// A get() method returns a value if one can be found, and throws an exception
+    /// if one cannot be found. An opt() method returns a default value instead of
+    /// throwing an exception, and so is useful for obtaining optional values.
+    /// </para>
+    /// <para>
+    /// The generic get() and opt() methods return an object which you can cast or
+    /// query for type. There are also typed get() and opt() methods that do typing
+    /// checking and type coersion for you.
+    ///</para>
+    /// <para>
+    /// The texts produced by the toString() methods are very strict.
+    /// The constructors are more forgiving in the texts they will accept.
+    /// </para>
+    /// <para>
+    /// <list type="bullet">
+    /// <item><description>An extra comma may appear just before the closing bracket.</description></item>
+    /// <item><description>Strings may be quoted with single quotes.</description></item>
+    /// <item><description>Strings do not need to be quoted at all if they do not contain leading
+    ///     or trailing spaces, and if they do not contain any of these characters:
+    ///     { } [ ] / \ : , </description></item>
+    /// <item><description>Numbers may have the 0- (octal) or 0x- (hex) prefix.</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Public Domain 2002 JSON.org
+    /// @author JSON.org
+    /// @version 0.1
+    ///</para>
+    /// Ported to C# by Are Bjolseth, teleplan.no
+    /// TODO:
+    /// 1. Implement Custom exceptions
+    /// 2. Add indexer JSONObject[i] = object,     and object = JSONObject[i];
+    /// 3. Add indexer JSONObject["key"] = object, and object = JSONObject["key"]
+    /// 4. Add unit testing
+    /// 5. Add log4net
+    /// 6. Make get/put methods private, to force use of indexer instead?
+    /// </summary>
     public class JSONObject
     {
         #region Local struct JSONNull
         /// <summary>
-    /// Make a Null object
-    /// JSONObject.NULL is equivalent to the value that JavaScript calls null,
-    /// whilst C#'s null is equivalent to the value that JavaScript calls undefined.
+        /// Make a Null object
+        /// JSONObject.NULL is equivalent to the value that JavaScript calls null,
+        /// whilst C#'s null is equivalent to the value that JavaScript calls undefined.
         /// </summary>
         public struct JSONNull
         {
@@ -123,10 +121,10 @@ namespace MySoft.Json
                 return (obj == null) || (obj == this);
             }
             */
-      /// <summary>
-      /// Overriden to return "null"
-      /// </summary>
-      /// <returns>null</returns>
+            /// <summary>
+            /// Overriden to return "null"
+            /// </summary>
+            /// <returns>null</returns>
             public override string ToString()
             {
                 //return base.ToString ();
@@ -154,7 +152,7 @@ namespace MySoft.Json
         /// </summary>
         public JSONObject()
         {
-            myHashMap      = new Hashtable();
+            myHashMap = new Hashtable();
             myKeyIndexList = new ArrayList();
         }
 
@@ -162,7 +160,8 @@ namespace MySoft.Json
         /// Construct a JSONObject from a JSONTokener.
         /// </summary>
         /// <param name="x">A JSONTokener object containing the source string.</param>
-        public JSONObject(JSONTokener x) : this()
+        public JSONObject(JSONTokener x)
+            : this()
         {
             char c;
             string key;
@@ -218,7 +217,8 @@ namespace MySoft.Json
         /// Construct a JSONObject from a string.
         /// </summary>
         /// <param name="sJSON">A string beginning with '{' and ending with '}'.</param>
-        public JSONObject(string sJSON) : this(new JSONTokener(sJSON))
+        public JSONObject(string sJSON)
+            : this(new JSONTokener(sJSON))
         {
 
         }
@@ -245,7 +245,7 @@ namespace MySoft.Json
         /// <param name="map"></param>
         public JSONObject(IDictionary map)
         {
-            myHashMap      = new Hashtable(map);
+            myHashMap = new Hashtable(map);
             myKeyIndexList = new ArrayList(map);
         }
 
@@ -279,7 +279,7 @@ namespace MySoft.Json
                 a = new JSONArray();
                 a.put(obj);
                 a.put(val);
-                put(key,a);
+                put(key, a);
             }
             return this;
         }
@@ -310,7 +310,7 @@ namespace MySoft.Json
             }
             set
             {
-                put(key,value);
+                put(key, value);
             }
         }
 
@@ -598,10 +598,10 @@ namespace MySoft.Json
         }
 
         /// <summary>
-      ///  Get an optional double associated with a key, or the
-      ///  defaultValue if there is no such key or if its value is not a number.
-      ///  If the value is a string, an attempt will be made to evaluate it as
-      ///  number.
+        ///  Get an optional double associated with a key, or the
+        ///  defaultValue if there is no such key or if its value is not a number.
+        ///  If the value is a string, an attempt will be made to evaluate it as
+        ///  number.
         /// </summary>
         /// <param name="key">A key string.</param>
         /// <returns>An int object value</returns>
@@ -743,27 +743,27 @@ namespace MySoft.Json
             return this;
         }
 
-    /// <summary>
-    /// Add a key value pair
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="val"></param>
-    /// <returns></returns>
+        /// <summary>
+        /// Add a key value pair
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
         public JSONObject putOpt(string key, object val)
         {
             if (val != null)
             {
-                put(key,val);
+                put(key, val);
             }
             return this;
         }
         #endregion
 
-    /// <summary>
-    /// Remove a object assosiateted with the given key
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+        /// <summary>
+        /// Remove a object assosiateted with the given key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public object remove(string key)
         {
             if (myHashMap.ContainsKey(key))
@@ -777,28 +777,28 @@ namespace MySoft.Json
             return null;
         }
 
-    /// <summary>
-    /// Append an array of JSONObjects to current object
-    /// </summary>
-    /// <param name="pks"></param>
-    /// <returns></returns>
+        /// <summary>
+        /// Append an array of JSONObjects to current object
+        /// </summary>
+        /// <param name="pks"></param>
+        /// <returns></returns>
         public JSONArray toJSONArray(JSONArray names)
         {
             if (names == null | names.Length() == 0)
                 return null;
 
             JSONArray ja = new JSONArray();
-            for (int i=0; i<names.Length(); i++)
+            for (int i = 0; i < names.Length(); i++)
             {
                 ja.put(this.opt(names.getString(i)));
             }
             return ja;
         }
 
-    /// <summary>
-    /// Overridden to return a JSON formattet object as a string
-    /// </summary>
-    /// <returns>JSON object as formatted string</returns>
+        /// <summary>
+        /// Overridden to return a JSON formattet object as a string
+        /// </summary>
+        /// <returns>JSON object as formatted string</returns>
         public override string ToString()
         {
             object obj = null;

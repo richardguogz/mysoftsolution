@@ -1,8 +1,4 @@
-using System;
 using System.IO;
-using NZlib.Compression;
-using NZlib.Streams;
-using System.Diagnostics;
 using NZlib.Zip;
 
 namespace CompressionSink

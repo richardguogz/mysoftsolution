@@ -6,7 +6,8 @@
     {
         private Exception mError;
 
-        public EventRunErrorArgs(IChannel channel) : base(channel)
+        public EventRunErrorArgs(IChannel channel)
+            : base(channel)
         {
         }
 

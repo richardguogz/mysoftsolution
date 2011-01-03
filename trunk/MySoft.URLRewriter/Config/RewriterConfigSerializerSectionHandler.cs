@@ -2,7 +2,6 @@ using System;
 using System.Configuration;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.XPath;
 
 namespace MySoft.URLRewriter.Config
 {

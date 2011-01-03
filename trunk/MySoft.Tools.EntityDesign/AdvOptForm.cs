@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using MySoft.Data;
 using MySoft.Data.Design;
 
 namespace MySoft.Tools.EntityDesign

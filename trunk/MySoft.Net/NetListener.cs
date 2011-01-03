@@ -3,7 +3,6 @@
     using System;
     using System.Net;
     using System.Net.Sockets;
-    using System.Runtime.CompilerServices;
     using System.Threading;
 
     public class NetListener
@@ -53,7 +52,7 @@
 
         private static void ConnectCall(IAsyncResult ar)
         {
-            ((Socket) ar.AsyncState).EndConnect(ar);
+            ((Socket)ar.AsyncState).EndConnect(ar);
             re.Set();
         }
 

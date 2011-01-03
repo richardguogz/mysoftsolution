@@ -24,77 +24,79 @@
 // This exception does not however invalidate any other reasons why the
 // executable file might be covered by the GNU General Public License.
 
-using System;
 using System.IO;
 
 using NZlib.Checksums;
 using NZlib.Compression;
 using NZlib.Streams;
 
-namespace NZlib.GZip {
-	
-	/// <summary>
-	/// This filter stream is used to compress a stream into a "GZIP" stream.
-	/// The "GZIP" format is described in RFC 1952.
-	///
-	/// author of the original java version : John Leuner
-	/// </summary>
-	/// <example> This sample shows how to gzip a file
-	/// <code>
-	/// using System;
-	/// using System.IO;
-	/// 
-	/// using NZlib.GZip;
-	/// 
-	/// class MainClass
-	/// {
-	/// 	public static void Main(string[] args)
-	/// 	{
-	/// 		Stream s = new GZipOutputStream(File.Create(args[0] + ".gz"));
-	/// 		FileStream fs = File.OpenRead(args[0]);
-	/// 		byte[] writeData = new byte[fs.Length];
-	/// 		fs.Read(writeData, 0, (int)fs.Length);
-	/// 		s.Write(writeData, 0, writeData.Length);
-	/// 		s.Close();
-	/// 	}
-	/// }	
-	/// </code>
-	/// </example>
-	public class GZipOutputStream : DeflaterOutputStream
-	{
-		//Variables
-		
-		/// <summary>
-		/// CRC-32 value for uncompressed data
-		/// </summary>
-		protected Crc32 crc = new Crc32();
-		
-		// Constructors
-		
-		/// <summary>
-		/// Creates a GzipOutputStream with the default buffer size
-		/// </summary>
-		/// <param name="baseOutputStream">
-		/// The stream to read data (to be compressed) from
-		/// </param>
-		public GZipOutputStream(Stream baseOutputStream) : this(baseOutputStream, 4096)
-		{
-		}
-		
-		/// <summary>
-		/// Creates a GZIPOutputStream with the specified buffer size
-		/// </summary>
-		/// <param name="baseOutputStream">
-		/// The stream to read data (to be compressed) from
-		/// </param>
-		/// <param name="size">
-		/// Size of the buffer to use
-		/// </param>
-		public GZipOutputStream(Stream baseOutputStream, int size) : base(baseOutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, true), size)
-		{
-			
-			int mod_time = 0; // HACK : (int) (System.currentTimeMillis() / 1000L);
-			byte[] gzipHeader = {
+namespace NZlib.GZip
+{
+
+    /// <summary>
+    /// This filter stream is used to compress a stream into a "GZIP" stream.
+    /// The "GZIP" format is described in RFC 1952.
+    ///
+    /// author of the original java version : John Leuner
+    /// </summary>
+    /// <example> This sample shows how to gzip a file
+    /// <code>
+    /// using System;
+    /// using System.IO;
+    /// 
+    /// using NZlib.GZip;
+    /// 
+    /// class MainClass
+    /// {
+    /// 	public static void Main(string[] args)
+    /// 	{
+    /// 		Stream s = new GZipOutputStream(File.Create(args[0] + ".gz"));
+    /// 		FileStream fs = File.OpenRead(args[0]);
+    /// 		byte[] writeData = new byte[fs.Length];
+    /// 		fs.Read(writeData, 0, (int)fs.Length);
+    /// 		s.Write(writeData, 0, writeData.Length);
+    /// 		s.Close();
+    /// 	}
+    /// }	
+    /// </code>
+    /// </example>
+    public class GZipOutputStream : DeflaterOutputStream
+    {
+        //Variables
+
+        /// <summary>
+        /// CRC-32 value for uncompressed data
+        /// </summary>
+        protected Crc32 crc = new Crc32();
+
+        // Constructors
+
+        /// <summary>
+        /// Creates a GzipOutputStream with the default buffer size
+        /// </summary>
+        /// <param name="baseOutputStream">
+        /// The stream to read data (to be compressed) from
+        /// </param>
+        public GZipOutputStream(Stream baseOutputStream)
+            : this(baseOutputStream, 4096)
+        {
+        }
+
+        /// <summary>
+        /// Creates a GZIPOutputStream with the specified buffer size
+        /// </summary>
+        /// <param name="baseOutputStream">
+        /// The stream to read data (to be compressed) from
+        /// </param>
+        /// <param name="size">
+        /// Size of the buffer to use
+        /// </param>
+        public GZipOutputStream(Stream baseOutputStream, int size)
+            : base(baseOutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, true), size)
+        {
+
+            int mod_time = 0; // HACK : (int) (System.currentTimeMillis() / 1000L);
+            byte[] gzipHeader = {
 				/* The two magic bytes */
 				(byte) (GZipConstants.GZIP_MAGIC >> 8), (byte) GZipConstants.GZIP_MAGIC,
 				
@@ -114,46 +116,46 @@ namespace NZlib.GZip {
 				/* The OS type (unknown) */
 				(byte) 255
 			};
-			
-			baseOutputStream.Write(gzipHeader, 0, gzipHeader.Length);
-			//    System.err.println("wrote GZIP header (" + gzipHeader.length + " bytes )");
-		}
-		
-		public override void Write(byte[] buf, int off, int len)
-		{
-			crc.Update(buf, off, len);
-			base.Write(buf, off, len);
-		}
-		
-		/// <summary>
-		/// Writes remaining compressed output data to the output stream
-		/// and closes it.
-		/// </summary>
-		public override void Close()
-		{
-			Finish();
-			baseOutputStream.Close();
-		}
-		
-		public override void Finish()
-		{
-			base.Finish();
-			
-			int totalin = def.GetTotalIn();
-			int crcval = (int) (crc.Value & 0xffffffff);
-			
-			//    System.err.println("CRC val is " + Integer.toHexString( crcval ) 		       + " and length " + Integer.toHexString(totalin));
-			
-			byte[] gzipFooter = {
+
+            baseOutputStream.Write(gzipHeader, 0, gzipHeader.Length);
+            //    System.err.println("wrote GZIP header (" + gzipHeader.length + " bytes )");
+        }
+
+        public override void Write(byte[] buf, int off, int len)
+        {
+            crc.Update(buf, off, len);
+            base.Write(buf, off, len);
+        }
+
+        /// <summary>
+        /// Writes remaining compressed output data to the output stream
+        /// and closes it.
+        /// </summary>
+        public override void Close()
+        {
+            Finish();
+            baseOutputStream.Close();
+        }
+
+        public override void Finish()
+        {
+            base.Finish();
+
+            int totalin = def.GetTotalIn();
+            int crcval = (int)(crc.Value & 0xffffffff);
+
+            //    System.err.println("CRC val is " + Integer.toHexString( crcval ) 		       + " and length " + Integer.toHexString(totalin));
+
+            byte[] gzipFooter = {
 				(byte) crcval, (byte) (crcval >> 8),
 				(byte) (crcval >> 16), (byte) (crcval >> 24),
 				
 				(byte) totalin, (byte) (totalin >> 8),
 				(byte) (totalin >> 16), (byte) (totalin >> 24)
 			};
-			
-			baseOutputStream.Write(gzipFooter, 0, gzipFooter.Length);
-			//    System.err.println("wrote GZIP trailer (" + gzipFooter.length + " bytes )");
-		}
-	}
+
+            baseOutputStream.Write(gzipFooter, 0, gzipFooter.Length);
+            //    System.err.println("wrote GZIP trailer (" + gzipFooter.length + " bytes )");
+        }
+    }
 }

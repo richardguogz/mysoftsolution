@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
 using System.Data;
-using Newtonsoft.Json.Converters;
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MySoft.Core
 {

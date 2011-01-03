@@ -1,7 +1,6 @@
 using System;
-using System.Web;
-using System.Web.Caching;
 using System.Configuration;
+using System.Web;
 using System.Xml.Serialization;
 
 namespace MySoft.URLRewriter.Config

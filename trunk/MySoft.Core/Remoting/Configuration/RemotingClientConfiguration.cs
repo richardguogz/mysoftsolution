@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
 using System.Configuration;
+using System.Xml;
 using MySoft.Core;
 
 namespace MySoft.Remoting
@@ -71,17 +70,6 @@ namespace MySoft.Remoting
             set { _Interval = value; }
         }
 
-        private int _Timeout = -1;
-
-        /// <summary>
-        /// 信道超时时间
-        /// </summary>
-        public int Timeout
-        {
-            get { return _Timeout; }
-            set { _Timeout = value; }
-        }
-
         private Dictionary<string, RemotingHost> _RemotingHosts = new Dictionary<string, RemotingHost>();
 
         /// <summary>
@@ -116,8 +104,6 @@ namespace MySoft.Remoting
                 _IsCheckServer = node.Attributes["isCheckServer"].Value == "true" ? true : false;
             if (node.Attributes["interval"].Value != null)
                 _Interval = Convert.ToDouble(node.Attributes["interval"].Value);
-            if (node.Attributes["timeout"].Value != null)
-                _Timeout = Convert.ToInt32(node.Attributes["timeout"].Value);
 
             foreach (XmlNode n in node.ChildNodes)
             {

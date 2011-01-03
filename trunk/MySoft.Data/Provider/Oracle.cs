@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.OracleClient;
 using System.Data.Common;
+using System.Data.OracleClient;
 using System.Text;
-using System.Text.RegularExpressions;
 using MySoft.Data.Design;
-using MySoft.Core;
 
 namespace MySoft.Data.Oracle
 {

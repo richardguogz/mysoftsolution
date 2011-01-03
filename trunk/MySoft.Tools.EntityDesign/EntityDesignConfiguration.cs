@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MySoft.Tools.EntityDesign
 {

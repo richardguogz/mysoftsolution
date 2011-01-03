@@ -23,14 +23,11 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
 
 namespace Newtonsoft.Json
 {
-  public class JsonConverterCollection : Collection<JsonConverter>
-  {
-  }
+    public class JsonConverterCollection : Collection<JsonConverter>
+    {
+    }
 }

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Npgsql;
 using System.Data;
-using NpgsqlTypes;
 using System.Data.Common;
+using Npgsql;
+using NpgsqlTypes;
 
 namespace MySoft.Data.PostgreSQL
 {

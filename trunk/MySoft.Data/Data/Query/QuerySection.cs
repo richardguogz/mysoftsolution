@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using System.Data;
 using System.Data.Common;
-using System.Text.RegularExpressions;
-using MySoft.Data.Design;
+using System.Text;
 using MySoft.Core;
+using MySoft.Data.Design;
 
 namespace MySoft.Data
 {

@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using System.Reflection;
+using System.Threading;
 using MySoft.Core;
 
 namespace MySoft.Task

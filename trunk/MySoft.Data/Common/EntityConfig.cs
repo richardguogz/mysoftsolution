@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Configuration;
 using System.IO;
 using System.Xml;
-using System.Configuration;
-using MySoft.Data.Mapping;
 using System.Xml.Serialization;
+using MySoft.Data.Mapping;
 
 namespace MySoft.Data
 {

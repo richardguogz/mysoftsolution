@@ -1,6 +1,6 @@
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 
 namespace MySoft.Json
 {
@@ -93,7 +93,7 @@ namespace MySoft.Json
         public char next()
         {
             char c = more() ? mySource[myIndex] : (char)0;
-            myIndex +=1;
+            myIndex += 1;
             return c;
         }
 
@@ -128,7 +128,7 @@ namespace MySoft.Json
                 throw (new Exception(msg));
             }
             myIndex += n;
-            return mySource.Substring(i,j);
+            return mySource.Substring(i, j);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace MySoft.Json
                             break;
                         case 'u':
                             //sb.append((char)Integer.parseInt(next(4), 16)); // 16 == radix, ie. hex
-                            int iascii = int.Parse(next(4),System.Globalization.NumberStyles.HexNumber);
+                            int iascii = int.Parse(next(4), System.Globalization.NumberStyles.HexNumber);
                             sb.Append((char)iascii);
                             break;
                         default:
@@ -279,7 +279,7 @@ namespace MySoft.Json
             while (true)
             {
                 c = next();
-                if ((delimiters.IndexOf(c) >= 0) || (c == (char)0 ) || (c == '\n') || (c == '\r'))
+                if ((delimiters.IndexOf(c) >= 0) || (c == (char)0) || (c == '\n') || (c == '\r'))
                 {
                     if (c != (char)0)
                     {
@@ -383,7 +383,7 @@ namespace MySoft.Json
                     myIndex = i;
                     return c;
                 }
-            }while (c != to);
+            } while (c != to);
 
             back();
             return c;
@@ -438,7 +438,7 @@ namespace MySoft.Json
         {
             int len = s.Length;
             StringBuilder sb = new StringBuilder();
-            for (int i=0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 char c = s[i];
                 if (c == '+')
@@ -447,11 +447,11 @@ namespace MySoft.Json
                 }
                 else if (c == '%' && (i + 2 < len))
                 {
-                    int d = dehexchar(s[i+1]);
-                    int e = dehexchar(s[i+2]);
+                    int d = dehexchar(s[i + 1]);
+                    int e = dehexchar(s[i + 2]);
                     if (d >= 0 && e >= 0)
                     {
-                        c = (char)(d*16 + e);
+                        c = (char)(d * 16 + e);
                         i += 2;
                     }
                 }

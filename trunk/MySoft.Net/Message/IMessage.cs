@@ -1,6 +1,5 @@
 ﻿namespace MySoft.Net.Message
 {
-    using System;
 
     public interface IMessage
     {

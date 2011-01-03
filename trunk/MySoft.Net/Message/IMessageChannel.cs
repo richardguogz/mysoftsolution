@@ -1,8 +1,7 @@
 ﻿namespace MySoft.Net.Message
 {
-    using MySoft.Net;
     using System;
-    using System.Runtime.CompilerServices;
+    using MySoft.Net;
 
     public interface IMessageChannel : IDisposable
     {

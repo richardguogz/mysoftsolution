@@ -1,7 +1,6 @@
 ﻿namespace MySoft.Converter
 {
     using System;
-    using System.Runtime.InteropServices;
 
     public abstract class ToArray : IStringConverter
     {

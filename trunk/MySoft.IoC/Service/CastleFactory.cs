@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
-using Castle.Windsor;
 using System.Reflection.Emit;
-using System.Configuration;
-using MySoft.IoC;
 using MySoft.Core;
 using MySoft.Remoting;
 
@@ -345,17 +341,15 @@ namespace MySoft.IoC
             {
                 throw ex;
             }
-            else if (!typeof(IServiceInterface).IsAssignableFrom(typeof(IServiceInterfaceType)))
+            else
             {
                 bool markedWithServiceContract = false;
-                foreach (object attr in typeof(IServiceInterfaceType).GetCustomAttributes(true))
+                var attr = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(typeof(IServiceInterfaceType));
+                if (attr != null)
                 {
-                    if (attr.ToString().EndsWith("ServiceContractAttribute"))
-                    {
-                        markedWithServiceContract = true;
-                        break;
-                    }
+                    markedWithServiceContract = true;
                 }
+
                 if (!markedWithServiceContract)
                 {
                     throw ex;
@@ -383,7 +377,7 @@ namespace MySoft.IoC
                 }
             }
 
-                        //如果不是本地服务
+            //如果不是本地服务
             if (!localService)
             {
                 lock (this)

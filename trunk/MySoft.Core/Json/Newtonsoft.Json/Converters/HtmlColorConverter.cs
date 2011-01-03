@@ -24,22 +24,20 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 
 namespace Newtonsoft.Json.Converters
 {
-  public class HtmlColorConverter : JsonConverter
-  {
-    public override void WriteJson(JsonWriter writer, object value)
+    public class HtmlColorConverter : JsonConverter
     {
-      writer.WriteValue(ColorTranslator.ToHtml((Color)value));
-    }
+        public override void WriteJson(JsonWriter writer, object value)
+        {
+            writer.WriteValue(ColorTranslator.ToHtml((Color)value));
+        }
 
-    public override bool CanConvert(Type valueType)
-    {
-      return typeof(Color).IsAssignableFrom(valueType);
+        public override bool CanConvert(Type valueType)
+        {
+            return typeof(Color).IsAssignableFrom(valueType);
+        }
     }
-  }
 }

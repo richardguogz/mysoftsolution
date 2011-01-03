@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using MySoft.Converter;
+using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using System.Security.Cryptography;
+using System.Text;
+using MySoft.Converter;
 
 namespace MySoft.Core
 {

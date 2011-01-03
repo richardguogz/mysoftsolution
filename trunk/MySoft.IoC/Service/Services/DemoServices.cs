@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
 using MySoft.Remoting;
 
 namespace MySoft.IoC.Services
@@ -9,7 +6,8 @@ namespace MySoft.IoC.Services
     /// <summary>
     /// sample math service interface.
     /// </summary>
-    public interface IMathService : IServiceInterface
+    [ServiceContract]
+    public interface IMathService
     {
         /// <summary>
         /// Gets the result.
@@ -72,7 +70,7 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         protected override ResponseMessage Run(RequestMessage msg)
         {
-            int rt = GetResult(msg.Parameters["op"][0], int.Parse(msg.Parameters["x"]), int.Parse(msg.Parameters["y"]));
+            int rt = GetResult(Convert.ToChar(msg.Parameters["op"]), Convert.ToInt32(msg.Parameters["x"]), Convert.ToInt32(msg.Parameters["y"]));
             ResponseMessage retMsg = new ResponseMessage();
             retMsg.ServiceName = msg.ServiceName;
             retMsg.Parameters["Result"] = rt.ToString();

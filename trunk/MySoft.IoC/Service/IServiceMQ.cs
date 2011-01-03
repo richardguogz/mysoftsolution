@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using MySoft.IoC;
 using MySoft.Core;
 
 namespace MySoft.IoC
@@ -49,12 +45,6 @@ namespace MySoft.IoC
         /// <param name="clientId">The client id.</param>
         /// <param name="handler">The handler.</param>
         void SubscribeServiceRequest(string serviceName, Guid clientId, ServiceRequestNotifyHandler handler);
-        /// <summary>
-        /// Cleans the expired messages.
-        /// </summary>
-        /// <param name="expiredRequests">The expired requests.</param>
-        /// <param name="expiredResponses">The expired responses.</param>
-        void CleanExpiredMessages(out RequestMessage[] expiredRequests, out ResponseMessage[] expiredResponses);
         /// <summary>
         /// Sets the broad cast strategy.
         /// </summary>

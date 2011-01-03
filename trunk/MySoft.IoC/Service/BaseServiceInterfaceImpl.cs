@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Reflection;
 using MySoft.Core;
 using MySoft.Remoting;
@@ -12,6 +12,13 @@ namespace MySoft.IoC
     /// </summary>
     public class BaseServiceInterfaceImpl
     {
+        delegate object GetValueDelegate(Type t);
+
+        /// <summary>
+        /// 保存方法
+        /// </summary>
+        private static readonly Dictionary<string, MethodInfo> dictMethods = new Dictionary<string, MethodInfo>();
+
         /// <summary>
         /// The default msg expire time.
         /// </summary>
@@ -40,14 +47,32 @@ namespace MySoft.IoC
         /// <returns>The result.</returns>
         protected object CallService(string subServiceName, Type returnType, params object[] paramValues)
         {
-            object errorReturnValue = null;
+            RequestMessage reqMsg = new RequestMessage();
 
-            if (returnType != typeof(void))
+            //获取约束格式
+            var contract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
+            if (contract != null && contract.Format != DataFormat.Default)
             {
-                errorReturnValue = null;
+                switch (contract.Format)
+                {
+                    case DataFormat.Binary:
+                        reqMsg.Transfer = TransferType.Binary;
+                        break;
+                    case DataFormat.Json:
+                        reqMsg.Transfer = TransferType.Json;
+                        break;
+                    case DataFormat.Xml:
+                        reqMsg.Transfer = TransferType.Xml;
+                        break;
+                }
+            }
+            else
+            {
+                //传递传输与压缩格式
+                reqMsg.Transfer = container.Transfer;
             }
 
-            RequestMessage reqMsg = new RequestMessage();
+            reqMsg.Compress = container.Compress;
             reqMsg.Expiration = DateTime.Now.AddMinutes(DefaultExpireMinutes);
             reqMsg.MessageId = Guid.NewGuid();
             reqMsg.ServiceName = serviceInterfaceType.FullName;
@@ -55,76 +80,78 @@ namespace MySoft.IoC
             reqMsg.Timestamp = DateTime.Now;
             reqMsg.TransactionId = Guid.NewGuid();
 
-            MethodInfo mi = null;
-            foreach (MethodInfo item in serviceInterfaceType.GetMethods())
+            MethodInfo method = null;
+            if (dictMethods.ContainsKey(subServiceName))
             {
-                if (item.ToString() == subServiceName)
-                {
-                    mi = item;
-                    break;
-                }
+                method = dictMethods[subServiceName];
             }
-
-            if (mi == null)
+            else
             {
-                foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
+                method = serviceInterfaceType.GetMethods()
+                              .Where(p => p.ToString() == subServiceName)
+                              .FirstOrDefault();
+
+                if (method == null)
                 {
-                    foreach (MethodInfo item in inheritedInterface.GetMethods())
+                    foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
                     {
-                        if (item.ToString() == subServiceName)
-                        {
-                            mi = item;
-                            break;
-                        }
+                        method = inheritedInterface.GetMethods()
+                                .Where(p => p.ToString() == subServiceName)
+                                .FirstOrDefault();
+
+                        if (method != null) break;
                     }
                 }
+
+                if (method == null)
+                {
+                    throw new Exception(string.Format("未找到调用的方法({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                }
+                else
+                {
+                    dictMethods[subServiceName] = method;
+                }
             }
 
-            if (mi == null)
-            {
-                //return errorReturnValue;
-                throw new Exception("Method not found " + subServiceName + "!");
-            }
-
-            ParameterInfo[] pis = mi.GetParameters();
-
+            ParameterInfo[] pis = method.GetParameters();
             if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
-                return errorReturnValue;
+                //参数不正确直接返回异常
+                throw new ArgumentException(string.Format("无效的参数信息({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
             }
 
             if (pis.Length > 0)
             {
                 for (int i = 0; i < paramValues.Length; i++)
                 {
-                    if (paramValues[i] == null)
+                    if (paramValues[i] != null)
                     {
-                        continue;
+                        reqMsg.Parameters[pis[i].Name] = SerializationManager.SerializeJson(paramValues[i]);
                     }
-
-                    string val = SerializationManager.SerializeJson(paramValues[i]);
-
-                    reqMsg.Parameters[pis[i].Name] = val;
                 }
             }
 
             ResponseMessage resMsg = container.CallService(serviceInterfaceType.FullName, reqMsg);
-            if (resMsg == null || returnType == typeof(void))
+            if (resMsg == null)
             {
-                return errorReturnValue;
+                throw new Exception(string.Format("未找到接口对应的实现({0}).", reqMsg.ServiceName));
             }
 
             if (resMsg.Data == null) return resMsg.Data;
+            if (resMsg.Data is Exception)
+            {
+                throw resMsg.Data as Exception;
+            }
 
-            switch (container.Transfer)
+            switch (resMsg.Transfer)
             {
                 case TransferType.Binary:
                     byte[] buffer = (byte[])resMsg.Data;
 
                     //将数据进行解压缩
-                    if (container.Compress != CompressType.None)
+                    if (resMsg.Compress != CompressType.None)
                     {
-                        switch (container.Compress)
+                        switch (resMsg.Compress)
                         {
                             case CompressType.GZip:
                                 buffer = CompressionManager.DecompressGZip(buffer);
@@ -140,9 +167,9 @@ namespace MySoft.IoC
                     string jsonString = resMsg.Data.ToString();
 
                     //将数据进行解压缩
-                    if (container.Compress != CompressType.None)
+                    if (resMsg.Compress != CompressType.None)
                     {
-                        switch (container.Compress)
+                        switch (resMsg.Compress)
                         {
                             case CompressType.GZip:
                                 jsonString = CompressionManager.DecompressGZip(jsonString);
@@ -158,9 +185,9 @@ namespace MySoft.IoC
                     string xmlString = resMsg.Data.ToString();
 
                     //将数据进行解压缩
-                    if (container.Compress != CompressType.None)
+                    if (resMsg.Compress != CompressType.None)
                     {
-                        switch (container.Compress)
+                        switch (resMsg.Compress)
                         {
                             case CompressType.GZip:
                                 xmlString = CompressionManager.DecompressGZip(xmlString);
@@ -174,8 +201,8 @@ namespace MySoft.IoC
                     return SerializationManager.DeserializeXml(returnType, xmlString);
             }
 
-            return errorReturnValue;
-
+            //参数不正确直接返回异常
+            throw new ArgumentNullException(string.Format("无效的方法调用({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
         }
     }
 }

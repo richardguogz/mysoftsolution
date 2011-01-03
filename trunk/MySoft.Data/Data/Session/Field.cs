@@ -1,9 +1,8 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Data;
-using MySoft.Data.Design;
+using System.Text;
 using MySoft.Core;
+using MySoft.Data.Design;
 
 namespace MySoft.Data
 {

@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels.Http;
-using System.Runtime.Remoting.Channels.Ipc;
+using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
+using System.Text;
 using MySoft.Core;
 
 namespace MySoft.Remoting

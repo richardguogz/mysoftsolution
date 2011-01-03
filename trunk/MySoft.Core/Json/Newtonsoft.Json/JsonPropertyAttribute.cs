@@ -2,20 +2,20 @@ using System;
 
 namespace Newtonsoft.Json
 {
-  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
-  public sealed class JsonPropertyAttribute : Attribute
-  {
-    private string _propertyName;
-
-    public string PropertyName
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+    public sealed class JsonPropertyAttribute : Attribute
     {
-      get { return _propertyName; }
-      set { _propertyName = value; }
-    }
+        private string _propertyName;
 
-    public JsonPropertyAttribute(string propertyName)
-    {
-      _propertyName = propertyName;
+        public string PropertyName
+        {
+            get { return _propertyName; }
+            set { _propertyName = value; }
+        }
+
+        public JsonPropertyAttribute(string propertyName)
+        {
+            _propertyName = propertyName;
+        }
     }
-  }
 }

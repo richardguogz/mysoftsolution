@@ -30,9 +30,9 @@
 
         protected virtual void OnLoad(object obj)
         {
-            object[] objArray = (object[]) obj;
-            this.ID = (string) objArray[0];
-            this.Time = (DateTime) objArray[1];
+            object[] objArray = (object[])obj;
+            this.ID = (string)objArray[0];
+            this.Time = (DateTime)objArray[1];
         }
 
         protected virtual object OnSave()

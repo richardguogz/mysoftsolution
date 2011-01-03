@@ -1,18 +1,16 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using System.Reflection;
-using System.IO;
-using ADODB;
 using MySoft.Data;
 using MySoft.Data.MsAccess;
-using MySoft.Data.SqlServer;
-using System.CodeDom.Compiler;
 using MySoft.Data.Oracle;
+using MySoft.Data.SqlServer;
 
 namespace MySoft.Tools.EntityDesign
 {

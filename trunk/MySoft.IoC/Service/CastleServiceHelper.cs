@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Runtime.Remoting;
 using MySoft.Remoting;
-using System.Runtime.Remoting;
 
 namespace MySoft.IoC
 {

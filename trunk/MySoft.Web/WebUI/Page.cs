@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
-using System.IO;
-using System.Web;
 using System.Web.UI;
-using MySoft.Web;
 using MySoft.Core;
 
 namespace MySoft.Web.UI

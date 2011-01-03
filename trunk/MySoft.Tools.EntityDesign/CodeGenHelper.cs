@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Text;
-using System.Reflection;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using MySoft.Data;
 using MySoft.Data.Design;
 

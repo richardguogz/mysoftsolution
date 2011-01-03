@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("MySoft.Tools.EntityDesignVsPlugin")]
 [assembly: AssemblyDescription("")]
@@ -11,4 +10,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.010.1215")]
+[assembly: AssemblyFileVersion("3.0.011.0103")]

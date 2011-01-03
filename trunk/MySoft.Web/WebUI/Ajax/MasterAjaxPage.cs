@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Web.UI;
-using System.Text;
 
 namespace MySoft.Web.UI
 {

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace MySoft.Data
 {
     interface IDeleteCreator

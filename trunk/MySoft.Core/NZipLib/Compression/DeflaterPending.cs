@@ -25,17 +25,19 @@
 // executable file might be covered by the GNU General Public License.
 
 
-namespace NZlib.Compression {
-	
-	/// <summary>
-	/// This class stores the pending output of the Deflater.
-	/// 
-	/// author of the original java version : Jochen Hoenicke
-	/// </summary>
-	public class DeflaterPending : PendingBuffer
-	{
-		public DeflaterPending() : base(DeflaterConstants.PENDING_BUF_SIZE)
-		{
-		}
-	}
+namespace NZlib.Compression
+{
+
+    /// <summary>
+    /// This class stores the pending output of the Deflater.
+    /// 
+    /// author of the original java version : Jochen Hoenicke
+    /// </summary>
+    public class DeflaterPending : PendingBuffer
+    {
+        public DeflaterPending()
+            : base(DeflaterConstants.PENDING_BUF_SIZE)
+        {
+        }
+    }
 }

@@ -1,15 +1,14 @@
 using System;
 using System.Data;
-using System.Text;
 using System.IO;
-using System.Xml;
+using System.Text;
 
 namespace MySoft.Common
 {
     /// <summary>
-    /// FObject : 文件系统的处理类
+    /// FileHelper : 文件系统的处理类
     /// </summary>
-    public abstract class FileOperate
+    public abstract class FileHelper
     {
 
         /// <summary>

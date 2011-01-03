@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Facilities;
-using Castle.MicroKernel.SubSystems.Conversion;
-using Castle.Core;
-
+using MySoft.Core;
 using MySoft.IoC.Services;
 using MySoft.Remoting;
 
@@ -24,19 +21,13 @@ namespace MySoft.IoC.Facilities
 
         private bool CheckIfComponentImplementsIService(ComponentModel model)
         {
-            bool markedWithServiceContract = typeof(IServiceInterface).IsAssignableFrom(model.Service);
-            if (!markedWithServiceContract)
+            bool markedWithServiceContract = false;
+            var attr = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(model.Service);
+            if (attr != null)
             {
-                foreach (object attr in model.Service.GetCustomAttributes(true))
-                {
-                    if (attr.ToString().EndsWith("ServiceContractAttribute"))
-                    {
-                        markedWithServiceContract = true;
-                        break;
-                    }
-                }
+                markedWithServiceContract = true;
             }
-            return  markedWithServiceContract;
+            return markedWithServiceContract;
         }
 
         /// <summary>

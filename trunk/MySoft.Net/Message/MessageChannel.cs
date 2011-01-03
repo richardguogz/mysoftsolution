@@ -1,9 +1,8 @@
 ﻿namespace MySoft.Net.Message
 {
-    using MySoft.Net;
     using System;
-    using System.Runtime.CompilerServices;
     using System.Text;
+    using MySoft.Net;
 
     public class MessageChannel : IMessageChannel, IDisposable
     {
@@ -63,7 +62,7 @@
             {
                 buffer2[index - num3] = data[index];
             }
-            IMessage message = (IMessage) Activator.CreateInstance(Type.GetType(Encoding.ASCII.GetString(bytes)));
+            IMessage message = (IMessage)Activator.CreateInstance(Type.GetType(Encoding.ASCII.GetString(bytes)));
             message.Load(buffer2);
             return message;
         }
@@ -98,7 +97,7 @@
             Encoding.ASCII.GetBytes("8DD25FFF-FFD8-42a9-9640-96F5E7FAA796").CopyTo(array, 0);
             BitConverter.GetBytes(length).CopyTo(array, 0x24);
             bytes.CopyTo(array, 40);
-            buffer2.CopyTo(array, (int) (40 + length));
+            buffer2.CopyTo(array, (int)(40 + length));
             this.BaseChannel.Send(array);
         }
 

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Data;
 
 namespace MySoft.Common
 {
@@ -12,11 +9,7 @@ namespace MySoft.Common
         /// <summary>
         /// ¹¹Ôìº¯Êý
         /// </summary>
-        public PostUserInfo()
-        {
-
-        }
-
+        public PostUserInfo() { }
 
         // Private Field
         private string _UID;

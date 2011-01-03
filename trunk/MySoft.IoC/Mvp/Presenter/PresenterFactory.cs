@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
-using System.Configuration;
-using MySoft.IoC;
 using MySoft.Core;
+using MySoft.IoC;
 
 namespace MySoft.Mvp
 {
