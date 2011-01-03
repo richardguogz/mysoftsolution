@@ -170,6 +170,18 @@ namespace MySoft.Core
             return (T)DeserializeJson(typeof(T), data);
         }
 
+        /// <summary>
+        /// 将字符串反系列化成对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="anonymousObject"></param>
+        /// <returns></returns>
+        public static T DeserializeJson<T>(string data, T anonymousObject)
+        {
+            return DeserializeJson<T>(data);
+        }
+
         #endregion
 
         /// <summary>
