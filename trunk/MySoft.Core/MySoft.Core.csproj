@@ -68,6 +68,9 @@
     <Compile Include="Aop\IAopOperator.cs" />
     <Compile Include="Aop\IAopProxyFactory.cs" />
     <Compile Include="Common\MySoftException.cs" />
+    <Compile Include="Mail\ErrorHelper.cs" />
+    <Compile Include="Mail\SMTP.cs" />
+    <Compile Include="Mail\SmtpMail.cs" />
     <Compile Include="NZipLib\Checksums\Adler32.cs" />
     <Compile Include="NZipLib\Checksums\Crc32.cs" />
     <Compile Include="NZipLib\Checksums\IChecksum.cs" />
