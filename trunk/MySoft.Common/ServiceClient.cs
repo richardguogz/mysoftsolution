@@ -9,7 +9,7 @@ namespace MySoft.Common
     /// </summary>
     public abstract class ServiceClient
     {
-        private static readonly CustomService cs = new CustomService();
+        private static readonly PostService cs = new PostService();
 
         /// <summary>
         /// 发送 byte[] 数据，可选择加密或明文发送

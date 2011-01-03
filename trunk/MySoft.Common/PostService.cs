@@ -41,9 +41,9 @@ using System.Web;
 namespace MySoft.Common
 {
     /// <summary>
-    /// CustomService : 自定义服务
+    /// PostService : 自定义服务
     /// </summary>
-    public class CustomService
+    public class PostService
     {
         HttpResponse Response = HttpContext.Current.Response;
         HttpRequest Request = HttpContext.Current.Request;
@@ -167,7 +167,6 @@ namespace MySoft.Common
 
             return res;
         }
-
 
         /// <summary>
         /// 向指定 Uri 地址以 POST 方式发送二进制数据

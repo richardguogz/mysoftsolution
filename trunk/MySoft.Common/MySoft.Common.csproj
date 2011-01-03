@@ -96,7 +96,7 @@
     <Compile Include="CryptoService\DESCrypto.cs" />
     <Compile Include="CryptoService\RSACrypto.cs" />
     <Compile Include="CryptoService\SymmCrypto.cs" />
-    <Compile Include="CustomService.cs" />
+    <Compile Include="PostService.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="FormatterHelper.cs" />
     <Compile Include="ImageHelper.cs" />
