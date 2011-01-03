@@ -10,6 +10,9 @@ using MySoft.Remoting;
 using MySoft.IoC;
 using System.Diagnostics;
 using MySoft.IoC.Dll;
+using System.Runtime.Serialization;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace MySort.IoC.WinFormTest
 {
@@ -26,6 +29,12 @@ namespace MySort.IoC.WinFormTest
         {
             var item = new { Name = "maoyong", Age = 10 };
             var json = MySoft.Core.SerializationManager.SerializeJson(item);
+
+            //ConstructorInfo constructorInfo = item.GetType().GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
+            //var iii = constructorInfo.Invoke(new object[] { "a", 1 });
+
+            //var objectType = CreateDynamicType(item.GetType());
+            //var items = Activator.CreateInstance(objectType);
 
             var item2 = MySoft.Core.SerializationManager.DeserializeJson(json, item);
             return;

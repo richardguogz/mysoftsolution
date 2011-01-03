@@ -388,7 +388,23 @@ namespace Newtonsoft.Json
 
         private object PopulateObject(JsonReader reader, Type objectType)
         {
-            object newObject = Activator.CreateInstance(objectType);
+            object newObject = null;
+            ConstructorInfo info = null;
+            bool isAnonymousObject = false;
+            try
+            {
+                newObject = Activator.CreateInstance(objectType);
+            }
+            catch
+            {
+                var arr = objectType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+                if (arr != null && arr.Length > 0)
+                    info = arr[0];
+
+                newObject = new Dictionary<string, object>();
+                objectType = newObject.GetType();
+                isAnonymousObject = true;
+            }
 
             while (reader.Read())
             {
@@ -400,7 +416,23 @@ namespace Newtonsoft.Json
                         SetObjectMember(reader, newObject, objectType, memberName);
                         break;
                     case JsonToken.EndObject:
-                        return newObject;
+                        {
+                            if (isAnonymousObject)
+                            {
+                                var args = new List<object>();
+                                var dict = newObject as Dictionary<string, object>;
+                                foreach (var p in info.GetParameters())
+                                {
+                                    if (dict.ContainsKey(p.Name))
+                                    {
+                                        args.Add(Convert.ChangeType(dict[p.Name], p.ParameterType));
+                                    }
+                                }
+
+                                return info.Invoke(args.ToArray());
+                            }
+                            return newObject;
+                        }
                     default:
                         throw new JsonSerializationException("Unexpected token when deserializing object: " + reader.TokenType);
                 }

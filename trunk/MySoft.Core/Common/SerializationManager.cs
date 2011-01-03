@@ -8,6 +8,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace MySoft.Core
 {
