@@ -14,10 +14,8 @@ namespace MySoft.Mail
 {
     #region 邮件接收类
 
-
     /// <summary>
     /// 邮件接收类
-
     /// </summary>
     public class POP3
     {
@@ -68,7 +66,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 获得新邮件数量
-
         /// </summary>
         /// <returns>新邮件数量</returns>
         public int GetNumberOfNewMessages()
@@ -98,7 +95,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 获取新邮件内容
-
         /// </summary>
         /// <param name="subj">邮件主题</param>
         /// <returns>新邮件内容</returns>
@@ -139,7 +135,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 获取新邮件内容
-
         /// </summary>
         /// <param name="nIndex">新邮件索引</param>
         /// <returns>新邮件内容</returns>
@@ -352,7 +347,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 显示的名称
-
         /// </summary>
         public string MailDisplyName
         {
@@ -371,7 +365,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 抄送
-
         /// </summary>
         public string[] MailCc
         {
@@ -381,7 +374,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 密件抄送
-
         /// </summary>
         public string[] MailBcc
         {
@@ -418,7 +410,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// SMTP 服务器
-
         /// </summary>
         public string SMTPServer
         {
@@ -437,7 +428,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 用户名
-
         /// </summary>
         public string SMTPUsername
         {
@@ -475,7 +465,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 示邮件正文是否为 Html 格式的值
-
         /// </summary>
         public bool IsBodyHtml
         {
@@ -616,7 +605,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 同步发送邮件
-
         /// </summary>
         /// <returns></returns>
         public Boolean Send()
@@ -642,7 +630,6 @@ namespace MySoft.Mail
 
         /// <summary>
         /// 发送邮件
-
         /// </summary>
         /// <param name="isAsync">是否异步发送邮件</param>
         /// <param name="userState">异步任务的唯一标识符，当 isAsync 为 True 时必须设置该属性， 当 isAsync 为 False 时可设置为 null</param>

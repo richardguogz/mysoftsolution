@@ -10,7 +10,10 @@ namespace MySoft.IoC.Dll
     {
         public UserInfo GetUserInfo(string username)
         {
-            System.Threading.Thread.Sleep(1000);
+            if (username.Length % 2 == 0)
+            {
+                throw new Exception(username + " =>  出错啦！");
+            }
 
             return new UserInfo()
             {

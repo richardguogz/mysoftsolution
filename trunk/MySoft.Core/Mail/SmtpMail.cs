@@ -6,7 +6,7 @@ using System.Web;
 namespace MySoft.Mail
 {
     /// <summary>
-    /// 邮件
+    /// 邮件发送
     /// </summary>
     public class SmtpMail
     {

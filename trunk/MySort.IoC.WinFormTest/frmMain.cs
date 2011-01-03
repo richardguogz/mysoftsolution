@@ -24,6 +24,12 @@ namespace MySort.IoC.WinFormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
+            var item = new { Name = "maoyong", Age = 10 };
+            var json = MySoft.Core.SerializationManager.SerializeJson(item);
+
+            var item2 = MySoft.Core.SerializationManager.DeserializeJson(json, item);
+            return;
+
             CastleFactory.Create().OnError += new MySoft.Core.ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
