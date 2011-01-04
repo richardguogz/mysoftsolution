@@ -47,6 +47,11 @@ namespace MySoft.Web
         bool IsRemote { get; set; }
 
         /// <summary>
+        /// 重试间隔(单位:分钟)
+        /// </summary>
+        int RetryInterval { get; set; }
+
+        /// <summary>
         /// 立即更新页面
         /// </summary>
         void Update();
@@ -86,13 +91,13 @@ namespace MySoft.Web
     /// 返回值数组的委托
     /// </summary>
     /// <returns></returns>
-    public delegate object[] GetValuesEventHandler();
+    public delegate object[] GetResultEventHandler(object[] arguments);
 
     /// <summary>
     /// 获取开始结束值的委托
     /// </summary>
     /// <returns></returns>
-    public delegate int StartEndValueEventHandler();
+    public delegate int BeginEndValueEventHandler();
 
     /// <summary>
     /// 通用静态页子项
@@ -160,6 +165,16 @@ namespace MySoft.Web
         {
             get { return isRemote; }
             set { isRemote = value; }
+        }
+
+        private int retryInterval = 10;
+        /// <summary>
+        /// 重试间隔
+        /// </summary>
+        public int RetryInterval
+        {
+            get { return retryInterval; }
+            set { retryInterval = value; }
         }
 
         /// <summary>
@@ -305,16 +320,28 @@ namespace MySoft.Web
 
                 //结束生成
                 if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
+
+                //全部生成成功才设置最后更新时间
+                if (updateTime == DateTime.MaxValue)
+                    staticPageDependency.LastUpdateTime = DateTime.Now;
+                else
+                    staticPageDependency.LastUpdateTime = updateTime;
             }
             catch (Exception ex)
             {
                 StaticPageManager.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                 //如果出错，则继续往下执行
+
+                //全部生成成功才设置最后更新时间,否则往后推10分钟重新生成
+                if (updateTime == DateTime.MaxValue)
+                    staticPageDependency.LastUpdateTime = DateTime.Now.AddMinutes(retryInterval);
+                else
+                    staticPageDependency.LastUpdateTime = updateTime.AddMinutes(retryInterval);
             }
             finally
             {
                 //设置最后更新时间
-                staticPageDependency.LastUpdateTime = updateTime;
+                //staticPageDependency.LastUpdateTime = updateTime;
             }
 
             updateComplete = true;
@@ -357,6 +384,7 @@ namespace MySoft.Web
     /// </summary>
     public sealed class StaticPageParamInfo
     {
+        private object[] arguments;
         private string paramName;
         /// <summary>
         /// 参数名
@@ -366,13 +394,21 @@ namespace MySoft.Web
             get { return paramName; }
         }
 
-        private GetValuesEventHandler getValues;
+        private GetResultEventHandler getResult;
         /// <summary>
         /// 获取值委托
         /// </summary>
-        public GetValuesEventHandler GetValues
+        public GetResultEventHandler GetResult
         {
-            get { return getValues; }
+            get { return getResult; }
+        }
+
+        /// <summary>
+        /// 委托参数
+        /// </summary>
+        public object[] Arguments
+        {
+            get { return arguments; }
         }
 
         public StaticPageParamInfo(string paramName, int startPage, int endPage)
@@ -383,23 +419,24 @@ namespace MySoft.Web
             {
                 list.Add(index);
             }
-            this.getValues = delegate() { return list.ToArray(); };
+            this.getResult = delegate(object[] args) { return list.ToArray(); };
         }
 
-        public StaticPageParamInfo(string paramName, StartEndValueEventHandler startValue, StartEndValueEventHandler endValue)
-            : this(paramName, startValue(), endValue())
+        public StaticPageParamInfo(string paramName, BeginEndValueEventHandler beginValue, BeginEndValueEventHandler endValue)
+            : this(paramName, beginValue(), endValue())
         { }
 
         public StaticPageParamInfo(string paramName, object[] values)
         {
             this.paramName = paramName;
-            this.getValues = delegate() { return values; };
+            this.getResult = delegate(object[] args) { return values; };
         }
 
-        public StaticPageParamInfo(string paramName, GetValuesEventHandler getValues)
+        public StaticPageParamInfo(string paramName, GetResultEventHandler getResult, params object[] arguments)
         {
             this.paramName = paramName;
-            this.getValues = getValues;
+            this.getResult = getResult;
+            this.arguments = arguments;
         }
     }
 
@@ -479,6 +516,16 @@ namespace MySoft.Web
         {
             get { return isRemote; }
             set { isRemote = value; }
+        }
+
+        private int retryInterval = 10;
+        /// <summary>
+        /// 重试间隔
+        /// </summary>
+        public int RetryInterval
+        {
+            get { return retryInterval; }
+            set { retryInterval = value; }
         }
 
         /// <summary>
@@ -595,12 +642,26 @@ namespace MySoft.Web
                 {
                     if (!dict.ContainsKey(paramInfo.ParamName))
                     {
-                        dict.Add(paramInfo.ParamName, new List<object>(paramInfo.GetValues()));
+                        List<object> objlist = new List<object>();
+                        try
+                        {
+                            objlist = new List<object>(paramInfo.GetResult(paramInfo.Arguments));
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                objlist = new List<object>(paramInfo.GetResult(paramInfo.Arguments));
+                            }
+                            catch { }
+                        }
+                        dict.Add(paramInfo.ParamName, objlist);
                         dictPosition.Add(paramInfo.ParamName, 0);
                     }
                 }
 
                 int count = GetPageCount(dict);
+                bool allUpdateSuccess = true;
                 for (int index = 0; index < count; index++)
                 {
                     string dynamicurl = GetRealPath(templatePath);
@@ -654,22 +715,42 @@ namespace MySoft.Web
                     {
                         StaticPageManager.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                         //如果出错，则继续往下执行
+
+                        allUpdateSuccess = false;
                     }
                     finally
                     {
                         SetPosition(dict.Keys.Count - 1);
                     }
                 }
+
+                //未全部更新成功
+                if (!allUpdateSuccess)
+                {
+                    throw new Exception("静态页未能全部生成成功，需要延迟重新生成！");
+                }
+
+                //全部生成成功才设置最后更新时间
+                if (updateTime == DateTime.MaxValue)
+                    staticPageDependency.LastUpdateTime = DateTime.Now;
+                else
+                    staticPageDependency.LastUpdateTime = updateTime;
             }
             catch (Exception ex)
             {
                 StaticPageManager.SaveError(ex, "调用静态页生成方法Update时发生异常：" + ex.Message);
                 //如果出错，则继续往下执行
+
+                //全部生成成功才设置最后更新时间,否则往后推10分钟重新生成
+                if (updateTime == DateTime.MaxValue)
+                    staticPageDependency.LastUpdateTime = DateTime.Now.AddMinutes(retryInterval);
+                else
+                    staticPageDependency.LastUpdateTime = updateTime.AddMinutes(retryInterval);
             }
             finally
             {
                 //设置最后更新时间
-                staticPageDependency.LastUpdateTime = updateTime;
+                //staticPageDependency.LastUpdateTime = updateTime;
             }
 
             updateComplete = true;
