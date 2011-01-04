@@ -27,8 +27,8 @@ namespace MySort.IoC.WinFormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var item = new { Name = "maoyong", Age = 10, Children = new List<string>(new string[] { "a", "b" }) };
-            var json = MySoft.Core.SerializationManager.SerializeJson(item);
+            //var item = new { Name = "maoyong", Age = 10, Children = new List<string>(new string[] { "a", "b" }) };
+            //var json = MySoft.Core.SerializationManager.SerializeJson(item);
 
             //ConstructorInfo constructorInfo = item.GetType().GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
             //var iii = constructorInfo.Invoke(new object[] { "a", 1 });
@@ -36,10 +36,10 @@ namespace MySort.IoC.WinFormTest
             //var objectType = CreateDynamicType(item.GetType());
             //var items = Activator.CreateInstance(objectType);
 
-            var item2 = MySoft.Core.SerializationManager.DeserializeJson(json, new { Name = string.Empty, Age = 0, Children = new List<string>() });
+            //var item2 = MySoft.Core.SerializationManager.DeserializeJson(json, new { Name = string.Empty, Age = 0, Children = new List<string>() });
 
-            var a = item2.Name;
-            return;
+            //var a = item2.Name;
+            //return;
 
             CastleFactory.Create().OnError += new MySoft.Core.ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
