@@ -404,11 +404,13 @@ namespace Newtonsoft.Json
             {
                 newObject = Activator.CreateInstance(objectType);
             }
-            catch
+            catch (MissingMethodException ex)
             {
                 var arr = objectType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
                 if (arr != null && arr.Length > 0)
                     info = arr[0];
+                else
+                    throw ex;
 
                 var dataObject = new Dictionary<string, object>();
                 foreach (var p in info.GetParameters())
