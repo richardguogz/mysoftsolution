@@ -345,12 +345,21 @@ namespace Newtonsoft.Json
             }
             else if (typeof(IDictionary).IsAssignableFrom(targetType))
             {
-                // attempt to get the IDictionary's type
-                memberType = ReflectionUtils.GetDictionaryValueType(target.GetType());
+                if (((IDictionary)target).Contains(memberName))
+                {
+                    value = GetObject(reader, ((IDictionary)target)[memberName] as Type);
 
-                value = GetObject(reader, memberType);
+                    ((IDictionary)target)[memberName] = value;
+                }
+                else
+                {
+                    // attempt to get the IDictionary's type
+                    memberType = ReflectionUtils.GetDictionaryValueType(target.GetType());
 
-                ((IDictionary)target).Add(memberName, value);
+                    value = GetObject(reader, memberType);
+
+                    ((IDictionary)target).Add(memberName, value);
+                }
             }
             else
             {
@@ -401,7 +410,13 @@ namespace Newtonsoft.Json
                 if (arr != null && arr.Length > 0)
                     info = arr[0];
 
-                newObject = new Dictionary<string, object>();
+                var dataObject = new Dictionary<string, object>();
+                foreach (var p in info.GetParameters())
+                {
+                    dataObject[p.Name] = p.ParameterType;
+                }
+
+                newObject = dataObject;
                 objectType = newObject.GetType();
                 isAnonymousObject = true;
             }
@@ -412,27 +427,19 @@ namespace Newtonsoft.Json
                 {
                     case JsonToken.PropertyName:
                         string memberName = reader.Value.ToString();
-
                         SetObjectMember(reader, newObject, objectType, memberName);
+
                         break;
                     case JsonToken.EndObject:
+                        if (isAnonymousObject)
                         {
-                            if (isAnonymousObject)
-                            {
-                                var args = new List<object>();
-                                var dict = newObject as Dictionary<string, object>;
-                                foreach (var p in info.GetParameters())
-                                {
-                                    if (dict.ContainsKey(p.Name))
-                                    {
-                                        args.Add(Convert.ChangeType(dict[p.Name], p.ParameterType));
-                                    }
-                                }
-
-                                return info.Invoke(args.ToArray());
-                            }
-                            return newObject;
+                            var dictionary = (IDictionary)newObject;
+                            var args = new object[dictionary.Count];
+                            dictionary.Values.CopyTo(args, 0);
+                            return info.Invoke(args);
                         }
+                        return newObject;
+
                     default:
                         throw new JsonSerializationException("Unexpected token when deserializing object: " + reader.TokenType);
                 }
