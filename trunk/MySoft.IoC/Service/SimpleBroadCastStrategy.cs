@@ -66,18 +66,6 @@ namespace MySoft.IoC
                                 //if calling ok, skip other subscribers, easily exit loop
                                 break;
                             }
-                            catch (SocketException ex)  //如果socket错误，表示连接失败
-                            {
-                                string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] shutdown! Reason: " + ex.Message;
-                                if (OnLog != null) OnLog(error);
-
-                                var exception = new IoCException(log + "\r\n" + error, ex);
-                                if (OnError != null) OnError(exception);
-
-                                handlers[tempClientId] = null;
-
-                                needCleanHandlers = true;
-                            }
                             catch (Exception ex)
                             {
                                 string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ex.Message;
@@ -85,6 +73,13 @@ namespace MySoft.IoC
 
                                 var exception = new IoCException(log + "\r\n" + error, ex);
                                 if (OnError != null) OnError(exception);
+
+                                //如果socket错误，表示连接失败
+                                if (ex is SocketException)
+                                {
+                                    handlers[tempClientId] = null;
+                                    needCleanHandlers = true;
+                                }
                             }
                         }
                         else
