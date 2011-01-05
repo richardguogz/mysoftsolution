@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormatterHelper.cs" />
     <Compile Include="FunctionHelper.cs" />
     <Compile Include="CryptoService\DESCrypto.cs" />
     <Compile Include="CryptoService\RSACrypto.cs" />
