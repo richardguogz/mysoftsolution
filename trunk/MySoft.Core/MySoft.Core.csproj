@@ -240,6 +240,7 @@
     <Compile Include="Utils\IErrorLogable.cs" />
     <Compile Include="Utils\ILogable.cs" />
     <Compile Include="Common\SerializationManager.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
