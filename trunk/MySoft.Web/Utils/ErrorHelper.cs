@@ -35,7 +35,7 @@ namespace MySoft.Web
             {
                 // Query Information
                 NameValueCollection info = new NameValueCollection();
-                info.Add("RawUrl", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
+                info.Add("Url", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
                 html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Query Information");
                 html += CollectionToHtmlTable(info);
 
@@ -80,7 +80,7 @@ namespace MySoft.Web
             {
                 // Query Information
                 NameValueCollection info = new NameValueCollection();
-                info.Add("RawUrl", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
+                info.Add("Url", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
                 html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Query Information");
                 html += CollectionToHtmlTable(info);
 
