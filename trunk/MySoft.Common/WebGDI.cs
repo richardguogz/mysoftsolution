@@ -185,20 +185,6 @@ namespace MySoft.Common
             imgPhoto.Dispose();
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// 在一张图片的指定位置处加入一张具有水印效果的图片
         /// </summary>
