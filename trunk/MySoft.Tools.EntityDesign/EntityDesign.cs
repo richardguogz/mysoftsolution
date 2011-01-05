@@ -820,7 +820,15 @@ namespace MySoft.Tools.EntityDesign
 
                 if (result.Errors.Count > 0)
                 {
-                    MessageBox.Show("生成实体时出现错误！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    StringBuilder sb = new StringBuilder();
+                    for (int index = 0; index < result.Errors.Count; index++)
+                    {
+                        var err = result.Errors[index];
+                        sb.AppendFormat("{0}、({1})-->", ++index, err.ErrorNumber);
+                        sb.AppendLine(err.ErrorText);
+                    }
+
+                    MessageBox.Show("生成实体时出现了" + result.Errors.Count + "个错误！\r\n" + sb.ToString(), "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 

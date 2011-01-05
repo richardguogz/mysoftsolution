@@ -21,6 +21,7 @@ namespace MySoft.Remoting
         private string serverAddress;
         private int serverPort;
         private int callbackPort;
+        private int timeout = 1000 * 60 * 5;
         private IChannel clientChannel;
 
         private void WriteLog(string log)
@@ -70,35 +71,33 @@ namespace MySoft.Remoting
         {
             if (clientChannel == null)
             {
-                try
+                BinaryServerFormatterSinkProvider serverProvider = new
+                    BinaryServerFormatterSinkProvider();
+                BinaryClientFormatterSinkProvider clientProvider = new
+                    BinaryClientFormatterSinkProvider();
+
+                //设置反序列化级别为Full，支持远程处理在所有情况下支持的所有类型
+                serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                string name = AppDomain.CurrentDomain.FriendlyName + Environment.MachineName;
+                IDictionary props = new Hashtable();
+                props["name"] = name;
+                props["port"] = callbackPort;
+                props["timeout"] = timeout;
+
+                if (channelType == RemotingChannelType.Tcp)
                 {
-                    IDictionary props = new Hashtable();
-                    props["name"] = AppDomain.CurrentDomain.FriendlyName;
-                    props["port"] = callbackPort;
-                    props["timeout"] = 1000 * 60 * 5; //默认5分钟超时
-
-                    if (channelType == RemotingChannelType.Tcp)
-                    {
-                        BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
-                        BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
-                        binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
-
-                        clientChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
-                    }
-                    else
-                    {
-                        SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
-                        SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
-                        soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
-
-                        clientChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
-                    }
-
-                    ChannelServices.RegisterChannel(clientChannel, false);
+                    clientChannel = new TcpChannel(props, clientProvider, serverProvider);
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new RemotingException(ex.Message, ex);
+                    clientChannel = new HttpChannel(props, clientProvider, serverProvider);
+                }
+
+                //判断信道是否注册
+                if (ChannelServices.GetChannel(name) == null)
+                {
+                    ChannelServices.RegisterChannel(clientChannel, false);
                 }
             }
         }

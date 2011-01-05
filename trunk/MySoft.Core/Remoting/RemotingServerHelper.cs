@@ -117,34 +117,32 @@ namespace MySoft.Remoting
         {
             if (serviceChannel == null)
             {
-                try
+                //使用二进制格式化
+                BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+
+                //设置反序列化级别为Full，支持远程处理在所有情况下支持的所有类型
+                serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+
+                string name = AppDomain.CurrentDomain.FriendlyName + Environment.MachineName;
+                IDictionary props = new Hashtable();
+                props["name"] = name;
+                props["port"] = serverPort;
+
+                //初始化通道并注册
+                if (channelType == RemotingChannelType.Tcp)
                 {
-                    IDictionary props = new Hashtable();
-                    props["name"] = AppDomain.CurrentDomain.FriendlyName;
-                    props["port"] = serverPort;
-
-                    if (channelType == RemotingChannelType.Tcp)
-                    {
-                        BinaryClientFormatterSinkProvider binaryClientSinkProvider = new BinaryClientFormatterSinkProvider();
-                        BinaryServerFormatterSinkProvider binaryServerSinkProvider = new BinaryServerFormatterSinkProvider();
-                        binaryServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
-
-                        serviceChannel = new TcpChannel(props, binaryClientSinkProvider, binaryServerSinkProvider);
-                    }
-                    else
-                    {
-                        SoapClientFormatterSinkProvider soapClientSinkProvider = new SoapClientFormatterSinkProvider();
-                        SoapServerFormatterSinkProvider soapServerSinkProvider = new SoapServerFormatterSinkProvider();
-                        soapServerSinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
-
-                        serviceChannel = new HttpChannel(props, soapClientSinkProvider, soapServerSinkProvider);
-                    }
-
-                    ChannelServices.RegisterChannel(serviceChannel, false);
+                    serviceChannel = new TcpChannel(props, clientProvider, serverProvider);
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new RemotingException(ex.Message, ex);
+                    serviceChannel = new HttpChannel(props, clientProvider, serverProvider);
+                }
+
+                //判断信道是否注册
+                if (ChannelServices.GetChannel(name) == null)
+                {
+                    ChannelServices.RegisterChannel(serviceChannel, false);
                 }
             }
         }
