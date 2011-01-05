@@ -4,8 +4,11 @@ using System.Text;
 using System.Collections.Specialized;
 using System.Web;
 
-namespace MySoft.Mail
+namespace MySoft.Core
 {
+    /// <summary>
+    /// 错误处理
+    /// </summary>
     public class ErrorHelper
     {
         public static string GetErrorWithoutHtml(Exception ex)

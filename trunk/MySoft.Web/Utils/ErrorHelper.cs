@@ -33,6 +33,12 @@ namespace MySoft.Web
 
             if (HttpContext.Current != null)
             {
+                // Query Information
+                NameValueCollection info = new NameValueCollection();
+                info.Add("RawUrl", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Query Information");
+                html += CollectionToHtmlTable(info);
+
                 // QueryString Collection
                 html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "QueryString Collection");
                 html += CollectionToHtmlTable(HttpContext.Current.Request.QueryString);
@@ -72,6 +78,12 @@ namespace MySoft.Web
 
             if (HttpContext.Current != null)
             {
+                // Query Information
+                NameValueCollection info = new NameValueCollection();
+                info.Add("RawUrl", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Query Information");
+                html += CollectionToHtmlTable(info);
+
                 // QueryString Collection
                 html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "QueryString Collection");
                 html += CollectionToHtmlTable(HttpContext.Current.Request.QueryString);
@@ -202,7 +214,7 @@ namespace MySoft.Web
         {
             if (html == null) return html;
             // Cleans the string for HTML friendly display
-            return (html.Length == 0) ? "" : html.Replace("<", "&lt;").Replace("\r\n", "<BR>").Replace("&", "&amp;").Replace(" ", "&nbsp;");
+            return (html.Length == 0) ? "" : html.Replace("<", "&lt;").Replace("\r\n", "<br/ >").Replace("&", "&amp;").Replace(" ", "&nbsp;");
         }
     }
 }
