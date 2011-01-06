@@ -8,7 +8,6 @@ using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
-using MySoft.Core;
 
 namespace MySoft.Remoting
 {
@@ -97,7 +96,7 @@ namespace MySoft.Remoting
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemotingServerHelper"/> class.

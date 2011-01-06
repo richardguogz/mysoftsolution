@@ -1,11 +1,11 @@
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// A delegate used for log.
     /// </summary>
     /// <param name="log">The msg to write to log.</param>
-    public delegate void LogEventHandler(string log);
+    public delegate void LogHandler(string log);
 
     /// <summary>
     /// Mark a implementing class as loggable.
@@ -15,6 +15,6 @@ namespace MySoft.Core
         /// <summary>
         /// OnLog event.
         /// </summary>
-        event LogEventHandler OnLog;
+        event LogHandler OnLog;
     }
 }

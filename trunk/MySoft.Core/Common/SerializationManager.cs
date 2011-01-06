@@ -11,7 +11,7 @@ using Newtonsoft.Json.Converters;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// The serialization manager.

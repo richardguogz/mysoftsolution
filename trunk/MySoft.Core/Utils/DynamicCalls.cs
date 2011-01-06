@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>Delegate for calling a method that is not known at runtime.</summary>
     /// <param name="target">the object to be called or null if the call is to a static method.</param>

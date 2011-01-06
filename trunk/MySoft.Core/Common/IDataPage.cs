@@ -1,5 +1,5 @@
 ﻿
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 

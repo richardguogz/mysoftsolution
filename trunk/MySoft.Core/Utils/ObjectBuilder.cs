@@ -1,10 +1,11 @@
-﻿namespace MySoft.Converter
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Reflection;
+using MySoft.Converter;
 
+namespace MySoft
+{
     /// <summary>
     /// 对象构造器
     /// </summary>

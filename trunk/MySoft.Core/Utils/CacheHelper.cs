@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 缓存操作

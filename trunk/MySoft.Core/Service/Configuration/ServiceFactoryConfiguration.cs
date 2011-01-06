@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Xml;
 
-namespace MySoft.Service
+namespace MySoft
 {
     /// <summary>
     /// 服务工厂

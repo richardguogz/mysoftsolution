@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Xml;
-using MySoft.Core;
 
 namespace MySoft.Task
 {
@@ -13,7 +12,7 @@ namespace MySoft.Task
     /// <configuration>
     ///     <configSections>
     /// 	    <sectionGroup name="serviceFramework">
-    /// 		    <section name="task" type="MySoft.Task.TaskConfigurationHandler, MySoft.Core"/>
+    /// 		    <section name="task" type="MySoft.Task.TaskConfigurationHandler, MySoft"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///        ......

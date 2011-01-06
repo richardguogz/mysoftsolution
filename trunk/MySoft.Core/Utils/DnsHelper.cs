@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// DnsHelper

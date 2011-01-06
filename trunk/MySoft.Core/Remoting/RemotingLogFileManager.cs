@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using MySoft.Core;
 
 namespace MySoft.Remoting
 {

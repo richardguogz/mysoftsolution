@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 简单日志管理类(按日期生成文件)

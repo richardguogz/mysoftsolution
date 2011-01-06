@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace MySoft.Service
+namespace MySoft
 {
     /// <summary>
     /// 创建本地服务

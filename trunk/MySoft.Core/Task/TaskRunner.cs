@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using MySoft.Core;
 
 namespace MySoft.Task
 {
@@ -27,7 +26,6 @@ namespace MySoft.Task
         public void AddJob(Job job)
         {
             if (!job.IsRegisterLog) job.OnLog += OnLog;
-
             cfg.Jobs.Add(job.Name, job);
         }
 
@@ -166,7 +164,7 @@ namespace MySoft.Task
         /// <summary>
         /// 
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
 

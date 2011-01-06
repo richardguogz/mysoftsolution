@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 分页数据信息

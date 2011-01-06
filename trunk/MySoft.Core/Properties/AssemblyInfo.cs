@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过下列属性集
 // 控制。更改这些属性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("MySoft.Core")]
+[assembly: AssemblyTitle("MySoft")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MySoft开发组")]
-[assembly: AssemblyProduct("MySoft.Core")]
+[assembly: AssemblyProduct("MySoft")]
 [assembly: AssemblyCopyright("版权所有 (C) MySoft 2010")]
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 排序数据属性

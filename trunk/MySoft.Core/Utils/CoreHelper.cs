@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using MySoft.Converter;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 常用方法
@@ -23,6 +23,19 @@ namespace MySoft.Core
             path = path.Replace("/", "\\").TrimStart('\\');
 
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+        }
+
+        /// <summary>
+        /// 获取内部异常
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        public static Exception GetInnerException(Exception ex)
+        {
+            if (ex.InnerException != null)
+                return GetInnerException(ex.InnerException);
+
+            return ex;
         }
 
         #region 对象克隆

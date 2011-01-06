@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MySoft.Core
+namespace MySoft
 {
     public sealed class EmitHelper
     {

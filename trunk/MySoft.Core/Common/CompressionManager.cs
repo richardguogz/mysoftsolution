@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// Compress Manager

@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace MySoft.Service
+namespace MySoft
 {
     /// <summary>
     /// 本地服务

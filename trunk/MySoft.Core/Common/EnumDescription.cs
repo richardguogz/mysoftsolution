@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 对任意类型添加文字描述

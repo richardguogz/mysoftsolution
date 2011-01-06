@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// A delegate used for exception.
     /// </summary>
     /// <param name="exception"></param>
-    public delegate void ErrorLogEventHandler(Exception exception);
+    public delegate void ErrorLogHandler(Exception exception);
 
     /// <summary>
     /// Mark a implementing class as loggable.
@@ -16,6 +16,6 @@ namespace MySoft.Core
         /// <summary>
         /// OnError event.
         /// </summary>
-        event ErrorLogEventHandler OnError;
+        event ErrorLogHandler OnError;
     }
 }

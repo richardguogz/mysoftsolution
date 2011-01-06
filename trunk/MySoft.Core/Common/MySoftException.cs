@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary>
     /// 异常类型

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MySoft.Core
+namespace MySoft
 {
     /// <summary> 
     /// 考虑到某些类型没有无参的构造函数，增加了描述构造信息的专门结构 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Runtime.Remoting;
 using System.Xml;
-using MySoft.Core;
 
 namespace MySoft.Remoting
 {
@@ -14,7 +13,7 @@ namespace MySoft.Remoting
     /// <configuration>
     ///     <configSections>
     /// 	    <sectionGroup name="serviceFramework">
-    /// 		    <section name="remotingServer" type="MySoft.Remoting.RemotingServerConfigurationHandler, MySoft.Core"/>
+    /// 		    <section name="remotingServer" type="MySoft.Remoting.RemotingServerConfigurationHandler, MySoft"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///     <system.web>

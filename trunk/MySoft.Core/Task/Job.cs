@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using System.Threading;
-using MySoft.Core;
 
 namespace MySoft.Task
 {
@@ -14,7 +13,7 @@ namespace MySoft.Task
         /// <summary>
         /// 事件处理日志
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         /// <summary>
         /// 是否注册了日志

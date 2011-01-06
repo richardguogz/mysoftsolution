@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MySoft.Service
+namespace MySoft
 {
 
     /// <summary>
