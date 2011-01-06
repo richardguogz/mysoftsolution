@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using MySoft.Core;
 
 namespace MySoft.Data
 {

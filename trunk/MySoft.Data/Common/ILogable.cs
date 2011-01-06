@@ -1,5 +1,4 @@
 using System.Data;
-using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -14,7 +13,7 @@ namespace MySoft.Data
         /// <summary>
         /// OnDbException event;
         /// </summary>
-        event ErrorLogEventHandler OnError;
+        event ErrorLogHandler OnError;
 
         /// <summary>
         /// 开始事件

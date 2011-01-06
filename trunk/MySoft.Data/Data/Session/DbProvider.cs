@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text;
-using MySoft.Core;
 using MySoft.Data.Design;
 
 namespace MySoft.Data
@@ -794,12 +793,12 @@ namespace MySoft.Data
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         /// <summary>
         /// OnExceptionLog event.
         /// </summary>
-        public event ErrorLogEventHandler OnError;
+        public event ErrorLogHandler OnError;
 
         /// <summary>
         /// 开始事件

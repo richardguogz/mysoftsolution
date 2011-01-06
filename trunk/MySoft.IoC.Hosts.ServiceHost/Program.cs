@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MySoft.IoC;
-using MySoft.Core;
 using System.Collections;
 using MySoft.Remoting;
 
@@ -13,8 +12,8 @@ namespace MySoft.IoC.Hosts.ServiceHost
         static void Main(string[] args)
         {
             CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
-            CastleFactory.Create().OnLog += new LogEventHandler(Program_OnLog);
-            //CastleFactory.Create().OnError += new ErrorLogEventHandler(Program_OnError);
+            CastleFactory.Create().OnLog += new LogHandler(Program_OnLog);
+            //CastleFactory.Create().OnError += new ErrorLogHandler(Program_OnError);
 
             Console.WriteLine("Service host started...");
             Console.WriteLine("Logger Status: On");

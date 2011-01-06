@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Text;
 using System.Web.UI;
-using MySoft.Core;
 
 namespace MySoft.Web.UI
 {

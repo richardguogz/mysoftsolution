@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -227,7 +226,7 @@ namespace MySoft.Data
         /// 注册一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlLogger(LogEventHandler handler)
+        public void RegisterSqlLogger(LogHandler handler)
         {
             dbProvider.OnLog += handler;
         }
@@ -236,7 +235,7 @@ namespace MySoft.Data
         /// 取消一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlLogger(LogEventHandler handler)
+        public void UnregisterSqlLogger(LogHandler handler)
         {
             dbProvider.OnLog -= handler;
         }
@@ -245,7 +244,7 @@ namespace MySoft.Data
         /// 注册一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlExceptionLogger(ErrorLogEventHandler handler)
+        public void RegisterSqlExceptionLogger(ErrorLogHandler handler)
         {
             dbProvider.OnError += handler;
         }
@@ -254,7 +253,7 @@ namespace MySoft.Data
         /// 取消一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler)
+        public void UnregisterSqlExceptionLogger(ErrorLogHandler handler)
         {
             dbProvider.OnError -= handler;
         }

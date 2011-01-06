@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Reflection;
-using MySoft.Core;
 
 namespace MySoft.Data
 {

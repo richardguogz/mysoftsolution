@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MySoft.IoC;
-using MySoft.Core;
 using MySoft.Remoting;
 
 namespace MySoft.IoC.Servers.ServiceMQServer
@@ -13,10 +12,10 @@ namespace MySoft.IoC.Servers.ServiceMQServer
         {
             CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
-            LogEventHandler logger = Console.WriteLine;
+            LogHandler logger = Console.WriteLine;
             MemoryServiceMQ mq = new MemoryServiceMQ();
-            mq.OnLog += new LogEventHandler(mq_OnLog);
-            //mq.OnError += new ErrorLogEventHandler(mq_OnError);
+            mq.OnLog += new LogHandler(mq_OnLog);
+            //mq.OnError += new ErrorLogHandler(mq_OnError);
 
             CastleServiceHelper cs = new CastleServiceHelper(config);
             cs.OnLog += logger;

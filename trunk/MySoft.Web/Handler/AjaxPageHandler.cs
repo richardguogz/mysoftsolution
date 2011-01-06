@@ -1,6 +1,5 @@
 using System.Text;
 using System.Web;
-using MySoft.Core;
 
 namespace MySoft.Web
 {

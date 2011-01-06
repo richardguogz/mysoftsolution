@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using MySoft.Core;
 
 namespace MySoft.Data
 {

@@ -8,7 +8,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 using System.Web.UI;
-using MySoft.Core;
 
 namespace MySoft.Web.UI
 {

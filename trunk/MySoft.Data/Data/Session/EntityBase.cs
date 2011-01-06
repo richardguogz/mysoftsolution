@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using MySoft.Core;
 using MySoft.Data.Design;
 
 namespace MySoft.Data

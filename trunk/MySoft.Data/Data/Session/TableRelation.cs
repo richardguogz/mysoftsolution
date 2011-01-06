@@ -1,6 +1,4 @@
-﻿using MySoft.Core;
-
-namespace MySoft.Data
+﻿namespace MySoft.Data
 {
     /// <summary>
     /// 关系表，可以用来存储关联信息

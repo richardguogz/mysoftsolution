@@ -1,6 +1,5 @@
 using System.Data;
 using System.Data.Common;
-using MySoft.Core;
 
 namespace MySoft.Data
 {
@@ -23,11 +22,11 @@ namespace MySoft.Data
 
         #region ×¢²áLog
 
-        void RegisterSqlLogger(LogEventHandler handler);
-        void UnregisterSqlLogger(LogEventHandler handler);
+        void RegisterSqlLogger(LogHandler handler);
+        void UnregisterSqlLogger(LogHandler handler);
 
-        void RegisterSqlExceptionLogger(ErrorLogEventHandler handler);
-        void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler);
+        void RegisterSqlExceptionLogger(ErrorLogHandler handler);
+        void UnregisterSqlExceptionLogger(ErrorLogHandler handler);
 
         void RegisterOnStartHandler(ExcutingEventHandler handler);
         void UnregisterOnStartHandler(ExcutingEventHandler handler);

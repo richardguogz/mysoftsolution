@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
-using MySoft.Core;
 
 namespace MySoft.Web
 {
@@ -18,9 +17,9 @@ namespace MySoft.Web
     {
         private const int INTERVAL = 60000;
 
-        public static event LogEventHandler OnLog;
+        public static event LogHandler OnLog;
 
-        public static event ErrorLogEventHandler OnError;
+        public static event ErrorLogHandler OnError;
 
         //¾²Ì¬Ò³Éú³ÉÏî
         private static List<IStaticPageItem> staticPageItems = new List<IStaticPageItem>();

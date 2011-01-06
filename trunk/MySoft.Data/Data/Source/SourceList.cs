@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
-using MySoft.Core;
 
 namespace MySoft.Data
 {
