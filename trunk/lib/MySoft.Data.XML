@@ -526,14 +526,14 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.IDbBatch.Execute(System.Collections.Generic.IList{MySoft.Core.MySoftException}@)">
+        <member name="M:MySoft.Data.IDbBatch.Execute(System.Collections.Generic.IList{MySoft.MySoftException}@)">
             <summary>
             执行批处理操作
             </summary>
             <param name="errors">输出的错误</param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DbBatch.Execute(System.Collections.Generic.IList{MySoft.Core.MySoftException}@)">
+        <member name="M:MySoft.Data.DbBatch.Execute(System.Collections.Generic.IList{MySoft.MySoftException}@)">
             <summary>
             执行批处理操作
             </summary>
@@ -845,25 +845,25 @@
             移除所有cache
             </summary>
         </member>
-        <member name="M:MySoft.Data.DbSession.RegisterSqlLogger(MySoft.Core.LogEventHandler)">
+        <member name="M:MySoft.Data.DbSession.RegisterSqlLogger(MySoft.LogHandler)">
             <summary>
             注册一个日志事件
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:MySoft.Data.DbSession.UnregisterSqlLogger(MySoft.Core.LogEventHandler)">
+        <member name="M:MySoft.Data.DbSession.UnregisterSqlLogger(MySoft.LogHandler)">
             <summary>
             取消一个日志事件
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:MySoft.Data.DbSession.RegisterSqlExceptionLogger(MySoft.Core.ErrorLogEventHandler)">
+        <member name="M:MySoft.Data.DbSession.RegisterSqlExceptionLogger(MySoft.ErrorLogHandler)">
             <summary>
             注册一个异常日志事件
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:MySoft.Data.DbSession.UnregisterSqlExceptionLogger(MySoft.Core.ErrorLogEventHandler)">
+        <member name="M:MySoft.Data.DbSession.UnregisterSqlExceptionLogger(MySoft.ErrorLogHandler)">
             <summary>
             取消一个异常日志事件
             </summary>
@@ -1492,6 +1492,27 @@
             <param name="table"></param>
             <param name="fvs"></param>
             <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.DbSession.Insert``2(``0,``1@)">
+            <summary>
+            插入实体
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="entity"></param>
+            <param name="retVal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.DbSession.Insert``2(MySoft.Data.Table,``0,``1@)">
+            <summary>
+            插入实体
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="table"></param>
+            <param name="entity"></param>
+            <param name="retVal"></param>
             <returns></returns>
         </member>
         <member name="T:MySoft.Data.TableRelation`1">
@@ -3823,6 +3844,27 @@
             <param name="table"></param>
             <param name="fvs"></param>
             <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.DbTrans.Insert``2(``0,``1@)">
+            <summary>
+            插入实体
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="entity"></param>
+            <param name="retVal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Data.DbTrans.Insert``2(MySoft.Data.Table,``0,``1@)">
+            <summary>
+            插入实体
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="table"></param>
+            <param name="entity"></param>
+            <param name="retVal"></param>
             <returns></returns>
         </member>
         <member name="T:MySoft.Data.OrderByClip">

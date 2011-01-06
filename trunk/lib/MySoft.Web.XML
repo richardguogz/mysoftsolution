@@ -778,6 +778,11 @@
             是否为远程页面
             </summary>
         </member>
+        <member name="P:MySoft.Web.IStaticPageItem.RetryInterval">
+            <summary>
+            重试间隔(单位:分钟)
+            </summary>
+        </member>
         <member name="T:MySoft.Web.ExcutingEventHandler">
             <summary>
             执行生成时的委托
@@ -793,13 +798,13 @@
             <param name="content"></param>
             <returns></returns>
         </member>
-        <member name="T:MySoft.Web.GetValuesEventHandler">
+        <member name="T:MySoft.Web.GetResultEventHandler">
             <summary>
             返回值数组的委托
             </summary>
             <returns></returns>
         </member>
-        <member name="T:MySoft.Web.StartEndValueEventHandler">
+        <member name="T:MySoft.Web.BeginEndValueEventHandler">
             <summary>
             获取开始结束值的委托
             </summary>
@@ -913,6 +918,11 @@
             是否为远程页面
             </summary>
         </member>
+        <member name="P:MySoft.Web.SingleStaticPageItem.RetryInterval">
+            <summary>
+            重试间隔
+            </summary>
+        </member>
         <member name="T:MySoft.Web.StaticPageParamInfo">
             <summary>
             参数信息
@@ -923,9 +933,14 @@
             参数名
             </summary>
         </member>
-        <member name="P:MySoft.Web.StaticPageParamInfo.GetValues">
+        <member name="P:MySoft.Web.StaticPageParamInfo.GetResult">
             <summary>
             获取值委托
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.StaticPageParamInfo.Arguments">
+            <summary>
+            委托参数
             </summary>
         </member>
         <member name="T:MySoft.Web.ParamStaticPageItem">
@@ -1058,6 +1073,11 @@
         <member name="P:MySoft.Web.ParamStaticPageItem.IsRemote">
             <summary>
             是否为远程页面
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.ParamStaticPageItem.RetryInterval">
+            <summary>
+            重试间隔
             </summary>
         </member>
         <member name="T:MySoft.Web.UI.MasterAjaxPage">
@@ -1214,11 +1234,22 @@
             启动静态管理类
             </summary>
         </member>
+        <member name="M:MySoft.Web.StaticPageManager.Start(System.Boolean)">
+            <summary>
+            启动静态管理类
+            </summary>
+        </member>
         <member name="M:MySoft.Web.StaticPageManager.Start(System.Int32)">
             <summary>
             启动静态管理类
             </summary>
             <param name="interval">检测间隔时间(默认为一分钟)</param>
+        </member>
+        <member name="M:MySoft.Web.StaticPageManager.Start(System.Double,System.Boolean)">
+            <summary>
+            启动静态管理类
+            </summary>
+            <param name="interval">检测间隔时间</param>
         </member>
         <member name="M:MySoft.Web.StaticPageManager.AddItem(MySoft.Web.IStaticPageItem[])">
             <summary>
@@ -1721,20 +1752,20 @@
             每屏连接条数
             </summary>
         </member>
-        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.Core.DataPage)">
+        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.DataPage)">
             <summary>
             初始化HtmlPager对象
             </summary>
             <param name="dataPage"></param>
         </member>
-        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.Core.DataPage,System.String)">
+        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.DataPage,System.String)">
             <summary>
             初始化HtmlPager对象
             </summary>
             <param name="page">对应的数据源</param>
             <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
         </member>
-        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.Core.DataPage,System.String,System.Int32)">
+        <member name="M:MySoft.Web.HtmlPager.#ctor(MySoft.DataPage,System.String,System.Int32)">
             <summary>
             初始化HtmlPager对象
             </summary>
@@ -1947,6 +1978,20 @@
             <summary>
             异步处理Handler
             </summary>
+        </member>
+        <member name="T:MySoft.Web.ErrorHelper">
+            <summary>
+            错误处理
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.ErrorHelper.GetHtmlError(System.Exception)">
+            <summary>Returns HTML an formatted error message.</summary>
+        </member>
+        <member name="M:MySoft.Web.ErrorHelper.GetHtmlWithoutError">
+            <summary>
+            Get Log Html
+            </summary>
+            <returns>Result</returns>
         </member>
         <member name="T:MySoft.Web.UI.IAjaxInitHandler">
             <summary>

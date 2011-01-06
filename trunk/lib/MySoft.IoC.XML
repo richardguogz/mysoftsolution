@@ -239,6 +239,21 @@
             拦截器选择
             </summary>
         </member>
+        <member name="T:MySoft.IoC.AspectProxyAttribute">
+            <summary>
+            拦截器属性
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.AspectProxyAttribute.InterceptorType">
+            <summary>
+            拦截器对象
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.AspectProxyAttribute.Arguments">
+            <summary>
+            拦截器参数
+            </summary>
+        </member>
         <member name="T:MySoft.IoC.AspectAttribute">
             <summary>
             拦截器属性
@@ -642,6 +657,16 @@
             The request msg.
             </summary>
         </member>
+        <member name="P:MySoft.IoC.RequestMessage.Compress">
+            <summary>
+            Gets or sets the compress of the service.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.Transfer">
+            <summary>
+            Gets or sets the transfer of the service.
+            </summary>
+        </member>
         <member name="P:MySoft.IoC.RequestMessage.ServiceName">
             <summary>
             Gets or sets the name of the service.
@@ -737,6 +762,18 @@
             <param name="message"></param>
             <param name="ex"></param>
         </member>
+        <member name="M:MySoft.IoC.IoCException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="info">存储对象序列化和反序列化所需的全部数据</param>
+            <param name="context">描述给定的序列化流的源和目标，并提供一个由调用方定义的附加上下文</param>
+        </member>
+        <member name="P:MySoft.IoC.IoCException.ExceptionHeader">
+            <summary>
+            错误头
+            </summary>
+        </member>
         <member name="T:MySoft.IoC.AspectSwitcherAttribute">
             <summary>
             切面方法选择器
@@ -831,6 +868,17 @@
             Remoting
             </summary>
         </member>
+        <member name="T:MySoft.IoC.CastleConfigService">
+            <summary>
+            CastleService
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.CastleConfigService.PublishWellKnownServiceInstance(MySoft.IoC.MemoryServiceMQ)">
+            <summary>
+            发布服务实例
+            </summary>
+            <param name="mq"></param>
+        </member>
         <member name="T:MySoft.IoC.MemoryServiceMQ">
             <summary>
             A memory service mq impl.
@@ -876,13 +924,6 @@
             <param name="serviceName">Name of the service.</param>
             <param name="clientId">The client id.</param>
             <param name="handler">The handler.</param>
-        </member>
-        <member name="M:MySoft.IoC.IServiceMQ.CleanExpiredMessages(MySoft.IoC.RequestMessage[]@,MySoft.IoC.ResponseMessage[]@)">
-            <summary>
-            Cleans the expired messages.
-            </summary>
-            <param name="expiredRequests">The expired requests.</param>
-            <param name="expiredResponses">The expired responses.</param>
         </member>
         <member name="M:MySoft.IoC.IServiceMQ.SetBroadCastStrategy(MySoft.IoC.IBroadCastStrategy)">
             <summary>
@@ -964,13 +1005,6 @@
             <param name="serviceName">Name of the service.</param>
             <param name="clientId">The client id.</param>
             <param name="handler">The handler.</param>
-        </member>
-        <member name="M:MySoft.IoC.MemoryServiceMQ.CleanExpiredMessages(MySoft.IoC.RequestMessage[]@,MySoft.IoC.ResponseMessage[]@)">
-            <summary>
-            Cleans the expired messages.
-            </summary>
-            <param name="expiredRequests">The expired requests.</param>
-            <param name="expiredResponses">The expired responses.</param>
         </member>
         <member name="M:MySoft.IoC.MemoryServiceMQ.SetBroadCastStrategy(MySoft.IoC.IBroadCastStrategy)">
             <summary>
@@ -1531,6 +1565,11 @@
             The dynamic service.
             </summary>
         </member>
+        <member name="F:MySoft.IoC.Services.DynamicService.dictMethods">
+            <summary>
+            保存方法
+            </summary>
+        </member>
         <member name="F:MySoft.IoC.Services.DynamicService.DefaultExpireMinutes">
             <summary>
             The default  message expire minutes.
@@ -1655,7 +1694,7 @@
         </member>
         <member name="M:MySoft.IoC.CastleFactory.#ctor(MySoft.IoC.IServiceContainer)">
             <summary>
-            Initializes a new instance of the <see cref="!:ServiceFactory"/> class.
+            Initializes a new instance of the <see cref="T:MySoft.ServiceFactory"/> class.
             </summary>
             <param name="container">The container.</param>
         </member>
@@ -1704,6 +1743,11 @@
         <member name="T:MySoft.IoC.BaseServiceInterfaceImpl">
             <summary>
             The base impl class of the service interface, this class is used by service factory to emit service interface impl automatically at runtime.
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.BaseServiceInterfaceImpl.dictMethods">
+            <summary>
+            保存方法
             </summary>
         </member>
         <member name="F:MySoft.IoC.BaseServiceInterfaceImpl.DefaultExpireMinutes">
