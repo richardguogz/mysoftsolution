@@ -7,29 +7,59 @@ copy ..\MySoft.Data.MySql\bin\Debug\MySoft.Data.MySql.dll /Y
 copy ..\MySoft.Data.FireBird\bin\Debug\MySoft.Data.FireBird.dll /Y
 copy ..\MySoft.Data.SQLite\bin\Debug\MySoft.Data.SQLite.dll /Y
 copy ..\MySoft.Data.PostgreSQL\bin\Debug\MySoft.Data.PostgreSQL.dll /Y
+copy ..\MySoft.Core\bin\Debug\MySoft.Core.dll /Y
+copy ..\MySoft.IoC\bin\Debug\MySoft.IoC.dll /Y
 copy ..\MySoft.Net\bin\Debug\MySoft.Net.dll /Y
 copy ..\MySoft.Web\bin\Debug\MySoft.Web.dll /Y
+copy ..\MySoft.Controls\bin\Debug\MySoft.Controls.dll /Y
 copy ..\MySoft.URLRewriter\bin\Debug\MySoft.URLRewriter.dll /Y
+copy ..\MySoft.Common\bin\Debug\MySoft.Common.xml /Y
+copy ..\MySoft.Data\bin\Debug\MySoft.Data.xml /Y
+copy ..\MySoft.Data.MySql\bin\Debug\MySoft.Data.MySql.xml /Y
+copy ..\MySoft.Data.FireBird\bin\Debug\MySoft.Data.FireBird.xml /Y
+copy ..\MySoft.Data.PostgreSQL\bin\Debug\MySoft.Data.PostgreSQL.xml /Y
+copy ..\MySoft.Data.SQLite\bin\Debug\MySoft.Data.SQLite.xml /Y
+copy ..\MySoft.Core\bin\Debug\MySoft.Core.xml /Y
+copy ..\MySoft.IoC\bin\Debug\MySoft.IoC.xml /Y
+copy ..\MySoft.Net\bin\Debug\MySoft.Net.xml /Y
+copy ..\MySoft.Web\bin\Debug\MySoft.Web.xml /Y
+copy ..\MySoft.Controls\bin\Debug\MySoft.Controls.xml /Y
+copy ..\MySoft.URLRewriter\bin\Debug\MySoft.URLRewriter.xml /Y
 copy ..\MySoft.Tools.EntityDesign\bin\Debug\MySoft.Tools.EntityDesign.exe /Y
 copy ..\MySoft.Tools.EntityDesignVsPlugin\bin\Debug\MySoft.Tools.EntityDesignVsPlugin.dll /Y
 copy ..\MySoft.Tools.EntityDesignVsPlugin\MySoft.Tools.EntityDesignVsPlugin.AddIn /Y
 copy ..\SetupEntityVsPlugin\bin\Debug\SetupEntityVsPlugin.exe /Y
 copy ..\SetupEntityVsPlugin\bin\Debug\SetupEntityVsPlugin.exe.config /Y
 
-rem copy ..\MySoft.Common\bin\Debug\MySoft.Common.dll e:\CommonDll /Y
-rem copy ..\MySoft.Data\bin\Debug\MySoft.Data.dll e:\CommonDll /Y
-rem copy ..\MySoft.Data.MySql\bin\Debug\MySoft.Data.MySql.dll /Y e:\CommonDll /Y
-rem copy ..\MySoft.Data.FireBird\bin\Debug\MySoft.Data.FireBird.dll e:\CommonDll /Y
-rem copy ..\MySoft.Data.SQLite\bin\Debug\MySoft.Data.SQLite.dll e:\CommonDll /Y
-rem copy ..\MySoft.Data.PostgreSQL\bin\Debug\MySoft.Data.PostgreSQL.dll e:\CommonDll /Y
-rem copy ..\MySoft.Web\bin\Debug\MySoft.Web.dll e:\CommonDll /Y
-rem copy ..\MySoft.Net\bin\Debug\MySoft.Net.dll e:\CommonDll /Y
-rem copy ..\MySoft.URLRewriter\bin\Debug\MySoft.URLRewriter.dll e:\CommonDll /Y
-rem copy ..\MySoft.Tools.EntityDesign\bin\Debug\MySoft.Tools.EntityDesign.exe e:\CommonDll /Y
-rem copy ..\MySoft.Tools.EntityDesignVsPlugin\bin\Debug\MySoft.Tools.EntityDesignVsPlugin.dll e:\CommonDll /Y
-rem copy ..\MySoft.Tools.EntityDesignVsPlugin\MySoft.Tools.EntityDesignVsPlugin.AddIn e:\CommonDll /Y
-rem copy ..\SetupEntityVsPlugin\bin\Debug\SetupEntityVsPlugin.exe e:\CommonDll /Y
-rem copy ..\SetupEntityVsPlugin\bin\Debug\SetupEntityVsPlugin.exe.config e:\CommonDll /Y
+copy ..\MySoft.Common\bin\Debug\MySoft.Common.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data\bin\Debug\MySoft.Data.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.MySql\bin\Debug\MySoft.Data.MySql.dll /Y E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.FireBird\bin\Debug\MySoft.Data.FireBird.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.SQLite\bin\Debug\MySoft.Data.SQLite.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.PostgreSQL\bin\Debug\MySoft.Data.PostgreSQL.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Core\bin\Debug\MySoft.Core.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.IoC\bin\Debug\MySoft.IoC.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Net\bin\Debug\MySoft.Net.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Web\bin\Debug\MySoft.Web.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Controls\bin\Debug\MySoft.Controls.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.URLRewriter\bin\Debug\MySoft.URLRewriter.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Common\bin\Debug\MySoft.Common.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data\bin\Debug\MySoft.Data.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.MySql\bin\Debug\MySoft.Data.MySql.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.FireBird\bin\Debug\MySoft.Data.FireBird.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.SQLite\bin\Debug\MySoft.Data.SQLite.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.PostgreSQL\bin\Debug\MySoft.Data.PostgreSQL.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Core\bin\Debug\MySoft.Core.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.IoC\bin\Debug\MySoft.IoC.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Net\bin\Debug\MySoft.Net.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Web\bin\Debug\MySoft.Web.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Controls\bin\Debug\MySoft.Controls.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.URLRewriter\bin\Debug\MySoft.URLRewriter.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Tools.EntityDesign\bin\Debug\MySoft.Tools.EntityDesign.exe E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Tools.EntityDesignVsPlugin\bin\Debug\MySoft.Tools.EntityDesignVsPlugin.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Tools.EntityDesignVsPlugin\MySoft.Tools.EntityDesignVsPlugin.AddIn E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\SetupEntityVsPlugin\bin\Debug\SetupEntityVsPlugin.exe E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\SetupEntityVsPlugin\bin\Debug\SetupEntityVsPlugin.exe.config E:\SOURCE_SVN\MyReference\MySoft /Y
 
 pause
 @echo on

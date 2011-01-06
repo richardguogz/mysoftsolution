@@ -31,35 +31,35 @@ copy ..\MySoft.Tools.EntityDesignVsPlugin\MySoft.Tools.EntityDesignVsPlugin.AddI
 copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe /Y
 copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe.config /Y
 
-copy ..\MySoft.Common\bin\Release\MySoft.Common.dll e:\CommonDll /Y
-copy ..\MySoft.Data\bin\Release\MySoft.Data.dll e:\CommonDll /Y
-copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.dll /Y e:\CommonDll /Y
-copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.dll e:\CommonDll /Y
-copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.dll e:\CommonDll /Y
-copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.dll e:\CommonDll /Y
-copy ..\MySoft.Core\bin\Release\MySoft.Core.dll e:\CommonDll /Y
-copy ..\MySoft.IoC\bin\Release\MySoft.IoC.dll e:\CommonDll /Y
-copy ..\MySoft.Net\bin\Release\MySoft.Net.dll e:\CommonDll /Y
-copy ..\MySoft.Web\bin\Release\MySoft.Web.dll e:\CommonDll /Y
-copy ..\MySoft.Controls\bin\Release\MySoft.Controls.dll e:\CommonDll /Y
-copy ..\MySoft.URLRewriter\bin\Release\MySoft.URLRewriter.dll e:\CommonDll /Y
-copy ..\MySoft.Common\bin\Release\MySoft.Common.xml e:\CommonDll /Y
-copy ..\MySoft.Data\bin\Release\MySoft.Data.xml e:\CommonDll /Y
-copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.xml e:\CommonDll /Y
-copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.xml e:\CommonDll /Y
-copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.xml e:\CommonDll /Y
-copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.xml e:\CommonDll /Y
-copy ..\MySoft.Core\bin\Release\MySoft.Core.xml e:\CommonDll /Y
-copy ..\MySoft.IoC\bin\Release\MySoft.IoC.xml e:\CommonDll /Y
-copy ..\MySoft.Net\bin\Release\MySoft.Net.xml e:\CommonDll /Y
-copy ..\MySoft.Web\bin\Release\MySoft.Web.xml e:\CommonDll /Y
-copy ..\MySoft.Controls\bin\Release\MySoft.Controls.xml e:\CommonDll /Y
-copy ..\MySoft.URLRewriter\bin\Release\MySoft.URLRewriter.xml e:\CommonDll /Y
-copy ..\MySoft.Tools.EntityDesign\bin\Release\MySoft.Tools.EntityDesign.exe e:\CommonDll /Y
-copy ..\MySoft.Tools.EntityDesignVsPlugin\bin\Release\MySoft.Tools.EntityDesignVsPlugin.dll e:\CommonDll /Y
-copy ..\MySoft.Tools.EntityDesignVsPlugin\MySoft.Tools.EntityDesignVsPlugin.AddIn e:\CommonDll /Y
-copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe e:\CommonDll /Y
-copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe.config e:\CommonDll /Y
+copy ..\MySoft.Common\bin\Release\MySoft.Common.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data\bin\Release\MySoft.Data.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.dll /Y E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Core\bin\Release\MySoft.Core.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.IoC\bin\Release\MySoft.IoC.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Net\bin\Release\MySoft.Net.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Web\bin\Release\MySoft.Web.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Controls\bin\Release\MySoft.Controls.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.URLRewriter\bin\Release\MySoft.URLRewriter.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Common\bin\Release\MySoft.Common.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data\bin\Release\MySoft.Data.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.SQLite\bin\Release\MySoft.Data.SQLite.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Data.PostgreSQL\bin\Release\MySoft.Data.PostgreSQL.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Core\bin\Release\MySoft.Core.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.IoC\bin\Release\MySoft.IoC.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Net\bin\Release\MySoft.Net.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Web\bin\Release\MySoft.Web.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Controls\bin\Release\MySoft.Controls.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.URLRewriter\bin\Release\MySoft.URLRewriter.xml E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Tools.EntityDesign\bin\Release\MySoft.Tools.EntityDesign.exe E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Tools.EntityDesignVsPlugin\bin\Release\MySoft.Tools.EntityDesignVsPlugin.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Tools.EntityDesignVsPlugin\MySoft.Tools.EntityDesignVsPlugin.AddIn E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe.config E:\SOURCE_SVN\MyReference\MySoft /Y
 
 pause
 @echo on

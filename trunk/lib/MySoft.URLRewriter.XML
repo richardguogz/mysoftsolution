@@ -4,39 +4,26 @@
         <name>MySoft.URLRewriter</name>
     </assembly>
     <members>
-        <member name="T:MySoft.URLRewriter.RewriterUtils">
+        <member name="T:MySoft.URLRewriter.RewriterFactoryHandler">
             <summary>
-            Provides utility helper methods for the rewriting HttpModule and HttpHandler.
+            Provides an HttpHandler that performs redirection.
             </summary>
-            <remarks>This class is marked as internal, meaning only classes in the same assembly will be
-            able to access its methods.</remarks>
+            <remarks>The RewriterFactoryHandler checks the rewriting rules, rewrites the path if needed, and then
+            delegates the responsibility of processing the ASP.NET page to the <b>PageParser</b> class (the same one
+            used by the <b>PageHandlerFactory</b> class).</remarks>
         </member>
-        <member name="M:MySoft.URLRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String)">
+        <member name="M:MySoft.URLRewriter.RewriterFactoryHandler.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
             <summary>
-            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
+            GetHandler is executed by the ASP.NET pipeline after the associated HttpModules have run.  The job of
+            GetHandler is to return an instance of an HttpHandler that can process the page.
             </summary>
-            <param name="context">The HttpContext object to rewrite the URL to.</param>
-            <param name="sendToUrl">The URL to rewrite to.</param>
-        </member>
-        <member name="M:MySoft.URLRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String,System.String@,System.String@)">
-            <summary>
-            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
-            </summary>
-            <param name="context">The HttpContext object to rewrite the URL to.</param>
-            <param name="sendToUrl">The URL to rewrite to.</param>
-            <param name="sendToUrlLessQString">Returns the value of sendToUrl stripped of the querystring.</param>
-            <param name="filePath">Returns the physical file path to the requested page.</param>
-        </member>
-        <member name="M:MySoft.URLRewriter.RewriterUtils.ResolveUrl(System.String,System.String)">
-            <summary>
-            Converts a URL into one that is usable on the requesting client.
-            </summary>
-            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
-            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
-            <param name="appPath">The application path.</param>
-            <param name="url">The URL, which might contain ~.</param>
-            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
-            value of the <b>appPath</b> parameter.</returns>
+            <param name="context">The HttpContext for this request.</param>
+            <param name="requestType">The HTTP data transfer method (<b>GET</b> or <b>POST</b>)</param>
+            <param name="url">The RawUrl of the requested resource.</param>
+            <param name="pathTranslated">The physical path to the requested resource.</param>
+            <returns>An instance that implements IHttpHandler; specifically, an HttpHandler instance returned
+            by the <b>PageParser</b> class, which is the same class that the default ASP.NET PageHandlerFactory delegates
+            to.</returns>
         </member>
         <member name="T:MySoft.URLRewriter.ModuleRewriter">
             <summary>
@@ -79,6 +66,40 @@
             <param name="requestedRawUrl">The RawUrl being requested (includes path and querystring).</param>
             <param name="app">The HttpApplication instance.</param>
         </member>
+        <member name="T:MySoft.URLRewriter.RewriterUtils">
+            <summary>
+            Provides utility helper methods for the rewriting HttpModule and HttpHandler.
+            </summary>
+            <remarks>This class is marked as internal, meaning only classes in the same assembly will be
+            able to access its methods.</remarks>
+        </member>
+        <member name="M:MySoft.URLRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String)">
+            <summary>
+            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
+            </summary>
+            <param name="context">The HttpContext object to rewrite the URL to.</param>
+            <param name="sendToUrl">The URL to rewrite to.</param>
+        </member>
+        <member name="M:MySoft.URLRewriter.RewriterUtils.RewriteUrl(System.Web.HttpContext,System.String,System.String@,System.String@)">
+            <summary>
+            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
+            </summary>
+            <param name="context">The HttpContext object to rewrite the URL to.</param>
+            <param name="sendToUrl">The URL to rewrite to.</param>
+            <param name="sendToUrlLessQString">Returns the value of sendToUrl stripped of the querystring.</param>
+            <param name="filePath">Returns the physical file path to the requested page.</param>
+        </member>
+        <member name="M:MySoft.URLRewriter.RewriterUtils.ResolveUrl(System.String,System.String)">
+            <summary>
+            Converts a URL into one that is usable on the requesting client.
+            </summary>
+            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
+            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
+            <param name="appPath">The application path.</param>
+            <param name="url">The URL, which might contain ~.</param>
+            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
+            value of the <b>appPath</b> parameter.</returns>
+        </member>
         <member name="T:MySoft.URLRewriter.Config.RewriterRuleCollection">
             <summary>
             The RewriterRuleCollection models a set of RewriterRules in the Web.config file.
@@ -113,6 +134,19 @@
             Gets or sets a RewriterRule at a specified ordinal index.
             </summary>
         </member>
+        <member name="T:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler">
+            <summary>
+            Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
+            </summary>
+        </member>
+        <member name="M:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
+            <summary>
+            Creates an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
+            </summary>
+            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
+            <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> instance.</remarks>
+            <returns>An instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.</returns>
+        </member>
         <member name="T:MySoft.URLRewriter.Config.RewriterRule">
             <summary>
             Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
@@ -136,40 +170,6 @@
             <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
             <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
             the match in <see cref="P:MySoft.URLRewriter.Config.RewriterRule.LookFor"/> with the value in <b>SendTo</b>.</remarks>
-        </member>
-        <member name="T:MySoft.URLRewriter.RewriterFactoryHandler">
-            <summary>
-            Provides an HttpHandler that performs redirection.
-            </summary>
-            <remarks>The RewriterFactoryHandler checks the rewriting rules, rewrites the path if needed, and then
-            delegates the responsibility of processing the ASP.NET page to the <b>PageParser</b> class (the same one
-            used by the <b>PageHandlerFactory</b> class).</remarks>
-        </member>
-        <member name="M:MySoft.URLRewriter.RewriterFactoryHandler.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
-            <summary>
-            GetHandler is executed by the ASP.NET pipeline after the associated HttpModules have run.  The job of
-            GetHandler is to return an instance of an HttpHandler that can process the page.
-            </summary>
-            <param name="context">The HttpContext for this request.</param>
-            <param name="requestType">The HTTP data transfer method (<b>GET</b> or <b>POST</b>)</param>
-            <param name="url">The RawUrl of the requested resource.</param>
-            <param name="pathTranslated">The physical path to the requested resource.</param>
-            <returns>An instance that implements IHttpHandler; specifically, an HttpHandler instance returned
-            by the <b>PageParser</b> class, which is the same class that the default ASP.NET PageHandlerFactory delegates
-            to.</returns>
-        </member>
-        <member name="T:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler">
-            <summary>
-            Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.URLRewriter.Config.RewriterConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
-            <summary>
-            Creates an instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.
-            </summary>
-            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
-            <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> instance.</remarks>
-            <returns>An instance of the <see cref="T:MySoft.URLRewriter.Config.RewriterConfiguration"/> class.</returns>
         </member>
         <member name="T:MySoft.URLRewriter.Config.RewriterConfiguration">
             <summary>

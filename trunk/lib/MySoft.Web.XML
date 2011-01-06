@@ -4,142 +4,9 @@
         <name>MySoft.Web</name>
     </assembly>
     <members>
-        <member name="T:MySoft.Web.UI.Page">
+        <member name="T:MySoft.Web.UI.AjaxCallbackParam">
             <summary>
-            Page 的摘要说明
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RegisterPageJsFile(System.String[])">
-            <summary>
-            注册js文件到页面上
-            </summary>
-            <param name="jsfiles"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RegisterPageCssFile(System.String[])">
-            <summary>
-            注册css文件到页面上
-            </summary>
-            <param name="jsfiles"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RegisterPageScript(System.String[])">
-            <summary>
-            注册script脚本到页面上
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RegisterPageForAjax(System.String)">
-            <summary>
-            将指定url页面中的ajax调用所需js注册到本页
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RegisterPageForAjax(System.Type,System.String)">
-            <summary>
-            将指定url页面中的ajax调用所需js注册到本页
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.AddObjectToPage(System.String,System.Object[])">
-            <summary>
-            添加对象到页面上
-            </summary>
-            <param name="ObjectName"></param>
-            <param name="values"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.AddEnumToPage(System.Type)">
-            <summary>
-            添加枚举到页面上
-            </summary>
-            <param name="ObjectName"></param>
-            <param name="type"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.ConvertTo``1(System.String)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.ConvertTo``1(System.String,``0)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="key"></param>
-            <param name="outValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.GetRequestParam``1(System.String)">
-            <summary>
-            Gets the string param.
-            </summary>
-            <param name="paramName">Name of the param.</param>
-            <returns>The param value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.GetRequestParam``1(System.String,``0)">
-            <summary>
-            Gets the string param.
-            </summary>
-            <param name="paramName">Name of the param.</param>
-            <param name="errorReturn">The error return.</param>
-            <returns>The param value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.StrongTyped``1(System.Object)">
-            <summary>
-            Strongs the typed.
-            </summary>
-            <param name="obj">The obj.</param>
-            <returns>The strong typed instance.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.FindControl``1(System.String)">
-            <summary>
-            Strongs the typed.
-            </summary>
-            <param name="obj">The obj.</param>
-            <returns>The strong typed instance.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.TextToHtml(System.String)">
-            <summary>
-            Texts to HTML.
-            </summary>
-            <param name="txtStr">The TXT STR.</param>
-            <returns>The formated str.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.GetResourceString(System.String)">
-            <summary>
-            Gets the string.
-            </summary>
-            <param name="key">The key.</param>
-            <returns>The resource value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.GetResourceString(System.String,System.Globalization.CultureInfo)">
-            <summary>
-            Gets the string.
-            </summary>
-            <param name="key">The key.</param>
-            <param name="ci">The ci.</param>
-            <returns>The resource value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RunMethod(System.Object,System.String)">
-            <summary>
-            通过字符串的方式来执行方法
-            </summary>
-            <param name="obj">方法所在对象</param>
-            <param name="name">方法名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.Page.RunMethod(System.Object,System.String,System.Object[])">
-            <summary>
-            通过字符串的方式来执行方法
-            </summary>
-            <param name="obj">方法所在对象</param>
-            <param name="name">方法名称</param>
-            <param name="values">方法对应的参数值</param>
-            <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.AjaxPageHandler">
-            <summary>
-            异步处理Handler
+            AjaxCallback参数
             </summary>
         </member>
         <member name="F:MySoft.Web.CacheControlConfigurationSection.DEFAULT_EXPIRE_SECONDS">
@@ -147,264 +14,394 @@
             默认过期时间为60秒
             </summary>
         </member>
+        <member name="T:MySoft.Web.PageHelper">
+            <summary>
+            Provides utility helper methods for the rewriting HttpModule and HttpHandler.
+            </summary>
+            <remarks>This class is marked as internal, meaning only classes in the same assembly will be
+            able to access its methods.</remarks>
+        </member>
+        <member name="M:MySoft.Web.PageHelper.RewriteUrl(System.Web.HttpContext,System.String)">
+            <summary>
+            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
+            </summary>
+            <param name="context">The HttpContext object to rewrite the URL to.</param>
+            <param name="sendToUrl">The URL to rewrite to.</param>
+        </member>
+        <member name="M:MySoft.Web.PageHelper.RewriteUrl(System.Web.HttpContext,System.String,System.String@,System.String@)">
+            <summary>
+            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
+            </summary>
+            <param name="context">The HttpContext object to rewrite the URL to.</param>
+            <param name="sendToUrl">The URL to rewrite to.</param>
+            <param name="sendToUrlLessQString">Returns the value of sendToUrl stripped of the querystring.</param>
+            <param name="filePath">Returns the physical file path to the requested page.</param>
+        </member>
+        <member name="M:MySoft.Web.PageHelper.ResolveUrl(System.String,System.String)">
+            <summary>
+            Converts a URL into one that is usable on the requesting client.
+            </summary>
+            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
+            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
+            <param name="appPath">The application path.</param>
+            <param name="url">The URL, which might contain ~.</param>
+            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
+            value of the <b>appPath</b> parameter.</returns>
+        </member>
+        <member name="T:MySoft.Web.Config.StaticPageRuleCollection">
+            <summary>
+            The StaticPageRuleCollection models a set of StaticPageRules in the Web.config file.
+            </summary>
+            <remarks>
+            The StaticPageRuleCollection is expressed in XML as:
+            <code>
+            &lt;StaticPageRule&gt;
+              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
+              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
+            &lt;StaticPageRule&gt;
+            &lt;StaticPageRule&gt;
+              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
+              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
+            &lt;StaticPageRule&gt;
+            ...
+            &lt;StaticPageRule&gt;
+              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
+              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
+            &lt;StaticPageRule&gt;
+            </code>
+            </remarks>
+        </member>
+        <member name="M:MySoft.Web.Config.StaticPageRuleCollection.Add(MySoft.Web.Config.StaticPageRule)">
+            <summary>
+            Adds a new StaticPageRule to the collection.
+            </summary>
+            <param name="r">A StaticPageRule instance.</param>
+        </member>
+        <member name="P:MySoft.Web.Config.StaticPageRuleCollection.Item(System.Int32)">
+            <summary>
+            Gets or sets a StaticPageRule at a specified ordinal index.
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.Config.StaticPageConfiguration">
+            <summary>
+            Specifies the configuration settings in the Web.config for the StaticPageRule.
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.Config.StaticPageConfiguration.GetConfig">
+            <summary>
+            GetConfig() returns an instance of the <b>StaticPageConfiguration</b> class with the values populated from
+            the Web.config file.  It uses XML deserialization to convert the XML structure in Web.config into
+            a <b>StaticPageConfiguration</b> instance.
+            </summary>
+            <returns>A <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> instance.</returns>
+        </member>
+        <member name="P:MySoft.Web.Config.StaticPageConfiguration.Rules">
+            <summary>
+            A <see cref="T:MySoft.Web.Config.StaticPageRuleCollection"/> instance that provides access to a set of <see cref="T:MySoft.Web.Config.StaticPageRule"/>s.
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.IUpdateDependency">
+            <summary>
+            更新依赖，包含 SlidingUpdateTime 和 AbsoluteUpdateTime 
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.IUpdateDependency.HasUpdate(System.DateTime)">
+            <summary>
+            判断是否需要更新
+            </summary>
+            <param name="currentDate"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Web.IUpdateDependency.UpdateType">
+            <summary>
+            更新类型
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.IUpdateDependency.LastUpdateTime">
+            <summary>
+            最后更新时间
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UpdateType">
+            <summary>
+            更新类型
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.UpdateType.None">
+            <summary>
+            只生成一次
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.UpdateType.Year">
+            <summary>
+            每年定时生成一次
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.UpdateType.Month">
+            <summary>
+            每月定时生成一次
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.UpdateType.Day">
+            <summary>
+            每天定时生成一次
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UpdateTime">
+            <summary>
+            定时生成基类
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UpdateTime.HasUpdate(System.DateTime)">
+            <summary>
+            检测是否需要更新
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Web.UpdateTime.UpdateType">
+            <summary>
+            更新类型
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.UpdateTime.LastUpdateTime">
+            <summary>
+            最后更新时间
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.SlidingParamInfo">
+            <summary>
+            定时生成策略
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.SlidingParamInfo.CheckUpdate(MySoft.Web.UpdateType,System.DateTime)">
+            <summary>
+            检测当前更新时间是否在设置的范围内
+            </summary>
+            <param name="updateTime"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Web.SlidingUpdateTime">
+            <summary>
+            定时生成策略（按间隔时间）
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.SlidingUpdateTime.UpdateType">
+            <summary>
+            更新类型
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.SlidingUpdateTime.SlidingTimeSpan">
+            <summary>
+            时间间隔
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.SlidingUpdateTime.SlidingTimeParams">
+            <summary>
+            定时生成时间段参数
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.AbsoluteUpdateTime">
+            <summary>
+            绝对时间生成策略
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.AbsoluteUpdateTime.UpdateType">
+            <summary>
+            更新类型
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.AbsoluteUpdateTime.AbsoluteDateTimes">
+            <summary>
+            时间间隔
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.CookieExpiresType">
+            <summary>
+            为None时配合cookieTime为0使用
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.None">
+            <summary>
+            默认
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.Year">
+            <summary>
+            年
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.Month">
+            <summary>
+            月
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.Day">
+            <summary>
+            天
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.Hour">
+            <summary>
+            小时
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.Minute">
+            <summary>
+            分钟
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CookieExpiresType.Second">
+            <summary>
+            秒
+            </summary>
+        </member>
         <member name="T:FormFixerHtml32TextWriter">
             <summary>
             FormHtmlTextWriter 的摘要说明
             </summary>
         </member>
-        <member name="F:MySoft.Web.CacheControlConfiguration.config">
-            <summary>
-            获取配置信息
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.CacheControlConfiguration.rules">
-            <summary>
-            获取缓存规则
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.CacheControlConfiguration.singleton">
-            <summary>
-            创建单例
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.CacheControlConfiguration.GetSection">
-            <summary>
-            加载控件缓存配置
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.IAjaxInitHandler">
-            <summary>
-            提供异步初始化处理的接口
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.IAjaxProcessHandler">
-            <summary>
-            提供异步回调处理的接口
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.MasterAjaxPage">
-            <summary>
-            The MasterPage base class.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.MasterPage">
-            <summary>
-            The MasterPage base class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageJsFile(System.String[])">
-            <summary>
-            注册js文件到页面上
-            </summary>
-            <param name="jsfiles"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageCssFile(System.String[])">
-            <summary>
-            注册css文件到页面上
-            </summary>
-            <param name="jsfiles"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageScript(System.String[])">
-            <summary>
-            注册script脚本到页面上
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageForAjax(System.String)">
-            <summary>
-            将指定url页面中的ajax调用所需js注册到本页
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageForAjax(System.Type,System.String)">
-            <summary>
-            将指定url页面中的ajax调用所需js注册到本页
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.AddObjectToPage(System.String,System.Object[])">
-            <summary>
-            添加对象到页面上
-            </summary>
-            <param name="ObjectName"></param>
-            <param name="values"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.AddEnumToPage(System.Type)">
-            <summary>
-            添加枚举到页面上
-            </summary>
-            <param name="ObjectName"></param>
-            <param name="type"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.ConvertTo``1(System.String)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.ConvertTo``1(System.String,``0)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="key"></param>
-            <param name="outValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.GetRequestParam``1(System.String)">
-            <summary>
-            Gets the string param.
-            </summary>
-            <param name="paramName">Name of the param.</param>
-            <returns>The param value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.GetRequestParam``1(System.String,``0)">
-            <summary>
-            Gets the string param.
-            </summary>
-            <param name="paramName">Name of the param.</param>
-            <param name="errorReturn">The error return.</param>
-            <returns>The param value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.StrongTyped``1(System.Object)">
-            <summary>
-            Strongs the typed.
-            </summary>
-            <param name="obj">The obj.</param>
-            <returns>The strong typed instance.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.FindControl``1(System.String)">
-            <summary>
-            Strongs the typed.
-            </summary>
-            <param name="obj">The obj.</param>
-            <returns>The strong typed instance.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.TextToHtml(System.String)">
-            <summary>
-            Texts to HTML.
-            </summary>
-            <param name="txtStr">The TXT STR.</param>
-            <returns>The formated str.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.GetResourceString(System.String)">
-            <summary>
-            Gets the string.
-            </summary>
-            <param name="key">The key.</param>
-            <returns>The resource value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.MasterPage.GetResourceString(System.String,System.Globalization.CultureInfo)">
-            <summary>
-            Gets the string.
-            </summary>
-            <param name="key">The key.</param>
-            <param name="ci">The ci.</param>
-            <returns>The resource value.</returns>
-        </member>
-        <member name="P:MySoft.Web.UI.MasterAjaxPage.EnableAjaxCallback">
-            <summary>
-            是否启用Ajax回调功能
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.UI.MasterAjaxPage.EnableAjaxTemplate">
-            <summary>
-            是否启用Ajax模板处理功能
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Config.StaticPageConfigSerializerSectionHandler">
-            <summary>
-            Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Config.StaticPageConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
-            <summary>
-            Creates an instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.
-            </summary>
-            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
-            <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> instance.</remarks>
-            <returns>An instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.</returns>
-        </member>
-        <member name="T:MySoft.Web.UI.CallbackParam">
-            <summary>
-            Callback参数值
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.CallbackParam.To``1">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.CallbackParam.To``1(``0)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="key"></param>
-            <param name="defvalue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.CallbackParam.ToString">
-            <summary>
-            返回原始值
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.UI.CallbackParams">
-            <summary>
-            返回Callback参数字典
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.CallbackParams.Add(System.String,System.String)">
-            <summary>
-            添加元素
-            </summary>
-            <param name="key"></param>
-            <param name="value"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.CallbackParams.Contains(System.String)">
-            <summary>
-            判断是否存在key
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.CallbackParams.ToNameValueCollection">
-            <summary>
-            返回NameValueCollection
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:MySoft.Web.UI.CallbackParams.Item(System.String)">
-            <summary>
-            重载字典
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.UI.AjaxPage">
-            <summary>
-            AjaxPage 的摘要说明
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.UI.AjaxPage.EnableAjaxCallback">
-            <summary>
-            是否启用Ajax回调功能
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.UI.AjaxPage.EnableAjaxTemplate">
-            <summary>
-            是否启用Ajax模板处理功能
-            </summary>
-        </member>
         <member name="T:MySoft.Web.WebHelper">
             <summary>
-            The web helper class contains shared functions used by page and user controls, as base class of Page and UserControl.
+            通用方法处理类
             </summary>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RegisterPageForAjax(System.Web.UI.Page,System.String)">
+            <summary>
+            注册Ajax所需js到页面
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RegisterPageForAjax(System.Web.UI.Page,System.Type,System.String)">
+            <summary>
+            注册Ajax所需js到页面
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RegisterForAjax(System.Web.UI.Page,System.String)">
+            <summary>
+            注册Ajax所需js到页面
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RegisterPageJsFile(System.Web.UI.Page,System.String[])">
+            <summary>
+            向页面中加载js文件
+            </summary>
+            <param name="type"></param>
+            <param name="jsurls"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RegisterPageScript(System.Web.UI.Page,System.String[])">
+            <summary>
+            添加Javascript脚本到页面
+            </summary>
+            <param name="scriptString"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RegisterPageCssFile(System.Web.UI.Page,System.String[])">
+            <summary>
+            向页面中加载css文件
+            </summary>
+            <param name="page"></param>
+            <param name="cssurls"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.SaveCookie(System.String,System.String[],System.String[],System.String,MySoft.Web.CookieExpiresType,System.Int32)">
+            <summary>
+            保存一个Cookie,0为永不过期
+            </summary>
+            <param name="cookieName">Cookie名称</param>
+            <param name="CookieValue">Cookie值</param>
+            <param name="CookieTime">Cookie过期时间(天数),0为关闭页面失效</param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.ExistCookie(System.String)">
+            <summary>
+            检测cookid中是否存在值
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.GetCookie(System.String)">
+            <summary>
+            取得CookieValue
+            </summary>
+            <param name="cookieName">Cookie名称</param>
+            <returns>Cookie的值</returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.ClearCookie(System.String)">
+            <summary>
+            清除CookieValue
+            </summary>
+            <param name="cookieName">Cookie名称</param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.SaveSession(System.String,System.Object)">
+            <summary>
+            保存Session值
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RemoveSession(System.String)">
+            <summary>
+            从页面中移除Session值
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.ExistSession(System.String)">
+            <summary>
+            检测Session中是否存在值
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.GetSession``1(System.String)">
+            <summary>
+            从Session中获取对象
+            </summary>
+            <typeparam name="TObject"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.ServUEncrypt(System.String)">
+            <summary>
+            对字符串进行适应 ServU 的 MD5 加密
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.RandomSTR(System.Int32)">
+            <summary>
+            获取一个由26个小写字母组成的指定长度的随即字符串
+            </summary>
+            <param name="intLong">指定长度</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.MD5Encrypt(System.String)">
+            <summary>
+            对字符串进行普通md5加密
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.NoneEncrypt(System.String,System.Int32)">
+            <summary>
+            对字符串进行加密（不可逆）
+            </summary>
+            <param name="Password">要加密的字符串</param>
+            <param name="Format">加密方式,0 is SHA1,1 is MD5</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.Encrypt(System.String)">
+            <summary>
+            对字符串进行加密
+            </summary>
+            <param name="value">待加密的字符串</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:MySoft.Web.WebHelper.Decrypt(System.String)">
+            <summary>
+            对字符串进行解密
+            </summary>
+            <param name="value">已加密的字符串</param>
+            <returns></returns>
         </member>
         <member name="M:MySoft.Web.WebHelper.GetRequestParam``1(System.Web.HttpRequest,System.String)">
             <summary>
@@ -687,436 +684,6 @@
             <param name="strs">The STRS.</param>
             <returns>The script.</returns>
         </member>
-        <member name="T:MySoft.Web.UI.AjaxRequestPage">
-            <summary>
-            Ajax相关信息
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.AjaxRequest">
-            <summary>
-            Ajax调用类
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.SendRequest">
-            <summary>
-            发送请求
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.LoadTemplate(System.String)">
-            <summary>
-            Called when [ajax template pre render].
-            </summary>
-            <param name="templatePath"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.InvokeMethod(System.Object,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="invokeObject"></param>
-            <param name="MethodName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.LoadAjaxControl(System.String)">
-            <summary>
-            加载控件返回String
-            </summary>
-            <param name="controlPath"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.LoadAjaxControl(System.String,System.String)">
-            <summary>
-            加载控件返回String
-            </summary>
-            <param name="controlPath"></param>
-            <param name="templatePath"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.GetCache(System.String,System.String)">
-            <summary>
-            获取控件的cache
-            </summary>
-            <param name="path"></param>
-            <param name="parameter"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.SetCache(System.String,System.String,System.String)">
-            <summary>
-            设置控件的cache
-            </summary>
-            <param name="path"></param>
-            <param name="parameter"></param>
-            <param name="html"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.GetCallbackParams">
-            <summary>
-            获取页面参数
-            </summary>
-            <param name="eventArgument"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.GetObject``1(System.String)">
-            <summary>
-            将字符串反系列化成对象
-            </summary>
-            <typeparam name="TObject"></typeparam>
-            <param name="paramsKey">传入key值获取对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.GetObject(System.String,System.Type)">
-            <summary>
-            将字符串反系列化成对象
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.WriteToBuffer(MySoft.Web.UI.AjaxCallbackParam)">
-            <summary>
-            将数据写入页面流
-            </summary>
-            <param name="param"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.WriteToBuffer(MySoft.Web.UI.AjaxMethodInfo[])">
-            <summary>
-            将数据写入页面流
-            </summary>
-            <param name="methods"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxRequest.WriteToBuffer(System.String)">
-            <summary>
-            将数据写入页面流
-            </summary>
-            <param name="html"></param>
-        </member>
-        <member name="T:MySoft.Web.PageUtils">
-            <summary>
-            Provides utility helper methods for the rewriting HttpModule and HttpHandler.
-            </summary>
-            <remarks>This class is marked as internal, meaning only classes in the same assembly will be
-            able to access its methods.</remarks>
-        </member>
-        <member name="M:MySoft.Web.PageUtils.RewriteUrl(System.Web.HttpContext,System.String)">
-            <summary>
-            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
-            </summary>
-            <param name="context">The HttpContext object to rewrite the URL to.</param>
-            <param name="sendToUrl">The URL to rewrite to.</param>
-        </member>
-        <member name="M:MySoft.Web.PageUtils.RewriteUrl(System.Web.HttpContext,System.String,System.String@,System.String@)">
-            <summary>
-            Rewrite's a URL using <b>HttpContext.RewriteUrl()</b>.
-            </summary>
-            <param name="context">The HttpContext object to rewrite the URL to.</param>
-            <param name="sendToUrl">The URL to rewrite to.</param>
-            <param name="sendToUrlLessQString">Returns the value of sendToUrl stripped of the querystring.</param>
-            <param name="filePath">Returns the physical file path to the requested page.</param>
-        </member>
-        <member name="M:MySoft.Web.PageUtils.ResolveUrl(System.String,System.String)">
-            <summary>
-            Converts a URL into one that is usable on the requesting client.
-            </summary>
-            <remarks>Converts ~ to the requesting application path.  Mimics the behavior of the 
-            <b>Control.ResolveUrl()</b> method, which is often used by control developers.</remarks>
-            <param name="appPath">The application path.</param>
-            <param name="url">The URL, which might contain ~.</param>
-            <returns>A resolved URL.  If the input parameter <b>url</b> contains ~, it is replaced with the
-            value of the <b>appPath</b> parameter.</returns>
-        </member>
-        <member name="T:MySoft.Web.Config.StaticPageRuleCollection">
-            <summary>
-            The StaticPageRuleCollection models a set of StaticPageRules in the Web.config file.
-            </summary>
-            <remarks>
-            The StaticPageRuleCollection is expressed in XML as:
-            <code>
-            &lt;StaticPageRule&gt;
-              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
-              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
-            &lt;StaticPageRule&gt;
-            &lt;StaticPageRule&gt;
-              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
-              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
-            &lt;StaticPageRule&gt;
-            ...
-            &lt;StaticPageRule&gt;
-              &lt;LookFor&gt;<i>pattern to search for</i>&lt;/LookFor&gt;
-              &lt;SendTo&gt;<i>string to redirect to</i>&lt;/LookFor&gt;
-            &lt;StaticPageRule&gt;
-            </code>
-            </remarks>
-        </member>
-        <member name="M:MySoft.Web.Config.StaticPageRuleCollection.Add(MySoft.Web.Config.StaticPageRule)">
-            <summary>
-            Adds a new StaticPageRule to the collection.
-            </summary>
-            <param name="r">A StaticPageRule instance.</param>
-        </member>
-        <member name="P:MySoft.Web.Config.StaticPageRuleCollection.Item(System.Int32)">
-            <summary>
-            Gets or sets a StaticPageRule at a specified ordinal index.
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.Config.StaticPageConfiguration">
-            <summary>
-            Specifies the configuration settings in the Web.config for the StaticPageRule.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.Config.StaticPageConfiguration.GetConfig">
-            <summary>
-            GetConfig() returns an instance of the <b>StaticPageConfiguration</b> class with the values populated from
-            the Web.config file.  It uses XML deserialization to convert the XML structure in Web.config into
-            a <b>StaticPageConfiguration</b> instance.
-            </summary>
-            <returns>A <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> instance.</returns>
-        </member>
-        <member name="P:MySoft.Web.Config.StaticPageConfiguration.Rules">
-            <summary>
-            A <see cref="T:MySoft.Web.Config.StaticPageRuleCollection"/> instance that provides access to a set of <see cref="T:MySoft.Web.Config.StaticPageRule"/>s.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.AjaxMethodHelper.GetAjaxMethods(System.Type)">
-            <summary>
-            获取方法列表
-            </summary>
-            <param name="t"></param>
-            <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.ResponseFilter">
-            <summary>
-            生成htm静态页面
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.IUpdateDependency">
-            <summary>
-            更新依赖，包含 SlidingUpdateTime 和 AbsoluteUpdateTime 
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.IUpdateDependency.HasUpdate(System.DateTime)">
-            <summary>
-            判断是否需要更新
-            </summary>
-            <param name="currentDate"></param>
-            <returns></returns>
-        </member>
-        <member name="P:MySoft.Web.IUpdateDependency.UpdateType">
-            <summary>
-            更新类型
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.IUpdateDependency.LastUpdateTime">
-            <summary>
-            最后更新时间
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UpdateType">
-            <summary>
-            更新类型
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UpdateType.None">
-            <summary>
-            只生成一次
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UpdateType.Year">
-            <summary>
-            每年定时生成一次
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UpdateType.Month">
-            <summary>
-            每月定时生成一次
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UpdateType.Day">
-            <summary>
-            每天定时生成一次
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UpdateTime">
-            <summary>
-            定时生成基类
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UpdateTime.HasUpdate(System.DateTime)">
-            <summary>
-            检测是否需要更新
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:MySoft.Web.UpdateTime.UpdateType">
-            <summary>
-            更新类型
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.UpdateTime.LastUpdateTime">
-            <summary>
-            最后更新时间
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.SlidingParamInfo">
-            <summary>
-            定时生成策略
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.SlidingParamInfo.CheckUpdate(MySoft.Web.UpdateType,System.DateTime)">
-            <summary>
-            检测当前更新时间是否在设置的范围内
-            </summary>
-            <param name="updateTime"></param>
-            <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.SlidingUpdateTime">
-            <summary>
-            定时生成策略（按间隔时间）
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.SlidingUpdateTime.UpdateType">
-            <summary>
-            更新类型
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.SlidingUpdateTime.SlidingTimeSpan">
-            <summary>
-            时间间隔
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.SlidingUpdateTime.SlidingTimeParams">
-            <summary>
-            定时生成时间段参数
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.AbsoluteUpdateTime">
-            <summary>
-            绝对时间生成策略
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.AbsoluteUpdateTime.UpdateType">
-            <summary>
-            更新类型
-            </summary>
-        </member>
-        <member name="P:MySoft.Web.AbsoluteUpdateTime.AbsoluteDateTimes">
-            <summary>
-            时间间隔
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UI.AjaxMethodAttribute.name">
-            <summary>
-            自定义方法名称
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UI.AjaxMethodInfo.name">
-            <summary>
-            函数名称
-            </summary>
-        </member>
-        <member name="F:MySoft.Web.UI.AjaxMethodInfo.paramters">
-            <summary>
-            参数列表
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.UserControl">
-            <summary>
-            User Control base class.
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.RegisterPageJsFile(System.String[])">
-            <summary>
-            注册js文件到页面上
-            </summary>
-            <param name="jsfiles"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.RegisterPageCssFile(System.String[])">
-            <summary>
-            注册css文件到页面上
-            </summary>
-            <param name="jsfiles"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.RegisterPageScript(System.String[])">
-            <summary>
-            注册script脚本到页面上
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.AddObjectToPage(System.String,System.Object[])">
-            <summary>
-            添加对象到页面上
-            </summary>
-            <param name="ObjectName"></param>
-            <param name="values"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.AddEnumToPage(System.Type)">
-            <summary>
-            添加枚举到页面上
-            </summary>
-            <param name="ObjectName"></param>
-            <param name="type"></param>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.ConvertTo``1(System.String)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.ConvertTo``1(System.String,``0)">
-            <summary>
-            将value转换成对应的类型值
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="key"></param>
-            <param name="outValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.GetRequestParam``1(System.String)">
-            <summary>
-            Gets the string param.
-            </summary>
-            <param name="paramName">Name of the param.</param>
-            <returns>The param value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.GetRequestParam``1(System.String,``0)">
-            <summary>
-            Gets the string param.
-            </summary>
-            <param name="paramName">Name of the param.</param>
-            <param name="errorReturn">The error return.</param>
-            <returns>The param value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.StrongTyped``1(System.Object)">
-            <summary>
-            Strongs the typed.
-            </summary>
-            <param name="obj">The obj.</param>
-            <returns>The strong typed instance.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.FindControl``1(System.String)">
-            <summary>
-            Strongs the typed.
-            </summary>
-            <param name="obj">The obj.</param>
-            <returns>The strong typed instance.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.TextToHtml(System.String)">
-            <summary>
-            Texts to HTML.
-            </summary>
-            <param name="txtStr">The TXT STR.</param>
-            <returns>The formated str.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.GetResourceString(System.String)">
-            <summary>
-            Gets the string.
-            </summary>
-            <param name="key">The key.</param>
-            <returns>The resource value.</returns>
-        </member>
-        <member name="M:MySoft.Web.UI.UserControl.GetResourceString(System.String,System.Globalization.CultureInfo)">
-            <summary>
-            Gets the string.
-            </summary>
-            <param name="key">The key.</param>
-            <param name="ci">The ci.</param>
-            <returns>The resource value.</returns>
-        </member>
         <member name="T:MySoft.Web.Config.StaticPageRule">
             <summary>
             Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
@@ -1151,16 +718,6 @@
             验证字符串
             </summary>
         </member>
-        <member name="T:MySoft.Web.UI.AjaxException">
-            <summary>
-            Ajax调用异常类
-            </summary>
-        </member>
-        <member name="T:MySoft.Web.UI.AjaxCallbackParam">
-            <summary>
-            AjaxCallback参数
-            </summary>
-        </member>
         <member name="T:MySoft.Web.IStaticPageItem">
             <summary>
             静态页子项接口
@@ -1186,6 +743,21 @@
             当前是否可以更新
             </summary>
         </member>
+        <member name="E:MySoft.Web.IStaticPageItem.OnStart">
+            <summary>
+            开始处理
+            </summary>
+        </member>
+        <member name="E:MySoft.Web.IStaticPageItem.OnEnd">
+            <summary>
+            结束处理
+            </summary>
+        </member>
+        <member name="E:MySoft.Web.IStaticPageItem.Callback">
+            <summary>
+            生成时的回调
+            </summary>
+        </member>
         <member name="P:MySoft.Web.IStaticPageItem.StaticPageDependency">
             <summary>
             静态页生成依赖
@@ -1206,21 +778,30 @@
             是否为远程页面
             </summary>
         </member>
+        <member name="T:MySoft.Web.ExcutingEventHandler">
+            <summary>
+            执行生成时的委托
+            </summary>
+            <param name="createTime"></param>
+            <param name="dynamicurl"></param>
+            <param name="staticurl"></param>
+        </member>
+        <member name="T:MySoft.Web.CallbackEventHandler">
+            <summary>
+            生成页面时委托
+            </summary>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
         <member name="T:MySoft.Web.GetValuesEventHandler">
             <summary>
             返回值数组的委托
             </summary>
             <returns></returns>
         </member>
-        <member name="T:MySoft.Web.StartValueEventHandler">
+        <member name="T:MySoft.Web.StartEndValueEventHandler">
             <summary>
-            返回开始数的委托
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:MySoft.Web.EndValueEventHandler">
-            <summary>
-            返回结束数的委托
+            获取开始结束值的委托
             </summary>
             <returns></returns>
         </member>
@@ -1290,6 +871,28 @@
             对页面进行更新
             </summary>
         </member>
+        <member name="M:MySoft.Web.SingleStaticPageItem.RemoveRootPath(System.String)">
+            <summary>
+            去除根目录
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="E:MySoft.Web.SingleStaticPageItem.OnStart">
+            <summary>
+            回调
+            </summary>
+        </member>
+        <member name="E:MySoft.Web.SingleStaticPageItem.OnEnd">
+            <summary>
+            结束处理
+            </summary>
+        </member>
+        <member name="E:MySoft.Web.SingleStaticPageItem.Callback">
+            <summary>
+            生成时的回调
+            </summary>
+        </member>
         <member name="P:MySoft.Web.SingleStaticPageItem.StaticPageDependency">
             <summary>
             静态页依赖方案
@@ -1312,7 +915,7 @@
         </member>
         <member name="T:MySoft.Web.StaticPageParamInfo">
             <summary>
-            查询信息
+            参数信息
             </summary>
         </member>
         <member name="P:MySoft.Web.StaticPageParamInfo.ParamName">
@@ -1397,7 +1000,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Web.ParamStaticPageItem.GetQueryString(System.String)">
+        <member name="M:MySoft.Web.ParamStaticPageItem.GetRealPath(System.String)">
             <summary>
             获取查询字符串
             </summary>
@@ -1409,6 +1012,28 @@
             设置对应的坐标值
             </summary>
             <param name="index"></param>
+        </member>
+        <member name="M:MySoft.Web.ParamStaticPageItem.RemoveRootPath(System.String)">
+            <summary>
+            去除根目录
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="E:MySoft.Web.ParamStaticPageItem.OnStart">
+            <summary>
+            回调
+            </summary>
+        </member>
+        <member name="E:MySoft.Web.ParamStaticPageItem.OnEnd">
+            <summary>
+            结束处理
+            </summary>
+        </member>
+        <member name="E:MySoft.Web.ParamStaticPageItem.Callback">
+            <summary>
+            生成时的回调
+            </summary>
         </member>
         <member name="P:MySoft.Web.ParamStaticPageItem.StaticPageDependency">
             <summary>
@@ -1435,203 +1060,173 @@
             是否为远程页面
             </summary>
         </member>
-        <member name="T:MySoft.Web.CookieExpiresType">
+        <member name="T:MySoft.Web.UI.MasterAjaxPage">
             <summary>
-            为None时配合cookieTime为0使用
+            The MasterPage base class.
             </summary>
         </member>
-        <member name="T:MySoft.Web.WebUtils">
+        <member name="T:MySoft.Web.UI.MasterPage">
             <summary>
-            通用方法处理类
+            The MasterPage base class.
             </summary>
         </member>
-        <member name="M:MySoft.Web.WebUtils.RegisterPageForAjax(System.Web.UI.Page,System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageJsFile(System.String[])">
             <summary>
-            注册Ajax所需js到页面
+            注册js文件到页面上
             </summary>
+            <param name="jsfiles"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageCssFile(System.String[])">
+            <summary>
+            注册css文件到页面上
+            </summary>
+            <param name="jsfiles"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageScript(System.String[])">
+            <summary>
+            注册script脚本到页面上
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageForAjax(System.String)">
+            <summary>
+            将指定url页面中的ajax调用所需js注册到本页
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.MasterPage.RegisterPageForAjax(System.Type,System.String)">
+            <summary>
+            将指定url页面中的ajax调用所需js注册到本页
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.MasterPage.AddObjectToPage(System.String,System.Object[])">
+            <summary>
+            添加对象到页面上
+            </summary>
+            <param name="ObjectName"></param>
+            <param name="values"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.MasterPage.AddEnumToPage(System.Type)">
+            <summary>
+            添加枚举到页面上
+            </summary>
+            <param name="ObjectName"></param>
             <param name="type"></param>
         </member>
-        <member name="M:MySoft.Web.WebUtils.RegisterPageForAjax(System.Web.UI.Page,System.Type,System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.ConvertTo``1(System.String)">
             <summary>
-            注册Ajax所需js到页面
+            将value转换成对应的类型值
             </summary>
-            <param name="type"></param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.RegisterForAjax(System.Web.UI.Page,System.String)">
-            <summary>
-            注册Ajax所需js到页面
-            </summary>
-            <param name="type"></param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.RegisterPageJsFile(System.Web.UI.Page,System.String[])">
-            <summary>
-            向页面中加载js文件
-            </summary>
-            <param name="type"></param>
-            <param name="jsurls"></param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.RegisterPageScript(System.Web.UI.Page,System.String[])">
-            <summary>
-            添加Javascript脚本到页面
-            </summary>
-            <param name="scriptString"></param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.RegisterPageCssFile(System.Web.UI.Page,System.String[])">
-            <summary>
-            向页面中加载css文件
-            </summary>
-            <param name="page"></param>
-            <param name="cssurls"></param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.SaveCookie(System.String,System.String[],System.String[],System.String,MySoft.Web.CookieExpiresType,System.Int32)">
-            <summary>
-            保存一个Cookie,0为永不过期
-            </summary>
-            <param name="cookieName">Cookie名称</param>
-            <param name="CookieValue">Cookie值</param>
-            <param name="CookieTime">Cookie过期时间(天数),0为关闭页面失效</param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.ExistCookie(System.String)">
-            <summary>
-            检测cookid中是否存在值
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.GetCookie(System.String)">
-            <summary>
-            取得CookieValue
-            </summary>
-            <param name="cookieName">Cookie名称</param>
-            <returns>Cookie的值</returns>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.ClearCookie(System.String)">
-            <summary>
-            清除CookieValue
-            </summary>
-            <param name="cookieName">Cookie名称</param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.SaveSession(System.String,System.Object)">
-            <summary>
-            保存Session值
-            </summary>
-            <param name="key"></param>
+            <typeparam name="T"></typeparam>
             <param name="value"></param>
+            <returns></returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.RemoveSession(System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.ConvertTo``1(System.String,``0)">
             <summary>
-            从页面中移除Session值
+            将value转换成对应的类型值
             </summary>
-            <param name="page"></param>
+            <typeparam name="T"></typeparam>
             <param name="key"></param>
-        </member>
-        <member name="M:MySoft.Web.WebUtils.ExistSession(System.String)">
-            <summary>
-            检测Session中是否存在值
-            </summary>
-            <param name="key"></param>
+            <param name="outValue"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.GetSession``1(System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.GetRequestParam``1(System.String)">
             <summary>
-            从Session中获取对象
+            Gets the string param.
             </summary>
-            <typeparam name="TObject"></typeparam>
-            <param name="key"></param>
-            <returns></returns>
+            <param name="paramName">Name of the param.</param>
+            <returns>The param value.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.ServUEncrypt(System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.GetRequestParam``1(System.String,``0)">
             <summary>
-            对字符串进行适应 ServU 的 MD5 加密
+            Gets the string param.
             </summary>
-            <param name="str"></param>
-            <returns></returns>
+            <param name="paramName">Name of the param.</param>
+            <param name="errorReturn">The error return.</param>
+            <returns>The param value.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.RandomSTR(System.Int32)">
+        <member name="M:MySoft.Web.UI.MasterPage.StrongTyped``1(System.Object)">
             <summary>
-            获取一个由26个小写字母组成的指定长度的随即字符串
+            Strongs the typed.
             </summary>
-            <param name="intLong">指定长度</param>
-            <returns></returns>
+            <param name="obj">The obj.</param>
+            <returns>The strong typed instance.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.MD5Encrypt(System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.FindControl``1(System.String)">
             <summary>
-            对字符串进行普通md5加密
+            Strongs the typed.
             </summary>
-            <param name="str"></param>
-            <returns></returns>
+            <param name="obj">The obj.</param>
+            <returns>The strong typed instance.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.NoneEncrypt(System.String,System.Int32)">
+        <member name="M:MySoft.Web.UI.MasterPage.TextToHtml(System.String)">
             <summary>
-            对字符串进行加密（不可逆）
+            Texts to HTML.
             </summary>
-            <param name="Password">要加密的字符串</param>
-            <param name="Format">加密方式,0 is SHA1,1 is MD5</param>
-            <returns></returns>
+            <param name="txtStr">The TXT STR.</param>
+            <returns>The formated str.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.Encrypt(System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.GetResourceString(System.String)">
             <summary>
-            对字符串进行加密
+            Gets the string.
             </summary>
-            <param name="Passowrd">待加密的字符串</param>
-            <returns>string</returns>
+            <param name="key">The key.</param>
+            <returns>The resource value.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.Decrypt(System.String)">
+        <member name="M:MySoft.Web.UI.MasterPage.GetResourceString(System.String,System.Globalization.CultureInfo)">
             <summary>
-            对字符串进行解密
+            Gets the string.
             </summary>
-            <param name="Passowrd">已加密的字符串</param>
-            <returns></returns>
+            <param name="key">The key.</param>
+            <param name="ci">The ci.</param>
+            <returns>The resource value.</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.Encrypt(System.String,System.String)">
+        <member name="P:MySoft.Web.UI.MasterAjaxPage.EnableAjaxCallback">
             <summary>
-            对字符串进行加密
+            是否启用Ajax回调功能
             </summary>
-            <param name="text">待加密的字符串</param>
-            <returns>string</returns>
         </member>
-        <member name="M:MySoft.Web.WebUtils.Decrypt(System.String,System.String)">
+        <member name="P:MySoft.Web.UI.MasterAjaxPage.EnableAjaxTemplate">
             <summary>
-            对字符串进行解密
+            是否启用Ajax模板处理功能
             </summary>
-            <param name="text">已加密的字符串</param>
-            <returns></returns>
         </member>
-        <member name="T:MySoft.Web.LogHandler">
+        <member name="T:MySoft.Web.Config.StaticPageConfigSerializerSectionHandler">
             <summary>
-            写日志委托
+            Deserializes the markup in Web.config into an instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.
             </summary>
-            <param name="logMsg"></param>
         </member>
-        <member name="T:MySoft.Web.StaticErrorHandler">
+        <member name="M:MySoft.Web.Config.StaticPageConfigSerializerSectionHandler.Create(System.Object,System.Object,System.Xml.XmlNode)">
             <summary>
-            错误委托
+            Creates an instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.
             </summary>
-            <param name="ex"></param>
+            <remarks>Uses XML Serialization to deserialize the XML in the Web.config file into an
+            <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> instance.</remarks>
+            <returns>An instance of the <see cref="T:MySoft.Web.Config.StaticPageConfiguration"/> class.</returns>
         </member>
-        <member name="T:MySoft.Web.StaticPageUtils">
+        <member name="T:MySoft.Web.StaticPageManager">
             <summary>
             静态页处理类
             </summary>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.Start">
+        <member name="M:MySoft.Web.StaticPageManager.Start">
             <summary>
             启动静态管理类
             </summary>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.Start(System.Double)">
+        <member name="M:MySoft.Web.StaticPageManager.Start(System.Int32)">
             <summary>
             启动静态管理类
             </summary>
             <param name="interval">检测间隔时间(默认为一分钟)</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.AddItem(MySoft.Web.IStaticPageItem[])">
+        <member name="M:MySoft.Web.StaticPageManager.AddItem(MySoft.Web.IStaticPageItem[])">
             <summary>
             成批添加静态页生成项
             </summary>
             <param name="items">静态生成项</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.CreateRemotePage(System.String,System.String,System.String,System.Text.Encoding,System.Text.Encoding)">
+        <member name="M:MySoft.Web.StaticPageManager.CreateRemotePage(System.String,System.String,System.String,System.Text.Encoding,System.Text.Encoding)">
             <summary>
             生成远程页面
             </summary>
@@ -1641,7 +1236,7 @@
             <param name="outEncoding">文件保存页面编码</param>
             <param name="validateString">验证字符串</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.CreateRemotePage(System.String,System.String,System.String)">
+        <member name="M:MySoft.Web.StaticPageManager.CreateRemotePage(System.String,System.String,System.String)">
             <summary>
             生成远程页面
             </summary>
@@ -1649,27 +1244,37 @@
             <param name="savePath">文件保存路径</param>
             <param name="validateString">验证字符串</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.CreateLocalPage(System.String,System.String,System.String,System.String,System.Text.Encoding,System.Text.Encoding)">
+        <member name="M:MySoft.Web.StaticPageManager.CreateLocalPage(System.String,System.String,System.String,System.String,System.Text.Encoding,System.Text.Encoding)">
             <summary>
             生成本地页面
             </summary>
             <param name="templatePath">模板文件路径，如:/Default.aspx</param>
+            <param name="query">查询字符串</param>
             <param name="savePath">文件保存路径</param>
             <param name="inEncoding">模板页面编码</param>
             <param name="outEncoding">文件保存页面编码</param>
-            <param name="query">查询字符串</param>
             <param name="validateString">验证字符串</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.CreateLocalPage(System.String,System.String,System.String,System.String)">
+        <member name="M:MySoft.Web.StaticPageManager.CreateLocalPage(System.String,System.String,System.String,System.String)">
+            <summary>
+            生成本地页面
+            </summary>
+            <param name="templatePath">模板文件路径，如:/Default.aspx</param>
+            <param name="query">查询字符串</param>
+            <param name="savePath">文件保存路径</param>
+            <param name="validateString">验证字符串</param>
+        </member>
+        <member name="M:MySoft.Web.StaticPageManager.CreateLocalPage(System.String,System.String,System.String,System.Text.Encoding,System.Text.Encoding)">
             <summary>
             生成本地页面
             </summary>
             <param name="templatePath">模板文件路径，如:/Default.aspx</param>
             <param name="savePath">文件保存路径</param>
-            <param name="query">查询字符串</param>
+            <param name="validateString">验证字符串</param>
+            <param name="outEncoding">文件保存页面编码</param>
             <param name="validateString">验证字符串</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.CreateLocalPage(System.String,System.String,System.String)">
+        <member name="M:MySoft.Web.StaticPageManager.CreateLocalPage(System.String,System.String,System.String)">
             <summary>
             生成本地页面
             </summary>
@@ -1677,28 +1282,7 @@
             <param name="savePath">文件保存路径</param>
             <param name="validateString">验证字符串</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.GetFullPath(System.String)">
-            <summary>
-            获取当前某文件绝对路径
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Web.StaticPageUtils.ProcessRequest(System.String,System.String)">
-            <summary>
-            内部处理IIS请求，获取结果
-            </summary>
-            <param name="page">页面路径。应用程序绝对路径。</param>
-            <returns>解析结果</returns>
-        </member>
-        <member name="M:MySoft.Web.StaticPageUtils.ProcessRequest(System.String,System.String,System.Text.Encoding)">
-            <summary>
-            内部处理IIS请求，获取结果
-            </summary>
-            <param name="page">页面路径。应用程序绝对路径。</param>
-            <param name="encoding">编码，默认是UTF8</param>
-            <returns>解析结果</returns>
-        </member>
-        <member name="M:MySoft.Web.StaticPageUtils.GetLocalPageString(System.String,System.String,System.Text.Encoding,System.String)">
+        <member name="M:MySoft.Web.StaticPageManager.GetLocalPageString(System.String,System.String,System.Text.Encoding,System.String)">
             <summary>
             获取本地页面内容
             </summary>
@@ -1708,7 +1292,7 @@
             <param name="validateString"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.GetRemotePageString(System.String,System.Text.Encoding,System.String)">
+        <member name="M:MySoft.Web.StaticPageManager.GetRemotePageString(System.String,System.Text.Encoding,System.String)">
             <summary>
             获取远程页面内容
             </summary>
@@ -1717,7 +1301,7 @@
             <param name="validateString"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.SaveFile(System.String,System.String,System.Text.Encoding)">
+        <member name="M:MySoft.Web.StaticPageManager.SaveFile(System.String,System.String,System.Text.Encoding)">
             <summary>
              保存字符串到路径
             </summary>
@@ -1725,21 +1309,97 @@
             <param name="savePath">文件保存路径</param>
             <param name="outEncoding">文件保存页面编码</param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.SaveLog(System.String)">
+        <member name="M:MySoft.Web.StaticPageManager.SaveLog(System.String)">
             <summary>
             保存日志
             </summary>
-            <param name="logMsg"></param>
+            <param name="log"></param>
         </member>
-        <member name="M:MySoft.Web.StaticPageUtils.SaveError(System.Exception)">
+        <member name="M:MySoft.Web.StaticPageManager.SaveError(System.Exception,System.String)">
             <summary>
             保存错误
             </summary>
+            <param name="log"></param>
             <param name="ex"></param>
         </member>
-        <member name="T:MySoft.Web.RequestEncoding">
+        <member name="T:MySoft.Web.EncodingWorkerRequest">
             <summary>
             简单请求处理类
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.CallbackParam">
+            <summary>
+            Callback参数值
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParam.To``1">
+            <summary>
+            将value转换成对应的类型值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParam.To``1(``0)">
+            <summary>
+            将value转换成对应的类型值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="defvalue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParam.ToString">
+            <summary>
+            返回原始值
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Web.UI.CallbackParams">
+            <summary>
+            返回Callback参数字典
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParams.Add(System.String,System.String)">
+            <summary>
+            添加元素
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParams.Contains(System.String)">
+            <summary>
+            判断是否存在key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.CallbackParams.ToNameValueCollection">
+            <summary>
+            返回NameValueCollection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Web.UI.CallbackParams.Item(System.String)">
+            <summary>
+            重载字典
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="F:MySoft.Web.UI.AjaxMethodAttribute.name">
+            <summary>
+            自定义方法名称
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.UI.AjaxMethodInfo.name">
+            <summary>
+            函数名称
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.UI.AjaxMethodInfo.paramters">
+            <summary>
+            参数列表
             </summary>
         </member>
         <member name="T:MySoft.Web.UI.AjaxNamespaceAttribute">
@@ -1757,6 +1417,139 @@
             实例化Ajax输出命名空间
             </summary>
             <param name="name"></param>
+        </member>
+        <member name="T:MySoft.Web.UI.Page">
+            <summary>
+            Page 的摘要说明
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RegisterPageJsFile(System.String[])">
+            <summary>
+            注册js文件到页面上
+            </summary>
+            <param name="jsfiles"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RegisterPageCssFile(System.String[])">
+            <summary>
+            注册css文件到页面上
+            </summary>
+            <param name="jsfiles"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RegisterPageScript(System.String[])">
+            <summary>
+            注册script脚本到页面上
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RegisterPageForAjax(System.String)">
+            <summary>
+            将指定url页面中的ajax调用所需js注册到本页
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RegisterPageForAjax(System.Type,System.String)">
+            <summary>
+            将指定url页面中的ajax调用所需js注册到本页
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.AddObjectToPage(System.String,System.Object[])">
+            <summary>
+            添加对象到页面上
+            </summary>
+            <param name="ObjectName"></param>
+            <param name="values"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.AddEnumToPage(System.Type)">
+            <summary>
+            添加枚举到页面上
+            </summary>
+            <param name="ObjectName"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.ConvertTo``1(System.String)">
+            <summary>
+            将value转换成对应的类型值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.ConvertTo``1(System.String,``0)">
+            <summary>
+            将value转换成对应的类型值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="outValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.GetRequestParam``1(System.String)">
+            <summary>
+            Gets the string param.
+            </summary>
+            <param name="paramName">Name of the param.</param>
+            <returns>The param value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.GetRequestParam``1(System.String,``0)">
+            <summary>
+            Gets the string param.
+            </summary>
+            <param name="paramName">Name of the param.</param>
+            <param name="errorReturn">The error return.</param>
+            <returns>The param value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.StrongTyped``1(System.Object)">
+            <summary>
+            Strongs the typed.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns>The strong typed instance.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.FindControl``1(System.String)">
+            <summary>
+            Strongs the typed.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns>The strong typed instance.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.TextToHtml(System.String)">
+            <summary>
+            Texts to HTML.
+            </summary>
+            <param name="txtStr">The TXT STR.</param>
+            <returns>The formated str.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.GetResourceString(System.String)">
+            <summary>
+            Gets the string.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The resource value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.GetResourceString(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the string.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="ci">The ci.</param>
+            <returns>The resource value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RunMethod(System.Object,System.String)">
+            <summary>
+            通过字符串的方式来执行方法
+            </summary>
+            <param name="obj">方法所在对象</param>
+            <param name="name">方法名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.Page.RunMethod(System.Object,System.String,System.Object[])">
+            <summary>
+            通过字符串的方式来执行方法
+            </summary>
+            <param name="obj">方法所在对象</param>
+            <param name="name">方法名称</param>
+            <param name="values">方法对应的参数值</param>
+            <returns></returns>
         </member>
         <member name="T:MySoft.Web.LinkStyle">
             <summary>
@@ -2015,6 +1808,313 @@
             <summary>
             获取或设置DataPage
             </summary>
+        </member>
+        <member name="T:MySoft.Web.AjaxException">
+            <summary>
+            Ajax异常
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.WebException">
+            <summary>
+            Web异常
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.WebException.#ctor(System.String)">
+            <summary>
+            普通异常的构造方法
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MySoft.Web.WebException.#ctor(System.String,System.Exception)">
+            <summary>
+            内嵌异常的构造方法
+            </summary>
+            <param name="message"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="M:MySoft.Web.AjaxException.#ctor(System.String)">
+            <summary>
+            普通异常的构造方法
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MySoft.Web.AjaxException.#ctor(System.String,System.Exception)">
+            <summary>
+            内嵌异常的构造方法
+            </summary>
+            <param name="message"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="T:MySoft.Web.UI.AjaxRequestPage">
+            <summary>
+            Ajax相关信息
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.AjaxRequest">
+            <summary>
+            Ajax调用类
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.SendRequest">
+            <summary>
+            发送请求
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.LoadTemplate(System.String)">
+            <summary>
+            Called when [ajax template pre render].
+            </summary>
+            <param name="templatePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.InvokeMethod(System.Object,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="invokeObject"></param>
+            <param name="MethodName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.LoadAjaxControl(System.String)">
+            <summary>
+            加载控件返回String
+            </summary>
+            <param name="controlPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.LoadAjaxControl(System.String,System.String)">
+            <summary>
+            加载控件返回String
+            </summary>
+            <param name="controlPath"></param>
+            <param name="templatePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.GetCache(System.String,System.String)">
+            <summary>
+            获取控件的cache
+            </summary>
+            <param name="path"></param>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.SetCache(System.String,System.String,System.String)">
+            <summary>
+            设置控件的cache
+            </summary>
+            <param name="path"></param>
+            <param name="parameter"></param>
+            <param name="html"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.GetCallbackParams">
+            <summary>
+            获取页面参数
+            </summary>
+            <param name="eventArgument"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.GetObject``1(System.String)">
+            <summary>
+            将字符串反系列化成对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="paramsKey">传入key值获取对象</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.GetObject(System.Type,System.String)">
+            <summary>
+            将字符串反系列化成对象
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.WriteToBuffer(MySoft.Web.UI.AjaxCallbackParam)">
+            <summary>
+            将数据写入页面流
+            </summary>
+            <param name="param"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.WriteToBuffer(MySoft.Web.UI.AjaxMethodInfo[])">
+            <summary>
+            将数据写入页面流
+            </summary>
+            <param name="methods"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxRequest.WriteToBuffer(System.String)">
+            <summary>
+            将数据写入页面流
+            </summary>
+            <param name="html"></param>
+        </member>
+        <member name="T:MySoft.Web.AjaxPageHandler">
+            <summary>
+            异步处理Handler
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.IAjaxInitHandler">
+            <summary>
+            提供异步初始化处理的接口
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.AjaxPage">
+            <summary>
+            AjaxPage 的摘要说明
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.UI.AjaxPage.EnableAjaxCallback">
+            <summary>
+            是否启用Ajax回调功能
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.UI.AjaxPage.EnableAjaxTemplate">
+            <summary>
+            是否启用Ajax模板处理功能
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.ResponseFilter">
+            <summary>
+            生成htm静态页面
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.ResponseFilter.RemoveRootPath(System.String)">
+            <summary>
+            去除根目录
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Web.UI.IAjaxProcessHandler">
+            <summary>
+            提供异步回调处理的接口
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CacheControlConfiguration.config">
+            <summary>
+            获取配置信息
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CacheControlConfiguration.rules">
+            <summary>
+            获取缓存规则
+            </summary>
+        </member>
+        <member name="F:MySoft.Web.CacheControlConfiguration.singleton">
+            <summary>
+            创建单例
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.CacheControlConfiguration.GetSection">
+            <summary>
+            加载控件缓存配置
+            </summary>
+        </member>
+        <member name="T:MySoft.Web.UI.UserControl">
+            <summary>
+            User Control base class.
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.RegisterPageJsFile(System.String[])">
+            <summary>
+            注册js文件到页面上
+            </summary>
+            <param name="jsfiles"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.RegisterPageCssFile(System.String[])">
+            <summary>
+            注册css文件到页面上
+            </summary>
+            <param name="jsfiles"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.RegisterPageScript(System.String[])">
+            <summary>
+            注册script脚本到页面上
+            </summary>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.AddObjectToPage(System.String,System.Object[])">
+            <summary>
+            添加对象到页面上
+            </summary>
+            <param name="ObjectName"></param>
+            <param name="values"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.AddEnumToPage(System.Type)">
+            <summary>
+            添加枚举到页面上
+            </summary>
+            <param name="ObjectName"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.ConvertTo``1(System.String)">
+            <summary>
+            将value转换成对应的类型值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.ConvertTo``1(System.String,``0)">
+            <summary>
+            将value转换成对应的类型值
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="outValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.GetRequestParam``1(System.String)">
+            <summary>
+            Gets the string param.
+            </summary>
+            <param name="paramName">Name of the param.</param>
+            <returns>The param value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.GetRequestParam``1(System.String,``0)">
+            <summary>
+            Gets the string param.
+            </summary>
+            <param name="paramName">Name of the param.</param>
+            <param name="errorReturn">The error return.</param>
+            <returns>The param value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.StrongTyped``1(System.Object)">
+            <summary>
+            Strongs the typed.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns>The strong typed instance.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.FindControl``1(System.String)">
+            <summary>
+            Strongs the typed.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns>The strong typed instance.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.TextToHtml(System.String)">
+            <summary>
+            Texts to HTML.
+            </summary>
+            <param name="txtStr">The TXT STR.</param>
+            <returns>The formated str.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.GetResourceString(System.String)">
+            <summary>
+            Gets the string.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The resource value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.UserControl.GetResourceString(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the string.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="ci">The ci.</param>
+            <returns>The resource value.</returns>
+        </member>
+        <member name="M:MySoft.Web.UI.AjaxMethodHelper.GetAjaxMethods(System.Type)">
+            <summary>
+            获取方法列表
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>
