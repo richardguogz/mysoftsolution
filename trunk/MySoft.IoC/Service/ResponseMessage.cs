@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
 
 namespace MySoft.IoC
 {
@@ -56,9 +59,13 @@ namespace MySoft.IoC
                     return "empty data";
                 }
 
-                if (data.GetType() == typeof(byte[]))
+                if (data is byte[])
                 {
                     return string.Format("packet size: {0} bytes", ((byte[])data).Length);
+                }
+                else if (data is Exception)
+                {
+                    return CoreHelper.GetInnerException(data as Exception).Message;
                 }
                 else
                 {

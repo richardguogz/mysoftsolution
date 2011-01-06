@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Configuration;
 using System.Xml;
-using MySoft.Core;
+using MySoft.IoC;
 using MySoft.Remoting;
 
 namespace MySoft.IoC
@@ -27,7 +29,7 @@ namespace MySoft.IoC
         /// <returns></returns>
         public static CastleFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/castleFactory");
+            object obj = ConfigurationManager.GetSection("shumi.framework/castleFactory");
 
             if (obj != null)
                 return (CastleFactoryConfiguration)obj;

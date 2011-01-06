@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Diagnostics;
 using System.Net.Sockets;
-using MySoft.Core;
+using System.Linq;
 
 namespace MySoft.IoC
 {
@@ -14,19 +16,15 @@ namespace MySoft.IoC
 
         private Dictionary<Guid, ServiceRequestNotifyHandler> RemoveNullHandlers(Dictionary<Guid, ServiceRequestNotifyHandler> handlers)
         {
-            lock (handlers)
+            Dictionary<Guid, ServiceRequestNotifyHandler> newHandlers = new Dictionary<Guid, ServiceRequestNotifyHandler>();
+            foreach (Guid key in handlers.Keys)
             {
-                IList<Guid> clientIdList = new List<Guid>(handlers.Keys);
-                foreach (Guid key in clientIdList)
+                if (handlers[key] != null)
                 {
-                    if (handlers[key] != null)
-                    {
-                        handlers.Remove(key);
-                    }
+                    newHandlers.Add(key, handlers[key]);
                 }
-
-                return handlers;
             }
+            return newHandlers;
         }
 
         #endregion
@@ -45,48 +43,38 @@ namespace MySoft.IoC
 
             if (handlers != null && handlers.Count > 0)
             {
-                Random random = new Random(Guid.NewGuid().GetHashCode());
-                IList<Guid> clientIdList = new List<Guid>(handlers.Keys);
-                int start = random.Next(clientIdList.Count);
-                for (int i = 0; i < clientIdList.Count; i++)
+                Random random = new Random();
+                KeyValuePair<Guid, ServiceRequestNotifyHandler> temp = handlers.ElementAt(random.Next(handlers.Count));
+                Guid tempClientId = temp.Key;
+                ServiceRequestNotifyHandler tempHandler = temp.Value;
+                if (tempHandler != null)
                 {
-                    Guid tempClientId = clientIdList[(i + start) % clientIdList.Count];
-                    if (handlers.ContainsKey(tempClientId))
+                    string log = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "].";
+                    try
                     {
-                        ServiceRequestNotifyHandler tempHandler = handlers[tempClientId];
-                        if (tempHandler != null)
+                        IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
+                        if (OnLog != null) OnLog(log);
+                        tempHandler(reqMsg);
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ex.Message;
+                        if (OnLog != null) OnLog(error);
+
+                        var exception = new IoCException(log + "\r\n" + error, ex);
+                        if (OnError != null) OnError(exception);
+
+                        //如果socket错误，表示连接失败
+                        if (ex is SocketException)
                         {
-                            string log = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "].";
-                            try
-                            {
-                                IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
-                                if (OnLog != null) OnLog(log);
-                                tempHandler(reqMsg);
-
-                                //if calling ok, skip other subscribers, easily exit loop
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ex.Message;
-                                if (OnLog != null) OnLog(error);
-
-                                var exception = new IoCException(log + "\r\n" + error, ex);
-                                if (OnError != null) OnError(exception);
-
-                                //如果socket错误，表示连接失败
-                                if (ex is SocketException)
-                                {
-                                    handlers[tempClientId] = null;
-                                    needCleanHandlers = true;
-                                }
-                            }
-                        }
-                        else
-                        {
+                            handlers[tempClientId] = null;
                             needCleanHandlers = true;
                         }
                     }
+                }
+                else
+                {
+                    needCleanHandlers = true;
                 }
             }
 
@@ -136,7 +124,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
 
@@ -145,7 +133,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogEventHandler OnError;
+        public event ErrorLogHandler OnError;
 
         #endregion
     }

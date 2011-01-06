@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using Castle.Core.Interceptor;
-using MySoft.Core;
 
 namespace MySoft.IoC
 {

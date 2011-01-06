@@ -1,4 +1,7 @@
-﻿using MySoft.Remoting;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using MySoft.Remoting;
 
 namespace MySoft.IoC
 {

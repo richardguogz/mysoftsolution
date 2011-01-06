@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using MySoft.Core;
+using System.Collections.Specialized;
 
 namespace MySoft.IoC
 {
@@ -55,15 +55,6 @@ namespace MySoft.IoC
         {
             lock (requests)
             {
-                //foreach (Guid key in requests.Keys)
-                //{
-                //    RequestMessage reqMsg = (RequestMessage)requests[key];
-                //    if (reqMsg == null || reqMsg.Expiration < DateTime.Now)
-                //    {
-                //        requests.Remove(key);
-                //    }
-                //}
-
                 if (!requests.ContainsKey(tid))
                 {
                     requests.Add(tid, msg);
@@ -84,15 +75,6 @@ namespace MySoft.IoC
         {
             lock (responses)
             {
-                //foreach (Guid key in responses.Keys)
-                //{
-                //    ResponseMessage resMsg = (ResponseMessage)responses[key];
-                //    if (resMsg == null || resMsg.Expiration < DateTime.Now)
-                //    {
-                //        responses.Remove(key);
-                //    }
-                //}
-
                 if (!responses.ContainsKey(tid))
                 {
                     responses.Add(tid, msg);
@@ -134,8 +116,8 @@ namespace MySoft.IoC
         public MemoryServiceMQ()
         {
             SimpleBroadCastStrategy strategy = new SimpleBroadCastStrategy();
-            strategy.OnLog += new LogEventHandler(strategy_OnLog);
-            strategy.OnError += new ErrorLogEventHandler(strategy_OnError);
+            strategy.OnLog += new LogHandler(strategy_OnLog);
+            strategy.OnError += new ErrorLogHandler(strategy_OnError);
             this.broadCastStrategy = strategy;
         }
 
@@ -301,7 +283,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
 
@@ -310,7 +292,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogEventHandler OnError;
+        public event ErrorLogHandler OnError;
 
         #endregion
     }

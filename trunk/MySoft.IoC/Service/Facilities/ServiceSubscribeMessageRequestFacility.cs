@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
-using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Facilities;
+using Castle.MicroKernel.SubSystems.Conversion;
+using Castle.Core;
 using MySoft.IoC.Services;
 
 namespace MySoft.IoC.Facilities
@@ -28,7 +30,7 @@ namespace MySoft.IoC.Facilities
         /// </summary>
         private void CheckWaitingList()
         {
-            IHandler[] handlerArray1 = (IHandler[])this.waitList.ToArray(typeof(IHandler));
+            IHandler[] handlerArray1 = (IHandler[]) this.waitList.ToArray(typeof(IHandler));
             IHandler[] handlerArray2 = handlerArray1;
             for (int num1 = 0; num1 < handlerArray2.Length; num1++)
             {

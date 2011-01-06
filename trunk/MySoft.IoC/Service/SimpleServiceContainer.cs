@@ -1,13 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.Diagnostics;
+
+using Castle.MicroKernel;
 using Castle.Core;
-using Castle.Facilities.Startable;
+using Castle.Core.Configuration;
 using Castle.Windsor;
+using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor.Configuration.Interpreters;
-using MySoft.Core;
+using Castle.Facilities.Startable;
+
 using MySoft.IoC.Services;
 using MySoft.Remoting;
+using System.Threading;
 
 namespace MySoft.IoC
 {
@@ -54,7 +61,7 @@ namespace MySoft.IoC
             }
 
             serviceProxy = new ServiceProxy(mq, DEFAULT_MAX_TRY_NUMBER);
-            serviceProxy.OnLog += new LogEventHandler(serviceProxy_OnLog);
+            serviceProxy.OnLog += new LogHandler(serviceProxy_OnLog);
 
             this.DiscoverServices();
         }
@@ -392,7 +399,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
 
@@ -401,7 +408,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogEventHandler OnError;
+        public event ErrorLogHandler OnError;
 
         #endregion
 

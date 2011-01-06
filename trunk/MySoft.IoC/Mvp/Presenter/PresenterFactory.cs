@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using MySoft.Core;
 using MySoft.IoC;
 
 namespace MySoft.Mvp

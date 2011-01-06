@@ -1,5 +1,8 @@
 using System;
-using MySoft.Core;
+using System.Collections.Generic;
+using System.Text;
+
+using MySoft.IoC;
 
 namespace MySoft.IoC
 {

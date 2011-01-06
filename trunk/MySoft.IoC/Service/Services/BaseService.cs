@@ -1,5 +1,7 @@
 using System;
-using MySoft.Core;
+using System.Collections.Generic;
+using System.Text;
+using System.Diagnostics;
 
 namespace MySoft.IoC.Services
 {
@@ -88,7 +90,7 @@ namespace MySoft.IoC.Services
             {
                 long t2 = System.Environment.TickCount - t1;
                 //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog(string.Format("Dynamic service ({0}:{1},{2}). -->{3}\r\nResult -->{4}", clientId, serviceName, msg.SubServiceName, "spent time: (" + t2.ToString() + ") ms.", retMsg.Message));
+                if (OnLog != null) OnLog(string.Format("Dynamic service ({0}:{1},{2}).\r\nResult -->{3}\r\n{4}", clientId, serviceName, msg.SubServiceName, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms."));
             }
 
             return retMsg;
@@ -118,7 +120,7 @@ namespace MySoft.IoC.Services
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
 
@@ -127,7 +129,7 @@ namespace MySoft.IoC.Services
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogEventHandler OnError;
+        public event ErrorLogHandler OnError;
 
         #endregion
     }

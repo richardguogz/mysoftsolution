@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Reflection;
-using MySoft.Core;
 using MySoft.Remoting;
+using System.Linq;
+using System.Reflection.Emit;
 
 namespace MySoft.IoC
 {
@@ -119,7 +120,7 @@ namespace MySoft.IoC
                 if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
                 {
                     //参数不正确直接返回异常
-                    throw new ArgumentException(string.Format("无效的参数信息({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                    throw new IoCException(string.Format("无效的参数信息({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
                 }
 
                 if (pis.Length > 0)
@@ -136,7 +137,7 @@ namespace MySoft.IoC
                 ResponseMessage resMsg = container.CallService(serviceInterfaceType.FullName, reqMsg);
                 if (resMsg == null)
                 {
-                    throw new Exception(string.Format("未找到接口对应的实现({0}).", reqMsg.ServiceName));
+                    throw new IoCException(string.Format("远程服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
                 }
 
                 if (resMsg.Data == null) return resMsg.Data;
@@ -202,14 +203,13 @@ namespace MySoft.IoC
 
                         return SerializationManager.DeserializeXml(returnType, xmlString);
                 }
+
+                return null;
             }
             catch (Exception ex)
             {
                 throw new IoCException(ex.Message, ex);
             }
-
-            //参数不正确直接返回异常
-            throw new ArgumentNullException(string.Format("无效的方法调用({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
         }
     }
 }

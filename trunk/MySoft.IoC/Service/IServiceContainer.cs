@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 
+using Castle.Core;
 using Castle.MicroKernel;
-using MySoft.Core;
 using MySoft.Remoting;
 
 namespace MySoft.IoC

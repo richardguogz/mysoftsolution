@@ -1,5 +1,9 @@
 using System;
-using MySoft.Core;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+using System.Diagnostics;
+using Castle.Windsor;
 
 namespace MySoft.IoC
 {
@@ -39,6 +43,11 @@ namespace MySoft.IoC
                 retMsg = mq.ReceieveResponseFromQueue(tid);
                 if (retMsg == null)
                 {
+                    //重新发送请求
+                    msg.MessageId = Guid.NewGuid();
+                    msg.TransactionId = Guid.NewGuid();
+                    tid = mq.SendRequestToQueue(serviceName, msg);
+
                     if (OnLog != null) OnLog(string.Format("Try {0} running ({1},{2}) -->{3}", (i + 1), serviceName, msg.SubServiceName, msg.Parameters.SerializedData));
                 }
                 else
@@ -64,7 +73,7 @@ namespace MySoft.IoC
 
         #region ILogable Members
 
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
     }

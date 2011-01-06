@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Castle.DynamicProxy;
-using MySoft.Core;
 
 namespace MySoft.IoC
 {

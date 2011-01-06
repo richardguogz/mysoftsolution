@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Reflection;
+using Castle.Windsor;
 using System.Reflection.Emit;
-using MySoft.Core;
+using System.Configuration;
+using MySoft.IoC;
 using MySoft.Remoting;
+using System.Linq;
+using Castle.Core.Interceptor;
 
 namespace MySoft.IoC
 {
@@ -269,12 +274,12 @@ namespace MySoft.IoC
                 else
                 {
                     RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
-                    helper.OnLog += new LogEventHandler(msg_OnLog);
+                    helper.OnLog += new LogHandler(msg_OnLog);
 
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
                     IServiceContainer container = new SimpleServiceContainer(mq);
-                    container.OnLog += new LogEventHandler(msg_OnLog);
-                    container.OnError += new ErrorLogEventHandler(container_OnError);
+                    container.OnLog += new LogHandler(msg_OnLog);
+                    container.OnError += new ErrorLogHandler(container_OnError);
 
                     singleton = new CastleFactory(container);
                 }
@@ -399,7 +404,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogEventHandler OnLog;
+        public event LogHandler OnLog;
 
         #endregion
 
@@ -408,7 +413,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogEventHandler OnError;
+        public event ErrorLogHandler OnError;
 
         #endregion
     }
