@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace MySort.IoC.WinFormTest
+namespace MySoft.IoC.WinFormTest
 {
     static class Program
     {

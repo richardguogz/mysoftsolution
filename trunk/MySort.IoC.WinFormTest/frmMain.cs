@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MySort.IoC.WinFormTest
+namespace MySoft.IoC.WinFormTest
 {
     public delegate void UpdateMessage(string msg);
 
@@ -41,7 +41,7 @@ namespace MySort.IoC.WinFormTest
             //var a = item2.Name;
             //return;
 
-            CastleFactory.Create().OnError += new MySoft.Core.ErrorLogEventHandler(frmMain_OnError);
+            CastleFactory.Create().OnError += new ErrorLogHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
             //var user = service.GetUserInfo("maoyong");

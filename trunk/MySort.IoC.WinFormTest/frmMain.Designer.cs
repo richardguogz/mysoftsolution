@@ -1,4 +1,4 @@
-﻿namespace MySort.IoC.WinFormTest
+﻿namespace MySoft.IoC.WinFormTest
 {
     partial class frmMain
     {
