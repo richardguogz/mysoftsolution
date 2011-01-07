@@ -641,7 +641,7 @@ namespace MySoft.Web
                 bool allUpdateSuccess = true;
                 for (int index = 0; index < count; index++)
                 {
-                    string dynamicurl = GetRealPath(templatePath);
+                    string dynamicurl = templatePath;
                     string staticurl = GetRealPath(savePath);
 
                     try

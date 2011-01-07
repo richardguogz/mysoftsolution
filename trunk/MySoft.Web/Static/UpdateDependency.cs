@@ -96,6 +96,9 @@ namespace MySoft.Web
         /// <returns></returns>
         internal bool CheckUpdate(UpdateType updateType, DateTime updateTime)
         {
+            //如果是MaxValue直接返回true
+            if (updateTime == DateTime.MaxValue) return true;
+
             switch (updateType)
             {
                 case UpdateType.Year:
@@ -217,6 +220,9 @@ namespace MySoft.Web
 
         public override bool HasUpdate(DateTime currentDate)
         {
+            //如果是MaxValue直接返回true
+            if (currentDate == DateTime.MaxValue) return true;
+
             DateTime updateTime = lastUpdateTime.Add(slidingTimeSpan);
             bool isUpdate = currentDate.Ticks >= updateTime.Ticks;
             if (isUpdate && lastUpdateTime != DateTime.MinValue)
@@ -275,6 +281,9 @@ namespace MySoft.Web
 
         public override bool HasUpdate(DateTime currentDate)
         {
+            //如果是MaxValue直接返回true
+            if (currentDate == DateTime.MaxValue) return true;
+
             int index = 0;
             bool isUpdate = false;
             foreach (DateTime absoluteDateTime in absoluteDateTimes)
