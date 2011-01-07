@@ -297,10 +297,24 @@ namespace MySoft.Web
                 DateTime createTime = DateTime.Now;
 
                 //开始生成
-                if (OnStart != null) OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
+                if (OnStart != null)
+                {
+                    try
+                    {
+                        OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
+                    }
+                    catch { };
+                }
 
                 //生成时回调
-                if (Callback != null) content = Callback(content);
+                if (Callback != null)
+                {
+                    try
+                    {
+                        content = Callback(content);
+                    }
+                    catch { };
+                }
 
                 string extension = Path.GetExtension(staticurl);
                 if (extension != null && extension.ToLower() == ".js")
@@ -319,7 +333,14 @@ namespace MySoft.Web
                 StaticPageManager.SaveFile(content, staticurl, outEncoding);
 
                 //结束生成
-                if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
+                if (OnEnd != null)
+                {
+                    try
+                    {
+                        OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
+                    }
+                    catch { };
+                }
 
                 //全部生成成功才设置最后更新时间
                 if (updateTime == DateTime.MaxValue)
@@ -668,10 +689,24 @@ namespace MySoft.Web
                         DateTime createTime = DateTime.Now;
 
                         //开始生成
-                        if (OnStart != null) OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
+                        if (OnStart != null)
+                        {
+                            try
+                            {
+                                OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
+                            }
+                            catch { };
+                        }
 
                         //生成时回调
-                        if (Callback != null) content = Callback(content);
+                        if (Callback != null)
+                        {
+                            try
+                            {
+                                content = Callback(content);
+                            }
+                            catch { };
+                        }
 
                         string extension = Path.GetExtension(staticurl);
                         if (extension != null && extension.ToLower() == ".js")
@@ -690,7 +725,14 @@ namespace MySoft.Web
                         StaticPageManager.SaveFile(content, staticurl, outEncoding);
 
                         //结束生成
-                        if (OnEnd != null) OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
+                        if (OnEnd != null)
+                        {
+                            try
+                            {
+                                OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
+                            }
+                            catch { };
+                        }
                     }
                     catch (Exception ex)
                     {
