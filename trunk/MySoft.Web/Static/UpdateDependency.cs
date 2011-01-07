@@ -238,7 +238,12 @@ namespace MySoft.Web
             //如果是MaxValue直接返回true
             if (currentDate == DateTime.MaxValue) return true;
 
-            DateTime updateTime = lastUpdateTime.Add(slidingTimeSpan);
+            DateTime updateTime = lastUpdateTime;
+            if (updateSuccess)
+            {
+                updateTime = lastUpdateTime.Add(slidingTimeSpan);
+            }
+
             bool isUpdate = currentDate.Ticks >= updateTime.Ticks;
             if (isUpdate && lastUpdateTime != DateTime.MinValue)
             {
@@ -246,7 +251,7 @@ namespace MySoft.Web
                 {
                     foreach (SlidingParamInfo slidingTimeParam in slidingTimeParams)
                     {
-                        if (slidingTimeParam.CheckUpdate(updateType, currentDate)) return true;
+                        if (slidingTimeParam.CheckUpdate(updateType, currentDate, updateSuccess)) return true;
                     }
                     isUpdate = false;
                 }

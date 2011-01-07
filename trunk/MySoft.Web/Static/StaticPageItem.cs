@@ -169,7 +169,7 @@ namespace MySoft.Web
 
         private int retryInterval = 10;
         /// <summary>
-        /// 重试间隔
+        /// 重试间隔(单位:分钟)
         /// </summary>
         public int RetryInterval
         {
@@ -524,7 +524,7 @@ namespace MySoft.Web
 
         private int retryInterval = 10;
         /// <summary>
-        /// 重试间隔
+        /// 重试间隔(单位:分钟)
         /// </summary>
         public int RetryInterval
         {
