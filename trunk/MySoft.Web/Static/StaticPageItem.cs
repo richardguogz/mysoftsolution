@@ -200,7 +200,7 @@ namespace MySoft.Web
         {
             this.outEncoding = Encoding.UTF8;
             this.inEncoding = Encoding.UTF8;
-            this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(0, 20, 0));
+            this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(1, 0, 0));
             this.isRemote = false;
             this.updateComplete = true;
         }
@@ -551,36 +551,9 @@ namespace MySoft.Web
         {
             this.outEncoding = Encoding.UTF8;
             this.inEncoding = Encoding.UTF8;
-            this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(0, 20, 0));
+            this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(1, 0, 0));
             this.isRemote = false;
             this.updateComplete = true;
-        }
-
-        /// <summary>
-        /// 初始化静态页生成类
-        /// </summary>
-        /// <param name="templatePath">模板路径</param>
-        /// <param name="savePath">生成文件路径</param>
-        /// <param name="validateString">验证字符串</param>
-        public ParamStaticPageItem(string templatePath, string savePath, string validateString, params StaticPageParamInfo[] paramInfos)
-            : this()
-        {
-            this.templatePath = templatePath;
-            this.savePath = savePath;
-            this.validateString = validateString;
-            this.paramInfos = paramInfos;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="templatePath">模板路径</param>
-        /// <param name="savePath">生成文件路径</param>
-        /// <param name="createSpan">生成间隔时间</param>
-        public ParamStaticPageItem(string templatePath, string savePath, string validateString, IUpdateDependency staticPageDependency, params StaticPageParamInfo[] paramInfos)
-            : this(templatePath, savePath, validateString, paramInfos)
-        {
-            this.staticPageDependency = staticPageDependency;
         }
 
         /// <summary>
@@ -592,9 +565,13 @@ namespace MySoft.Web
         /// <param name="validateString">验证字符串</param>
         /// <param name="query">查询参数字符串</param>
         public ParamStaticPageItem(string templatePath, string query, string savePath, string validateString, params StaticPageParamInfo[] paramInfos)
-            : this(templatePath, savePath, validateString, paramInfos)
+            : this()
         {
+            this.templatePath = templatePath;
             this.query = query;
+            this.savePath = savePath;
+            this.validateString = validateString;
+            this.paramInfos = paramInfos;
         }
 
 
