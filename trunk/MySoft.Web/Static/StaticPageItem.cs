@@ -326,6 +326,8 @@ namespace MySoft.Web
                     staticPageDependency.LastUpdateTime = DateTime.Now;
                 else
                     staticPageDependency.LastUpdateTime = updateTime;
+
+                staticPageDependency.UpdateSuccess = true;
             }
             catch (Exception ex)
             {
@@ -337,6 +339,8 @@ namespace MySoft.Web
                     staticPageDependency.LastUpdateTime = DateTime.Now.AddMinutes(retryInterval);
                 else
                     staticPageDependency.LastUpdateTime = updateTime.AddMinutes(retryInterval);
+
+                staticPageDependency.UpdateSuccess = false;
             }
             finally
             {
@@ -712,6 +716,8 @@ namespace MySoft.Web
                     staticPageDependency.LastUpdateTime = DateTime.Now;
                 else
                     staticPageDependency.LastUpdateTime = updateTime;
+
+                staticPageDependency.UpdateSuccess = true;
             }
             catch (Exception ex)
             {
@@ -723,6 +729,8 @@ namespace MySoft.Web
                     staticPageDependency.LastUpdateTime = DateTime.Now.AddMinutes(retryInterval);
                 else
                     staticPageDependency.LastUpdateTime = updateTime.AddMinutes(retryInterval);
+
+                staticPageDependency.UpdateSuccess = false;
             }
             finally
             {

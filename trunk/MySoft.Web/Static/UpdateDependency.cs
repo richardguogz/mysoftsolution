@@ -22,7 +22,12 @@ namespace MySoft.Web
         /// <summary>
         /// 最后更新时间
         /// </summary>
-        DateTime LastUpdateTime { set; }
+        DateTime LastUpdateTime { get; set; }
+
+        /// <summary>
+        /// 是否更新成功
+        /// </summary>
+        bool UpdateSuccess { get; set; }
     }
 
     /// <summary>
@@ -73,6 +78,16 @@ namespace MySoft.Web
             get { return lastUpdateTime; }
             set { lastUpdateTime = value; }
         }
+
+        protected bool updateSuccess;
+        /// <summary>
+        /// 是否更新成功
+        /// </summary>
+        public bool UpdateSuccess
+        {
+            get { return updateSuccess; }
+            set { updateSuccess = value; }
+        }
     }
 
     /// <summary>
@@ -94,7 +109,7 @@ namespace MySoft.Web
         /// </summary>
         /// <param name="updateTime"></param>
         /// <returns></returns>
-        internal bool CheckUpdate(UpdateType updateType, DateTime updateTime)
+        internal bool CheckUpdate(UpdateType updateType, DateTime updateTime, bool updateSuccess)
         {
             //如果是MaxValue直接返回true
             if (updateTime == DateTime.MaxValue) return true;
@@ -102,21 +117,21 @@ namespace MySoft.Web
             switch (updateType)
             {
                 case UpdateType.Year:
-                    if (beginDateTime.Year != updateTime.Year)
+                    if (updateSuccess && beginDateTime.Year != updateTime.Year)
                     {
                         beginDateTime = beginDateTime.AddYears(1);
                         endDateTime = endDateTime.AddYears(1);
                     }
                     break;
                 case UpdateType.Month:
-                    if (beginDateTime.Month != updateTime.Month)
+                    if (updateSuccess && beginDateTime.Month != updateTime.Month)
                     {
                         beginDateTime = beginDateTime.AddMonths(1);
                         endDateTime = endDateTime.AddMonths(1);
                     }
                     break;
                 case UpdateType.Day:
-                    if (beginDateTime.Day != updateTime.Day)
+                    if (updateSuccess && beginDateTime.Day != updateTime.Day)
                     {
                         beginDateTime = beginDateTime.AddDays(1);
                         endDateTime = endDateTime.AddDays(1);
@@ -294,16 +309,28 @@ namespace MySoft.Web
                     switch (updateType)
                     {
                         case UpdateType.Year:
-                            absoluteDateTimes[index] = absoluteDateTime.AddYears(1);
+                            if (updateSuccess)
+                            {
+                                absoluteDateTimes[index] = absoluteDateTime.AddYears(1);
+                            }
                             break;
                         case UpdateType.Month:
-                            absoluteDateTimes[index] = absoluteDateTime.AddMonths(1);
+                            if (updateSuccess)
+                            {
+                                absoluteDateTimes[index] = absoluteDateTime.AddMonths(1);
+                            }
                             break;
                         case UpdateType.Day:
-                            absoluteDateTimes[index] = absoluteDateTime.AddDays(1);
+                            if (updateSuccess)
+                            {
+                                absoluteDateTimes[index] = absoluteDateTime.AddDays(1);
+                            }
                             break;
                         case UpdateType.None:
-                            absoluteDateTimes[index] = DateTime.MaxValue;
+                            if (updateSuccess)
+                            {
+                                absoluteDateTimes[index] = currentDate;
+                            }
                             break;
                     }
                     break;
