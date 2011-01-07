@@ -274,12 +274,12 @@ namespace MySoft.IoC
                 else
                 {
                     RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
-                    helper.OnLog += new LogHandler(msg_OnLog);
+                    helper.OnLog += new LogEventHandler(msg_OnLog);
 
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
                     IServiceContainer container = new SimpleServiceContainer(mq);
-                    container.OnLog += new LogHandler(msg_OnLog);
-                    container.OnError += new ErrorLogHandler(container_OnError);
+                    container.OnLog += new LogEventHandler(msg_OnLog);
+                    container.OnError += new ErrorLogEventHandler(container_OnError);
 
                     singleton = new CastleFactory(container);
                 }
@@ -404,7 +404,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
 
@@ -413,7 +413,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogHandler OnError;
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

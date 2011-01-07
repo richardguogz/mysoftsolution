@@ -13,7 +13,7 @@ namespace MySoft.Task
         /// <summary>
         /// 事件处理日志
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         /// <summary>
         /// 是否注册了日志

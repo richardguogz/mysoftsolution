@@ -116,8 +116,8 @@ namespace MySoft.IoC
         public MemoryServiceMQ()
         {
             SimpleBroadCastStrategy strategy = new SimpleBroadCastStrategy();
-            strategy.OnLog += new LogHandler(strategy_OnLog);
-            strategy.OnError += new ErrorLogHandler(strategy_OnError);
+            strategy.OnLog += new LogEventHandler(strategy_OnLog);
+            strategy.OnError += new ErrorLogEventHandler(strategy_OnError);
             this.broadCastStrategy = strategy;
         }
 
@@ -283,7 +283,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
 
@@ -292,7 +292,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogHandler OnError;
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

@@ -226,7 +226,7 @@ namespace MySoft.Data
         /// 注册一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlLogger(LogHandler handler)
+        public void RegisterSqlLogger(LogEventHandler handler)
         {
             dbProvider.OnLog += handler;
         }
@@ -235,7 +235,7 @@ namespace MySoft.Data
         /// 取消一个日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlLogger(LogHandler handler)
+        public void UnregisterSqlLogger(LogEventHandler handler)
         {
             dbProvider.OnLog -= handler;
         }
@@ -244,7 +244,7 @@ namespace MySoft.Data
         /// 注册一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void RegisterSqlExceptionLogger(ErrorLogHandler handler)
+        public void RegisterSqlExceptionLogger(ErrorLogEventHandler handler)
         {
             dbProvider.OnError += handler;
         }
@@ -253,7 +253,7 @@ namespace MySoft.Data
         /// 取消一个异常日志事件
         /// </summary>
         /// <param name="handler"></param>
-        public void UnregisterSqlExceptionLogger(ErrorLogHandler handler)
+        public void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler)
         {
             dbProvider.OnError -= handler;
         }

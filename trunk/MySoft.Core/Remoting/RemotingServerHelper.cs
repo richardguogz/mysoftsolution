@@ -96,7 +96,7 @@ namespace MySoft.Remoting
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemotingServerHelper"/> class.

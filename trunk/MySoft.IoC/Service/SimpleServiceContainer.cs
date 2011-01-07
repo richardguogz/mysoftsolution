@@ -61,7 +61,7 @@ namespace MySoft.IoC
             }
 
             serviceProxy = new ServiceProxy(mq, DEFAULT_MAX_TRY_NUMBER);
-            serviceProxy.OnLog += new LogHandler(serviceProxy_OnLog);
+            serviceProxy.OnLog += new LogEventHandler(serviceProxy_OnLog);
 
             this.DiscoverServices();
         }
@@ -399,7 +399,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
 
@@ -408,7 +408,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogHandler OnError;
+        public event ErrorLogEventHandler OnError;
 
         #endregion
 

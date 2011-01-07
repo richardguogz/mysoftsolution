@@ -17,9 +17,9 @@ namespace MySoft.Web
     {
         private const int INTERVAL = 60000;
 
-        public static event LogHandler OnLog;
+        public static event LogEventHandler OnLog;
 
-        public static event ErrorLogHandler OnError;
+        public static event ErrorLogEventHandler OnError;
 
         //¾²Ì¬Ò³Éú³ÉÏî
         private static List<IStaticPageItem> staticPageItems = new List<IStaticPageItem>();

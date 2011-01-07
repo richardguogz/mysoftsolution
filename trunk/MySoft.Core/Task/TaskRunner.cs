@@ -164,7 +164,7 @@ namespace MySoft.Task
         /// <summary>
         /// 
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
 

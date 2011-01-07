@@ -124,7 +124,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
 
@@ -133,7 +133,7 @@ namespace MySoft.IoC
         /// <summary>
         /// OnError event.
         /// </summary>
-        public event ErrorLogHandler OnError;
+        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MySoft开发组")]
 [assembly: AssemblyProduct("MySoft.Tools.EntityDesign")]
-[assembly: AssemblyCopyright("版权所有 (C) MySoft 2010")]
+[assembly: AssemblyCopyright("版权所有 (C) MySoft 2011")]
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]
 
@@ -29,4 +29,4 @@ using System.Runtime.InteropServices;
 //      修订号
 //
 [assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.011.0104")]
+[assembly: AssemblyFileVersion("3.0.011.0108")]

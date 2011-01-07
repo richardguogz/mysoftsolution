@@ -793,12 +793,12 @@ namespace MySoft.Data
         /// <summary>
         /// OnLog event.
         /// </summary>
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         /// <summary>
         /// OnExceptionLog event.
         /// </summary>
-        public event ErrorLogHandler OnError;
+        public event ErrorLogEventHandler OnError;
 
         /// <summary>
         /// 开始事件

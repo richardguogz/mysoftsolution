@@ -6,7 +6,7 @@ namespace MySoft
     /// A delegate used for exception.
     /// </summary>
     /// <param name="exception"></param>
-    public delegate void ErrorLogHandler(Exception exception);
+    public delegate void ErrorLogEventHandler(Exception exception);
 
     /// <summary>
     /// Mark a implementing class as loggable.
@@ -16,6 +16,6 @@ namespace MySoft
         /// <summary>
         /// OnError event.
         /// </summary>
-        event ErrorLogHandler OnError;
+        event ErrorLogEventHandler OnError;
     }
 }

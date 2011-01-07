@@ -12,9 +12,9 @@ namespace MySoft.IoC.Servers.ServiceMQServer
         {
             CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
 
-            LogHandler logger = Console.WriteLine;
+            LogEventHandler logger = Console.WriteLine;
             MemoryServiceMQ mq = new MemoryServiceMQ();
-            mq.OnLog += new LogHandler(mq_OnLog);
+            mq.OnLog += new LogEventHandler(mq_OnLog);
             //mq.OnError += new ErrorLogHandler(mq_OnError);
 
             CastleServiceHelper cs = new CastleServiceHelper(config);

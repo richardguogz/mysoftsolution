@@ -73,7 +73,7 @@ namespace MySoft.IoC
 
         #region ILogable Members
 
-        public event LogHandler OnLog;
+        public event LogEventHandler OnLog;
 
         #endregion
     }
