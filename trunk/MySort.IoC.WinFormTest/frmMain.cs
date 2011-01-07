@@ -41,7 +41,7 @@ namespace MySoft.IoC.WinFormTest
             //var a = item2.Name;
             //return;
 
-            CastleFactory.Create().OnError += new ErrorLogHandler(frmMain_OnError);
+            CastleFactory.Create().OnError += new ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
             //var user = service.GetUserInfo("maoyong");
