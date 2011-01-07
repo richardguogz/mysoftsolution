@@ -109,29 +109,26 @@ namespace MySoft.Web
         /// </summary>
         /// <param name="updateTime"></param>
         /// <returns></returns>
-        internal bool CheckUpdate(UpdateType updateType, DateTime updateTime, bool updateSuccess)
+        internal bool CheckUpdate(UpdateType updateType, DateTime updateTime)
         {
-            //如果是MaxValue直接返回true
-            if (updateTime == DateTime.MaxValue) return true;
-
             switch (updateType)
             {
                 case UpdateType.Year:
-                    if (updateSuccess && beginDateTime.Year != updateTime.Year)
+                    if (beginDateTime.Year != updateTime.Year)
                     {
                         beginDateTime = beginDateTime.AddYears(1);
                         endDateTime = endDateTime.AddYears(1);
                     }
                     break;
                 case UpdateType.Month:
-                    if (updateSuccess && beginDateTime.Month != updateTime.Month)
+                    if (beginDateTime.Month != updateTime.Month)
                     {
                         beginDateTime = beginDateTime.AddMonths(1);
                         endDateTime = endDateTime.AddMonths(1);
                     }
                     break;
                 case UpdateType.Day:
-                    if (updateSuccess && beginDateTime.Day != updateTime.Day)
+                    if (beginDateTime.Day != updateTime.Day)
                     {
                         beginDateTime = beginDateTime.AddDays(1);
                         endDateTime = endDateTime.AddDays(1);
@@ -235,14 +232,14 @@ namespace MySoft.Web
 
         public override bool HasUpdate(DateTime currentDate)
         {
-            //如果是MaxValue直接返回true
+            //更新时间为最大更新时间，直接返回true
             if (currentDate == DateTime.MaxValue) return true;
 
-            DateTime updateTime = lastUpdateTime;
-            if (updateSuccess)
-            {
-                updateTime = lastUpdateTime.Add(slidingTimeSpan);
-            }
+            //如果更新失败，判断时间后返回true
+            if (!updateSuccess && currentDate.Ticks > lastUpdateTime.Ticks)
+                return true;
+
+            DateTime updateTime = lastUpdateTime.Add(slidingTimeSpan); ;
 
             bool isUpdate = currentDate.Ticks >= updateTime.Ticks;
             if (isUpdate && lastUpdateTime != DateTime.MinValue)
@@ -251,7 +248,7 @@ namespace MySoft.Web
                 {
                     foreach (SlidingParamInfo slidingTimeParam in slidingTimeParams)
                     {
-                        if (slidingTimeParam.CheckUpdate(updateType, currentDate, updateSuccess)) return true;
+                        if (slidingTimeParam.CheckUpdate(updateType, currentDate)) return true;
                     }
                     isUpdate = false;
                 }
@@ -301,8 +298,12 @@ namespace MySoft.Web
 
         public override bool HasUpdate(DateTime currentDate)
         {
-            //如果是MaxValue直接返回true
+            //更新时间为最大更新时间，直接返回true
             if (currentDate == DateTime.MaxValue) return true;
+
+            //如果更新失败，判断时间后返回true
+            if (!updateSuccess && currentDate.Ticks > lastUpdateTime.Ticks)
+                return true;
 
             int index = 0;
             bool isUpdate = false;
@@ -314,28 +315,16 @@ namespace MySoft.Web
                     switch (updateType)
                     {
                         case UpdateType.Year:
-                            if (updateSuccess)
-                            {
-                                absoluteDateTimes[index] = absoluteDateTime.AddYears(1);
-                            }
+                            absoluteDateTimes[index] = absoluteDateTime.AddYears(1);
                             break;
                         case UpdateType.Month:
-                            if (updateSuccess)
-                            {
-                                absoluteDateTimes[index] = absoluteDateTime.AddMonths(1);
-                            }
+                            absoluteDateTimes[index] = absoluteDateTime.AddMonths(1);
                             break;
                         case UpdateType.Day:
-                            if (updateSuccess)
-                            {
-                                absoluteDateTimes[index] = absoluteDateTime.AddDays(1);
-                            }
+                            absoluteDateTimes[index] = absoluteDateTime.AddDays(1);
                             break;
                         case UpdateType.None:
-                            if (updateSuccess)
-                            {
-                                absoluteDateTimes[index] = currentDate;
-                            }
+                            absoluteDateTimes[index] = currentDate;
                             break;
                     }
                     break;
