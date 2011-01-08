@@ -674,7 +674,7 @@ namespace MySoft.Web
                     if (updateErrorList.Count > 0)
                     {
                         //判断更新失败的url
-                        if (!staticPageDependency.UpdateSuccess && !updateErrorList.Contains(dynamicurl))
+                        if (!staticPageDependency.UpdateSuccess && !updateErrorList.Contains(staticurl))
                         {
                             SetPosition(dict.Keys.Count - 1);
                             continue;
@@ -747,9 +747,9 @@ namespace MySoft.Web
                         }
 
                         //把生成成功的url移出列表
-                        if (updateErrorList.Contains(dynamicurl))
+                        if (updateErrorList.Contains(staticurl))
                         {
-                            updateErrorList.Remove(dynamicurl);
+                            updateErrorList.Remove(staticurl);
                         }
                     }
                     catch (Exception ex)
@@ -758,9 +758,9 @@ namespace MySoft.Web
                         //如果出错，则继续往下执行
 
                         //把生成出错的url加入列表
-                        if (!updateErrorList.Contains(dynamicurl))
+                        if (!updateErrorList.Contains(staticurl))
                         {
-                            updateErrorList.Add(dynamicurl);
+                            updateErrorList.Add(staticurl);
                         }
 
                         allUpdateSuccess = false;
