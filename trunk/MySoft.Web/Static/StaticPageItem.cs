@@ -492,6 +492,7 @@ namespace MySoft.Web
         private string query;
         private string validateString;
         private bool updateComplete;
+        private IList<string> updateErrorList;
 
         private IUpdateDependency staticPageDependency;
         /// <summary>
@@ -579,6 +580,7 @@ namespace MySoft.Web
             this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(1, 0, 0));
             this.isRemote = false;
             this.updateComplete = true;
+            this.updateErrorList = new List<string>();
         }
 
         /// <summary>
@@ -669,6 +671,13 @@ namespace MySoft.Web
                     string dynamicurl = templatePath;
                     string staticurl = GetRealPath(savePath);
 
+                    //判断更新失败的url
+                    if (!staticPageDependency.UpdateSuccess && !updateErrorList.Contains(dynamicurl))
+                    {
+                        SetPosition(dict.Keys.Count - 1);
+                        continue;
+                    }
+
                     try
                     {
                         string content = null;
@@ -733,11 +742,23 @@ namespace MySoft.Web
                             }
                             catch { };
                         }
+
+                        //把生成成功的url移出列表
+                        if (updateErrorList.Contains(dynamicurl))
+                        {
+                            updateErrorList.Remove(dynamicurl);
+                        }
                     }
                     catch (Exception ex)
                     {
                         StaticPageManager.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                         //如果出错，则继续往下执行
+
+                        //把生成出错的url加入列表
+                        if (!updateErrorList.Contains(dynamicurl))
+                        {
+                            updateErrorList.Add(dynamicurl);
+                        }
 
                         allUpdateSuccess = false;
                     }
