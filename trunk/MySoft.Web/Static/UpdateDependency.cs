@@ -69,7 +69,7 @@ namespace MySoft.Web
         /// </summary>
         public abstract UpdateType UpdateType { get; set; }
 
-        protected DateTime lastUpdateTime;
+        protected DateTime lastUpdateTime = DateTime.Now;
         /// <summary>
         /// 最后更新时间
         /// </summary>
@@ -79,7 +79,7 @@ namespace MySoft.Web
             set { lastUpdateTime = value; }
         }
 
-        protected bool updateSuccess;
+        protected bool updateSuccess = true;
         /// <summary>
         /// 是否更新成功
         /// </summary>
