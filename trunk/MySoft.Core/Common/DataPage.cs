@@ -5,6 +5,7 @@ namespace MySoft
     /// <summary>
     /// 分页数据信息
     /// </summary>
+    [Serializable]
     public class DataPage : IDataPage
     {
         private int pageSize;
@@ -174,6 +175,7 @@ namespace MySoft
     /// 分页数据信息
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Serializable]
     public class DataPage<TSource> : DataPage, IDataPage<TSource>
     {
         /// <summary>

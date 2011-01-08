@@ -6,6 +6,7 @@ namespace MySoft.Data
     /// <summary>
     /// 数据行
     /// </summary>
+    [Serializable]
     public class SourceRow : IRowReader, IDataSource<DataRow>
     {
         private DataRow row;

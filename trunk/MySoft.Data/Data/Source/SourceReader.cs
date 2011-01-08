@@ -7,6 +7,7 @@ namespace MySoft.Data
     /// <summary>
     /// 自定义数据记录
     /// </summary>
+    [Serializable]
     public sealed class SourceReader : ISourceReader
     {
         private IDataReader reader;
