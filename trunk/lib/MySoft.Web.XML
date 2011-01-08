@@ -122,6 +122,11 @@
             最后更新时间
             </summary>
         </member>
+        <member name="P:MySoft.Web.IUpdateDependency.UpdateSuccess">
+            <summary>
+            是否更新成功
+            </summary>
+        </member>
         <member name="T:MySoft.Web.UpdateType">
             <summary>
             更新类型
@@ -166,6 +171,11 @@
         <member name="P:MySoft.Web.UpdateTime.LastUpdateTime">
             <summary>
             最后更新时间
+            </summary>
+        </member>
+        <member name="P:MySoft.Web.UpdateTime.UpdateSuccess">
+            <summary>
+            是否更新成功
             </summary>
         </member>
         <member name="T:MySoft.Web.SlidingParamInfo">
@@ -920,7 +930,7 @@
         </member>
         <member name="P:MySoft.Web.SingleStaticPageItem.RetryInterval">
             <summary>
-            重试间隔
+            重试间隔(单位:分钟)
             </summary>
         </member>
         <member name="T:MySoft.Web.StaticPageParamInfo">
@@ -957,22 +967,6 @@
             <summary>
             初始化静态页生成类
             </summary>
-        </member>
-        <member name="M:MySoft.Web.ParamStaticPageItem.#ctor(System.String,System.String,System.String,MySoft.Web.StaticPageParamInfo[])">
-            <summary>
-            初始化静态页生成类
-            </summary>
-            <param name="templatePath">模板路径</param>
-            <param name="savePath">生成文件路径</param>
-            <param name="validateString">验证字符串</param>
-        </member>
-        <member name="M:MySoft.Web.ParamStaticPageItem.#ctor(System.String,System.String,System.String,MySoft.Web.IUpdateDependency,MySoft.Web.StaticPageParamInfo[])">
-            <summary>
-            
-            </summary>
-            <param name="templatePath">模板路径</param>
-            <param name="savePath">生成文件路径</param>
-            <param name="createSpan">生成间隔时间</param>
         </member>
         <member name="M:MySoft.Web.ParamStaticPageItem.#ctor(System.String,System.String,System.String,System.String,MySoft.Web.StaticPageParamInfo[])">
             <summary>
@@ -1077,7 +1071,7 @@
         </member>
         <member name="P:MySoft.Web.ParamStaticPageItem.RetryInterval">
             <summary>
-            重试间隔
+            重试间隔(单位:分钟)
             </summary>
         </member>
         <member name="T:MySoft.Web.UI.MasterAjaxPage">

@@ -2,6 +2,7 @@
 @echo off
 
 copy ..\MySoft.Common\bin\Release\MySoft.Common.dll /Y
+copy ..\MySoft.Cache\bin\Release\MySoft.Cache.dll /Y
 copy ..\MySoft.Data\bin\Release\MySoft.Data.dll /Y
 copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.dll /Y
 copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.dll /Y
@@ -32,6 +33,7 @@ copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe /Y
 copy ..\SetupEntityVsPlugin\bin\Release\SetupEntityVsPlugin.exe.config /Y
 
 copy ..\MySoft.Common\bin\Release\MySoft.Common.dll E:\SOURCE_SVN\MyReference\MySoft /Y
+copy ..\MySoft.Cache\bin\Release\MySoft.Cache.dll E:\SOURCE_SVN\MyReference\MySoft /Y
 copy ..\MySoft.Data\bin\Release\MySoft.Data.dll E:\SOURCE_SVN\MyReference\MySoft /Y
 copy ..\MySoft.Data.MySql\bin\Release\MySoft.Data.MySql.dll /Y E:\SOURCE_SVN\MyReference\MySoft /Y
 copy ..\MySoft.Data.FireBird\bin\Release\MySoft.Data.FireBird.dll E:\SOURCE_SVN\MyReference\MySoft /Y

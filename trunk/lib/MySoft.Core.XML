@@ -2756,6 +2756,17 @@
             <param name="property"></param>
             <returns></returns>
         </member>
+        <member name="T:MySoft.ObjectBuilder`1">
+            <summary>
+            对象构造器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:MySoft.ObjectBuilder">
+            <summary>
+            对象构造器
+            </summary>
+        </member>
         <member name="T:MySoft.ServiceFactory">
             <summary>
             创建本地服务
@@ -2974,7 +2985,7 @@
             是否使用切面处理
             </summary>
         </member>
-        <member name="T:MySoft.ErrorLogHandler">
+        <member name="T:MySoft.ErrorLogEventHandler">
             <summary>
             A delegate used for exception.
             </summary>
@@ -5412,7 +5423,7 @@
             Returns the Adler32 data checksum computed so far.
             </summary>
         </member>
-        <member name="T:MySoft.LogHandler">
+        <member name="T:MySoft.LogEventHandler">
             <summary>
             A delegate used for log.
             </summary>
@@ -6459,17 +6470,6 @@
             <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param>   
             <param name="objectType">Type of the object.</param>   
             <returns>The object value.</returns>   
-        </member>
-        <member name="T:MySoft.ObjectBuilder`1">
-            <summary>
-            对象构造器
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="T:MySoft.ObjectBuilder">
-            <summary>
-            对象构造器
-            </summary>
         </member>
     </members>
 </doc>

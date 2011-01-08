@@ -845,25 +845,25 @@
             移除所有cache
             </summary>
         </member>
-        <member name="M:MySoft.Data.DbSession.RegisterSqlLogger(MySoft.LogHandler)">
+        <member name="M:MySoft.Data.DbSession.RegisterSqlLogger(MySoft.LogEventHandler)">
             <summary>
             注册一个日志事件
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:MySoft.Data.DbSession.UnregisterSqlLogger(MySoft.LogHandler)">
+        <member name="M:MySoft.Data.DbSession.UnregisterSqlLogger(MySoft.LogEventHandler)">
             <summary>
             取消一个日志事件
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:MySoft.Data.DbSession.RegisterSqlExceptionLogger(MySoft.ErrorLogHandler)">
+        <member name="M:MySoft.Data.DbSession.RegisterSqlExceptionLogger(MySoft.ErrorLogEventHandler)">
             <summary>
             注册一个异常日志事件
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:MySoft.Data.DbSession.UnregisterSqlExceptionLogger(MySoft.ErrorLogHandler)">
+        <member name="M:MySoft.Data.DbSession.UnregisterSqlExceptionLogger(MySoft.ErrorLogEventHandler)">
             <summary>
             取消一个异常日志事件
             </summary>
