@@ -69,7 +69,7 @@ namespace MySoft.Web
         /// </summary>
         public abstract UpdateType UpdateType { get; set; }
 
-        protected DateTime lastUpdateTime;
+        protected DateTime lastUpdateTime = DateTime.Now.AddYears(1);
         /// <summary>
         /// 最后更新时间
         /// </summary>
@@ -239,6 +239,8 @@ namespace MySoft.Web
             if (!updateSuccess && currentDate.Ticks > lastUpdateTime.Ticks)
                 return true;
 
+            if (!updateSuccess) return false;
+
             DateTime updateTime = lastUpdateTime.Add(slidingTimeSpan); ;
 
             bool isUpdate = currentDate.Ticks >= updateTime.Ticks;
@@ -304,6 +306,8 @@ namespace MySoft.Web
             //如果更新失败，判断时间后返回true
             if (!updateSuccess && currentDate.Ticks > lastUpdateTime.Ticks)
                 return true;
+
+            if (!updateSuccess) return false;
 
             int index = 0;
             bool isUpdate = false;

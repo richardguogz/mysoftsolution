@@ -492,6 +492,7 @@ namespace MySoft.Web
         private string query;
         private string validateString;
         private bool updateComplete;
+        private IList<string> updateErrorList;
 
         private IUpdateDependency staticPageDependency;
         /// <summary>
@@ -579,6 +580,7 @@ namespace MySoft.Web
             this.staticPageDependency = new SlidingUpdateTime(new TimeSpan(1, 0, 0));
             this.isRemote = false;
             this.updateComplete = true;
+            this.updateErrorList = new List<string>();
         }
 
         /// <summary>
@@ -634,6 +636,10 @@ namespace MySoft.Web
         public void Update(DateTime updateTime)
         {
             updateComplete = false;
+            if (updateTime == DateTime.MaxValue)
+            {
+                updateErrorList.Clear();
+            }
 
             try
             {
@@ -664,27 +670,33 @@ namespace MySoft.Web
 
                 int count = GetPageCount(dict);
                 bool allUpdateSuccess = true;
+
                 for (int index = 0; index < count; index++)
                 {
                     string dynamicurl = templatePath;
                     string staticurl = GetRealPath(savePath);
+                    string queryURL = dynamicurl;
+                    string queryurl = GetRealPath(query);
+                    if (!string.IsNullOrEmpty(queryurl))
+                        queryURL = string.Format("{0}?{1}", dynamicurl, queryurl);
+
+                    if (updateTime != DateTime.MaxValue && updateErrorList.Count > 0)
+                    {
+                        //判断更新失败的url
+                        if (!staticPageDependency.UpdateSuccess && !updateErrorList.Contains(queryURL))
+                        {
+                            SetPosition(dict.Keys.Count - 1);
+                            continue;
+                        }
+                    }
 
                     try
                     {
                         string content = null;
-
                         if (isRemote)
-                        {
                             content = StaticPageManager.GetRemotePageString(dynamicurl, inEncoding, validateString);
-                        }
                         else
-                        {
-                            string queryurl = GetRealPath(query);
                             content = StaticPageManager.GetLocalPageString(dynamicurl, queryurl, inEncoding, validateString);
-
-                            if (!string.IsNullOrEmpty(queryurl))
-                                dynamicurl = string.Format("{0}?{1}", dynamicurl, queryurl);
-                        }
 
                         DateTime createTime = DateTime.Now;
 
@@ -733,11 +745,23 @@ namespace MySoft.Web
                             }
                             catch { };
                         }
+
+                        //把生成成功的url移出列表
+                        if (updateErrorList.Contains(queryURL))
+                        {
+                            updateErrorList.Remove(queryURL);
+                        }
                     }
                     catch (Exception ex)
                     {
                         StaticPageManager.SaveError(ex, string.Format("生成静态文件{0}失败！", RemoveRootPath(staticurl)));
                         //如果出错，则继续往下执行
+
+                        //把生成出错的url加入列表
+                        if (!updateErrorList.Contains(queryURL))
+                        {
+                            updateErrorList.Add(queryURL);
+                        }
 
                         allUpdateSuccess = false;
                     }
