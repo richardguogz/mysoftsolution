@@ -79,7 +79,7 @@ namespace MySoft.Web
             set { lastUpdateTime = value; }
         }
 
-        protected bool updateSuccess = true;
+        protected bool updateSuccess;
         /// <summary>
         /// 是否更新成功
         /// </summary>
