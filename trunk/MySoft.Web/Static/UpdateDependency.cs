@@ -69,7 +69,7 @@ namespace MySoft.Web
         /// </summary>
         public abstract UpdateType UpdateType { get; set; }
 
-        protected DateTime lastUpdateTime = DateTime.Now;
+        protected DateTime lastUpdateTime;
         /// <summary>
         /// 最后更新时间
         /// </summary>

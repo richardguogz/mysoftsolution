@@ -671,11 +671,14 @@ namespace MySoft.Web
                     string dynamicurl = templatePath;
                     string staticurl = GetRealPath(savePath);
 
-                    //判断更新失败的url
-                    if (!staticPageDependency.UpdateSuccess && !updateErrorList.Contains(dynamicurl))
+                    if (updateErrorList.Count > 0)
                     {
-                        SetPosition(dict.Keys.Count - 1);
-                        continue;
+                        //判断更新失败的url
+                        if (!staticPageDependency.UpdateSuccess && !updateErrorList.Contains(dynamicurl))
+                        {
+                            SetPosition(dict.Keys.Count - 1);
+                            continue;
+                        }
                     }
 
                     try
