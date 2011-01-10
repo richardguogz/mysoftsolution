@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace MySoft
+namespace MySoft.Logger
 {
     /// <summary>
     /// 简单日志管理类(按日期生成文件)
     /// </summary>
-    public class Logger
+    public class SimpleLog
     {
-        public static readonly Logger Instance = new Logger(AppDomain.CurrentDomain.BaseDirectory);
+        public static readonly SimpleLog Instance = new SimpleLog(AppDomain.CurrentDomain.BaseDirectory);
         private static readonly object syncobj = new object();
 
         private string dir;
@@ -18,7 +18,7 @@ namespace MySoft
         /// 实例化简单日志组件
         /// </summary>
         /// <param name="dir">日志存储根目录，下面会自动创建Log与ErrorLog文件夹</param>
-        public Logger(string dir)
+        public SimpleLog(string dir)
         {
             this.dir = dir;
         }
