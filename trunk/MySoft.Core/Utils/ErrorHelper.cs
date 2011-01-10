@@ -11,6 +11,11 @@ namespace MySoft
     /// </summary>
     public class ErrorHelper
     {
+        /// <summary>
+        /// Returns HTML an formatted error message.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public static string GetErrorWithoutHtml(Exception ex)
         {
             string error = "System Error\r\n";
@@ -26,7 +31,11 @@ namespace MySoft
             return error;
         }
 
-        /// <summary>Returns HTML an formatted error message.</summary>
+        /// <summary>
+        /// Returns HTML an formatted error message.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public static string GetHtmlError(Exception ex)
         {
             // Heading Template
@@ -46,7 +55,81 @@ namespace MySoft
             html += heading.Replace("<!--HEADER-->", "Error Information");
             html += CollectionToHtmlTable(error_info);
 
+            if (HttpContext.Current != null)
+            {
+                // Query Information
+                NameValueCollection info = new NameValueCollection();
+                info.Add("Url", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Query Information");
+                html += CollectionToHtmlTable(info);
+
+                // QueryString Collection
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "QueryString Collection");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.QueryString);
+
+                // Form Collection
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Form Collection");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.Form);
+
+                // Cookies Collection
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Cookies Collection");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.Cookies);
+
+                // Session Variables
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Session Variables");
+                html += CollectionToHtmlTable(HttpContext.Current.Session);
+
+                // Server Variables
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Server Variables");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.ServerVariables);
+            }
+
             if (ex.InnerException != null) html += GetHtmlError(ex.InnerException);
+
+            return html;
+        }
+
+        /// <summary>
+        /// Get Log Html
+        /// </summary>
+        /// <returns>Result</returns>
+        public static string GetHtmlWithoutError()
+        {
+            // Heading Template
+            const string heading = "<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\"><TR><TD bgcolor=\"black\" COLSPAN=\"2\"><FONT face=\"Arial\" color=\"white\"><B>&nbsp;<!--HEADER--></B></FONT></TD></TR></TABLE>";
+
+            string html = "";
+
+            if (HttpContext.Current != null)
+            {
+                // Query Information
+                NameValueCollection info = new NameValueCollection();
+                info.Add("Url", String.Format("<a target='_blank' href='{0}'>{0}</a>", HttpContext.Current.Request.Url.ToString()));
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Query Information");
+                html += CollectionToHtmlTable(info);
+
+                // QueryString Collection
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "QueryString Collection");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.QueryString);
+
+                // Form Collection
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Form Collection");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.Form);
+
+                // Cookies Collection
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Cookies Collection");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.Cookies);
+
+                // Session Variables
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Session Variables");
+                html += CollectionToHtmlTable(HttpContext.Current.Session);
+
+                // Server Variables
+                html += "<BR><BR>" + heading.Replace("<!--HEADER-->", "Server Variables");
+                html += CollectionToHtmlTable(HttpContext.Current.Request.ServerVariables);
+
+                //html = HttpContext.Current.Request.ServerVariables["Remote_Addr"];
+            }
 
             return html;
         }
@@ -115,11 +198,47 @@ namespace MySoft
             return text;
         }
 
+        private static string CollectionToHtmlTable(HttpCookieCollection collection)
+        {
+            // Overload for HttpCookieCollection collection.
+            // Converts HttpCookieCollection to NameValueCollection
+            NameValueCollection NVC = new NameValueCollection();
+            if (collection != null)
+            {
+                foreach (string item in collection)
+                {
+                    if (collection[item] != null)
+                    {
+                        NVC.Add(item, collection[item].Value);
+                    }
+                }
+            }
+            return CollectionToHtmlTable(NVC);
+        }
+
+        private static string CollectionToHtmlTable(System.Web.SessionState.HttpSessionState collection)
+        {
+            // Overload for HttpSessionState collection.
+            // Converts HttpSessionState to NameValueCollection
+            NameValueCollection NVC = new NameValueCollection();
+            if (collection != null)
+            {
+                foreach (string item in collection)
+                {
+                    if (collection[item] != null)
+                    {
+                        NVC.Add(item, collection[item].ToString());
+                    }
+                }
+            }
+            return CollectionToHtmlTable(NVC);
+        }
+
         private static string CleanHTML(string html)
         {
             if (html == null) return html;
             // Cleans the string for HTML friendly display
-            return (html.Length == 0) ? "" : html.Replace("<", "&lt;").Replace("\r\n", "<BR>").Replace("&", "&amp;").Replace(" ", "&nbsp;");
+            return (html.Length == 0) ? "" : html.Replace("<", "&lt;").Replace("\r\n", "<br/ >").Replace("&", "&amp;").Replace(" ", "&nbsp;");
         }
     }
 }

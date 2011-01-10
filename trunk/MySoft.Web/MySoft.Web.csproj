@@ -77,7 +77,6 @@
   <ItemGroup>
     <Compile Include="Cache\CacheControlConfigurationSection.cs" />
     <Compile Include="Cache\CacheControlConfiguration.cs" />
-    <Compile Include="Utils\ErrorHelper.cs" />
     <Compile Include="WebException.cs" />
     <Compile Include="Utils\CookieExpiresType.cs" />
     <Compile Include="Utils\HtmlPager.cs" />
