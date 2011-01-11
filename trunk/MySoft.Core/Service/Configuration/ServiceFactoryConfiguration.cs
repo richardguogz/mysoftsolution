@@ -9,8 +9,8 @@ namespace MySoft
     /// </summary>
     public sealed class ServiceFactoryConfiguration : ConfigurationSection
     {
-        private List<ServiceBase> services = new List<ServiceBase>();
-        public List<ServiceBase> Services
+        private List<ServiceProfile> services = new List<ServiceProfile>();
+        public List<ServiceProfile> Services
         {
             get { return services; }
         }
@@ -43,7 +43,7 @@ namespace MySoft
 
                 if (n.Name == "serviceObject")
                 {
-                    ServiceBase config = new ServiceBase();
+                    ServiceProfile config = new ServiceProfile();
                     if (n.Attributes["name"] != null && n.Attributes["name"].Value.Trim() != string.Empty)
                         config.Name = n.Attributes["name"].Value;
 

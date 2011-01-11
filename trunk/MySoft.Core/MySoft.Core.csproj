@@ -179,7 +179,7 @@
     <Compile Include="Remoting\RemotingServerHelper.cs" />
     <Compile Include="Remoting\RemotingTest.cs" />
     <Compile Include="Remoting\ServiceModule.cs" />
-    <Compile Include="Service\ServiceBase.cs" />
+    <Compile Include="Service\ServiceProfile.cs" />
     <Compile Include="Service\Configuration\ServiceFactoryConfiguration.cs" />
     <Compile Include="Service\ServiceFactory.cs" />
     <Compile Include="Service\Configuration\ServiceFactoryConfigurationHandler.cs" />

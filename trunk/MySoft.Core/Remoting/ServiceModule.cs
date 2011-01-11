@@ -7,7 +7,7 @@ namespace MySoft.Remoting
     /// 业务模块实体类
     /// </summary>
     [Serializable]
-    public class ServiceModule : ServiceBase
+    public class ServiceModule : ServiceProfile
     {
         private WellKnownObjectMode _Mode = WellKnownObjectMode.SingleCall;
 

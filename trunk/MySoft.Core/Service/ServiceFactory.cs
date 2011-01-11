@@ -16,7 +16,7 @@ namespace MySoft
         {
             if (config == null) return;
 
-            foreach (ServiceBase service in config.Services)
+            foreach (ServiceProfile service in config.Services)
             {
                 object obj = null;
                 Assembly ass = Assembly.Load(service.AssemblyName);

@@ -7,7 +7,7 @@ namespace MySoft
     /// 服务配置基类
     /// </summary>
     [Serializable]
-    public class ServiceBase
+    public class ServiceProfile
     {
         private string _Name;
 
