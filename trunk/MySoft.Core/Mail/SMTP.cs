@@ -702,10 +702,8 @@ namespace MySoft.Mail
             Email.IsBodyHtml = mIsBodyHtml;
 
             // Smtp Client
-            SmtpClient SmtpMail =
-             new SmtpClient(mSMTPServer, mSMTPPort);
-            SmtpMail.Credentials =
-             new NetworkCredential(mSMTPUsername, mSMTPPassword);
+            SmtpClient SmtpMail = new SmtpClient(mSMTPServer, mSMTPPort);
+            SmtpMail.Credentials = new NetworkCredential(mSMTPUsername, mSMTPPassword);
             SmtpMail.EnableSsl = mSMTPSSL;
             //SmtpMail.UseDefaultCredentials = false;
 
