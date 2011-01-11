@@ -80,7 +80,7 @@ namespace MySoft.IoC.Services
             {
                 var ex = retMsg.Data as Exception;
 
-                string error = string.Format("Dynamic service error occured at ({0}:{1},{2}). -->{3}", clientId, serviceName, msg.SubServiceName, ex.Message);
+                string error = string.Format("Dynamic service error occured at ({0}:{1},{2}). -->{3}", clientId, serviceName, msg.SubServiceName, ErrorHelper.GetExceptionLog(ex));
                 if (OnLog != null) OnLog(error);
 
                 var exception = new IoCException(log + "\r\n" + error, ex);

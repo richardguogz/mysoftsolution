@@ -12,23 +12,45 @@ namespace MySoft
     public class ErrorHelper
     {
         /// <summary>
-        /// Returns HTML an formatted error message.
+        /// 获取内部异常
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
-        public static string GetErrorWithoutHtml(Exception ex)
+        public static Exception GetInnerException(Exception ex)
         {
-            string error = "System Error\r\n";
+            if (ex.InnerException != null)
+                return GetInnerException(ex.InnerException);
 
-            // Populate Error Information Collection
-            NameValueCollection error_info = new NameValueCollection();
-            error_info.Add("Message：", ex.Message);
-            error_info.Add("Source：", ex.Source);
-            error_info.Add("TargetSite：", ex.TargetSite == null ? null : ex.TargetSite.ToString());
-            error_info.Add("StackTrace：", ex.StackTrace);
-            error += CollectionToString(error_info);
+            return ex;
+        }
 
-            return error;
+        /// <summary>
+        /// 获取异常日志
+        /// </summary>
+        /// <param name="ex"></param>
+        public static string GetExceptionLog(Exception ex)
+        {
+            StringBuilder sbLog = new StringBuilder("\r\n------------------------------------------------------------------------\r\n");
+            Exception ochainException = ex;
+            var currentExceptionIndex = 1;
+
+            while (ochainException != null)
+            {
+                sbLog.Append("\r\nException (" + currentExceptionIndex + ")")
+                .Append("\r\nException Type:" + ochainException.GetType().FullName)
+                .Append("\r\nException Message:" + ochainException.Message)
+                .Append("\r\nException Source:" + ochainException.Source)
+                .Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
+                .Append("\r\nException StackTrace:" + ochainException.StackTrace)
+                .Append("\r\nException Date:" + DateTime.Now)
+                .Append("\r\nEnvironment Stack:" + System.Environment.StackTrace);
+
+                ochainException = ochainException.InnerException;
+                currentExceptionIndex++;
+            }
+
+            sbLog.Append("\r\n------------------------------------------------------------------------\r\n");
+            return sbLog.ToString();
         }
 
         /// <summary>

@@ -25,19 +25,6 @@ namespace MySoft
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
         }
 
-        /// <summary>
-        /// 获取内部异常
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <returns></returns>
-        public static Exception GetInnerException(Exception ex)
-        {
-            if (ex.InnerException != null)
-                return GetInnerException(ex.InnerException);
-
-            return ex;
-        }
-
         #region 对象克隆
 
         /// <summary>

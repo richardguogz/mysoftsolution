@@ -59,7 +59,7 @@ namespace MySoft.Logger
             {
                 try
                 {
-                    string log = ErrorHelper.GetErrorWithoutHtml(ex);
+                    string log = ErrorHelper.GetExceptionLog(ex);
 
                     string filePath = Path.Combine(dir, "ErrorLog");
                     string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));

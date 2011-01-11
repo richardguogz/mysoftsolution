@@ -725,14 +725,14 @@ namespace MySoft.Mail
             }
             catch (SmtpFailedRecipientsException ex)
             {
-                result.Message = CoreHelper.GetInnerException(ex).Message;
+                result.Message = ErrorHelper.GetInnerException(ex).Message;
 
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
                 mailSent = false;
             }
             catch (Exception ex)
             {
-                result.Message = CoreHelper.GetInnerException(ex).Message;
+                result.Message = ErrorHelper.GetInnerException(ex).Message;
 
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
                 mailSent = false;
