@@ -13,34 +13,47 @@ namespace MySoft.Mail
         public static readonly SmtpMail Instance = new SmtpMail();
 
         private string smtpServer;
+        /// <summary>
+        /// 邮件发送服务器
+        /// </summary>
         public string SmtpServer
         {
             get { return smtpServer; }
             set { smtpServer = value; }
         }
 
+        private string mailFrom;
         private string userName;
+        /// <summary>
+        /// 发件人邮箱
+        /// </summary>
         public string UserName
         {
-            get { return userName; }
-            set { userName = value; }
+            get
+            {
+                return mailFrom;
+            }
+            set
+            {
+                mailFrom = value;
+                userName = value.Split('@')[0];
+            }
         }
 
         private string password;
+        /// <summary>
+        /// 发件人密码
+        /// </summary>
         public string Password
         {
             get { return password; }
             set { password = value; }
         }
 
-        private string mailFrom;
-        public string MailFrom
-        {
-            get { return mailFrom; }
-            set { mailFrom = value; }
-        }
-
         private string displayName;
+        /// <summary>
+        /// 显示名称
+        /// </summary>
         public string DisplayName
         {
             get { return displayName; }
@@ -48,28 +61,40 @@ namespace MySoft.Mail
         }
 
         private int smtpPort;
+        /// <summary>
+        /// 邮件端口
+        /// </summary>
         public int SmtpPort
         {
             get { return smtpPort; }
             set { smtpPort = value; }
         }
 
-        public SmtpMail()
+        private bool isSystemMail;
+        /// <summary>
+        /// 是否系统邮件
+        /// </summary>
+        public bool IsSystemMail
         {
-            this.smtpServer = "mail.51shumi.com";
-            this.userName = "alicc";
-            this.password = "fund123";
-            this.mailFrom = "alicc@51shumi.com";
-            this.displayName = "数米网";
-            this.smtpPort = 25;
+            get { return isSystemMail; }
+            set { isSystemMail = value; }
         }
 
-        public SmtpMail(string smtpServer, string mailFrom, string userName, string password, string displayName)
+        public SmtpMail()
+        {
+            this.smtpServer = "smtp.163.com";
+            this.UserName = "mysoft2011@163.com";
+            this.password = "mysoft";
+            this.displayName = "MySoft开发组";
+            this.smtpPort = 25;
+            this.isSystemMail = true;
+        }
+
+        public SmtpMail(string smtpServer, string userName, string password, string displayName)
         {
             this.smtpServer = smtpServer;
-            this.userName = userName;
+            this.UserName = userName;
             this.password = password;
-            this.mailFrom = mailFrom;
             this.displayName = displayName;
             this.smtpPort = 25;
         }
@@ -109,7 +134,7 @@ namespace MySoft.Mail
         /// <returns></returns>
         public bool Send(string title, string body, string[] mailTo)
         {
-            body += "<br><br>系统邮件，请勿直接回复！";
+            if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
             SMTP smtp = new SMTP(this.mailFrom, mailTo, title, body, this.smtpServer, userName, password);
             smtp.SMTPPort = this.smtpPort;
             smtp.MailDisplyName = this.displayName;
@@ -127,7 +152,7 @@ namespace MySoft.Mail
         /// <returns></returns>
         public void SendAsync(string title, string body, string[] mailTo)
         {
-            body += "<br><br>系统邮件，请勿直接回复！";
+            if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
             SMTP smtp = new SMTP(this.mailFrom, mailTo, title, body, this.smtpServer, userName, password);
             smtp.SMTPPort = this.smtpPort;
             smtp.MailDisplyName = this.displayName;
@@ -164,6 +189,21 @@ namespace MySoft.Mail
             return Send(title, msg, mailTo);
         }
 
+        /// <summary>
+        /// 发送错误
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="title"></param>
+        /// <param name="mailTo"></param>
+        /// <returns></returns>
+        public bool SendException(HttpContext current, string title, string mailTo)
+        {
+            HttpContext ctx = HttpContext.Current;
+            Exception ex = ctx.Server.GetLastError();
+
+            return SendException(ex, title, mailTo);
+        }
+
         #endregion
 
         #region 发送错误(多发件人)
@@ -192,6 +232,21 @@ namespace MySoft.Mail
         {
             string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
+        }
+
+        /// <summary>
+        /// 发送错误
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="title"></param>
+        /// <param name="mailTo"></param>
+        /// <returns></returns>
+        public bool SendException(HttpContext current, string title, string[] mailTo)
+        {
+            HttpContext ctx = HttpContext.Current;
+            Exception ex = ctx.Server.GetLastError();
+
+            return SendException(ex, title, mailTo);
         }
 
         #endregion

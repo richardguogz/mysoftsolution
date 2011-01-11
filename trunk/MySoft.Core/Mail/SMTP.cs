@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Configuration;
+using System.Text;
 
 namespace MySoft.Mail
 {
@@ -476,9 +477,7 @@ namespace MySoft.Mail
 
         #region Constructors
 
-        public SMTP()
-        {
-        }
+        public SMTP() { }
 
         /// <summary>
         /// 邮件发送类
@@ -644,10 +643,13 @@ namespace MySoft.Mail
             string[] mailBccs = mMailBcc;
             string[] attachments = mMailAttachments;
 
+            Encoding chtEnc = Encoding.BigEndianUnicode;
             // build the email message
             MailMessage Email = new MailMessage();
-            MailAddress MailFrom = new MailAddress(mMailFrom, mMailDisplyName);
+            MailAddress MailFrom = new MailAddress(mMailFrom, mMailDisplyName, chtEnc);
             Email.From = MailFrom;
+            Email.SubjectEncoding = chtEnc;
+            Email.BodyEncoding = Encoding.UTF8;
 
             if (mailTos != null)
             {
