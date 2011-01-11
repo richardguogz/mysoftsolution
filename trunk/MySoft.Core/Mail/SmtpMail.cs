@@ -201,7 +201,7 @@ namespace MySoft.Mail
         /// <returns></returns>
         public SendResult SendSampleException(Exception ex, string title, string mailTo)
         {
-            string msg = ErrorHelper.GetExceptionLog(ex);
+            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
         }
 
@@ -246,7 +246,7 @@ namespace MySoft.Mail
         /// <returns></returns>
         public SendResult SendSampleException(Exception ex, string title, string[] mailTo)
         {
-            string msg = ErrorHelper.GetExceptionLog(ex);
+            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
         }
 
@@ -293,7 +293,7 @@ namespace MySoft.Mail
         /// <returns></returns>
         public void SendSampleExceptionAsync(Exception ex, string title, string mailTo)
         {
-            string msg = ErrorHelper.GetExceptionLog(ex);
+            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             SendAsync(title, msg, mailTo);
         }
 
@@ -323,7 +323,7 @@ namespace MySoft.Mail
         /// <returns></returns>
         public void SendSampleExceptionAsync(Exception ex, string title, string[] mailTo)
         {
-            string msg = ErrorHelper.GetExceptionLog(ex);
+            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             SendAsync(title, msg, mailTo);
         }
 

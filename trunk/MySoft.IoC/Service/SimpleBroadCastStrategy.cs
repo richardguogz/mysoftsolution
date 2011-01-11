@@ -58,7 +58,7 @@ namespace MySoft.IoC
                     }
                     catch (Exception ex)
                     {
-                        string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ErrorHelper.GetExceptionLog(ex);
+                        string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ErrorHelper.GetErrorWithoutHtml(ex);
                         if (OnLog != null) OnLog(error);
 
                         var exception = new IoCException(log + "\r\n" + error, ex);

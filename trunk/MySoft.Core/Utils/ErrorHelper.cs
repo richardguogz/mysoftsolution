@@ -28,7 +28,7 @@ namespace MySoft
         /// 获取异常日志
         /// </summary>
         /// <param name="ex"></param>
-        public static string GetExceptionLog(Exception ex)
+        public static string GetErrorWithoutHtml(Exception ex)
         {
             StringBuilder sbLog = new StringBuilder("\r\n------------------------------------------------------------------------\r\n");
             Exception ochainException = ex;
@@ -40,8 +40,8 @@ namespace MySoft
                 .Append("\r\nException Type:" + ochainException.GetType().FullName)
                 .Append("\r\nException Message:" + ochainException.Message)
                 .Append("\r\nException Source:" + ochainException.Source)
-                .Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
-                .Append("\r\nException StackTrace:" + ochainException.StackTrace)
+                //.Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
+                //.Append("\r\nException StackTrace:" + ochainException.StackTrace)
                 .Append("\r\nException Date:" + DateTime.Now)
                 .Append("\r\nEnvironment Stack:" + System.Environment.StackTrace);
 

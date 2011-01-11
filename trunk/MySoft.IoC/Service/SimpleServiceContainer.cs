@@ -319,7 +319,7 @@ namespace MySoft.IoC
             }
             catch (Exception ex)
             {
-                if (OnLog != null) OnLog(string.Format("Calling service ({0},{1}) error occured. --> {2}", serviceName, msg.SubServiceName, ErrorHelper.GetExceptionLog(ex)));
+                if (OnLog != null) OnLog(string.Format("Calling service ({0},{1}) error occured. --> {2}", serviceName, msg.SubServiceName, ErrorHelper.GetErrorWithoutHtml(ex)));
 
                 throw ex;
             }

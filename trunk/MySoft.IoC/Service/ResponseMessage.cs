@@ -65,7 +65,7 @@ namespace MySoft.IoC
                 }
                 else if (data is Exception)
                 {
-                    return CoreHelper.GetInnerException(data as Exception).Message;
+                    return ErrorHelper.GetInnerException(data as Exception).Message;
                 }
                 else
                 {
