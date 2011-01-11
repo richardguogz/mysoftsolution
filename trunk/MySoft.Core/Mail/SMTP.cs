@@ -606,7 +606,7 @@ namespace MySoft.Mail
         /// 同步发送邮件
         /// </summary>
         /// <returns></returns>
-        public Boolean Send()
+        public SendResult Send()
         {
             return SendMail(false, null);
         }
@@ -633,7 +633,7 @@ namespace MySoft.Mail
         /// <param name="isAsync">是否异步发送邮件</param>
         /// <param name="userState">异步任务的唯一标识符，当 isAsync 为 True 时必须设置该属性， 当 isAsync 为 False 时可设置为 null</param>
         /// <returns></returns>
-        private Boolean SendMail(bool isAsync, object userState)
+        private SendResult SendMail(bool isAsync, object userState)
         {
             #region 设置属性值
 
@@ -643,12 +643,15 @@ namespace MySoft.Mail
             string[] mailBccs = mMailBcc;
             string[] attachments = mMailAttachments;
 
-            Encoding chtEnc = Encoding.BigEndianUnicode;
             // build the email message
             MailMessage Email = new MailMessage();
-            MailAddress MailFrom = new MailAddress(mMailFrom, mMailDisplyName, chtEnc);
+            MailAddress MailFrom = new MailAddress(mMailFrom, mMailDisplyName);
             Email.From = MailFrom;
-            Email.SubjectEncoding = chtEnc;
+            Email.Subject = mMailSubject;
+            Email.Body = mMailBody;
+            Email.Priority = mPriority;
+            Email.IsBodyHtml = mIsBodyHtml;
+            Email.SubjectEncoding = Encoding.UTF8;
             Email.BodyEncoding = Encoding.UTF8;
 
             if (mailTos != null)
@@ -696,11 +699,6 @@ namespace MySoft.Mail
                 }
             }
 
-            Email.Subject = mMailSubject;
-            Email.Body = mMailBody;
-            Email.Priority = mPriority;
-            Email.IsBodyHtml = mIsBodyHtml;
-
             // Smtp Client
             SmtpClient SmtpMail = new SmtpClient(mSMTPServer, mSMTPPort);
             SmtpMail.Credentials = new NetworkCredential(mSMTPUsername, mSMTPPassword);
@@ -708,6 +706,8 @@ namespace MySoft.Mail
             //SmtpMail.UseDefaultCredentials = false;
 
             #endregion
+
+            var result = new SendResult { Success = true, Message = "发送成功！" };
 
             try
             {
@@ -725,16 +725,22 @@ namespace MySoft.Mail
             }
             catch (SmtpFailedRecipientsException ex)
             {
+                result.Message = CoreHelper.GetInnerException(ex).Message;
+
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
                 mailSent = false;
             }
             catch (Exception ex)
             {
+                result.Message = CoreHelper.GetInnerException(ex).Message;
+
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
                 mailSent = false;
             }
 
-            return mailSent;
+            result.Success = mailSent;
+
+            return result;
         }
 
         private void SendCompletedCallback(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
