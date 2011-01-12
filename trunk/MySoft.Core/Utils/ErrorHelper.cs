@@ -30,26 +30,25 @@ namespace MySoft
         /// <param name="ex"></param>
         public static string GetErrorWithoutHtml(Exception ex)
         {
-            StringBuilder sbLog = new StringBuilder("\r\n------------------------------------------------------------------------\r\n");
+            StringBuilder sbLog = new StringBuilder("\r\n==============================================================================================\r\n");
             Exception ochainException = ex;
             var currentExceptionIndex = 1;
 
             while (ochainException != null)
             {
-                sbLog.Append("\r\nException (" + currentExceptionIndex + ")")
+                sbLog.Append("Exception (" + currentExceptionIndex + ") --> " + DateTime.Now)
                 .Append("\r\nException Type:" + ochainException.GetType().FullName)
                 .Append("\r\nException Message:" + ochainException.Message)
                 .Append("\r\nException Source:" + ochainException.Source)
-                //.Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
-                //.Append("\r\nException StackTrace:" + ochainException.StackTrace)
-                .Append("\r\nException Date:" + DateTime.Now)
-                .Append("\r\nEnvironment Stack:" + System.Environment.StackTrace);
+                .Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
+                .Append("\r\nException StackTrace:" + ochainException.StackTrace)
+                .Append(Environment.NewLine);
 
                 ochainException = ochainException.InnerException;
                 currentExceptionIndex++;
             }
 
-            sbLog.Append("\r\n------------------------------------------------------------------------\r\n");
+            sbLog.Append("\r\n==============================================================================================\r\n");
             return sbLog.ToString();
         }
 

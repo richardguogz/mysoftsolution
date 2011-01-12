@@ -6,22 +6,6 @@ using System.Web;
 namespace MySoft.Mail
 {
     /// <summary>
-    /// 发送结果
-    /// </summary>
-    public class SendResult
-    {
-        /// <summary>
-        /// 是否成功
-        /// </summary>
-        public bool Success { get; set; }
-
-        /// <summary>
-        /// 消息
-        /// </summary>
-        public string Message { get; set; }
-    }
-
-    /// <summary>
     /// 邮件发送
     /// </summary>
     public class SmtpMail
@@ -122,7 +106,7 @@ namespace MySoft.Mail
         /// <param name="body"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult Send(string title, string body, string mailTo)
+        public DataResult Send(string title, string body, string mailTo)
         {
             string[] mailto = new string[] { mailTo };
             return Send(title, body, mailto);
@@ -148,7 +132,7 @@ namespace MySoft.Mail
         /// <param name="body"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult Send(string title, string body, string[] mailTo)
+        public DataResult Send(string title, string body, string[] mailTo)
         {
             if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
             SMTP smtp = new SMTP(this.mailFrom, mailTo, title, body, this.smtpServer, userName, password);
@@ -186,7 +170,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult SendException(Exception ex, string title, string mailTo)
+        public DataResult SendException(Exception ex, string title, string mailTo)
         {
             string msg = ErrorHelper.GetHtmlError(ex);
             return Send(title, msg, mailTo);
@@ -199,7 +183,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult SendSampleException(Exception ex, string title, string mailTo)
+        public DataResult SendSampleException(Exception ex, string title, string mailTo)
         {
             string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
@@ -212,7 +196,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult SendException(HttpContext current, string title, string mailTo)
+        public DataResult SendException(HttpContext current, string title, string mailTo)
         {
             HttpContext ctx = HttpContext.Current;
             Exception ex = ctx.Server.GetLastError();
@@ -231,7 +215,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult SendException(Exception ex, string title, string[] mailTo)
+        public DataResult SendException(Exception ex, string title, string[] mailTo)
         {
             string msg = ErrorHelper.GetHtmlError(ex);
             return Send(title, msg, mailTo);
@@ -244,7 +228,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult SendSampleException(Exception ex, string title, string[] mailTo)
+        public DataResult SendSampleException(Exception ex, string title, string[] mailTo)
         {
             string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
@@ -257,7 +241,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public SendResult SendException(HttpContext current, string title, string[] mailTo)
+        public DataResult SendException(HttpContext current, string title, string[] mailTo)
         {
             HttpContext ctx = HttpContext.Current;
             Exception ex = ctx.Server.GetLastError();
