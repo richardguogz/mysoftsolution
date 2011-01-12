@@ -112,7 +112,7 @@ namespace MySoft.Data
             list.AddRange(leftWhere.Parameters);
             list.AddRange(rightWhere.Parameters);
 
-            return new WhereClip(leftWhere.ToString() + " and " + rightWhere.ToString(), list.ToArray());
+            return new WhereClip("(" + leftWhere.ToString() + " and " + rightWhere.ToString() + ")", list.ToArray());
         }
 
         /// <summary>
@@ -139,17 +139,7 @@ namespace MySoft.Data
             list.AddRange(leftWhere.Parameters);
             list.AddRange(rightWhere.Parameters);
 
-            return new WhereClip(leftWhere.ToString() + " or " + rightWhere.ToString(), list.ToArray());
-        }
-
-        /// <summary>
-        /// ÃÌº”¿®∫≈
-        /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        public static WhereClip Bracket(WhereClip where)
-        {
-            return new WhereClip("(" + where.ToString() + ")", where.Parameters);
+            return new WhereClip("(" + leftWhere.ToString() + " or " + rightWhere.ToString() + ")", list.ToArray());
         }
 
         /// <summary>

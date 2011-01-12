@@ -461,7 +461,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(leftField.Name + " + " + rightField.Name).As(leftField.OriginalName);
+            return new Field("(" + leftField.Name + " + " + rightField.Name + ")").As(leftField.OriginalName);
         }
 
         public static Field operator -(Field leftField, Field rightField)
@@ -474,7 +474,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(leftField.Name + " - " + rightField.Name).As(leftField.OriginalName);
+            return new Field("(" + leftField.Name + " - " + rightField.Name + ")").As(leftField.OriginalName);
         }
 
         public static Field operator *(Field leftField, Field rightField)
@@ -487,7 +487,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(leftField.Name + " * " + rightField.Name).As(leftField.OriginalName);
+            return new Field("(" + leftField.Name + " * " + rightField.Name + ")").As(leftField.OriginalName);
         }
 
         public static Field operator /(Field leftField, Field rightField)
@@ -500,7 +500,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(leftField.Name + " / " + rightField.Name).As(leftField.OriginalName);
+            return new Field("(" + leftField.Name + " / " + rightField.Name + ")").As(leftField.OriginalName);
         }
 
         public static Field operator %(Field leftField, Field rightField)
@@ -513,7 +513,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new Field(leftField.Name + " % " + rightField.Name).As(leftField.OriginalName);
+            return new Field("(" + leftField.Name + " % " + rightField.Name + ")").As(leftField.OriginalName);
         }
 
         public static Field operator +(Field field, object value)
