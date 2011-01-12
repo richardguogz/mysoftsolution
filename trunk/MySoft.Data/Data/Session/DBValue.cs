@@ -19,6 +19,17 @@ namespace MySoft.Data
             }
         }
 
+        /// <summary>
+        /// 返回默认值
+        /// </summary>
+        public static DBValue Default
+        {
+            get
+            {
+                return new DBValue("$$$___$$$___$$$");
+            }
+        }
+
         private string dbvalue;
         public DBValue(string dbvalue)
         {
@@ -28,6 +39,12 @@ namespace MySoft.Data
         internal string Value
         {
             get { return dbvalue; }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is DBValue)) return false;
+            return string.Compare(this.Value, (obj as DBValue).Value, true) == 0;
         }
     }
 }

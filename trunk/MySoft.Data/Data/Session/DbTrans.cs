@@ -1152,7 +1152,7 @@ namespace MySoft.Data
         /// <param name="entity"></param>
         /// <param name="retVal"></param>
         /// <returns></returns>
-        public int Insert<T, TResult>(T entity, out TResult retVal)
+        public int Insert<T, TResult>(T entity, out TResult retVal, params FieldValue[] fvs)
             where T : Entity
         {
             return Insert<T, TResult>(null, entity, out retVal);
@@ -1167,23 +1167,30 @@ namespace MySoft.Data
         /// <param name="entity"></param>
         /// <param name="retVal"></param>
         /// <returns></returns>
-        public int Insert<T, TResult>(Table table, T entity, out TResult retVal)
+        public int Insert<T, TResult>(Table table, T entity, out TResult retVal, params FieldValue[] fvs)
             where T : Entity
         {
-            entity.Detach();
-            int ret = Save<T>(table, entity);
-            retVal = default(TResult);
-
-            if ((IField)entity.IdentityField != null)
+            var list = entity.GetFieldValues();
+            if (fvs != null && fvs.Length > 0)
             {
-                object val = CoreHelper.GetPropertyValue(entity, entity.IdentityField.PropertyName);
-                if (val != null)
+                foreach (var fv in fvs)
                 {
-                    retVal = CoreHelper.ConvertValue<TResult>(val);
+                    if (fv.Value == null) continue;
+
+                    var item = list.Find(p => p.Field.Name == fv.Field.Name);
+                    if (item != null)
+                    {
+                        if (fv.Value is DBValue && DBValue.Default.Equals(fv.Value))
+                        {
+                            list.Remove(item);
+                        }
+
+                        item.Value = fv.Value;
+                    }
                 }
             }
 
-            return ret;
+            return Insert<T, TResult>(table, list.ToArray(), out retVal);
         }
 
         #endregion

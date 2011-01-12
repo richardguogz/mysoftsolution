@@ -25,6 +25,21 @@ namespace MySoft
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
         }
 
+        /// <summary>
+        /// 检测是否为结构类型
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsStruct(Type type)
+        {
+            //当属性为结构时进行系列化
+            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive)
+            {
+                return true;
+            }
+            return false;
+        }
+
         #region 对象克隆
 
         /// <summary>

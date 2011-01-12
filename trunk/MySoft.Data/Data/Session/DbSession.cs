@@ -1304,10 +1304,10 @@ namespace MySoft.Data
         /// <param name="entity"></param>
         /// <param name="retVal"></param>
         /// <returns></returns>
-        public int Insert<T, TResult>(T entity, out TResult retVal)
+        public int Insert<T, TResult>(T entity, out TResult retVal, params FieldValue[] fvs)
             where T : Entity
         {
-            return dbTrans.Insert<T, TResult>(entity, out retVal);
+            return dbTrans.Insert<T, TResult>(entity, out retVal, fvs);
         }
 
         /// <summary>
@@ -1319,10 +1319,10 @@ namespace MySoft.Data
         /// <param name="entity"></param>
         /// <param name="retVal"></param>
         /// <returns></returns>
-        public int Insert<T, TResult>(Table table, T entity, out TResult retVal)
+        public int Insert<T, TResult>(Table table, T entity, out TResult retVal, params FieldValue[] fvs)
             where T : Entity
         {
-            return dbTrans.Insert<T, TResult>(table, entity, out retVal);
+            return dbTrans.Insert<T, TResult>(table, entity, out retVal, fvs);
         }
 
         #endregion

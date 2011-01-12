@@ -106,8 +106,8 @@ namespace MySoft.Data
 
         #region 插入时返回标识列
 
-        int Insert<T, TResult>(T entity, out TResult retVal) where T : Entity;
-        int Insert<T, TResult>(Table table, T entity, out TResult retVal) where T : Entity;
+        int Insert<T, TResult>(T entity, out TResult retVal, params FieldValue[] fvs) where T : Entity;
+        int Insert<T, TResult>(Table table, T entity, out TResult retVal, params FieldValue[] fvs) where T : Entity;
 
         #endregion
     }

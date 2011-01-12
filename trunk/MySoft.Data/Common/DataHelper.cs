@@ -193,7 +193,7 @@ namespace MySoft.Data
             }
             else if (type.IsValueType)
             {
-                if (CheckStruct(type))
+                if (CoreHelper.IsStruct(type))
                 {
                     //如果属性是值类型，则进行系列化存储
                     return SerializationManager.SerializeJson(val);
@@ -349,20 +349,5 @@ namespace MySoft.Data
         }
 
         #endregion
-
-        /// <summary>
-        /// 检测是否为结构数据
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private static bool CheckStruct(Type type)
-        {
-            //当属性为结构时进行系列化
-            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && !type.IsSerializable)
-            {
-                return true;
-            }
-            return false;
-        }
     }
 }

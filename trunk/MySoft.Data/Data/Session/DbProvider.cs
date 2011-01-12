@@ -964,11 +964,7 @@ namespace MySoft.Data
         {
             //当属性为结构时进行系列化
             Type type = value.GetType();
-            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && !type.IsSerializable)
-            {
-                return true;
-            }
-            return false;
+            return CoreHelper.IsStruct(type);
         }
     }
 }
