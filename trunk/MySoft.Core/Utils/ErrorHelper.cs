@@ -30,26 +30,24 @@ namespace MySoft
         /// <param name="ex"></param>
         public static string GetErrorWithoutHtml(Exception ex)
         {
-            StringBuilder sbLog = new StringBuilder("\r\n==============================================================================================\r\n");
-            Exception ochainException = ex;
-            var currentExceptionIndex = 1;
-
-            while (ochainException != null)
+            try
             {
-                sbLog.Append("Exception (" + currentExceptionIndex + ") --> " + DateTime.Now)
-                .Append("\r\nException Type:" + ochainException.GetType().FullName)
-                .Append("\r\nException Message:" + ochainException.Message)
-                .Append("\r\nException Source:" + ochainException.Source)
+                StringBuilder sbLog = new StringBuilder("\r\n==============================================================================================\r\n");
+                sbLog.Append("Exception Date:" + DateTime.Now)
+                .Append("\r\nException Type:" + ex.GetType().FullName)
+                .Append("\r\nException Message:" + ex.Message)
+                .Append("\r\nException Source:" + ex.Source)
                 .Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
-                .Append("\r\nException StackTrace:" + ochainException.StackTrace)
-                .Append(Environment.NewLine);
+                .Append("\r\nException StackTrace:" + ex.StackTrace)
+                .Append("\r\n==============================================================================================\r\n");
 
-                ochainException = ochainException.InnerException;
-                currentExceptionIndex++;
+                if (ex.InnerException != null) sbLog.Append(GetErrorWithoutHtml(ex.InnerException));
+                return sbLog.ToString();
             }
-
-            sbLog.Append("\r\n==============================================================================================\r\n");
-            return sbLog.ToString();
+            catch (Exception)
+            {
+                return ex.ToString();
+            }
         }
 
         /// <summary>

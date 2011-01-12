@@ -210,10 +210,23 @@ namespace MySoft.IoC.Services
             catch (Exception ex)
             {
                 //捕获全局错误
-                resMsg.Data = ex;
+                resMsg.Data = GetNewException(ex);
             }
 
             return resMsg;
+        }
+
+        /// <summary>
+        /// 获取新的Exception
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        private Exception GetNewException(Exception ex)
+        {
+            if (ex.InnerException == null)
+                return new Exception(ex.Message);
+            else
+                return new Exception(ex.Message, ErrorHelper.GetInnerException(ex.InnerException));
         }
     }
 }

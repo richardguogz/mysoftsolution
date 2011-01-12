@@ -61,7 +61,7 @@ namespace MySoft.IoC
                         string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ErrorHelper.GetErrorWithoutHtml(ex);
                         if (OnLog != null) OnLog(error);
 
-                        var exception = new IoCException(log + "\r\n" + error, ex);
+                        var exception = new IoCException(log + "\r\n" + error);
                         if (OnError != null) OnError(exception);
 
                         //如果socket错误，表示连接失败

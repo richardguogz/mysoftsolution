@@ -302,27 +302,18 @@ namespace MySoft.IoC
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(string serviceName, RequestMessage msg)
         {
-            try
+            //check local service first
+            IService localService = (IService)GetLocalService(serviceName);
+
+            if (localService != null)
             {
-                //check local service first
-                IService localService = (IService)GetLocalService(serviceName);
-
-                if (localService != null)
-                {
-                    if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1}). --> {2}", serviceName, msg.SubServiceName, localService.ClientId));
-                    return localService.CallService(msg);
-                }
-
-                //if no local service, call remote service
-                if (OnLog != null) OnLog(string.Format("Calling remote service ({0},{1}).", serviceName, msg.SubServiceName));
-                return serviceProxy.CallMethod(serviceName, msg);
+                if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1}). --> {2}", serviceName, msg.SubServiceName, localService.ClientId));
+                return localService.CallService(msg);
             }
-            catch (Exception ex)
-            {
-                if (OnLog != null) OnLog(string.Format("Calling service ({0},{1}) error occured. --> {2}", serviceName, msg.SubServiceName, ErrorHelper.GetErrorWithoutHtml(ex)));
 
-                throw ex;
-            }
+            //if no local service, call remote service
+            if (OnLog != null) OnLog(string.Format("Calling remote service ({0},{1}).", serviceName, msg.SubServiceName));
+            return serviceProxy.CallMethod(serviceName, msg);
         }
 
         /// <summary>

@@ -81,135 +81,128 @@ namespace MySoft.IoC
             reqMsg.Timestamp = DateTime.Now;
             reqMsg.TransactionId = Guid.NewGuid();
 
-            try
+            MethodInfo method = null;
+            if (dictMethods.ContainsKey(subServiceName))
             {
-                MethodInfo method = null;
-                if (dictMethods.ContainsKey(subServiceName))
+                method = dictMethods[subServiceName];
+            }
+            else
+            {
+                method = serviceInterfaceType.GetMethods()
+                              .Where(p => p.ToString() == subServiceName)
+                              .FirstOrDefault();
+
+                if (method == null)
                 {
-                    method = dictMethods[subServiceName];
+                    foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
+                    {
+                        method = inheritedInterface.GetMethods()
+                                .Where(p => p.ToString() == subServiceName)
+                                .FirstOrDefault();
+
+                        if (method != null) break;
+                    }
+                }
+
+                if (method == null)
+                {
+                    throw new Exception(string.Format("未找到调用的方法({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
                 }
                 else
                 {
-                    method = serviceInterfaceType.GetMethods()
-                                  .Where(p => p.ToString() == subServiceName)
-                                  .FirstOrDefault();
-
-                    if (method == null)
-                    {
-                        foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
-                        {
-                            method = inheritedInterface.GetMethods()
-                                    .Where(p => p.ToString() == subServiceName)
-                                    .FirstOrDefault();
-
-                            if (method != null) break;
-                        }
-                    }
-
-                    if (method == null)
-                    {
-                        throw new Exception(string.Format("未找到调用的方法({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
-                    }
-                    else
-                    {
-                        dictMethods[subServiceName] = method;
-                    }
+                    dictMethods[subServiceName] = method;
                 }
-
-                ParameterInfo[] pis = method.GetParameters();
-                if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
-                {
-                    //参数不正确直接返回异常
-                    throw new IoCException(string.Format("无效的参数信息({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
-                }
-
-                if (pis.Length > 0)
-                {
-                    for (int i = 0; i < paramValues.Length; i++)
-                    {
-                        if (paramValues[i] != null)
-                        {
-                            reqMsg.Parameters[pis[i].Name] = SerializationManager.SerializeJson(paramValues[i]);
-                        }
-                    }
-                }
-
-                ResponseMessage resMsg = container.CallService(serviceInterfaceType.FullName, reqMsg);
-                if (resMsg == null)
-                {
-                    throw new IoCException(string.Format("远程服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
-                }
-
-                if (resMsg.Data == null) return resMsg.Data;
-                if (resMsg.Data is Exception)
-                {
-                    throw resMsg.Data as Exception;
-                }
-
-                switch (resMsg.Transfer)
-                {
-                    case TransferType.Binary:
-                        byte[] buffer = (byte[])resMsg.Data;
-
-                        //将数据进行解压缩
-                        if (resMsg.Compress != CompressType.None)
-                        {
-                            switch (resMsg.Compress)
-                            {
-                                case CompressType.GZip:
-                                    buffer = CompressionManager.DecompressGZip(buffer);
-                                    break;
-                                case CompressType.Zip:
-                                    buffer = CompressionManager.Decompress7Zip(buffer);
-                                    break;
-                            }
-                        }
-
-                        return SerializationManager.DeserializeBin(buffer);
-                    case TransferType.Json:
-                        string jsonString = resMsg.Data.ToString();
-
-                        //将数据进行解压缩
-                        if (resMsg.Compress != CompressType.None)
-                        {
-                            switch (resMsg.Compress)
-                            {
-                                case CompressType.GZip:
-                                    jsonString = CompressionManager.DecompressGZip(jsonString);
-                                    break;
-                                case CompressType.Zip:
-                                    jsonString = CompressionManager.Decompress7Zip(jsonString);
-                                    break;
-                            }
-                        }
-
-                        return SerializationManager.DeserializeJson(returnType, jsonString);
-                    case TransferType.Xml:
-                        string xmlString = resMsg.Data.ToString();
-
-                        //将数据进行解压缩
-                        if (resMsg.Compress != CompressType.None)
-                        {
-                            switch (resMsg.Compress)
-                            {
-                                case CompressType.GZip:
-                                    xmlString = CompressionManager.DecompressGZip(xmlString);
-                                    break;
-                                case CompressType.Zip:
-                                    xmlString = CompressionManager.Decompress7Zip(xmlString);
-                                    break;
-                            }
-                        }
-
-                        return SerializationManager.DeserializeXml(returnType, xmlString);
-                }
-
-                return null;
             }
-            catch (Exception ex)
+
+            ParameterInfo[] pis = method.GetParameters();
+            if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
-                throw new IoCException(ex.Message, ex);
+                //参数不正确直接返回异常
+                throw new IoCException(string.Format("无效的参数信息({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
             }
+
+            if (pis.Length > 0)
+            {
+                for (int i = 0; i < paramValues.Length; i++)
+                {
+                    if (paramValues[i] != null)
+                    {
+                        reqMsg.Parameters[pis[i].Name] = SerializationManager.SerializeJson(paramValues[i]);
+                    }
+                }
+            }
+
+            ResponseMessage resMsg = container.CallService(serviceInterfaceType.FullName, reqMsg);
+            if (resMsg == null)
+            {
+                throw new IoCException(string.Format("远程服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+            }
+
+            if (resMsg.Data == null) return resMsg.Data;
+            if (resMsg.Data is Exception)
+            {
+                throw resMsg.Data as Exception;
+            }
+
+            switch (resMsg.Transfer)
+            {
+                case TransferType.Binary:
+                    byte[] buffer = (byte[])resMsg.Data;
+
+                    //将数据进行解压缩
+                    if (resMsg.Compress != CompressType.None)
+                    {
+                        switch (resMsg.Compress)
+                        {
+                            case CompressType.GZip:
+                                buffer = CompressionManager.DecompressGZip(buffer);
+                                break;
+                            case CompressType.Zip:
+                                buffer = CompressionManager.Decompress7Zip(buffer);
+                                break;
+                        }
+                    }
+
+                    return SerializationManager.DeserializeBin(buffer);
+                case TransferType.Json:
+                    string jsonString = resMsg.Data.ToString();
+
+                    //将数据进行解压缩
+                    if (resMsg.Compress != CompressType.None)
+                    {
+                        switch (resMsg.Compress)
+                        {
+                            case CompressType.GZip:
+                                jsonString = CompressionManager.DecompressGZip(jsonString);
+                                break;
+                            case CompressType.Zip:
+                                jsonString = CompressionManager.Decompress7Zip(jsonString);
+                                break;
+                        }
+                    }
+
+                    return SerializationManager.DeserializeJson(returnType, jsonString);
+                case TransferType.Xml:
+                    string xmlString = resMsg.Data.ToString();
+
+                    //将数据进行解压缩
+                    if (resMsg.Compress != CompressType.None)
+                    {
+                        switch (resMsg.Compress)
+                        {
+                            case CompressType.GZip:
+                                xmlString = CompressionManager.DecompressGZip(xmlString);
+                                break;
+                            case CompressType.Zip:
+                                xmlString = CompressionManager.Decompress7Zip(xmlString);
+                                break;
+                        }
+                    }
+
+                    return SerializationManager.DeserializeXml(returnType, xmlString);
+            }
+
+            return null;
         }
     }
 }
