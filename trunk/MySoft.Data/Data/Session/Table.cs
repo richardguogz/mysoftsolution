@@ -39,7 +39,7 @@ namespace MySoft.Data
         /// <param name="tableName"></param>
         public Table(string tableName)
         {
-            this.name = tableName.Replace("{0}", "").Replace("{1}", "");
+            this.name = tableName.Replace("__[__", "").Replace("__]__", "");
             this.prefix = null;
             this.suffix = null;
         }
@@ -75,7 +75,7 @@ namespace MySoft.Data
         {
             get
             {
-                return string.Concat("{0}", OriginalName, "{1}");
+                return string.Concat("__[__", OriginalName, "__]__");
             }
         }
 

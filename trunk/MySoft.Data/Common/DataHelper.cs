@@ -211,20 +211,10 @@ namespace MySoft.Data
         {
             if (sql == null) return string.Empty;
 
-            try
-            {
-                if (isAccess)
-                    sql = string.Format(sql, leftToken, rightToken, '(', ')');
-                else
-                    sql = string.Format(sql, leftToken, rightToken, ' ', ' ');
-            }
-            catch
-            {
-                if (isAccess)
-                    sql = sql.Replace("{0}", leftToken.ToString()).Replace("{1}", rightToken.ToString()).Replace("{2}", '('.ToString()).Replace("{3}", ')'.ToString());
-                else
-                    sql = sql.Replace("{0}", leftToken.ToString()).Replace("{1}", rightToken.ToString()).Replace("{2}", ' '.ToString()).Replace("{3}", ' '.ToString());
-            }
+            if (isAccess)
+                sql = sql.Replace("__[__", leftToken.ToString()).Replace("__]__", rightToken.ToString()).Replace("__{__", '('.ToString()).Replace("__}__", ')'.ToString());
+            else
+                sql = sql.Replace("__[__", leftToken.ToString()).Replace("__]__", rightToken.ToString()).Replace("__{__", ' '.ToString()).Replace("__}__", ' '.ToString());
 
             return sql.Trim().Replace(" . ", ".")
                             .Replace(" , ", ",")

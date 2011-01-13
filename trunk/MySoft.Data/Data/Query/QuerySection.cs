@@ -464,7 +464,7 @@ namespace MySoft.Data
             TSub entity = CoreHelper.CreateInstance<TSub>();
             string tableName = entity.GetTable().Name;
             QuerySection<TSub> query = new QuerySection<TSub>(new FromSection<TSub>(tableName, aliasName), dbProvider, dbTran, pagingField);
-            query.SqlString = "(" + QueryString + ") " + (aliasName != null ? "{0}" + aliasName + "{1}" : tableName);
+            query.SqlString = "(" + QueryString + ") " + (aliasName != null ? "__[__" + aliasName + "__]__" : tableName);
             query.Parameters = this.Parameters;
 
             if ((IField)this.pagingField == null)
