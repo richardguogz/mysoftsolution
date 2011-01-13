@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Net;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Threading;
-using System.Net.Sockets;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+using System.Net;
 using System.Net.Configuration;
+using System.Net.Mail;
+using System.Net.Sockets;
 using System.Text;
 
 namespace MySoft.Mail
@@ -617,12 +615,6 @@ namespace MySoft.Mail
         /// <param name="userState">异步任务的唯一标识符</param>
         /// <returns></returns>
         public void SendAsync(object userState)
-        {
-            //启用线程池来实现异步发送
-            ThreadPool.QueueUserWorkItem(DoSend, userState);
-        }
-
-        void DoSend(object userState)
         {
             SendMail(true, userState);
         }

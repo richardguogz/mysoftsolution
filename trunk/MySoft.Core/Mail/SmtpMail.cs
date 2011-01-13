@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace MySoft.Mail
@@ -158,6 +157,19 @@ namespace MySoft.Mail
             smtp.MailDisplyName = this.displayName;
             smtp.IsBodyHtml = true;
 
+            //启用线程池来实现异步发送
+            ThreadPool.QueueUserWorkItem(DoSend, smtp);
+        }
+
+        /// <summary>
+        /// 异步发送邮件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        void DoSend(object sender)
+        {
+            if (sender == null) return;
+            SMTP smtp = sender as SMTP;
             smtp.SendAsync(null);
         }
 

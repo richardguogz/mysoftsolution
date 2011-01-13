@@ -59,6 +59,11 @@ namespace MySoft.IoC
             long t2 = System.Environment.TickCount - t1;
             if (retMsg != null)
             {
+                if (retMsg.Data is Exception)
+                {
+                    throw retMsg.Data as Exception;
+                }
+
                 //SerializationManager.Serialize(retMsg)
                 if (OnLog != null) OnLog(string.Format("Result -->{0}\r\n{1}", retMsg.Message, "Spent time: (" + t2.ToString() + ") ms"));
             }

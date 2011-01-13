@@ -1,9 +1,14 @@
 ﻿namespace MySoft.Data
 {
     /// <summary>
+    /// 表关系接口
+    /// </summary>
+    public interface ITableRelation { }
+
+    /// <summary>
     /// 关系表，可以用来存储关联信息
     /// </summary>
-    public class TableRelation<T>
+    public class TableRelation<T> : ITableRelation
         where T : Entity
     {
         private FromSection<T> section;
@@ -159,7 +164,7 @@
         /// <returns></returns>
         public TableRelation<T> SubQuery()
         {
-            section.SetQuerySection(section.SubQuery());
+            section.SetQuery(section.SubQuery());
             return this;
         }
 
@@ -169,7 +174,7 @@
         /// <returns></returns>
         public TableRelation<T> SubQuery(string aliasName)
         {
-            section.SetQuerySection(section.SubQuery(aliasName));
+            section.SetQuery(section.SubQuery(aliasName));
             return this;
         }
 
@@ -181,7 +186,7 @@
             where TSub : Entity
         {
             TableRelation<TSub> tr = new TableRelation<TSub>(null);
-            tr.section.SetQuerySection(section.SubQuery<TSub>());
+            tr.section.SetQuery(section.SubQuery<TSub>());
             return tr;
         }
 
@@ -194,7 +199,7 @@
             where TSub : Entity
         {
             TableRelation<TSub> tr = new TableRelation<TSub>(null);
-            tr.section.SetQuerySection(section.SubQuery<TSub>(aliasName));
+            tr.section.SetQuery(section.SubQuery<TSub>(aliasName));
             return tr;
         }
 

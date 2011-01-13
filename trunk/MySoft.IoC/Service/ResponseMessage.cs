@@ -56,16 +56,16 @@ namespace MySoft.IoC
             {
                 if (data == null)
                 {
-                    return "empty data";
+                    return "Empty data";
                 }
 
                 if (data is byte[])
                 {
-                    return string.Format("packet size: {0} bytes", ((byte[])data).Length);
+                    return string.Format("Packet size: {0} bytes", ((byte[])data).Length);
                 }
                 else if (data is Exception)
                 {
-                    return ErrorHelper.GetInnerException(data as Exception).Message;
+                    return "Occured error";
                 }
                 else
                 {

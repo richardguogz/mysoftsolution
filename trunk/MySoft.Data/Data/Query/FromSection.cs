@@ -57,7 +57,17 @@ namespace MySoft.Data
 
                 this.tableName += " {0}" + aliasName + "{1}";
             }
-            this.query = new QuerySection<T>(this, dbProvider, dbTran, pagingField);
+
+            if (fromEntity.GetRelation() != null)
+            {
+                var relation = fromEntity.GetRelation() as TableRelation<T>;
+                this.query = relation.Section.Query;
+                this.query.SetDbProvider(dbProvider, dbTran);
+            }
+            else
+            {
+                this.query = new QuerySection<T>(this, dbProvider, dbTran, pagingField);
+            }
         }
 
         internal FromSection(string tableName, string relation, IList<Entity> list)
@@ -164,7 +174,7 @@ namespace MySoft.Data
         #endregion
 
         //…Ë÷√≤È—ØΩ⁄
-        internal void SetQuerySection(QuerySection<T> query)
+        internal void SetQuery(QuerySection<T> query)
         {
             this.query = query;
         }

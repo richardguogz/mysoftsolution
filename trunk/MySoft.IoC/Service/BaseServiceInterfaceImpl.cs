@@ -139,11 +139,6 @@ namespace MySoft.IoC
             }
 
             if (resMsg.Data == null) return resMsg.Data;
-            if (resMsg.Data is Exception)
-            {
-                throw resMsg.Data as Exception;
-            }
-
             switch (resMsg.Transfer)
             {
                 case TransferType.Binary:
