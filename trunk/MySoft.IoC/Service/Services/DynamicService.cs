@@ -72,7 +72,7 @@ namespace MySoft.IoC.Services
             catch { }
             if (service == null)
             {
-                resMsg.Data = new Exception(string.Format("服务端未找到对应的服务({0}).", resMsg.ServiceName));
+                resMsg.Data = new IoCException(string.Format("服务端未找到对应的服务({0}).", resMsg.ServiceName));
                 return resMsg;
             }
 
@@ -103,7 +103,7 @@ namespace MySoft.IoC.Services
 
                     if (method == null)
                     {
-                        resMsg.Data = new Exception(string.Format("服务端未找到调用的方法({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
+                        resMsg.Data = new IoCException(string.Format("服务端未找到调用的方法({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
                         return resMsg;
                     }
                     else
@@ -131,7 +131,7 @@ namespace MySoft.IoC.Services
                 }
                 catch (Exception ex)
                 {
-                    resMsg.Data = ex;
+                    resMsg.Data = GetNewException(ex);
                     return resMsg;
                 }
                 //returnValue = mi.Invoke(service, parms);
@@ -221,12 +221,12 @@ namespace MySoft.IoC.Services
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
-        private Exception GetNewException(Exception ex)
+        private IoCException GetNewException(Exception ex)
         {
             if (ex.InnerException == null)
-                return new Exception(ex.Message);
+                return new IoCException(ex.Message);
             else
-                return new Exception(ex.Message, ErrorHelper.GetInnerException(ex.InnerException));
+                return new IoCException(ex.Message, ErrorHelper.GetInnerException(ex.InnerException));
         }
     }
 }

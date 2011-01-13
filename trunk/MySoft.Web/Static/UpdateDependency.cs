@@ -241,7 +241,7 @@ namespace MySoft.Web
 
             if (!updateSuccess) return false;
 
-            DateTime updateTime = lastUpdateTime.Add(slidingTimeSpan); ;
+            DateTime updateTime = lastUpdateTime.Add(slidingTimeSpan);
 
             bool isUpdate = currentDate.Ticks >= updateTime.Ticks;
             if (isUpdate && lastUpdateTime != DateTime.MinValue)

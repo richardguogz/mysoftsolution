@@ -106,7 +106,7 @@ namespace MySoft.IoC
 
                 if (method == null)
                 {
-                    throw new Exception(string.Format("未找到调用的方法({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                    throw new IoCException(string.Format("未找到调用的方法({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
                 }
                 else
                 {
@@ -135,7 +135,7 @@ namespace MySoft.IoC
             ResponseMessage resMsg = container.CallService(serviceInterfaceType.FullName, reqMsg);
             if (resMsg == null)
             {
-                throw new IoCException(string.Format("远程服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                throw new IoCException(string.Format("服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
             }
 
             if (resMsg.Data == null) return resMsg.Data;
@@ -202,7 +202,7 @@ namespace MySoft.IoC
                     return SerializationManager.DeserializeXml(returnType, xmlString);
             }
 
-            return null;
+            throw new IoCException(string.Format("服务调用失败({0},{1})，无数据返回.", reqMsg.ServiceName, reqMsg.SubServiceName));
         }
     }
 }
