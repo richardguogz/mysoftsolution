@@ -1,14 +1,9 @@
 ﻿namespace MySoft.Data
 {
     /// <summary>
-    /// 表关系接口
-    /// </summary>
-    public interface ITableRelation { }
-
-    /// <summary>
     /// 关系表，可以用来存储关联信息
     /// </summary>
-    public class TableRelation<T> : ITableRelation
+    public class TableRelation<T>
         where T : Entity
     {
         private FromSection<T> section;

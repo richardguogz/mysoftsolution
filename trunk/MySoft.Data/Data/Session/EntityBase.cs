@@ -187,15 +187,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 获取表关系
-        /// </summary>
-        /// <returns></returns>
-        protected internal virtual ITableRelation GetRelation()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// 设置属性值
         /// </summary>
         /// <param name="reader"></param>

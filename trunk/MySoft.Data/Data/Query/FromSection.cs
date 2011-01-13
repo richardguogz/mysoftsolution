@@ -58,16 +58,7 @@ namespace MySoft.Data
                 this.tableName += " {0}" + aliasName + "{1}";
             }
 
-            if (fromEntity.GetRelation() != null)
-            {
-                var relation = fromEntity.GetRelation() as TableRelation<T>;
-                this.query = relation.Section.Query;
-                this.query.SetDbProvider(dbProvider, dbTran);
-            }
-            else
-            {
-                this.query = new QuerySection<T>(this, dbProvider, dbTran, pagingField);
-            }
+            this.query = new QuerySection<T>(this, dbProvider, dbTran, pagingField);
         }
 
         internal FromSection(string tableName, string relation, IList<Entity> list)
