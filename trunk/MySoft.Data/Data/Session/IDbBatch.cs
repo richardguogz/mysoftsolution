@@ -44,6 +44,6 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="errors">输出的错误</param>
         /// <returns></returns>
-        int Execute(out IList<MySoftException> errors);
+        int Execute(out IList<DataException> errors);
     }
 }

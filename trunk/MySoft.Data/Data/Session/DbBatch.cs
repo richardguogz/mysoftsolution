@@ -44,10 +44,10 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="errors">输出的错误</param>
         /// <returns></returns>
-        public int Execute(out IList<MySoftException> errors)
+        public int Execute(out IList<DataException> errors)
         {
             //实例化errors
-            errors = new List<MySoftException>();
+            errors = new List<DataException>();
             int rowCount = 0;
 
             if (commandList.Count == 0)
