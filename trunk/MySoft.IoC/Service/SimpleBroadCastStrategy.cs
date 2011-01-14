@@ -54,14 +54,15 @@ namespace MySoft.IoC
                         string log = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "].";
                         //IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
                         if (OnLog != null) OnLog(log);
+
                         tempHandler(reqMsg);
                     }
                     catch (Exception ex)
                     {
-                        string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " + ErrorHelper.GetErrorWithoutHtml(ex);
-                        if (OnLog != null) OnLog(error);
-
+                        string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " +
+                            ErrorHelper.GetErrorWithoutHtml(ex);
                         var exception = new IoCException(error);
+
                         if (OnError != null) OnError(exception);
 
                         //如果socket错误，表示连接失败
@@ -111,9 +112,8 @@ namespace MySoft.IoC
             else
             {
                 string error = "Call service (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ") error. have not any subscriber!";
-                if (OnLog != null) OnLog(error);
-
                 var exception = new IoCException(error);
+
                 if (OnError != null) OnError(exception);
             }
         }

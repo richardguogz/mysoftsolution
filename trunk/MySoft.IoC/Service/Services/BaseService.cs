@@ -71,22 +71,22 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            string log = string.Format("Dynamic service ({0}:{1},{2}) process. -->{3}", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
+            string log = string.Format("Dynamic service ({0}:{1},{2}). -->{3}", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
             if (OnLog != null) OnLog(log);
 
             long t1 = System.Environment.TickCount;
             ResponseMessage retMsg = Run(msg);
             if (retMsg != null && retMsg.Data is Exception)
             {
-                var exception = retMsg.Data as Exception;
+                var ex = retMsg.Data as Exception;
+                var exception = new IoCException(log, ex);
+
                 if (OnError != null) OnError(exception);
             }
-            else
-            {
-                long t2 = System.Environment.TickCount - t1;
-                //SerializationManager.Serialize(retMsg)
-                if (OnLog != null) OnLog(string.Format("Dynamic service ({0}:{1},{2}).\r\nResult -->{3}\r\n{4}", clientId, serviceName, msg.SubServiceName, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms."));
-            }
+
+            long t2 = System.Environment.TickCount - t1;
+            //SerializationManager.Serialize(retMsg)
+            if (OnLog != null) OnLog(string.Format("{0}\r\nResult -->{1} == {2}", log, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms."));
 
             return retMsg;
         }
