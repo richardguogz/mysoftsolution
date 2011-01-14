@@ -32,14 +32,13 @@ namespace MySoft
         {
             try
             {
-                StringBuilder sbLog = new StringBuilder("\r\n==============================================================================================\r\n");
-                sbLog.Append("Exception Date:" + DateTime.Now)
-                .Append("\r\nException Type:" + ex.GetType().FullName)
-                .Append("\r\nException Message:" + ex.Message)
-                .Append("\r\nException Source:" + ex.Source)
-                .Append("\r\nException TargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
-                .Append("\r\nException StackTrace:" + ex.StackTrace)
-                .Append("\r\n==============================================================================================\r\n");
+                StringBuilder sbLog = new StringBuilder("\r\n===================================================================================================================\r\n");
+                sbLog.Append("\r\nType:" + ex.GetType().FullName)
+                .Append("\r\nMessage:" + ex.Message)
+                .Append("\r\nSource:" + ex.Source)
+                .Append("\r\nTargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
+                .Append("\r\nStackTrace:" + ex.StackTrace)
+                .Append("\r\n===================================================================================================================\r\n");
 
                 if (ex.InnerException != null) sbLog.Append(GetErrorWithoutHtml(ex.InnerException));
                 return sbLog.ToString();
@@ -65,6 +64,7 @@ namespace MySoft
 
             // Populate Error Information Collection
             NameValueCollection error_info = new NameValueCollection();
+            error_info.Add("Type", ex.GetType().FullName);
             error_info.Add("Message", CleanHTML(ex.Message));
             error_info.Add("Source", CleanHTML(ex.Source));
             error_info.Add("TargetSite", CleanHTML(ex.TargetSite == null ? null : ex.TargetSite.ToString()));
