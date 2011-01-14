@@ -153,7 +153,7 @@ namespace MySoft.Data
                 foreach (string msg in result.Messages)
                 {
                     if (string.IsNullOrEmpty(msg)) continue;
-                    msgs.Add(msg.Split('|')[0]);
+                    msgs.Add(msg);
                 }
                 string message = string.Join("\r\n", msgs.ToArray());
                 throw new DataException(message);

@@ -71,7 +71,7 @@ namespace MySoft.Data
             {
                 if (predicate(this.entity))
                 {
-                    this.messages.Add(string.Format("{0}|PropertyName:{1} - FieldName:{2}", message, field.PropertyName, field.OriginalName));
+                    this.messages.Add(message);
                 }
             }
             return this;

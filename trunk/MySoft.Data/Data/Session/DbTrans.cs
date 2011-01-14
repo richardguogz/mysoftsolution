@@ -1190,6 +1190,24 @@ namespace MySoft.Data
                 }
             }
 
+            #region 实体验证处理
+
+            //对实体进行验证
+            ValidateResult result = entity.Validate();
+            if (!result.IsSuccess)
+            {
+                List<string> msgs = new List<string>();
+                foreach (string msg in result.Messages)
+                {
+                    if (string.IsNullOrEmpty(msg)) continue;
+                    msgs.Add(msg);
+                }
+                string message = string.Join("\r\n", msgs.ToArray());
+                throw new DataException(message);
+            }
+
+            #endregion
+
             return Insert<T, TResult>(table, list.ToArray(), out retVal);
         }
 
