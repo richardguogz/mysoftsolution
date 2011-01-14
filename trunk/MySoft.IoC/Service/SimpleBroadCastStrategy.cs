@@ -49,9 +49,9 @@ namespace MySoft.IoC
                 ServiceRequestNotifyHandler tempHandler = temp.Value;
                 if (tempHandler != null)
                 {
+                    string log = string.Format("Notify service host: ({0},{1})[{2}]. -->", reqMsg.ServiceName, reqMsg.SubServiceName, tempClientId, reqMsg.Parameters.SerializedData);
                     try
                     {
-                        string log = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "].";
                         //IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
                         if (OnLog != null) OnLog(log);
 
@@ -59,10 +59,7 @@ namespace MySoft.IoC
                     }
                     catch (Exception ex)
                     {
-                        string error = "Notify service host: (" + reqMsg.ServiceName + "," + reqMsg.SubServiceName + ")[" + tempClientId.ToString() + "] error! Reason: " +
-                            ErrorHelper.GetErrorWithoutHtml(ex);
-                        var exception = new IoCException(error);
-
+                        var exception = new IoCException(log, ex);
                         if (OnError != null) OnError(exception);
 
                         //如果socket错误，表示连接失败
