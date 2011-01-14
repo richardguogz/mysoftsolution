@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Linq;
+using MySoft.Remoting;
 
 namespace MySoft.IoC
 {
@@ -49,7 +50,7 @@ namespace MySoft.IoC
                 ServiceRequestNotifyHandler tempHandler = temp.Value;
                 if (tempHandler != null)
                 {
-                    string log = string.Format("Notify service host: ({0},{1})[{2}]. -->", reqMsg.ServiceName, reqMsg.SubServiceName, tempClientId, reqMsg.Parameters.SerializedData);
+                    string log = string.Format("Notify service host: ({0},{1})[{2}]. -->{3}", reqMsg.ServiceName, reqMsg.SubServiceName, tempClientId, reqMsg.Parameters.SerializedData);
                     try
                     {
                         //IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
@@ -59,15 +60,15 @@ namespace MySoft.IoC
                     }
                     catch (Exception ex)
                     {
-                        var exception = new IoCException(log, ex);
-                        if (OnError != null) OnError(exception);
-
                         //如果socket错误，表示连接失败
-                        if (ex is SocketException)
+                        if (ex is SocketException || ex is RemotingException)
                         {
                             handlers[tempClientId] = null;
                             needCleanHandlers = true;
                         }
+
+                        var exception = new IoCException(log, ex);
+                        if (OnError != null) OnError(exception);
                     }
                 }
                 else

@@ -70,7 +70,7 @@ namespace MySoft.Remoting
         {
             if (clientChannel == null)
             {
-                RemotingConfiguration.CustomErrorsEnabled(false);
+                RemotingConfiguration.CustomErrorsMode = CustomErrorsModes.Off;
 
                 BinaryServerFormatterSinkProvider serverProvider = new
                     BinaryServerFormatterSinkProvider();

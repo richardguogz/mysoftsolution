@@ -86,7 +86,7 @@ namespace MySoft.IoC.Services
 
             long t2 = System.Environment.TickCount - t1;
             //SerializationManager.Serialize(retMsg)
-            if (OnLog != null) OnLog(string.Format("{0}\r\nResult -->{1} == {2}", log, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms."));
+            if (OnLog != null) OnLog(string.Format("{0}\r\nResult -->{1} <==> {2}", log, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms."));
 
             return retMsg;
         }
