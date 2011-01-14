@@ -150,7 +150,7 @@ namespace MySoft.Data
                 {
                     return this.Name;
                 }
-                return this.Name + " as __[__" + aliasName + "__]__";
+                return this.Name + " as __{__" + aliasName + "__}__";
             }
         }
 
@@ -201,12 +201,12 @@ namespace MySoft.Data
         {
             get
             {
-                if (tableName == null || tableName.Contains("__[__") || tableName.Contains("__]__"))
+                if (tableName == null || tableName.Contains("__{__") || tableName.Contains("__}__"))
                 {
                     return tableName;
                 }
 
-                return "__[__" + tableName + "__]__";
+                return "__{__" + tableName + "__}__";
             }
         }
 
@@ -214,12 +214,12 @@ namespace MySoft.Data
         {
             get
             {
-                if (fieldName == "*" || fieldName.Contains("'") || fieldName.Contains("(") || fieldName.Contains(")") || fieldName.Contains("__[__") || fieldName.Contains("__]__"))
+                if (fieldName == "*" || fieldName.Contains("'") || fieldName.Contains("(") || fieldName.Contains(")") || fieldName.Contains("__{__") || fieldName.Contains("__}__"))
                 {
                     return fieldName;
                 }
 
-                return "__[__" + fieldName + "__]__";
+                return "__{__" + fieldName + "__}__";
             }
         }
 
@@ -233,7 +233,7 @@ namespace MySoft.Data
         /// <param name="fieldName"></param>
         public Field(string fieldName)
         {
-            this.fieldName = fieldName.Replace("__[__", "").Replace("__]__", "");
+            this.fieldName = fieldName.Replace("__{__", "").Replace("__}__", "");
             this.propertyName = this.fieldName;
         }
 
