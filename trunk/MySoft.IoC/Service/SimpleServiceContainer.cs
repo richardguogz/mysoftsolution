@@ -307,7 +307,7 @@ namespace MySoft.IoC
 
             if (localService != null)
             {
-                if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1}). --> {2}", serviceName, msg.SubServiceName, localService.ClientId));
+                if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1})[{2}].", serviceName, msg.SubServiceName, localService.ClientId));
                 return localService.CallService(msg);
             }
 
