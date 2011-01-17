@@ -197,7 +197,7 @@ namespace MySoft.IoC
                     return SerializationManager.DeserializeXml(returnType, xmlString);
             }
 
-            throw new IoCException(string.Format("服务调用失败({0},{1})，无数据返回.", reqMsg.ServiceName, reqMsg.SubServiceName));
+            throw new IoCException(string.Format("服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
         }
     }
 }

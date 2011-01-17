@@ -79,14 +79,20 @@ namespace MySoft.IoC.Services
             if (retMsg != null && retMsg.Data is Exception)
             {
                 var ex = retMsg.Data as Exception;
+
+                long t2 = System.Environment.TickCount - t1;
+                log += "<==>Spent time: (" + t2.ToString() + ") ms.";
                 var exception = new IoCException(log, ex);
 
                 if (OnError != null) OnError(exception);
             }
-
-            long t2 = System.Environment.TickCount - t1;
-            //SerializationManager.Serialize(retMsg)
-            if (OnLog != null) OnLog(string.Format("{0}\r\nResult -->{1} <==> {2}", log, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms."));
+            else
+            {
+                long t2 = System.Environment.TickCount - t1;
+                log = string.Format("Dynamic service ({0}:{1},{2}).-->{3}\r\n{4}", clientId, serviceName, msg.SubServiceName,
+                    retMsg.Message, "Spent time: (" + t2.ToString() + ") ms.");
+                if (OnLog != null) OnLog(log);
+            }
 
             return retMsg;
         }

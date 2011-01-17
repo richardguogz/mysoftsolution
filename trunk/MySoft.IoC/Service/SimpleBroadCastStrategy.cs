@@ -53,20 +53,25 @@ namespace MySoft.IoC
                     string log = string.Format("Notify service host: ({0},{1})[{2}]. -->{3}", reqMsg.ServiceName, reqMsg.SubServiceName, tempClientId, reqMsg.Parameters.SerializedData);
                     try
                     {
-                        //IService service = ((Services.MessageRequestCallbackHandler)tempHandler.Target).Service;
                         if (OnLog != null) OnLog(log);
-
                         tempHandler(reqMsg);
                     }
-                    catch (Exception ex)
+                    catch (SocketException ex)  //如果socket错误，表示连接失败
                     {
-                        //如果socket错误，表示连接失败
-                        if (ex is SocketException || ex is RemotingException)
+                        if (!(ex.SocketErrorCode == SocketError.ConnectionRefused
+                            || ex.SocketErrorCode == SocketError.Success
+                            || ex.SocketErrorCode == SocketError.TimedOut))
                         {
                             handlers[tempClientId] = null;
                             needCleanHandlers = true;
                         }
 
+                        log = string.Format("【{0}({1})】{2}", ex.SocketErrorCode, ex.ErrorCode, log);
+                        var exception = new IoCException(log, ex);
+                        if (OnError != null) OnError(exception);
+                    }
+                    catch (Exception ex)
+                    {
                         var exception = new IoCException(log, ex);
                         if (OnError != null) OnError(exception);
                     }

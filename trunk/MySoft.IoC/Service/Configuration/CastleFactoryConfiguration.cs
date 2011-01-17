@@ -29,7 +29,7 @@ namespace MySoft.IoC
         /// <returns></returns>
         public static CastleFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("shumi.framework/castleFactory");
+            object obj = ConfigurationManager.GetSection("serviceFramework/castleFactory");
 
             if (obj != null)
                 return (CastleFactoryConfiguration)obj;

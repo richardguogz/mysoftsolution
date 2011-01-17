@@ -13,7 +13,7 @@ namespace MySoft.IoC.Hosts.ServiceHost
         {
             CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
             CastleFactory.Create().OnLog += new LogEventHandler(Program_OnLog);
-            //CastleFactory.Create().OnError += new ErrorLogHandler(Program_OnError);
+            CastleFactory.Create().OnError += new ErrorLogEventHandler(Program_OnError);
 
             Console.WriteLine("Service host started...");
             Console.WriteLine("Logger Status: On");

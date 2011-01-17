@@ -175,7 +175,7 @@ namespace MySoft.IoC
             if (msg != null)
             {
                 AddResponseToQueue(msg.TransactionId, msg);
-                if (OnLog != null) OnLog(string.Format("AddResponseToQueue({0}:{1},{2}). -->(result success)", msg.TransactionId, msg.ServiceName, msg.SubServiceName));
+                if (OnLog != null) OnLog(string.Format("AddResponseToQueue({0}:{1},{2}). -->{3}", msg.TransactionId, msg.ServiceName, msg.SubServiceName, msg.Message));
             }
         }
 
@@ -207,7 +207,7 @@ namespace MySoft.IoC
 
             if (msg != null)
             {
-                if (OnLog != null) OnLog(string.Format("GetResponseFromQueue({0}:{1},{2}). -->(result success)", msg.TransactionId, msg.ServiceName, msg.SubServiceName));
+                if (OnLog != null) OnLog(string.Format("GetResponseFromQueue({0}:{1},{2}). -->{3}", msg.TransactionId, msg.ServiceName, msg.SubServiceName, msg.Message));
             }
 
             return msg;

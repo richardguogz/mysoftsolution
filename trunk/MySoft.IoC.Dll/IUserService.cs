@@ -6,7 +6,7 @@ using System.Data;
 
 namespace MySoft.IoC.Dll
 {
-    [ServiceContract(DataFormat.Xml)]
+    [ServiceContract]
     public interface IUserService
     {
         UserInfo GetUserInfo(string username);

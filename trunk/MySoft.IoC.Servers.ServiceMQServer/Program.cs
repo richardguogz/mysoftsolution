@@ -15,7 +15,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
             LogEventHandler logger = Console.WriteLine;
             MemoryServiceMQ mq = new MemoryServiceMQ();
             mq.OnLog += new LogEventHandler(mq_OnLog);
-            //mq.OnError += new ErrorLogHandler(mq_OnError);
+            mq.OnError += new ErrorLogEventHandler(mq_OnError);
 
             CastleServiceHelper cs = new CastleServiceHelper(config);
             cs.OnLog += logger;
