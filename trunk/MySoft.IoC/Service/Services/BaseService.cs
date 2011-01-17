@@ -81,7 +81,7 @@ namespace MySoft.IoC.Services
                 var ex = retMsg.Data as Exception;
 
                 long t2 = System.Environment.TickCount - t1;
-                log += "<==>Spent time: (" + t2.ToString() + ") ms.";
+                log += " Spent time: (" + t2.ToString() + ") ms.";
                 var exception = new IoCException(log, ex);
 
                 if (OnError != null) OnError(exception);
