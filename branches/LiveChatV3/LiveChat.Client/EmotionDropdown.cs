@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using CSharpWin;
-using MySoft.Core;
+using MySoft;
 using System.IO;
+using CSharpWin;
 
 namespace LiveChat.Client
 {

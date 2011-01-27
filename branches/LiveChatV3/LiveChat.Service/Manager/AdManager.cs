@@ -61,13 +61,13 @@ namespace LiveChat.Service.Manager
             lock (syncobj)
             {
                 string area = PHCZIP.Get(ip);
-                WhereClip where = WhereClip.Bracket(t_Ad._.CompanyID == companyID || t_Ad._.IsCommon == 1);
+                WhereClip where = t_Ad._.CompanyID == companyID || t_Ad._.IsCommon == 1;
                 IList<t_Ad> ads = dbSession.From<t_Ad>().Where(where && new Field("replace(AdArea,'|','')") == area)
                      .OrderBy(t_Ad._.IsCommon.Asc && t_Ad._.AddTime.Desc).ToList();
 
                 if (ads.Count == 0)
                 {
-                    where = WhereClip.Bracket(t_Ad._.CompanyID == companyID || t_Ad._.IsCommon == 1);
+                    where = t_Ad._.CompanyID == companyID || t_Ad._.IsCommon == 1;
                     where &= t_Ad._.IsDefault == true;
                     ads = dbSession.From<t_Ad>().Where(where).OrderBy(t_Ad._.IsCommon.Asc && t_Ad._.AddTime.Desc).ToList();
                 }

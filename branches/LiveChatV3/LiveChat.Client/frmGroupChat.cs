@@ -5,16 +5,16 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CSharpWin;
 using System.IO;
 using LiveChat.Entity;
 using LiveChat.Interface;
 using System.Text.RegularExpressions;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using MySoft.Core;
+using MySoft;
 using System.Drawing.Imaging;
 using LiveChat.Utils;
+using CSharpWin;
 
 namespace LiveChat.Client
 {

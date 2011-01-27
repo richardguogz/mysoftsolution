@@ -5,7 +5,7 @@ using MySoft.Web.UI;
 using LiveChat.Entity;
 using MySoft.Web;
 using LiveChat.Interface;
-using MySoft.Core;
+using MySoft;
 
 namespace LiveChat.Web
 {

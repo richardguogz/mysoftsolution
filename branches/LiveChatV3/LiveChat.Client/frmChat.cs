@@ -11,9 +11,9 @@ using LiveChat.Entity;
 using LiveChat.Interface;
 using LiveChat.Client;
 using System.Net.Sockets;
-using CSharpWin;
 using System.Text.RegularExpressions;
 using System.Drawing.Imaging;
+using CSharpWin;
 
 namespace LiveChat.Client
 {

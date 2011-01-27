@@ -9,7 +9,7 @@ using LiveChat.Interface;
 using LiveChat.Entity;
 using LiveChat.Utils;
 using LiveChat.Remoting;
-using MySoft.Core;
+using MySoft;
 using System.IO;
 using MySoft.Security;
 using System.Net.Sockets;

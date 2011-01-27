@@ -5,7 +5,7 @@ using LiveChat.Entity;
 using System.Timers;
 using MySoft.Data;
 using LiveChat.Utils;
-using MySoft.Core;
+using MySoft;
 
 namespace LiveChat.Service.Manager
 {
@@ -188,7 +188,7 @@ namespace LiveChat.Service.Manager
                                 batch.Save<t_User>(u);
                             }
 
-                            IList<MySoftException> exps;
+                            IList<DataException> exps;
                             batch.Execute(out exps);
 
                             if (exps.Count > 0)

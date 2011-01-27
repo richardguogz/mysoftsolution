@@ -9,10 +9,10 @@ using LiveChat.Interface;
 using System.Runtime.InteropServices;
 using LiveChat.Entity;
 using System.IO;
-using CSharpWin;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Drawing.Imaging;
+using CSharpWin;
 
 namespace LiveChat.Client
 {
@@ -31,6 +31,8 @@ namespace LiveChat.Client
         private Timer msgtimer;
         private int messageCount;
         private string memoName;
+        private IntPtr clientPtr = IntPtr.Zero;
+        private VideoChat chat;
 
         [DllImport("user32.dll")]
         public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
@@ -57,6 +59,8 @@ namespace LiveChat.Client
 
             if (currentFont != null) txtMessage.Font = currentFont;
             if (currentColor != null) txtMessage.ForeColor = currentColor;
+
+            this.chat = new VideoChat(fromSeat, toSeat, this.Handle, splitContainer2.Panel1.ClientRectangle);
 
             //获取点击的表情。
             emotionDropdown1.LoadImages(AppDomain.CurrentDomain.BaseDirectory);
@@ -525,6 +529,194 @@ namespace LiveChat.Client
         {
             panel4.Visible = false;
             panel2.Visible = false;
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            this.clientPtr = chat.CreateClient();
+            chat.LoginToServer();
+        }
+
+        /// 重写窗体的消息处理函数
+        protected override void DefWndProc(ref System.Windows.Forms.Message m)
+        {
+            if (m.Msg == 0x400 + 6668)//接收自定义消息
+            {
+                int a = (int)m.WParam;
+                switch (a)
+                {
+
+                    case 100:  //第二个按钮被按下
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 1; i < m_nVideo; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        if (m_bSend[i] == 0)
+                            //        {
+                            //            NNVOpenVideoTo(m_strName[i]);
+                            //            m_bSend[i] = 1;
+                            //        }
+                            //        else
+                            //        {
+                            //            NNVCloseVideoTo(m_strName[i]);
+                            //            m_bSend[i] = 0;
+                            //        }
+                            //    }
+                            //}
+                        }
+                        break;
+                    case 101: //第一个按钮
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 1; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        MessageBox.Show(m_strName[i]);
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+                    case 102: //视频窗口被隐藏.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        MessageBox.Show("用户关闭!此演示程序继续显示该窗口", m_strName[i]);
+                            //        ShowWindow(m_hVideoWnd[i], 5);
+
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+                    case 103: //视频退出.
+                        {
+                            chat.DestroyClient();
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    m_hVideoWnd[i] = IntPtr.Zero;
+                            //    m_nVideo = 0;
+                            //    button1.Enabled = true;
+                            //}
+                        }
+                        break;
+                    case 104:	//用户名或密码出错.
+                        {
+                            chat.DestroyClient();
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    m_hVideoWnd[i] = IntPtr.Zero;
+                            //    m_nVideo = 0;
+                            //    button1.Enabled = true;
+                            //}
+                            MessageBox.Show("登陆失败！帐号有误");
+                        }
+                        break;
+                    case 105:	//与服务器的连接掉线了。
+                        {
+                            //MessageBox.Show("msg:掉线了");
+                        }
+                        break;
+                    case 106:	//登陆服务器成功。
+                        {
+                            //MessageBox.Show("msg:上线了\n");
+                        }
+                        break;
+                    case 107:		//连接对方成功，第二个参数:窗口句柄.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        //...
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+                    case 108:	//断开与对方的连接。第二个参数:窗口句柄.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        //...
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+
+                    case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        MessageBox.Show("对方不在线，无法连接", m_strName[i]);
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+                    case 110:		//对方没有添加你为用户，无法连接。第二个参数:窗口句柄.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        MessageBox.Show("你没有被对方添加为用户,无法连接", m_strName[i]);
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+
+                    case 111:	//连接对方超时，连接失败。
+                        {
+                            //IntPtr hWnd = m.LParam;
+                            //for (int i = 0; i < 6; i++)
+                            //{
+                            //    if (m_hVideoWnd[i] == hWnd)
+                            //    {
+                            //        //...
+                            //        break;
+                            //    }
+                            //}
+                        }
+                        break;
+                    case 112:	//登陆服务器超时，登陆失败。
+                        {
+                            //MessageBox.Show ("msg:登陆服务器超时，登陆失败\n");
+                        }
+                        break;
+                    case 113:	//其他原因(如：版本过低或人数已满等)登陆失败。
+                        {
+                            //MessageBox.Show ("msg:其他原因登陆失败\n");
+                        }
+                        break;
+                    case 123: //是否子窗口还是弹出窗口
+                        {
+                            m.Result = (IntPtr)666;
+                        }
+                        break;
+                }
+
+            }
+            else
+            {
+                base.DefWndProc(ref m);
+            }
         }
     }
 }

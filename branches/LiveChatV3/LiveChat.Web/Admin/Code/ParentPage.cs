@@ -10,7 +10,7 @@ using System.Web.UI.WebControls.WebParts;
 using MySoft.Web.UI;
 using MySoft.Web;
 using LiveChat.Interface;
-using MySoft.Core;
+using MySoft;
 
 namespace LiveChat.Web.Admin
 {

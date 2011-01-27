@@ -13,7 +13,7 @@ using MySoft.Data;
 using MySoft.Web.UI;
 using LiveChat.Service;
 using MySoft.Web;
-using MySoft.Core;
+using MySoft;
 using LiveChat.Entity;
 
 namespace LiveChat.Web.Admin.UserControls

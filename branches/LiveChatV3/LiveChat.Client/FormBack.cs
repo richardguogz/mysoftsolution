@@ -17,7 +17,7 @@ using System.Drawing.Drawing2D;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
-using MySoft.Core;
+using MySoft;
 using System.IO;
 
 namespace LiveChat.Client

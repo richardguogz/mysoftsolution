@@ -142,6 +142,7 @@
     <Compile Include="classes\ClientInfo.cs" />
     <Compile Include="classes\ClientUtils.cs" />
     <Compile Include="classes\IniFiles.cs" />
+    <Compile Include="classes\VideoChat.cs" />
     <Compile Include="classes\Win32.cs" />
     <Compile Include="controls\dbImageBox.cs">
       <SubType>Component</SubType>
@@ -398,6 +399,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGroupChat.resx">
       <DependentUpon>frmGroupChat.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLeaveManager.resx">
       <DependentUpon>frmLeaveManager.cs</DependentUpon>

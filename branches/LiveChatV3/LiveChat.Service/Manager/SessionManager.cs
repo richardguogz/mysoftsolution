@@ -6,7 +6,7 @@ using MySoft.Data;
 using System.Timers;
 using System.Data.Common;
 using LiveChat.Utils;
-using MySoft.Core;
+using MySoft;
 
 namespace LiveChat.Service.Manager
 {

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using LiveChat.Entity;
 using LiveChat.Interface;
 using LiveChat.Utils;
-using MySoft.Core;
+using MySoft;
 using System.Text;
 using System.Text.RegularExpressions;
 

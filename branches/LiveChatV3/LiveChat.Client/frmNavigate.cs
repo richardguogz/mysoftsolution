@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using LiveChat.Interface;
 using LiveChat.Entity;
-using MySoft.Core;
+using MySoft;
 using System.Runtime.InteropServices;
 using System.IO;
 using MySoft.Data;
