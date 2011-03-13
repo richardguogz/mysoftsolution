@@ -108,7 +108,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(372, 368);
+            this.wbChatBox.Size = new System.Drawing.Size(372, 268);
             this.wbChatBox.TabIndex = 13;
             // 
             // plChat
@@ -464,10 +464,10 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             this.splitContainer1.Panel1.Controls.Add(this.panel4);
-            this.splitContainer1.Panel1.Controls.Add(this.plChat);
             this.splitContainer1.Panel1.Controls.Add(this.wbChatBox);
+            this.splitContainer1.Panel1.Controls.Add(this.panel2);
+            this.splitContainer1.Panel1.Controls.Add(this.plChat);
             this.splitContainer1.Panel1MinSize = 200;
             // 
             // splitContainer1.Panel2

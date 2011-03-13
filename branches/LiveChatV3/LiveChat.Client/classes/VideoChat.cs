@@ -17,7 +17,6 @@ namespace LiveChat.Client
 
         Int32 m_VideoCount = 2;
         IntPtr[] m_hVideoWnd = new IntPtr[2];	//6个视频窗口
-        Int32[] m_bSend = new Int32[2];
         Int32[] m_bOpen = new Int32[2];
         Int32[] m_bOnline = new Int32[2];
         String[] m_strName = new String[2];
@@ -131,26 +130,31 @@ namespace LiveChat.Client
         /// 打开视频会话
         /// </summary>
         /// <param name="hWnd"></param>
-        public void OperateVideo(IntPtr hWnd)
+        public void OpenVideo(IntPtr hWnd)
         {
             for (int i = 0; i < m_VideoCount; i++)
             {
                 if (m_hVideoWnd[i] == hWnd)
                 {
-                    if (m_bSend[i] == 0)
-                    {
-                        NNVOpenVideoTo(m_strName[i]);
-                        m_bSend[i] = 1;
-                    }
-                    else
-                    {
-                        NNVCloseVideoTo(m_strName[i]);
-                        m_bSend[i] = 0;
-                    }
-
-                    break;
+                    NNVOpenVideoTo(m_strName[i]);
                 }
             }
+        }
+
+        /// <summary>
+        /// 打开自己的视频
+        /// </summary>
+        public void OpenSelfVideo()
+        {
+            NNVOpenVideoTo(m_strName[0]);
+        }
+
+        /// <summary>
+        /// 关闭自己的视频
+        /// </summary>
+        public void CloseSelfVideo()
+        {
+            NNVCloseVideoTo(m_strName[0]);
         }
 
         #region 操作用户
@@ -158,27 +162,10 @@ namespace LiveChat.Client
         /// <summary>
         /// 打开视频会话
         /// </summary>
-        /// <param name="strUser"></param>
-        public void OperateVideo(string strUser)
+        /// <param name="hWnd"></param>
+        public void OpenVideo(string strUser)
         {
-            for (int i = 0; i < m_VideoCount; i++)
-            {
-                if (m_strName[i] == strUser)
-                {
-                    if (m_bSend[i] == 0)
-                    {
-                        NNVOpenVideoTo(m_strName[i]);
-                        m_bSend[i] = 1;
-                    }
-                    else
-                    {
-                        NNVCloseVideoTo(m_strName[i]);
-                        m_bSend[i] = 0;
-                    }
-
-                    break;
-                }
-            }
+            NNVOpenVideoTo(strUser);
         }
 
         /// <summary>

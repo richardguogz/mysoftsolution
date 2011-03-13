@@ -590,10 +590,9 @@ namespace LiveChat.Client
                 int a = (int)m.WParam;
                 switch (a)
                 {
-
                     case 100:  //第二个按钮被按下
                         {
-                            chat.OperateVideo(m.LParam);
+                            chat.OpenVideo(m.LParam);
                         }
                         break;
                     case 101: //第一个按钮
@@ -630,12 +629,13 @@ namespace LiveChat.Client
                         break;
                     case 107:		//连接对方成功，第二个参数:窗口句柄.
                         {
-
+                            //打开自己的视频
+                            chat.OpenSelfVideo();
                         }
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
-
+                            chat.CloseSelfVideo();
                         }
                         break;
 
@@ -739,7 +739,7 @@ namespace LiveChat.Client
 
             frmSeatChat_SizeChanged(null, null);
 
-            chat.OperateVideo(strUser);
+            chat.OpenVideo(strUser);
         }
 
         #endregion
