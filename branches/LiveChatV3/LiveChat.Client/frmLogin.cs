@@ -51,6 +51,7 @@ namespace LiveChat.Client
                 style = "office2007";
             }
 
+            this.skinEngine1.SkinDialogs = false;
             frmNav_Callback(style);
 
             //如果是自动登录
@@ -184,7 +185,12 @@ namespace LiveChat.Client
 
         void frmNav_Callback(object obj)
         {
-            if (obj == null) return;
+            if (obj == null)
+            {
+                this.skinEngine1.SkinFile = "";
+                this.skinEngine1.ApplyMainBuiltInSkin();
+                return;
+            }
 
             string style = obj.ToString();
 
@@ -340,6 +346,12 @@ namespace LiveChat.Client
         private void txtClientID_TextChanged(object sender, EventArgs e)
         {
             txtPassword.Text = string.Empty;
+        }
+
+        private void 取消皮肤ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.skinEngine1.SkinFile = "";
+            this.skinEngine1.ApplyMainBuiltInSkin();
         }
     }
 }

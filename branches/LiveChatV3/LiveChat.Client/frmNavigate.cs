@@ -85,11 +85,14 @@ namespace LiveChat.Client
                 #endregion
 
                 urlTimer = new Timer();
-                urlTimer.Interval = (int)TimeSpan.FromSeconds(10).TotalMilliseconds;
+                urlTimer.Interval = (int)TimeSpan.FromSeconds(60).TotalMilliseconds;
                 urlTimer.Tick += new EventHandler(urlTimer_Tick);
                 urlTimer.Start();
 
                 isRelogin = false;
+
+                //创建一个侦听
+                //VideoChat.CreateClientAndLogin(this.Handle, loginSeat);
             }
             catch (Exception ex)
             {
@@ -102,12 +105,12 @@ namespace LiveChat.Client
             Singleton.Show<frmMini>(() =>
             {
                 urlTimer.Stop();
-                string url = ConfigurationManager.AppSettings["DefaultPageUrl"];
+                string url = ClientConfig.DefaultPageUrl;
                 if (string.IsNullOrEmpty(url))
                 {
                     url = "http://www.globalfabric.com/mini.asp";
                 }
-                string xy = ConfigurationManager.AppSettings["DefaultPageSize"];
+                string xy = ClientConfig.DefaultPageSize;
                 Size size = new Size(560, 580);
                 if (!string.IsNullOrEmpty(xy))
                 {
@@ -1966,5 +1969,151 @@ namespace LiveChat.Client
             if (SizeChangedCallback != null)
                 SizeChangedCallback(this.Size);
         }
+
+        private void 取消皮肤ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Callback != null) Callback(null);
+        }
+
+        #region 消息管理
+
+        /// 重写窗体的消息处理函数
+        protected override void DefWndProc(ref System.Windows.Forms.Message m)
+        {
+            if (m.Msg == 0x400 + 6668)//接收自定义消息
+            {
+                int a = (int)m.WParam;
+                switch (a)
+                {
+
+                    case 100:  //第二个按钮被按下
+                        {
+                            //chat.OperateVideo(m.LParam);
+                        }
+                        break;
+                    case 101: //第一个按钮
+                        {
+                            //chat.OpenBigVideo(m.LParam);
+                        }
+                        break;
+                    case 102: //视频窗口被隐藏.
+                        {
+
+                        }
+                        break;
+                    case 103: //视频退出.
+                        {
+                            //chat.DestroyClient();
+                        }
+                        break;
+                    case 104:	//用户名或密码出错.
+                        {
+                            //chat.DestroyClient();
+                            //ClientUtils.ShowMessage("登陆失败，帐号有误！");
+                        }
+                        break;
+                    case 105:	//与服务器的连接掉线了。
+                        {
+                            //chat.SetOnline(m.LParam, false);
+                            //button5.Visible = true;
+                        }
+                        break;
+                    case 106:	//登陆服务器成功。
+                        {
+                            //chat.SetOnline(m.LParam, true);
+                        }
+                        break;
+                    case 107:		//连接对方成功，第二个参数:窗口句柄.
+                        {
+
+                        }
+                        break;
+                    case 108:	//断开与对方的连接。第二个参数:窗口句柄.
+                        {
+
+                        }
+                        break;
+
+                    case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
+                        {
+
+                        }
+                        break;
+                    case 110:		//对方没有添加你为用户，无法连接。第二个参数:窗口句柄.
+                        {
+
+                        }
+                        break;
+
+                    case 111:	//连接对方超时，连接失败。
+                        {
+
+                        }
+                        break;
+                    case 112:	//登陆服务器超时，登陆失败。
+                        {
+                            //MessageBox.Show ("msg:登陆服务器超时，登陆失败\n");
+                        }
+                        break;
+                    case 113:	//其他原因(如：版本过低或人数已满等)登陆失败。
+                        {
+                            //MessageBox.Show ("msg:其他原因登陆失败\n");
+                        }
+                        break;
+                    case 114: //收到用户请求,格式:用户名换行文字.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            StringBuilder text = new StringBuilder(1024);
+                            int i = VideoChat.GetWindowText(hWnd, text, 1000);
+                            if (i > 0)
+                            {
+                                String str = text.ToString();
+                                int pos = str.IndexOf('\n');
+                                if (pos > 0)
+                                {
+                                    String strUser = str.Substring(0, pos);
+                                    String strText = str.Substring(pos + 1);
+                                    String showUser = strUser;
+                                    if (strText == "_ReqV") //发送的请求
+                                    {
+                                        string seatID = strUser.Replace('+', '_');
+                                        Seat toSeat = service.GetSeat(seatID);
+                                        if (MessageBox.Show("用户【" + toSeat.SeatName + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                                        {
+                                            VideoChat.ExitClient();
+
+                                            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
+                                            SingletonMul.Show(key, () =>
+                                            {
+                                                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
+                                                frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                                frmSeatChat.OpenUser = strUser;
+                                                return frmSeatChat;
+                                            });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //MessageBox.Show(strText, strUser);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 123: //是否子窗口还是弹出窗口
+                        {
+                            m.Result = (IntPtr)666;
+                        }
+                        break;
+                }
+
+            }
+            else
+            {
+                base.DefWndProc(ref m);
+            }
+        }
+
+        #endregion
     }
 }

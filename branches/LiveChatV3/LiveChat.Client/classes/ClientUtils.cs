@@ -7,6 +7,7 @@ using System.Threading;
 using System.Runtime.Remoting;
 using System.Net.Sockets;
 using LiveChat.Entity;
+using System.Configuration;
 
 namespace LiveChat.Client
 {
@@ -58,6 +59,31 @@ namespace LiveChat.Client
         /// 目标
         /// </summary>
         public object Target { get; set; }
+    }
+
+    public static class ClientConfig
+    {
+        /// <summary>
+        /// 视频聊天URL
+        /// </summary>
+        public static readonly string VideoChatUrl;
+
+        /// <summary>
+        /// 默认窗口URL
+        /// </summary>
+        public static readonly string DefaultPageUrl;
+
+        /// <summary>
+        /// 默认窗口大小
+        /// </summary>
+        public static readonly string DefaultPageSize;
+
+        static ClientConfig()
+        {
+            DefaultPageUrl = ConfigurationManager.AppSettings["DefaultPageUrl"];
+            DefaultPageSize = ConfigurationManager.AppSettings["DefaultPageSize"];
+            VideoChatUrl = ConfigurationManager.AppSettings["VideoChatUrl"];
+        }
     }
 
     /// <summary>

@@ -31,8 +31,17 @@ namespace LiveChat.Client
         private Timer msgtimer;
         private int messageCount;
         private string memoName;
-        private IntPtr clientPtr = IntPtr.Zero;
         private VideoChat chat;
+
+        private string _OpenUser;
+        /// <summary>
+        /// 打开的用户
+        /// </summary>
+        public string OpenUser
+        {
+            get { return _OpenUser; }
+            set { _OpenUser = value; }
+        }
 
         [DllImport("user32.dll")]
         public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
@@ -60,13 +69,30 @@ namespace LiveChat.Client
             if (currentFont != null) txtMessage.Font = currentFont;
             if (currentColor != null) txtMessage.ForeColor = currentColor;
 
-            this.chat = new VideoChat(fromSeat, toSeat, this.Handle, splitContainer2.Panel1.ClientRectangle);
+            button5.Visible = false;
+
+            var rect = splitContainer2.Panel1.ClientRectangle;
+            rect.X = splitContainer1.Width - splitContainer2.Width;
+
+            splitContainer1.IsSplitterFixed = true;
+            splitContainer1.Panel2.Hide();
+            splitContainer1.SplitterDistance = splitContainer1.Width;
 
             //获取点击的表情。
             emotionDropdown1.LoadImages(AppDomain.CurrentDomain.BaseDirectory);
             emotionDropdown1.EmotionContainer.ItemClick += new EmotionItemMouseEventHandler(EmotionContainer_ItemClick);
 
             InitBrowser();
+
+            this.chat = new VideoChat(fromSeat, toSeat, this.Handle, rect);
+            this.chat.CreateClient();
+            this.chat.LoginToServer();
+
+            //打开视频
+            if (!string.IsNullOrEmpty(OpenUser))
+            {
+                OpenVideo(OpenUser);
+            }
         }
 
         /// <summary>
@@ -533,9 +559,28 @@ namespace LiveChat.Client
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            this.clientPtr = chat.CreateClient();
-            chat.LoginToServer();
+            if (service.GetSeat(toSeat.SeatID).State == OnlineState.Offline)
+            {
+                ClientUtils.ShowMessage(toSeat.SeatName + "不在线，不能进行视频会话！");
+                return;
+            }
+
+            if (splitContainer1.Panel2.Width < 50)
+            {
+                this.Width += 80;
+            }
+            splitContainer1.Panel2.Show();
+            splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+            toolStripButton3.Enabled = false;
+            button5.Visible = true;
+
+            chat.CreateClient();
+            chat.InitRequest(true);
+
+            frmSeatChat_SizeChanged(sender, e);
         }
+
+        #region 消息管理
 
         /// 重写窗体的消息处理函数
         protected override void DefWndProc(ref System.Windows.Forms.Message m)
@@ -548,151 +593,66 @@ namespace LiveChat.Client
 
                     case 100:  //第二个按钮被按下
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 1; i < m_nVideo; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        if (m_bSend[i] == 0)
-                            //        {
-                            //            NNVOpenVideoTo(m_strName[i]);
-                            //            m_bSend[i] = 1;
-                            //        }
-                            //        else
-                            //        {
-                            //            NNVCloseVideoTo(m_strName[i]);
-                            //            m_bSend[i] = 0;
-                            //        }
-                            //    }
-                            //}
+                            chat.OperateVideo(m.LParam);
                         }
                         break;
                     case 101: //第一个按钮
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 1; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        MessageBox.Show(m_strName[i]);
-                            //        break;
-                            //    }
-                            //}
+                            chat.OpenBigVideo(m.LParam);
                         }
                         break;
                     case 102: //视频窗口被隐藏.
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        MessageBox.Show("用户关闭!此演示程序继续显示该窗口", m_strName[i]);
-                            //        ShowWindow(m_hVideoWnd[i], 5);
 
-                            //        break;
-                            //    }
-                            //}
                         }
                         break;
                     case 103: //视频退出.
                         {
                             chat.DestroyClient();
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    m_hVideoWnd[i] = IntPtr.Zero;
-                            //    m_nVideo = 0;
-                            //    button1.Enabled = true;
-                            //}
                         }
                         break;
                     case 104:	//用户名或密码出错.
                         {
                             chat.DestroyClient();
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    m_hVideoWnd[i] = IntPtr.Zero;
-                            //    m_nVideo = 0;
-                            //    button1.Enabled = true;
-                            //}
-                            MessageBox.Show("登陆失败！帐号有误");
+                            ClientUtils.ShowMessage("登陆失败，帐号有误！");
                         }
                         break;
                     case 105:	//与服务器的连接掉线了。
                         {
-                            //MessageBox.Show("msg:掉线了");
+                            chat.SetOnline(m.LParam, false);
+                            button5.Visible = true;
                         }
                         break;
                     case 106:	//登陆服务器成功。
                         {
-                            //MessageBox.Show("msg:上线了\n");
+                            chat.SetOnline(m.LParam, true);
                         }
                         break;
                     case 107:		//连接对方成功，第二个参数:窗口句柄.
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        //...
-                            //        break;
-                            //    }
-                            //}
+
                         }
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        //...
-                            //        break;
-                            //    }
-                            //}
+
                         }
                         break;
 
                     case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        MessageBox.Show("对方不在线，无法连接", m_strName[i]);
-                            //        break;
-                            //    }
-                            //}
+
                         }
                         break;
                     case 110:		//对方没有添加你为用户，无法连接。第二个参数:窗口句柄.
                         {
-                            IntPtr hWnd = m.LParam;
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        MessageBox.Show("你没有被对方添加为用户,无法连接", m_strName[i]);
-                            //        break;
-                            //    }
-                            //}
+
                         }
                         break;
 
                     case 111:	//连接对方超时，连接失败。
                         {
-                            //IntPtr hWnd = m.LParam;
-                            //for (int i = 0; i < 6; i++)
-                            //{
-                            //    if (m_hVideoWnd[i] == hWnd)
-                            //    {
-                            //        //...
-                            //        break;
-                            //    }
-                            //}
+
                         }
                         break;
                     case 112:	//登陆服务器超时，登陆失败。
@@ -703,6 +663,48 @@ namespace LiveChat.Client
                     case 113:	//其他原因(如：版本过低或人数已满等)登陆失败。
                         {
                             //MessageBox.Show ("msg:其他原因登陆失败\n");
+                        }
+                        break;
+                    case 114: //收到用户请求,格式:用户名换行文字.
+                        {
+                            IntPtr hWnd = m.LParam;
+                            StringBuilder text = new StringBuilder(1024);
+                            int i = VideoChat.GetWindowText(hWnd, text, 1000);
+                            if (i > 0)
+                            {
+                                String str = text.ToString();
+                                int pos = str.IndexOf('\n');
+                                if (pos > 0)
+                                {
+                                    String strUser = str.Substring(0, pos);
+                                    String strText = str.Substring(pos + 1);
+                                    String showUser = strUser;
+                                    if (strText == "_ReqV") //发送的请求
+                                    {
+                                        if (fromSeat.SeatID == strUser.Replace('+', '_'))
+                                            showUser = fromSeat.SeatName;
+                                        else
+                                            showUser = toSeat.SeatName;
+
+                                        if (MessageBox.Show("用户【" + showUser + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                                        {
+                                            OpenVideo(strUser);
+                                        }
+                                        else
+                                        {
+                                            chat.SendText(strUser, "_CancelV");
+                                        }
+                                    }
+                                    else if (strText == "_CancelV")
+                                    {
+                                        ClientUtils.ShowMessage("对方取消了你的请求！");
+                                    }
+                                    else
+                                    {
+                                        //MessageBox.Show(strText, strUser);
+                                    }
+                                }
+                            }
                         }
                         break;
                     case 123: //是否子窗口还是弹出窗口
@@ -717,6 +719,67 @@ namespace LiveChat.Client
             {
                 base.DefWndProc(ref m);
             }
+        }
+
+        private void OpenVideo(String strUser)
+        {
+            if (splitContainer1.Panel2.Width < 50)
+            {
+                this.Width += 80;
+            }
+
+            splitContainer1.Panel2.Show();
+            splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+            toolStripButton3.Enabled = false;
+            button5.Visible = true;
+
+            //首先添加.
+            chat.CreateClient();
+            chat.InitRequest(false);
+
+            frmSeatChat_SizeChanged(null, null);
+
+            chat.OperateVideo(strUser);
+        }
+
+        #endregion
+
+        private void frmSeatChat_ResizeEnd(object sender, EventArgs e)
+        {
+            var rect = splitContainer2.Panel1.ClientRectangle;
+            rect.X = splitContainer1.Width - splitContainer2.Width;
+            chat.MoveTo(rect);
+        }
+
+        private void frmSeatChat_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            var rect = splitContainer2.Panel1.ClientRectangle;
+            rect.X = splitContainer1.Width - splitContainer2.Width;
+            chat.MoveTo(rect);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //取消视频
+            chat.ExitVideo();
+
+            if (splitContainer1.Panel2.Width > 50)
+            {
+                this.Width -= 80;
+            }
+
+            toolStripButton3.Enabled = true;
+            splitContainer1.Panel2.Hide();
+            splitContainer1.SplitterDistance = splitContainer1.Width;
+
+            //chat.DestroyClient();
+        }
+
+        private void frmSeatChat_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            chat.DestroyClient();
         }
     }
 }

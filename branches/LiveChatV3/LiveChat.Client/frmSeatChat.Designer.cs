@@ -76,7 +76,6 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             tsbExit = new System.Windows.Forms.ToolStripButton();
             this.plChat.SuspendLayout();
             this.tsChatTools.SuspendLayout();
@@ -109,7 +108,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(547, 366);
+            this.wbChatBox.Size = new System.Drawing.Size(372, 368);
             this.wbChatBox.TabIndex = 13;
             // 
             // plChat
@@ -120,16 +119,16 @@
             this.plChat.Controls.Add(this.tsChatTools);
             this.plChat.Controls.Add(this.panel7);
             this.plChat.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.plChat.Location = new System.Drawing.Point(0, 266);
+            this.plChat.Location = new System.Drawing.Point(0, 268);
             this.plChat.Name = "plChat";
-            this.plChat.Size = new System.Drawing.Size(547, 100);
+            this.plChat.Size = new System.Drawing.Size(372, 100);
             this.plChat.TabIndex = 12;
             // 
             // btnSend
             // 
-            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.Location = new System.Drawing.Point(459, 33);
+            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSend.Location = new System.Drawing.Point(284, 33);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(77, 59);
             this.btnSend.TabIndex = 1;
@@ -139,13 +138,13 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(445, 66);
+            this.txtMessage.Size = new System.Drawing.Size(270, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -167,7 +166,7 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(545, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(370, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
@@ -290,9 +289,9 @@
             // 
             // btnSendMessage
             // 
-            this.btnSendMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSendMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSendMessage.Enabled = false;
             this.btnSendMessage.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnSendMessage.Location = new System.Drawing.Point(5, 0);
@@ -307,7 +306,7 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.emotionDropdown1);
-            this.panel4.Location = new System.Drawing.Point(1, 8);
+            this.panel4.Location = new System.Drawing.Point(1, 10);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(396, 256);
             this.panel4.TabIndex = 15;
@@ -332,9 +331,9 @@
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(3, 194);
+            this.panel2.Location = new System.Drawing.Point(3, 196);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(500, 70);
+            this.panel2.Size = new System.Drawing.Size(422, 70);
             this.panel2.TabIndex = 16;
             this.panel2.Visible = false;
             // 
@@ -342,7 +341,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(321, 34);
+            this.button3.Location = new System.Drawing.Point(243, 34);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(59, 21);
             this.button3.TabIndex = 4;
@@ -352,21 +351,21 @@
             // 
             // txtFile
             // 
-            this.txtFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFile.BackColor = System.Drawing.Color.White;
             this.txtFile.Enabled = false;
             this.txtFile.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txtFile.Location = new System.Drawing.Point(22, 34);
             this.txtFile.Name = "txtFile";
             this.txtFile.ReadOnly = true;
-            this.txtFile.Size = new System.Drawing.Size(293, 21);
+            this.txtFile.Size = new System.Drawing.Size(215, 21);
             this.txtFile.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(386, 33);
+            this.button2.Location = new System.Drawing.Point(308, 33);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(46, 23);
             this.button2.TabIndex = 2;
@@ -377,7 +376,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(438, 33);
+            this.button1.Location = new System.Drawing.Point(360, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(46, 23);
             this.button1.TabIndex = 1;
@@ -409,7 +408,7 @@
             tsbExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(719, 56);
+            this.toolStrip1.Size = new System.Drawing.Size(544, 56);
             this.toolStrip1.TabIndex = 18;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -431,7 +430,7 @@
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.tool2;
+            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.tool6;
             this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
@@ -465,17 +464,19 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             this.splitContainer1.Panel1.Controls.Add(this.panel4);
             this.splitContainer1.Panel1.Controls.Add(this.plChat);
-            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             this.splitContainer1.Panel1.Controls.Add(this.wbChatBox);
+            this.splitContainer1.Panel1MinSize = 200;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
-            this.splitContainer1.Size = new System.Drawing.Size(719, 366);
-            this.splitContainer1.SplitterDistance = 547;
+            this.splitContainer1.Panel2MinSize = 0;
+            this.splitContainer1.Size = new System.Drawing.Size(544, 368);
+            this.splitContainer1.SplitterDistance = 372;
             this.splitContainer1.TabIndex = 19;
             // 
             // splitContainer2
@@ -485,50 +486,45 @@
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.splitContainer2.Size = new System.Drawing.Size(168, 325);
-            this.splitContainer2.SplitterDistance = 149;
+            this.splitContainer2.Size = new System.Drawing.Size(168, 333);
+            this.splitContainer2.SplitterDistance = 161;
             this.splitContainer2.TabIndex = 0;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.button5);
-            this.panel1.Controls.Add(this.button4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 325);
+            this.panel1.Location = new System.Drawing.Point(0, 333);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(168, 41);
+            this.panel1.Size = new System.Drawing.Size(168, 35);
             this.panel1.TabIndex = 1;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(88, 11);
+            this.button5.Location = new System.Drawing.Point(46, 6);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(65, 23);
+            this.button5.Size = new System.Drawing.Size(79, 23);
             this.button5.TabIndex = 0;
-            this.button5.Text = "关闭(&C)";
+            this.button5.Text = "取消(&C)";
             this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(15, 11);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(65, 23);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "接受(&A)";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // frmSeatChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(719, 422);
+            this.ClientSize = new System.Drawing.Size(544, 424);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(560, 462);
             this.Name = "frmSeatChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "客服与客服会话";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSeatChat_FormClosed);
             this.Load += new System.EventHandler(this.frmSeatChat_Load);
+            this.ResizeEnd += new System.EventHandler(this.frmSeatChat_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.frmSeatChat_SizeChanged);
             this.plChat.ResumeLayout(false);
             this.plChat.PerformLayout();
             this.tsChatTools.ResumeLayout(false);
@@ -592,6 +588,5 @@
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
     }
 }

@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUpdate", "AutoUpdate\Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpWin", "EmotionPanel\CSharpWin.csproj", "{C9BB207F-521A-4805-B308-1CD08C7BE3F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shumi.LiveChat.VideoChat", "Shumi.LiveChat.VideoChat\Shumi.LiveChat.VideoChat.csproj", "{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -149,8 +151,8 @@ Global
 		{9D9A965A-C213-4CBC-AE4E-0A9091DC52CD}.Release|x64.ActiveCfg = Release|Any CPU
 		{9D9A965A-C213-4CBC-AE4E-0A9091DC52CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{9D9A965A-C213-4CBC-AE4E-0A9091DC52CD}.Release|x86.Build.0 = Release|Any CPU
-		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|Any CPU.Build.0 = Debug|x86
 		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{88967C2C-D661-4D6D-BB6E-543FBADD310A}.Debug|x64.ActiveCfg = Debug|x64
@@ -245,6 +247,18 @@ Global
 		{C9BB207F-521A-4805-B308-1CD08C7BE3F6}.Release|x64.Build.0 = Release|x64
 		{C9BB207F-521A-4805-B308-1CD08C7BE3F6}.Release|x86.ActiveCfg = Release|x86
 		{C9BB207F-521A-4805-B308-1CD08C7BE3F6}.Release|x86.Build.0 = Release|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Debug|x64.ActiveCfg = Debug|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Debug|x86.ActiveCfg = Debug|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Debug|x86.Build.0 = Debug|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Release|Any CPU.ActiveCfg = Release|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Release|x64.ActiveCfg = Release|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Release|x86.ActiveCfg = Release|x86
+		{0B4DAEC9-9264-4685-AC2F-0E04F9FE6D0C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
