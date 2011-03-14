@@ -33,7 +33,7 @@ namespace MySoft
         public static bool IsStruct(Type type)
         {
             //当属性为结构时进行系列化
-            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive)
+            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && string.Compare(type.Namespace, "System", true) != 0)
             {
                 return true;
             }

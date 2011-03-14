@@ -22,6 +22,7 @@ namespace MySoft.IoC.HostService
         private String _ServiceName;
         private String _Description;
         private String _Command;
+        private String[] _DependedOn;
 
         private static Boolean _Initialized = false;
 
@@ -58,6 +59,11 @@ namespace MySoft.IoC.HostService
                             _Password = _Root.Attributes["Password"].Value;
                             _Description = _Root.Attributes["Description"].Value;
                             _Command = _Root.Attributes["Command"].Value;
+
+                            if (!string.IsNullOrEmpty(_Root.Attributes["DependedOn"].Value))
+                            {
+                                _DependedOn = _Root.Attributes["DependedOn"].Value.Split('|');
+                            }
                         }
                     }
                 }
@@ -80,6 +86,12 @@ namespace MySoft.IoC.HostService
                     _ServiceName = "MySoft.IoC.HostService";
                 }
 
+                //如果依赖关系为null，则使用默认名称
+                if (_DependedOn == null)
+                {
+                    _DependedOn = new string[] { "Shumi.MQService" };
+                }
+
                 _ProcessInstaller = new ServiceProcessInstaller();
                 _ServiceInstaller = new ServiceInstaller();
 
@@ -97,6 +109,7 @@ namespace MySoft.IoC.HostService
                 }
 
                 //服务启动类型
+                _ServiceInstaller.ServicesDependedOn = _DependedOn;
                 _ServiceInstaller.StartType = ServiceStartMode.Automatic;
                 _ServiceInstaller.ServiceName = _ServiceName;
                 _ServiceInstaller.DisplayName = _ServiceName.Replace('.', ' ') + " (Host服务中心)";

@@ -116,7 +116,9 @@ namespace MySoft.Remoting
         {
             if (serviceChannel == null)
             {
+                //远程抛出错误
                 RemotingConfiguration.CustomErrorsMode = CustomErrorsModes.Off;
+                RemotingConfiguration.CustomErrorsEnabled(false);
 
                 //使用二进制格式化
                 BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();

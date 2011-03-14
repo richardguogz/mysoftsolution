@@ -341,7 +341,7 @@ namespace MySoft.IoC
         /// <returns></returns>
         public IServiceInterfaceType GetService<IServiceInterfaceType>(string key)
         {
-            Exception ex = new ArgumentException("Generic parameter type - IServiceInterfaceType must be an interface implementing MySoft.IoC.IServiceInterface or marked with ServiceContractAttribute.");
+            Exception ex = new ArgumentException("Generic parameter type - IServiceInterfaceType must be an interface marked with ServiceContractAttribute.");
             if (!typeof(IServiceInterfaceType).IsInterface)
             {
                 throw ex;

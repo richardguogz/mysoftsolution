@@ -65,6 +65,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="job_install.bat" />
+    <None Include="job_restartService.bat" />
     <None Include="job_startService.bat" />
     <None Include="job_stopService.bat" />
     <None Include="job_uninstall.bat" />

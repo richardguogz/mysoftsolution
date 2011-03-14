@@ -33,7 +33,7 @@ namespace MySoft.IoC.MQService
             }
 
 
-            SimpleLog.Instance.WriteLog("正在启用消息队列服务......");
+            SimpleLog.Instance.WriteLog("正在启动消息队列服务......");
 
             SimpleLog.Instance.WriteLog("Service MQ Server started...");
             try
@@ -89,11 +89,6 @@ namespace MySoft.IoC.MQService
                 MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
             }
             catch { }
-        }
-
-        protected override void OnStop()
-        {
-            SimpleLog.Instance.WriteLog("正在停止消息队列服务......");
         }
     }
 }

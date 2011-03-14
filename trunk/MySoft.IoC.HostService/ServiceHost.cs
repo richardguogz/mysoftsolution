@@ -79,10 +79,5 @@ namespace MySoft.IoC.HostService
             }
             catch { }
         }
-
-        protected override void OnStop()
-        {
-            SimpleLog.Instance.WriteLog("正在停止宿主服务程序......");
-        }
     }
 }

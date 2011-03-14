@@ -11,8 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "测试项目", "测试项�
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1CFBD941-E013-48D1-9B3B-95170D3E418B}"
 	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-		MySoftSolutionV2.vsmdi = MySoftSolutionV2.vsmdi
+		MySoftSolutionV21.vsmdi = MySoftSolutionV21.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Web", "MySoft.Web\MySoft.Web.csproj", "{D2610145-763C-4C1E-8853-06ACA8FF4C3E}"
@@ -63,13 +65,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoCServices", "IoCServices"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.IoC.WinFormTest", "MySoft.IoC.WinFormTest\MySoft.IoC.WinFormTest.csproj", "{77D2BA2C-1273-4D33-842E-01C6B00B47E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySoft.Data.Test", "MySoft.Data.Test\MySoft.Data.Test.csproj", "{AD7CF872-65D8-46D6-B884-C1935979302E}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = MySoftSolutionV2.vsmdi
+		CategoryFile = MySoftSolutionV21.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -358,6 +362,18 @@ Global
 		{77D2BA2C-1273-4D33-842E-01C6B00B47E6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{77D2BA2C-1273-4D33-842E-01C6B00B47E6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{77D2BA2C-1273-4D33-842E-01C6B00B47E6}.Release|x86.ActiveCfg = Release|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Release|.NET.ActiveCfg = Release|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AD7CF872-65D8-46D6-B884-C1935979302E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -385,6 +401,7 @@ Global
 		{A377D541-E7BB-46F9-A453-3B68336DF1EA} = {307E8DC1-59D2-47F0-A9D1-4284F846976C}
 		{4955AB17-A062-4399-8795-3D40F6FDB869} = {307E8DC1-59D2-47F0-A9D1-4284F846976C}
 		{77D2BA2C-1273-4D33-842E-01C6B00B47E6} = {307E8DC1-59D2-47F0-A9D1-4284F846976C}
+		{AD7CF872-65D8-46D6-B884-C1935979302E} = {307E8DC1-59D2-47F0-A9D1-4284F846976C}
 		{27ACAE51-F141-4DAD-A89B-387F6E711CBF} = {1CFBD941-E013-48D1-9B3B-95170D3E418B}
 		{43548580-0792-411A-A9E8-BC95C58F8A22} = {DE276D8F-DD2F-45CA-A38E-0A3A356E5BB1}
 		{A68E2420-089A-49C3-A6AB-869731B2E23D} = {DE276D8F-DD2F-45CA-A38E-0A3A356E5BB1}
