@@ -521,7 +521,7 @@
             this.Name = "frmSeatChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "客服与客服会话";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSeatChat_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSeatChat_FormClosing);
             this.Load += new System.EventHandler(this.frmSeatChat_Load);
             this.ResizeEnd += new System.EventHandler(this.frmSeatChat_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.frmSeatChat_SizeChanged);

@@ -178,7 +178,7 @@ namespace LiveChat.Client
             {
                 IniFiles ini = new IniFiles(path);
                 string section = "userinfo";
-                ini.WriteString(section, "formsize", Encode(string.Format("{0}*{1}", size.Width, size.Height)));
+                ini.WriteString(section, "formsize", Encode(string.Format("{0}*{1}", size.Width, size.Height-16)));
             }
             catch { }
         }

@@ -24,9 +24,6 @@ namespace LiveChat.Client
 
         public event CallbackEventHandler Callback;
 
-        [DllImport("user32.dll")]
-        public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
-
         private ISeatService service;
         private Company company;
         private Seat seat;
@@ -300,7 +297,7 @@ namespace LiveChat.Client
                         if (isflash)
                         {
                             //闪屏处理
-                            FlashWindow(this.Handle, true);
+                            VideoChat.FlashWindow(this.Handle, true);
                         }
                     }
                 }

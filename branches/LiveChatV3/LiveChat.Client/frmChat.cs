@@ -35,9 +35,6 @@ namespace LiveChat.Client
         private Timer msgtimer;
         private int messageCount;
 
-        [DllImport("user32.dll")]
-        public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
-
         public frmChat(ISeatService service, P2SSession session, Company company, Seat seat, Font useFont, Color useColor)
         {
             this.service = service;
@@ -213,7 +210,7 @@ namespace LiveChat.Client
                         if (isflash)
                         {
                             //闪屏处理
-                            FlashWindow(this.Handle, true);
+                            VideoChat.FlashWindow(this.Handle, true);
                         }
                     }
                 }

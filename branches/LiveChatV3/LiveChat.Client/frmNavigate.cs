@@ -41,6 +41,7 @@ namespace LiveChat.Client
         private bool isMainShow = false;
         private IList<SeatFriend> myfriends;
         private Timer urlTimer;
+        private VideoChat chat;
 
         #endregion
 
@@ -91,8 +92,10 @@ namespace LiveChat.Client
 
                 isRelogin = false;
 
-                //创建一个侦听
-                //VideoChat.CreateClientAndLogin(this.Handle, loginSeat);
+                //视频化视频会话
+                chat = new VideoChat(loginSeat);
+                chat.CreateClient(this.Handle);
+                chat.LoginToServer();
             }
             catch (Exception ex)
             {
@@ -439,8 +442,9 @@ namespace LiveChat.Client
                             SeatFriend toSeat = tip.Target as SeatFriend;
                             SingletonMul.Show(tip.Key, () =>
                             {
-                                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
+                                frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
                                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                frmSeatChat.MainFormParent = this.Handle;
                                 return frmSeatChat;
                             });
                         }
@@ -980,6 +984,11 @@ namespace LiveChat.Client
             AppExit(e);
         }
 
+        private void frmNavigate_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            chat.DestroyClient();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Singleton.Show(() =>
@@ -1180,8 +1189,10 @@ namespace LiveChat.Client
             string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
             SingletonMul.Show(key, () =>
             {
-                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
+
+                frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, toSeat.MemoName, currentFont, currentColor);
                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                frmSeatChat.MainFormParent = this.Handle;
                 return frmSeatChat;
             });
         }
@@ -1567,8 +1578,9 @@ namespace LiveChat.Client
             string key = string.Format("CHAT_{0}_{1}", loginSeat.SeatID, friend.SeatID);
             SingletonMul.Show(key, () =>
             {
-                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, friend, friend.MemoName, currentFont, currentColor);
+                frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, friend, friend.MemoName, currentFont, currentColor);
                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                frmSeatChat.MainFormParent = this.Handle;
                 return frmSeatChat;
             });
         }
@@ -1982,18 +1994,19 @@ namespace LiveChat.Client
         {
             if (m.Msg == 0x400 + 6668)//接收自定义消息
             {
+                System.Threading.Thread.Sleep(1000);
+
                 int a = (int)m.WParam;
                 switch (a)
                 {
-
                     case 100:  //第二个按钮被按下
                         {
-                            //chat.OperateVideo(m.LParam);
+                            chat.OpenVideo(m.LParam);
                         }
                         break;
                     case 101: //第一个按钮
                         {
-                            //chat.OpenBigVideo(m.LParam);
+                            chat.OpenBigVideo(m.LParam);
                         }
                         break;
                     case 102: //视频窗口被隐藏.
@@ -2009,45 +2022,44 @@ namespace LiveChat.Client
                     case 104:	//用户名或密码出错.
                         {
                             //chat.DestroyClient();
-                            //ClientUtils.ShowMessage("登陆失败，帐号有误！");
+                            ClientUtils.ShowMessage("登陆失败，帐号有误！");
                         }
                         break;
                     case 105:	//与服务器的连接掉线了。
                         {
-                            //chat.SetOnline(m.LParam, false);
-                            //button5.Visible = true;
+                            chat.SetOnline(false);
                         }
                         break;
                     case 106:	//登陆服务器成功。
                         {
-                            //chat.SetOnline(m.LParam, true);
+                            chat.SetOnline(true);
                         }
                         break;
-                    case 107:		//连接对方成功，第二个参数:窗口句柄.
+                    case 107:	//连接对方成功，第二个参数:窗口句柄.
                         {
-
+                            //MessageBox.Show ("msg:连接对方成功，第二个参数:窗口句柄.\n");
                         }
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
-
+                            //MessageBox.Show ("msg:断开与对方的连接。第二个参数:窗口句柄.\n");
                         }
                         break;
 
                     case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
                         {
-
+                            //MessageBox.Show ("msg:对方不在线，无法连接。第二个参数:窗口句柄.\n");
                         }
                         break;
-                    case 110:		//对方没有添加你为用户，无法连接。第二个参数:窗口句柄.
+                    case 110:	//对方没有添加你为用户，无法连接。第二个参数:窗口句柄.
                         {
-
+                            //MessageBox.Show ("msg:对方没有添加你为用户，无法连接。第二个参数:窗口句柄.\n");
                         }
                         break;
 
                     case 111:	//连接对方超时，连接失败。
                         {
-
+                            //MessageBox.Show ("msg:连接对方超时，连接失败\n");
                         }
                         break;
                     case 112:	//登陆服务器超时，登陆失败。
@@ -2078,23 +2090,44 @@ namespace LiveChat.Client
                                     {
                                         string seatID = strUser.Replace('+', '_');
                                         Seat toSeat = service.GetSeat(seatID);
+
                                         if (MessageBox.Show("用户【" + toSeat.SeatName + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                                         {
-                                            VideoChat.ExitClient();
+                                            //对方接受
+                                            chat.SendText(strUser, "_ReqVOK");
 
                                             string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
                                             SingletonMul.Show(key, () =>
                                             {
-                                                frmSeatChat frmSeatChat = new frmSeatChat(service, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
+                                                frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
                                                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
-                                                frmSeatChat.OpenUser = strUser;
+                                                frmSeatChat.IsReceiveRequest = true;
+                                                frmSeatChat.MainFormParent = this.Handle;
                                                 return frmSeatChat;
                                             });
                                         }
+                                        else
+                                        {
+                                            //对方拒绝
+                                            chat.SendText(strUser, "_ReqVFail");
+                                        }
+                                    }
+                                    else if (strText == "_ReqVOK") //对方允许
+                                    {
+                                        chat.OpenVideo(strUser);
+                                        chat.SendText(strUser, "_ReqVOpen");
+                                    }
+                                    else if (strText == "_ReqVOpen") //对方打开视频,我也打开给对方
+                                    {
+                                        chat.OpenVideo(strUser);
+                                    }
+                                    else if (strText == "_ReqVFail") //对方拒绝
+                                    {
+                                        ClientUtils.ShowMessage("对方取消了你的请求！");
                                     }
                                     else
                                     {
-                                        //MessageBox.Show(strText, strUser);
+                                        MessageBox.Show(strText, strUser, MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
                                 }
                             }

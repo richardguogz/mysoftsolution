@@ -32,23 +32,34 @@ namespace LiveChat.Client
         private int messageCount;
         private string memoName;
         private VideoChat chat;
+        private bool isClosing;
 
-        private string _OpenUser;
+        private bool _IsReceiveRequest;
+        private IntPtr _MainFormParent;
+
         /// <summary>
-        /// 打开的用户
+        /// 是否启动就接受请求
         /// </summary>
-        public string OpenUser
+        public bool IsReceiveRequest
         {
-            get { return _OpenUser; }
-            set { _OpenUser = value; }
+            get { return _IsReceiveRequest; }
+            set { _IsReceiveRequest = value; }
         }
 
-        [DllImport("user32.dll")]
-        public static extern bool FlashWindow(IntPtr hWnd, bool bInvert);
+        /// <summary>
+        /// 主窗口句柄
+        /// </summary>
+        public IntPtr MainFormParent
+        {
+            get { return _MainFormParent; }
+            set { _MainFormParent = value; }
+        }
 
-        public frmSeatChat(ISeatService service, Company company, Seat fromSeat, Seat toSeat, string memoName, Font useFont, Color useColor)
+        public frmSeatChat(ISeatService service, VideoChat chat, Company company, Seat fromSeat, Seat toSeat, string memoName, Font useFont, Color useColor)
         {
             this.service = service;
+            this.chat = chat;
+
             this.company = company;
             this.fromSeat = fromSeat;
             this.toSeat = toSeat;
@@ -69,8 +80,6 @@ namespace LiveChat.Client
             if (currentFont != null) txtMessage.Font = currentFont;
             if (currentColor != null) txtMessage.ForeColor = currentColor;
 
-            button5.Visible = false;
-
             var rect = splitContainer2.Panel1.ClientRectangle;
             rect.X = splitContainer1.Width - splitContainer2.Width;
 
@@ -84,14 +93,21 @@ namespace LiveChat.Client
 
             InitBrowser();
 
-            this.chat = new VideoChat(fromSeat, toSeat, this.Handle, rect);
-            this.chat.CreateClient();
-            this.chat.LoginToServer();
-
-            //打开视频
-            if (!string.IsNullOrEmpty(OpenUser))
+            //启动打开视频
+            if (_IsReceiveRequest)
             {
-                OpenVideo(OpenUser);
+                if (splitContainer1.Panel2.Width < 50)
+                {
+                    this.Width += 80;
+                }
+                splitContainer1.Panel2.Show();
+                splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+                toolStripButton3.Enabled = false;
+
+                //接收并打开视频
+                chat.ReceiveRequest(this.Handle, toSeat);
+
+                frmSeatChat_SizeChanged(sender, e);
             }
         }
 
@@ -195,7 +211,7 @@ namespace LiveChat.Client
                         if (isflash)
                         {
                             //闪屏处理
-                            FlashWindow(this.Handle, true);
+                            VideoChat.FlashWindow(this.Handle, true);
                         }
                     }
                 }
@@ -539,6 +555,7 @@ namespace LiveChat.Client
 
         private void tsbExit_Click(object sender, EventArgs e)
         {
+            chat.ExitVideo(_MainFormParent);
             this.Close();
         }
 
@@ -572,198 +589,36 @@ namespace LiveChat.Client
             splitContainer1.Panel2.Show();
             splitContainer1.SplitterDistance = splitContainer1.Width - 160;
             toolStripButton3.Enabled = false;
-            button5.Visible = true;
 
-            chat.CreateClient();
-            chat.InitRequest(true);
+            //发送请求
+            chat.SendRequest(this.Handle, toSeat);
 
             frmSeatChat_SizeChanged(sender, e);
         }
 
-        #region 消息管理
-
-        /// 重写窗体的消息处理函数
-        protected override void DefWndProc(ref System.Windows.Forms.Message m)
-        {
-            if (m.Msg == 0x400 + 6668)//接收自定义消息
-            {
-                int a = (int)m.WParam;
-                switch (a)
-                {
-                    case 100:  //第二个按钮被按下
-                        {
-                            chat.OpenVideo(m.LParam);
-                        }
-                        break;
-                    case 101: //第一个按钮
-                        {
-                            chat.OpenBigVideo(m.LParam);
-                        }
-                        break;
-                    case 102: //视频窗口被隐藏.
-                        {
-
-                        }
-                        break;
-                    case 103: //视频退出.
-                        {
-                            chat.DestroyClient();
-                        }
-                        break;
-                    case 104:	//用户名或密码出错.
-                        {
-                            chat.DestroyClient();
-                            ClientUtils.ShowMessage("登陆失败，帐号有误！");
-                        }
-                        break;
-                    case 105:	//与服务器的连接掉线了。
-                        {
-                            chat.SetOnline(m.LParam, false);
-                            button5.Visible = true;
-                        }
-                        break;
-                    case 106:	//登陆服务器成功。
-                        {
-                            chat.SetOnline(m.LParam, true);
-                        }
-                        break;
-                    case 107:		//连接对方成功，第二个参数:窗口句柄.
-                        {
-                            //打开自己的视频
-                            chat.OpenSelfVideo();
-                        }
-                        break;
-                    case 108:	//断开与对方的连接。第二个参数:窗口句柄.
-                        {
-                            chat.CloseSelfVideo();
-                        }
-                        break;
-
-                    case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
-                        {
-
-                        }
-                        break;
-                    case 110:		//对方没有添加你为用户，无法连接。第二个参数:窗口句柄.
-                        {
-
-                        }
-                        break;
-
-                    case 111:	//连接对方超时，连接失败。
-                        {
-
-                        }
-                        break;
-                    case 112:	//登陆服务器超时，登陆失败。
-                        {
-                            //MessageBox.Show ("msg:登陆服务器超时，登陆失败\n");
-                        }
-                        break;
-                    case 113:	//其他原因(如：版本过低或人数已满等)登陆失败。
-                        {
-                            //MessageBox.Show ("msg:其他原因登陆失败\n");
-                        }
-                        break;
-                    case 114: //收到用户请求,格式:用户名换行文字.
-                        {
-                            IntPtr hWnd = m.LParam;
-                            StringBuilder text = new StringBuilder(1024);
-                            int i = VideoChat.GetWindowText(hWnd, text, 1000);
-                            if (i > 0)
-                            {
-                                String str = text.ToString();
-                                int pos = str.IndexOf('\n');
-                                if (pos > 0)
-                                {
-                                    String strUser = str.Substring(0, pos);
-                                    String strText = str.Substring(pos + 1);
-                                    String showUser = strUser;
-                                    if (strText == "_ReqV") //发送的请求
-                                    {
-                                        if (fromSeat.SeatID == strUser.Replace('+', '_'))
-                                            showUser = fromSeat.SeatName;
-                                        else
-                                            showUser = toSeat.SeatName;
-
-                                        if (MessageBox.Show("用户【" + showUser + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
-                                        {
-                                            OpenVideo(strUser);
-                                        }
-                                        else
-                                        {
-                                            chat.SendText(strUser, "_CancelV");
-                                        }
-                                    }
-                                    else if (strText == "_CancelV")
-                                    {
-                                        ClientUtils.ShowMessage("对方取消了你的请求！");
-                                    }
-                                    else
-                                    {
-                                        //MessageBox.Show(strText, strUser);
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case 123: //是否子窗口还是弹出窗口
-                        {
-                            m.Result = (IntPtr)666;
-                        }
-                        break;
-                }
-
-            }
-            else
-            {
-                base.DefWndProc(ref m);
-            }
-        }
-
-        private void OpenVideo(String strUser)
-        {
-            if (splitContainer1.Panel2.Width < 50)
-            {
-                this.Width += 80;
-            }
-
-            splitContainer1.Panel2.Show();
-            splitContainer1.SplitterDistance = splitContainer1.Width - 160;
-            toolStripButton3.Enabled = false;
-            button5.Visible = true;
-
-            //首先添加.
-            chat.CreateClient();
-            chat.InitRequest(false);
-
-            frmSeatChat_SizeChanged(null, null);
-
-            chat.OpenVideo(strUser);
-        }
-
-        #endregion
-
         private void frmSeatChat_ResizeEnd(object sender, EventArgs e)
         {
+            if (isClosing) return;
+
             var rect = splitContainer2.Panel1.ClientRectangle;
             rect.X = splitContainer1.Width - splitContainer2.Width;
-            chat.MoveTo(rect);
+            chat.MoveVideoTo(rect);
         }
 
         private void frmSeatChat_SizeChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized) return;
+            if (isClosing) return;
 
             var rect = splitContainer2.Panel1.ClientRectangle;
             rect.X = splitContainer1.Width - splitContainer2.Width;
-            chat.MoveTo(rect);
+            chat.MoveVideoTo(rect);
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             //取消视频
-            chat.ExitVideo();
+            chat.ExitVideo(_MainFormParent);
 
             if (splitContainer1.Panel2.Width > 50)
             {
@@ -777,9 +632,9 @@ namespace LiveChat.Client
             //chat.DestroyClient();
         }
 
-        private void frmSeatChat_FormClosed(object sender, FormClosedEventArgs e)
+        private void frmSeatChat_FormClosing(object sender, FormClosingEventArgs e)
         {
-            chat.DestroyClient();
+            this.isClosing = true;
         }
     }
 }
