@@ -2042,11 +2042,6 @@ namespace LiveChat.Client
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
                             //MessageBox.Show("msg:断开与对方的连接。第二个参数:窗口句柄.\n");
-
-                            //对方退出，将视频关掉
-                            Seat toSeat = chat.GetToUser();
-                            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
-                            SingletonMul.Run<frmSeatChat>(key, false);
                         }
                         break;
 
@@ -2136,6 +2131,16 @@ namespace LiveChat.Client
                                     else if (strText == "_ReqVFail") //对方拒绝
                                     {
                                         ClientUtils.ShowMessage("对方取消了你的请求！");
+                                    }
+                                    else if (strText == "_CloseVideo")
+                                    {
+                                        //对方退出，将视频关掉
+                                        Seat toSeat = chat.GetToUser();
+                                        string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
+                                        SingletonMul.Run<frmSeatChat>(key, false);
+
+                                        //提示断开
+                                        ClientUtils.ShowMessage("对方中断了与您的语音聊天！");
                                     }
                                     else
                                     {

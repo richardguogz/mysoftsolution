@@ -57,14 +57,14 @@
             this.btnSendMessage = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.txtFile = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
@@ -73,9 +73,10 @@
             this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             tsbExit = new System.Windows.Forms.ToolStripButton();
             this.plChat.SuspendLayout();
             this.tsChatTools.SuspendLayout();
@@ -86,7 +87,6 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -331,7 +331,7 @@
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(3, 196);
+            this.panel2.Location = new System.Drawing.Point(1, 252);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(422, 70);
             this.panel2.TabIndex = 16;
@@ -430,13 +430,14 @@
             // 
             // toolStripButton3
             // 
-            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.tool6;
+            this.toolStripButton3.Image = global::LiveChat.Client.Properties.Resources.Voice_20chat111;
             this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(60, 53);
-            this.toolStripButton3.Text = "语音会话";
+            this.toolStripButton3.Text = "语音聊天";
             this.toolStripButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButton3.ToolTipText = "语音聊天";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // tsbChatMessage
@@ -466,42 +467,31 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.panel4);
             this.splitContainer1.Panel1.Controls.Add(this.wbChatBox);
-            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             this.splitContainer1.Panel1.Controls.Add(this.plChat);
             this.splitContainer1.Panel1MinSize = 200;
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
+            this.splitContainer1.Panel2.Controls.Add(this.panel5);
+            this.splitContainer1.Panel2.Controls.Add(this.panel3);
             this.splitContainer1.Panel2MinSize = 0;
             this.splitContainer1.Size = new System.Drawing.Size(544, 368);
             this.splitContainer1.SplitterDistance = 372;
             this.splitContainer1.TabIndex = 19;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.splitContainer2.Size = new System.Drawing.Size(168, 333);
-            this.splitContainer2.SplitterDistance = 161;
-            this.splitContainer2.TabIndex = 0;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.button5);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 333);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 168);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(168, 35);
+            this.panel1.Size = new System.Drawing.Size(168, 32);
             this.panel1.TabIndex = 1;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(46, 6);
+            this.button5.Location = new System.Drawing.Point(46, 4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(79, 23);
             this.button5.TabIndex = 0;
@@ -509,11 +499,28 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // panel5
+            // 
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel5.Location = new System.Drawing.Point(0, 200);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(168, 168);
+            this.panel5.TabIndex = 3;
+            // 
+            // panel3
+            // 
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(168, 168);
+            this.panel3.TabIndex = 2;
+            // 
             // frmSeatChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(544, 424);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -523,7 +530,6 @@
             this.Text = "客服与客服会话";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSeatChat_FormClosing);
             this.Load += new System.EventHandler(this.frmSeatChat_Load);
-            this.ResizeEnd += new System.EventHandler(this.frmSeatChat_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.frmSeatChat_SizeChanged);
             this.plChat.ResumeLayout(false);
             this.plChat.PerformLayout();
@@ -538,7 +544,6 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -583,10 +588,11 @@
         private System.Windows.Forms.ToolStripButton tsbAcceptTalk;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
         private EmotionDropdown emotionDropdown1;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel3;
     }
 }

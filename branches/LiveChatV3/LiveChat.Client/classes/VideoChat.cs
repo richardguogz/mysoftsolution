@@ -91,6 +91,14 @@ namespace LiveChat.Client
         }
 
         /// <summary>
+        /// 关闭视频
+        /// </summary>
+        public void CloseVideo()
+        {
+            SendText(GetUserName(m_VideoUser[1]), "_CloseVideo");
+        }
+
+        /// <summary>
         /// 销毁客户端
         /// </summary>
         public void DestroyClient()
@@ -256,18 +264,18 @@ namespace LiveChat.Client
         /// 移动视频窗口
         /// </summary>
         /// <param name="rect"></param>
-        public void MoveVideoTo(Rectangle rect)
+        public void MoveVideoTo(Rectangle rect1, Rectangle rect2)
         {
             if (!isCreateForm) return;
 
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
-                MoveWindow(m_hVideoWnd[0], rect.X, rect.Y + 60, rect.Width, rect.Height, 1);
+                MoveWindow(m_hVideoWnd[0], rect1.X, rect1.Y, rect1.Width, rect1.Height, 1);
             }
 
             if (m_hVideoWnd[1] != IntPtr.Zero)
             {
-                MoveWindow(m_hVideoWnd[1], rect.X, rect.Y + 65 + rect.Height, rect.Width, rect.Height, 1);
+                MoveWindow(m_hVideoWnd[1], rect2.X, rect2.Y, rect2.Width, rect2.Height, 1);
             }
         }
 

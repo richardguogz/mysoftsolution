@@ -654,6 +654,7 @@
     <None Include="Resources\树打开.png" />
     <None Include="Resources\树第一级.png" />
     <None Include="Resources\人_灰色.png" />
+    <None Include="Resources\Voice%2520chat111.png" />
     <Content Include="template\chat.htm" />
     <Content Include="UpdateList.xml" />
   </ItemGroup>

@@ -32,6 +32,7 @@ namespace LiveChat.Client
         private int messageCount;
         private string memoName;
         private VideoChat chat;
+        private bool isChating;
         private bool isClosing;
 
         private bool _IsReceiveRequest;
@@ -80,9 +81,6 @@ namespace LiveChat.Client
             if (currentFont != null) txtMessage.Font = currentFont;
             if (currentColor != null) txtMessage.ForeColor = currentColor;
 
-            var rect = splitContainer2.Panel1.ClientRectangle;
-            rect.X = splitContainer1.Width - splitContainer2.Width;
-
             splitContainer1.IsSplitterFixed = true;
             splitContainer1.Panel2.Hide();
             splitContainer1.SplitterDistance = splitContainer1.Width;
@@ -99,6 +97,8 @@ namespace LiveChat.Client
             //启动打开视频
             if (_IsReceiveRequest)
             {
+                isChating = true;
+
                 if (splitContainer1.Panel2.Width < 50)
                 {
                     this.Width += 80;
@@ -595,35 +595,39 @@ namespace LiveChat.Client
             splitContainer1.SplitterDistance = splitContainer1.Width - 160;
             toolStripButton3.Enabled = false;
 
+            isChating = true;
+
             //发送请求
             chat.SendRequest(_MainFormParent, this.Handle, toSeat);
 
             frmSeatChat_SizeChanged(sender, e);
         }
 
-        private void frmSeatChat_ResizeEnd(object sender, EventArgs e)
-        {
-            if (isClosing) return;
-
-            var rect = splitContainer2.Panel1.ClientRectangle;
-            rect.X = splitContainer1.Width - splitContainer2.Width;
-            chat.MoveVideoTo(rect);
-        }
-
         private void frmSeatChat_SizeChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized) return;
             if (isClosing) return;
+            if (!isChating) return;
 
-            var rect = splitContainer2.Panel1.ClientRectangle;
-            rect.X = splitContainer1.Width - splitContainer2.Width;
-            chat.MoveVideoTo(rect);
+            var rect1 = panel3.ClientRectangle;
+            rect1.X = splitContainer1.Width - rect1.Width;
+            rect1.Y = 60;
+
+            var rect2 = panel5.ClientRectangle;
+            rect2.X = splitContainer1.Width - rect2.Width;
+            rect2.Y = splitContainer1.Height - panel5.Height + 60;
+
+            chat.MoveVideoTo(rect1, rect2);
+            button5.Top = (panel1.Height - button5.Height) / 2 + 5;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             //取消视频
             chat.ExitVideo(_MainFormParent);
+
+            //关闭视频
+            chat.CloseVideo();
 
             if (splitContainer1.Panel2.Width > 50)
             {
@@ -634,6 +638,7 @@ namespace LiveChat.Client
             splitContainer1.Panel2.Hide();
             splitContainer1.SplitterDistance = splitContainer1.Width;
 
+            isChating = false;
             //chat.DestroyClient();
         }
 
@@ -659,7 +664,19 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    button5_Click(null, null);
+                    //取消视频
+                    chat.ExitVideo(_MainFormParent);
+
+                    if (splitContainer1.Panel2.Width > 50)
+                    {
+                        this.Width -= 80;
+                    }
+
+                    toolStripButton3.Enabled = true;
+                    splitContainer1.Panel2.Hide();
+                    splitContainer1.SplitterDistance = splitContainer1.Width;
+
+                    isChating = false;
                 }
             }
         }
