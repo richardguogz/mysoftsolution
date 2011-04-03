@@ -630,7 +630,7 @@ namespace LiveChat.Client
         private void button5_Click(object sender, EventArgs e)
         {
             //关闭视频
-            chat.CloseVideo();
+            chat.CloseVideo(this.Handle);
 
             //取消视频
             chat.ExitVideo(_MainFormParent, this.Handle);
@@ -693,6 +693,8 @@ namespace LiveChat.Client
 
         private void frmSeatChat_FormClosed(object sender, FormClosedEventArgs e)
         {
+            chat.CloseVideo(this.Handle);
+
             chat.ExitVideo(_MainFormParent, this.Handle);
         }
     }

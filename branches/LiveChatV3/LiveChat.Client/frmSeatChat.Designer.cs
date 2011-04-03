@@ -56,6 +56,7 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnSendMessage = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.txtFile = new System.Windows.Forms.TextBox();
@@ -76,7 +77,6 @@
             this.button5 = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.emotionDropdown1 = new LiveChat.Client.EmotionDropdown();
             tsbExit = new System.Windows.Forms.ToolStripButton();
             this.plChat.SuspendLayout();
             this.tsChatTools.SuspendLayout();
@@ -312,6 +312,16 @@
             this.panel4.TabIndex = 15;
             this.panel4.Visible = false;
             // 
+            // emotionDropdown1
+            // 
+            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
+            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.Name = "emotionDropdown1";
+            this.emotionDropdown1.Size = new System.Drawing.Size(531, 350);
+            this.emotionDropdown1.TabIndex = 1;
+            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -504,16 +514,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(168, 168);
             this.panel3.TabIndex = 2;
-            // 
-            // emotionDropdown1
-            // 
-            this.emotionDropdown1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.emotionDropdown1.Location = new System.Drawing.Point(0, 0);
-            this.emotionDropdown1.MaximumSize = new System.Drawing.Size(531, 350);
-            this.emotionDropdown1.MinimumSize = new System.Drawing.Size(531, 350);
-            this.emotionDropdown1.Name = "emotionDropdown1";
-            this.emotionDropdown1.Size = new System.Drawing.Size(531, 350);
-            this.emotionDropdown1.TabIndex = 1;
             // 
             // frmSeatChat
             // 

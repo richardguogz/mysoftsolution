@@ -93,11 +93,14 @@ namespace LiveChat.Client
         /// <summary>
         /// 关闭视频
         /// </summary>
-        public void CloseVideo()
+        public void CloseVideo(IntPtr hWnd)
         {
-            SetConnected(false);
+            if (m_hParentWnd == hWnd)
+            {
+                SetConnected(false);
 
-            SendText(GetUserName(m_VideoUser[1]), "_CloseVideo");
+                SendText(GetUserName(m_VideoUser[1]), "_CloseVideo");
+            }
         }
 
         /// <summary>
@@ -127,13 +130,13 @@ namespace LiveChat.Client
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
                 SetParent(m_hVideoWnd[0], hParent);
-                ShowWindow(m_hVideoWnd[0], 5);
+                //ShowWindow(m_hVideoWnd[0], 5);
             }
 
             if (m_VideoUser[1] != null && m_hVideoWnd[1] != IntPtr.Zero)
             {
                 SetParent(m_hVideoWnd[1], hParent);
-                ShowWindow(m_hVideoWnd[1], 5);
+                //ShowWindow(m_hVideoWnd[1], 5);
             }
             else
             {
@@ -143,7 +146,7 @@ namespace LiveChat.Client
                 SetWindowText(m_hVideoWnd[1], m_VideoUser[1].SeatName);
 
                 SetParent(m_hVideoWnd[1], hParent);
-                ShowWindow(m_hVideoWnd[1], 5);
+                //ShowWindow(m_hVideoWnd[1], 5);
             }
 
             //发送_ReqV表示请求
@@ -167,13 +170,13 @@ namespace LiveChat.Client
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
                 SetParent(m_hVideoWnd[0], hParent);
-                ShowWindow(m_hVideoWnd[0], 5);
+                //ShowWindow(m_hVideoWnd[0], 5);
             }
 
             if (m_VideoUser[1] != null && m_hVideoWnd[1] != IntPtr.Zero)
             {
                 SetParent(m_hVideoWnd[1], hParent);
-                ShowWindow(m_hVideoWnd[1], 5);
+                //ShowWindow(m_hVideoWnd[1], 5);
             }
             else
             {
@@ -183,10 +186,10 @@ namespace LiveChat.Client
                 SetWindowText(m_hVideoWnd[1], m_VideoUser[1].SeatName);
 
                 SetParent(m_hVideoWnd[1], hParent);
-                ShowWindow(m_hVideoWnd[1], 5);
+                //ShowWindow(m_hVideoWnd[1], 5);
             }
 
-            System.Threading.Thread.Sleep(1500);
+            //System.Threading.Thread.Sleep(1500);
 
             //打开视频给对方看
             NNVOpenVideoTo(GetUserName(m_VideoUser[1]));
@@ -304,11 +307,13 @@ namespace LiveChat.Client
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
                 MoveWindow(m_hVideoWnd[0], rect1.X, rect1.Y, rect1.Width, rect1.Height, 1);
+                ShowWindow(m_hVideoWnd[0], 5);
             }
 
             if (m_hVideoWnd[1] != IntPtr.Zero)
             {
                 MoveWindow(m_hVideoWnd[1], rect2.X, rect2.Y, rect2.Width, rect2.Height, 1);
+                ShowWindow(m_hVideoWnd[1], 5);
             }
         }
 
