@@ -16,7 +16,7 @@ using CSharpWin;
 
 namespace LiveChat.Client
 {
-    public partial class frmSeatChat : Form
+    public partial class frmSeatChat : Form, ICallbackForm
     {
         public event CallbackFontColorEventHandler CallbackFontColor;
 
@@ -92,7 +92,10 @@ namespace LiveChat.Client
             emotionDropdown1.EmotionContainer.ItemClick += new EmotionItemMouseEventHandler(EmotionContainer_ItemClick);
 
             InitBrowser();
+        }
 
+        protected override void OnShown(EventArgs e)
+        {
             //启动打开视频
             if (_IsReceiveRequest)
             {
@@ -105,10 +108,12 @@ namespace LiveChat.Client
                 toolStripButton3.Enabled = false;
 
                 //接收并打开视频
-                chat.ReceiveRequest(this.Handle, toSeat);
+                chat.ReceiveRequest(_MainFormParent, this.Handle, toSeat);
 
-                frmSeatChat_SizeChanged(sender, e);
+                frmSeatChat_SizeChanged(null, e);
             }
+
+            base.OnShown(e);
         }
 
         /// <summary>
@@ -591,7 +596,7 @@ namespace LiveChat.Client
             toolStripButton3.Enabled = false;
 
             //发送请求
-            chat.SendRequest(this.Handle, toSeat);
+            chat.SendRequest(_MainFormParent, this.Handle, toSeat);
 
             frmSeatChat_SizeChanged(sender, e);
         }
@@ -636,5 +641,29 @@ namespace LiveChat.Client
         {
             this.isClosing = true;
         }
+
+        #region ICallbackForm 成员
+
+        /// <summary>
+        /// 实现回调的方法
+        /// </summary>
+        /// <param name="args"></param>
+        public void Run(params object[] args)
+        {
+            if (args.Length > 0)
+            {
+                if (Convert.ToBoolean(args[0]))
+                {
+                    _IsReceiveRequest = true;
+                    OnShown(null);
+                }
+                else
+                {
+                    button5_Click(null, null);
+                }
+            }
+        }
+
+        #endregion
     }
 }

@@ -2016,12 +2016,11 @@ namespace LiveChat.Client
                         break;
                     case 103: //视频退出.
                         {
-                            //chat.DestroyClient();
+
                         }
                         break;
                     case 104:	//用户名或密码出错.
                         {
-                            //chat.DestroyClient();
                             ClientUtils.ShowMessage("登陆失败，帐号有误！");
                         }
                         break;
@@ -2042,7 +2041,12 @@ namespace LiveChat.Client
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
-                            //MessageBox.Show ("msg:断开与对方的连接。第二个参数:窗口句柄.\n");
+                            //MessageBox.Show("msg:断开与对方的连接。第二个参数:窗口句柄.\n");
+
+                            //对方退出，将视频关掉
+                            Seat toSeat = chat.GetToUser();
+                            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
+                            SingletonMul.Run<frmSeatChat>(key, false);
                         }
                         break;
 
@@ -2093,18 +2097,26 @@ namespace LiveChat.Client
 
                                         if (MessageBox.Show("用户【" + toSeat.SeatName + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                                         {
+                                            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
+                                            //存在窗口，则直接打开视频
+                                            if (SingletonMul.ExistForm(key))
+                                            {
+                                                SingletonMul.Run<frmSeatChat>(key, true);
+                                            }
+                                            else
+                                            {
+                                                SingletonMul.Show(key, () =>
+                                                {
+                                                    frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
+                                                    frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                                    frmSeatChat.IsReceiveRequest = true;
+                                                    frmSeatChat.MainFormParent = this.Handle;
+                                                    return frmSeatChat;
+                                                });
+                                            }
+
                                             //对方接受
                                             chat.SendText(strUser, "_ReqVOK");
-
-                                            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
-                                            SingletonMul.Show(key, () =>
-                                            {
-                                                frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
-                                                frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
-                                                frmSeatChat.IsReceiveRequest = true;
-                                                frmSeatChat.MainFormParent = this.Handle;
-                                                return frmSeatChat;
-                                            });
                                         }
                                         else
                                         {
@@ -2114,7 +2126,7 @@ namespace LiveChat.Client
                                     }
                                     else if (strText == "_ReqVOK") //对方允许
                                     {
-                                        chat.OpenVideo(strUser);
+                                        //chat.OpenVideo(strUser);
                                         chat.SendText(strUser, "_ReqVOpen");
                                     }
                                     else if (strText == "_ReqVOpen") //对方打开视频,我也打开给对方

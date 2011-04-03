@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using LiveChat.Entity;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace LiveChat.Client
 {
@@ -16,6 +17,7 @@ namespace LiveChat.Client
         Int32 m_VideoCount = 2;
         Seat[] m_VideoUser = new Seat[2];
         IntPtr[] m_hVideoWnd = new IntPtr[2];	//6个视频窗口
+        Int32[] m_bConnect = new Int32[2];
         Int32[] m_bOpen = new Int32[2];
         bool isOnline = false;
         bool isCreateForm = false;
@@ -60,6 +62,15 @@ namespace LiveChat.Client
         }
 
         /// <summary>
+        /// 获取对方
+        /// </summary>
+        /// <returns></returns>
+        public Seat GetToUser()
+        {
+            return m_VideoUser[1];
+        }
+
+        /// <summary>
         /// 退出视频
         /// </summary>
         public void ExitVideo(IntPtr hParent)
@@ -90,9 +101,10 @@ namespace LiveChat.Client
         /// <summary>
         /// 发送请求
         /// </summary>
+        /// <param name="hWnd"></param>
         /// <param name="hParent"></param>
         /// <param name="user"></param>
-        public void SendRequest(IntPtr hParent, Seat user)
+        public void SendRequest(IntPtr hWnd, IntPtr hParent, Seat user)
         {
             if (!isOnline)
             {
@@ -115,7 +127,7 @@ namespace LiveChat.Client
             {
                 this.m_VideoUser[1] = user;
 
-                m_hVideoWnd[1] = NNVAddUser(hParent, GetUserName(m_VideoUser[1]), 1);
+                m_hVideoWnd[1] = NNVAddUser(hWnd, GetUserName(m_VideoUser[1]), 1);
                 SetWindowText(m_hVideoWnd[1], m_VideoUser[1].SeatName);
 
                 SetParent(m_hVideoWnd[1], hParent);
@@ -129,9 +141,10 @@ namespace LiveChat.Client
         /// <summary>
         /// 接收请求并打开视频
         /// </summary>
+        /// <param name="hWnd"></param>
         /// <param name="hParent"></param>
         /// <param name="user"></param>
-        public void ReceiveRequest(IntPtr hParent, Seat user)
+        public void ReceiveRequest(IntPtr hWnd, IntPtr hParent, Seat user)
         {
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
@@ -148,7 +161,7 @@ namespace LiveChat.Client
             {
                 this.m_VideoUser[1] = user;
 
-                m_hVideoWnd[1] = NNVAddUser(hParent, GetUserName(m_VideoUser[1]), 1);
+                m_hVideoWnd[1] = NNVAddUser(hWnd, GetUserName(m_VideoUser[1]), 1);
                 SetWindowText(m_hVideoWnd[1], m_VideoUser[1].SeatName);
 
                 SetParent(m_hVideoWnd[1], hParent);
@@ -178,7 +191,16 @@ namespace LiveChat.Client
             {
                 if (m_hVideoWnd[i] == hWnd)
                 {
-                    NNVOpenVideoTo(GetUserName(m_VideoUser[i]));
+                    if (m_bConnect[i] == 0)
+                    {
+                        NNVOpenVideoTo(GetUserName(m_VideoUser[i]));
+                        m_bConnect[i] = 1;
+                    }
+                    else
+                    {
+                        NNVCloseVideoTo(GetUserName(m_VideoUser[i]));
+                        m_bConnect[i] = 0;
+                    }
 
                     break;
                 }

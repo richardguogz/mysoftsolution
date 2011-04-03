@@ -8,6 +8,14 @@ using System.Drawing;
 namespace LiveChat.Client
 {
     /// <summary>
+    /// 回调的窗口
+    /// </summary>
+    public interface ICallbackForm
+    {
+        void Run(params object[] args);
+    }
+
+    /// <summary>
     /// 创建实例Form委托
     /// </summary>
     /// <returns></returns>
@@ -75,6 +83,25 @@ namespace LiveChat.Client
                     dict.Add(key, t);
 
                     t.Show();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 如果存在Key的窗口，则执行Run方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="args"></param>
+        public static void Run<T>(string key, params object[] args)
+            where T : Form
+        {
+            if (ExistForm(key))
+            {
+                var winform = dict[key] as WinForm<T>;
+                if (!winform.IsDisposed && winform.Form is ICallbackForm)
+                {
+                    (winform.Form as ICallbackForm).Run(args);
                 }
             }
         }
