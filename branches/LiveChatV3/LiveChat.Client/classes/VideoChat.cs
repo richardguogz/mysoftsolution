@@ -17,10 +17,13 @@ namespace LiveChat.Client
         Int32 m_VideoCount = 2;
         Seat[] m_VideoUser = new Seat[2];
         IntPtr[] m_hVideoWnd = new IntPtr[2];	//6个视频窗口
+        IntPtr m_hParentWnd = IntPtr.Zero;
         Int32[] m_bConnect = new Int32[2];
         Int32[] m_bOpen = new Int32[2];
         bool isOnline = false;
+        bool isConnected = false;
         bool isCreateForm = false;
+        bool isRequest = false;
 
         public VideoChat(Seat firstUser)
         {
@@ -34,6 +37,7 @@ namespace LiveChat.Client
         /// <returns></returns>
         private string GetUserName(Seat user)
         {
+            if (user == null) return "0000";
             return string.Format("{0}+{1}", user.CompanyID, user.SeatCode);
         }
 
@@ -62,31 +66,27 @@ namespace LiveChat.Client
         }
 
         /// <summary>
-        /// 获取对方
-        /// </summary>
-        /// <returns></returns>
-        public Seat GetToUser()
-        {
-            return m_VideoUser[1];
-        }
-
-        /// <summary>
         /// 退出视频
         /// </summary>
-        public void ExitVideo(IntPtr hParent)
+        public void ExitVideo(IntPtr hParent, IntPtr hWnd)
         {
-            if (m_hVideoWnd[0] != IntPtr.Zero)
+            if (m_hParentWnd == hWnd)
             {
-                SetParent(m_hVideoWnd[0], hParent);
-                ShowWindow(m_hVideoWnd[0], 0);
-            }
+                isRequest = false;
 
-            if (m_hVideoWnd[1] != IntPtr.Zero)
-            {
-                NNVRemoveUser(GetUserName(m_VideoUser[1]));
-                ShowWindow(m_hVideoWnd[1], 0);
+                if (m_hVideoWnd[0] != IntPtr.Zero)
+                {
+                    SetParent(m_hVideoWnd[0], hParent);
+                    ShowWindow(m_hVideoWnd[0], 0);
+                }
 
-                m_hVideoWnd[1] = IntPtr.Zero;
+                if (m_hVideoWnd[1] != IntPtr.Zero)
+                {
+                    NNVRemoveUser(GetUserName(m_VideoUser[1]));
+                    ShowWindow(m_hVideoWnd[1], 0);
+
+                    m_hVideoWnd[1] = IntPtr.Zero;
+                }
             }
         }
 
@@ -95,6 +95,8 @@ namespace LiveChat.Client
         /// </summary>
         public void CloseVideo()
         {
+            SetConnected(false);
+
             SendText(GetUserName(m_VideoUser[1]), "_CloseVideo");
         }
 
@@ -112,13 +114,15 @@ namespace LiveChat.Client
         /// <param name="hWnd"></param>
         /// <param name="hParent"></param>
         /// <param name="user"></param>
-        public void SendRequest(IntPtr hWnd, IntPtr hParent, Seat user)
+        public bool SendRequest(IntPtr hWnd, IntPtr hParent, Seat user)
         {
             if (!isOnline)
             {
                 ClientUtils.ShowMessage("您当前视频服务不可用，不能与对方建立链接！");
-                return;
+                return false;
             }
+
+            m_hParentWnd = hParent;
 
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
@@ -144,6 +148,10 @@ namespace LiveChat.Client
 
             //发送_ReqV表示请求
             NNVSendTextTo(GetUserName(m_VideoUser[1]), "_ReqV");
+
+            isRequest = true;
+
+            return true;
         }
 
         /// <summary>
@@ -154,6 +162,8 @@ namespace LiveChat.Client
         /// <param name="user"></param>
         public void ReceiveRequest(IntPtr hWnd, IntPtr hParent, Seat user)
         {
+            m_hParentWnd = hParent;
+
             if (m_hVideoWnd[0] != IntPtr.Zero)
             {
                 SetParent(m_hVideoWnd[0], hParent);
@@ -176,8 +186,11 @@ namespace LiveChat.Client
                 ShowWindow(m_hVideoWnd[1], 5);
             }
 
+            System.Threading.Thread.Sleep(1500);
+
             //打开视频给对方看
             NNVOpenVideoTo(GetUserName(m_VideoUser[1]));
+            //OpenVideo(GetUserName(m_VideoUser[1]));
         }
 
         /// <summary>
@@ -187,6 +200,26 @@ namespace LiveChat.Client
         public void SetOnline(bool online)
         {
             this.isOnline = online;
+        }
+
+        /// <summary>
+        /// 设置是否连接
+        /// </summary>
+        /// <param name="connected"></param>
+        public void SetConnected(bool connected)
+        {
+            this.isConnected = connected;
+        }
+
+        /// <summary>
+        /// 是否连接
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                return isConnected || isRequest;
+            }
         }
 
         /// <summary>

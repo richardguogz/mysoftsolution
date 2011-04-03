@@ -560,7 +560,6 @@ namespace LiveChat.Client
 
         private void tsbExit_Click(object sender, EventArgs e)
         {
-            chat.ExitVideo(_MainFormParent);
             this.Close();
         }
 
@@ -587,20 +586,27 @@ namespace LiveChat.Client
                 return;
             }
 
-            if (splitContainer1.Panel2.Width < 50)
+            if (chat.IsConnected)
             {
-                this.Width += 80;
+                ClientUtils.ShowMessage("当前你正在与其它人进行对话，不能再次发送请求！");
+                return;
             }
-            splitContainer1.Panel2.Show();
-            splitContainer1.SplitterDistance = splitContainer1.Width - 160;
-            toolStripButton3.Enabled = false;
-
-            isChating = true;
 
             //发送请求
-            chat.SendRequest(_MainFormParent, this.Handle, toSeat);
+            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat))
+            {
+                if (splitContainer1.Panel2.Width < 50)
+                {
+                    this.Width += 80;
+                }
+                splitContainer1.Panel2.Show();
+                splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+                toolStripButton3.Enabled = false;
 
-            frmSeatChat_SizeChanged(sender, e);
+                isChating = true;
+
+                frmSeatChat_SizeChanged(sender, e);
+            }
         }
 
         private void frmSeatChat_SizeChanged(object sender, EventArgs e)
@@ -623,11 +629,11 @@ namespace LiveChat.Client
 
         private void button5_Click(object sender, EventArgs e)
         {
-            //取消视频
-            chat.ExitVideo(_MainFormParent);
-
             //关闭视频
             chat.CloseVideo();
+
+            //取消视频
+            chat.ExitVideo(_MainFormParent, this.Handle);
 
             if (splitContainer1.Panel2.Width > 50)
             {
@@ -664,8 +670,10 @@ namespace LiveChat.Client
                 }
                 else
                 {
+                    chat.SetConnected(false);
+
                     //取消视频
-                    chat.ExitVideo(_MainFormParent);
+                    chat.ExitVideo(_MainFormParent, this.Handle);
 
                     if (splitContainer1.Panel2.Width > 50)
                     {
@@ -682,5 +690,10 @@ namespace LiveChat.Client
         }
 
         #endregion
+
+        private void frmSeatChat_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            chat.ExitVideo(_MainFormParent, this.Handle);
+        }
     }
 }

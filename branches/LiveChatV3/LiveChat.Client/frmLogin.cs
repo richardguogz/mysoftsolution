@@ -100,21 +100,21 @@ namespace LiveChat.Client
             {
                 if (string.IsNullOrEmpty(companyID))
                 {
-                    ClientUtils.ShowMessage("请输入公司ID");
+                    ClientUtils.ShowMessage("请输入公司ID！");
                     txtCompanyID.Focus();
                     return;
                 }
 
                 if (string.IsNullOrEmpty(userID))
                 {
-                    ClientUtils.ShowMessage("请输入用户ID");
+                    ClientUtils.ShowMessage("请输入用户ID！");
                     txtClientID.Focus();
                     return;
                 }
 
                 if (string.IsNullOrEmpty(password))
                 {
-                    ClientUtils.ShowMessage("请输入密码");
+                    ClientUtils.ShowMessage("请输入密码！");
                     txtPassword.Focus();
                     return;
                 }

@@ -42,6 +42,7 @@ namespace LiveChat.Client
         private IList<SeatFriend> myfriends;
         private Timer urlTimer;
         private VideoChat chat;
+        private string strUserID;
 
         #endregion
 
@@ -1994,8 +1995,6 @@ namespace LiveChat.Client
         {
             if (m.Msg == 0x400 + 6668)//接收自定义消息
             {
-                System.Threading.Thread.Sleep(1000);
-
                 int a = (int)m.WParam;
                 switch (a)
                 {
@@ -2037,14 +2036,24 @@ namespace LiveChat.Client
                     case 107:	//连接对方成功，第二个参数:窗口句柄.
                         {
                             //MessageBox.Show ("msg:连接对方成功，第二个参数:窗口句柄.\n");
+                            chat.SetConnected(true);
+
+                            System.Threading.Thread.Sleep(1500);
+
+                            if (!string.IsNullOrEmpty(strUserID))
+                            {
+                                chat.OpenVideo(strUserID);
+                            }
                         }
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
                             //MessageBox.Show("msg:断开与对方的连接。第二个参数:窗口句柄.\n");
+                            chat.SetConnected(false);
+
+                            strUserID = null;
                         }
                         break;
-
                     case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
                         {
                             //MessageBox.Show ("msg:对方不在线，无法连接。第二个参数:窗口句柄.\n");
@@ -2059,16 +2068,19 @@ namespace LiveChat.Client
                     case 111:	//连接对方超时，连接失败。
                         {
                             //MessageBox.Show ("msg:连接对方超时，连接失败\n");
+                            ClientUtils.ShowMessage("连接对方超时，登陆失败！");
                         }
                         break;
                     case 112:	//登陆服务器超时，登陆失败。
                         {
                             //MessageBox.Show ("msg:登陆服务器超时，登陆失败\n");
+                            ClientUtils.ShowMessage("登陆服务器超时，登陆失败！");
                         }
                         break;
                     case 113:	//其他原因(如：版本过低或人数已满等)登陆失败。
                         {
                             //MessageBox.Show ("msg:其他原因登陆失败\n");
+                            ClientUtils.ShowMessage("其它原因登陆失败！");
                         }
                         break;
                     case 114: //收到用户请求,格式:用户名换行文字.
@@ -2092,6 +2104,16 @@ namespace LiveChat.Client
 
                                         if (MessageBox.Show("用户【" + toSeat.SeatName + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                                         {
+                                            if (chat.IsConnected)
+                                            {
+                                                ClientUtils.ShowMessage("当前你正在与其它人进行对话，不能再次接受请求！");
+
+                                                //对方拒绝
+                                                chat.SendText(strUser, "_ReqVFail");
+
+                                                return;
+                                            }
+
                                             string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
                                             //存在窗口，则直接打开视频
                                             if (SingletonMul.ExistForm(key))
@@ -2126,21 +2148,31 @@ namespace LiveChat.Client
                                     }
                                     else if (strText == "_ReqVOpen") //对方打开视频,我也打开给对方
                                     {
-                                        chat.OpenVideo(strUser);
+                                        //赋值给当前用户
+                                        strUserID = strUser;
                                     }
                                     else if (strText == "_ReqVFail") //对方拒绝
                                     {
-                                        ClientUtils.ShowMessage("对方取消了你的请求！");
+                                        //对方退出，将视频关掉
+                                        string seatID = strUser.Replace('+', '_');
+                                        Seat toSeat = service.GetSeat(seatID);
+
+                                        string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
+                                        SingletonMul.Run<frmSeatChat>(key, false);
+
+                                        ClientUtils.ShowMessage("【" + toSeat.SeatName + "】取消了你的语音请求！");
                                     }
                                     else if (strText == "_CloseVideo")
                                     {
                                         //对方退出，将视频关掉
-                                        Seat toSeat = chat.GetToUser();
+                                        string seatID = strUser.Replace('+', '_');
+                                        Seat toSeat = service.GetSeat(seatID);
+
                                         string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
                                         SingletonMul.Run<frmSeatChat>(key, false);
 
                                         //提示断开
-                                        ClientUtils.ShowMessage("对方中断了与您的语音聊天！");
+                                        ClientUtils.ShowMessage("【" + toSeat.SeatName + "】取消了与你的语音聊天！");
                                     }
                                     else
                                     {
