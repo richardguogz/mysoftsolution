@@ -42,7 +42,6 @@ namespace LiveChat.Client
         private IList<SeatFriend> myfriends;
         private Timer urlTimer;
         private VideoChat chat;
-        private string strUserID;
 
         #endregion
 
@@ -2038,20 +2037,14 @@ namespace LiveChat.Client
                             //MessageBox.Show ("msg:连接对方成功，第二个参数:窗口句柄.\n");
                             chat.SetConnected(true);
 
-                            System.Threading.Thread.Sleep(1500);
-
-                            if (!string.IsNullOrEmpty(strUserID))
-                            {
-                                chat.OpenVideo(strUserID);
-                            }
+                            //打开视频
+                            chat.OpenVideo();
                         }
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
                         {
                             //MessageBox.Show("msg:断开与对方的连接。第二个参数:窗口句柄.\n");
                             chat.SetConnected(false);
-
-                            strUserID = null;
                         }
                         break;
                     case 109:	//对方不在线，无法连接。第二个参数:窗口句柄.
@@ -2102,54 +2095,27 @@ namespace LiveChat.Client
                                         string seatID = strUser.Replace('+', '_');
                                         Seat toSeat = service.GetSeat(seatID);
 
-                                        if (MessageBox.Show("用户【" + toSeat.SeatName + "】请求通话,是否确定与他通话？", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                                        string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
+                                        //存在窗口，则直接打开视频
+                                        if (SingletonMul.ExistForm(key))
                                         {
-                                            if (chat.IsConnected)
-                                            {
-                                                ClientUtils.ShowMessage("当前你正在与其它人进行对话，不能再次接受请求！");
-
-                                                //对方拒绝
-                                                chat.SendText(strUser, "_ReqVFail");
-
-                                                return;
-                                            }
-
-                                            string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
-                                            //存在窗口，则直接打开视频
-                                            if (SingletonMul.ExistForm(key))
-                                            {
-                                                SingletonMul.Run<frmSeatChat>(key, true);
-                                            }
-                                            else
-                                            {
-                                                SingletonMul.Show(key, () =>
-                                                {
-                                                    frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
-                                                    frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
-                                                    frmSeatChat.IsReceiveRequest = true;
-                                                    frmSeatChat.MainFormParent = this.Handle;
-                                                    return frmSeatChat;
-                                                });
-                                            }
-
-                                            //对方接受
-                                            chat.SendText(strUser, "_ReqVOK");
+                                            SingletonMul.Run<frmSeatChat>(key, true);
                                         }
                                         else
                                         {
-                                            //对方拒绝
-                                            chat.SendText(strUser, "_ReqVFail");
+                                            SingletonMul.Show(key, () =>
+                                            {
+                                                frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
+                                                frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
+                                                frmSeatChat.IsReceiveRequest = true;
+                                                frmSeatChat.MainFormParent = this.Handle;
+                                                return frmSeatChat;
+                                            });
                                         }
                                     }
-                                    else if (strText == "_ReqVOK") //对方允许
+                                    else if (strText == "_ReqVOK") //对方打开视频,我也打开给对方
                                     {
-                                        //chat.OpenVideo(strUser);
-                                        chat.SendText(strUser, "_ReqVOpen");
-                                    }
-                                    else if (strText == "_ReqVOpen") //对方打开视频,我也打开给对方
-                                    {
-                                        //赋值给当前用户
-                                        strUserID = strUser;
+                                        chat.SetVideoUser(strUser);
                                     }
                                     else if (strText == "_ReqVFail") //对方拒绝
                                     {

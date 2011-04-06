@@ -90,30 +90,40 @@ namespace LiveChat.Client
             emotionDropdown1.EmotionContainer.ItemClick += new EmotionItemMouseEventHandler(EmotionContainer_ItemClick);
 
             InitBrowser();
+
+            ReceiveRequest();
         }
 
-        protected override void OnShown(EventArgs e)
+        /// <summary>
+        /// 接受请求
+        /// </summary>
+        private void ReceiveRequest()
         {
             //启动打开视频
             if (_IsReceiveRequest)
             {
                 isChating = true;
 
-                if (splitContainer1.Panel2.Width < 50)
+                if (splitContainer1.Width - 160 > 0)
                 {
-                    this.Width += 80;
+                    if (splitContainer1.Panel2.Width < 50)
+                    {
+                        this.Width += 80;
+                    }
+                    splitContainer1.Panel2.Show();
+                    splitContainer1.SplitterDistance = splitContainer1.Width - 160;
                 }
-                splitContainer1.Panel2.Show();
-                splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+
                 toolStripButton3.Enabled = false;
 
                 //接收并打开视频
                 chat.ReceiveRequest(_MainFormParent, this.Handle, toSeat);
 
-                frmSeatChat_SizeChanged(null, e);
-            }
+                frmSeatChat_SizeChanged(null, null);
 
-            base.OnShown(e);
+                button5.Visible = false;
+                panel6.Visible = true;
+            }
         }
 
         /// <summary>
@@ -605,6 +615,9 @@ namespace LiveChat.Client
 
                 isChating = true;
 
+                button5.Visible = true;
+                panel6.Visible = false;
+
                 frmSeatChat_SizeChanged(sender, e);
             }
         }
@@ -625,6 +638,9 @@ namespace LiveChat.Client
 
             chat.MoveVideoTo(rect1, rect2);
             button5.Top = (panel1.Height - button5.Height) / 2 + 5;
+
+            button4.Top = (panel6.Height - button4.Height) / 2 + 5;
+            button6.Top = (panel6.Height - button6.Height) / 2 + 5;
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -665,37 +681,86 @@ namespace LiveChat.Client
             {
                 if (Convert.ToBoolean(args[0]))
                 {
+                    button5.Visible = false;
+                    panel6.Visible = true;
+
                     _IsReceiveRequest = true;
-                    OnShown(null);
+                    ReceiveRequest();
+
+                    //闪屏处理
+                    VideoChat.FlashWindow(this.Handle, true);
                 }
                 else
                 {
                     chat.SetConnected(false);
 
-                    //取消视频
-                    chat.ExitVideo(_MainFormParent, this.Handle);
-
-                    if (splitContainer1.Panel2.Width > 50)
-                    {
-                        this.Width -= 80;
-                    }
-
-                    toolStripButton3.Enabled = true;
-                    splitContainer1.Panel2.Hide();
-                    splitContainer1.SplitterDistance = splitContainer1.Width;
-
-                    isChating = false;
+                    CancelChat();
                 }
             }
+        }
+
+        private void CancelChat()
+        {
+            //取消视频
+            chat.ExitVideo(_MainFormParent, this.Handle);
+
+            if (splitContainer1.Panel2.Width > 50)
+            {
+                this.Width -= 80;
+            }
+
+            toolStripButton3.Enabled = true;
+            splitContainer1.Panel2.Hide();
+            splitContainer1.SplitterDistance = splitContainer1.Width;
+
+            isChating = false;
         }
 
         #endregion
 
         private void frmSeatChat_FormClosed(object sender, FormClosedEventArgs e)
         {
-            chat.CloseVideo(this.Handle);
+            if (isChating)
+            {
+                chat.CloseVideo(this.Handle);
+            }
 
             chat.ExitVideo(_MainFormParent, this.Handle);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string strUser = toSeat.SeatID.Replace('_', '+');
+
+            if (chat.IsConnected)
+            {
+                ClientUtils.ShowMessage("当前你正在与其它人进行对话，不能再次接受请求！");
+
+                //对方拒绝
+                chat.SendText(strUser, "_ReqVFail");
+
+                return;
+            }
+
+            button5.Visible = true;
+            panel6.Visible = false;
+
+            //打开视频
+            chat.OpenVideo(strUser);
+
+            //对方接受
+            chat.SendText(strUser, "_ReqVOK");
+        }
+
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string strUser = toSeat.SeatID.Replace('_', '+');
+
+            //对方拒绝
+            chat.SendText(strUser, "_ReqVFail");
+
+            CancelChat();
         }
     }
 }

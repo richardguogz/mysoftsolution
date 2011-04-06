@@ -189,11 +189,8 @@ namespace LiveChat.Client
                 //ShowWindow(m_hVideoWnd[1], 5);
             }
 
-            //System.Threading.Thread.Sleep(1500);
-
             //打开视频给对方看
-            NNVOpenVideoTo(GetUserName(m_VideoUser[1]));
-            //OpenVideo(GetUserName(m_VideoUser[1]));
+            //NNVOpenVideoTo(GetUserName(m_VideoUser[1]));
         }
 
         /// <summary>
@@ -258,6 +255,27 @@ namespace LiveChat.Client
         public void OpenVideo(string strUser)
         {
             NNVOpenVideoTo(strUser);
+        }
+
+        private string strUser;
+        /// <summary>
+        /// 设置视频用户
+        /// </summary>
+        /// <param name="strUser"></param>
+        public void SetVideoUser(string strUser)
+        {
+            this.strUser = strUser;
+        }
+
+        /// <summary>
+        /// 打开视频
+        /// </summary>
+        public void OpenVideo()
+        {
+            if (isConnected)
+            {
+                OpenVideo(strUser);
+            }
         }
 
         /// <summary>
