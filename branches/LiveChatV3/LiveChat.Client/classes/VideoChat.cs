@@ -91,6 +91,20 @@ namespace LiveChat.Client
         }
 
         /// <summary>
+        /// 获取聊天对象
+        /// </summary>
+        /// <returns></returns>
+        public string GetChatName()
+        {
+            if (isConnected)
+            {
+                return m_VideoUser[1].SeatName;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// 关闭视频
         /// </summary>
         public void CloseVideo(IntPtr hWnd)
@@ -254,7 +268,11 @@ namespace LiveChat.Client
         /// <param name="strUser"></param>
         public void OpenVideo(string strUser)
         {
-            NNVOpenVideoTo(strUser);
+            try
+            {
+                NNVOpenVideoTo(strUser);
+            }
+            catch { }
         }
 
         private string strUser;

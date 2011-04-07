@@ -99,30 +99,37 @@ namespace LiveChat.Client
         /// </summary>
         private void ReceiveRequest()
         {
-            //启动打开视频
-            if (_IsReceiveRequest)
+            if (chat.IsConnected)
             {
-                isChating = true;
-
-                if (splitContainer1.Width - 160 > 0)
+                ClientUtils.ShowMessage("当前你正在与【" + chat.GetChatName() + "】语音聊天中，语音及视频无法再次启动！");
+            }
+            else
+            {
+                //启动打开视频
+                if (_IsReceiveRequest)
                 {
-                    if (splitContainer1.Panel2.Width < 50)
+                    isChating = true;
+
+                    if (splitContainer1.Width - 160 > 0)
                     {
-                        this.Width += 80;
+                        if (splitContainer1.Panel2.Width < 50)
+                        {
+                            this.Width += 80;
+                        }
+                        splitContainer1.Panel2.Show();
+                        splitContainer1.SplitterDistance = splitContainer1.Width - 160;
                     }
-                    splitContainer1.Panel2.Show();
-                    splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+
+                    toolStripButton3.Enabled = false;
+
+                    //接收并打开视频
+                    chat.ReceiveRequest(_MainFormParent, this.Handle, toSeat);
+
+                    frmSeatChat_SizeChanged(null, null);
+
+                    button5.Visible = false;
+                    panel6.Visible = true;
                 }
-
-                toolStripButton3.Enabled = false;
-
-                //接收并打开视频
-                chat.ReceiveRequest(_MainFormParent, this.Handle, toSeat);
-
-                frmSeatChat_SizeChanged(null, null);
-
-                button5.Visible = false;
-                panel6.Visible = true;
             }
         }
 
@@ -738,7 +745,6 @@ namespace LiveChat.Client
 
                 //对方拒绝
                 chat.SendText(strUser, "_ReqVFail");
-
                 return;
             }
 
