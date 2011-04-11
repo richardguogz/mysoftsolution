@@ -2090,7 +2090,7 @@ namespace LiveChat.Client
                                     String strUser = str.Substring(0, pos);
                                     String strText = str.Substring(pos + 1);
                                     String showUser = strUser;
-                                    if (strText == "_ReqV") //发送的请求
+                                    if (strText == "_ReqV" || strText == "_ReqNV") //发送的请求
                                     {
                                         string seatID = strUser.Replace('+', '_');
                                         Seat toSeat = service.GetSeat(seatID);
@@ -2108,14 +2108,27 @@ namespace LiveChat.Client
                                                 frmSeatChat frmSeatChat = new frmSeatChat(service, chat, loginCompany, loginSeat, toSeat, null, currentFont, currentColor);
                                                 frmSeatChat.CallbackFontColor += new CallbackFontColorEventHandler(chat_CallbackFontColor);
                                                 frmSeatChat.IsReceiveRequest = true;
+
+                                                if (strText == "_ReqV")
+                                                {
+                                                    frmSeatChat.IsVideoRequest = true;
+                                                }
+
                                                 frmSeatChat.MainFormParent = this.Handle;
                                                 return frmSeatChat;
                                             });
                                         }
                                     }
-                                    else if (strText == "_ReqVOK") //对方打开视频,我也打开给对方
+                                    else if (strText == "_ReqVOK" || strText == "_ReqNVOK") //对方打开视频,我也打开给对方
                                     {
-                                        chat.SetVideoUser(strUser);
+                                        if (strText == "_ReqVOK")
+                                        {
+                                            chat.SetVideoUser(strUser, true);
+                                        }
+                                        else
+                                        {
+                                            chat.SetVideoUser(strUser, false);
+                                        }
                                     }
                                     else if (strText == "_ReqVFail") //对方拒绝
                                     {
@@ -2146,6 +2159,11 @@ namespace LiveChat.Client
                                     }
                                 }
                             }
+                        }
+                        break;
+                    case 115: //双击视频处理
+                        {
+                            chat.OpenLargeVideo(m.LParam);
                         }
                         break;
                     case 123: //是否子窗口还是弹出窗口

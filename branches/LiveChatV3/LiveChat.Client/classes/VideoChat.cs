@@ -126,12 +126,14 @@ namespace LiveChat.Client
         }
 
         /// <summary>
-        /// 发送请求
+        /// 发送视频请求
         /// </summary>
         /// <param name="hWnd"></param>
         /// <param name="hParent"></param>
         /// <param name="user"></param>
-        public bool SendRequest(IntPtr hWnd, IntPtr hParent, Seat user)
+        /// <param name="isVideo"></param>
+        /// <returns></returns>
+        public bool SendRequest(IntPtr hWnd, IntPtr hParent, Seat user, bool isVideo)
         {
             if (!isOnline)
             {
@@ -163,8 +165,16 @@ namespace LiveChat.Client
                 //ShowWindow(m_hVideoWnd[1], 5);
             }
 
-            //发送_ReqV表示请求
-            NNVSendTextTo(GetUserName(m_VideoUser[1]), "_ReqV");
+            if (isVideo)
+            {
+                //发送_ReqV表示请求视频
+                NNVSendTextTo(GetUserName(m_VideoUser[1]), "_ReqV");
+            }
+            else
+            {
+                //发送_ReqNV表示请求语音
+                NNVSendTextTo(GetUserName(m_VideoUser[1]), "_ReqNV");
+            }
 
             isRequest = true;
 
@@ -263,6 +273,14 @@ namespace LiveChat.Client
         }
 
         /// <summary>
+        /// 关闭视频
+        /// </summary>
+        public void CloseVideo()
+        {
+            NNVSetVideoDevice(100);
+        }
+
+        /// <summary>
         /// 打开视频会话
         /// </summary>
         /// <param name="strUser"></param>
@@ -276,13 +294,17 @@ namespace LiveChat.Client
         }
 
         private string strUser;
+        private bool isVideo;
+
         /// <summary>
         /// 设置视频用户
         /// </summary>
         /// <param name="strUser"></param>
-        public void SetVideoUser(string strUser)
+        /// <param name="isVideo"></param>
+        public void SetVideoUser(string strUser, bool isVideo)
         {
             this.strUser = strUser;
+            this.isVideo = isVideo;
         }
 
         /// <summary>
@@ -292,6 +314,11 @@ namespace LiveChat.Client
         {
             if (isConnected)
             {
+                if (!isVideo)
+                {
+                    CloseVideo();
+                }
+
                 OpenVideo(strUser);
             }
         }
@@ -304,6 +331,21 @@ namespace LiveChat.Client
         public void SendText(string strUser, string strText)
         {
             NNVSendTextTo(strUser, strText);
+        }
+
+        /// <summary>
+        /// 打开大视频
+        /// </summary>
+        /// <param name="hWnd"></param>
+        public void OpenLargeVideo(IntPtr hWnd)
+        {
+            for (int i = 0; i < m_VideoCount; i++)
+            {
+                if (m_hVideoWnd[i] == hWnd)
+                {
+                    NNVSendTextTo(GetUserName(m_VideoUser[i]), "_popup"); //_popup弹出窗口,_unpopup关闭弹出窗口
+                }
+            }
         }
 
         /// <summary>
@@ -385,6 +427,10 @@ namespace LiveChat.Client
         //设置大视频还是小视频
         [DllImport("NCVideoChat.dll")]
         private static extern Int32 NNVSetVideoSize(Int32 nSize);
+
+        //设置本地视频参数
+        [DllImport("NCVideoChat.dll")]
+        private static extern Int32 NNVSetVideoDevice(Int32 nSize);
 
         //发送文字。参数：用户ID，要发送的文字,不换行,最多100个字符。
         [DllImport("NCVideoChat.dll")]

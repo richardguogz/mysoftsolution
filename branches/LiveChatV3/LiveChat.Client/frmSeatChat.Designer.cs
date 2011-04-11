@@ -69,6 +69,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAcceptTalk = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.tsbChatMessage = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -112,7 +113,7 @@
             this.wbChatBox.Margin = new System.Windows.Forms.Padding(5);
             this.wbChatBox.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbChatBox.Name = "wbChatBox";
-            this.wbChatBox.Size = new System.Drawing.Size(372, 268);
+            this.wbChatBox.Size = new System.Drawing.Size(352, 268);
             this.wbChatBox.TabIndex = 13;
             // 
             // plChat
@@ -125,14 +126,14 @@
             this.plChat.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.plChat.Location = new System.Drawing.Point(0, 268);
             this.plChat.Name = "plChat";
-            this.plChat.Size = new System.Drawing.Size(372, 100);
+            this.plChat.Size = new System.Drawing.Size(352, 100);
             this.plChat.TabIndex = 12;
             // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.Location = new System.Drawing.Point(284, 33);
+            this.btnSend.Location = new System.Drawing.Point(264, 33);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(77, 59);
             this.btnSend.TabIndex = 1;
@@ -148,7 +149,7 @@
             this.txtMessage.Location = new System.Drawing.Point(4, 28);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(270, 66);
+            this.txtMessage.Size = new System.Drawing.Size(250, 66);
             this.txtMessage.TabIndex = 0;
             this.txtMessage.Click += new System.EventHandler(this.txtMessage_Click);
             this.txtMessage.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMessage_KeyUp);
@@ -170,7 +171,7 @@
             this.tsChatTools.Location = new System.Drawing.Point(0, 0);
             this.tsChatTools.Name = "tsChatTools";
             this.tsChatTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.tsChatTools.Size = new System.Drawing.Size(370, 25);
+            this.tsChatTools.Size = new System.Drawing.Size(350, 25);
             this.tsChatTools.TabIndex = 9;
             this.tsChatTools.Text = "聊天工具箱";
             // 
@@ -264,7 +265,7 @@
             this.toolStripDropDownButton1.Image = global::LiveChat.Client.Properties.Resources.quickrep;
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(114, 22);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(114, 20);
             this.toolStripDropDownButton1.Text = "消息发送方式";
             // 
             // 按Control键发送消息ToolStripMenuItem
@@ -406,6 +407,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbAcceptTalk,
             this.toolStripSeparator2,
+            this.toolStripButton4,
             this.toolStripButton3,
             this.tsbChatMessage,
             this.toolStripSeparator5,
@@ -431,6 +433,17 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
+            this.toolStripButton4.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(60, 53);
+            this.toolStripButton4.Text = "视频聊天";
+            this.toolStripButton4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
             // 
             // toolStripButton3
             // 
@@ -481,7 +494,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.panel3);
             this.splitContainer1.Panel2MinSize = 0;
             this.splitContainer1.Size = new System.Drawing.Size(544, 368);
-            this.splitContainer1.SplitterDistance = 372;
+            this.splitContainer1.SplitterDistance = 352;
             this.splitContainer1.TabIndex = 19;
             // 
             // panel1
@@ -491,7 +504,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 168);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(168, 32);
+            this.panel1.Size = new System.Drawing.Size(188, 32);
             this.panel1.TabIndex = 1;
             // 
             // panel6
@@ -501,12 +514,12 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(0, 0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(168, 32);
+            this.panel6.Size = new System.Drawing.Size(188, 32);
             this.panel6.TabIndex = 4;
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(2, 5);
+            this.button6.Location = new System.Drawing.Point(8, 5);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(79, 23);
             this.button6.TabIndex = 0;
@@ -516,7 +529,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(83, 5);
+            this.button4.Location = new System.Drawing.Point(92, 5);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(79, 23);
             this.button4.TabIndex = 0;
@@ -526,7 +539,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(46, 4);
+            this.button5.Location = new System.Drawing.Point(54, 4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(79, 23);
             this.button5.TabIndex = 0;
@@ -539,7 +552,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel5.Location = new System.Drawing.Point(0, 200);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(168, 168);
+            this.panel5.Size = new System.Drawing.Size(188, 168);
             this.panel5.TabIndex = 3;
             // 
             // panel3
@@ -547,7 +560,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(168, 168);
+            this.panel3.Size = new System.Drawing.Size(188, 168);
             this.panel3.TabIndex = 2;
             // 
             // frmSeatChat
@@ -634,5 +647,6 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
     }
 }

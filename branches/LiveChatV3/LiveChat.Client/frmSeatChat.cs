@@ -36,6 +36,7 @@ namespace LiveChat.Client
         private bool isClosing;
 
         private bool _IsReceiveRequest;
+        private bool _IsVideoRequest;
         private IntPtr _MainFormParent;
 
         /// <summary>
@@ -45,6 +46,15 @@ namespace LiveChat.Client
         {
             get { return _IsReceiveRequest; }
             set { _IsReceiveRequest = value; }
+        }
+
+        /// <summary>
+        /// 是否是视频请求
+        /// </summary>
+        public bool IsVideoRequest
+        {
+            get { return _IsVideoRequest; }
+            set { _IsVideoRequest = value; }
         }
 
         /// <summary>
@@ -99,28 +109,29 @@ namespace LiveChat.Client
         /// </summary>
         private void ReceiveRequest()
         {
-            if (chat.IsConnected)
+            //启动打开视频
+            if (_IsReceiveRequest)
             {
-                ClientUtils.ShowMessage("当前你正在与【" + chat.GetChatName() + "】语音聊天中，语音及视频无法再次启动！");
-            }
-            else
-            {
-                //启动打开视频
-                if (_IsReceiveRequest)
+                if (chat.IsConnected)
+                {
+                    ClientUtils.ShowMessage("当前你正在与【" + chat.GetChatName() + "】聊天中，语音及视频无法再次启动！");
+                }
+                else
                 {
                     isChating = true;
 
-                    if (splitContainer1.Width - 160 > 0)
+                    if (splitContainer1.Width - 180 > 0)
                     {
-                        if (splitContainer1.Panel2.Width < 50)
+                        if (splitContainer1.Panel2.Width < 80)
                         {
-                            this.Width += 80;
+                            this.Width += 100;
                         }
                         splitContainer1.Panel2.Show();
-                        splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+                        splitContainer1.SplitterDistance = splitContainer1.Width - 180;
                     }
 
                     toolStripButton3.Enabled = false;
+                    toolStripButton4.Enabled = false;
 
                     //接收并打开视频
                     chat.ReceiveRequest(_MainFormParent, this.Handle, toSeat);
@@ -599,6 +610,42 @@ namespace LiveChat.Client
         {
             if (service.GetSeat(toSeat.SeatID).State == OnlineState.Offline)
             {
+                ClientUtils.ShowMessage(toSeat.SeatName + "不在线，不能进行语音会话！");
+                return;
+            }
+
+            if (chat.IsConnected)
+            {
+                ClientUtils.ShowMessage("当前你正在与其它人进行对话，不能再次发送请求！");
+                return;
+            }
+
+            //发送请求
+            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat, true))
+            {
+                if (splitContainer1.Panel2.Width < 80)
+                {
+                    this.Width += 100;
+                }
+                splitContainer1.Panel2.Show();
+                splitContainer1.SplitterDistance = splitContainer1.Width - 180;
+
+                toolStripButton3.Enabled = false;
+                toolStripButton4.Enabled = false;
+
+                isChating = true;
+
+                button5.Visible = true;
+                panel6.Visible = false;
+
+                frmSeatChat_SizeChanged(sender, e);
+            }
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            if (service.GetSeat(toSeat.SeatID).State == OnlineState.Offline)
+            {
                 ClientUtils.ShowMessage(toSeat.SeatName + "不在线，不能进行视频会话！");
                 return;
             }
@@ -610,15 +657,17 @@ namespace LiveChat.Client
             }
 
             //发送请求
-            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat))
+            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat, false))
             {
-                if (splitContainer1.Panel2.Width < 50)
+                if (splitContainer1.Panel2.Width < 80)
                 {
-                    this.Width += 80;
+                    this.Width += 100;
                 }
                 splitContainer1.Panel2.Show();
-                splitContainer1.SplitterDistance = splitContainer1.Width - 160;
+                splitContainer1.SplitterDistance = splitContainer1.Width - 180;
+
                 toolStripButton3.Enabled = false;
+                toolStripButton4.Enabled = false;
 
                 isChating = true;
 
@@ -660,10 +709,12 @@ namespace LiveChat.Client
 
             if (splitContainer1.Panel2.Width > 50)
             {
-                this.Width -= 80;
+                this.Width -= 100;
             }
 
             toolStripButton3.Enabled = true;
+            toolStripButton4.Enabled = true;
+
             splitContainer1.Panel2.Hide();
             splitContainer1.SplitterDistance = splitContainer1.Width;
 
@@ -713,10 +764,12 @@ namespace LiveChat.Client
 
             if (splitContainer1.Panel2.Width > 50)
             {
-                this.Width -= 80;
+                this.Width -= 100;
             }
 
             toolStripButton3.Enabled = true;
+            toolStripButton4.Enabled = true;
+
             splitContainer1.Panel2.Hide();
             splitContainer1.SplitterDistance = splitContainer1.Width;
 
@@ -751,11 +804,25 @@ namespace LiveChat.Client
             button5.Visible = true;
             panel6.Visible = false;
 
-            //打开视频
-            chat.OpenVideo(strUser);
+            if (_IsVideoRequest)
+            {
+                //打开视频
+                chat.OpenVideo(strUser);
 
-            //对方接受
-            chat.SendText(strUser, "_ReqVOK");
+                //对方接受
+                chat.SendText(strUser, "_ReqVOK");
+            }
+            else
+            {
+                //关闭视频
+                chat.CloseVideo();
+
+                //打开视频
+                chat.OpenVideo(strUser);
+
+                //对方接受
+                chat.SendText(strUser, "_ReqNVOK");
+            }
         }
 
 
