@@ -82,33 +82,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channel.cs" />
-    <Compile Include="ClientPool.cs" />
-    <Compile Include="DataPackage.cs" />
-    <Compile Include="DataPackageCollection.cs" />
-    <Compile Include="EventChannelArgs.cs" />
-    <Compile Include="EventChannelClose.cs" />
-    <Compile Include="EventChannelReceive.cs" />
-    <Compile Include="EventChannelReceiveArgs.cs" />
-    <Compile Include="EventClientPoolChange.cs" />
-    <Compile Include="EventRunError.cs" />
-    <Compile Include="EventRunErrorArgs.cs" />
-    <Compile Include="IAddressFilter.cs" />
-    <Compile Include="IChannel.cs" />
-    <Compile Include="Message\EventMessageReceive.cs" />
-    <Compile Include="Message\EventMessageReceiveArgs.cs" />
-    <Compile Include="Message\IMessage.cs" />
-    <Compile Include="Message\IMessageChannel.cs" />
-    <Compile Include="Message\MessageAdapter.cs" />
-    <Compile Include="Message\MessageChannel.cs" />
-    <Compile Include="NetException.cs" />
-    <Compile Include="NetListener.cs" />
-    <Compile Include="NET_TAG.cs" />
+    <Compile Include="Client\SocketClient.cs" />
+    <Compile Include="Compression\Deflate.cs" />
+    <Compile Include="Compression\GZip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\AES.cs" />
+    <Compile Include="Security\DES.cs" />
+    <Compile Include="Server\BufferManager.cs" />
+    <Compile Include="Server\SocketAsyncEventArgsPool.cs" />
+    <Compile Include="Server\SocketServer.cs" />
+    <Compile Include="Sockets\BufferFormat.cs" />
+    <Compile Include="Sockets\BufferTypeAttribute.cs" />
+    <Compile Include="Sockets\BufferList.cs" />
+    <Compile Include="Sockets\BufferRead.cs" />
+    <Compile Include="Sockets\SocketConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -126,6 +118,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

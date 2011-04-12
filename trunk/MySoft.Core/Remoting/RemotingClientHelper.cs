@@ -79,6 +79,16 @@ namespace MySoft.Remoting
                 serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
 
                 string name = AppDomain.CurrentDomain.FriendlyName + Environment.MachineName;
+
+                var channel = ChannelServices.GetChannel(name);
+
+                //判断信道是否注册
+                if (channel != null)
+                {
+                    //如果已经注册，则先注销注册
+                    ChannelServices.UnregisterChannel(channel);
+                }
+
                 IDictionary props = new Hashtable();
                 props["name"] = name;
                 props["port"] = callbackPort;
@@ -93,11 +103,7 @@ namespace MySoft.Remoting
                     clientChannel = new HttpChannel(props, clientProvider, serverProvider);
                 }
 
-                //判断信道是否注册
-                if (ChannelServices.GetChannel(name) == null)
-                {
-                    ChannelServices.RegisterChannel(clientChannel, false);
-                }
+                ChannelServices.RegisterChannel(clientChannel, false);
             }
         }
 
@@ -178,7 +184,8 @@ namespace MySoft.Remoting
         /// </summary>
         public void Dispose()
         {
-            ChannelServices.UnregisterChannel(clientChannel);
+            if (clientChannel != null)
+                ChannelServices.UnregisterChannel(clientChannel);
         }
 
         #endregion

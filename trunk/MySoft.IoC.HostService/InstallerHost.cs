@@ -43,7 +43,7 @@ namespace MySoft.IoC.HostService
         {
             try
             {
-                String _ConfigPath = String.Concat(Environment.CurrentDirectory, "\\InstallConfig.xml");
+                String _ConfigPath = CoreHelper.GetFullPath("InstallConfig.xml");
                 if (System.IO.File.Exists(_ConfigPath))
                 {
                     XmlDocument _Xdc = new XmlDocument();
@@ -69,7 +69,7 @@ namespace MySoft.IoC.HostService
                 }
                 else
                 {
-                    Console.Write("通用配置文件不存在（Config.xml）,按任意键继续..");
+                    Console.Write("通用配置文件不存在（InstallConfig.xml）,按任意键继续..");
                     Console.ReadLine();
                 }
 

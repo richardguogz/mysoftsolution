@@ -11,16 +11,16 @@ namespace MySoft.Task
     /// <code>
     /// <configuration>
     ///     <configSections>
-    /// 	    <sectionGroup name="serviceFramework">
+    /// 	    <sectionGroup name="mysoft.framework">
     /// 		    <section name="task" type="MySoft.Task.TaskConfigurationHandler, MySoft"/>
     /// 	    </sectionGroup>
     ///     </configSections>
     ///        ......
-    ///     <serviceFramework>
+    ///     <mysoft.framework>
     /// 	    <task>
     ///             <job name="job1" beginDate="2008-1-1" endDate="2010-1-1" beginTime="" endTime="" interval="" assemblyName="" className=""/>
     /// 	    </task>
-    ///     </serviceFramework>
+    ///     </mysoft.framework>
     /// </configuration>
     /// </code>
     /// </remarks>
@@ -33,7 +33,7 @@ namespace MySoft.Task
         /// <returns></returns>
         public static TaskConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/task");
+            object obj = ConfigurationManager.GetSection("mysoft.framework/task");
 
             if (obj != null)
                 return (TaskConfiguration)obj;

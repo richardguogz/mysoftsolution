@@ -1589,6 +1589,13 @@
             <param name="msg">The MSG.</param>
             <returns>The msg.</returns>
         </member>
+        <member name="M:MySoft.IoC.Services.DynamicService.GetNewException(System.Exception)">
+            <summary>
+            获取新的Exception
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
         <member name="T:MySoft.IoC.Facilities.ServiceSubscribeMessageRequestFacility">
             <summary>
             The facility is used to automatically subscribe msg reqyest to specified services.

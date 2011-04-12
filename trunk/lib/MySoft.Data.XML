@@ -526,14 +526,14 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.IDbBatch.Execute(System.Collections.Generic.IList{MySoft.MySoftException}@)">
+        <member name="M:MySoft.Data.IDbBatch.Execute(System.Collections.Generic.IList{MySoft.Data.DataException}@)">
             <summary>
             执行批处理操作
             </summary>
             <param name="errors">输出的错误</param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DbBatch.Execute(System.Collections.Generic.IList{MySoft.MySoftException}@)">
+        <member name="M:MySoft.Data.DbBatch.Execute(System.Collections.Generic.IList{MySoft.Data.DataException}@)">
             <summary>
             执行批处理操作
             </summary>
@@ -1494,7 +1494,7 @@
             <param name="where"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DbSession.Insert``2(``0,``1@)">
+        <member name="M:MySoft.Data.DbSession.Insert``2(``0,``1@,MySoft.Data.FieldValue[])">
             <summary>
             插入实体
             </summary>
@@ -1504,7 +1504,7 @@
             <param name="retVal"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DbSession.Insert``2(MySoft.Data.Table,``0,``1@)">
+        <member name="M:MySoft.Data.DbSession.Insert``2(MySoft.Data.Table,``0,``1@,MySoft.Data.FieldValue[])">
             <summary>
             插入实体
             </summary>
@@ -3846,7 +3846,7 @@
             <param name="where"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DbTrans.Insert``2(``0,``1@)">
+        <member name="M:MySoft.Data.DbTrans.Insert``2(``0,``1@,MySoft.Data.FieldValue[])">
             <summary>
             插入实体
             </summary>
@@ -3856,7 +3856,7 @@
             <param name="retVal"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DbTrans.Insert``2(MySoft.Data.Table,``0,``1@)">
+        <member name="M:MySoft.Data.DbTrans.Insert``2(MySoft.Data.Table,``0,``1@,MySoft.Data.FieldValue[])">
             <summary>
             插入实体
             </summary>
@@ -4836,13 +4836,6 @@
             <param name="values"></param>
             <returns></returns>
         </member>
-        <member name="M:MySoft.Data.DataHelper.CheckStruct(System.Type)">
-            <summary>
-            检测是否为结构数据
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
         <member name="T:MySoft.Data.Design.PrimaryKeyAttribute">
             <summary>
             表示主键
@@ -4905,13 +4898,6 @@
             或者
             </summary>
             <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MySoft.Data.WhereClip.Bracket(MySoft.Data.WhereClip)">
-            <summary>
-            添加括号
-            </summary>
-            <param name="where"></param>
             <returns></returns>
         </member>
         <member name="M:MySoft.Data.WhereClip.ToString">
@@ -5730,6 +5716,11 @@
         <member name="P:MySoft.Data.DBValue.DateTime">
             <summary>
             系统时间
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.DBValue.Default">
+            <summary>
+            返回默认值
             </summary>
         </member>
         <member name="T:MySoft.Data.EntityState">

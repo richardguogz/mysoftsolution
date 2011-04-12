@@ -21,7 +21,7 @@ namespace MySoft
         /// <returns></returns>
         public static ServiceFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("serviceFramework/serviceFactory");
+            object obj = ConfigurationManager.GetSection("mysoft.framework/serviceFactory");
 
             if (obj != null)
                 return (ServiceFactoryConfiguration)obj;

@@ -233,7 +233,7 @@ namespace MySoft.Data
         /// <param name="fieldName"></param>
         public Field(string fieldName)
         {
-            this.fieldName = fieldName.Replace("__{__", "").Replace("__}__", "");
+            this.fieldName = fieldName;
             this.propertyName = this.fieldName;
         }
 

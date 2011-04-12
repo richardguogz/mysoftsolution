@@ -699,11 +699,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MySoft.CoreHelper.GetInnerException(System.Exception)">
+        <member name="M:MySoft.CoreHelper.IsStruct(System.Type)">
             <summary>
-            获取内部异常
+            检测是否为结构类型
             </summary>
-            <param name="ex"></param>
+            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:MySoft.CoreHelper.CloneObject(System.Object)">
@@ -1550,6 +1550,48 @@
             异常类型
             </summary>
         </member>
+        <member name="T:MySoft.DataResult">
+            <summary>
+            数据返回
+            </summary>
+        </member>
+        <member name="M:MySoft.DataResult.#ctor">
+            <summary>
+            实体化DataResult
+            </summary>
+        </member>
+        <member name="P:MySoft.DataResult.IsSuccess">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:MySoft.DataResult.Message">
+            <summary>
+            返回消息
+            </summary>
+        </member>
+        <member name="T:MySoft.DataResult`1">
+            <summary>
+            数据返回
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:MySoft.DataResult`1.#ctor">
+            <summary>
+            实体化DataResult
+            </summary>
+        </member>
+        <member name="M:MySoft.DataResult`1.#ctor(`0)">
+            <summary>
+            实体化DataResult
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:MySoft.DataResult`1.Value">
+            <summary>
+            返回值
+            </summary>
+        </member>
         <member name="T:MySoft.XmlHelper">
             <summary>
             Xml工具
@@ -2076,6 +2118,13 @@
             <param name="mailTo"></param>
             <returns></returns>
         </member>
+        <member name="M:MySoft.Mail.SmtpMail.DoSend(System.Object)">
+            <summary>
+            异步发送邮件
+            </summary>
+            <param name="sender"></param>
+            <returns></returns>
+        </member>
         <member name="M:MySoft.Mail.SmtpMail.SendException(System.Exception,System.String,System.String)">
             <summary>
             发送错误
@@ -2094,6 +2143,15 @@
             <param name="mailTo"></param>
             <returns></returns>
         </member>
+        <member name="M:MySoft.Mail.SmtpMail.SendException(System.Web.HttpContext,System.String,System.String)">
+            <summary>
+            发送错误
+            </summary>
+            <param name="current"></param>
+            <param name="title"></param>
+            <param name="mailTo"></param>
+            <returns></returns>
+        </member>
         <member name="M:MySoft.Mail.SmtpMail.SendException(System.Exception,System.String,System.String[])">
             <summary>
             发送错误
@@ -2108,6 +2166,15 @@
             发送错误
             </summary>
             <param name="ex"></param>
+            <param name="title"></param>
+            <param name="mailTo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Mail.SmtpMail.SendException(System.Web.HttpContext,System.String,System.String[])">
+            <summary>
+            发送错误
+            </summary>
+            <param name="current"></param>
             <param name="title"></param>
             <param name="mailTo"></param>
             <returns></returns>
@@ -2147,6 +2214,36 @@
             <param name="title"></param>
             <param name="mailTo"></param>
             <returns></returns>
+        </member>
+        <member name="P:MySoft.Mail.SmtpMail.SmtpServer">
+            <summary>
+            邮件发送服务器
+            </summary>
+        </member>
+        <member name="P:MySoft.Mail.SmtpMail.UserName">
+            <summary>
+            发件人邮箱
+            </summary>
+        </member>
+        <member name="P:MySoft.Mail.SmtpMail.Password">
+            <summary>
+            发件人密码
+            </summary>
+        </member>
+        <member name="P:MySoft.Mail.SmtpMail.DisplayName">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:MySoft.Mail.SmtpMail.SmtpPort">
+            <summary>
+            邮件端口
+            </summary>
+        </member>
+        <member name="P:MySoft.Mail.SmtpMail.IsSystemMail">
+            <summary>
+            是否系统邮件
+            </summary>
         </member>
         <member name="T:MySoft.Aop.IAopProxyFactory">
             <summary>
@@ -2189,22 +2286,22 @@
             业务模块实体类
             </summary>
         </member>
-        <member name="T:MySoft.ServiceBase">
+        <member name="T:MySoft.ServiceProfile">
             <summary>
             服务配置基类
             </summary>
         </member>
-        <member name="P:MySoft.ServiceBase.Name">
+        <member name="P:MySoft.ServiceProfile.Name">
             <summary>
             模块名称
             </summary>
         </member>
-        <member name="P:MySoft.ServiceBase.AssemblyName">
+        <member name="P:MySoft.ServiceProfile.AssemblyName">
             <summary>
             程序集名称字符串
             </summary>
         </member>
-        <member name="P:MySoft.ServiceBase.ClassName">
+        <member name="P:MySoft.ServiceProfile.ClassName">
             <summary>
             完整类名
             </summary>
@@ -2358,6 +2455,42 @@
             <summary>
             Returns the data checksum computed so far.
             </summary>
+        </member>
+        <member name="T:MySoft.Logger.SimpleLog">
+            <summary>
+            简单日志管理类(按日期生成文件)
+            </summary>
+        </member>
+        <member name="M:MySoft.Logger.SimpleLog.#ctor(System.String)">
+            <summary>
+            实例化简单日志组件
+            </summary>
+            <param name="dir">日志存储根目录，下面会自动创建Log与ErrorLog文件夹</param>
+        </member>
+        <member name="M:MySoft.Logger.SimpleLog.WriteLog(System.String)">
+            <summary>
+            写入日志
+            </summary>
+        </member>
+        <member name="M:MySoft.Logger.SimpleLog.WriteLog(System.Exception)">
+            <summary>
+            写错误日志
+            </summary>
+            <param name="ex"></param>
+        </member>
+        <member name="M:MySoft.Logger.SimpleLog.WriteLogWithSendMail(System.String,System.String[])">
+            <summary>
+            写日志并发送邮件
+            </summary>
+            <param name="log"></param>
+            <param name="mailTo"></param>
+        </member>
+        <member name="M:MySoft.Logger.SimpleLog.WriteLogWithSendMail(System.Exception,System.String[])">
+            <summary>
+            写错误日志并发送邮件
+            </summary>
+            <param name="ex"></param>
+            <param name="mailTo"></param>
         </member>
         <member name="T:MySoft.Remoting.RemotingHost">
             <summary>
@@ -3156,42 +3289,6 @@
             </summary>
             <param name="requestMsg"></param>
             <param name="respondMsg"></param>
-        </member>
-        <member name="T:MySoft.Logger">
-            <summary>
-            简单日志管理类(按日期生成文件)
-            </summary>
-        </member>
-        <member name="M:MySoft.Logger.#ctor(System.String)">
-            <summary>
-            实例化简单日志组件
-            </summary>
-            <param name="dir">日志存储根目录，下面会自动创建Log与ErrorLog文件夹</param>
-        </member>
-        <member name="M:MySoft.Logger.WriteLog(System.String)">
-            <summary>
-            写入日志
-            </summary>
-        </member>
-        <member name="M:MySoft.Logger.WriteLog(System.Exception)">
-            <summary>
-            写错误日志
-            </summary>
-            <param name="ex"></param>
-        </member>
-        <member name="M:MySoft.Logger.WriteLogWithSendMail(System.String,System.String[])">
-            <summary>
-            写日志并发送邮件
-            </summary>
-            <param name="log"></param>
-            <param name="mailTo"></param>
-        </member>
-        <member name="M:MySoft.Logger.WriteLogWithSendMail(System.Exception,System.String[])">
-            <summary>
-            写错误日志并发送邮件
-            </summary>
-            <param name="ex"></param>
-            <param name="mailTo"></param>
         </member>
         <member name="T:MySoft.Remoting.RemotingClientUtil`1">
             <summary>
@@ -5115,8 +5212,31 @@
             错误处理
             </summary>
         </member>
+        <member name="M:MySoft.ErrorHelper.GetInnerException(System.Exception)">
+            <summary>
+            获取内部异常
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.ErrorHelper.GetErrorWithoutHtml(System.Exception)">
+            <summary>
+            获取异常日志
+            </summary>
+            <param name="ex"></param>
+        </member>
         <member name="M:MySoft.ErrorHelper.GetHtmlError(System.Exception)">
-            <summary>Returns HTML an formatted error message.</summary>
+            <summary>
+            Returns HTML an formatted error message.
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.ErrorHelper.GetHtmlWithoutError">
+            <summary>
+            Get Log Html
+            </summary>
+            <returns>Result</returns>
         </member>
         <member name="T:NZlib.Zip.ZipEntry">
              <summary>

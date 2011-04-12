@@ -1973,20 +1973,6 @@
             异步处理Handler
             </summary>
         </member>
-        <member name="T:MySoft.Web.ErrorHelper">
-            <summary>
-            错误处理
-            </summary>
-        </member>
-        <member name="M:MySoft.Web.ErrorHelper.GetHtmlError(System.Exception)">
-            <summary>Returns HTML an formatted error message.</summary>
-        </member>
-        <member name="M:MySoft.Web.ErrorHelper.GetHtmlWithoutError">
-            <summary>
-            Get Log Html
-            </summary>
-            <returns>Result</returns>
-        </member>
         <member name="T:MySoft.Web.UI.IAjaxInitHandler">
             <summary>
             提供异步初始化处理的接口
