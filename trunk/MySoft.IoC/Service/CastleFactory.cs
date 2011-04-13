@@ -9,6 +9,7 @@ using MySoft.IoC;
 using MySoft.Remoting;
 using System.Linq;
 using Castle.Core.Interceptor;
+using MySoft.Remoting.CompressionSink;
 
 namespace MySoft.IoC
 {
@@ -273,7 +274,7 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
+                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0, ZipSinkType.GZip);
                     helper.OnLog += new LogEventHandler(msg_OnLog);
 
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);

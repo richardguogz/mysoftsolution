@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySoft.Remoting;
 using System.Runtime.Remoting;
+using MySoft.Remoting.CompressionSink;
 
 namespace MySoft.IoC
 {
@@ -13,7 +14,7 @@ namespace MySoft.IoC
     {
         private CastleFactoryConfiguration config;
         public CastleServiceHelper(CastleFactoryConfiguration config)
-            : base(config.Protocol, config.Server, config.Port)
+            : base(config.Protocol, config.Server, config.Port, ZipSinkType.GZip)
         {
             this.config = config;
         }

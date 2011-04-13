@@ -1,18 +1,38 @@
 using System.IO;
-using NZlib.Zip;
+using System.IO.Compression;
 
-namespace CompressionSink
+namespace MySoft.Remoting.CompressionSink
 {
-
-    public class myHelper
+    /// <summary>
+    /// 压缩类型
+    /// </summary>
+    public enum ZipSinkType
     {
+        /// <summary>
+        /// 无压缩
+        /// </summary>
+        None,
+        /// <summary>
+        /// Deflate压缩
+        /// </summary>
+        Deflate,
+        /// <summary>
+        /// GZip压缩
+        /// </summary>
+        GZip
+    }
 
+    /// <summary>
+    /// 压缩帮助类
+    /// </summary>
+    public class ZipHelper
+    {
         /// <summary>
         /// refactor  by zendy
         /// </summary>
         /// <param name="inStream"></param>
         /// <returns></returns>
-        public static Stream getCompressedStreamCopy(Stream inStream)
+        public static Stream GetCompressedStreamCopy(Stream inStream, ZipSinkType type)
         {
 
             //using sharpziplib
@@ -64,16 +84,28 @@ namespace CompressionSink
             //			 
             //
             //if(inStream.Length==0) return inStream;
+
             MemoryStream outStream = new MemoryStream();
-            ZipOutputStream outZStream = new ZipOutputStream(outStream);
+            Stream memoryStream = new MemoryStream();
 
-            //				
-            //			 
-            CopyStream(inStream, outZStream);
-            //			// Crypto(inStream,outStream);
-            outZStream.Finish();
-            outStream.Seek(0, SeekOrigin.Begin);
+            switch (type)
+            {
+                case ZipSinkType.Deflate:
+                    {
+                        memoryStream = new DeflateStream(inStream, CompressionMode.Compress);
+                    }
+                    break;
+                case ZipSinkType.GZip:
+                    {
+                        memoryStream = new GZipStream(inStream, CompressionMode.Compress);
+                    }
+                    break;
+            }
 
+            CopyStream(memoryStream, outStream);
+
+            // 加密调用如下方法
+            // Crypto(inStream,outStream);
 
             //记录16进制的流
             //			System.Text.StringBuilder str=new System.Text.StringBuilder();
@@ -92,9 +124,6 @@ namespace CompressionSink
             //				cnt = outStream.Read(buf,0,4096);
             //			}
             //			System.Diagnostics.Debug.WriteLine("compress in mySink:" +outStream.Length.ToString() + " | "+ str.ToString());
-            System.Diagnostics.Debug.WriteLine("compress in mySink:" + outStream.Length.ToString());
-
-            outStream.Seek(0, SeekOrigin.Begin);
 
 
             //压缩流
@@ -105,6 +134,10 @@ namespace CompressionSink
             //			CopyStream(outStream, outZStream);
             //			
             //			outStream1.Seek(0,SeekOrigin.Begin);
+
+            System.Diagnostics.Debug.WriteLine("Compress in zipSink:" + outStream.Length.ToString());
+            outStream.Seek(0, SeekOrigin.Begin);
+
             return outStream;
         }
 
@@ -113,7 +146,7 @@ namespace CompressionSink
         /// </summary>
         /// <param name="inStream"></param>
         /// <returns></returns>
-        public static Stream getUncompressedStreamCopy(Stream inStream)
+        public static Stream GetUncompressedStreamCopy(Stream inStream, ZipSinkType type)
         {
 
             //			MemoryStream outStream = new MemoryStream();
@@ -147,17 +180,28 @@ namespace CompressionSink
             //			outStream.Seek(0,SeekOrigin.Begin);
             //inStream.Seek(0,SeekOrigin.Begin);
             //if(inStream.==0) return inStream;
+
             MemoryStream outStream = new MemoryStream();
-            ZipOutputStream outZStream = new ZipOutputStream(outStream);
-            //zlib.ZInputStream unCompressStream = new zlib.ZInputStream(inStream,zlib.zlibConst.Z_NO_COMPRESSION);
+            Stream memoryStream = new MemoryStream();
 
+            switch (type)
+            {
+                case ZipSinkType.Deflate:
+                    {
+                        memoryStream = new DeflateStream(inStream, CompressionMode.Decompress);
+                    }
+                    break;
+                case ZipSinkType.GZip:
+                    {
+                        memoryStream = new GZipStream(inStream, CompressionMode.Decompress);
+                    }
+                    break;
+            }
 
-            //unCompressStream.Close();
-            CopyStream(inStream, outZStream);
+            CopyStream(memoryStream, outStream);
+
+            // 解密调用如下方法
             // Decrypto(inStream, outStream);
-            outZStream.Finish();
-
-            outStream.Seek(0, SeekOrigin.Begin);
 
             //记录16进制的流
             //			System.Text.StringBuilder str=new System.Text.StringBuilder();
@@ -182,12 +226,11 @@ namespace CompressionSink
             //			if(outStream.Length==0) return outStream;
             //			MemoryStream outStream1 = new MemoryStream();
 
-            System.Diagnostics.Debug.WriteLine("uncompress in mySink:" + outStream.Length.ToString());
+            System.Diagnostics.Debug.WriteLine("Uncompress in zipSink:" + outStream.Length.ToString());
             outStream.Seek(0, SeekOrigin.Begin);
+
             return outStream;
         }
-
-
 
         public static void CopyStream(System.IO.Stream input, System.IO.Stream output)
         {
@@ -200,6 +243,7 @@ namespace CompressionSink
             }
             output.Flush();
         }
+
         public static void Decrypto(System.IO.Stream input, System.IO.Stream output)
         {
             byte[] mycode = System.Text.Encoding.Default.GetBytes("123456789");
@@ -215,9 +259,9 @@ namespace CompressionSink
             }
             output.Flush();
         }
+
         public static void Crypto(System.IO.Stream input, System.IO.Stream output)
         {
-
             byte[] mycode = System.Text.Encoding.Default.GetBytes("123456789");
             output.Write(mycode, 0, mycode.Length);
             byte[] buffer = new byte[2000];
@@ -227,7 +271,6 @@ namespace CompressionSink
 
                 output.Write(buffer, 0, len);
             }
-
             output.Flush();
         }
     }

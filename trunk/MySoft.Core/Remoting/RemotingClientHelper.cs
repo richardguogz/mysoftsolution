@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
+using MySoft.Remoting.CompressionSink;
 
 namespace MySoft.Remoting
 {
@@ -60,23 +61,51 @@ namespace MySoft.Remoting
             this.serverPort = serverPort;
             this.callbackPort = callbackPort;
 
-            Init();
+            Init(ZipSinkType.None);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RemotingClientHelper"/> class.
+        /// </summary>
+        /// <param name="channelType">Type of the channel.</param>
+        /// <param name="serverAddress">The server address.</param>
+        /// <param name="serverPort">The server port.</param>
+        /// <param name="callbackPort">The callback port.</param>
+        public RemotingClientHelper(RemotingChannelType channelType, string serverAddress, int serverPort, int callbackPort, ZipSinkType zipType)
+        {
+            this.channelType = channelType;
+            this.serverAddress = serverAddress;
+            this.serverPort = serverPort;
+            this.callbackPort = callbackPort;
+
+            Init(zipType);
         }
 
         /// <summary>
         /// Inits this instance.
         /// </summary>
-        private void Init()
+        private void Init(ZipSinkType zipType)
         {
             if (clientChannel == null)
             {
-                BinaryServerFormatterSinkProvider serverProvider = new
-                    BinaryServerFormatterSinkProvider();
-                BinaryClientFormatterSinkProvider clientProvider = new
-                    BinaryClientFormatterSinkProvider();
+                IClientChannelSinkProvider clientProvider;
+                IServerChannelSinkProvider serverProvider;
 
-                //设置反序列化级别为Full，支持远程处理在所有情况下支持的所有类型
-                serverProvider.TypeFilterLevel = TypeFilterLevel.Full;
+                if (zipType == ZipSinkType.None)
+                {
+                    //使用二进制格式化
+                    clientProvider = new BinaryClientFormatterSinkProvider();
+                    serverProvider = new BinaryServerFormatterSinkProvider();
+
+                    //设置反序列化级别为Full，支持远程处理在所有情况下支持的所有类型
+                    (serverProvider as BinaryServerFormatterSinkProvider)
+                        .TypeFilterLevel = TypeFilterLevel.Full;
+                }
+                else
+                {
+                    clientProvider = new ZipClientSinkProvider(zipType);
+                    serverProvider = new ZipServerSinkProvider(zipType);
+                }
 
                 string name = AppDomain.CurrentDomain.FriendlyName + Environment.MachineName;
 

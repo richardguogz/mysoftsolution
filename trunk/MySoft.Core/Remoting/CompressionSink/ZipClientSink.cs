@@ -3,16 +3,18 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Messaging;
 
 
-namespace CompressionSink
+namespace MySoft.Remoting.CompressionSink
 {
-    public class myClientSink : BaseChannelSinkWithProperties,
+    public class ZipClientSink : BaseChannelSinkWithProperties,
                                         IClientChannelSink
     {
         private IClientChannelSink _nextSink;
+        private ZipSinkType _zipType;
 
-        public myClientSink(IClientChannelSink next)
+        public ZipClientSink(IClientChannelSink next, ZipSinkType zip)
         {
             _nextSink = next;
+            _zipType = zip;
         }
 
         public IClientChannelSink NextChannelSink
@@ -32,7 +34,7 @@ namespace CompressionSink
 
             headers["Compress"] = "True";
             // generate a compressed stream using NZipLib
-            stream = myHelper.getCompressedStreamCopy(stream);
+            stream = ZipHelper.GetCompressedStreamCopy(stream, _zipType);
 
             // push onto stack and forward the request
             sinkStack.Push(this, null);
@@ -47,7 +49,7 @@ namespace CompressionSink
         {
 
             // deflate the response
-            stream = myHelper.getUncompressedStreamCopy(stream);
+            stream = ZipHelper.GetUncompressedStreamCopy(stream, _zipType);
 
             // forward the request
             sinkStack.AsyncProcessResponse(headers, stream);
@@ -71,8 +73,7 @@ namespace CompressionSink
 
             requestHeaders["Compress"] = "True";
 
-            Stream localrequestStream =
-                myHelper.getCompressedStreamCopy(requestStream);
+            Stream localrequestStream = ZipHelper.GetCompressedStreamCopy(requestStream, _zipType);
 
             Stream localresponseStream;
             // forward the call to the next sink
@@ -83,7 +84,7 @@ namespace CompressionSink
                                      out localresponseStream);
 
             // deflate the response
-            responseStream = myHelper.getUncompressedStreamCopy(localresponseStream);
+            responseStream = ZipHelper.GetUncompressedStreamCopy(localresponseStream, _zipType);
 
 
 

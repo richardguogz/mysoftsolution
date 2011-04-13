@@ -2,17 +2,19 @@ using System.IO;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Messaging;
 
-namespace CompressionSink
+namespace MySoft.Remoting.CompressionSink
 {
 
-    public class myServerSink : BaseChannelSinkWithProperties, IServerChannelSink
+    public class ZipServerSink : BaseChannelSinkWithProperties, IServerChannelSink
     {
 
         private IServerChannelSink _nextSink;
+        private ZipSinkType _zipType;
 
-        public myServerSink(IServerChannelSink next)
+        public ZipServerSink(IServerChannelSink next, ZipSinkType _zip)
         {
             _nextSink = next;
+            _zipType = _zip;
         }
 
         public IServerChannelSink NextChannelSink
@@ -36,7 +38,7 @@ namespace CompressionSink
             if (compress != null && compress.ToString() == "True")
             {
                 // 压缩数据流
-                stream = myHelper.getCompressedStreamCopy(stream);
+                stream = ZipHelper.GetCompressedStreamCopy(stream, _zipType);
                 // forwarding to the stack for further processing
                 sinkStack.AsyncProcessResponse(msg, headers, stream);
 
@@ -69,7 +71,7 @@ namespace CompressionSink
             if (compress != null && compress.ToString() == "True")
             {
                 // 解压请求的数据流,using NZipLib
-                Stream localrequestStream = myHelper.getUncompressedStreamCopy(requestStream);
+                Stream localrequestStream = ZipHelper.GetUncompressedStreamCopy(requestStream, _zipType);
 
                 // pushing onto stack and forwarding the call
                 sinkStack.Push(this, null);
@@ -84,7 +86,7 @@ namespace CompressionSink
                     out localresponseStream);
 
                 // compressing the response
-                responseStream = myHelper.getCompressedStreamCopy(localresponseStream);
+                responseStream = ZipHelper.GetCompressedStreamCopy(localresponseStream, _zipType);
 
                 // returning status information
                 return srvProc;

@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Runtime.Remoting.Channels;
 
-namespace CompressionSink
+namespace MySoft.Remoting.CompressionSink
 {
-    public class myServerSinkProvider : IServerChannelSinkProvider
+    public class ZipServerSinkProvider : IServerChannelSinkProvider
     {
         private IServerChannelSinkProvider _nextProvider;
+        private ZipSinkType _zipType = ZipSinkType.GZip;
 
-        public myServerSinkProvider(IDictionary properties, ICollection providerData)
+        public ZipServerSinkProvider(ZipSinkType zipType)
+        {
+            _zipType = zipType;
+        }
+
+        public ZipServerSinkProvider(IDictionary properties, ICollection providerData)
         {
             // not yet needed
         }
@@ -24,13 +30,25 @@ namespace CompressionSink
             }
         }
 
+        public ZipSinkType ZipType
+        {
+            get
+            {
+                return _zipType;
+            }
+            set
+            {
+                _zipType = value;
+            }
+        }
+
         public IServerChannelSink CreateSink(IChannelReceiver channel)
         {
             // create other sinks in the chain
             IServerChannelSink next = _nextProvider.CreateSink(channel);
 
             // put our sink on top of the chain and return it				
-            return new myServerSink(next);
+            return new ZipServerSink(next, _zipType);
         }
 
         public void GetChannelData(IChannelDataStore channelData)
