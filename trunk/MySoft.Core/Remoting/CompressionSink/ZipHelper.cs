@@ -254,7 +254,6 @@ namespace MySoft.Remoting.CompressionSink
             int len;
             while ((len = input.Read(buffer, 0, 2000)) > 0)
             {
-
                 output.Write(buffer, 0, len);
             }
             output.Flush();
