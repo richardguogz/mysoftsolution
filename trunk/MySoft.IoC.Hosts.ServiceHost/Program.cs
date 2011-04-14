@@ -11,7 +11,7 @@ namespace MySoft.IoC.Hosts.ServiceHost
     {
         static void Main(string[] args)
         {
-            CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
+            //CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
             CastleFactory.Create().OnLog += new LogEventHandler(Program_OnLog);
             CastleFactory.Create().OnError += new ErrorLogEventHandler(Program_OnError);
 

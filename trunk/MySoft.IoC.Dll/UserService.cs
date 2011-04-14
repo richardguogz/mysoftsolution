@@ -6,14 +6,14 @@ using MySoft.Data;
 
 namespace MySoft.IoC.Dll
 {
-    public class UserService : MarshalByRefObject, IUserService
+    public class UserService : IUserService
     {
         public UserInfo GetUserInfo(string username)
         {
-            if (username.Length % 2 == 0)
-            {
-                throw new Exception(username + " =>  出错啦！");
-            }
+            //if (username.Length % 2 == 0)
+            //{
+            //    throw new Exception(username + " =>  出错啦！");
+            //}
 
             return new UserInfo()
             {

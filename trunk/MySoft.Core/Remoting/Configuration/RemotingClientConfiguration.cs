@@ -19,7 +19,7 @@ namespace MySoft.Remoting
     /// 	......
     ///     </system.web>
     ///     <mysoft.framework>
-    /// 	    <remotingClient isCheckServer="true" interval="3000">
+    /// 	    <remotingClient isCheckServer="true" interval="3000" compress="true">
     ///             <remotingHost name="NetValueClient" defaultServer="s1">
     ///                 <server name="s1" url="tcp://192.168.0.1:8888"/>
     ///                 <server name="s2" url="tcp://192.168.0.2:8888"/>
@@ -100,9 +100,9 @@ namespace MySoft.Remoting
             if (node == null) return;
 
             if (node.Attributes["isCheckServer"].Value != null)
-                _IsCheckServer = node.Attributes["isCheckServer"].Value == "true" ? true : false;
+                this._IsCheckServer = node.Attributes["isCheckServer"].Value == "true" ? true : false;
             if (node.Attributes["interval"].Value != null)
-                _Interval = Convert.ToDouble(node.Attributes["interval"].Value);
+                this._Interval = Convert.ToDouble(node.Attributes["interval"].Value);
 
             foreach (XmlNode n in node.ChildNodes)
             {
@@ -146,9 +146,9 @@ namespace MySoft.Remoting
                     host.Servers = servers;
                     host.Modules = modules;
 
-                    if (!_RemotingHosts.ContainsKey(host.Name))
+                    if (!this._RemotingHosts.ContainsKey(host.Name))
                     {
-                        _RemotingHosts.Add(host.Name, host);
+                        this._RemotingHosts.Add(host.Name, host);
                     }
                 }
             }

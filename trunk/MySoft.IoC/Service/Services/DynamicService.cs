@@ -62,7 +62,6 @@ namespace MySoft.IoC.Services
             resMsg.Timestamp = DateTime.Now;
             resMsg.TransactionId = msg.TransactionId;
             resMsg.Transfer = msg.Transfer;
-            resMsg.Compress = msg.Compress;
 
             object service = null;
             try
@@ -143,66 +142,15 @@ namespace MySoft.IoC.Services
                     {
                         case TransferType.Binary:
                             byte[] buffer = SerializationManager.SerializeBin(returnValue);
-
-                            //将数据进行压缩
-                            if (resMsg.Compress != CompressType.None)
-                            {
-                                switch (resMsg.Compress)
-                                {
-                                    case CompressType.Zip:
-                                        resMsg.Data = CompressionManager.Compress7Zip(buffer);
-                                        break;
-                                    case CompressType.GZip:
-                                        resMsg.Data = CompressionManager.CompressGZip(buffer);
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                resMsg.Data = buffer;
-                            }
+                            resMsg.Data = buffer;
                             break;
                         case TransferType.Json:
                             string jsonString = SerializationManager.SerializeJson(returnValue);
-
-                            //将数据进行压缩
-                            if (resMsg.Compress != CompressType.None)
-                            {
-                                switch (resMsg.Compress)
-                                {
-                                    case CompressType.Zip:
-                                        resMsg.Data = CompressionManager.Compress7Zip(jsonString);
-                                        break;
-                                    case CompressType.GZip:
-                                        resMsg.Data = CompressionManager.CompressGZip(jsonString);
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                resMsg.Data = jsonString;
-                            }
+                            resMsg.Data = jsonString;
                             break;
                         case TransferType.Xml:
                             string xmlString = SerializationManager.SerializeXml(returnValue);
-
-                            //将数据进行压缩
-                            if (resMsg.Compress != CompressType.None)
-                            {
-                                switch (resMsg.Compress)
-                                {
-                                    case CompressType.Zip:
-                                        resMsg.Data = CompressionManager.Compress7Zip(xmlString);
-                                        break;
-                                    case CompressType.GZip:
-                                        resMsg.Data = CompressionManager.CompressGZip(xmlString);
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                resMsg.Data = xmlString;
-                            }
+                            resMsg.Data = xmlString;
                             break;
                     }
                 }

@@ -21,25 +21,9 @@ namespace MySoft.IoC
         private Guid messageId;
         private byte priority;
         private DateTime timestamp;
-        private CompressType compress = CompressType.None;
         private TransferType transfer = TransferType.Binary;
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the compress of the service.
-        /// </summary>
-        public CompressType Compress
-        {
-            get
-            {
-                return compress;
-            }
-            set
-            {
-                compress = value;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the transfer of the service.

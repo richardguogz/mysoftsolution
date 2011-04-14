@@ -13,8 +13,6 @@ namespace MySoft.IoC
     /// </summary>
     public class BaseServiceInterfaceImpl
     {
-        delegate object GetValueDelegate(Type t);
-
         /// <summary>
         /// 保存方法
         /// </summary>
@@ -73,7 +71,6 @@ namespace MySoft.IoC
                 reqMsg.Transfer = container.Transfer;
             }
 
-            reqMsg.Compress = container.Compress;
             reqMsg.Expiration = DateTime.Now.AddMinutes(DefaultExpireMinutes);
             reqMsg.MessageId = Guid.NewGuid();
             reqMsg.ServiceName = serviceInterfaceType.FullName;
@@ -143,57 +140,12 @@ namespace MySoft.IoC
             {
                 case TransferType.Binary:
                     byte[] buffer = (byte[])resMsg.Data;
-
-                    //将数据进行解压缩
-                    if (resMsg.Compress != CompressType.None)
-                    {
-                        switch (resMsg.Compress)
-                        {
-                            case CompressType.GZip:
-                                buffer = CompressionManager.DecompressGZip(buffer);
-                                break;
-                            case CompressType.Zip:
-                                buffer = CompressionManager.Decompress7Zip(buffer);
-                                break;
-                        }
-                    }
-
                     return SerializationManager.DeserializeBin(buffer);
                 case TransferType.Json:
                     string jsonString = resMsg.Data.ToString();
-
-                    //将数据进行解压缩
-                    if (resMsg.Compress != CompressType.None)
-                    {
-                        switch (resMsg.Compress)
-                        {
-                            case CompressType.GZip:
-                                jsonString = CompressionManager.DecompressGZip(jsonString);
-                                break;
-                            case CompressType.Zip:
-                                jsonString = CompressionManager.Decompress7Zip(jsonString);
-                                break;
-                        }
-                    }
-
                     return SerializationManager.DeserializeJson(returnType, jsonString);
                 case TransferType.Xml:
                     string xmlString = resMsg.Data.ToString();
-
-                    //将数据进行解压缩
-                    if (resMsg.Compress != CompressType.None)
-                    {
-                        switch (resMsg.Compress)
-                        {
-                            case CompressType.GZip:
-                                xmlString = CompressionManager.DecompressGZip(xmlString);
-                                break;
-                            case CompressType.Zip:
-                                xmlString = CompressionManager.Decompress7Zip(xmlString);
-                                break;
-                        }
-                    }
-
                     return SerializationManager.DeserializeXml(returnType, xmlString);
             }
 

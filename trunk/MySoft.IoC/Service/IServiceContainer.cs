@@ -100,10 +100,5 @@ namespace MySoft.IoC
         /// Gets or sets the transfer.
         /// </summary>
         TransferType Transfer { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
-        /// </summary>
-        /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        CompressType Compress { get; set; }
     }
 }

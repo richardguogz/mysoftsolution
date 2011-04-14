@@ -9,7 +9,6 @@ using MySoft.IoC;
 using MySoft.Remoting;
 using System.Linq;
 using Castle.Core.Interceptor;
-using MySoft.Remoting.CompressionSink;
 
 namespace MySoft.IoC
 {
@@ -274,10 +273,14 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0, ZipSinkType.GZip);
+                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
                     helper.OnLog += new LogEventHandler(msg_OnLog);
 
                     IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
+
+                    //string url = string.Format("{0}://{1}:{2}/{3}", config.Protocol, config.Server, config.Port, config.ServiceMQName);
+                    //IServiceMQ mq = RemotingClientUtil<IServiceMQ>.Instance.GetWellKnownClientInstance(url.ToLower());
+
                     IServiceContainer container = new SimpleServiceContainer(mq);
                     container.OnLog += new LogEventHandler(msg_OnLog);
                     container.OnError += new ErrorLogEventHandler(container_OnError);
@@ -286,7 +289,6 @@ namespace MySoft.IoC
                 }
 
                 singleton.ServiceContainer.Transfer = config.Transfer;
-                singleton.ServiceContainer.Compress = config.Compress;
                 singleton.ServiceContainer.MaxTryNum = config.MaxTry;
             }
 

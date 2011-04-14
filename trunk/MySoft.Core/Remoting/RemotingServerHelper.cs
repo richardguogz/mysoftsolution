@@ -8,7 +8,6 @@ using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
-using MySoft.Remoting.CompressionSink;
 
 namespace MySoft.Remoting
 {
@@ -110,24 +109,11 @@ namespace MySoft.Remoting
             this.channelType = channelType;
             this.serverAddress = serverAddress;
             this.serverPort = serverPort;
-            Init(ZipSinkType.None);
+
+            Init();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RemotingServerHelper"/> class.
-        /// </summary>
-        /// <param name="channelType">Type of the channel.</param>
-        /// <param name="serverAddress">The server address.</param>
-        /// <param name="serverPort">The server port.</param>
-        public RemotingServerHelper(RemotingChannelType channelType, string serverAddress, int serverPort, ZipSinkType zipType)
-        {
-            this.channelType = channelType;
-            this.serverAddress = serverAddress;
-            this.serverPort = serverPort;
-            Init(zipType);
-        }
-
-        private void Init(ZipSinkType zipType)
+        private void Init()
         {
             if (serviceChannel == null)
             {
@@ -138,10 +124,12 @@ namespace MySoft.Remoting
                 IClientChannelSinkProvider clientProvider;
                 IServerChannelSinkProvider serverProvider;
 
-                if (zipType == ZipSinkType.None)
+                if (channelType == RemotingChannelType.Tcp)
                 {
                     //使用二进制格式化
                     clientProvider = new BinaryClientFormatterSinkProvider();
+
+                    //使用二进制格式化
                     serverProvider = new BinaryServerFormatterSinkProvider();
 
                     //设置反序列化级别为Full，支持远程处理在所有情况下支持的所有类型
@@ -150,20 +138,18 @@ namespace MySoft.Remoting
                 }
                 else
                 {
-                    clientProvider = new ZipClientSinkProvider(zipType);
-                    serverProvider = new ZipServerSinkProvider(zipType);
+                    //使用SOAP格式化
+                    clientProvider = new SoapClientFormatterSinkProvider();
+
+                    //使用SOAP格式化
+                    serverProvider = new SoapServerFormatterSinkProvider();
+
+                    //设置反序列化级别为Full，支持远程处理在所有情况下支持的所有类型
+                    (serverProvider as SoapServerFormatterSinkProvider)
+                        .TypeFilterLevel = TypeFilterLevel.Full;
                 }
 
-                string name = AppDomain.CurrentDomain.FriendlyName + Environment.MachineName;
-
-                var channel = ChannelServices.GetChannel(name);
-
-                //判断信道是否注册
-                if (channel != null)
-                {
-                    //如果已经注册，则先注销注册
-                    ChannelServices.UnregisterChannel(channel);
-                }
+                string name = AppDomain.CurrentDomain.FriendlyName;
 
                 IDictionary props = new Hashtable();
                 props["name"] = name;
@@ -179,7 +165,14 @@ namespace MySoft.Remoting
                     serviceChannel = new HttpChannel(props, clientProvider, serverProvider);
                 }
 
-                ChannelServices.RegisterChannel(serviceChannel, false);
+                try
+                {
+                    ChannelServices.RegisterChannel(serviceChannel, false);
+                }
+                catch (RemotingException ex)
+                {
+                    //注册信道出错
+                }
             }
         }
 

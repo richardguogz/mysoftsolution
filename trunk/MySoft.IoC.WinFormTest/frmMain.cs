@@ -25,6 +25,8 @@ namespace MySoft.IoC.WinFormTest
             CastleFactory.Create().OnError += new ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
 
+            service.GetUserInfo("dfasdf");
+
             int count = (int)numericUpDown1.Value;
 
             for (int i = 0; i < count; i++)
@@ -59,6 +61,8 @@ namespace MySoft.IoC.WinFormTest
                     string msg = string.Format("线程：{0} 耗时：{1} ms 异常：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, ex.Message);
                     WriteMessage(msg);
                 }
+
+                Thread.Sleep(10);
             }
         }
 

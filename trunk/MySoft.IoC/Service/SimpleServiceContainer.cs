@@ -37,7 +37,6 @@ namespace MySoft.IoC
         private Castle.Windsor.IWindsorContainer container;
         private ServiceProxy serviceProxy;
         private IServiceMQ mq;
-        private CompressType compress = CompressType.None;
         private TransferType transfer = TransferType.Binary;
 
         private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
@@ -353,22 +352,6 @@ namespace MySoft.IoC
                 return null;
             }
             return ParseServiceNodes(node.Dependents);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether return value of service <see cref="IServiceContainer"/> is compress.
-        /// </summary>
-        /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        public CompressType Compress
-        {
-            get
-            {
-                return compress;
-            }
-            set
-            {
-                compress = value;
-            }
         }
 
         #endregion

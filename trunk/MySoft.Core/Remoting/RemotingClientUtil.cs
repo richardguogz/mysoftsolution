@@ -80,8 +80,8 @@ namespace MySoft.Remoting
                     }
                 }
 
-                //每隔30秒生成一次日志
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
+                //每隔10秒生成一次日志
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
             }
         }
 

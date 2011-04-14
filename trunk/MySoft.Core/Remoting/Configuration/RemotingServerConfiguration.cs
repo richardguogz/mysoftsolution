@@ -21,7 +21,7 @@ namespace MySoft.Remoting
     ///     </system.web>
     ///     <mysoft.framework>
     /// 	    <remotingServer>
-    ///             <server channelType="tcp" serverAddress="127.0.0.1" port="8888"/>
+    ///             <server channelType="tcp" serverAddress="127.0.0.1" port="8888" compress="true"/>
     /// 		    <remoteObject name="基金净值" assemblyName="Shumi.BLL" className="SB.NetValue" mode="singleton" />
     /// 		    <remoteObject name="基金净值" assemblyName="Shumi.BLL" className="SB.NetValue" mode="singlecall" />
     /// 	    </remotingServer>
@@ -142,7 +142,7 @@ namespace MySoft.Remoting
                         module.Mode = ac["mode"].Value.ToLower() == "singleton" ? WellKnownObjectMode.Singleton : WellKnownObjectMode.SingleCall;
                     }
 
-                    _Modules.Add(module);
+                    this._Modules.Add(module);
                 }
             }
         }

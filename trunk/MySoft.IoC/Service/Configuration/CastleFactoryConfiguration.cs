@@ -16,7 +16,6 @@ namespace MySoft.IoC
         private CastleFactoryType type = CastleFactoryType.Local;
         private RemotingChannelType protocol = RemotingChannelType.Tcp;
         private TransferType transfer = TransferType.Binary;
-        private CompressType compress = CompressType.None;
 
         private string server = "127.0.0.1";
         private int port = 8888;
@@ -79,25 +78,6 @@ namespace MySoft.IoC
                         break;
                     default:
                         transfer = TransferType.Binary;
-                        break;
-                }
-            }
-
-            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value.Trim() != string.Empty)
-            {
-                switch (node.Attributes["compress"].Value.ToLower())
-                {
-                    case "none":
-                        compress = CompressType.None;
-                        break;
-                    case "zip":
-                        compress = CompressType.Zip;
-                        break;
-                    case "gzip":
-                        compress = CompressType.GZip;
-                        break;
-                    default:
-                        compress = CompressType.None;
                         break;
                 }
             }
@@ -173,16 +153,6 @@ namespace MySoft.IoC
         {
             get { return serviceMQName; }
             set { serviceMQName = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether data dispatched by this service factory is compressed.
-        /// </summary>
-        /// <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        public CompressType Compress
-        {
-            get { return compress; }
-            set { compress = value; }
         }
 
         /// <summary>
