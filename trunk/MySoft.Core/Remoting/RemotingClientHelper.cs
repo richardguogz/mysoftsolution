@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Channels.Http;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
+using System.Collections.Generic;
 
 namespace MySoft.Remoting
 {
@@ -22,6 +23,8 @@ namespace MySoft.Remoting
         private int callbackPort;
         private int timeout = 1000 * 60 * 5;
         private IChannel clientChannel;
+
+        private Dictionary<string, object> _RemoteObjects = new Dictionary<string, object>();
 
         private void WriteLog(string log)
         {
@@ -134,11 +137,19 @@ namespace MySoft.Remoting
         public T GetWellKnownClientInstance<T>(string notifyName)
         {
             string url = BuildUrl(notifyName);
-            RemotingConfiguration.RegisterWellKnownClientType(typeof(T), url);
-            T instance = (T)Activator.GetObject(typeof(T), url);
-            if (instance != null)
+            T instance = default(T);
+            if (!_RemoteObjects.ContainsKey(url))
             {
-                WriteLog(instance.ToString() + " proxy created!");
+                //RemotingConfiguration.RegisterWellKnownClientType(typeof(T), url);
+                instance = (T)Activator.GetObject(typeof(T), url);
+                if (instance != null)
+                {
+                    WriteLog(instance.ToString() + " proxy created!");
+                }
+            }
+            else
+            {
+                instance = (T)_RemoteObjects[url];
             }
 
             return instance;
