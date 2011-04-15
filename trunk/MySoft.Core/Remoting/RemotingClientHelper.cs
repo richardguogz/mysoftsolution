@@ -104,6 +104,15 @@ namespace MySoft.Remoting
 
                 string name = AppDomain.CurrentDomain.FriendlyName;
 
+                foreach (var channel in ChannelServices.RegisteredChannels)
+                {
+                    if (channel.ChannelName == name)
+                    {
+                        ChannelServices.UnregisterChannel(channel);
+                        break;
+                    }
+                }
+
                 IDictionary props = new Hashtable();
                 props["name"] = name;
                 props["port"] = callbackPort;
