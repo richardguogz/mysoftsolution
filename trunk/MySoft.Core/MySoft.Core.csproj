@@ -94,7 +94,7 @@
     <Compile Include="Json\Newtonsoft.Json\Converters\DataSetConverter.cs" />
     <Compile Include="Json\Newtonsoft.Json\Converters\DataTableConverter.cs" />
     <Compile Include="Remoting\RemotingException.cs" />
-    <Compile Include="Remoting\ServiceContract.cs" />
+    <Compile Include="Common\ServiceContract.cs" />
     <Compile Include="Security\AESEncrypt.cs" />
     <Compile Include="Security\DESEncrypt.cs" />
     <Compile Include="Json\JSONArray.cs" />

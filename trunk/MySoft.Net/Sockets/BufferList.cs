@@ -60,15 +60,15 @@ namespace MySoft.Net.Sockets
 
         }
 
-        public bool InsertByteArray(byte[] Data, int ml, out List<byte[]> datax)
+        public bool InsertByteArray(byte[] buffer, int ml, out List<byte[]> datax)
         {
             lock (locklist)
             {
                 datax = new List<byte[]>();
 
-                ByteList.AddRange(Data);
+                ByteList.AddRange(buffer);
 
-                Interlocked.Add(ref Vlent, Data.Length);
+                Interlocked.Add(ref Vlent, buffer.Length);
 
 
                 if (lengt == -1 && Vlent > ml)

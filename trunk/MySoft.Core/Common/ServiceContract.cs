@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MySoft.Remoting
+namespace MySoft
 {
     /// <summary>
     /// 数据格式

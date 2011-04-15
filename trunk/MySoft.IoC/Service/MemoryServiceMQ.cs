@@ -27,11 +27,9 @@ namespace MySoft.IoC
                     map.Remove(transactionId);
                     return retObj;
                 }
-                else
-                {
-                    return null;
-                }
             }
+
+            return null;
         }
 
         private void BroadCast(RequestMessage reqMsg)
@@ -53,16 +51,9 @@ namespace MySoft.IoC
         /// <param name="msg">The MSG.</param>
         protected virtual void AddRequestToQueue(Guid tid, RequestMessage msg)
         {
-            lock (requests)
+            lock (responses)
             {
-                if (!requests.ContainsKey(tid))
-                {
-                    requests.Add(tid, msg);
-                }
-                else
-                {
-                    requests[tid] = msg;
-                }
+                requests[tid] = msg;
             }
         }
 
@@ -75,14 +66,7 @@ namespace MySoft.IoC
         {
             lock (responses)
             {
-                if (!responses.ContainsKey(tid))
-                {
-                    responses.Add(tid, msg);
-                }
-                else
-                {
-                    responses[tid] = msg;
-                }
+                responses[tid] = msg;
             }
         }
 

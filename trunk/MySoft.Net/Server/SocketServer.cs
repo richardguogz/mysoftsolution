@@ -19,22 +19,22 @@ namespace MySoft.Net.Server
     /// 连接的代理
     /// </summary>
     /// <param name="socketAsync"></param>
-    public delegate bool ConnectionEventHandler(SocketAsyncEventArgs socketAsync);
+    public delegate bool ConnectionFilterEventHandler(SocketAsyncEventArgs socketAsync);
 
     /// <summary>
     /// 数据包输入代理
     /// </summary>
     /// <param name="data">输入包</param>
     /// <param name="socketAsync"></param>
-    public delegate void BinaryInputEventHandler(byte[] data, SocketAsyncEventArgs socketAsync);
+    public delegate void BinaryInputEventHandler(byte[] buffer, SocketAsyncEventArgs socketAsync);
 
     /// <summary>
     /// 异常错误通常是用户断开的代理
     /// </summary>
     /// <param name="message">消息</param>
     /// <param name="socketAsync"></param>
-    /// <param name="erorr">错误代码</param>
-    public delegate void MessageInputEventHandler(string message, SocketAsyncEventArgs socketAsync, int erorr);
+    /// <param name="error">错误代码</param>
+    public delegate void MessageInputEventHandler(string message, SocketAsyncEventArgs socketAsync, int error);
 
     /// <summary>
     /// ZYSOCKET框架 服务器端
@@ -115,7 +115,7 @@ namespace MySoft.Net.Server
         /// <summary>
         /// 连接传入处理
         /// </summary>
-        public event ConnectionEventHandler OnConnected;
+        public event ConnectionFilterEventHandler OnConnectFilter;
 
         /// <summary>
         /// 数据输入处理
@@ -410,8 +410,6 @@ namespace MySoft.Net.Server
 
         void Accept()
         {
-
-
             if (SocketAsynPool.Count > 0)
             {
                 SocketAsyncEventArgs sockasyn = SocketAsynPool.Pop();
@@ -436,9 +434,9 @@ namespace MySoft.Net.Server
                     System.Threading.WaitHandle.WaitAll(reset);
                     reset[0].Set();
 
-                    if (this.OnConnected != null)
+                    if (this.OnConnectFilter != null)
                     {
-                        if (!this.OnConnected(e))
+                        if (!this.OnConnectFilter(e))
                         {
                             LogOutEvent(null, LogType.Error, string.Format("The Socket Not Connect {0}！", e.AcceptSocket.RemoteEndPoint));
                             e.AcceptSocket = null;

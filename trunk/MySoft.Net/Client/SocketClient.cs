@@ -15,13 +15,13 @@ namespace MySoft.Net.Client
     /// </summary>
     /// <param name="message"></param>
     /// <param name="isConnect"></param>
-    public delegate void ConnectionEventHandler(string message, bool isConnect);
+    public delegate void ConnectionEventHandler(string message, bool connect);
 
     /// <summary>
     /// 接收事件
     /// </summary>
     /// <param name="Data"></param>
-    public delegate void ReceiveEventHandler(byte[] Data);
+    public delegate void ReceiveEventHandler(byte[] buffer);
 
     /// <summary>
     /// 退出事件
@@ -63,7 +63,7 @@ namespace MySoft.Net.Client
 
         }
 
-        private bool isConnect;
+        private bool connect;
 
         /// <summary>
         /// 异步连接到指定的服务器
@@ -195,7 +195,7 @@ namespace MySoft.Net.Client
             wait.WaitOne();
             wait.Reset();
 
-            return isConnect;
+            return connect;
         }
 
         void e_Completed(object sender, SocketAsyncEventArgs e)
@@ -212,7 +212,7 @@ namespace MySoft.Net.Client
                     if (e.SocketError == SocketError.Success)
                     {
 
-                        isConnect = true;
+                        connect = true;
                         wait.Set();
 
                         if (OnConnected != null)
@@ -226,7 +226,7 @@ namespace MySoft.Net.Client
                     }
                     else
                     {
-                        isConnect = false;
+                        connect = false;
                         wait.Set();
                         if (OnConnected != null)
                             OnConnected("连接服务器失败！", false);
