@@ -8,7 +8,7 @@ namespace MySoft.Data
     /// 实体基类
     /// </summary>
     [Serializable]
-    public abstract class Entity : EntityBase, IEntity
+    public abstract class Entity : EntityBase, IEntity, IEntityInfo
     {
         #region 公用方法
 
@@ -277,7 +277,53 @@ namespace MySoft.Data
         }
 
         #endregion
+
+        #region IEntityInfo 成员
+
+        /// <summary>
+        /// 表信息
+        /// </summary>
+        Table IEntityInfo.Table
+        {
+            get
+            {
+                return GetTable();
+            }
+        }
+
+        /// <summary>
+        /// 字段信息
+        /// </summary>
+        Field[] IEntityInfo.Fields
+        {
+            get
+            {
+                return GetFields();
+            }
+        }
+
+        /// <summary>
+        /// 字段及值信息
+        /// </summary>
+        FieldValue[] IEntityInfo.FieldValues
+        {
+            get
+            {
+                return GetFieldValues().ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 是否只读
+        /// </summary>
+        bool IEntityInfo.ReadOnly
+        {
+            get
+            {
+                return GetReadOnly();
+            }
+        }
+
+        #endregion
     }
-
-
 }

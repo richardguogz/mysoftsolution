@@ -31,7 +31,7 @@ namespace MySoft.Data
         /// <summary>
         /// 是否标识列
         /// </summary>
-        internal bool IsIdentity
+        public bool IsIdentity
         {
             get { return isIdentity; }
             set { isIdentity = value; }
@@ -41,7 +41,7 @@ namespace MySoft.Data
         /// <summary>
         /// 是否主键
         /// </summary>
-        internal bool IsPrimaryKey
+        public bool IsPrimaryKey
         {
             get { return isPrimaryKey; }
             set { isPrimaryKey = value; }

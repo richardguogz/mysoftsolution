@@ -22,6 +22,32 @@ namespace MySoft.Data
     }
 
     /// <summary>
+    /// 实体相关信息
+    /// </summary>
+    public interface IEntityInfo
+    {
+        /// <summary>
+        /// 表信息
+        /// </summary>
+        Table Table { get; }
+
+        /// <summary>
+        /// 字段信息
+        /// </summary>
+        Field[] Fields { get; }
+
+        /// <summary>
+        /// 字段及值信息
+        /// </summary>
+        FieldValue[] FieldValues { get; }
+
+        /// <summary>
+        /// 是否只读 (只读时为视图或自定义实例)
+        /// </summary>
+        bool ReadOnly { get; }
+    }
+
+    /// <summary>
     /// Entity基类
     /// </summary>
     [Serializable]
@@ -32,6 +58,23 @@ namespace MySoft.Data
         protected EntityBase originalObject;
         protected bool isUpdate = false;
         protected bool isFromDB = false;
+
+        /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public object this[string propertyName]
+        {
+            get
+            {
+                return CoreHelper.GetPropertyValue(this, propertyName);
+            }
+            set
+            {
+                CoreHelper.SetPropertyValue(this, propertyName, value);
+            }
+        }
 
         /// <summary>
         /// 转换成另一对象

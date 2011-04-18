@@ -47,7 +47,15 @@ namespace MySoft.Data
 
                 try
                 {
-                    t = CoreHelper.CreateInstance<TOutput>();
+                    //t = CoreHelper.CreateInstance<TOutput>();
+                    if (typeof(TOutput) == typeof(TInput))
+                    {
+                        t = CoreHelper.CreateInstance<TOutput>(obj.GetType());
+                    }
+                    else
+                    {
+                        t = CoreHelper.CreateInstance<TOutput>();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +69,8 @@ namespace MySoft.Data
                 }
                 else
                 {
-                    foreach (PropertyInfo p in typeof(TOutput).GetProperties())
+                    foreach (PropertyInfo p in t.GetType().GetProperties(BindingFlags.DeclaredOnly
+                        | BindingFlags.Instance | BindingFlags.Public))
                     {
                         object value = null;
                         if (obj is NameValueCollection)

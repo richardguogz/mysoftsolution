@@ -40,6 +40,13 @@ namespace MySoft.Data
         /// 获取原始对象
         /// </summary>
         EntityBase OriginalObject { get; }
+
+        /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="FieldName"></param>
+        /// <returns></returns>
+        object this[string FieldName] { get; set; }
     }
 }
 
