@@ -14,7 +14,6 @@ using MySoft.Net.Sockets;
 
 namespace MySoft.Net.Server
 {
-
     /// <summary>
     /// 连接的代理
     /// </summary>
@@ -32,9 +31,9 @@ namespace MySoft.Net.Server
     /// 异常错误通常是用户断开的代理
     /// </summary>
     /// <param name="message">消息</param>
-    /// <param name="socketAsync"></param>
     /// <param name="error">错误代码</param>
-    public delegate void MessageInputEventHandler(string message, SocketAsyncEventArgs socketAsync, int error);
+    /// <param name="socketAsync"></param>
+    public delegate void MessageInputEventHandler(string message, int error, SocketAsyncEventArgs socketAsync);
 
     /// <summary>
     /// ZYSOCKET框架 服务器端
@@ -77,12 +76,8 @@ namespace MySoft.Net.Server
 
                         BuffManagers.FreeBuffer(args);
                     }
-
-
                 }
-                catch
-                {
-                }
+                catch { }
 
                 isDisposed = true;
             }
@@ -230,7 +225,6 @@ namespace MySoft.Net.Server
         {
             if (OnMessageOutput != null)
                 OnMessageOutput.BeginInvoke(sender, new LogOutEventArgs(type, message), new AsyncCallback(CallBackEvent), OnMessageOutput);
-
         }
         /// <summary>
         /// 事件处理完的回调函数
@@ -247,13 +241,13 @@ namespace MySoft.Net.Server
         /// <summary>
         /// 实例化SocketServer类
         /// </summary>
-        /// <param name="ipAddress"></param>
+        /// <param name="ipaddress"></param>
         /// <param name="port"></param>
         /// <param name="maxconnectcout"></param>
         /// <param name="maxbuffersize"></param>
-        public SocketServer(IPAddress ipAddress, int port, int maxconnectcout, int maxbuffersize)
+        public SocketServer(IPAddress ipaddress, int port, int maxconnectcout, int maxbuffersize)
         {
-            this.IPEndPoint = new IPEndPoint(ipAddress, port);
+            this.IPEndPoint = new IPEndPoint(ipaddress, port);
             this.MaxBufferSize = maxbuffersize;
             this.MaxConnectCout = maxconnectcout;
 
@@ -267,12 +261,12 @@ namespace MySoft.Net.Server
         /// <summary>
         /// 实例化SocketServer类
         /// </summary>
-        /// <param name="ipEndPoint"></param>
+        /// <param name="ipendpoint"></param>
         /// <param name="maxconnectcout"></param>
         /// <param name="maxbuffersize"></param>
-        public SocketServer(IPEndPoint ipEndPoint, int maxconnectcout, int maxbuffersize)
+        public SocketServer(IPEndPoint ipendpoint, int maxconnectcout, int maxbuffersize)
         {
-            this.IPEndPoint = ipEndPoint;
+            this.IPEndPoint = ipendpoint;
             this.MaxBufferSize = maxbuffersize;
             this.MaxConnectCout = maxconnectcout;
 
@@ -364,7 +358,7 @@ namespace MySoft.Net.Server
         {
             if (isDisposed == true)
             {
-                throw new ObjectDisposedException("SocketServer is Disposed");
+                throw new ObjectDisposedException("SocketServer is Disposed！");
             }
 
             sock = new Socket(IPEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -491,13 +485,13 @@ namespace MySoft.Net.Server
             }
             else
             {
-                string message = string.Format("User Disconnect :{0}！", e.AcceptSocket.RemoteEndPoint.ToString());
+                string message = string.Format("User Disconnect {0}！", e.AcceptSocket.RemoteEndPoint.ToString());
 
                 LogOutEvent(null, LogType.Error, message);
 
                 if (OnMessageInput != null)
                 {
-                    OnMessageInput(message, e, 0);
+                    OnMessageInput(message, -1, e);
                 }
 
                 e.AcceptSocket = null;
@@ -510,8 +504,6 @@ namespace MySoft.Net.Server
             }
 
         }
-
-
 
         void Asyn_Completed(object sender, SocketAsyncEventArgs e)
         {
@@ -532,11 +524,11 @@ namespace MySoft.Net.Server
         /// 发送数据包
         /// </summary>
         /// <param name="sock"></param>
-        /// <param name="data"></param>
-        public void SendData(Socket sock, byte[] data)
+        /// <param name="buffer"></param>
+        public void SendData(Socket sock, byte[] buffer)
         {
             if (sock != null && sock.Connected)
-                sock.BeginSend(data, 0, data.Length, SocketFlags.None, AsynCallBack, sock);
+                sock.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, sock);
 
         }
 
@@ -553,7 +545,6 @@ namespace MySoft.Net.Server
             }
             catch
             {
-
             }
         }
 
