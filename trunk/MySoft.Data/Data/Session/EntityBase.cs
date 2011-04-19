@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using MySoft.Data.Design;
+using Newtonsoft.Json;
 
 namespace MySoft.Data
 {
@@ -64,6 +65,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
+        [JsonIgnore]
         public object this[string propertyName]
         {
             get
@@ -81,6 +83,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="field"></param>
         /// <returns></returns>
+        [JsonIgnore]
         public object this[Field field]
         {
             get

@@ -221,15 +221,15 @@ namespace MySoft.Data
             if (sql == null) return string.Empty;
 
             if (isAccess)
-                sql = sql.Replace("__{__", leftToken.ToString())
-                        .Replace("__}__", rightToken.ToString())
-                        .Replace("____{____", '('.ToString())
-                        .Replace("____}____", ')'.ToString());
+                sql = sql.Replace("__[", leftToken.ToString())
+                        .Replace("]__", rightToken.ToString())
+                        .Replace("__[[", '('.ToString())
+                        .Replace("]]__", ')'.ToString());
             else
-                sql = sql.Replace("__{__", leftToken.ToString())
-                        .Replace("__}__", rightToken.ToString())
-                        .Replace("____{____", ' '.ToString())
-                        .Replace("____}____", ' '.ToString());
+                sql = sql.Replace("__[", leftToken.ToString())
+                        .Replace("]__", rightToken.ToString())
+                        .Replace("__[[", ' '.ToString())
+                        .Replace("]]__", ' '.ToString());
 
             return sql.Trim().Replace(" . ", ".")
                             .Replace(" , ", ",")

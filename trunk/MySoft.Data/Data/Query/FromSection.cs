@@ -55,7 +55,7 @@ namespace MySoft.Data
                     pagingField = pagingField.At(aliasName);
                 }
 
-                this.tableName += " __{__" + aliasName + "__}__ ";
+                this.tableName += " __[" + aliasName + "]__ ";
             }
 
             this.query = new QuerySection<T>(this, dbProvider, dbTran, pagingField);
@@ -77,7 +77,7 @@ namespace MySoft.Data
             this.tableName = tableName;
             if (aliasName != null)
             {
-                this.tableName += " __{__" + aliasName + "__}__ ";
+                this.tableName += " __[" + aliasName + "]__ ";
             }
             this.query = new QuerySection<T>(this);
         }
@@ -620,8 +620,8 @@ namespace MySoft.Data
 
             if (this.relation != null)
             {
-                this.tableName = " ____{____ " + this.tableName;
-                this.relation += " ____}____ ";
+                this.tableName = " __[[ " + this.tableName;
+                this.relation += " ]]__ ";
             }
             this.relation += join + from.TableName + strJoin;
 
@@ -651,8 +651,8 @@ namespace MySoft.Data
 
             if (this.relation != null)
             {
-                this.tableName = " ____{____ " + this.tableName;
-                this.relation += " ____}____ ";
+                this.tableName = " __[[ " + this.tableName;
+                this.relation += " ]]__ ";
             }
             this.relation += join + from.TableName + strJoin;
 
@@ -679,7 +679,7 @@ namespace MySoft.Data
                 if ((IField)query.PagingField != null)
                     query.PagingField = query.PagingField.At(aliasName);
 
-                from.tableName += " __{__" + aliasName + "__}__ ";
+                from.tableName += " __[" + aliasName + "]__ ";
             }
             string strJoin = string.Empty;
             if (onWhere != null)
@@ -691,8 +691,8 @@ namespace MySoft.Data
 
             if (this.relation != null)
             {
-                this.tableName = " ____{____ " + this.tableName;
-                this.relation += " ____}____ ";
+                this.tableName = " __[[ " + this.tableName;
+                this.relation += " ]]__ ";
             }
             this.relation += join + from.TableName + strJoin;
 
