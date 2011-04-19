@@ -972,7 +972,7 @@ namespace MySoft.Tools.EntityDesign
 
         private string GenEntity(string name, bool isView, bool isEntity)
         {
-            DataSet ds = DbSession.Default.FromSql("select * from " + name + " where 1 = 2").ToDataSet();
+            DataSet ds = DbSession.Default.FromSql("select * from __[__" + name + "__]__ where 1 = 2").ToDataSet();
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
             int index = 0;

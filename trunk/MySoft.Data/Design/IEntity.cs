@@ -44,9 +44,16 @@ namespace MySoft.Data
         /// <summary>
         /// 使用this获取值信息
         /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        object this[string propertyName] { get; set; }
+
+        /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
         /// <param name="FieldName"></param>
         /// <returns></returns>
-        object this[string FieldName] { get; set; }
+        object this[Field field] { get; set; }
     }
 }
 

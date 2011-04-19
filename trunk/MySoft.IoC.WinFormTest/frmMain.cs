@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using MySoft.IoC.Dll;
 using System.Threading;
 using System.Diagnostics;
+using MySoft.Net.Sockets;
 
 namespace MySoft.IoC.WinFormTest
 {
@@ -24,8 +25,6 @@ namespace MySoft.IoC.WinFormTest
         {
             CastleFactory.Create().OnError += new ErrorLogEventHandler(frmMain_OnError);
             IUserService service = CastleFactory.Create().GetService<IUserService>("service");
-
-            service.GetUserInfo("dfasdf");
 
             int count = (int)numericUpDown1.Value;
 

@@ -44,7 +44,7 @@ namespace MySoft.IoC.MQService
                 //mq.OnLog += new LogHandler(mq_OnLog);
                 mq.OnError += new ErrorLogEventHandler(mq_OnError);
 
-                CastleConfigService rh = new CastleConfigService(config);
+                CastleServiceHelper rh = new CastleServiceHelper(config);
                 rh.OnLog += new LogEventHandler(rh_OnLog);
                 rh.PublishWellKnownServiceInstance(mq);
 

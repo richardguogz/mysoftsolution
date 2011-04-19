@@ -16,9 +16,9 @@ namespace MySoft.Net.Services
 
         public ClientFactory()
         {
-            SocketClientManager.OnConnected += new Client.ConnectionEventHandler(SocketClientManager_OnConnected);
-            SocketClientManager.OnDisconnected += new Client.DisconnectionEventHandler(SocketClientManager_OnDisconnected);
-            SocketClientManager.OnReceived += new Client.ReceiveEventHandler(SocketClientManager_OnReceived);
+            SocketClientManager.OnConnected += new ConnectionEventHandler(SocketClientManager_OnConnected);
+            SocketClientManager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
+            SocketClientManager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
         }
 
         public ClientFactory Create()
@@ -29,11 +29,6 @@ namespace MySoft.Net.Services
             }
 
             return instance;
-        }
-
-        public IServiceType GetService<IServiceType>()
-        {
-            return 
         }
 
         void SocketClientManager_OnReceived(byte[] buffer)

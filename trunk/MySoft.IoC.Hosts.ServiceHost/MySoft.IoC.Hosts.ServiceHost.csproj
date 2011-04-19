@@ -106,9 +106,13 @@
       <Project>{4955AB17-A062-4399-8795-3D40F6FDB869}</Project>
       <Name>MySoft.IoC.Dll</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MySoft.IoC\MySoft.IoC.csproj">
-      <Project>{3B83A695-C929-47E8-BCC3-A2F33D8A44B5}</Project>
-      <Name>MySoft.IoC</Name>
+    <ProjectReference Include="..\MySoft.IoC2\MySoft.IoC2.csproj">
+      <Project>{075BD20E-ABD5-4754-8C40-58E3EC025E42}</Project>
+      <Name>MySoft.IoC2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySoft.Net\MySoft.Net.csproj">
+      <Project>{0EAA6720-5CD3-46CD-B68C-6F0C41B8A17A}</Project>
+      <Name>MySoft.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

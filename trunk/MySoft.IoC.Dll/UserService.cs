@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using MySoft.Data;
+using System.Threading;
 
 namespace MySoft.IoC.Dll
 {
@@ -14,6 +15,8 @@ namespace MySoft.IoC.Dll
             //{
             //    throw new Exception(username + " =>  出错啦！");
             //}
+
+            //Thread.Sleep(1000);
 
             return new UserInfo()
             {

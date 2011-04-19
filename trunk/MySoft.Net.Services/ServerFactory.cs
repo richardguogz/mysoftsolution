@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MySoft.Net.Sockets;
+using MySoft.Net.Server;
 
 namespace MySoft.Net.Services
 {
@@ -16,22 +17,22 @@ namespace MySoft.Net.Services
 
         public ServerFactory()
         {
-            SocketServerManager.OnConnectFilter += new Server.ConnectionFilterEventHandler(SocketServerManager_OnConnectFilter);
-            SocketServerManager.OnBinaryInput += new Server.BinaryInputEventHandler(SocketServerManager_OnBinaryInput);
-            SocketServerManager.OnMessageInput += new Server.MessageInputEventHandler(SocketServerManager_OnMessageInput);
-            SocketServerManager.OnMessageOutput += new EventHandler<Server.LogOutEventArgs>(SocketServerManager_OnMessageOutput);
+            SocketServerManager.OnConnectFilter += new ConnectionFilterEventHandler(SocketServerManager_OnConnectFilter);
+            SocketServerManager.OnBinaryInput += new BinaryInputEventHandler(SocketServerManager_OnBinaryInput);
+            SocketServerManager.OnMessageInput += new MessageInputEventHandler(SocketServerManager_OnMessageInput);
+            SocketServerManager.OnMessageOutput += new EventHandler<LogOutEventArgs>(SocketServerManager_OnMessageOutput);
 
-            SocketServerManager.Server.Start();
+            SocketServerManager.Start();
         }
 
         ~ServerFactory()
         {
-            SocketServerManager.Server.Stop();
+            SocketServerManager.Stop();
         }
 
         public void Dispose()
         {
-            SocketServerManager.Server.Stop();
+            SocketServerManager.Stop();
         }
 
         public ServerFactory Create()
@@ -53,7 +54,7 @@ namespace MySoft.Net.Services
             return true;
         }
 
-        void SocketServerManager_OnMessageOutput(object sender, Server.LogOutEventArgs e)
+        void SocketServerManager_OnMessageOutput(object sender, LogOutEventArgs e)
         {
             //throw new NotImplementedException();
         }

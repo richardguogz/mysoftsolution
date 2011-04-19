@@ -77,6 +77,23 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public object this[Field field]
+        {
+            get
+            {
+                return CoreHelper.GetPropertyValue(this, field.PropertyName);
+            }
+            set
+            {
+                CoreHelper.SetPropertyValue(this, field.PropertyName, value);
+            }
+        }
+
+        /// <summary>
         /// 转换成另一对象
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>

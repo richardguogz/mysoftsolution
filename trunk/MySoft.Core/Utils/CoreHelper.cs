@@ -73,6 +73,17 @@ namespace MySoft
         }
 
         /// <summary>
+        /// 快速创建一个T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static T CreateInstance<T>(Type type)
+        {
+            return (T)GetFastInstanceCreator(type)();
+        }
+
+        /// <summary>
         /// 创建一个委托
         /// </summary>
         /// <param name="type"></param>
@@ -131,7 +142,8 @@ namespace MySoft
         /// <param name="value"></param>
         public static void SetPropertyValue(object obj, string propertyName, object value)
         {
-            PropertyInfo property = obj.GetType().GetProperty(propertyName);
+            PropertyInfo property = obj.GetType().GetProperty(propertyName, BindingFlags.DeclaredOnly
+                        | BindingFlags.Instance | BindingFlags.Public);
             if (property != null)
             {
                 SetPropertyValue(obj, property, value);
@@ -166,7 +178,8 @@ namespace MySoft
         /// <returns></returns>
         public static object GetPropertyValue(object obj, string propertyName)
         {
-            PropertyInfo property = obj.GetType().GetProperty(propertyName);
+            PropertyInfo property = obj.GetType().GetProperty(propertyName, BindingFlags.DeclaredOnly
+                        | BindingFlags.Instance | BindingFlags.Public);
             if (property != null)
             {
                 return GetPropertyValue(obj, property);
