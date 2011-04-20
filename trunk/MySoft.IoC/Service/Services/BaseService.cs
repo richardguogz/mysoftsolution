@@ -9,18 +9,12 @@ namespace MySoft.IoC.Services
     /// The base class of services.
     /// </summary>
     [Serializable]
-    public abstract class BaseService : MarshalByRefObject, IService, ILogable, IErrorLogable
+    public abstract class BaseService : IService, ILogable, IErrorLogable
     {
-        private Guid clientId;
-
         /// <summary>
         /// The service name.
         /// </summary>
         protected string serviceName;
-        /// <summary>
-        /// The service mq.
-        /// </summary>
-        protected IServiceMQ mq;
 
         /// <summary>
         /// Runs the specified MSG.
@@ -33,27 +27,12 @@ namespace MySoft.IoC.Services
         /// Initializes a new instance of the <see cref="BaseService"/> class.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        /// <param name="mq">The mq.</param>
-        public BaseService(string serviceName, IServiceMQ mq)
+        public BaseService(string serviceName)
         {
             this.serviceName = serviceName;
-            this.mq = mq;
-            this.clientId = Guid.NewGuid();
         }
 
         #region IService Members
-
-        /// <summary>
-        /// Gets the client id.
-        /// </summary>
-        /// <value>The client id.</value>
-        public Guid ClientId
-        {
-            get
-            {
-                return clientId;
-            }
-        }
 
         /// <summary>
         /// Gets the name of the service.
@@ -71,7 +50,7 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            string log = string.Format("Dynamic service ({0}:{1},{2}). -->{3}", clientId, serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
+            string log = string.Format("Dynamic service ({0},{1}). -->{2}", serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
             if (OnLog != null) OnLog(log);
 
             long t1 = System.Environment.TickCount;
@@ -89,29 +68,12 @@ namespace MySoft.IoC.Services
             else
             {
                 long t2 = System.Environment.TickCount - t1;
-                log = string.Format("Dynamic service ({0}:{1},{2}).-->{3}\r\n{4}", clientId, serviceName, msg.SubServiceName,
+                log = string.Format("Dynamic service ({0},{1}).-->{2}\r\n{3}", serviceName, msg.SubServiceName,
                     retMsg.Message, "Spent time: (" + t2.ToString() + ") ms.");
                 if (OnLog != null) OnLog(log);
             }
 
             return retMsg;
-        }
-
-        #endregion
-
-        #region MarshalByRefObject
-
-        /// <summary>
-        /// Obtains a lifetime service object to control the lifetime policy for this instance.
-        /// </summary>
-        /// <returns>
-        /// An object of type <see cref="T:System.Runtime.Remoting.Lifetime.ILease"></see> used to control the lifetime policy for this instance. This is the current lifetime service object for this instance if one exists; otherwise, a new lifetime service object initialized to the value of the <see cref="P:System.Runtime.Remoting.Lifetime.LifetimeServices.LeaseManagerPollTime"></see> property.
-        /// </returns>
-        /// <exception cref="T:System.Security.SecurityException">The immediate caller does not have infrastructure permission. </exception>
-        /// <PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="RemotingConfiguration, Infrastructure"/></PermissionSet>
-        public override object InitializeLifetimeService()
-        {
-            return null;
         }
 
         #endregion
