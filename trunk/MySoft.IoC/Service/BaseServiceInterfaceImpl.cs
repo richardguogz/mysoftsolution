@@ -18,11 +18,6 @@ namespace MySoft.IoC
         /// </summary>
         private static readonly Dictionary<string, MethodInfo> dictMethods = new Dictionary<string, MethodInfo>();
 
-        /// <summary>
-        /// The default msg expire time.
-        /// </summary>
-        public static int DefaultExpireMinutes = 30;
-
         private IServiceContainer container;
         private Type serviceInterfaceType;
 
@@ -71,11 +66,8 @@ namespace MySoft.IoC
                 reqMsg.Transfer = container.Transfer;
             }
 
-            reqMsg.Expiration = DateTime.Now.AddMinutes(DefaultExpireMinutes);
-            reqMsg.MessageId = Guid.NewGuid();
             reqMsg.ServiceName = serviceInterfaceType.FullName;
             reqMsg.SubServiceName = subServiceName;
-            reqMsg.Timestamp = DateTime.Now;
             reqMsg.TransactionId = Guid.NewGuid();
 
             MethodInfo method = null;
@@ -129,10 +121,11 @@ namespace MySoft.IoC
                 }
             }
 
-            ResponseMessage resMsg = container.CallService(serviceInterfaceType.FullName, reqMsg);
+            ResponseMessage resMsg = container.CallService(reqMsg);
             if (resMsg == null)
             {
-                throw new IoCException(string.Format("服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                return null;
+                //throw new IoCException(string.Format("服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
             }
 
             if (resMsg.Data == null) return resMsg.Data;

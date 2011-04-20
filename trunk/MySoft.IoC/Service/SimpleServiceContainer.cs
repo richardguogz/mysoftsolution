@@ -1,20 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-
-using Castle.MicroKernel;
 using Castle.Core;
-using Castle.Core.Configuration;
-using Castle.Windsor;
-using Castle.MicroKernel.SubSystems.Configuration;
-using Castle.Windsor.Configuration.Interpreters;
 using Castle.Facilities.Startable;
-
+using Castle.Windsor;
+using Castle.Windsor.Configuration.Interpreters;
 using MySoft.IoC.Services;
 using MySoft.Remoting;
-using System.Threading;
 
 namespace MySoft.IoC
 {
@@ -28,18 +20,17 @@ namespace MySoft.IoC
         /// <summary>
         /// The default max try number.
         /// </summary>
-        public const int DEFAULT_MAX_TRY_NUMBER = 30;
+        public const int DEFAULT_MAX_TRY_NUMBER = 5;
 
         #endregion
 
         #region Private Members
 
         private Castle.Windsor.IWindsorContainer container;
-        private ServiceProxy serviceProxy;
-        private IServiceMQ mq;
+        private IServiceProxy serviceProxy;
         private TransferType transfer = TransferType.Binary;
 
-        private void Init(IServiceMQ mq, IDictionary serviceKeyTypes)
+        private void Init(IDictionary serviceKeyTypes)
         {
             if (System.Configuration.ConfigurationManager.GetSection("castle") != null)
             {
@@ -50,24 +41,13 @@ namespace MySoft.IoC
                 container = new WindsorContainer();
             }
             container.AddFacility("startable", new StartableFacility());
-            this.mq = mq;
-            container.Kernel.AddComponentInstance("MySoft.IoC.IServiceMQ", typeof(IServiceMQ), mq);
-            container.AddFacility("service subscribe message reqMsg", new Facilities.ServiceSubscribeMessageRequestFacility(mq));
 
             if (serviceKeyTypes != null && serviceKeyTypes.Count > 0)
             {
                 RegisterComponents(serviceKeyTypes);
             }
 
-            serviceProxy = new ServiceProxy(mq, DEFAULT_MAX_TRY_NUMBER);
-            serviceProxy.OnLog += new LogEventHandler(serviceProxy_OnLog);
-
             this.DiscoverServices();
-        }
-
-        void serviceProxy_OnLog(string log)
-        {
-            if (OnLog != null) OnLog(log);
         }
 
         private static ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
@@ -138,7 +118,7 @@ namespace MySoft.IoC
                 if (markedWithServiceContract)
                 {
                     DynamicService service = new DynamicService(this, model.Service);
-                    Kernel.AddComponentInstance(Guid.NewGuid().ToString(), service);
+                    Kernel.AddComponentInstance(service.ServiceName, service);
                 }
             }
         }
@@ -150,28 +130,20 @@ namespace MySoft.IoC
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
+        /// <param name="config"></param>
         public SimpleServiceContainer()
         {
-            Init(new MemoryServiceMQ(), null);
+            Init(null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
-        /// <param name="mq">The mq.</param>
-        public SimpleServiceContainer(IServiceMQ mq)
-        {
-            Init(mq, null);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
-        /// </summary>
-        /// <param name="mq">The mq.</param>
+        /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(IServiceMQ mq, IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(IDictionary serviceKeyTypes)
         {
-            Init(mq, serviceKeyTypes);
+            Init(serviceKeyTypes);
         }
 
         #endregion
@@ -194,18 +166,17 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the max try num.
+        /// 设置服务代理
         /// </summary>
-        /// <value>The max try num.</value>
-        public int MaxTryNum
+        public IServiceProxy Proxy
         {
             get
             {
-                return serviceProxy.MaxTryNum;
+                return this.serviceProxy;
             }
             set
             {
-                serviceProxy.MaxTryNum = value;
+                this.serviceProxy = value;
             }
         }
 
@@ -216,18 +187,6 @@ namespace MySoft.IoC
         public Castle.MicroKernel.IKernel Kernel
         {
             get { return container.Kernel; }
-        }
-
-        /// <summary>
-        /// Gets the MQ.
-        /// </summary>
-        /// <value>The MQ.</value>
-        public IServiceMQ MQ
-        {
-            get
-            {
-                return mq;
-            }
         }
 
         /// <summary>
@@ -299,27 +258,41 @@ namespace MySoft.IoC
         /// <param name="serviceName">Name of the service.</param>
         /// <param name="msg">The MSG.</param>
         /// <returns>The msg.</returns>
-        public ResponseMessage CallService(string serviceName, RequestMessage msg)
+        public ResponseMessage CallService(RequestMessage msg)
         {
             //check local service first
-            IService localService = (IService)GetLocalService(serviceName);
+            IService localService = (IService)GetLocalService(msg.ServiceName);
 
-            if (localService != null)
+            try
             {
-                if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1})[{2}].", serviceName, msg.SubServiceName, localService.ClientId));
-                return localService.CallService(msg);
-            }
+                if (localService != null)
+                {
+                    if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                    return localService.CallService(msg);
+                }
 
-            //if no local service, call remote service
-            if (OnLog != null) OnLog(string.Format("Calling remote service ({0},{1}).", serviceName, msg.SubServiceName));
-            return serviceProxy.CallMethod(serviceName, msg);
+                if (serviceProxy == null)
+                {
+                    if (OnLog != null) OnLog(string.Format("Calling remote service error, serviceProxy is undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                    return null;
+                }
+
+                //if no local service, call remote service
+                if (OnLog != null) OnLog(string.Format("Calling remote service ({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                return serviceProxy.CallMethod(msg);
+            }
+            catch (Exception ex)
+            {
+                WriteError(ex);
+                throw ex;
+            }
         }
 
         /// <summary>
         /// Gets the service nodes.
         /// </summary>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.ServiceNodeInfo[] GetServiceNodes()
+        public ServiceNodeInfo[] GetServiceNodes()
         {
             return ParseServiceNodes(Kernel.GraphNodes);
         }
@@ -329,7 +302,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.ServiceNodeInfo[] GetDependerServiceNodes(string key)
+        public ServiceNodeInfo[] GetDependerServiceNodes(string key)
         {
             ComponentModel node = GetComponentModelByKey(key);
             if (node == null)
@@ -344,7 +317,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The service nodes.</returns>
-        public MySoft.IoC.ServiceNodeInfo[] GetDependentServiceNodes(string key)
+        public ServiceNodeInfo[] GetDependentServiceNodes(string key)
         {
             ComponentModel node = GetComponentModelByKey(key);
             if (node == null)

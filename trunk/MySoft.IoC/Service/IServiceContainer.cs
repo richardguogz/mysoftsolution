@@ -15,20 +15,10 @@ namespace MySoft.IoC
     public interface IServiceContainer : IDisposable, ILogable, IErrorLogable
     {
         /// <summary>
-        /// Gets or sets the max try num.
-        /// </summary>
-        /// <value>The max try num.</value>
-        int MaxTryNum { get; set; }
-        /// <summary>
         /// Gets the kernel.
         /// </summary>
         /// <value>The kernel.</value>
         IKernel Kernel { get; }
-        /// <summary>
-        /// Gets the MQ.
-        /// </summary>
-        /// <value>The MQ.</value>
-        IServiceMQ MQ { get; }
         /// <summary>
         /// Registers the component.
         /// </summary>
@@ -65,10 +55,9 @@ namespace MySoft.IoC
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
         /// <param name="msg">The MSG.</param>
         /// <returns>The response msg.</returns>
-        ResponseMessage CallService(string serviceName, RequestMessage msg);
+        ResponseMessage CallService(RequestMessage msg);
         /// <summary>
         /// Gets the service nodes.
         /// </summary>
@@ -100,5 +89,9 @@ namespace MySoft.IoC
         /// Gets or sets the transfer.
         /// </summary>
         TransferType Transfer { get; set; }
+        /// <summary>
+        /// 设置服务代理
+        /// </summary>
+        IServiceProxy Proxy { get; set; }
     }
 }

@@ -14,8 +14,8 @@ namespace MySoft.IoC
         /// </summary>
         Local,
         /// <summary>
-        /// Remoting
+        /// Remote
         /// </summary>
-        Remoting
+        Remote
     }
 }

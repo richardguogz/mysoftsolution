@@ -15,11 +15,6 @@ namespace MySoft.IoC
         /// <value>The name of the service.</value>
         string ServiceName { get; }
         /// <summary>
-        /// Gets the client id.
-        /// </summary>
-        /// <value>The client id.</value>
-        Guid ClientId { get; }
-        /// <summary>
         /// Calls the service.
         /// </summary>
         /// <param name="msg">The MSG.</param>

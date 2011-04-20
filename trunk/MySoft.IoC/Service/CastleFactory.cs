@@ -1,14 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
-using Castle.Windsor;
 using System.Reflection.Emit;
-using System.Configuration;
-using MySoft.IoC;
-using MySoft.Remoting;
-using System.Linq;
-using Castle.Core.Interceptor;
+using MySoft.Net.Client;
 
 namespace MySoft.IoC
 {
@@ -273,23 +267,24 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    RemotingClientHelper helper = new RemotingClientHelper(config.Protocol, config.Server, config.Port, 0);
-                    helper.OnLog += new LogEventHandler(msg_OnLog);
-
-                    IServiceMQ mq = helper.GetWellKnownClientInstance<IServiceMQ>(config.ServiceMQName);
-
-                    //string url = string.Format("{0}://{1}:{2}/{3}", config.Protocol, config.Server, config.Port, config.ServiceMQName);
-                    //IServiceMQ mq = RemotingClientUtil<IServiceMQ>.Instance.GetWellKnownClientInstance(url.ToLower());
-
-                    IServiceContainer container = new SimpleServiceContainer(mq);
+                    IServiceContainer container = new SimpleServiceContainer();
                     container.OnLog += new LogEventHandler(msg_OnLog);
                     container.OnError += new ErrorLogEventHandler(container_OnError);
+
+                    //设置配置信息
+                    SocketClientConfiguration scc = new SocketClientConfiguration();
+                    scc.IP = config.Server;
+                    scc.Port = config.Port;
+
+                    //设置服务代理
+                    IServiceProxy serviceProxy = new ServiceProxy(scc, config.MaxTry);
+                    serviceProxy.OnLog += new LogEventHandler(msg_OnLog);
+                    container.Proxy = serviceProxy;
 
                     singleton = new CastleFactory(container);
                 }
 
                 singleton.ServiceContainer.Transfer = config.Transfer;
-                singleton.ServiceContainer.MaxTryNum = config.MaxTry;
             }
 
             return singleton;

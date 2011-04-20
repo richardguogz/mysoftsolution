@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MySoft.Remoting;
+using MySoft.Net.Sockets;
 
 namespace MySoft.IoC
 {
@@ -9,6 +10,7 @@ namespace MySoft.IoC
     /// The request msg.
     /// </summary>
     [Serializable]
+    [BufferType(-10000)]
     public class RequestMessage
     {
         #region Private Members
@@ -17,10 +19,7 @@ namespace MySoft.IoC
         private string subServiceName;
         private Guid transactionId;
         private ParameterCollection parameters = new ParameterCollection();
-        private DateTime expiration;
-        private Guid messageId;
         private byte priority;
-        private DateTime timestamp;
         private TransferType transfer = TransferType.Binary;
 
         #endregion
@@ -105,38 +104,6 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the expiration.
-        /// </summary>
-        /// <value>The expiration.</value>
-        public DateTime Expiration
-        {
-            get
-            {
-                return expiration;
-            }
-            set
-            {
-                expiration = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the message id.
-        /// </summary>
-        /// <value>The message id.</value>
-        public Guid MessageId
-        {
-            get
-            {
-                return messageId;
-            }
-            set
-            {
-                messageId = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the priority.
         /// </summary>
         /// <value>The priority.</value>
@@ -149,22 +116,6 @@ namespace MySoft.IoC
             set
             {
                 priority = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the timestamp.
-        /// </summary>
-        /// <value>The timestamp.</value>
-        public DateTime Timestamp
-        {
-            get
-            {
-                return timestamp;
-            }
-            set
-            {
-                timestamp = value;
             }
         }
     }

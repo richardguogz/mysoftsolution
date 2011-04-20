@@ -19,10 +19,6 @@ namespace MySoft.IoC.Services
         /// </summary>
         private static readonly Dictionary<string, MethodInfo> dictMethods = new Dictionary<string, MethodInfo>();
 
-        /// <summary>
-        /// The default  message expire minutes.
-        /// </summary>
-        public static int DefaultExpireMinutes = 30;
         private IServiceContainer container;
         private Type serviceInterfaceType;
 
@@ -32,7 +28,7 @@ namespace MySoft.IoC.Services
         /// <param name="container">The container.</param>
         /// <param name="serviceInterfaceType">Type of the service interface.</param>
         public DynamicService(IServiceContainer container, Type serviceInterfaceType)
-            : base(serviceInterfaceType.FullName, container.MQ)
+            : base(serviceInterfaceType.FullName)
         {
             this.container = container;
             this.OnLog += container.WriteLog;
@@ -55,11 +51,8 @@ namespace MySoft.IoC.Services
 
             ResponseMessage resMsg = new ResponseMessage();
             resMsg.Request = msg;
-            resMsg.Expiration = DateTime.Now.AddMinutes(DefaultExpireMinutes);
-            resMsg.MessageId = Guid.NewGuid();
             resMsg.ServiceName = serviceInterfaceType.FullName;
             resMsg.SubServiceName = msg.SubServiceName;
-            resMsg.Timestamp = DateTime.Now;
             resMsg.TransactionId = msg.TransactionId;
             resMsg.Transfer = msg.Transfer;
 
