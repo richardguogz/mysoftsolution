@@ -727,7 +727,7 @@ namespace MySoft.Tools.EntityDesign
 
         private static string ParseMappingName(string name)
         {
-            return name.Trim().Replace(" ", "_");
+            return name.Trim().Replace(" ", "_").Replace(".", "__");
         }
 
         private void btnGen_Click(object sender, EventArgs e)
@@ -1002,7 +1002,7 @@ namespace MySoft.Tools.EntityDesign
                     }
                     else
                     {
-                        if (name.Contains(" ")) sb.Append(string.Format("\t[Mapping(\"" + name + "\")]\r\n"));
+                        if (name.Contains(" ") || name.Contains(".")) sb.Append(string.Format("\t[Mapping(\"" + name + "\")]\r\n"));
                         sb.Append(string.Format("\tpublic interface {0} : IEntity\r\n", tableName));
                     }
                     sb.Append("\t{\r\n");
@@ -1040,12 +1040,20 @@ namespace MySoft.Tools.EntityDesign
                         }
 
                         string fieldName = ConvertCharToUpperOrLower(ParseMappingName(column.ColumnName), checkUpperFieldChar.Checked);
-                        if (tableName == fieldName)
+                        if (string.Compare(tableName, fieldName, true) == 0)
                         {
                             sb.Append(string.Format("\t\t[Mapping(\"" + column.ColumnName + "\")]\r\n"));
-                            fieldName += "_1";
+
+                            if (string.Compare(tableName, fieldName.ToUpper()) == 0)
+                            {
+                                fieldName += "_New";
+                            }
+                            else
+                            {
+                                fieldName = fieldName.ToUpper();
+                            }
                         }
-                        else if (column.ColumnName.Contains(" "))
+                        else if (column.ColumnName.Contains(" ") || column.ColumnName.Contains("."))
                         {
                             sb.Append(string.Format("\t\t[Mapping(\"" + column.ColumnName + "\")]\r\n"));
                         }
@@ -1087,7 +1095,7 @@ namespace MySoft.Tools.EntityDesign
                     }
                     else
                     {
-                        if (name.Contains(" ")) sb.Append(string.Format("\t<[Mapping](\"" + name + "\")> _\r\n"));
+                        if (name.Contains(" ") || name.Contains(".")) sb.Append(string.Format("\t<[Mapping](\"" + name + "\")> _\r\n"));
                         sb.Append(string.Format("\tPublic Interface {0}\r\n\t\tInherits IEntity\r\n", tableName));
                     }
                 }
@@ -1136,13 +1144,21 @@ namespace MySoft.Tools.EntityDesign
                         }
 
                         string fieldName = ConvertCharToUpperOrLower(ParseMappingName(column.ColumnName), checkUpperFieldChar.Checked);
-                        if (tableName == fieldName)
+                        if (string.Compare(tableName, fieldName, true) == 0)
                         {
                             sb.Append(string.Format("<[Mapping](\"" + column.ColumnName + "\")> _\r\n"));
                             sb.Append("\t\t");
-                            fieldName += "_1";
+
+                            if (string.Compare(tableName, fieldName.ToUpper()) == 0)
+                            {
+                                fieldName += "_New";
+                            }
+                            else
+                            {
+                                fieldName = fieldName.ToUpper();
+                            }
                         }
-                        else if (column.ColumnName.Contains(" "))
+                        else if (column.ColumnName.Contains(" ") || column.ColumnName.Contains("."))
                         {
                             sb.Append(string.Format("<[Mapping](\"" + column.ColumnName + "\")> _\r\n"));
                             sb.Append("\t\t");

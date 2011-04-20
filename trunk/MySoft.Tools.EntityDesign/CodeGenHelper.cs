@@ -91,7 +91,7 @@ namespace MySoft.Tools.EntityDesign
                     ns = new CodeNamespace(outNs);
                     unit.Namespaces.Add(ns);
                     ns.Imports.Add(new CodeNamespaceImport("System"));
-                    ns.Imports.Add(new CodeNamespaceImport("MySoft.Data"));
+                    //ns.Imports.Add(new CodeNamespaceImport("MySoft.Data"));
                     //ns.Imports.Add(new CodeNamespaceImport("MySoft.Data.Design"));
                     //sb.Append("namespace " + GetOutputNamespace(type) + "\r\n{\r\n");
                     GenEntityEx(ns, type, outLang);
@@ -185,11 +185,12 @@ namespace MySoft.Tools.EntityDesign
             //sb.Append("\");\r\n");
 
             memberfield.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-            memberfield.Type = new CodeTypeReference(typeof(Field).Name);
+            memberfield.Type = new CodeTypeReference(typeof(Field));
 
-            //new CodeObjectCreateExpression(typeof(AllField).Name, new CodeExpression[] { new CodePrimitiveExpression(tableName) });
+            //new CodeObjectCreateExpression(typeof(AllField), new CodeExpression[] { new CodePrimitiveExpression(tableName) });
 
-            CodeTypeReference reference = new CodeTypeReference(typeof(Field).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
+            //new CodeTypeReference(type.Name, )
+            CodeTypeReference reference = new CodeTypeReference(typeof(Field), CodeTypeReferenceOptions.GenericTypeParameter);
 
             if (item.Name == fieldName)
                 memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(fieldName) });
@@ -459,7 +460,7 @@ namespace MySoft.Tools.EntityDesign
             }
             if (!findNonEntityBaseEntity)
             {
-                entity.BaseTypes.Add(typeof(Entity).Name);
+                entity.BaseTypes.Add(typeof(Entity));
             }
 
             string tableName = GetTableName(type);
@@ -513,7 +514,7 @@ namespace MySoft.Tools.EntityDesign
             method = new CodeMemberMethod();
             method.Name = "GetTable";
             method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-            method.ReturnType = new CodeTypeReference("Table");
+            method.ReturnType = new CodeTypeReference(typeof(Table));
 
             //添加注释
             method.Comments.Add(new CodeCommentStatement("<summary>", true));
@@ -532,7 +533,8 @@ namespace MySoft.Tools.EntityDesign
             //method.Statements.Add(new CodeMethodReturnStatement(new CodeSnippetExpression("mappingTable")));
             //entity.Members.Add(method);
 
-            CodeTypeReference reference = new CodeTypeReference(typeof(Table).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
+            //new CodeTypeReference(type.Name,
+            CodeTypeReference reference = new CodeTypeReference(typeof(Table), CodeTypeReferenceOptions.GenericTypeParameter);
             CodeExpression codeExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(tableName) });
 
             method.Statements.Add(new CodeMethodReturnStatement(codeExpression));
@@ -586,7 +588,7 @@ namespace MySoft.Tools.EntityDesign
                 method = new CodeMemberMethod();
                 method.Name = "GetIdentityField";
                 method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-                method.ReturnType = new CodeTypeReference(typeof(Field).Name);
+                method.ReturnType = new CodeTypeReference(typeof(Field));
 
                 //添加注释
                 method.Comments.Add(new CodeCommentStatement("<summary>", true));
@@ -615,21 +617,21 @@ namespace MySoft.Tools.EntityDesign
                 method = new CodeMemberMethod();
                 method.Name = "GetPrimaryKeyFields";
                 method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-                method.ReturnType = new CodeTypeReference(new CodeTypeReference(typeof(Field).Name), 1);
+                method.ReturnType = new CodeTypeReference(new CodeTypeReference(typeof(Field)), 1);
 
                 //添加注释
                 method.Comments.Add(new CodeCommentStatement("<summary>", true));
                 method.Comments.Add(new CodeCommentStatement("获取实体中的主键列", true));
                 method.Comments.Add(new CodeCommentStatement("</summary>", true));
 
-                method.Statements.Add(new CodeMethodReturnStatement(new CodeArrayCreateExpression(typeof(Field).Name, arrayInit)));
+                method.Statements.Add(new CodeMethodReturnStatement(new CodeArrayCreateExpression(typeof(Field), arrayInit)));
                 entity.Members.Add(method);
             }
 
             method = new CodeMemberMethod();
             method.Name = "GetFields";
             method.Attributes = MemberAttributes.Family | MemberAttributes.Override;
-            method.ReturnType = new CodeTypeReference(new CodeTypeReference(typeof(Field).Name), 1);
+            method.ReturnType = new CodeTypeReference(new CodeTypeReference(typeof(Field)), 1);
 
             sbPropertyValuesList = new StringBuilder();
             generatedProperties.Clear();
@@ -651,7 +653,7 @@ namespace MySoft.Tools.EntityDesign
                 method.Comments.Add(new CodeCommentStatement(string.Format("获取列信息"), true));
                 method.Comments.Add(new CodeCommentStatement("</summary>", true));
 
-                method.Statements.Add(new CodeMethodReturnStatement(new CodeArrayCreateExpression(typeof(Field).Name, arrayInit)));
+                method.Statements.Add(new CodeMethodReturnStatement(new CodeArrayCreateExpression(typeof(Field), arrayInit)));
                 entity.Members.Add(method);
             }
 
@@ -702,7 +704,7 @@ namespace MySoft.Tools.EntityDesign
             method.Comments.Add(new CodeCommentStatement("给当前实体赋值", true));
             method.Comments.Add(new CodeCommentStatement("</summary>", true));
 
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IRowReader).Name, "reader"));
+            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IRowReader), "reader"));
             //sb.Append("\t\tpublic override void SetPropertyValues(System.Data.IDataReader reader)\r\n\t\t{\r\n");
             generatedProperties.Clear();
             GenSetPropertyValuesFromReaderEx(method.Statements, type, generatedProperties, outLang);
@@ -760,9 +762,10 @@ namespace MySoft.Tools.EntityDesign
                 CodeMemberField field = new CodeMemberField();
                 field.Name = "All";
                 field.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-                field.Type = new CodeTypeReference(typeof(AllField).Name);
+                field.Type = new CodeTypeReference(typeof(AllField));
 
-                reference = new CodeTypeReference(typeof(AllField).Name, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
+                //new CodeTypeReference(type.Name,
+                reference = new CodeTypeReference(typeof(AllField), CodeTypeReferenceOptions.GenericTypeParameter);
                 field.InitExpression = new CodeObjectCreateExpression(reference);
 
                 //添加注释
@@ -1100,35 +1103,6 @@ namespace MySoft.Tools.EntityDesign
             }
 
             return list.ToArray();
-        }
-
-        private MySoft.Data.Field GetField(Type entityType, PropertyInfo property)
-        {
-            //获取字段名
-            string fieldName = null;
-            MappingAttribute field = GetPropertyAttribute<MappingAttribute>(property);
-            if (field != null)
-            {
-                fieldName = field.Name;
-            }
-            else
-            {
-                fieldName = property.Name;
-            }
-
-            //获取表名
-            string tableName = null;
-            MappingAttribute table = GetEntityAttribute<MappingAttribute>(entityType);
-            if (table != null)
-            {
-                tableName = table.Name;
-            }
-            else
-            {
-                tableName = entityType.Name;
-            }
-
-            return new Field(fieldName).At(tableName);
         }
     }
 }
