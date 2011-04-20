@@ -94,7 +94,7 @@ namespace LiveChat.Client
 
                 //视频化视频会话
                 chat = new VideoChat(loginSeat);
-                chat.CreateClient(this.Handle);
+                chat.CreateClient(this.Handle, loginCompany.WebSite);
                 chat.LoginToServer();
             }
             catch (Exception ex)

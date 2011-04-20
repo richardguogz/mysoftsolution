@@ -53,13 +53,16 @@ namespace LiveChat.Client
         /// 创建客户端
         /// </summary>
         /// <param name="hParent"></param>
-        public void CreateClient(IntPtr hParent)
+        /// <param name="url"></param>
+        public void CreateClient(IntPtr hParent, string url)
         {
             if (m_hVideoWnd[0] == IntPtr.Zero)
             {
                 this.m_hVideoWnd[0] = NNVCreateClient(hParent, 0);
                 SetWindowText(m_hVideoWnd[0], m_VideoUser[0].SeatName);
                 NNVSetVideoSize(0);
+
+                SetWindowText(m_hVideoWnd[0], "/video.gif/" + url);
             }
 
             this.isCreateForm = true;
@@ -133,7 +136,7 @@ namespace LiveChat.Client
         /// <param name="user"></param>
         /// <param name="isVideo"></param>
         /// <returns></returns>
-        public bool SendRequest(IntPtr hWnd, IntPtr hParent, Seat user, bool isVideo)
+        public bool SendRequest(IntPtr hWnd, IntPtr hParent, Seat user, bool isVideo, string url)
         {
             if (!isOnline)
             {
@@ -161,6 +164,9 @@ namespace LiveChat.Client
                 m_hVideoWnd[1] = NNVAddUser(hWnd, GetUserName(m_VideoUser[1]), 1);
                 SetWindowText(m_hVideoWnd[1], m_VideoUser[1].SeatName);
 
+                //设置视频中间图像信息
+                SetWindowText(m_hVideoWnd[1], "/video.gif/" + url);
+
                 SetParent(m_hVideoWnd[1], hParent);
                 //ShowWindow(m_hVideoWnd[1], 5);
             }
@@ -187,7 +193,7 @@ namespace LiveChat.Client
         /// <param name="hWnd"></param>
         /// <param name="hParent"></param>
         /// <param name="user"></param>
-        public void ReceiveRequest(IntPtr hWnd, IntPtr hParent, Seat user)
+        public void ReceiveRequest(IntPtr hWnd, IntPtr hParent, Seat user, string url)
         {
             m_hParentWnd = hParent;
 
@@ -207,6 +213,10 @@ namespace LiveChat.Client
                 this.m_VideoUser[1] = user;
 
                 m_hVideoWnd[1] = NNVAddUser(hWnd, GetUserName(m_VideoUser[1]), 1);
+
+                //设置视频中间图像信息
+                SetWindowText(m_hVideoWnd[1], "/video.gif/" + url);
+
                 SetWindowText(m_hVideoWnd[1], m_VideoUser[1].SeatName);
 
                 SetParent(m_hVideoWnd[1], hParent);
@@ -273,18 +283,10 @@ namespace LiveChat.Client
         }
 
         /// <summary>
-        /// 关闭视频
-        /// </summary>
-        public void CloseVideo()
-        {
-            NNVSetVideoDevice(100);
-        }
-
-        /// <summary>
         /// 打开视频会话
         /// </summary>
         /// <param name="strUser"></param>
-        public void OpenVideo(string strUser)
+        public void OpenVideoTo(string strUser)
         {
             try
             {
@@ -314,13 +316,19 @@ namespace LiveChat.Client
         {
             if (isConnected)
             {
-                if (!isVideo)
-                {
-                    CloseVideo();
-                }
+                //如果不是视频，则关闭视频
+                if (!isVideo) CloseVideo();
 
-                OpenVideo(strUser);
+                OpenVideoTo(strUser);
             }
+        }
+
+        /// <summary>
+        /// 关闭视频
+        /// </summary>
+        public void CloseVideo()
+        {
+            NNVSetVideoDevice(100);
         }
 
         /// <summary>

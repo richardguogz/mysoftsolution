@@ -119,6 +119,23 @@ namespace LiveChat.Client
                     return;
                 }
 
+                var s = service.GetSeat(companyID, userID);
+                if (s == null)
+                {
+                    ClientUtils.ShowMessage("公司或用户信息不正确");
+                    return;
+                }
+
+                //判断用户是否已经登录
+                if (s.State != OnlineState.Offline)
+                {
+                    if (MessageBox.Show("当前用户已经登录，是否强制登录！", "系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Cancel)
+                    {
+                        txtCompanyID.Focus();
+                        return;
+                    }
+                }
+
                 IMResult result = service.Login(clientID, companyID, userID, password);
 
                 switch (result)

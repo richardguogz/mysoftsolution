@@ -249,6 +249,13 @@ namespace LiveChat.Client.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Video_chat2 {
+            get {
+                object obj = ResourceManager.GetObject("Video chat2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap visitor {
             get {
                 object obj = ResourceManager.GetObject("visitor", resourceCulture);

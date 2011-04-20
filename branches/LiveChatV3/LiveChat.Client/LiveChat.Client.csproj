@@ -464,9 +464,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Fabric.ico" />
+    <Content Include="Fabric.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\chat.ico" />
-    <Content Include="cur.cur" />
+    <Content Include="cur.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\face\0.gif" />
     <Content Include="images\face\1.gif" />
     <Content Include="images\face\10.gif" />
@@ -618,6 +622,10 @@
     <Content Include="images\software.jpg" />
     <Content Include="images\userhead.jpg" />
     <Content Include="images\users.ico" />
+    <None Include="Resources\Video chat2.png" />
+    <Content Include="video.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\apprise.PNG" />
     <None Include="Resources\capture.png" />
     <None Include="Resources\endsession.PNG" />
@@ -656,7 +664,9 @@
     <None Include="Resources\人_灰色.png" />
     <None Include="Resources\Voice%2520chat111.png" />
     <Content Include="template\chat.htm" />
-    <Content Include="UpdateList.xml" />
+    <Content Include="UpdateList.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
