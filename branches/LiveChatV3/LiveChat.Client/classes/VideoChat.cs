@@ -10,6 +10,22 @@ using System.Threading;
 namespace LiveChat.Client
 {
     /// <summary>
+    /// 请求用户
+    /// </summary>
+    public class RequestUser
+    {
+        /// <summary>
+        /// 语音用户ID
+        /// </summary>
+        public string UserID { get; set; }
+
+        /// <summary>
+        /// 是否视频会话
+        /// </summary>
+        public bool IsVideo { get; set; }
+    }
+
+    /// <summary>
     /// 视频聊天类
     /// </summary>
     public class VideoChat
@@ -286,40 +302,28 @@ namespace LiveChat.Client
         /// 打开视频会话
         /// </summary>
         /// <param name="strUser"></param>
-        public void OpenVideoTo(string strUser)
+        public void OpenVideoTo(string strUser, bool isVideo)
         {
             try
             {
+                if (isVideo)
+                    NNVSetVideoDevice(101);
+                else
+                    NNVSetVideoDevice(100);
+
                 NNVOpenVideoTo(strUser);
             }
             catch { }
         }
 
-        private string strUser;
-        private bool isVideo;
-
-        /// <summary>
-        /// 设置视频用户
-        /// </summary>
-        /// <param name="strUser"></param>
-        /// <param name="isVideo"></param>
-        public void SetVideoUser(string strUser, bool isVideo)
-        {
-            this.strUser = strUser;
-            this.isVideo = isVideo;
-        }
-
         /// <summary>
         /// 打开视频
         /// </summary>
-        public void OpenVideo()
+        public void OpenVideo(RequestUser user)
         {
             if (isConnected)
             {
-                //如果不是视频，则关闭视频
-                if (!isVideo) CloseVideo();
-
-                OpenVideoTo(strUser);
+                OpenVideoTo(user.UserID, user.IsVideo);
             }
         }
 

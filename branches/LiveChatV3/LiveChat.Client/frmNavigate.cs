@@ -42,6 +42,7 @@ namespace LiveChat.Client
         private IList<SeatFriend> myfriends;
         private Timer urlTimer;
         private VideoChat chat;
+        private RequestUser user;
 
         #endregion
 
@@ -2037,8 +2038,11 @@ namespace LiveChat.Client
                             //MessageBox.Show ("msg:连接对方成功，第二个参数:窗口句柄.\n");
                             chat.SetConnected(true);
 
-                            //打开视频
-                            chat.OpenVideo();
+                            if (user != null)
+                            {
+                                //打开视频
+                                chat.OpenVideo(user);
+                            }
                         }
                         break;
                     case 108:	//断开与对方的连接。第二个参数:窗口句柄.
@@ -2099,7 +2103,10 @@ namespace LiveChat.Client
                                         //存在窗口，则直接打开视频
                                         if (SingletonMul.ExistForm(key))
                                         {
-                                            SingletonMul.Run<frmSeatChat>(key, true);
+                                            if (strText == "_ReqV")
+                                                SingletonMul.Run<frmSeatChat>(key, true, true);
+                                            else
+                                                SingletonMul.Run<frmSeatChat>(key, true, false);
                                         }
                                         else
                                         {
@@ -2123,15 +2130,17 @@ namespace LiveChat.Client
                                     {
                                         if (strText == "_ReqVOK")
                                         {
-                                            chat.SetVideoUser(strUser, true);
+                                            user = new RequestUser { UserID = strUser, IsVideo = true };
                                         }
                                         else
                                         {
-                                            chat.SetVideoUser(strUser, false);
+                                            user = new RequestUser { UserID = strUser, IsVideo = false };
                                         }
                                     }
                                     else if (strText == "_ReqVFail") //对方拒绝
                                     {
+                                        user = null;
+
                                         //对方退出，将视频关掉
                                         string seatID = strUser.Replace('+', '_');
                                         Seat toSeat = service.GetSeat(seatID);
@@ -2139,10 +2148,12 @@ namespace LiveChat.Client
                                         string key = string.Format("SeatChat_{0}_{1}", loginSeat.SeatID, toSeat.SeatID);
                                         SingletonMul.Run<frmSeatChat>(key, false);
 
-                                        ClientUtils.ShowMessage("【" + toSeat.SeatName + "】取消了你的语音请求！");
+                                        ClientUtils.ShowMessage("【" + toSeat.SeatName + "】拒绝了你的视频或语音请求！");
                                     }
                                     else if (strText == "_CloseVideo")
                                     {
+                                        user = null;
+
                                         //对方退出，将视频关掉
                                         string seatID = strUser.Replace('+', '_');
                                         Seat toSeat = service.GetSeat(seatID);
@@ -2151,7 +2162,7 @@ namespace LiveChat.Client
                                         SingletonMul.Run<frmSeatChat>(key, false);
 
                                         //提示断开
-                                        ClientUtils.ShowMessage("【" + toSeat.SeatName + "】取消了与你的语音聊天！");
+                                        ClientUtils.ShowMessage("【" + toSeat.SeatName + "】取消了与你的视频或语音聊天！");
                                     }
                                     else
                                     {

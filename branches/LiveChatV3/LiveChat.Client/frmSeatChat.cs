@@ -134,6 +134,7 @@ namespace LiveChat.Client
                     toolStripButton4.Enabled = false;
 
                     var url = service.GetCompany(toSeat.CompanyID).WebSite;
+
                     //接收并打开视频
                     chat.ReceiveRequest(_MainFormParent, this.Handle, toSeat, url);
 
@@ -623,7 +624,7 @@ namespace LiveChat.Client
 
             var url = service.GetCompany(toSeat.CompanyID).WebSite;
             //发送请求
-            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat, true, url))
+            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat, false, url))
             {
                 if (splitContainer1.Panel2.Width < 80)
                 {
@@ -660,7 +661,7 @@ namespace LiveChat.Client
 
             var url = service.GetCompany(toSeat.CompanyID).WebSite;
             //发送请求
-            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat, false, url))
+            if (chat.SendRequest(_MainFormParent, this.Handle, toSeat, true, url))
             {
                 if (splitContainer1.Panel2.Width < 80)
                 {
@@ -746,6 +747,8 @@ namespace LiveChat.Client
                     panel6.Visible = true;
 
                     _IsReceiveRequest = true;
+                    _IsVideoRequest = Convert.ToBoolean(args[1]);
+
                     ReceiveRequest();
 
                     //闪屏处理
@@ -810,18 +813,15 @@ namespace LiveChat.Client
             if (_IsVideoRequest)
             {
                 //打开视频
-                chat.OpenVideoTo(strUser);
+                chat.OpenVideoTo(strUser, _IsVideoRequest);
 
                 //对方接受
                 chat.SendText(strUser, "_ReqVOK");
             }
             else
             {
-                //关闭视频
-                chat.CloseVideo();
-
                 //打开视频
-                chat.OpenVideoTo(strUser);
+                chat.OpenVideoTo(strUser, _IsVideoRequest);
 
                 //对方接受
                 chat.SendText(strUser, "_ReqNVOK");
