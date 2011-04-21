@@ -1040,11 +1040,11 @@ namespace MySoft.Tools.EntityDesign
                         }
 
                         string fieldName = ConvertCharToUpperOrLower(ParseMappingName(column.ColumnName), checkUpperFieldChar.Checked);
-                        if (string.Compare(tableName, fieldName, true) == 0)
+                        if (string.Compare(GetTableNameRemovePrefix(tableName), fieldName, true) == 0)
                         {
                             sb.Append(string.Format("\t\t[Mapping(\"" + column.ColumnName + "\")]\r\n"));
 
-                            if (string.Compare(tableName, fieldName.ToUpper()) == 0)
+                            if (string.Compare(GetTableNameRemovePrefix(tableName), fieldName.ToUpper()) == 0)
                             {
                                 fieldName += "_New";
                             }
@@ -1088,10 +1088,10 @@ namespace MySoft.Tools.EntityDesign
                         sb.Append(string.Format("\t<[ReadOnly]()> _\r\n"));
                     }
 
-                    if (txtExceptPrefix.Text.Trim() != string.Empty && tableName.ToLower().StartsWith(txtExceptPrefix.Text.ToLower().Trim()))
+                    if (CheckTableName(tableName))
                     {
                         if (!chkNoMapping.Checked) sb.Append(string.Format("\t<[Mapping](\"" + name + "\")> _\r\n"));
-                        sb.Append(string.Format("\tPublic Interface {0}\r\n\t\tInherits IEntity\r\n", tableName.Substring(tableName.ToLower().IndexOf(txtExceptPrefix.Text.ToLower().Trim()) + txtExceptPrefix.Text.ToLower().Trim().Length)));
+                        sb.Append(string.Format("\tPublic Interface {0}\r\n\t\tInherits IEntity\r\n", GetTableNameRemovePrefix(tableName)));
                     }
                     else
                     {
@@ -1144,12 +1144,12 @@ namespace MySoft.Tools.EntityDesign
                         }
 
                         string fieldName = ConvertCharToUpperOrLower(ParseMappingName(column.ColumnName), checkUpperFieldChar.Checked);
-                        if (string.Compare(tableName, fieldName, true) == 0)
+                        if (string.Compare(GetTableNameRemovePrefix(tableName), fieldName, true) == 0)
                         {
                             sb.Append(string.Format("<[Mapping](\"" + column.ColumnName + "\")> _\r\n"));
                             sb.Append("\t\t");
 
-                            if (string.Compare(tableName, fieldName.ToUpper()) == 0)
+                            if (string.Compare(GetTableNameRemovePrefix(tableName), fieldName.ToUpper()) == 0)
                             {
                                 fieldName += "_New";
                             }
@@ -1182,6 +1182,19 @@ namespace MySoft.Tools.EntityDesign
             }
 
             return sb.ToString();
+        }
+
+        private string GetTableNameRemovePrefix(string tableName)
+        {
+            if (CheckTableName(tableName))
+                return tableName.Substring(tableName.ToLower().IndexOf(txtExceptPrefix.Text.ToLower().Trim()) + txtExceptPrefix.Text.ToLower().Trim().Length);
+            else
+                return tableName;
+        }
+
+        private bool CheckTableName(string tableName)
+        {
+            return txtExceptPrefix.Text.Trim() != string.Empty && tableName.ToLower().StartsWith(txtExceptPrefix.Text.ToLower().Trim());
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
