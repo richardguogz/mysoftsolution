@@ -17,6 +17,22 @@ namespace MySoft.Data
             return new UpdateCreator();
         }
 
+        /// <summary>
+        /// 创建一个新的更新器
+        /// </summary>
+        public static UpdateCreator NewCreator(string tableName)
+        {
+            return new UpdateCreator(tableName);
+        }
+
+        /// <summary>
+        /// 创建一个新的更新器
+        /// </summary>
+        public static UpdateCreator NewCreator(Table table)
+        {
+            return new UpdateCreator(table);
+        }
+
         private Table table;
         private IList<WhereClip> whereList;
         private List<FieldValue> fvlist;
@@ -24,10 +40,30 @@ namespace MySoft.Data
         /// <summary>
         /// 实例化UpdateCreator
         /// </summary>
-        protected UpdateCreator()
+        private UpdateCreator()
         {
             this.whereList = new List<WhereClip>();
             this.fvlist = new List<FieldValue>();
+        }
+
+        /// <summary>
+        /// 实例化UpdateCreator
+        /// </summary>
+        /// <param name="tableName"></param>
+        private UpdateCreator(string tableName)
+            : this()
+        {
+            this.table = new Table(tableName);
+        }
+
+        /// <summary>
+        /// 实例化UpdateCreator
+        /// </summary>
+        /// <param name="table"></param>
+        private UpdateCreator(Table table)
+            : this()
+        {
+            this.table = table;
         }
 
         #region 内部属性

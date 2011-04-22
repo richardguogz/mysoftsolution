@@ -17,6 +17,22 @@ namespace MySoft.Data
             return new InsertCreator();
         }
 
+        /// <summary>
+        /// 创建一个新的插入器
+        /// </summary>
+        public static InsertCreator NewCreator(string tableName)
+        {
+            return new InsertCreator(tableName);
+        }
+
+        /// <summary>
+        /// 创建一个新的插入器
+        /// </summary>
+        public static InsertCreator NewCreator(Table table)
+        {
+            return new InsertCreator(table);
+        }
+
         private Table table;
         private Field identityField;
         private string sequenceName;
@@ -25,9 +41,29 @@ namespace MySoft.Data
         /// <summary>
         /// 实例化InsertCreator
         /// </summary>
-        protected InsertCreator()
+        private InsertCreator()
         {
             this.fvlist = new List<FieldValue>();
+        }
+
+        /// <summary>
+        /// 实例化InsertCreator
+        /// </summary>
+        /// <param name="tableName"></param>
+        private InsertCreator(string tableName)
+            : this()
+        {
+            this.table = new Table(tableName);
+        }
+
+        /// <summary>
+        /// 实例化InsertCreator
+        /// </summary>
+        /// <param name="table"></param>
+        private InsertCreator(Table table)
+            : this()
+        {
+            this.table = table;
         }
 
         #region 内部属性

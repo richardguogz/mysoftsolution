@@ -17,15 +17,51 @@ namespace MySoft.Data
             return new DeleteCreator();
         }
 
+        /// <summary>
+        /// 创建一个新的删除器
+        /// </summary>
+        public static DeleteCreator NewCreator(string tableName)
+        {
+            return new DeleteCreator(tableName);
+        }
+
+        /// <summary>
+        /// 创建一个新的插入器
+        /// </summary>
+        public static DeleteCreator NewCreator(Table table)
+        {
+            return new DeleteCreator(table);
+        }
+
         private Table table;
         private IList<WhereClip> whereList;
 
         /// <summary>
         /// 实例化DeleteCreator
         /// </summary>
-        protected DeleteCreator()
+        private DeleteCreator()
         {
             this.whereList = new List<WhereClip>();
+        }
+
+        /// <summary>
+        /// 实例化DeleteCreator
+        /// </summary>
+        /// <param name="tableName"></param>
+        private DeleteCreator(string tableName)
+            : this()
+        {
+            this.table = new Table(tableName);
+        }
+
+        /// <summary>
+        /// 实例化DeleteCreator
+        /// </summary>
+        /// <param name="table"></param>
+        private DeleteCreator(Table table)
+            : this()
+        {
+            this.table = table;
         }
 
         #region 内部属性

@@ -28,6 +28,22 @@ namespace MySoft.Data
             return new QueryCreator();
         }
 
+        /// <summary>
+        /// 创建一个新的查询器（条件为全部，排序为默认)
+        /// </summary>
+        public static QueryCreator NewCreator(string tableName)
+        {
+            return new QueryCreator(tableName);
+        }
+
+        /// <summary>
+        /// 创建一个新的查询器（条件为全部，排序为默认)
+        /// </summary>
+        public static QueryCreator NewCreator(Table table)
+        {
+            return new QueryCreator(table);
+        }
+
         private Table table;
         private IDictionary<string, TableJoin> joinTables;
         private IList<WhereClip> whereList;
@@ -37,12 +53,32 @@ namespace MySoft.Data
         /// <summary>
         /// 实例化QueryCreater
         /// </summary>
-        protected QueryCreator()
+        private QueryCreator()
         {
             this.whereList = new List<WhereClip>();
             this.orderList = new List<OrderByClip>();
             this.fieldList = new List<Field>();
             this.joinTables = new Dictionary<string, TableJoin>();
+        }
+
+        /// <summary>
+        /// 实例化QueryCreator
+        /// </summary>
+        /// <param name="tableName"></param>
+        private QueryCreator(string tableName)
+            : this()
+        {
+            this.table = new Table(tableName);
+        }
+
+        /// <summary>
+        /// 实例化QueryCreator
+        /// </summary>
+        /// <param name="table"></param>
+        private QueryCreator(Table table)
+            : this()
+        {
+            this.table = table;
         }
 
         #region 内部属性
