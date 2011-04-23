@@ -66,19 +66,19 @@ namespace MySoft.Net.Client
             Client.OnDisconnected += new DisconnectionEventHandler(Client_OnDisconnected);
         }
 
-        void Client_OnConnected(string message, bool connected, SocketAsyncEventArgs socketAsync)
+        void Client_OnConnected(string message, bool connected, Socket socket)
         {
             if (OnConnected != null)
-                OnConnected(message, connected, socketAsync);
+                OnConnected(message, connected, socket);
         }
 
-        void Client_OnDisconnected(string message, SocketAsyncEventArgs socketAsync)
+        void Client_OnDisconnected(string message, Socket socket)
         {
             if (OnDisconnected != null)
-                OnDisconnected(message, socketAsync);
+                OnDisconnected(message, socket);
         }
 
-        void Client_OnReceived(byte[] buffer, SocketAsyncEventArgs socketAsync)
+        void Client_OnReceived(byte[] buffer, Socket socket)
         {
             List<byte[]> datax;
 
@@ -89,7 +89,7 @@ namespace MySoft.Net.Client
                 {
                     foreach (byte[] mdata in datax)
                     {
-                        OnReceived(mdata, socketAsync);
+                        OnReceived(mdata, socket);
                     }
                 }
             }

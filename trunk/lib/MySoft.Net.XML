@@ -4,5 +4,907 @@
         <name>MySoft.Net</name>
     </assembly>
     <members>
+        <member name="T:MySoft.Net.Server.ConnectionFilterEventHandler">
+            <summary>
+            连接的代理
+            </summary>
+            <param name="socketAsync"></param>
+        </member>
+        <member name="T:MySoft.Net.Server.BinaryInputEventHandler">
+            <summary>
+            数据包输入代理
+            </summary>
+            <param name="data">输入包</param>
+            <param name="socketAsync"></param>
+        </member>
+        <member name="T:MySoft.Net.Server.MessageInputEventHandler">
+            <summary>
+            异常错误通常是用户断开的代理
+            </summary>
+            <param name="message">消息</param>
+            <param name="error">错误代码</param>
+            <param name="socketAsync"></param>
+        </member>
+        <member name="T:MySoft.Net.Server.SocketServer">
+             <summary>
+             ZYSOCKET框架 服务器端
+            （通过6W个连接测试。理论上支持10W个连接，可谓.NET最强SOCKET模型）
+             </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.isDisposed">
+            <summary>
+            用来确定是否以释放
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.BuffManagers">
+            <summary>
+            数据包管理
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.SocketAsynPool">
+            <summary>
+            Socket异步对象池
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.sock">
+            <summary>
+            SOCK对象
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.MaxBufferSize">
+            <summary>
+            接收包大小
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.MaxConnectCout">
+            <summary>
+            最大用户连接
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketServer.IPEndPoint">
+            <summary>
+            IP端点
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.LogOutEvent(System.Object,MySoft.Net.Server.LogType,System.String)">
+            <summary>
+            输出消息
+            </summary>
+            <param name="o"></param>
+            <param name="type"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.CallBackEvent(System.IAsyncResult)">
+            <summary>
+            事件处理完的回调函数
+            </summary>
+            <param name="ar"></param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.#ctor(System.Net.IPAddress,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            实例化SocketServer类
+            </summary>
+            <param name="ipaddress"></param>
+            <param name="port"></param>
+            <param name="maxconnectcout"></param>
+            <param name="maxbuffersize"></param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.#ctor(System.Net.IPEndPoint,System.Int32,System.Int32)">
+            <summary>
+            实例化SocketServer类
+            </summary>
+            <param name="ipendpoint"></param>
+            <param name="maxconnectcout"></param>
+            <param name="maxbuffersize"></param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            实例化SocketServer类
+            </summary>
+            <param name="host"></param>
+            <param name="port"></param>
+            <param name="maxconnectcout"></param>
+            <param name="maxbuffersize"></param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.Run">
+            <summary>
+            启动
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.Start">
+            <summary>
+            启动
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.Stop">
+            <summary>
+            停止
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.SendData(System.Net.Sockets.Socket,System.Byte[])">
+            <summary>
+            发送数据包
+            </summary>
+            <param name="sock"></param>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServer.Disconnect(System.Net.Sockets.Socket)">
+            <summary>
+            断开此SOCKET
+            </summary>
+            <param name="sock"></param>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServer.Sock">
+            <summary>
+            Socket对象
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServer.OnConnectFilter">
+            <summary>
+            连接传入处理
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServer.OnBinaryInput">
+            <summary>
+            数据输入处理
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServer.OnMessageInput">
+            <summary>
+            异常错误通常是用户断开处理
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServer.NoDelay">
+            <summary>
+            是否关闭SOCKET Delay算法
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServer.ReceiveTimeout">
+            <summary>
+            SOCKET 的  ReceiveTimeout属性
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServer.SendTimeout">
+            <summary>
+            SOCKET 的 SendTimeout
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServer.GetMaxUserConnect">
+            <summary>
+            最大用户连接数
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServer.OnMessageOutput">
+            <summary>
+            输出消息
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Server.LogType">
+            <summary>
+            日志类型
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.LogType.Error">
+            <summary>
+            错误
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.LogType.Success">
+            <summary>
+            成功
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Server.LogOutEventArgs">
+            <summary>
+            日志输出事件参数
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.LogOutEventArgs.messageType">
+            <summary>
+            消息类型
+            </summary>     
+        </member>
+        <member name="F:MySoft.Net.Server.LogOutEventArgs.message">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.LogOutEventArgs.MessageType">
+            <summary>
+            消息类型
+            </summary>  
+        </member>
+        <member name="T:MySoft.Net.Sockets.BufferTypeAttribute">
+            <summary>
+            数据包格式化类
+            （凡是打了此标记的类才能够被 BufferFormat.FormatFCA 处理)
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferTypeAttribute.#ctor(System.Int32)">
+            <summary>
+            数据包格式化类
+            </summary>
+            <param name="bufferCmdType">数据包命令类型</param>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferTypeAttribute.BufferCmdType">
+            <summary>
+            数据包命令类型
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Security.DES">
+            <summary>
+            DES加密算法
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Security.DES.EncryptDES(System.Byte[],System.Byte[],System.String)">
+            DES加密
+            <param >待加密的字符串</param>
+            <param >加密密钥,要求为8位</param>
+            <returns>加密成功返回加密后的字符串，失败返回源串</returns>
+        </member>
+        <member name="M:MySoft.Net.Security.DES.DecryptDES(System.Byte[],System.Byte[],System.String)">
+            DES解密
+            <param >待解密的字符串</param>
+            <param >解密密钥,要求为8位,和加密密钥相同</param>
+            <returns>解密成功返回解密后的字符串，失败返源串</returns>      
+        </member>
+        <member name="T:MySoft.Net.Client.SocketClientConfiguration">
+            <summary>
+            string host, int port
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Client.SocketClientConfiguration.IP">
+            <summary>
+            连接的IP信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Client.SocketClientConfiguration.Port">
+            <summary>
+            侦听端口
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Client.SocketClientManager">
+            <summary>
+            默认Socket客户端
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClientManager.#ctor">
+            <summary>
+            实例化Socket客户端管理器
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Client.SocketClientManager.OnReceived">
+            <summary>
+            数据包接收
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Client.SocketClientManager.OnConnected">
+            <summary>
+            连上服务器
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Client.SocketClientManager.OnDisconnected">
+            <summary>
+            断开连接
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Client.SocketClientManager.BuffListManger">
+            <summary>
+            数据包缓冲类
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Client.SocketClientManager.Client">
+            <summary>
+            SOCKETCLIENT对象
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Sockets.FDataExtraHandle">
+            <summary>
+            数据包在格式化完毕后回调方法。（例如加密，压缩等）
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Net.Sockets.BufferFormat">
+            <summary>
+            数据包格式化类
+            (此类功能是讲.NET数据转换成通讯数据包）
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.#ctor(System.Int32,MySoft.Net.Sockets.FDataExtraHandle)">
+            <summary>
+            数据包格式化类
+            </summary>
+            <param name="buffType">包类型</param>
+            <param name="dataExtra">数据包在格式化完毕后回调方法。（例如加密，压缩等）</param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.#ctor(System.Int32)">
+            <summary>
+            数据包格式化类
+            </summary>
+            <param name="buffType">包类型</param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Boolean)">
+            <summary>
+            添加一个布尔值
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Byte)">
+            <summary>
+            添加一个1字节的整数
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Int16)">
+            <summary>
+            添加一个2字节的整数
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Int32)">
+            <summary>
+            添加一个4字节的整数
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.UInt64)">
+            <summary>
+            添加一个8字节的整数
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Single)">
+            <summary>
+            添加一个4字节的浮点
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Double)">
+            <summary>
+            添加一个8字节的浮点
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Byte[])">
+            <summary>
+            添加一个BYTE[]数据包
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.String)">
+            <summary>
+            添加一个字符串
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.DateTime)">
+            <summary>
+            添加一个一个DATATIME
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.AddItem(System.Object)">
+            <summary>
+            将一个对象转换为二进制数据
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.Finish">
+            <summary>
+            完毕
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.FormatFCA(System.Object)">
+            <summary>
+            直接格式化一个带FormatClassAttibutes 标签的类，返回BYTE[]数组，此数组可以直接发送不需要组合所数据包。所以也称为类抽象数据包
+            </summary>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.FormatFCA(System.Object,MySoft.Net.Sockets.FDataExtraHandle)">
+            <summary>
+            直接格式化一个带FormatClassAttibutes 标签的类，返回BYTE[]数组，此数组可以直接发送不需要组合所数据包。所以也称为类抽象数据包
+            </summary>
+            <param name="o"></param>
+            <param name="dataExtra">数据加密回调</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.SerializeObject(System.Object)">
+            <summary>
+            把对象序列化并返回相应的字节
+            </summary>
+            <param name="pObj">需要序列化的对象</param>
+            <returns>byte[]</returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.Int32)">
+            <summary>
+            将一个32位整形转换成一个BYTE[]4字节
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.UInt64)">
+            <summary>
+            将一个64位整形转换成一个BYTE[]8字节
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.Char)">
+            <summary>
+            将一个 1位CHAR转换成1位的BYTE[]
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.Int16)">
+            <summary>
+            将一个 16位整数转换成2位的BYTE[]
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.Boolean)">
+            <summary>
+            将一个布尔值转换成一个BYTE[]
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.Single)">
+            <summary>
+            将一个32位浮点数转换成一个BYTE[]4字节
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferFormat.GetSocketBytes(System.Double)">
+            <summary>
+            将一个64位浮点数转换成一个BYTE[]8字节
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferFormat.Encode">
+            <summary>
+            字符串格式化字符编码
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Sockets.BufferFormat.FDataExtra">
+            <summary>
+            数据委托处理
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Sockets.BufferList">
+            <summary>
+            数据包组合类
+            功能描述:保持数据包完整性。
+            （通过互联网发送数据包，实际上是将一个较大的包拆分成诺干小包，此类的功能就是讲诺干小包重新组合成完整的数据包）
+            此类是线程安全的
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferList.#ctor(System.Int32)">
+            <summary>
+            数据包组合类
+            </summary>
+            <param name="maxSize">数据包有可能出现的最大长度。如果不想服务器被人攻击到内存崩溃请按实际情况设置</param>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferList.ByteList">
+            <summary>
+            数据包列表
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferList.MaxSize">
+            <summary>
+            数据包有可能出现的最大长度。如果不想服务器被人攻击到内存崩溃请按实际情况设置
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Security.AES">
+            <summary>
+            AES加密算法
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Security.AES.AESEncrypt(System.Byte[],System.Byte[],System.String)">
+            <summary>
+            AES加密
+            </summary>
+            <param name="inputdata">输入的数据</param>
+            <param name="iv">向量128位</param>
+            <param name="strKey">加密密钥</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Security.AES.AESDecrypt(System.Byte[],System.Byte[],System.String)">
+            <summary>
+            AES解密
+            </summary>
+            <param name="inputdata">输入的数据</param>
+            <param name="iv">向量128</param>
+            <param name="strKey">key</param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Net.Sockets.SocketConfig">
+            <summary>
+            接点读取类
+            （一个简单的读取appconfig的类)
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Sockets.SocketConfig.ReadString(System.String)">
+            <summary>
+            读取接点到字符串
+            </summary>
+            <param name="key">key</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.SocketConfig.ReadInt32(System.String)">
+            <summary>
+            读取一个整数
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.SocketConfig.ReadFloat(System.String)">
+            <summary>
+            读取一个浮点数
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.SocketConfig.ReadLong(System.String)">
+            <summary>
+            读取一个长整型
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.SocketConfig.ReadBoolean(System.String)">
+            <summary>
+            读取一个布尔值
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Net.Server.BufferManager">
+            <summary>
+            数据包缓冲池
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.BufferManager.Init">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Sockets.RDataExtraHandle">
+            <summary>
+            数据包在读取前需要额外的处理回调方法。（例如解密，解压缩等）
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.Net.Sockets.BufferRead">
+            <summary>
+            数据包读取类
+            （此类的功能是讲通讯数据包重新转换成.NET 数据类型）
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.#ctor(System.Byte[],System.Int32,System.Int32,MySoft.Net.Sockets.RDataExtraHandle)">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+            <param name="startIndex">需要载入数据额外处理的开始位置</param>
+            <param name="length">需要载入数据额外处理的数据长度 -1为，开始INDEX到结束位置,-2就是保留最后1位</param>
+             <param name="dataExtraCallBack"> 数据包在读取前需要额外的处理回调方法。（例如加密，解压缩等）</param>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadInt16(System.Int16@)">
+            <summary>
+            读取内存流中的头2位并转换成整型
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadInt32(System.Int32@)">
+            <summary>
+            读取内存流中的头4位并转换成整型
+            </summary>
+            <param name="ms">内存流</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadInt64(System.Int64@)">
+            <summary>
+            读取内存流中的头8位并转换成长整型
+            </summary>
+            <param name="ms">内存流</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadByte(System.Byte@)">
+            <summary>
+            读取内存流中的首位
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadFloat(System.Single@)">
+            <summary>
+            读取内存流中的头4位并转换成单精度浮点数
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadDouble(System.Double@)">
+            <summary>
+            读取内存流中的头8位并转换成浮点数
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadBoolean(System.Boolean@)">
+            <summary>
+            读取内存流中的头1位并转换成布尔值
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadString(System.String@)">
+            <summary>
+            读取内存流中一段字符串
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadByteArray(System.Byte[]@)">
+            <summary>
+            读取内存流中一段数据
+            </summary>
+            <param name="ms"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.DeserializeObject(System.Byte[])">
+            <summary>
+            把字节反序列化成相应的对象
+            </summary>
+            <param name="pBytes">字节流</param>
+            <returns>object</returns>
+        </member>
+        <member name="M:MySoft.Net.Sockets.BufferRead.ReadObject(System.Object@)">
+            <summary>
+            读取一个对象
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferRead.IsDataExtraSuccess">
+            <summary>
+            额外处理是否调用成功，可以判断是否解密成功
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferRead.Length">
+            <summary>
+            数据包长度
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Sockets.BufferRead.Postion">
+            <summary>
+            当前其位置
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Server.SocketServerConfiguration">
+            <summary>
+            string host, int port, int maxconnectcout, int maxbuffersize
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServerConfiguration.Host">
+            <summary>
+            主机信息，可以为localhost或any
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServerConfiguration.Port">
+            <summary>
+            侦听端口
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServerConfiguration.MaxConnectCount">
+            <summary>
+            最大连接数
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServerConfiguration.MaxBufferSize">
+            <summary>
+            最大缓冲大小
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Server.SocketServerManager">
+            <summary>
+            默认Socket服务端
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServerManager.#ctor">
+            <summary>
+            实例化Socket服务端管理器
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketServerManager.#ctor(MySoft.Net.Server.SocketServerConfiguration)">
+            <summary>
+            实例化Socket服务端管理器
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServerManager.OnBinaryInput">
+            <summary>
+            数据包接收
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServerManager.OnMessageInput">
+            <summary>
+            消息输入
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServerManager.OnMessageOutput">
+            <summary>
+            消息输出
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Server.SocketServerManager.OnConnectFilter">
+            <summary>
+            连接筛选
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServerManager.BuffListManger">
+            <summary>
+            数据包缓冲类
+            </summary>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketServerManager.Server">
+            <summary>
+            SOCKETSERVER对象
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Client.ConnectionEventHandler">
+            <summary>
+            连接事件
+            </summary>
+            <param name="message"></param>
+            <param name="connected"></param>
+            <param name="socketAsync"></param>
+        </member>
+        <member name="T:MySoft.Net.Client.ReceiveEventHandler">
+            <summary>
+            接收事件
+            </summary>
+            <param name="buffer"></param>
+            <param name="socketAsync"></param>
+        </member>
+        <member name="T:MySoft.Net.Client.DisconnectionEventHandler">
+            <summary>
+            退出事件
+            </summary>
+            <param name="message"></param>
+            <param name="socketAsync"></param>
+        </member>
+        <member name="T:MySoft.Net.Client.SocketClient">
+            <summary>
+            ZYSOCKET 客户端
+            （一个简单的异步SOCKET客户端，性能不错。支持.NET 3.0以上版本。适用于silverlight)
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Client.SocketClient.sock">
+            <summary>
+            SOCKET对象
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.#ctor">
+            <summary>
+            实例化Socket客户端
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.BeginConnectTo(System.String,System.Int32)">
+            <summary>
+            异步连接到指定的服务器
+            </summary>
+            <param name="host"></param>
+            <param name="port"></param>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.BeginConnectTo(System.Net.IPAddress,System.Int32)">
+            <summary>
+            异步连接到指定的服务器
+            </summary>
+            <param name="ipaddress"></param>
+            <param name="port"></param>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.BeginConnectTo(System.Net.IPEndPoint)">
+            <summary>
+            异步连接到指定的服务器
+            </summary>
+            <param name="ipendpoint"></param>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.BeginSendTo(System.Byte[])">
+            <summary>
+            异步发送数据包
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.ConnectTo(System.String,System.Int32)">
+            <summary>
+            连接到指定服务器
+            </summary>
+            <param name="host"></param>
+            <param name="port"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.ConnectTo(System.Net.IPAddress,System.Int32)">
+            <summary>
+            连接到指定服务器
+            </summary>
+            <param name="ipaddress"></param>
+            <param name="port"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.ConnectTo(System.Net.IPEndPoint)">
+            <summary>
+            连接到指定服务器
+            </summary>
+            <param name="ipendpoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Net.Client.SocketClient.SendData(System.Byte[])">
+            <summary>
+            发送数据包
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="E:MySoft.Net.Client.SocketClient.OnConnected">
+            <summary>
+            连接成功事件
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Client.SocketClient.OnReceived">
+            <summary>
+            数据包进入事件
+            </summary>
+        </member>
+        <member name="E:MySoft.Net.Client.SocketClient.OnDisconnected">
+            <summary>
+            出错或断开触发事件
+            </summary>
+        </member>
+        <member name="T:MySoft.Net.Server.SocketAsyncEventArgsPool">
+            <summary>
+            Based on example from http://msdn2.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs.socketasynceventargs.aspx
+            Represents a collection of reusable SocketAsyncEventArgs objects.  
+            </summary>
+        </member>
+        <member name="F:MySoft.Net.Server.SocketAsyncEventArgsPool.pool">
+            <summary>
+            SocketAsyncEventArgs栈
+            </summary>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketAsyncEventArgsPool.#ctor(System.Int32)">
+            <summary>
+            初始化SocketAsyncEventArgs池
+            </summary>
+            <param name="capacity">最大可能使用的SocketAsyncEventArgs对象.</param>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketAsyncEventArgsPool.Pop">
+            <summary>
+            弹出一个SocketAsyncEventArgs
+            </summary>
+            <returns>SocketAsyncEventArgs removed from the pool.</returns>
+        </member>
+        <member name="M:MySoft.Net.Server.SocketAsyncEventArgsPool.Push(System.Net.Sockets.SocketAsyncEventArgs)">
+            <summary>
+            添加一个 SocketAsyncEventArgs
+            </summary>
+            <param name="item">SocketAsyncEventArgs instance to add to the pool.</param>
+        </member>
+        <member name="P:MySoft.Net.Server.SocketAsyncEventArgsPool.Count">
+            <summary>
+            返回SocketAsyncEventArgs池中的 数量
+            </summary>
+        </member>
     </members>
 </doc>

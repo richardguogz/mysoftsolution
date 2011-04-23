@@ -222,12 +222,6 @@
             </summary>
             <value>The name of the service MQ.</value>
         </member>
-        <member name="P:MySoft.IoC.CastleFactoryConfiguration.Compress">
-            <summary>
-            Gets or sets a value indicating whether data dispatched by this service factory is compressed.
-            </summary>
-            <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        </member>
         <member name="P:MySoft.IoC.CastleFactoryConfiguration.MaxTry">
             <summary>
             Gets or sets the max try.
@@ -381,12 +375,6 @@
             Gets or sets the transfer.
             </summary>
         </member>
-        <member name="P:MySoft.IoC.IServiceContainer.Compress">
-            <summary>
-            Gets or sets a value indicating whether return value of service <see cref="T:MySoft.IoC.IServiceContainer"/> is compress.
-            </summary>
-            <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
-        </member>
         <member name="F:MySoft.IoC.SimpleServiceContainer.DEFAULT_MAX_TRY_NUMBER">
             <summary>
             The default max try number.
@@ -516,12 +504,6 @@
             Gets the <see cref="T:System.Object"/> with the specified service type.
             </summary>
             <value></value>
-        </member>
-        <member name="P:MySoft.IoC.SimpleServiceContainer.Compress">
-            <summary>
-            Gets or sets a value indicating whether return value of service <see cref="T:MySoft.IoC.IServiceContainer"/> is compress.
-            </summary>
-            <value><c>true</c> if compress; otherwise, <c>false</c>.</value>
         </member>
         <member name="E:MySoft.IoC.SimpleServiceContainer.OnLog">
             <summary>
@@ -655,11 +637,6 @@
         <member name="T:MySoft.IoC.RequestMessage">
             <summary>
             The request msg.
-            </summary>
-        </member>
-        <member name="P:MySoft.IoC.RequestMessage.Compress">
-            <summary>
-            Gets or sets the compress of the service.
             </summary>
         </member>
         <member name="P:MySoft.IoC.RequestMessage.Transfer">
@@ -867,17 +844,6 @@
             <summary>
             Remoting
             </summary>
-        </member>
-        <member name="T:MySoft.IoC.CastleConfigService">
-            <summary>
-            CastleService
-            </summary>
-        </member>
-        <member name="M:MySoft.IoC.CastleConfigService.PublishWellKnownServiceInstance(MySoft.IoC.MemoryServiceMQ)">
-            <summary>
-            发布服务实例
-            </summary>
-            <param name="mq"></param>
         </member>
         <member name="T:MySoft.IoC.MemoryServiceMQ">
             <summary>

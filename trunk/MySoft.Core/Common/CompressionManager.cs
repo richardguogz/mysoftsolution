@@ -10,6 +10,8 @@ namespace MySoft
     /// </summary>
     public abstract class CompressionManager
     {
+        #region GZip
+
         public static string CompressGZip(string str)
         {
             byte[] buffer = UTF8Encoding.Unicode.GetBytes(str);
@@ -58,6 +60,62 @@ namespace MySoft
             return msOut.ToArray();
         }
 
+        #endregion
+
+        #region Deflate
+
+        public static string CompressDeflate(string str)
+        {
+            byte[] buffer = UTF8Encoding.Unicode.GetBytes(str);
+            return Convert.ToBase64String(CompressDeflate(buffer));
+        }
+
+        public static byte[] CompressDeflate(byte[] buffer)
+        {
+            if (buffer == null || buffer.Length == 0)
+            {
+                return buffer;
+            }
+
+            MemoryStream ms = new MemoryStream();
+            using (DeflateStream gzip = new DeflateStream(ms, CompressionMode.Compress))
+            {
+                gzip.Write(buffer, 0, buffer.Length);
+            }
+            return ms.ToArray();
+        }
+
+        public static string DecompressDeflate(string str)
+        {
+            byte[] buffer = Convert.FromBase64String(str);
+            return UTF8Encoding.Unicode.GetString(DecompressDeflate(buffer));
+        }
+
+        public static byte[] DecompressDeflate(byte[] buffer)
+        {
+            if (buffer == null || buffer.Length == 0)
+            {
+                return buffer;
+            }
+
+            MemoryStream ms = new MemoryStream(buffer, 0, buffer.Length);
+            MemoryStream msOut = new MemoryStream();
+            byte[] writeData = new byte[4096];
+            using (DeflateStream gzip = new DeflateStream(ms, CompressionMode.Decompress))
+            {
+                int n;
+                while ((n = gzip.Read(writeData, 0, writeData.Length)) > 0)
+                {
+                    msOut.Write(writeData, 0, n);
+                }
+            }
+            return msOut.ToArray();
+        }
+
+        #endregion
+
+        #region 7Zip
+
         /// <summary>
         /// 7Zip Compress the str.
         /// </summary>
@@ -101,5 +159,7 @@ namespace MySoft
 
             return SevenZip.Compression.LZMA.SevenZipHelper.Decompress(buffer);
         }
+
+        #endregion
     }
 }

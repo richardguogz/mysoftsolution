@@ -79,6 +79,9 @@ namespace MySoft.IoC.Servers.ServiceMQServer
             //CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
             //Console.ReadKey();
 
+            CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
+            IUserService service = CastleFactory.Create().GetService<IUserService>();
+
             int count = 1;
 
             for (int i = 0; i < count; i++)
@@ -86,7 +89,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
                 Thread thread = new Thread(DoWork);
                 thread.Name = string.Format("Thread-->{0}", i);
                 thread.IsBackground = true;
-                thread.Start();
+                thread.Start(service);
             }
 
             Console.ReadKey();
@@ -106,8 +109,7 @@ namespace MySoft.IoC.Servers.ServiceMQServer
 
         static void DoWork(object value)
         {
-            //IUserService service = value as IUserService;
-            IUserService service = CastleFactory.Create().GetService<IUserService>("service");
+            IUserService service = value as IUserService;
             while (true)
             {
                 Stopwatch watch = Stopwatch.StartNew();

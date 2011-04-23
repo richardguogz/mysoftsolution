@@ -6,7 +6,8 @@ using System.Data;
 
 namespace MySoft.IoC.Dll
 {
-    [ServiceContract(Timeout = 10000)]
+    //[ServiceContract(Timeout = 1000, Format = ResponseFormat.Json, Compress = CompressType.GZip)]
+    [ServiceContract(Timeout = 2000)]
     public interface IUserService
     {
         UserInfo GetUserInfo(string username);

@@ -25,7 +25,7 @@ namespace MySoft.IoC.Dll
             //    Thread.Sleep(1000);
             //}
 
-            Thread.Sleep(5000);
+            //Thread.Sleep(1000);
 
             return new UserInfo()
             {

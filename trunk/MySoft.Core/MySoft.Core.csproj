@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MySoft.Core</RootNamespace>
     <AssemblyName>MySoft.Core</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -70,7 +70,8 @@
     <Compile Include="Aop\IAopProxyFactory.cs" />
     <Compile Include="Common\ResponseResult.cs" />
     <Compile Include="Common\MySoftException.cs" />
-    <Compile Include="Common\TransferType.cs" />
+    <Compile Include="Common\ResponseFormat.cs" />
+    <Compile Include="Common\CompressType.cs" />
     <Compile Include="Utils\ErrorHelper.cs" />
     <Compile Include="Mail\SMTP.cs" />
     <Compile Include="Mail\SmtpMail.cs" />

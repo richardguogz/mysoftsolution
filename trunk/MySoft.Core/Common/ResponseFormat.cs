@@ -5,9 +5,9 @@ using System.Text;
 namespace MySoft
 {
     /// <summary>
-    /// Transfer Data Type
+    /// 数据格式
     /// </summary>
-    public enum TransferType
+    public enum ResponseFormat
     {
         /// <summary>
         /// 二进制
@@ -22,4 +22,5 @@ namespace MySoft
         /// </summary>
         Xml
     }
+
 }

@@ -15,22 +15,22 @@ namespace MySoft.Net.Client
     /// </summary>
     /// <param name="message"></param>
     /// <param name="connected"></param>
-    /// <param name="socketAsync"></param>
-    public delegate void ConnectionEventHandler(string message, bool connected, SocketAsyncEventArgs socketAsync);
+    /// <param name="socket"></param>
+    public delegate void ConnectionEventHandler(string message, bool connected, Socket socket);
 
     /// <summary>
     /// 接收事件
     /// </summary>
     /// <param name="buffer"></param>
-    /// <param name="socketAsync"></param>
-    public delegate void ReceiveEventHandler(byte[] buffer, SocketAsyncEventArgs socketAsync);
+    /// <param name="socket"></param>
+    public delegate void ReceiveEventHandler(byte[] buffer, Socket socket);
 
     /// <summary>
     /// 退出事件
     /// </summary>
     /// <param name="message"></param>
-    /// <param name="socketAsync"></param>
-    public delegate void DisconnectionEventHandler(string message, SocketAsyncEventArgs socketAsync);
+    /// <param name="socket"></param>
+    public delegate void DisconnectionEventHandler(string message, Socket socket);
 
     /// <summary>
     /// ZYSOCKET 客户端
@@ -66,10 +66,11 @@ namespace MySoft.Net.Client
         public SocketClient()
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
         }
 
         private bool connected;
+
+        #region 连接服务器
 
         /// <summary>
         /// 异步连接到指定的服务器
@@ -98,44 +99,13 @@ namespace MySoft.Net.Client
 
             #endregion
 
-            BeginConnectTo(myEnd);
-        }
-
-        /// <summary>
-        /// 异步连接到指定的服务器
-        /// </summary>
-        /// <param name="ipaddress"></param>
-        /// <param name="port"></param>
-        public void BeginConnectTo(IPAddress ipaddress, int port)
-        {
-            BeginConnectTo(new IPEndPoint(ipaddress, port));
-        }
-
-        /// <summary>
-        /// 异步连接到指定的服务器
-        /// </summary>
-        /// <param name="ipendpoint"></param>
-        public void BeginConnectTo(IPEndPoint ipendpoint)
-        {
-
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.RemoteEndPoint = ipendpoint;
+            e.RemoteEndPoint = myEnd;
             e.Completed += new EventHandler<SocketAsyncEventArgs>(e_Completed);
             if (!socket.ConnectAsync(e))
             {
                 eCompleted(e);
             }
-        }
-
-        /// <summary>
-        /// 异步发送数据包
-        /// </summary>
-        /// <param name="buffer"></param>
-        public bool SendData(byte[] buffer)
-        {
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(buffer, 0, buffer.Length);
-            return socket.SendAsync(e);
         }
 
         /// <summary>
@@ -146,61 +116,25 @@ namespace MySoft.Net.Client
         /// <returns></returns>
         public bool ConnectTo(string host, int port)
         {
-            IPEndPoint myEnd = null;
-
-            #region ipformat
-            try
-            {
-                myEnd = new IPEndPoint(IPAddress.Parse(host), port);
-            }
-            catch (FormatException)
-            {
-                IPHostEntry p = Dns.GetHostEntry(Dns.GetHostName());
-
-                foreach (IPAddress s in p.AddressList)
-                {
-                    if (!s.IsIPv6LinkLocal)
-                        myEnd = new IPEndPoint(s, port);
-                }
-            }
-
-            #endregion
-
-            return ConnectTo(myEnd);
-        }
-
-
-        /// <summary>
-        /// 连接到指定服务器
-        /// </summary>
-        /// <param name="ipaddress"></param>
-        /// <param name="port"></param>
-        /// <returns></returns>
-        public bool ConnectTo(IPAddress ipaddress, int port)
-        {
-            return ConnectTo(new IPEndPoint(ipaddress, port));
-        }
-
-        /// <summary>
-        /// 连接到指定服务器
-        /// </summary>
-        /// <param name="ipendpoint"></param>
-        /// <returns></returns>
-        public bool ConnectTo(IPEndPoint ipendpoint)
-        {
-
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.RemoteEndPoint = ipendpoint;
-            e.Completed += new EventHandler<SocketAsyncEventArgs>(e_Completed);
-            if (!socket.ConnectAsync(e))
-            {
-                eCompleted(e);
-            }
+            BeginConnectTo(host, port);
 
             wait.WaitOne();
             wait.Reset();
 
             return connected;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 异步发送数据包
+        /// </summary>
+        /// <param name="buffer"></param>
+        public bool SendData(byte[] buffer)
+        {
+            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(buffer, 0, buffer.Length);
+            return socket.SendAsync(e);
         }
 
         void e_Completed(object sender, SocketAsyncEventArgs e)
@@ -220,54 +154,44 @@ namespace MySoft.Net.Client
                         wait.Set();
 
                         if (OnConnected != null)
-                            OnConnected("连接服务器成功！", true, e);
+                            OnConnected("连接服务器成功！", true, socket);
 
-                        byte[] data = new byte[4098];
+                        byte[] data = new byte[4096];
                         e.SetBuffer(data, 0, data.Length);  //设置数据包
 
                         if (!socket.ReceiveAsync(e)) //开始读取数据包
                             eCompleted(e);
-                    }
-                    else if (e.SocketError == SocketError.IsConnected)
-                    {
-                        connected = true;
-                        wait.Set();
-
-                        if (OnConnected != null)
-                            OnConnected("连接服务器成功！", true, e);
                     }
                     else
                     {
                         connected = false;
                         wait.Set();
                         if (OnConnected != null)
-                            OnConnected("连接服务器失败！", false, e);
+                            OnConnected("连接服务器失败！", false, socket);
                     }
                     break;
-
                 case SocketAsyncOperation.Receive:
                     if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)
                     {
                         byte[] data = new byte[e.BytesTransferred];
                         Array.Copy(e.Buffer, 0, data, 0, data.Length);
 
-                        byte[] dataLast = new byte[4098];
+                        byte[] dataLast = new byte[4096];
                         e.SetBuffer(dataLast, 0, dataLast.Length);
 
                         if (!socket.ReceiveAsync(e))
                             eCompleted(e);
 
                         if (OnReceived != null)
-                            OnReceived(data, e);
+                            OnReceived(data, socket);
 
                     }
                     else
                     {
                         if (OnDisconnected != null)
-                            OnDisconnected("与服务器断开连接！", e);
+                            OnDisconnected("与服务器断开连接！", socket);
                     }
                     break;
-
             }
         }
     }

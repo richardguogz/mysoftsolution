@@ -43,6 +43,20 @@
             获取原始对象
             </summary>
         </member>
+        <member name="P:MySoft.Data.IEntityBase.Item(System.String)">
+            <summary>
+            使用this获取值信息
+            </summary>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.IEntityBase.Item(MySoft.Data.Field)">
+            <summary>
+            使用this获取值信息
+            </summary>
+            <param name="FieldName"></param>
+            <returns></returns>
+        </member>
         <member name="T:MySoft.Data.Design.IEntity">
             <summary>
             实体接口
@@ -5738,6 +5752,31 @@
             修改状态
             </summary>
         </member>
+        <member name="T:MySoft.Data.IEntityInfo">
+            <summary>
+            实体相关信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.IEntityInfo.Table">
+            <summary>
+            表信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.IEntityInfo.Fields">
+            <summary>
+            字段信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.IEntityInfo.FieldValues">
+            <summary>
+            字段及值信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.IEntityInfo.ReadOnly">
+            <summary>
+            是否只读 (只读时为视图或自定义实例)
+            </summary>
+        </member>
         <member name="T:MySoft.Data.EntityBase">
             <summary>
             Entity基类
@@ -5848,6 +5887,20 @@
             <summary>
             验证实体的有效性
             </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.EntityBase.Item(System.String)">
+            <summary>
+            使用this获取值信息
+            </summary>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.Data.EntityBase.Item(MySoft.Data.Field)">
+            <summary>
+            使用this获取值信息
+            </summary>
+            <param name="field"></param>
             <returns></returns>
         </member>
         <member name="P:MySoft.Data.EntityBase.MySoft#Data#IEntityBase#OriginalObject">
@@ -5998,6 +6051,26 @@
             移除字段到修改列表
             </summary>
             <param name="fields"></param>
+        </member>
+        <member name="P:MySoft.Data.Entity.MySoft#Data#IEntityInfo#Table">
+            <summary>
+            表信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.Entity.MySoft#Data#IEntityInfo#Fields">
+            <summary>
+            字段信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.Entity.MySoft#Data#IEntityInfo#FieldValues">
+            <summary>
+            字段及值信息
+            </summary>
+        </member>
+        <member name="P:MySoft.Data.Entity.MySoft#Data#IEntityInfo#ReadOnly">
+            <summary>
+            是否只读
+            </summary>
         </member>
         <member name="T:MySoft.Data.AllField`1">
             <summary>

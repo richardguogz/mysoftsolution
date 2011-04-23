@@ -3,25 +3,6 @@
 namespace MySoft
 {
     /// <summary>
-    /// 数据格式
-    /// </summary>
-    public enum ResponseFormat
-    {
-        /// <summary>
-        /// 二进制
-        /// </summary>
-        Binary,
-        /// <summary>
-        /// json格式
-        /// </summary>
-        Json,
-        /// <summary>
-        /// xml格式
-        /// </summary>
-        Xml
-    }
-
-    /// <summary>
     /// Attribute used to mark service interfaces.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
@@ -43,7 +24,23 @@ namespace MySoft
             }
         }
 
-        private int timeout;
+        private CompressType compress;
+        /// <summary>
+        /// 压缩方式
+        /// </summary>
+        public CompressType Compress
+        {
+            get
+            {
+                return compress;
+            }
+            set
+            {
+                compress = value;
+            }
+        }
+
+        private int timeout = -1;
         /// <summary>
         /// 响应时间
         /// </summary>
@@ -62,12 +59,26 @@ namespace MySoft
         public ServiceContractAttribute()
         {
             this.format = ResponseFormat.Binary;
+            this.compress = CompressType.None;
         }
 
         public ServiceContractAttribute(ResponseFormat format)
             : this()
         {
             this.format = format;
+        }
+
+        public ServiceContractAttribute(CompressType compress)
+            : this()
+        {
+            this.compress = compress;
+        }
+
+        public ServiceContractAttribute(ResponseFormat format, CompressType compress)
+            : this()
+        {
+            this.format = format;
+            this.compress = compress;
         }
     }
 }
