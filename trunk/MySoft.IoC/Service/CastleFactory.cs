@@ -277,7 +277,7 @@ namespace MySoft.IoC
                     scc.Port = config.Port;
 
                     //设置服务代理
-                    IServiceProxy serviceProxy = new ServiceProxy(scc, config.MaxTry);
+                    IServiceProxy serviceProxy = new ServiceProxy(scc, config.Timeout);
                     serviceProxy.OnLog += new LogEventHandler(msg_OnLog);
                     container.Proxy = serviceProxy;
 
@@ -316,6 +316,19 @@ namespace MySoft.IoC
                 string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
                 Console.WriteLine(message);
             }
+        }
+
+        #endregion
+
+        #region 注入缓存
+
+        /// <summary>
+        /// 注入缓存
+        /// </summary>
+        /// <param name="cache"></param>
+        public void InjectCache(IDependentCache cache)
+        {
+            this.container.Cache = cache;
         }
 
         #endregion

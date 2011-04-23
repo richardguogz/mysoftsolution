@@ -6,7 +6,6 @@ using Castle.Facilities.Startable;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 using MySoft.IoC.Services;
-using MySoft.Remoting;
 
 namespace MySoft.IoC
 {
@@ -18,9 +17,9 @@ namespace MySoft.IoC
         #region Const Members
 
         /// <summary>
-        /// The default max try number.
+        /// The default timeout number.
         /// </summary>
-        public const int DEFAULT_MAX_TRY_NUMBER = 5;
+        public const int DEFAULT_TIMEOUT_NUMBER = 30000;
 
         #endregion
 
@@ -28,6 +27,7 @@ namespace MySoft.IoC
 
         private Castle.Windsor.IWindsorContainer container;
         private IServiceProxy serviceProxy;
+        private IDependentCache cache;
         private TransferType transfer = TransferType.Binary;
 
         private void Init(IDictionary serviceKeyTypes)
@@ -181,6 +181,21 @@ namespace MySoft.IoC
         }
 
         /// <summary>
+        /// 缓存依赖
+        /// </summary>
+        public IDependentCache Cache
+        {
+            get
+            {
+                return this.cache;
+            }
+            set
+            {
+                this.cache = value;
+            }
+        }
+
+        /// <summary>
         /// Gets the kernel.
         /// </summary>
         /// <value>The kernel.</value>
@@ -260,6 +275,13 @@ namespace MySoft.IoC
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
+            //缓存的处理
+            if (cache != null && cache.ServiceName == msg.ServiceName)
+            {
+                //处理Key信息
+                string key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters.ToString());
+            }
+
             //check local service first
             IService localService = (IService)GetLocalService(msg.ServiceName);
 
@@ -267,18 +289,18 @@ namespace MySoft.IoC
             {
                 if (localService != null)
                 {
-                    if (OnLog != null) OnLog(string.Format("Calling local service ({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                    if (OnLog != null) OnLog(string.Format("[{2}] => Calling local service ({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.ClientIP));
                     return localService.CallService(msg);
                 }
 
                 if (serviceProxy == null)
                 {
-                    if (OnLog != null) OnLog(string.Format("Calling remote service error, serviceProxy is undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                    if (OnLog != null) OnLog(string.Format("[{2}] => Calling remote service error, serviceProxy is undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.ClientIP));
                     return null;
                 }
 
                 //if no local service, call remote service
-                if (OnLog != null) OnLog(string.Format("Calling remote service ({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                if (OnLog != null) OnLog(string.Format("[{2}] => Calling remote service ({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.ClientIP));
                 return serviceProxy.CallMethod(msg);
             }
             catch (Exception ex)

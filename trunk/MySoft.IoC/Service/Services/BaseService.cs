@@ -17,11 +17,13 @@ namespace MySoft.IoC.Services
         protected string serviceName;
 
         /// <summary>
-        /// Runs the specified MSG.
+        /// Gets the name of the service.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <returns>The msg.</returns>
-        protected abstract ResponseMessage Run(RequestMessage msg);
+        /// <value>The name of the service.</value>
+        public string ServiceName
+        {
+            get { return serviceName; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseService"/> class.
@@ -32,16 +34,14 @@ namespace MySoft.IoC.Services
             this.serviceName = serviceName;
         }
 
-        #region IService Members
-
         /// <summary>
-        /// Gets the name of the service.
+        /// Runs the specified MSG.
         /// </summary>
-        /// <value>The name of the service.</value>
-        public string ServiceName
-        {
-            get { return serviceName; }
-        }
+        /// <param name="msg">The MSG.</param>
+        /// <returns>The msg.</returns>
+        protected abstract ResponseMessage Run(RequestMessage msg);
+
+        #region IService Members
 
         /// <summary>
         /// Calls the service.
@@ -50,7 +50,7 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            string log = string.Format("Dynamic service ({0},{1}). -->{2}", serviceName, msg.SubServiceName, msg.Parameters.SerializedData);
+            string log = string.Format("[{3}] => Dynamic service ({0},{1}). -->{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData, msg.ClientIP);
             if (OnLog != null) OnLog(log);
 
             long t1 = System.Environment.TickCount;
@@ -68,8 +68,8 @@ namespace MySoft.IoC.Services
             else
             {
                 long t2 = System.Environment.TickCount - t1;
-                log = string.Format("Dynamic service ({0},{1}).-->{2}\r\n{3}", serviceName, msg.SubServiceName,
-                    retMsg.Message, "Spent time: (" + t2.ToString() + ") ms.");
+                log = string.Format("[{4}] => Dynamic service ({0},{1}).-->{2}\r\n{3}", msg.ServiceName, msg.SubServiceName, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms.", msg.ClientIP);
+
                 if (OnLog != null) OnLog(log);
             }
 

@@ -17,6 +17,6 @@ namespace MySoft.IoC
         /// <summary>
         /// 尝试次数
         /// </summary>
-        int MaxTryNum { get; set; }
+        int Timeout { get; set; }
     }
 }

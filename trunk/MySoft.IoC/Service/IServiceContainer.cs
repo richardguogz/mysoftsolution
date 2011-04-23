@@ -2,10 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-
 using Castle.Core;
 using Castle.MicroKernel;
-using MySoft.Remoting;
 
 namespace MySoft.IoC
 {
@@ -93,5 +91,9 @@ namespace MySoft.IoC
         /// 设置服务代理
         /// </summary>
         IServiceProxy Proxy { get; set; }
+        /// <summary>
+        /// 缓存依赖
+        /// </summary>
+        IDependentCache Cache { get; set; }
     }
 }

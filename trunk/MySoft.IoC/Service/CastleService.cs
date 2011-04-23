@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using MySoft.Net.Server;
 using MySoft.Net.Sockets;
+using System.Net;
 
 namespace MySoft.IoC
 {
@@ -36,8 +37,8 @@ namespace MySoft.IoC
             //实例化Socket服务
             manager = new SocketServerManager(ssc);
             manager.OnConnectFilter += new ConnectionFilterEventHandler(SocketServerManager_OnConnectFilter);
+            manager.OnDisconnected += new DisconnectionEventHandler(SocketServerManager_OnDisconnected);
             manager.OnBinaryInput += new BinaryInputEventHandler(SocketServerManager_OnBinaryInput);
-            manager.OnMessageInput += new MessageInputEventHandler(SocketServerManager_OnMessageInput);
             manager.OnMessageOutput += new EventHandler<LogOutEventArgs>(SocketServerManager_OnMessageOutput);
         }
 
@@ -57,6 +58,14 @@ namespace MySoft.IoC
         public void Start()
         {
             manager.Server.Start();
+        }
+
+        /// <summary>
+        /// 获取本地终结点
+        /// </summary>
+        public EndPoint Host
+        {
+            get { return manager.Server.Sock.LocalEndPoint; }
         }
 
         /// <summary>
@@ -107,12 +116,12 @@ namespace MySoft.IoC
 
         void SocketServerManager_OnMessageOutput(object sender, LogOutEventArgs e)
         {
-            Console.WriteLine(e.Message);
+            //Console.WriteLine(e.Message);
         }
 
-        void SocketServerManager_OnMessageInput(string message, int error, SocketAsyncEventArgs socketAsync)
+        void SocketServerManager_OnDisconnected(int error, SocketAsyncEventArgs socketAsync)
         {
-            Console.WriteLine(message);
+            Console.WriteLine("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint);
             socketAsync.UserToken = null;
             socketAsync.AcceptSocket.Close();
         }
@@ -132,6 +141,9 @@ namespace MySoft.IoC
                     if (read.ReadObject(out requestObject))
                     {
                         RequestMessage request = requestObject as RequestMessage;
+
+                        //设置客户端IP
+                        request.ClientIP = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
 
                         //获取返回的消息
                         ResponseMessage response = container.CallService(request);

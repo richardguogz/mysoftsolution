@@ -13,29 +13,32 @@ namespace MySoft.IoC
 {
     internal sealed class ServiceProxy : ILogable, IServiceProxy
     {
+        private ManualResetEvent wait = new ManualResetEvent(false);
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private SocketClientConfiguration config;
         private SocketClientManager manager;
         private bool connected = false;
 
-        private int maxTryNum;
-
-        public int MaxTryNum
+        private int timeout;
+        /// <summary>
+        /// Socket超时时间
+        /// </summary>
+        public int Timeout
         {
             get
             {
-                return maxTryNum;
+                return timeout;
             }
             set
             {
-                maxTryNum = value;
+                timeout = value;
             }
         }
 
-        public ServiceProxy(SocketClientConfiguration config, int maxTryNum)
+        public ServiceProxy(SocketClientConfiguration config, int timeout)
         {
             this.config = config;
-            this.maxTryNum = maxTryNum;
+            this.timeout = timeout;
 
             #region socket通讯
 
@@ -65,47 +68,59 @@ namespace MySoft.IoC
                 Guid tid = msg.TransactionId;
 
                 //发送数据包到服务端
-                manager.Client.SendData(BufferFormat.FormatFCA(msg));
+                bool isSend = manager.Client.SendData(BufferFormat.FormatFCA(msg));
 
-                ResponseMessage retMsg = null;
-
-                while (true)
+                if (isSend)
                 {
-                    retMsg = GetData<ResponseMessage>(responses, tid);
-                    if (retMsg != null) break;
-                }
+                    ResponseMessage retMsg = null;
 
-                //for (int i = 0; i < maxTryNum; i++)
-                //{
-                //    retMsg = GetData<ResponseMessage>(responses, tid);
-                //    if (retMsg == null)
-                //    {
-                //        if (OnLog != null) OnLog(string.Format("Try {0} running ({1},{2}) -->{3}", (i + 1), msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
-                //    }
-                //    else
-                //    {
-                //        break;
-                //    }
-                //}
-
-                long t2 = System.Environment.TickCount - t1;
-                if (retMsg != null)
-                {
-                    if (retMsg.Data is Exception)
+                    //启动线程池读取数据信息
+                    ThreadPool.QueueUserWorkItem((obj) =>
                     {
-                        throw retMsg.Data as Exception;
+                        while (true)
+                        {
+                            retMsg = GetData<ResponseMessage>(responses, tid);
+                            if (retMsg != null)
+                            {
+                                //设置状态
+                                wait.Set();
+                                break;
+                            }
+                        }
+                    });
+
+                    //设置等待超时时间
+                    if (wait.WaitOne(msg.Timeout < 0 ? timeout : msg.Timeout))
+                    {
+                        //超时处理
                     }
 
-                    //SerializationManager.Serialize(retMsg)
-                    if (OnLog != null) OnLog(string.Format("Result -->{0}\r\n{1}", retMsg.Message, "Spent time: (" + t2.ToString() + ") ms"));
-                }
+                    //重置状态
+                    wait.Reset();
 
-                return retMsg;
+                    long t2 = System.Environment.TickCount - t1;
+                    if (retMsg != null)
+                    {
+                        if (retMsg.Data is Exception)
+                        {
+                            throw retMsg.Data as Exception;
+                        }
+
+                        //SerializationManager.Serialize(retMsg)
+                        if (OnLog != null) OnLog(string.Format("Result -->{0}\r\n{1}", retMsg.Message, "Spent time: (" + t2.ToString() + ") ms"));
+                    }
+
+                    return retMsg;
+                }
+                else
+                {
+                    if (OnLog != null) OnLog(string.Format("Send data to ({0}:{1}) error！", config.IP, config.Port));
+                    return null;
+                }
             }
             else
             {
                 if (OnLog != null) OnLog(string.Format("Server ({0}:{1}) not connected！", config.IP, config.Port));
-
                 return null;
             }
         }
@@ -133,7 +148,6 @@ namespace MySoft.IoC
                     if (read.ReadObject(out responseObject))
                     {
                         ResponseMessage result = responseObject as ResponseMessage;
-
                         lock (responses)
                         {
                             responses[result.Request.TransactionId] = result;
@@ -166,13 +180,16 @@ namespace MySoft.IoC
         /// <returns></returns>
         T GetData<T>(IDictionary map, Guid transactionId)
         {
-            lock (map)
+            if (map.Contains(transactionId))
             {
-                if (map.Contains(transactionId))
+                lock (map)
                 {
-                    object retObj = map[transactionId];
-                    map.Remove(transactionId);
-                    return (T)retObj;
+                    if (map.Contains(transactionId))
+                    {
+                        object retObj = map[transactionId];
+                        map.Remove(transactionId);
+                        return (T)retObj;
+                    }
                 }
             }
 

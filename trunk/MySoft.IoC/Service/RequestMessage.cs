@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MySoft.Remoting;
 using MySoft.Net.Sockets;
 
 namespace MySoft.IoC
@@ -18,8 +17,9 @@ namespace MySoft.IoC
         private string serviceName;
         private string subServiceName;
         private Guid transactionId;
+        private string clientIP;
+        private int timeout = -1;
         private ParameterCollection parameters = new ParameterCollection();
-        private byte priority;
         private TransferType transfer = TransferType.Binary;
 
         #endregion
@@ -36,6 +36,36 @@ namespace MySoft.IoC
             set
             {
                 transfer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the timeout of the service.
+        /// </summary>
+        public int Timeout
+        {
+            get
+            {
+                return timeout;
+            }
+            set
+            {
+                timeout = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the client ip.
+        /// </summary>
+        public string ClientIP
+        {
+            get
+            {
+                return clientIP;
+            }
+            set
+            {
+                clientIP = value;
             }
         }
 
@@ -100,22 +130,6 @@ namespace MySoft.IoC
             set
             {
                 parameters = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the priority.
-        /// </summary>
-        /// <value>The priority.</value>
-        public byte Priority
-        {
-            get
-            {
-                return priority;
-            }
-            set
-            {
-                priority = value;
             }
         }
     }

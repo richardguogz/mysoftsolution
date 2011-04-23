@@ -4,7 +4,6 @@ using System.Text;
 using System.Configuration;
 using System.Xml;
 using MySoft.IoC;
-using MySoft.Remoting;
 
 namespace MySoft.IoC
 {
@@ -18,7 +17,7 @@ namespace MySoft.IoC
 
         private string server = "127.0.0.1";
         private int port = 8888;
-        private int maxTry = SimpleServiceContainer.DEFAULT_MAX_TRY_NUMBER;
+        private int timeout = SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER;
 
         /// <summary>
         /// 获取远程对象配置
@@ -70,8 +69,8 @@ namespace MySoft.IoC
             if (node.Attributes["port"] != null && node.Attributes["port"].Value.Trim() != string.Empty)
                 port = Convert.ToInt32(node.Attributes["port"].Value);
 
-            if (node.Attributes["maxTry"] != null && node.Attributes["maxTry"].Value.Trim() != string.Empty)
-                maxTry = Convert.ToInt32(node.Attributes["maxTry"].Value);
+            if (node.Attributes["timeout"] != null && node.Attributes["timeout"].Value.Trim() != string.Empty)
+                timeout = Convert.ToInt32(node.Attributes["timeout"].Value);
         }
 
         /// <summary>
@@ -115,13 +114,13 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the max try.
+        /// Gets or sets the timeout
         /// </summary>
-        /// <value>The max try.</value>
-        public int MaxTry
+        /// <value>The timeout.</value>
+        public int Timeout
         {
-            get { return maxTry; }
-            set { maxTry = value; }
+            get { return timeout; }
+            set { timeout = value; }
         }
     }
 }
