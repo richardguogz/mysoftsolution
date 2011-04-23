@@ -105,7 +105,7 @@ namespace MySoft.Mail
         /// <param name="body"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult Send(string title, string body, string mailTo)
+        public ResponseResult Send(string title, string body, string mailTo)
         {
             string[] mailto = new string[] { mailTo };
             return Send(title, body, mailto);
@@ -131,7 +131,7 @@ namespace MySoft.Mail
         /// <param name="body"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult Send(string title, string body, string[] mailTo)
+        public ResponseResult Send(string title, string body, string[] mailTo)
         {
             if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
             SMTP smtp = new SMTP(this.mailFrom, mailTo, title, body, this.smtpServer, userName, password);
@@ -182,7 +182,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult SendException(Exception ex, string title, string mailTo)
+        public ResponseResult SendException(Exception ex, string title, string mailTo)
         {
             string msg = ErrorHelper.GetHtmlError(ex);
             return Send(title, msg, mailTo);
@@ -195,7 +195,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult SendSampleException(Exception ex, string title, string mailTo)
+        public ResponseResult SendSampleException(Exception ex, string title, string mailTo)
         {
             string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
@@ -208,7 +208,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult SendException(HttpContext current, string title, string mailTo)
+        public ResponseResult SendException(HttpContext current, string title, string mailTo)
         {
             HttpContext ctx = HttpContext.Current;
             Exception ex = ctx.Server.GetLastError();
@@ -227,7 +227,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult SendException(Exception ex, string title, string[] mailTo)
+        public ResponseResult SendException(Exception ex, string title, string[] mailTo)
         {
             string msg = ErrorHelper.GetHtmlError(ex);
             return Send(title, msg, mailTo);
@@ -240,7 +240,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult SendSampleException(Exception ex, string title, string[] mailTo)
+        public ResponseResult SendSampleException(Exception ex, string title, string[] mailTo)
         {
             string msg = ErrorHelper.GetErrorWithoutHtml(ex);
             return Send(title, msg, mailTo);
@@ -253,7 +253,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="mailTo"></param>
         /// <returns></returns>
-        public DataResult SendException(HttpContext current, string title, string[] mailTo)
+        public ResponseResult SendException(HttpContext current, string title, string[] mailTo)
         {
             HttpContext ctx = HttpContext.Current;
             Exception ex = ctx.Server.GetLastError();

@@ -43,9 +43,9 @@ namespace MySoft.Net.Server
         public event BinaryInputEventHandler OnBinaryInput;
 
         /// <summary>
-        /// 消息输入
+        /// 异常错误通常是用户断开处理
         /// </summary>
-        public event MessageInputEventHandler OnMessageInput;
+        public event DisconnectionEventHandler OnDisconnected;
 
         /// <summary>
         /// 消息输出
@@ -58,11 +58,6 @@ namespace MySoft.Net.Server
         public event ConnectionFilterEventHandler OnConnectFilter;
 
         /// <summary>
-        /// 数据包缓冲类
-        /// </summary>
-        public BufferList BuffListManger { get; set; }
-
-        /// <summary>
         /// SOCKETSERVER对象
         /// </summary>
         public SocketServer Server { get; set; }
@@ -72,13 +67,10 @@ namespace MySoft.Net.Server
         /// </summary>
         public SocketServerManager()
         {
-            //初始化数据包缓冲区,并设置了最大数据包尽可能的大 
-            BuffListManger = new BufferList(409600);
-
             Server = new SocketServer();
             Server.OnBinaryInput += new BinaryInputEventHandler(Server_OnBinaryInput);
-            Server.OnMessageInput += new MessageInputEventHandler(Server_OnMessageInput);
             Server.OnMessageOutput += new EventHandler<LogOutEventArgs>(Server_OnMessageOutput);
+            Server.OnDisconnected += new DisconnectionEventHandler(Server_OnDisconnected);
             Server.OnConnectFilter += new ConnectionFilterEventHandler(Server_OnConnectFilter);
         }
 
@@ -88,13 +80,10 @@ namespace MySoft.Net.Server
         /// <param name="config"></param>
         public SocketServerManager(SocketServerConfiguration config)
         {
-            //初始化数据包缓冲区,并设置了最大数据包尽可能的大 
-            BuffListManger = new BufferList(409600);
-
             Server = new SocketServer(config.Host, config.Port, config.MaxConnectCount, config.MaxBufferSize);
             Server.OnBinaryInput += new BinaryInputEventHandler(Server_OnBinaryInput);
-            Server.OnMessageInput += new MessageInputEventHandler(Server_OnMessageInput);
             Server.OnMessageOutput += new EventHandler<LogOutEventArgs>(Server_OnMessageOutput);
+            Server.OnDisconnected += new DisconnectionEventHandler(Server_OnDisconnected);
             Server.OnConnectFilter += new ConnectionFilterEventHandler(Server_OnConnectFilter);
         }
 
@@ -112,10 +101,10 @@ namespace MySoft.Net.Server
                 OnMessageOutput(sender, e);
         }
 
-        void Server_OnMessageInput(string message, int error, SocketAsyncEventArgs socketAsync)
+        void Server_OnDisconnected(int error, SocketAsyncEventArgs socketAsync)
         {
-            if (OnMessageInput != null)
-                OnMessageInput(message, error, socketAsync);
+            if (OnDisconnected != null)
+                OnDisconnected(error, socketAsync);
         }
 
         void Server_OnBinaryInput(byte[] buffer, SocketAsyncEventArgs socketAsync)
@@ -132,24 +121,19 @@ namespace MySoft.Net.Server
             }
 
             //BuffList 数据包组合类 如果不想丢数据就用这个类吧
-            BufferList bufflist = socketAsync.UserToken as BufferList;
+            BufferList BuffListManger = socketAsync.UserToken as BufferList;
 
-            lock (socketAsync)
+            List<byte[]> datax;
+
+            //整理从服务器上收到的数据包
+            if (BuffListManger.InsertByteArray(buffer, 4, out datax))
             {
-                List<byte[]> datax;
-
-                ////整理从服务器上收到的数据包
-                if (BuffListManger.InsertByteArray(buffer, 4, out datax))
+                if (OnBinaryInput != null)
                 {
-                    if (OnBinaryInput != null)
+                    foreach (byte[] mdata in datax)
                     {
-                        foreach (byte[] mdata in datax)
-                        {
-                            OnBinaryInput(mdata, socketAsync);
-                        }
+                        OnBinaryInput(mdata, socketAsync);
                     }
-
-                    datax = null;
                 }
             }
         }

@@ -71,6 +71,7 @@
     <Compile Include="Service\Configuration\CastleFactoryConfigurationHandler.cs" />
     <Compile Include="Service\Configuration\CastleFactoryType.cs" />
     <Compile Include="Service\Exceptions.cs" />
+    <Compile Include="Service\IDependentCache.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\IServiceContainer.cs" />
     <Compile Include="Service\IServiceProxy.cs" />

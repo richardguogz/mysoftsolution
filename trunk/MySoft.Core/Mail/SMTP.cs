@@ -604,7 +604,7 @@ namespace MySoft.Mail
         /// 同步发送邮件
         /// </summary>
         /// <returns></returns>
-        public DataResult Send()
+        public ResponseResult Send()
         {
             return SendMail(false, null);
         }
@@ -625,7 +625,7 @@ namespace MySoft.Mail
         /// <param name="isAsync">是否异步发送邮件</param>
         /// <param name="userState">异步任务的唯一标识符，当 isAsync 为 True 时必须设置该属性， 当 isAsync 为 False 时可设置为 null</param>
         /// <returns></returns>
-        private DataResult SendMail(bool isAsync, object userState)
+        private ResponseResult SendMail(bool isAsync, object userState)
         {
             #region 设置属性值
 
@@ -699,7 +699,8 @@ namespace MySoft.Mail
 
             #endregion
 
-            var result = new DataResult { IsSuccess = true, Message = "发送成功！" };
+            //状态码为0表示成功
+            var result = new ResponseResult { Code = 0, Message = "发送成功！" };
 
             try
             {
@@ -730,7 +731,7 @@ namespace MySoft.Mail
                 mailSent = false;
             }
 
-            result.IsSuccess = mailSent;
+            result.Code = mailSent ? 0 : -1;
 
             return result;
         }

@@ -16,7 +16,16 @@ namespace MySoft.IoC.Dll
             //    throw new Exception(username + " =>  出错啦！");
             //}
 
-            //Thread.Sleep(1000);
+            //if (username.Length % 2 == 0)
+            //{
+            //    Thread.Sleep(2000);
+            //}
+            //else
+            //{
+            //    Thread.Sleep(1000);
+            //}
+
+            Thread.Sleep(5000);
 
             return new UserInfo()
             {

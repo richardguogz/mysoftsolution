@@ -21,19 +21,18 @@ namespace MySoft.Net.Server
     public delegate bool ConnectionFilterEventHandler(SocketAsyncEventArgs socketAsync);
 
     /// <summary>
-    /// 数据包输入代理
+    /// 断开连接的代理
     /// </summary>
-    /// <param name="data">输入包</param>
-    /// <param name="socketAsync"></param>
-    public delegate void BinaryInputEventHandler(byte[] buffer, SocketAsyncEventArgs socketAsync);
-
-    /// <summary>
-    /// 异常错误通常是用户断开的代理
-    /// </summary>
-    /// <param name="message">消息</param>
     /// <param name="error">错误代码</param>
     /// <param name="socketAsync"></param>
-    public delegate void MessageInputEventHandler(string message, int error, SocketAsyncEventArgs socketAsync);
+    public delegate void DisconnectionEventHandler(int error, SocketAsyncEventArgs socketAsync);
+
+    /// <summary>
+    /// 数据包输入代理
+    /// </summary>
+    /// <param name="buffer">输入包</param>
+    /// <param name="socketAsync"></param>
+    public delegate void BinaryInputEventHandler(byte[] buffer, SocketAsyncEventArgs socketAsync);
 
     /// <summary>
     /// ZYSOCKET框架 服务器端
@@ -113,14 +112,14 @@ namespace MySoft.Net.Server
         public event ConnectionFilterEventHandler OnConnectFilter;
 
         /// <summary>
+        /// 异常错误通常是用户断开处理
+        /// </summary>
+        public event DisconnectionEventHandler OnDisconnected;
+
+        /// <summary>
         /// 数据输入处理
         /// </summary>
         public event BinaryInputEventHandler OnBinaryInput;
-
-        /// <summary>
-        /// 异常错误通常是用户断开处理
-        /// </summary>
-        public event MessageInputEventHandler OnMessageInput;
 
         private System.Threading.AutoResetEvent[] reset;
 
@@ -441,6 +440,7 @@ namespace MySoft.Net.Server
                         else
                         {
                             //连接成功处理
+                            LogOutEvent(null, LogType.Success, string.Format("The Socket Connect {0}！", e.AcceptSocket.RemoteEndPoint));
                         }
                     }
 
@@ -471,12 +471,12 @@ namespace MySoft.Net.Server
         {
             if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)
             {
-                byte[] data = new byte[e.BytesTransferred];
+                byte[] buffer = new byte[e.BytesTransferred];
 
-                Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);
+                Array.Copy(e.Buffer, e.Offset, buffer, 0, buffer.Length);
 
                 if (this.OnBinaryInput != null)
-                    this.OnBinaryInput(data, e);
+                    this.OnBinaryInput(buffer, e);
 
                 if (!e.AcceptSocket.ReceiveAsync(e))
                 {
@@ -485,13 +485,12 @@ namespace MySoft.Net.Server
             }
             else
             {
-                string message = string.Format("User Disconnect {0}！", e.AcceptSocket.RemoteEndPoint.ToString());
-
+                string message = string.Format("User Disconnect {0}！", e.AcceptSocket.RemoteEndPoint);
                 LogOutEvent(null, LogType.Error, message);
 
-                if (OnMessageInput != null)
+                if (OnDisconnected != null)
                 {
-                    OnMessageInput(message, -1, e);
+                    OnDisconnected(-1, e);
                 }
 
                 e.AcceptSocket = null;
@@ -528,8 +527,15 @@ namespace MySoft.Net.Server
         public void SendData(Socket sock, byte[] buffer)
         {
             if (sock != null && sock.Connected)
-                sock.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, sock);
-
+            {
+                try
+                {
+                    sock.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, sock);
+                }
+                catch
+                {
+                }
+            }
         }
 
         void AsynCallBack(IAsyncResult result)
@@ -571,8 +577,14 @@ namespace MySoft.Net.Server
 
             if (sock != null)
             {
-                sock.Shutdown(SocketShutdown.Both);
-                sock.EndDisconnect(result);
+                try
+                {
+                    sock.Shutdown(SocketShutdown.Both);
+                    sock.EndDisconnect(result);
+                }
+                catch
+                {
+                }
             }
         }
 

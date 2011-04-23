@@ -51,7 +51,7 @@ namespace MySoft.Remoting
             if (_RemotingConfiguration.IsCheckServer)
             {
                 System.Threading.Thread thread = new System.Threading.Thread(DoWork);
-                thread.IsBackground = true;
+                //thread.IsBackground = true;
                 thread.Start();
             }
         }

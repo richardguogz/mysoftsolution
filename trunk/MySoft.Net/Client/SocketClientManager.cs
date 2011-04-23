@@ -92,8 +92,6 @@ namespace MySoft.Net.Client
                         OnReceived(mdata, socketAsync);
                     }
                 }
-
-                datax = null;
             }
         }
     }

@@ -45,17 +45,17 @@ namespace MySoft.IoC
 
             //获取约束格式
             var contract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
-            if (contract != null && contract.Format != DataFormat.Default)
+            if (contract != null && contract.Format != ResponseFormat.Default)
             {
                 switch (contract.Format)
                 {
-                    case DataFormat.Binary:
+                    case ResponseFormat.Binary:
                         reqMsg.Transfer = TransferType.Binary;
                         break;
-                    case DataFormat.Json:
+                    case ResponseFormat.Json:
                         reqMsg.Transfer = TransferType.Json;
                         break;
-                    case DataFormat.Xml:
+                    case ResponseFormat.Xml:
                         reqMsg.Transfer = TransferType.Xml;
                         break;
                 }

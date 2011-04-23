@@ -11,6 +11,52 @@ namespace MySoft.IoC.Servers.ServiceMQServer
 {
     class Program
     {
+        ////写线程将数据写入myData
+        //static int myData = 0;
+
+        ////读写次数
+        //const int readWriteCount = 10;
+
+        ////false:初始时没有信号
+        //static AutoResetEvent autoResetEvent = new AutoResetEvent(true);
+
+        //static void Main(string[] args)
+        //{
+        //    //开启一个读线程(子线程)
+        //    Thread readerThread = new Thread(new ThreadStart(ReadThreadProc));
+        //    readerThread.Name = "ReaderThread";
+        //    readerThread.Start();
+
+        //    for (int i = 1; i <= readWriteCount; i++)
+        //    {
+        //        Console.WriteLine("MainThread writing : {0}", i);
+
+        //        //主(写)线程将数据写入
+        //        myData = 0;
+
+        //        //主(写)线程发信号，说明值已写过了
+        //        //即通知正在等待的线程有事件发生
+        //        autoResetEvent.Set();
+
+        //        Thread.Sleep(1);
+        //    }
+
+        //    //终止线程
+        //    //readerThread.Abort();
+
+        //    Console.ReadKey();
+        //}
+
+        //static void ReadThreadProc()
+        //{
+        //    while (true)
+        //    {
+        //        //在数据被写入前，读线程等待（实际上是等待写线程发出数据写完的信号）
+        //        autoResetEvent.WaitOne();
+        //        Console.WriteLine("{0} reading : {1}", Thread.CurrentThread.Name, myData);
+        //    }
+        //}
+
         static void Main(string[] args)
         {
             //CastleFactoryConfiguration config = CastleFactoryConfiguration.GetConfig();
@@ -31,17 +77,16 @@ namespace MySoft.IoC.Servers.ServiceMQServer
 
             //CastleFactory.Create().OnError += new ErrorLogEventHandler(mq_OnError);
             //CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
-            IUserService service = CastleFactory.Create().GetService<IUserService>("service");
             //Console.ReadKey();
 
-            int count = 100;
+            int count = 1;
 
             for (int i = 0; i < count; i++)
             {
                 Thread thread = new Thread(DoWork);
                 thread.Name = string.Format("Thread-->{0}", i);
                 thread.IsBackground = true;
-                thread.Start(service);
+                thread.Start();
             }
 
             Console.ReadKey();
@@ -61,7 +106,8 @@ namespace MySoft.IoC.Servers.ServiceMQServer
 
         static void DoWork(object value)
         {
-            IUserService service = value as IUserService;
+            //IUserService service = value as IUserService;
+            IUserService service = CastleFactory.Create().GetService<IUserService>("service");
             while (true)
             {
                 Stopwatch watch = Stopwatch.StartNew();
@@ -69,9 +115,18 @@ namespace MySoft.IoC.Servers.ServiceMQServer
                 {
                     UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000));
 
-                    string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
-                    //WriteMessage(msg);
-                    Console.WriteLine(msg);
+                    if (info == null)
+                    {
+                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
+                        //WriteMessage(msg);
+                        Console.WriteLine(msg);
+                    }
+                    else
+                    {
+                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
+                        //WriteMessage(msg);
+                        Console.WriteLine(msg);
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -5,12 +5,8 @@ namespace MySoft
     /// <summary>
     /// 数据格式
     /// </summary>
-    public enum DataFormat
+    public enum ResponseFormat
     {
-        /// <summary>
-        /// 默认
-        /// </summary>
-        Default,
         /// <summary>
         /// 二进制
         /// </summary>
@@ -31,24 +27,45 @@ namespace MySoft
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class ServiceContractAttribute : Attribute
     {
-        private DataFormat format;
+        private ResponseFormat format;
         /// <summary>
-        /// 数据格式
+        /// 响应格式
         /// </summary>
-        public DataFormat Format
+        public ResponseFormat Format
         {
             get
             {
                 return format;
             }
+            set
+            {
+                format = value;
+            }
+        }
+
+        private int timeout;
+        /// <summary>
+        /// 响应时间
+        /// </summary>
+        public int Timeout
+        {
+            get
+            {
+                return timeout;
+            }
+            set
+            {
+                timeout = value;
+            }
         }
 
         public ServiceContractAttribute()
         {
-            this.format = DataFormat.Default;
+            this.format = ResponseFormat.Binary;
         }
 
-        public ServiceContractAttribute(DataFormat format)
+        public ServiceContractAttribute(ResponseFormat format)
+            : this()
         {
             this.format = format;
         }

@@ -68,8 +68,9 @@
     <Compile Include="Aop\AopSwitcherAttribute.cs" />
     <Compile Include="Aop\IAopOperator.cs" />
     <Compile Include="Aop\IAopProxyFactory.cs" />
-    <Compile Include="Common\DataResult.cs" />
+    <Compile Include="Common\ResponseResult.cs" />
     <Compile Include="Common\MySoftException.cs" />
+    <Compile Include="Common\TransferType.cs" />
     <Compile Include="Utils\ErrorHelper.cs" />
     <Compile Include="Mail\SMTP.cs" />
     <Compile Include="Mail\SmtpMail.cs" />

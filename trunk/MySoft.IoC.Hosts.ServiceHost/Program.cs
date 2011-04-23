@@ -23,6 +23,7 @@ namespace MySoft.IoC.Hosts.ServiceHost
             server.Start();
 
             Console.WriteLine("Service host started...");
+            Console.WriteLine("Server host -> tcp://{0}", server.Host.ToString());
             Console.WriteLine("Logger Status: On");
             Console.WriteLine("Press any key to exit and stop host...");
             Console.ReadLine();

@@ -41,7 +41,7 @@ namespace MySoft.Net.Client
         /// <summary>
         /// SOCKET对象
         /// </summary>
-        private Socket sock;
+        private Socket socket;
 
         /// <summary>
         /// 连接成功事件
@@ -65,7 +65,7 @@ namespace MySoft.Net.Client
         /// </summary>
         public SocketClient()
         {
-            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         }
 
@@ -121,7 +121,7 @@ namespace MySoft.Net.Client
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.RemoteEndPoint = ipendpoint;
             e.Completed += new EventHandler<SocketAsyncEventArgs>(e_Completed);
-            if (!sock.ConnectAsync(e))
+            if (!socket.ConnectAsync(e))
             {
                 eCompleted(e);
             }
@@ -131,12 +131,11 @@ namespace MySoft.Net.Client
         /// 异步发送数据包
         /// </summary>
         /// <param name="buffer"></param>
-        public void BeginSendTo(byte[] buffer)
+        public bool SendData(byte[] buffer)
         {
-            this.sock.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, delegate(IAsyncResult Result)
-            {
-                this.sock.EndSend(Result);
-            }, null);
+            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
+            e.SetBuffer(buffer, 0, buffer.Length);
+            return socket.SendAsync(e);
         }
 
         /// <summary>
@@ -193,7 +192,7 @@ namespace MySoft.Net.Client
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.RemoteEndPoint = ipendpoint;
             e.Completed += new EventHandler<SocketAsyncEventArgs>(e_Completed);
-            if (!sock.ConnectAsync(e))
+            if (!socket.ConnectAsync(e))
             {
                 eCompleted(e);
             }
@@ -217,7 +216,6 @@ namespace MySoft.Net.Client
 
                     if (e.SocketError == SocketError.Success)
                     {
-
                         connected = true;
                         wait.Set();
 
@@ -227,8 +225,16 @@ namespace MySoft.Net.Client
                         byte[] data = new byte[4098];
                         e.SetBuffer(data, 0, data.Length);  //设置数据包
 
-                        if (!sock.ReceiveAsync(e)) //开始读取数据包
+                        if (!socket.ReceiveAsync(e)) //开始读取数据包
                             eCompleted(e);
+                    }
+                    else if (e.SocketError == SocketError.IsConnected)
+                    {
+                        connected = true;
+                        wait.Set();
+
+                        if (OnConnected != null)
+                            OnConnected("连接服务器成功！", true, e);
                     }
                     else
                     {
@@ -248,7 +254,7 @@ namespace MySoft.Net.Client
                         byte[] dataLast = new byte[4098];
                         e.SetBuffer(dataLast, 0, dataLast.Length);
 
-                        if (!sock.ReceiveAsync(e))
+                        if (!socket.ReceiveAsync(e))
                             eCompleted(e);
 
                         if (OnReceived != null)
@@ -264,17 +270,5 @@ namespace MySoft.Net.Client
 
             }
         }
-
-        /// <summary>
-        /// 发送数据包
-        /// </summary>
-        /// <param name="buffer"></param>
-        public void SendData(byte[] buffer)
-        {
-            SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-            e.SetBuffer(buffer, 0, buffer.Length);
-            sock.SendAsync(e);
-        }
-
     }
 }

@@ -20,7 +20,7 @@ namespace MySoft.Net.Sockets
     /// </summary>
     public class BufferList
     {
-        public object locklist = new object();
+        public object syncObject = new object();
 
         /// <summary>
         /// 数据包列表
@@ -62,7 +62,7 @@ namespace MySoft.Net.Sockets
 
         public bool InsertByteArray(byte[] buffer, int ml, out List<byte[]> datax)
         {
-            lock (locklist)
+            lock (syncObject)
             {
                 datax = new List<byte[]>();
 
