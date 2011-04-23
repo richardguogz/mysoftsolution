@@ -50,7 +50,7 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            string log = string.Format("[{3}] => Dynamic service ({0},{1}). -->{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData, msg.ClientIP);
+            string log = string.Format("Dynamic ({0}) service ({1},{2}). ==> {3}", msg.CalledIP, msg.ServiceName, msg.SubServiceName, msg.Parameters);
             if (OnLog != null) OnLog(log);
 
             long t1 = System.Environment.TickCount;
@@ -60,7 +60,8 @@ namespace MySoft.IoC.Services
                 var ex = retMsg.Data as Exception;
 
                 long t2 = System.Environment.TickCount - t1;
-                log += " Spent time: (" + t2.ToString() + ") ms.";
+                log += "\r\nSpent time: (" + t2.ToString() + ") ms.";
+
                 var exception = new IoCException(log, ex);
 
                 if (OnError != null) OnError(exception);
@@ -68,7 +69,7 @@ namespace MySoft.IoC.Services
             else
             {
                 long t2 = System.Environment.TickCount - t1;
-                log = string.Format("[{4}] => Dynamic service ({0},{1}).-->{2}\r\n{3}", msg.ServiceName, msg.SubServiceName, retMsg.Message, "Spent time: (" + t2.ToString() + ") ms.", msg.ClientIP);
+                log += (" Spent time: (" + t2.ToString() + ") ms. <==> " + retMsg.Message);
 
                 if (OnLog != null) OnLog(log);
             }

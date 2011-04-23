@@ -98,7 +98,7 @@ namespace MySoft.IoC
 
                 if (method == null)
                 {
-                    throw new IoCException(string.Format("未找到调用的方法({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                    throw new IoCException(string.Format("Not found called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
                 }
                 else
                 {
@@ -110,7 +110,7 @@ namespace MySoft.IoC
             if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
                 //参数不正确直接返回异常
-                throw new IoCException(string.Format("无效的参数信息({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                throw new IoCException(string.Format("Invalid parameters ({0},{1}). ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters));
             }
 
             if (pis.Length > 0)
@@ -124,16 +124,13 @@ namespace MySoft.IoC
                 }
             }
 
+            //调用服务
             ResponseMessage resMsg = container.CallService(reqMsg);
-            if (resMsg == null)
-            {
-                return null;
-                //throw new IoCException(string.Format("服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
-            }
-
             if (resMsg.Data == null) return resMsg.Data;
+
             switch (resMsg.Transfer)
             {
+                default:
                 case TransferType.Binary:
                     byte[] buffer = (byte[])resMsg.Data;
                     return SerializationManager.DeserializeBin(buffer);
@@ -144,8 +141,6 @@ namespace MySoft.IoC
                     string xmlString = resMsg.Data.ToString();
                     return SerializationManager.DeserializeXml(returnType, xmlString);
             }
-
-            throw new IoCException(string.Format("服务调用失败({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
         }
     }
 }

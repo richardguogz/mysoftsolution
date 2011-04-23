@@ -143,7 +143,7 @@ namespace MySoft.IoC
                         RequestMessage request = requestObject as RequestMessage;
 
                         //设置客户端IP
-                        request.ClientIP = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
+                        request.CalledIP = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
 
                         //获取返回的消息
                         ResponseMessage response = container.CallService(request);

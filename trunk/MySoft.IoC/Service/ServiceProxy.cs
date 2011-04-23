@@ -47,23 +47,36 @@ namespace MySoft.IoC
             manager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
             manager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
 
+            //启动一个检测线程
+            Thread thread = new Thread(() =>
+            {
+                while (true)
+                {
+                    if (!connected)
+                    {
+                        //尝试连接到服务器
+                        manager.Client.BeginConnectTo(config.IP, config.Port);
+                    }
+
+                    //每5秒检测一次
+                    Thread.Sleep(5000);
+                }
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+
             #endregion
         }
 
         public ResponseMessage CallMethod(RequestMessage msg)
         {
-            if (!connected)
-            {
-                //连接到服务器
-                connected = manager.Client.ConnectTo(config.IP, config.Port);
-            }
-
             if (connected)
             {
                 long t1 = System.Environment.TickCount;
 
                 //SerializationManager.Serialize(msg)
-                if (OnLog != null) OnLog(string.Format("Run reqMsg for ({0},{1}) to service. -->{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters.SerializedData));
+                if (OnLog != null) OnLog(string.Format("Call ({0}:{1}) remote service ({2},{3}). ==> {4}", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.Parameters));
 
                 Guid tid = msg.TransactionId;
 
@@ -86,42 +99,48 @@ namespace MySoft.IoC
                                 wait.Set();
                                 break;
                             }
+
+                            //避免Cpu使用率高
+                            Thread.Sleep(1);
                         }
                     });
 
                     //设置等待超时时间
-                    if (wait.WaitOne(msg.Timeout < 0 ? timeout : msg.Timeout))
+                    if (!wait.WaitOne(msg.Timeout < 0 ? timeout : msg.Timeout))
                     {
                         //超时处理
+                        throw new IoCException(string.Format("Call ({0}:{1}) remote service ({2},{3}) timeout！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName));
                     }
 
                     //重置状态
                     wait.Reset();
 
-                    long t2 = System.Environment.TickCount - t1;
-                    if (retMsg != null)
+                    if (retMsg == null)
                     {
+                        throw new IoCException(string.Format("Call ({0}:{1}) remote service ({2},{3}) failure .", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName));
+                    }
+                    else
+                    {
+                        long t2 = System.Environment.TickCount - t1;
                         if (retMsg.Data is Exception)
                         {
                             throw retMsg.Data as Exception;
                         }
 
                         //SerializationManager.Serialize(retMsg)
-                        if (OnLog != null) OnLog(string.Format("Result -->{0}\r\n{1}", retMsg.Message, "Spent time: (" + t2.ToString() + ") ms"));
+                        if (OnLog != null) OnLog(string.Format("Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message));
                     }
 
                     return retMsg;
                 }
                 else
                 {
-                    if (OnLog != null) OnLog(string.Format("Send data to ({0}:{1}) error！", config.IP, config.Port));
-                    return null;
+                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
                 }
             }
             else
             {
-                if (OnLog != null) OnLog(string.Format("Server ({0}:{1}) not connected！", config.IP, config.Port));
-                return null;
+                throw new IoCException(string.Format("Server ({0}:{1}) not connected！", config.IP, config.Port));
             }
         }
 
@@ -133,7 +152,7 @@ namespace MySoft.IoC
 
         #region Socket消息委托
 
-        void SocketClientManager_OnReceived(byte[] buffer, SocketAsyncEventArgs socketAsync)
+        void SocketClientManager_OnReceived(byte[] buffer, Socket socket)
         {
             BufferRead read = new BufferRead(buffer);
 
@@ -150,20 +169,23 @@ namespace MySoft.IoC
                         ResponseMessage result = responseObject as ResponseMessage;
                         lock (responses)
                         {
-                            responses[result.Request.TransactionId] = result;
+                            responses[result.TransactionId] = result;
                         }
                     }
                 }
             }
         }
 
-        void SocketClientManager_OnDisconnected(string message, SocketAsyncEventArgs socketAsync)
+        void SocketClientManager_OnDisconnected(string message, Socket socket)
         {
             //断开服务器
             connected = false;
+
+            //断开套接字
+            socket.Disconnect(true);
         }
 
-        void SocketClientManager_OnConnected(string message, bool connected, SocketAsyncEventArgs socketAsync)
+        void SocketClientManager_OnConnected(string message, bool connected, Socket socket)
         {
             //连上服务器
             this.connected = connected;

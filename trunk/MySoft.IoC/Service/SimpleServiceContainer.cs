@@ -279,7 +279,7 @@ namespace MySoft.IoC
             if (cache != null && cache.ServiceName == msg.ServiceName)
             {
                 //处理Key信息
-                string key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters.ToString());
+                string key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
             }
 
             //check local service first
@@ -289,23 +289,23 @@ namespace MySoft.IoC
             {
                 if (localService != null)
                 {
-                    if (OnLog != null) OnLog(string.Format("[{2}] => Calling local service ({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.ClientIP));
+                    if (OnLog != null) OnLog(string.Format("[{2}] => Calling local service ({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.CalledIP));
                     return localService.CallService(msg);
                 }
 
                 if (serviceProxy == null)
                 {
-                    if (OnLog != null) OnLog(string.Format("[{2}] => Calling remote service error, serviceProxy is undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.ClientIP));
-                    return null;
+                    throw new IoCException(string.Format("Call remote service failure, serviceProxy undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName));
                 }
-
-                //if no local service, call remote service
-                if (OnLog != null) OnLog(string.Format("[{2}] => Calling remote service ({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.ClientIP));
-                return serviceProxy.CallMethod(msg);
+                else
+                {
+                    return serviceProxy.CallMethod(msg);
+                }
             }
             catch (Exception ex)
             {
                 WriteError(ex);
+
                 throw ex;
             }
         }

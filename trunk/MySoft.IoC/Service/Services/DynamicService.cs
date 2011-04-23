@@ -49,9 +49,12 @@ namespace MySoft.IoC.Services
             }
 
             ResponseMessage resMsg = new ResponseMessage();
-            resMsg.Request = msg;
+            resMsg.TransactionId = msg.TransactionId;
+            resMsg.Transfer = msg.Transfer;
+            resMsg.Timeout = msg.Timeout;
             resMsg.ServiceName = serviceInterfaceType.FullName;
             resMsg.SubServiceName = msg.SubServiceName;
+            resMsg.Parameters = msg.Parameters;
             resMsg.TransactionId = msg.TransactionId;
             resMsg.Transfer = msg.Transfer;
 
@@ -63,7 +66,7 @@ namespace MySoft.IoC.Services
             catch { }
             if (service == null)
             {
-                resMsg.Data = new IoCException(string.Format("服务端未找到对应的服务({0}).", resMsg.ServiceName));
+                resMsg.Data = new IoCException(string.Format("The server did not find matching service ({0}).", resMsg.ServiceName));
                 return resMsg;
             }
 
@@ -94,7 +97,7 @@ namespace MySoft.IoC.Services
 
                     if (method == null)
                     {
-                        resMsg.Data = new IoCException(string.Format("服务端未找到调用的方法({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
+                        resMsg.Data = new IoCException(string.Format("The server did not find called method ({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
                         return resMsg;
                     }
                     else

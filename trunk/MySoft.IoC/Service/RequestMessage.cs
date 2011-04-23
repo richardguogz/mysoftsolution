@@ -17,7 +17,7 @@ namespace MySoft.IoC
         private string serviceName;
         private string subServiceName;
         private Guid transactionId;
-        private string clientIP;
+        private string calledIP;
         private int timeout = -1;
         private ParameterCollection parameters = new ParameterCollection();
         private TransferType transfer = TransferType.Binary;
@@ -55,17 +55,17 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the client ip.
+        /// Gets or sets the called ip.
         /// </summary>
-        public string ClientIP
+        public string CalledIP
         {
             get
             {
-                return clientIP;
+                return calledIP;
             }
             set
             {
-                clientIP = value;
+                calledIP = value;
             }
         }
 
