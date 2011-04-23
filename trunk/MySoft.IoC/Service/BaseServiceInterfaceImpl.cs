@@ -4,7 +4,6 @@ using System.Text;
 using System.Reflection;
 using System.Linq;
 using System.Reflection.Emit;
-using MySoft.Remoting;
 
 namespace MySoft.IoC
 {
@@ -45,8 +44,9 @@ namespace MySoft.IoC
 
             //获取约束格式
             var contract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
-            if (contract != null && contract.Format != ResponseFormat.Default)
+            if (contract != null)
             {
+                //设置响应格式
                 switch (contract.Format)
                 {
                     case ResponseFormat.Binary:
@@ -59,6 +59,9 @@ namespace MySoft.IoC
                         reqMsg.Transfer = TransferType.Xml;
                         break;
                 }
+
+                //设置超时时间
+                reqMsg.Timeout = contract.Timeout;
             }
             else
             {
