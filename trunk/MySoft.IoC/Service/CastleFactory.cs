@@ -297,8 +297,6 @@ namespace MySoft.IoC
             else
             {
                 IServiceContainer container = new SimpleServiceContainer();
-                container.OnLog += new LogEventHandler(msg_OnLog);
-                container.OnError += new ErrorLogEventHandler(container_OnError);
 
                 //设置配置信息
                 SocketClientConfiguration scc = new SocketClientConfiguration();
@@ -307,7 +305,6 @@ namespace MySoft.IoC
 
                 //设置服务代理
                 IServiceProxy serviceProxy = new ServiceProxy(scc);
-                serviceProxy.OnLog += new LogEventHandler(msg_OnLog);
                 serviceProxy.Timeout = config.Timeout;
                 serviceProxy.Format = config.Format;
                 serviceProxy.Compress = config.Compress;
@@ -315,6 +312,30 @@ namespace MySoft.IoC
                 container.Proxy = serviceProxy;
 
                 instance = new CastleFactory(container);
+
+                container.OnLog += (log) =>
+                {
+                    if (instance.OnLog != null)
+                    {
+                        instance.OnLog(log);
+                    }
+                };
+
+                container.OnError += (exception) =>
+                {
+                    if (instance.OnError != null)
+                    {
+                        instance.OnError(exception);
+                    }
+                };
+
+                serviceProxy.OnLog += (log) =>
+                {
+                    if (instance.OnLog != null)
+                    {
+                        instance.OnLog(log);
+                    }
+                };
             }
 
             //处理配置节
@@ -324,34 +345,6 @@ namespace MySoft.IoC
         }
 
         #endregion
-
-        static void msg_OnLog(string log)
-        {
-            if (singleton != null)
-            {
-                if (singleton.OnLog != null) singleton.OnLog(log);
-            }
-            else
-            {
-                //未设置委托之前，从控制台输出
-                log = "[" + DateTime.Now.ToString() + "] " + log;
-                Console.WriteLine(log);
-            }
-        }
-
-        static void container_OnError(Exception exception)
-        {
-            if (singleton != null)
-            {
-                if (singleton.OnError != null) singleton.OnError(exception);
-            }
-            else
-            {
-                //未设置委托之前，从控制台输出
-                string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
-                Console.WriteLine(message);
-            }
-        }
 
         #endregion
 

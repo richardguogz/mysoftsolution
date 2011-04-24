@@ -303,10 +303,12 @@ namespace MySoft.IoC
                     //如果缓存不为null;
                     if (cacheValue != null)
                     {
-                        //数据来自缓存
-                        if (OnLog != null) OnLog(string.Format("【{3}】Call service ({0},{1}) from cache. ==> {2}\r\n", msg.ServiceName, msg.SubServiceName, msg.Parameters, msg.TransactionId));
+                        var resMsg = cacheValue as ResponseMessage;
 
-                        return cacheValue as ResponseMessage;
+                        //数据来自缓存
+                        if (OnLog != null) OnLog(string.Format("【{4}】Call service ({0},{1}) from cache. ==> {2} <==> {3}\r\n", resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters, resMsg.Message, resMsg.TransactionId));
+
+                        return resMsg;
                     }
                     else
                     {
