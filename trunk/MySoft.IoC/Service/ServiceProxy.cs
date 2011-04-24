@@ -77,7 +77,7 @@ namespace MySoft.IoC
             #region socket通讯
 
             //实例化线程池
-            pool = new SmartThreadPool(30000, 100, 0);
+            pool = new SmartThreadPool(30 * 1000, 1000, 0);
 
             manager = new SocketClientManager();
             manager.OnConnected += new ConnectionEventHandler(SocketClientManager_OnConnected);
