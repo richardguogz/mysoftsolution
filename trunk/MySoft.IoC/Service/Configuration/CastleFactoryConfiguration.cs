@@ -13,7 +13,8 @@ namespace MySoft.IoC
     public class CastleFactoryConfiguration : ConfigurationBase
     {
         private CastleFactoryType type = CastleFactoryType.Local;
-        private TransferType transfer = TransferType.Binary;
+        private ResponseFormat format = ResponseFormat.Binary;
+        private CompressType compress = CompressType.None;
 
         private string server = "127.0.0.1";
         private int port = 8888;
@@ -44,21 +45,40 @@ namespace MySoft.IoC
             if (node.Attributes["type"] != null && node.Attributes["type"].Value.Trim() != string.Empty)
                 type = (CastleFactoryType)Enum.Parse(typeof(CastleFactoryType), node.Attributes["type"].Value);
 
-            if (node.Attributes["transfer"] != null && node.Attributes["transfer"].Value.Trim() != string.Empty)
+            if (node.Attributes["format"] != null && node.Attributes["format"].Value.Trim() != string.Empty)
             {
-                switch (node.Attributes["transfer"].Value.ToLower())
+                switch (node.Attributes["format"].Value.ToLower())
                 {
                     case "binary":
-                        transfer = TransferType.Binary;
+                        format = ResponseFormat.Binary;
                         break;
                     case "json":
-                        transfer = TransferType.Json;
+                        format = ResponseFormat.Json;
                         break;
                     case "xml":
-                        transfer = TransferType.Xml;
+                        format = ResponseFormat.Xml;
                         break;
                     default:
-                        transfer = TransferType.Binary;
+                        format = ResponseFormat.Binary;
+                        break;
+                }
+            }
+
+            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value.Trim() != string.Empty)
+            {
+                switch (node.Attributes["compress"].Value.ToLower())
+                {
+                    case "sevenzip":
+                        compress = CompressType.SevenZip;
+                        break;
+                    case "gzip":
+                        compress = CompressType.GZip;
+                        break;
+                    case "deflate":
+                        compress = CompressType.Deflate;
+                        break;
+                    default:
+                        compress = CompressType.None;
                         break;
                 }
             }
@@ -84,13 +104,23 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the transfer.
+        /// Gets or sets the format.
         /// </summary>
-        /// <value>The transfer.</value>
-        public TransferType Transfer
+        /// <value>The format.</value>
+        public ResponseFormat Format
         {
-            get { return transfer; }
-            set { transfer = value; }
+            get { return format; }
+            set { format = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the compress.
+        /// </summary>
+        /// <value>The format.</value>
+        public CompressType Compress
+        {
+            get { return compress; }
+            set { compress = value; }
         }
 
         /// <summary>

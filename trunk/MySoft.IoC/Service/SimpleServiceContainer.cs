@@ -6,6 +6,8 @@ using Castle.Facilities.Startable;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 using MySoft.IoC.Services;
+using Castle.MicroKernel;
+using System.Text;
 
 namespace MySoft.IoC
 {
@@ -25,10 +27,9 @@ namespace MySoft.IoC
 
         #region Private Members
 
-        private Castle.Windsor.IWindsorContainer container;
+        private IWindsorContainer container;
         private IServiceProxy serviceProxy;
         private IDependentCache cache;
-        private TransferType transfer = TransferType.Binary;
 
         private void Init(IDictionary serviceKeyTypes)
         {
@@ -40,7 +41,8 @@ namespace MySoft.IoC
             {
                 container = new WindsorContainer();
             }
-            container.AddFacility("startable", new StartableFacility());
+
+            //container.AddFacility("startable", new StartableFacility());
 
             if (serviceKeyTypes != null && serviceKeyTypes.Count > 0)
             {
@@ -141,7 +143,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(CastleFactoryType factoryType, IDictionary serviceKeyTypes)
         {
             Init(serviceKeyTypes);
         }
@@ -149,21 +151,6 @@ namespace MySoft.IoC
         #endregion
 
         #region IServiceContainer Members
-
-        /// <summary>
-        /// Gets or sets the transfer.
-        /// </summary>
-        public TransferType Transfer
-        {
-            get
-            {
-                return transfer;
-            }
-            set
-            {
-                transfer = value;
-            }
-        }
 
         /// <summary>
         /// 设置服务代理
@@ -199,7 +186,7 @@ namespace MySoft.IoC
         /// Gets the kernel.
         /// </summary>
         /// <value>The kernel.</value>
-        public Castle.MicroKernel.IKernel Kernel
+        public IKernel Kernel
         {
             get { return container.Kernel; }
         }
@@ -270,18 +257,21 @@ namespace MySoft.IoC
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
         /// <param name="msg">The MSG.</param>
         /// <returns>The msg.</returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            //缓存的处理
-            if (cache != null && cache.ServiceName == msg.ServiceName)
-            {
-                //处理Key信息
-                string key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
-            }
+            return CallService(null, msg);
+        }
 
+        /// <summary>
+        /// Calls the service.
+        /// </summary>
+        /// <param name="serviceType">Name of the serviceType.</param>
+        /// <param name="msg">The MSG.</param>
+        /// <returns>The msg.</returns>
+        public ResponseMessage CallService(Type serviceType, RequestMessage msg)
+        {
             //check local service first
             IService localService = (IService)GetLocalService(msg.ServiceName);
 
@@ -289,7 +279,6 @@ namespace MySoft.IoC
             {
                 if (localService != null)
                 {
-                    if (OnLog != null) OnLog(string.Format("[{2}] => Calling local service ({0},{1}).", msg.ServiceName, msg.SubServiceName, msg.CalledIP));
                     return localService.CallService(msg);
                 }
 
@@ -299,7 +288,38 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    return serviceProxy.CallMethod(msg);
+                    //处理cacheKey信息
+                    var key = string.Format("_{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
+                    string cacheKey = "MySoft_IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
+                    object cacheValue = null;
+
+                    //缓存的处理
+                    if (cache != null && serviceType != null)
+                    {
+                        //从缓存获取数据
+                        cacheValue = cache.GetCache(serviceType, cacheKey);
+                    }
+
+                    //如果缓存不为null;
+                    if (cacheValue != null)
+                    {
+                        //数据来自缓存
+                        if (OnLog != null) OnLog(string.Format("【{3}】Call service ({0},{1}) from cache. ==> {2}\r\n", msg.ServiceName, msg.SubServiceName, msg.Parameters, msg.TransactionId));
+
+                        return cacheValue as ResponseMessage;
+                    }
+                    else
+                    {
+                        var resMsg = serviceProxy.CallMethod(msg);
+
+                        //缓存的处理
+                        if (cache != null && serviceType != null)
+                        {
+                            cache.AddCache(serviceType, cacheKey, resMsg);
+                        }
+
+                        return resMsg;
+                    }
                 }
             }
             catch (Exception ex)

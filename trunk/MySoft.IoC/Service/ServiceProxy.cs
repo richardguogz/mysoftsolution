@@ -8,18 +8,53 @@ using MySoft.Net.Client;
 using System.Net.Sockets;
 using MySoft.Net.Sockets;
 using System.Collections;
+using MySoft.Threading;
 
 namespace MySoft.IoC
 {
-    internal sealed class ServiceProxy : ILogable, IServiceProxy
+    internal class ServiceProxy : ILogable, IServiceProxy
     {
-        private ManualResetEvent wait = new ManualResetEvent(false);
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private SocketClientConfiguration config;
         private SocketClientManager manager;
+        private ResponseFormat format = ResponseFormat.Binary;
+        private CompressType compress = CompressType.None;
         private bool connected = false;
-
         private int timeout;
+
+        //threading
+        private SmartThreadPool pool;
+
+        /// <summary>
+        /// Gets or sets the format.
+        /// </summary>
+        public ResponseFormat Format
+        {
+            get
+            {
+                return format;
+            }
+            set
+            {
+                format = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the compress.
+        /// </summary>
+        public CompressType Compress
+        {
+            get
+            {
+                return compress;
+            }
+            set
+            {
+                compress = value;
+            }
+        }
+
         /// <summary>
         /// Socket超时时间
         /// </summary>
@@ -35,12 +70,14 @@ namespace MySoft.IoC
             }
         }
 
-        public ServiceProxy(SocketClientConfiguration config, int timeout)
+        public ServiceProxy(SocketClientConfiguration config)
         {
             this.config = config;
-            this.timeout = timeout;
 
             #region socket通讯
+
+            //实例化线程池
+            pool = new SmartThreadPool(30000, 100, 0);
 
             manager = new SocketClientManager();
             manager.OnConnected += new ConnectionEventHandler(SocketClientManager_OnConnected);
@@ -73,51 +110,49 @@ namespace MySoft.IoC
         {
             if (connected)
             {
+                //处理过期时间
+                msg.Expiration = DateTime.Now.AddMilliseconds(msg.Timeout);
+
                 long t1 = System.Environment.TickCount;
-
-                //SerializationManager.Serialize(msg)
-                if (OnLog != null) OnLog(string.Format("Call ({0}:{1}) remote service ({2},{3}). ==> {4}", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.Parameters));
-
-                Guid tid = msg.TransactionId;
 
                 //发送数据包到服务端
                 bool isSend = manager.Client.SendData(BufferFormat.FormatFCA(msg));
 
                 if (isSend)
                 {
-                    ResponseMessage retMsg = null;
-
-                    //启动线程池读取数据信息
-                    ThreadPool.QueueUserWorkItem((obj) =>
+                    //启动线程来处理数据
+                    IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
                     {
+                        ResponseMessage ret = null;
+
+                        RequestMessage reqMsg = state as RequestMessage;
                         while (true)
                         {
-                            retMsg = GetData<ResponseMessage>(responses, tid);
-                            if (retMsg != null)
-                            {
-                                //设置状态
-                                wait.Set();
-                                break;
-                            }
+                            ret = GetData<ResponseMessage>(responses, reqMsg.TransactionId);
 
-                            //避免Cpu使用率高
-                            Thread.Sleep(1);
+                            //如果有数据返回，则响应
+                            if (ret != null) break;
                         }
-                    });
+
+                        return ret;
+                    }, msg);
 
                     //设置等待超时时间
-                    if (!wait.WaitOne(msg.Timeout < 0 ? timeout : msg.Timeout))
+                    if (!pool.WaitForIdle(msg.Timeout))
                     {
+                        //结束线程
+                        wir.Cancel(true);
+
                         //超时处理
-                        throw new IoCException(string.Format("Call ({0}:{1}) remote service ({2},{3}) timeout！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName));
+                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) timeout！\r\n", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
                     }
 
-                    //重置状态
-                    wait.Reset();
+                    //从线程获取返回信息
+                    ResponseMessage retMsg = wir.GetResult();
 
                     if (retMsg == null)
                     {
-                        throw new IoCException(string.Format("Call ({0}:{1}) remote service ({2},{3}) failure .", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName));
+                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure.\r\n", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
                     }
                     else
                     {
@@ -128,7 +163,7 @@ namespace MySoft.IoC
                         }
 
                         //SerializationManager.Serialize(retMsg)
-                        if (OnLog != null) OnLog(string.Format("Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message));
+                        if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}\r\n", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, retMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId));
                     }
 
                     return retMsg;

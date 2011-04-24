@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using MySoft.Net.Client;
+using System.Threading;
 
 namespace MySoft.IoC
 {
@@ -14,7 +15,6 @@ namespace MySoft.IoC
         #region Emit DynamicServiceImpl
 
         private object syncObj = new object();
-        private static bool localService = false;
         private static AssemblyBuilder assBuilder = null;
         private static ModuleBuilder modBuilder = null;
 
@@ -151,7 +151,6 @@ namespace MySoft.IoC
         }
 
         private IServiceInterfaceType DynamicServiceImpl<IServiceInterfaceType>()
-        //where IServiceInterfaceType : IServiceInterface
         {
             Type t = null;
             if (assBuilder != null)
@@ -194,6 +193,7 @@ namespace MySoft.IoC
         #region Create Service Factory
 
         private IServiceContainer container;
+        private CastleFactoryConfiguration Config;
 
         /// <summary>
         /// Gets the service container.
@@ -230,6 +230,8 @@ namespace MySoft.IoC
 
         private static CastleFactory singleton = null;
 
+        #region 创建单例
+
         /// <summary>
         /// Creates this instance.
         /// </summary>
@@ -238,8 +240,7 @@ namespace MySoft.IoC
         {
             if (singleton == null)
             {
-                var config = CastleFactoryConfiguration.GetConfig();
-                singleton = Create(config);
+                singleton = CreateNew();
             }
 
             return singleton;
@@ -254,41 +255,75 @@ namespace MySoft.IoC
         {
             if (singleton == null)
             {
-                //本地匹配节
-                if (config == null || config.Type == CastleFactoryType.Local)
-                {
-                    localService = true;
-                    singleton = new CastleFactory(new SimpleServiceContainer());
-
-                    if (config == null)
-                    {
-                        config = new CastleFactoryConfiguration();
-                    }
-                }
-                else
-                {
-                    IServiceContainer container = new SimpleServiceContainer();
-                    container.OnLog += new LogEventHandler(msg_OnLog);
-                    container.OnError += new ErrorLogEventHandler(container_OnError);
-
-                    //设置配置信息
-                    SocketClientConfiguration scc = new SocketClientConfiguration();
-                    scc.IP = config.Server;
-                    scc.Port = config.Port;
-
-                    //设置服务代理
-                    IServiceProxy serviceProxy = new ServiceProxy(scc, config.Timeout);
-                    serviceProxy.OnLog += new LogEventHandler(msg_OnLog);
-                    container.Proxy = serviceProxy;
-
-                    singleton = new CastleFactory(container);
-                }
-
-                singleton.ServiceContainer.Transfer = config.Transfer;
+                singleton = CreateNew(config);
             }
 
             return singleton;
         }
+
+        #endregion
+
+        #region 创建新实例
+
+        /// <summary>
+        /// Creates this instance. Used in a multithreaded environment
+        /// </summary>
+        /// <returns></returns>
+        public static CastleFactory CreateNew()
+        {
+            var config = CastleFactoryConfiguration.GetConfig();
+            return Create(config);
+        }
+
+        /// <summary>
+        /// Creates this instance. Used in a multithreaded environment
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns>The service factoru new instance.</returns>
+        public static CastleFactory CreateNew(CastleFactoryConfiguration config)
+        {
+            CastleFactory instance = null;
+
+            //本地匹配节
+            if (config == null || config.Type == CastleFactoryType.Local)
+            {
+                instance = new CastleFactory(new SimpleServiceContainer());
+
+                if (config == null)
+                {
+                    config = new CastleFactoryConfiguration();
+                }
+            }
+            else
+            {
+                IServiceContainer container = new SimpleServiceContainer();
+                container.OnLog += new LogEventHandler(msg_OnLog);
+                container.OnError += new ErrorLogEventHandler(container_OnError);
+
+                //设置配置信息
+                SocketClientConfiguration scc = new SocketClientConfiguration();
+                scc.IP = config.Server;
+                scc.Port = config.Port;
+
+                //设置服务代理
+                IServiceProxy serviceProxy = new ServiceProxy(scc);
+                serviceProxy.OnLog += new LogEventHandler(msg_OnLog);
+                serviceProxy.Timeout = config.Timeout;
+                serviceProxy.Format = config.Format;
+                serviceProxy.Compress = config.Compress;
+
+                container.Proxy = serviceProxy;
+
+                instance = new CastleFactory(container);
+            }
+
+            //处理配置节
+            instance.Config = config;
+
+            return instance;
+        }
+
+        #endregion
 
         static void msg_OnLog(string log)
         {
@@ -340,7 +375,6 @@ namespace MySoft.IoC
         /// </summary>
         /// <returns>The service implemetation instance.</returns>
         public IServiceInterfaceType GetService<IServiceInterfaceType>()
-        //where IServiceInterfaceType : IServiceInterface
         {
             return GetService<IServiceInterfaceType>(null);
         }
@@ -372,6 +406,7 @@ namespace MySoft.IoC
                 }
             }
 
+            //本地服务
             if (!string.IsNullOrEmpty(key))
             {
                 if (container.Kernel.HasComponent(key))
@@ -393,19 +428,26 @@ namespace MySoft.IoC
                 }
             }
 
-            //如果不是本地服务
-            if (!localService)
+            //如果是本地配置，则抛出异常
+            if (Config.Type == CastleFactoryType.Local)
             {
-                lock (this)
+                throw new IoCException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
+            }
+            else
+            {
+                string serviceKey = "CastleFactory_" + typeof(IServiceInterfaceType).FullName;
+                if (container.Kernel.HasComponent(serviceKey))
                 {
-                    if (container != null)
-                    {
-                        return DynamicServiceImpl<IServiceInterfaceType>();
-                    }
+                    return (IServiceInterfaceType)container[serviceKey];
+                }
+                else
+                {
+                    var service = DynamicServiceImpl<IServiceInterfaceType>();
+                    container.Kernel.AddComponentInstance(serviceKey, service);
+
+                    return service;
                 }
             }
-
-            return default(IServiceInterfaceType);
         }
 
         #endregion

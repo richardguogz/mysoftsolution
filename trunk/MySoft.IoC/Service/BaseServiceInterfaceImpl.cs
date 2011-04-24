@@ -41,37 +41,44 @@ namespace MySoft.IoC
         protected object CallService(string subServiceName, Type returnType, params object[] paramValues)
         {
             RequestMessage reqMsg = new RequestMessage();
-
-            //获取约束格式
-            var contract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
-            if (contract != null)
-            {
-                //设置响应格式
-                switch (contract.Format)
-                {
-                    case ResponseFormat.Binary:
-                        reqMsg.Transfer = TransferType.Binary;
-                        break;
-                    case ResponseFormat.Json:
-                        reqMsg.Transfer = TransferType.Json;
-                        break;
-                    case ResponseFormat.Xml:
-                        reqMsg.Transfer = TransferType.Xml;
-                        break;
-                }
-
-                //设置超时时间
-                reqMsg.Timeout = contract.Timeout;
-            }
-            else
-            {
-                //传递传输与压缩格式
-                reqMsg.Transfer = container.Transfer;
-            }
-
             reqMsg.ServiceName = serviceInterfaceType.FullName;
             reqMsg.SubServiceName = subServiceName;
             reqMsg.TransactionId = Guid.NewGuid();
+
+            #region 判断数据格式
+
+            if (container.Proxy != null)
+            {
+                //传递传输与压缩格式
+                reqMsg.Format = container.Proxy.Format;
+
+                //设置压缩格式
+                reqMsg.Compress = container.Proxy.Compress;
+
+                //设置超时时间
+                reqMsg.Timeout = container.Proxy.Timeout;
+            }
+
+            //获取约束信息
+            var contract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
+
+            //判断约束
+            if (contract != null)
+            {
+                //设置响应格式
+                if (contract.Format != ResponseFormat.Binary)
+                    reqMsg.Format = contract.Format;
+
+                //设置压缩方式
+                if (contract.Compress != CompressType.None)
+                    reqMsg.Compress = contract.Compress;
+
+                //设置超时时间
+                if (contract.Timeout > 0)
+                    reqMsg.Timeout = contract.Timeout;
+            }
+
+            #endregion
 
             MethodInfo method = null;
             if (dictMethods.ContainsKey(subServiceName))
@@ -125,22 +132,79 @@ namespace MySoft.IoC
             }
 
             //调用服务
-            ResponseMessage resMsg = container.CallService(reqMsg);
-            if (resMsg.Data == null) return resMsg.Data;
+            ResponseMessage resMsg = container.CallService(serviceInterfaceType, reqMsg);
 
-            switch (resMsg.Transfer)
+            //处理数据
+            #region 处理返回的数据
+
+            if (resMsg.Data != null)
             {
-                default:
-                case TransferType.Binary:
-                    byte[] buffer = (byte[])resMsg.Data;
-                    return SerializationManager.DeserializeBin(buffer);
-                case TransferType.Json:
-                    string jsonString = resMsg.Data.ToString();
-                    return SerializationManager.DeserializeJson(returnType, jsonString);
-                case TransferType.Xml:
-                    string xmlString = resMsg.Data.ToString();
-                    return SerializationManager.DeserializeXml(returnType, xmlString);
+                bool isBuffer = false;
+                if (resMsg.Format == ResponseFormat.Binary)
+                {
+                    isBuffer = true;
+
+                    //如果类型不是byte[]，则返回数据
+                    if (resMsg.Data.GetType() != typeof(byte[]))
+                    {
+                        return resMsg.Data;
+                    }
+                }
+
+                switch (resMsg.Compress)
+                {
+                    case CompressType.Deflate:
+                        {
+                            if (isBuffer)
+                                resMsg.Data = CompressionManager.DecompressDeflate((byte[])resMsg.Data);
+                            else
+                                resMsg.Data = CompressionManager.DecompressDeflate(resMsg.Data.ToString());
+                        }
+                        break;
+                    case CompressType.GZip:
+                        {
+                            if (isBuffer)
+                                resMsg.Data = CompressionManager.DecompressGZip((byte[])resMsg.Data);
+                            else
+                                resMsg.Data = CompressionManager.DecompressGZip(resMsg.Data.ToString());
+                        }
+                        break;
+                    case CompressType.SevenZip:
+                        {
+                            if (isBuffer)
+                                resMsg.Data = CompressionManager.Decompress7Zip((byte[])resMsg.Data);
+                            else
+                                resMsg.Data = CompressionManager.Decompress7Zip(resMsg.Data.ToString());
+                        }
+                        break;
+                }
+
+                switch (resMsg.Format)
+                {
+                    case ResponseFormat.Binary:
+                        {
+                            byte[] buffer = (byte[])resMsg.Data;
+                            resMsg.Data = SerializationManager.DeserializeBin(buffer);
+                        }
+                        break;
+                    case ResponseFormat.Json:
+                        {
+                            string jsonString = resMsg.Data.ToString();
+                            resMsg.Data = SerializationManager.DeserializeJson(returnType, jsonString);
+                        }
+                        break;
+                    case ResponseFormat.Xml:
+                        {
+                            string xmlString = resMsg.Data.ToString();
+                            resMsg.Data = SerializationManager.DeserializeXml(returnType, xmlString);
+                        }
+                        break;
+                }
             }
+
+            return resMsg.Data;
+
+            #endregion
         }
     }
 }

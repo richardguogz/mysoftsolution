@@ -63,9 +63,9 @@ namespace MySoft.IoC
         /// <summary>
         /// 获取本地终结点
         /// </summary>
-        public EndPoint Host
+        public string Host
         {
-            get { return manager.Server.Sock.LocalEndPoint; }
+            get { return string.Format("{0}://{1}", manager.Server.Sock.ProtocolType, manager.Server.Sock.LocalEndPoint).ToLower(); }
         }
 
         /// <summary>
@@ -143,15 +143,19 @@ namespace MySoft.IoC
                         RequestMessage request = requestObject as RequestMessage;
 
                         //设置客户端IP
-                        request.CalledIP = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
+                        request.RequestAddress = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
 
                         //获取返回的消息
                         ResponseMessage response = container.CallService(request);
 
                         if (requestObject != null)
                         {
-                            //发送数据到服务端
-                            manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(response));
+                            //如果超时，则不返回数据
+                            if (response.Expiration > DateTime.Now)
+                            {
+                                //发送数据到服务端
+                                manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(response));
+                            }
                         }
                     }
                 }

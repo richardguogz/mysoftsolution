@@ -11,22 +11,19 @@ namespace MySoft.IoC
     public interface IDependentCache
     {
         /// <summary>
-        /// 服务名称
-        /// </summary>
-        string ServiceName { get; }
-
-        /// <summary>
         /// 添加缓存
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        void AddCache(string key, object value);
+        /// <param name="serviceInterfaceType"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="cacheValue"></param>
+        void AddCache(Type serviceInterfaceType, string cacheKey, object cacheValue);
 
         /// <summary>
         /// 获取缓存
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="serviceInterfaceType"></param>
+        /// <param name="cacheKey"></param>
         /// <returns></returns>
-        object GetCache(string key);
+        object GetCache(Type serviceInterfaceType, string cacheKey);
     }
 }

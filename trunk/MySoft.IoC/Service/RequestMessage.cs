@@ -17,25 +17,42 @@ namespace MySoft.IoC
         private string serviceName;
         private string subServiceName;
         private Guid transactionId;
-        private string calledIP;
+        private string requestAddress;
+        private DateTime expiration;
         private int timeout = -1;
         private ParameterCollection parameters = new ParameterCollection();
-        private TransferType transfer = TransferType.Binary;
+        private ResponseFormat format = ResponseFormat.Binary;
+        private CompressType compress = CompressType.None;
 
         #endregion
 
         /// <summary>
-        /// Gets or sets the transfer of the service.
+        /// Gets or sets the format of the service.
         /// </summary>
-        public TransferType Transfer
+        public ResponseFormat Format
         {
             get
             {
-                return transfer;
+                return format;
             }
             set
             {
-                transfer = value;
+                format = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the compress of the service.
+        /// </summary>
+        public CompressType Compress
+        {
+            get
+            {
+                return compress;
+            }
+            set
+            {
+                compress = value;
             }
         }
 
@@ -55,17 +72,17 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the called ip.
+        /// Gets or sets the request address
         /// </summary>
-        public string CalledIP
+        public string RequestAddress
         {
             get
             {
-                return calledIP;
+                return requestAddress;
             }
             set
             {
-                calledIP = value;
+                requestAddress = value;
             }
         }
 
@@ -130,6 +147,22 @@ namespace MySoft.IoC
             set
             {
                 parameters = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the expiration.
+        /// </summary>
+        /// <value>The expiration.</value>
+        public DateTime Expiration
+        {
+            get
+            {
+                return expiration;
+            }
+            set
+            {
+                expiration = value;
             }
         }
     }

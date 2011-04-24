@@ -50,13 +50,15 @@ namespace MySoft.IoC.Services
 
             ResponseMessage resMsg = new ResponseMessage();
             resMsg.TransactionId = msg.TransactionId;
-            resMsg.Transfer = msg.Transfer;
+            resMsg.RequestAddress = msg.RequestAddress;
+            resMsg.Format = msg.Format;
+            resMsg.Compress = msg.Compress;
             resMsg.Timeout = msg.Timeout;
+            resMsg.TransactionId = msg.TransactionId;
             resMsg.ServiceName = serviceInterfaceType.FullName;
             resMsg.SubServiceName = msg.SubServiceName;
             resMsg.Parameters = msg.Parameters;
-            resMsg.TransactionId = msg.TransactionId;
-            resMsg.Transfer = msg.Transfer;
+            resMsg.Expiration = msg.Expiration;
 
             object service = null;
             try
@@ -73,14 +75,14 @@ namespace MySoft.IoC.Services
             try
             {
                 MethodInfo method = null;
-                if (dictMethods.ContainsKey(msg.SubServiceName))
+                if (dictMethods.ContainsKey(resMsg.SubServiceName))
                 {
-                    method = dictMethods[msg.SubServiceName];
+                    method = dictMethods[resMsg.SubServiceName];
                 }
                 else
                 {
                     method = serviceInterfaceType.GetMethods()
-                               .Where(p => p.ToString() == msg.SubServiceName)
+                               .Where(p => p.ToString() == resMsg.SubServiceName)
                                .FirstOrDefault();
 
                     if (method == null)
@@ -88,7 +90,7 @@ namespace MySoft.IoC.Services
                         foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
                         {
                             method = inheritedInterface.GetMethods()
-                                    .Where(p => p.ToString() == msg.SubServiceName)
+                                    .Where(p => p.ToString() == resMsg.SubServiceName)
                                     .FirstOrDefault();
 
                             if (method != null) break;
@@ -102,7 +104,7 @@ namespace MySoft.IoC.Services
                     }
                     else
                     {
-                        dictMethods[msg.SubServiceName] = method;
+                        dictMethods[resMsg.SubServiceName] = method;
                     }
                 }
 
@@ -112,7 +114,7 @@ namespace MySoft.IoC.Services
                 for (int i = 0; i < pis.Length; i++)
                 {
                     Type type = pis[i].ParameterType;
-                    object val = SerializationManager.DeserializeJson(type, msg.Parameters[pis[i].Name]);
+                    object val = SerializationManager.DeserializeJson(type, resMsg.Parameters[pis[i].Name]);
                     parms[i] = val;
                 }
 
@@ -132,20 +134,56 @@ namespace MySoft.IoC.Services
 
                 if (returnValue != null)
                 {
-                    Type returnType = method.ReturnType;
-                    switch (resMsg.Transfer)
+                    bool isBuffer = false;
+                    //Type returnType = method.ReturnType;
+                    switch (resMsg.Format)
                     {
-                        case TransferType.Binary:
-                            byte[] buffer = SerializationManager.SerializeBin(returnValue);
-                            resMsg.Data = buffer;
+                        case ResponseFormat.Binary:
+                            {
+                                isBuffer = true;
+                                byte[] buffer = SerializationManager.SerializeBin(returnValue);
+                                resMsg.Data = buffer;
+                            }
                             break;
-                        case TransferType.Json:
-                            string jsonString = SerializationManager.SerializeJson(returnValue);
-                            resMsg.Data = jsonString;
+                        case ResponseFormat.Json:
+                            {
+                                string jsonString = SerializationManager.SerializeJson(returnValue);
+                                resMsg.Data = jsonString;
+                            }
                             break;
-                        case TransferType.Xml:
-                            string xmlString = SerializationManager.SerializeXml(returnValue);
-                            resMsg.Data = xmlString;
+                        case ResponseFormat.Xml:
+                            {
+                                string xmlString = SerializationManager.SerializeXml(returnValue);
+                                resMsg.Data = xmlString;
+                            }
+                            break;
+                    }
+
+                    switch (resMsg.Compress)
+                    {
+                        case CompressType.Deflate:
+                            {
+                                if (isBuffer)
+                                    resMsg.Data = CompressionManager.CompressDeflate((byte[])resMsg.Data);
+                                else
+                                    resMsg.Data = CompressionManager.CompressDeflate(resMsg.Data.ToString());
+                            }
+                            break;
+                        case CompressType.GZip:
+                            {
+                                if (isBuffer)
+                                    resMsg.Data = CompressionManager.CompressGZip((byte[])resMsg.Data);
+                                else
+                                    resMsg.Data = CompressionManager.CompressGZip(resMsg.Data.ToString());
+                            }
+                            break;
+                        case CompressType.SevenZip:
+                            {
+                                if (isBuffer)
+                                    resMsg.Data = CompressionManager.Compress7Zip((byte[])resMsg.Data);
+                                else
+                                    resMsg.Data = CompressionManager.Compress7Zip(resMsg.Data.ToString());
+                            }
                             break;
                     }
                 }
