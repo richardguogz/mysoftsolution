@@ -23,6 +23,16 @@ namespace MySoft.IoC
         /// </summary>
         public const int DEFAULT_TIMEOUT_NUMBER = 30000;
 
+        /// <summary>
+        /// The default maxconnect number.
+        /// </summary>
+        public const int DEFAULT_MAXCONNECT_NUMBER = 10000;
+
+        /// <summary>
+        /// The default maxbuffer number.
+        /// </summary>
+        public const int DEFAULT_MAXBUFFER_NUMBER = 409600;
+
         #endregion
 
         #region Private Members

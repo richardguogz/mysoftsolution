@@ -68,7 +68,7 @@ namespace MySoft.IoC.Services
             catch { }
             if (service == null)
             {
-                resMsg.Data = new IoCException(string.Format("The server did not find matching service ({0}).", resMsg.ServiceName));
+                resMsg.Data = new IoCException(string.Format("The server not find matching service ({0}).", resMsg.ServiceName));
                 return resMsg;
             }
 
@@ -99,7 +99,7 @@ namespace MySoft.IoC.Services
 
                     if (method == null)
                     {
-                        resMsg.Data = new IoCException(string.Format("The server did not find called method ({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
+                        resMsg.Data = new IoCException(string.Format("The server not find called method ({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
                         return resMsg;
                     }
                     else

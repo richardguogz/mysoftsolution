@@ -16,8 +16,8 @@ namespace MySoft.IoC
         private ResponseFormat format = ResponseFormat.Binary;
         private CompressType compress = CompressType.None;
 
-        private string server = "127.0.0.1";
-        private int port = 8888;
+        private IDictionary<string, ServiceNode> hosts = new Dictionary<string, ServiceNode>();
+        private string defaultservice;
         private int timeout = SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER;
 
         /// <summary>
@@ -42,12 +42,14 @@ namespace MySoft.IoC
         {
             if (node == null) return;
 
-            if (node.Attributes["type"] != null && node.Attributes["type"].Value.Trim() != string.Empty)
-                type = (CastleFactoryType)Enum.Parse(typeof(CastleFactoryType), node.Attributes["type"].Value);
+            XmlAttributeCollection xmlnode = node.Attributes;
 
-            if (node.Attributes["format"] != null && node.Attributes["format"].Value.Trim() != string.Empty)
+            if (xmlnode["type"] != null && xmlnode["type"].Value.Trim() != string.Empty)
+                type = (CastleFactoryType)Enum.Parse(typeof(CastleFactoryType), xmlnode["type"].Value);
+
+            if (xmlnode["format"] != null && xmlnode["format"].Value.Trim() != string.Empty)
             {
-                switch (node.Attributes["format"].Value.ToLower())
+                switch (xmlnode["format"].Value.ToLower())
                 {
                     case "binary":
                         format = ResponseFormat.Binary;
@@ -64,9 +66,9 @@ namespace MySoft.IoC
                 }
             }
 
-            if (node.Attributes["compress"] != null && node.Attributes["compress"].Value.Trim() != string.Empty)
+            if (xmlnode["compress"] != null && xmlnode["compress"].Value.Trim() != string.Empty)
             {
-                switch (node.Attributes["compress"].Value.ToLower())
+                switch (xmlnode["compress"].Value.ToLower())
                 {
                     case "sevenzip":
                         compress = CompressType.SevenZip;
@@ -83,14 +85,45 @@ namespace MySoft.IoC
                 }
             }
 
-            if (node.Attributes["server"] != null && node.Attributes["server"].Value.Trim() != string.Empty)
-                server = node.Attributes["server"].Value;
+            if (xmlnode["timeout"] != null && xmlnode["timeout"].Value.Trim() != string.Empty)
+                timeout = Convert.ToInt32(xmlnode["timeout"].Value);
 
-            if (node.Attributes["port"] != null && node.Attributes["port"].Value.Trim() != string.Empty)
-                port = Convert.ToInt32(node.Attributes["port"].Value);
+            if (xmlnode["default"] != null && xmlnode["default"].Value.Trim() != string.Empty)
+                defaultservice = xmlnode["default"].Value;
 
-            if (node.Attributes["timeout"] != null && node.Attributes["timeout"].Value.Trim() != string.Empty)
-                timeout = Convert.ToInt32(node.Attributes["timeout"].Value);
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                if (child.NodeType == XmlNodeType.Comment) continue;
+
+                XmlAttributeCollection childnode = child.Attributes;
+                if (child.Name == "service")
+                {
+                    ServiceNode service = new ServiceNode();
+                    service.Name = childnode["name"].Value;
+                    service.Server = childnode["server"].Value;
+                    service.Port = Convert.ToInt32(childnode["port"].Value);
+
+                    //处理默认的服务
+                    if (string.IsNullOrEmpty(defaultservice))
+                    {
+                        defaultservice = service.Name;
+                    }
+
+                    hosts.Add(service.Name, service);
+                }
+            }
+
+            //判断是否配置了服务信息
+            if (hosts.Count == 0)
+            {
+                throw new IoCException("Not configure any service node！");
+            }
+
+            //判断是否包含默认的服务
+            if (!hosts.ContainsKey(defaultservice))
+            {
+                throw new IoCException("Not find the default service node [" + defaultservice + "]！");
+            }
         }
 
         /// <summary>
@@ -124,26 +157,6 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the server.
-        /// </summary>
-        /// <value>The server.</value>
-        public string Server
-        {
-            get { return server; }
-            set { server = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the port.
-        /// </summary>
-        /// <value>The port.</value>
-        public int Port
-        {
-            get { return port; }
-            set { port = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the timeout
         /// </summary>
         /// <value>The timeout.</value>
@@ -151,6 +164,26 @@ namespace MySoft.IoC
         {
             get { return timeout; }
             set { timeout = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the default
+        /// </summary>
+        /// <value>The default.</value>
+        public string Default
+        {
+            get { return defaultservice; }
+            set { defaultservice = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the hosts
+        /// </summary>
+        /// <value>The hosts.</value>
+        public IDictionary<string, ServiceNode> Hosts
+        {
+            get { return hosts; }
+            set { hosts = value; }
         }
     }
 }

@@ -87,29 +87,32 @@ namespace MySoft.IoC
             }
             else
             {
-                method = serviceInterfaceType.GetMethods()
-                              .Where(p => p.ToString() == subServiceName)
-                              .FirstOrDefault();
-
-                if (method == null)
+                lock (dictMethods)
                 {
-                    foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
+                    method = serviceInterfaceType.GetMethods()
+                                  .Where(p => p.ToString() == subServiceName)
+                                  .FirstOrDefault();
+
+                    if (method == null)
                     {
-                        method = inheritedInterface.GetMethods()
-                                .Where(p => p.ToString() == subServiceName)
-                                .FirstOrDefault();
+                        foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
+                        {
+                            method = inheritedInterface.GetMethods()
+                                    .Where(p => p.ToString() == subServiceName)
+                                    .FirstOrDefault();
 
-                        if (method != null) break;
+                            if (method != null) break;
+                        }
                     }
-                }
 
-                if (method == null)
-                {
-                    throw new IoCException(string.Format("Not found called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
-                }
-                else
-                {
-                    dictMethods[subServiceName] = method;
+                    if (method == null)
+                    {
+                        throw new IoCException(string.Format("Not found called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                    }
+                    else
+                    {
+                        dictMethods[subServiceName] = method;
+                    }
                 }
             }
 

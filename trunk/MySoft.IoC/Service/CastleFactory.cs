@@ -246,21 +246,6 @@ namespace MySoft.IoC
             return singleton;
         }
 
-        /// <summary>
-        /// Creates this instance.
-        /// </summary>
-        /// <param name="config"></param>
-        /// <returns>The service factoru singleton instance.</returns>
-        public static CastleFactory Create(CastleFactoryConfiguration config)
-        {
-            if (singleton == null)
-            {
-                singleton = CreateNew(config);
-            }
-
-            return singleton;
-        }
-
         #endregion
 
         #region 创建新实例
@@ -272,7 +257,18 @@ namespace MySoft.IoC
         public static CastleFactory CreateNew()
         {
             var config = CastleFactoryConfiguration.GetConfig();
-            return Create(config);
+            return CreateNew(config, config.Default);
+        }
+
+        /// <summary>
+        /// Creates this instance. Used in a multithreaded environment
+        /// </summary>
+        /// <param name="name">service name</param>
+        /// <returns></returns>
+        public static CastleFactory CreateNew(string name)
+        {
+            var config = CastleFactoryConfiguration.GetConfig();
+            return CreateNew(config, name);
         }
 
         /// <summary>
@@ -280,7 +276,20 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <returns>The service factoru new instance.</returns>
-        public static CastleFactory CreateNew(CastleFactoryConfiguration config)
+        public static CastleFactory CreateNew(ServiceNode node)
+        {
+            var config = CastleFactoryConfiguration.GetConfig();
+            config.Hosts.Add(node.Name, node); //添加节点
+            return CreateNew(config, node.Name);
+        }
+
+        /// <summary>
+        /// Creates this instance. Used in a multithreaded environment
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="name">service name</param>
+        /// <returns>The service factoru new instance.</returns>
+        private static CastleFactory CreateNew(CastleFactoryConfiguration config, string name)
         {
             CastleFactory instance = null;
 
@@ -288,20 +297,15 @@ namespace MySoft.IoC
             if (config == null || config.Type == CastleFactoryType.Local)
             {
                 instance = new CastleFactory(new SimpleServiceContainer());
-
-                if (config == null)
-                {
-                    config = new CastleFactoryConfiguration();
-                }
             }
             else
             {
                 IServiceContainer container = new SimpleServiceContainer();
 
-                //设置配置信息
+                //客户端配置
                 SocketClientConfiguration scc = new SocketClientConfiguration();
-                scc.IP = config.Server;
-                scc.Port = config.Port;
+                scc.IP = config.Hosts[name].Server;
+                scc.Port = config.Hosts[name].Port;
 
                 //设置服务代理
                 IServiceProxy serviceProxy = new ServiceProxy(scc);
@@ -422,7 +426,7 @@ namespace MySoft.IoC
             }
 
             //如果是本地配置，则抛出异常
-            if (Config.Type == CastleFactoryType.Local)
+            if (Config == null || Config.Type == CastleFactoryType.Local)
             {
                 throw new IoCException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
             }
