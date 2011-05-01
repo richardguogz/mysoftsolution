@@ -1,0 +1,404 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using MySoft.Data.Design;
+using Newtonsoft.Json;
+
+namespace MySoft.Data
+{
+    /// <summary>
+    /// Entity状态
+    /// </summary>
+    [Serializable]
+    public enum EntityState
+    {
+        /// <summary>
+        /// 插入状态
+        /// </summary>
+        Insert,
+        /// <summary>
+        /// 修改状态
+        /// </summary>
+        Update
+    }
+
+    /// <summary>
+    /// 实体相关信息
+    /// </summary>
+    public interface IEntityInfo
+    {
+        /// <summary>
+        /// 表信息
+        /// </summary>
+        Table Table { get; }
+
+        /// <summary>
+        /// 字段信息
+        /// </summary>
+        Field[] Fields { get; }
+
+        /// <summary>
+        /// 字段及值信息
+        /// </summary>
+        FieldValue[] FieldValues { get; }
+
+        /// <summary>
+        /// 是否只读 (只读时为视图或自定义实例)
+        /// </summary>
+        bool ReadOnly { get; }
+    }
+
+    /// <summary>
+    /// Entity基类
+    /// </summary>
+    [Serializable]
+    public abstract class EntityBase : IEntityBase, IValidator
+    {
+        protected List<Field> updatelist = new List<Field>();
+        protected List<Field> removeinsertlist = new List<Field>();
+        protected EntityBase originalObject;
+        protected bool isUpdate = false;
+        protected bool isFromDB = false;
+
+        /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        [JsonIgnore]
+        public object this[string propertyName]
+        {
+            get
+            {
+                return CoreHelper.GetPropertyValue(this, propertyName);
+            }
+            set
+            {
+                CoreHelper.SetPropertyValue(this, propertyName, value);
+            }
+        }
+
+        /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        [JsonIgnore]
+        public object this[Field field]
+        {
+            get
+            {
+                return CoreHelper.GetPropertyValue(this, field.PropertyName);
+            }
+            set
+            {
+                CoreHelper.SetPropertyValue(this, field.PropertyName, value);
+            }
+        }
+
+        /// <summary>
+        /// 转换成另一对象
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <returns></returns>
+        public TEntity As<TEntity>()
+        {
+            lock (this)
+            {
+                return DataHelper.ConvertType<IEntityBase, TEntity>(this);
+            }
+        }
+
+        /// <summary>
+        /// 返回一个行阅读对象
+        /// </summary>
+        IRowReader IEntityBase.ToRowReader()
+        {
+            lock (this)
+            {
+                try
+                {
+                    SourceList<EntityBase> list = new SourceList<EntityBase>();
+                    list.Add(this);
+
+                    DataTable dt = list.GetDataTable(this.GetType());
+                    ISourceTable table = new SourceTable(dt);
+                    return table[0];
+                }
+                catch (Exception ex)
+                {
+                    throw new DataException("数据转换失败！", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 返回字典对象
+        /// </summary>
+        /// <returns></returns>
+        IDictionary<string, object> IEntityBase.ToDictionary()
+        {
+            try
+            {
+                IDictionary<string, object> dict = new Dictionary<string, object>();
+                foreach (Field f in GetFields())
+                {
+                    object value = CoreHelper.GetPropertyValue(this, f.PropertyName);
+                    dict[f.OriginalName] = value;
+                }
+                return dict;
+            }
+            catch (Exception ex)
+            {
+                throw new DataException("数据转换失败！", ex);
+            }
+        }
+
+        /// <summary>
+        /// 获取原始对象
+        /// </summary>
+        EntityBase IEntityBase.OriginalObject
+        {
+            get
+            {
+                return originalObject;
+            }
+        }
+
+        /// <summary>
+        /// 获取对象状态
+        /// </summary>
+        EntityState IEntityBase.ObjectState
+        {
+            get
+            {
+                return isUpdate ? EntityState.Update : EntityState.Insert;
+            }
+        }
+
+        /// <summary>
+        /// 克隆一个对象
+        /// </summary>
+        /// <returns></returns>
+        EntityBase IEntityBase.CloneObject()
+        {
+            lock (this)
+            {
+                return DataHelper.CloneObject(this);
+            }
+        }
+
+        #region 字段信息
+
+        /// <summary>
+        /// 返回标识列的名称（如Oracle中Sequence.nextval）
+        /// </summary>
+        /// <returns></returns>
+        protected virtual string GetSequence()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 获取标识列
+        /// </summary>
+        /// <returns></returns>
+        protected virtual Field GetIdentityField()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 获取主键列表
+        /// </summary>
+        /// <returns></returns>
+        protected virtual Field[] GetPrimaryKeyFields()
+        {
+            return new Field[] { };
+        }
+
+        /// <summary>
+        /// 获取字段列表
+        /// </summary>
+        /// <returns></returns>
+        internal protected abstract Field[] GetFields();
+
+        /// <summary>
+        /// 获取属性值
+        /// </summary>
+        /// <returns></returns>
+        protected abstract object[] GetValues();
+
+        #endregion
+
+        /// <summary>
+        /// 获取只读属性
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual bool GetReadOnly()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 获取表名
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual Table GetTable()
+        {
+            return new Table("TempTable");
+        }
+
+        /// <summary>
+        /// 设置属性值
+        /// </summary>
+        /// <param name="reader"></param>
+        protected abstract void SetValues(IRowReader reader);
+
+        /// <summary>
+        /// 用于设置额外的值
+        /// </summary>
+        /// <param name="reader"></param>
+        protected virtual void SetPropertyValues(IRowReader reader)
+        { }
+
+        #region 内部方法
+
+        /// <summary>
+        /// 获取系列的名称
+        /// </summary>
+        internal string SequenceName
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this.GetSequence();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取排序或分页字段
+        /// </summary>
+        /// <returns></returns>
+        internal Field PagingField
+        {
+            get
+            {
+                lock (this)
+                {
+                    Field pagingField = this.GetIdentityField();
+
+                    if ((IField)pagingField == null)
+                    {
+                        Field[] fields = this.GetPrimaryKeyFields();
+                        if (fields.Length > 0) pagingField = fields[0];
+                    }
+
+                    return pagingField;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取标识列
+        /// </summary>
+        internal Field IdentityField
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this.GetIdentityField();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 设置所有的值
+        /// </summary>
+        /// <param name="reader"></param>
+        internal void SetAllValues(IRowReader reader)
+        {
+            lock (this)
+            {
+                //设置内部的值
+                SetValues(reader);
+
+                //设置外部的值
+                SetPropertyValues(reader);
+
+                //设置来自数据库变量为true
+                isFromDB = true;
+            }
+        }
+
+        /// <summary>
+        /// 获取字段及值
+        /// </summary>
+        /// <returns></returns>
+        internal List<FieldValue> GetFieldValues()
+        {
+            lock (this)
+            {
+                List<FieldValue> fvlist = new List<FieldValue>();
+
+                Field identityField = this.GetIdentityField();
+                List<Field> pkFields = new List<Field>(this.GetPrimaryKeyFields());
+
+                Field[] fields = this.GetFields();
+                object[] values = this.GetValues();
+
+                if (fields.Length != values.Length)
+                {
+                    throw new DataException("字段与值无法对应！");
+                }
+
+                int index = 0;
+                foreach (Field field in fields)
+                {
+                    FieldValue fv = new FieldValue(field, values[index]);
+
+                    //判断是否为标识列
+                    if ((IField)identityField != null)
+                        if (identityField.Name == field.Name) fv.IsIdentity = true;
+
+                    //判断是否为主键
+                    if (pkFields.Contains(field)) fv.IsPrimaryKey = true;
+
+                    if (isUpdate)
+                    {
+                        //如果是更新，则将更新的字段改变状态为true
+                        if (updatelist.Contains(field)) fv.IsChanged = true;
+                    }
+                    else
+                    {
+                        //如果是插入，则将移除插入的字段改变状态为true
+                        if (removeinsertlist.Contains(field)) fv.IsChanged = true;
+                    }
+
+                    fvlist.Add(fv);
+                    index++;
+                }
+
+                return fvlist;
+            }
+        }
+
+        #endregion
+
+        #region IValidator 成员
+
+        /// <summary>
+        /// 验证实体的有效性
+        /// </summary>
+        /// <returns></returns>
+        public virtual ValidateResult Validate()
+        {
+            return ValidateResult.Default;
+        }
+
+        #endregion
+    }
+}
