@@ -14,7 +14,6 @@ namespace MySoft.Cache
 
         private int timeout = DefaultCacheDependent.DEFAULT_TIMEOUT; //默认30分钟
         private ICacheStrategy strategy;
-        private IDictionary<string, Type> services = new Dictionary<string, Type>();
 
         private DefaultCacheDependent(CacheType type, int timeout)
         {
@@ -52,80 +51,46 @@ namespace MySoft.Cache
             return new DefaultCacheDependent(CacheType.Local, timeout);
         }
 
-        /// <summary>
-        /// 添加需要缓存的服务类型，不添加默认为全部
-        /// </summary>
-        /// <param name="type"></param>
-        public void AddService(Type type)
-        {
-            services[type.FullName] = type;
-        }
-
-        /// <summary>
-        /// 缓存是否存在服务
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private bool Contains(Type type)
-        {
-            return services.Count == 0 || services.ContainsKey(type.FullName);
-        }
-
         #region ICacheDependent 成员
 
         /// <summary>
         /// 添加缓存
         /// </summary>
-        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
         /// <param name="cacheValue"></param>
-        public void AddCache(Type serviceType, string cacheKey, object cacheValue)
+        /// <param name="cacheTime"></param>
+        public void AddCache(string cacheKey, object cacheValue, int cacheTime)
         {
-            if (Contains(serviceType))
+            lock (strategy)
             {
-                lock (strategy)
-                {
-                    cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
-                    strategy.AddObject(cacheKey, cacheValue, TimeSpan.FromMilliseconds(timeout));
-                }
+                var timer = cacheTime > 0 ? cacheTime : timeout;
+                strategy.AddObject(cacheKey, cacheValue, TimeSpan.FromMilliseconds(timer));
             }
         }
 
         /// <summary>
         /// 移除缓存
         /// </summary>
-        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
-        public void RemoveCache(Type serviceType, string cacheKey)
+        public void RemoveCache(string cacheKey)
         {
-            if (Contains(serviceType))
+            lock (strategy)
             {
-                lock (strategy)
-                {
-                    cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
-                    strategy.RemoveObject(cacheKey);
-                }
+                strategy.RemoveObject(cacheKey);
             }
         }
 
         /// <summary>
         /// 获取缓存
         /// </summary>
-        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
         /// <returns></returns>
-        public object GetCache(Type serviceType, string cacheKey)
+        public object GetCache(string cacheKey)
         {
-            if (Contains(serviceType))
+            lock (strategy)
             {
-                lock (strategy)
-                {
-                    cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
-                    return strategy.GetObject(cacheKey);
-                }
+                return strategy.GetObject(cacheKey);
             }
-
-            return null;
         }
 
         #endregion
@@ -138,12 +103,9 @@ namespace MySoft.Cache
         /// <param name="serviceType"></param>
         public void RemoveCache(Type serviceType)
         {
-            if (Contains(serviceType))
+            lock (strategy)
             {
-                lock (strategy)
-                {
-                    strategy.RemoveMatchObjects(serviceType.FullName);
-                }
+                strategy.RemoveMatchObjects(serviceType.FullName);
             }
         }
 
@@ -154,14 +116,10 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IList<object> GetCache(Type serviceType)
         {
-            if (Contains(serviceType))
+            lock (strategy)
             {
-                lock (strategy)
-                {
-                    return strategy.GetMatchObjects(serviceType.FullName).Values.ToList();
-                }
+                return strategy.GetMatchObjects(serviceType.FullName).Values.ToList();
             }
-            return new List<object>();
         }
 
         #endregion

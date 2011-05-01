@@ -76,6 +76,7 @@
     <Compile Include="Common\ResponseResult.cs" />
     <Compile Include="Common\MySoftException.cs" />
     <Compile Include="Common\ResponseFormat.cs" />
+    <Compile Include="IoC\ServiceContract.cs" />
     <Compile Include="Json\Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Json\Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
     <Compile Include="Json\Newtonsoft.Json\Bson\BsonObjectId.cs" />
@@ -271,7 +272,6 @@
     <Compile Include="Common\Compression\SevenZip\Compress\RangeCoder\RangeCoderBitTree.cs" />
     <Compile Include="Common\Compression\SevenZip\ICoder.cs" />
     <Compile Include="Remoting\RemotingException.cs" />
-    <Compile Include="Common\ServiceContract.cs" />
     <Compile Include="Security\AESEncrypt.cs" />
     <Compile Include="Security\DESEncrypt.cs" />
     <Compile Include="Common\ConfigurationBase.cs" />

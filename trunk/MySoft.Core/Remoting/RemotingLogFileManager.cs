@@ -6,7 +6,6 @@ namespace MySoft.Remoting
     /// <summary>
     /// 文件管理Remoting服务
     /// </summary>
-    [ServiceContract]
     public interface IRemotingLogFileManager
     {
         /// <summary>

@@ -13,25 +13,23 @@ namespace MySoft.Cache
         /// <summary>
         /// 添加缓存
         /// </summary>
-        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
         /// <param name="cacheValue"></param>
-        void AddCache(Type serviceType, string cacheKey, object cacheValue);
+        /// <param name="cacheTime"></param>
+        void AddCache(string cacheKey, object cacheValue, int cacheTime);
 
         /// <summary>
         /// 移除缓存
         /// </summary>
-        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
-        void RemoveCache(Type serviceType, string cacheKey);
+        void RemoveCache(string cacheKey);
 
         /// <summary>
         /// 获取缓存
         /// </summary>
-        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
         /// <returns></returns>
-        object GetCache(Type serviceType, string cacheKey);
+        object GetCache(string cacheKey);
 
         #region 处理一组缓存
 

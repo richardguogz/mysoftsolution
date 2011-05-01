@@ -6,6 +6,7 @@ using Castle.Core;
 using Castle.MicroKernel;
 using MySoft.Logger;
 using MySoft.Cache;
+using System.Reflection;
 
 namespace MySoft.IoC
 {
@@ -57,13 +58,13 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="msg">The MSG.</param>
         /// <returns>The response msg.</returns>
-        ResponseMessage CallService(Type serviceType, RequestMessage msg);
+        ResponseMessage CallService(RequestMessage msg);
         /// <summary>
         /// Calls the service.
         /// </summary>
         /// <param name="msg">The MSG.</param>
         /// <returns>The response msg.</returns>
-        ResponseMessage CallService(RequestMessage msg);
+        ResponseMessage CallService(Type serviceType, MethodInfo method, RequestMessage msg);
         /// <summary>
         /// Gets the service nodes.
         /// </summary>

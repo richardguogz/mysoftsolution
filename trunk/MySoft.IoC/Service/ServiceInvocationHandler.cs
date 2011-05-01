@@ -58,16 +58,6 @@ namespace MySoft.IoC
                 reqMsg.Timeout = container.Proxy.Timeout;
             }
 
-            //获取约束信息
-            var contract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
-
-            //判断约束
-            if (contract != null && contract.Timeout > 0)
-            {
-                //设置超时时间
-                reqMsg.Timeout = contract.Timeout;
-            }
-
             #endregion
 
             ParameterInfo[] pis = methodInfo.GetParameters();
@@ -93,7 +83,7 @@ namespace MySoft.IoC
             }
 
             //调用服务
-            ResponseMessage resMsg = container.CallService(serviceInterfaceType, reqMsg);
+            ResponseMessage resMsg = container.CallService(serviceInterfaceType, methodInfo, reqMsg);
 
             //如果数据为null,则返回null
             if (resMsg == null || resMsg.Data == null)

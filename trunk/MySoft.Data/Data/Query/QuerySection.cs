@@ -1182,9 +1182,10 @@ namespace MySoft.Data
             where CacheType : Entity
         {
             cacheKey = string.Concat(prefix, "|", cacheKey);
+            cacheKey = string.Format("{0}_{1}", cacheKey, typeof(CacheType).FullName);
 
             ICacheDependent cache = dbProvider.Cache;
-            return cache.GetCache(typeof(CacheType), cacheKey);
+            return cache.GetCache(cacheKey);
         }
 
         #endregion
@@ -1195,9 +1196,10 @@ namespace MySoft.Data
             where CacheType : Entity
         {
             cacheKey = string.Concat(prefix, "|", cacheKey);
+            cacheKey = string.Format("{0}_{1}", cacheKey, typeof(CacheType).FullName);
 
             ICacheDependent cache = dbProvider.Cache;
-            cache.AddCache(typeof(CacheType), cacheKey, obj);
+            cache.AddCache(cacheKey, obj, -1);
         }
 
         #endregion

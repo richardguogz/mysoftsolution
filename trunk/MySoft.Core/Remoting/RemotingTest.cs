@@ -5,7 +5,6 @@ namespace MySoft.Remoting
     /// <summary>
     /// Remoting≤‚ ‘¿‡Ω”ø⁄
     /// </summary>
-    [ServiceContract]
     public interface IRemotingTest
     {
         /// <summary>

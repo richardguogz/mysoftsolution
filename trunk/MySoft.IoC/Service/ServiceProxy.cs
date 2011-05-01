@@ -158,26 +158,24 @@ namespace MySoft.IoC
                         return ret;
                     }, msg);
 
-                    //从线程获取返回信息，超时等待
-                    ResponseMessage retMsg = null;
-
-                    try
+                    if (!pool.WaitForIdle(msg.Timeout))
                     {
-                        retMsg = wir.GetResult(msg.Timeout, true);
-
-                        if (retMsg.Exception != null)
-                        {
-                            throw retMsg.Exception;
-                        }
+                        if (!wir.IsCompleted) wir.Cancel(true);
+                        int timeout = System.Environment.TickCount - t1;
+                        throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, timeout, msg.TransactionId));
                     }
-                    catch (WorkItemResultException)  //表示结果为空
+
+                    //从线程获取返回信息，超时等待
+                    ResponseMessage retMsg = wir.GetResult();
+                    if (retMsg == null)
                     {
                         throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
                     }
-                    catch (WorkItemTimeoutException) //表示等待超时
+
+                    //如果发生了异常，则抛出异常
+                    if (retMsg.Exception != null)
                     {
-                        int timeout = System.Environment.TickCount - t1;
-                        throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, timeout, msg.TransactionId));
+                        throw retMsg.Exception;
                     }
 
                     int t2 = System.Environment.TickCount - t1;
@@ -228,11 +226,7 @@ namespace MySoft.IoC
                         ResponseMessage result = responseObject as ResponseMessage;
                         lock (responses)
                         {
-                            //如果超时，则不返回数据
-                            if (result.Expiration > DateTime.Now)
-                            {
-                                responses[result.TransactionId] = result;
-                            }
+                            responses[result.TransactionId] = result;
                         }
                     }
                 }

@@ -11,6 +11,7 @@ using System.Text;
 using System.IO;
 using MySoft.Logger;
 using MySoft.Cache;
+using System.Reflection;
 
 namespace MySoft.IoC
 {
@@ -278,29 +279,29 @@ namespace MySoft.IoC
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <returns>The msg.</returns>
+        /// <param name="msg"></param>
+        /// <returns></returns>
         public ResponseMessage CallService(RequestMessage msg)
         {
-            return CallService(null, msg);
+            //check local service first
+            IService localService = (IService)GetLocalService(msg.ServiceName);
+            if (localService != null)
+            {
+                return localService.CallService(msg, logtimeout);
+            }
+
+            return null;
         }
 
         /// <summary>
         /// Calls the service.
         /// </summary>
         /// <param name="serviceType">Name of the serviceType.</param>
+        /// <param name="method">Name of the method.</param>
         /// <param name="msg">The MSG.</param>
         /// <returns>The msg.</returns>
-        public ResponseMessage CallService(Type serviceType, RequestMessage msg)
+        public ResponseMessage CallService(Type serviceType, MethodInfo method, RequestMessage msg)
         {
-            //check local service first
-            IService localService = (IService)GetLocalService(msg.ServiceName);
-
-            if (localService != null)
-            {
-                return localService.CallService(msg, logtimeout);
-            }
-
             if (serviceProxy == null)
             {
                 throw new IoCException(string.Format("Call remote service failure, serviceProxy undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName));
@@ -312,13 +313,39 @@ namespace MySoft.IoC
                     //处理cacheKey信息
                     var key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
                     string cacheKey = "IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
+                    cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
+
+                    bool isAllowCache = false;
+                    int cacheTime = msg.Timeout; //默认缓存时间与超时时间一致
+
+                    //获取约束信息
+                    var serviceContract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceType);
+                    //判断约束
+                    if (serviceContract != null)
+                    {
+                        isAllowCache = serviceContract.AllowCache;
+                        if (serviceContract.CacheTime > 0) cacheTime = serviceContract.CacheTime;
+                    }
+
+                    if (isAllowCache)
+                    {
+                        //获取约束信息
+                        var operationContract = CoreHelper.GetMemberAttribute<OperationContractAttribute>(method);
+                        //判断约束
+                        if (operationContract != null)
+                        {
+                            if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
+                        }
+                    }
+
+                    //缓存对象
                     object cacheValue = null;
 
                     //缓存的处理
-                    if (cache != null && serviceType != null)
+                    if (isAllowCache && cache != null)
                     {
                         //从缓存获取数据
-                        cacheValue = cache.GetCache(serviceType, cacheKey);
+                        cacheValue = cache.GetCache(cacheKey);
                     }
 
                     //如果缓存不为null;
@@ -336,12 +363,12 @@ namespace MySoft.IoC
                         var resMsg = serviceProxy.CallMethod(msg, logtimeout);
 
                         //缓存的处理
-                        if (cache != null && serviceType != null)
+                        if (isAllowCache && cache != null)
                         {
                             //如果数据是null或者值为Exception，则不使用缓存
                             if (resMsg.Exception == null && resMsg.Data != null)
                             {
-                                cache.AddCache(serviceType, cacheKey, resMsg);
+                                cache.AddCache(cacheKey, resMsg, cacheTime);
                             }
                         }
 
