@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace MySoft.IoC
 {
@@ -34,7 +35,7 @@ namespace MySoft.IoC
                     json.Add(key, JToken.Parse(jsonString));
                 }
 
-                return json.ToString();
+                return json.ToString(Formatting.None);
             }
         }
 

@@ -159,29 +159,35 @@ namespace MySoft.IoC
                     }, msg);
 
                     //从线程获取返回信息，超时等待
-                    ResponseMessage retMsg = wir.GetResult(msg.Timeout, true);
+                    ResponseMessage retMsg = null;
 
-                    //返回的数据为null，表示等待超时
-                    if (retMsg == null)
+                    try
                     {
-                        throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.Timeout, msg.TransactionId));
-                    }
-                    else
-                    {
+                        retMsg = wir.GetResult(msg.Timeout, true);
+
                         if (retMsg.Exception != null)
                         {
                             throw retMsg.Exception;
                         }
+                    }
+                    catch (WorkItemResultException)  //表示结果为空
+                    {
+                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
+                    }
+                    catch (WorkItemTimeoutException) //表示等待超时
+                    {
+                        int timeout = System.Environment.TickCount - t1;
+                        throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, timeout, msg.TransactionId));
+                    }
 
-                        int t2 = System.Environment.TickCount - t1;
+                    int t2 = System.Environment.TickCount - t1;
 
-                        //如果时间超过预定，则输出日志
-                        if (t2 > logtimeout)
-                        {
-                            //SerializationManager.Serialize(retMsg)
-                            if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, retMsg.Parameters,
-                                "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId), LogType.Warning);
-                        }
+                    //如果时间超过预定，则输出日志
+                    if (t2 > logtimeout)
+                    {
+                        //SerializationManager.Serialize(retMsg)
+                        if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, msg.Parameters,
+                            "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId), LogType.Warning);
                     }
 
                     return retMsg;

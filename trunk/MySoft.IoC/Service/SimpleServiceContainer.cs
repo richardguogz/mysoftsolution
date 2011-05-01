@@ -310,8 +310,8 @@ namespace MySoft.IoC
                 try
                 {
                     //处理cacheKey信息
-                    var key = string.Format("_{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
-                    string cacheKey = "MySoft_IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
+                    var key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
+                    string cacheKey = "IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
                     object cacheValue = null;
 
                     //缓存的处理

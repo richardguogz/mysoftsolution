@@ -24,7 +24,7 @@ namespace MySoft.IoC
         public CastleService(CastleServiceConfiguration config)
         {
             this.config = config;
-            this.container = new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIMEOUT_NUMBER);
+            this.container = new SimpleServiceContainer(config.LogTimeout);
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
 
