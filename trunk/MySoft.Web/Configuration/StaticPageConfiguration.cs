@@ -8,8 +8,8 @@ namespace MySoft.Web.Configuration
     /// <summary>
     /// Specifies the configuration settings in the Web.config for the StaticPageRule.
     /// </summary>
-    [XmlRoot("staticPage")]
     [Serializable]
+    [XmlRoot("staticPage")]
     public class StaticPageConfiguration
     {
         // private member variables
@@ -35,7 +35,8 @@ namespace MySoft.Web.Configuration
         /// <summary>
         /// A <see cref="StaticPageRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
         /// </summary>
-        [XmlElement("rules")]
+        [XmlArray("rules")]
+        [XmlArrayItem("staticPageRule")]
         public StaticPageRuleCollection Rules
         {
             get

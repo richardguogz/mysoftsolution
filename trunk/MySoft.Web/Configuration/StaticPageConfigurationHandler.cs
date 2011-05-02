@@ -8,7 +8,6 @@ namespace MySoft.Web.Configuration
     /// <summary>
     /// Deserializes the markup in Web.config into an instance of the <see cref="StaticPageConfiguration"/> class.
     /// </summary>
-    [Serializable]
     public class StaticPageConfigurationHandler : IConfigurationSectionHandler
     {
         /// <summary>

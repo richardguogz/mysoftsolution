@@ -8,13 +8,13 @@ namespace MySoft.Web.Configuration
         /// 默认过期时间为60秒
         /// </summary>
         public const int DEFAULT_EXPIRE_SECONDS = 60;
-        private bool enable = false;
+        private bool enabled = false;
 
-        [ConfigurationProperty("enable")]
-        public bool Enable
+        [ConfigurationProperty("enabled")]
+        public bool Enabled
         {
-            get { return this["enable"] == null ? enable : (bool)this["enable"]; }
-            set { this["enable"] = value; }
+            get { return this["enabled"] == null ? enabled : (bool)this["enabled"]; }
+            set { this["enabled"] = value; }
         }
 
         [ConfigurationProperty("controls", IsRequired = true, IsDefaultCollection = false)]

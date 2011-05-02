@@ -35,7 +35,7 @@ namespace MySoft.Web
             string url = context.Request.Url.PathAndQuery;
             string sendToUrl = url;
             string filePath = context.Request.PhysicalApplicationPath;
-            string htmlFile = null, fileExtension = null;
+            string staticFile = null, fileExtension = null;
             bool htmlExists = false;
 
             //检测是否为Ajax调用
@@ -58,21 +58,21 @@ namespace MySoft.Web
                     {
                         // match found - do any replacement needed
 
-                        string htmlUrl = PageHelper.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
-                        htmlFile = context.Server.MapPath(htmlUrl);
+                        string staticUrl = PageHelper.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
+                        staticFile = context.Server.MapPath(staticUrl);
 
                         try
                         {
                             //需要生成静态页面
-                            if (!File.Exists(htmlFile))  //静态页面不存在
+                            if (!File.Exists(staticFile))  //静态页面不存在
                             {
-                                context.Response.Filter = new ResponseFilter(context.Response.Filter, htmlFile, rules[i].ValidateString);
+                                context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rules[i].ValidateString);
                                 break;
                             }
                             else
                             {
                                 //静态页面存在
-                                FileInfo file = new FileInfo(htmlFile);
+                                FileInfo file = new FileInfo(staticFile);
                                 htmlExists = file.Exists;
                                 fileExtension = file.Extension;
 
@@ -82,16 +82,18 @@ namespace MySoft.Web
 
                                 if (timeSpan > 0 && span >= timeSpan) //静态页面过期
                                 {
-                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, htmlFile, rules[i].ValidateString);
+                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rules[i].ValidateString);
                                     break;
                                 }
                                 else
                                 {
                                     //判断是否为xml格式
                                     if (fileExtension.ToLower().Contains("xml"))
+                                    {
                                         context.Response.ContentType = "text/xml";
+                                    }
 
-                                    context.Response.WriteFile(htmlFile);
+                                    context.Response.WriteFile(staticFile);
                                     return;
                                 }
                             }
@@ -100,7 +102,7 @@ namespace MySoft.Web
                         {
                             string logFile = PageHelper.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
                             logFile = context.Server.MapPath(logFile);
-                            string logText = string.Format("{0} => {3}\r\n请求路径：{1}\r\n生成路径：{2}", DateTime.Now.ToString("HH:mm:ss"), context.Request.Url, htmlFile, ex.Message);
+                            string logText = string.Format("{0} => {3}\r\n请求路径：{1}\r\n生成路径：{2}", DateTime.Now.ToString("HH:mm:ss"), context.Request.Url, staticFile, ex.Message);
                             logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
                             if (!Directory.Exists(Path.GetDirectoryName(logFile)))
                             {
@@ -122,13 +124,15 @@ namespace MySoft.Web
             }
             catch (HttpException ex)
             {
-                if (htmlExists && !string.IsNullOrEmpty(htmlFile))
+                if (htmlExists && !string.IsNullOrEmpty(staticFile))
                 {
                     //判断是否为xml格式
                     if (fileExtension.ToLower().Contains("xml"))
+                    {
                         context.Response.ContentType = "text/xml";
+                    }
 
-                    context.Response.WriteFile(htmlFile);
+                    context.Response.WriteFile(staticFile);
                     return;
                 }
                 else

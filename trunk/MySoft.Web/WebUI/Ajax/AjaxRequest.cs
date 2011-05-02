@@ -313,7 +313,7 @@ namespace MySoft.Web.UI
                 string url = info.CurrentPage.Request.Url.PathAndQuery;
                 string key = url + "," + path + (parameter != string.Empty ? "?" + parameter : null);
 
-                if (CacheControlConfiguration.GetSection().Config.Enable)
+                if (CacheControlConfiguration.GetSection().Config.Enabled)
                 {
                     object obj = HttpContext.Current.Cache[key];
                     if (obj != null) return obj.ToString();
@@ -341,7 +341,7 @@ namespace MySoft.Web.UI
                 string url = info.CurrentPage.Request.Url.PathAndQuery;
                 string key = url + "," + path + (parameter != string.Empty ? "?" + parameter : null);
 
-                if (CacheControlConfiguration.GetSection().Config.Enable)
+                if (CacheControlConfiguration.GetSection().Config.Enabled)
                 {
                     Dictionary<string, int> rules = CacheControlConfiguration.GetSection().Rules;
                     if (rules.ContainsKey(path))

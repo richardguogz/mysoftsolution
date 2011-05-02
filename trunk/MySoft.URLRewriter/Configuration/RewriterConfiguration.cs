@@ -45,8 +45,8 @@ namespace MySoft.URLRewriter.Configuration
     ///	&lt;/configuration&gt;
     /// </code>
     /// </remarks>
-    [XmlRoot("rewriterPage")]
     [Serializable]
+    [XmlRoot("rewriterPage")]
     public class RewriterConfiguration
     {
         // private member variables
@@ -72,7 +72,8 @@ namespace MySoft.URLRewriter.Configuration
         /// <summary>
         /// A <see cref="RewriterRuleCollection"/> instance that provides access to a set of <see cref="RewriterRule"/>s.
         /// </summary>
-        [XmlElement("rules")]
+        [XmlArray("rules")]
+        [XmlArrayItem("rewriterRule")]
         public RewriterRuleCollection Rules
         {
             get
