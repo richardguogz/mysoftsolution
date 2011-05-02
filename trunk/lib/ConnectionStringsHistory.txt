@@ -1,0 +1,4 @@
+Server=(local);Database=Northwind;Uid=sa;Pwd=sa
+Server=(local);Database=Northwind;Uid=sa;Pwd=sa;
+Server=(local);Database=Northwind;Uid=sa;Pwd=shumiwang;
+Data Source=115.236.72.6,1916;Initial Catalog=Fund123;UID=HZFund123;PWD=HZ@Fund123@ShuMi;

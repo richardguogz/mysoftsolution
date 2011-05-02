@@ -1,0 +1,1573 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MySoft.IoC</name>
+    </assembly>
+    <members>
+        <member name="T:MySoft.IoC.CastleService">
+            <summary>
+            Castle服务
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.CastleService.#ctor(MySoft.IoC.Configuration.CastleServiceConfiguration)">
+            <summary>
+            实例化CastleService
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:MySoft.IoC.CastleService.Dispose">
+            <summary>
+            资源释放
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.CastleService.Start">
+            <summary>
+            启用服务
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.CastleService.Stop">
+            <summary>
+            停止服务
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.CastleService.ServerUrl">
+            <summary>
+            获取服务的ServerUrl地址
+            </summary>
+        </member>
+        <member name="E:MySoft.IoC.CastleService.OnLog">
+            <summary>
+            OnLog event.
+            </summary>
+        </member>
+        <member name="E:MySoft.IoC.CastleService.OnError">
+            <summary>
+            OnError event.
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.Services.BaseService">
+            <summary>
+            The base class of services.
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.IService">
+            <summary>
+            interface of all services.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.IService.CallService(MySoft.IoC.RequestMessage,System.Int32)">
+            <summary>
+            Calls the service.
+            </summary>
+            <param name="msg">The MSG.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="P:MySoft.IoC.IService.ServiceName">
+            <summary>
+            Gets the name of the service.
+            </summary>
+            <value>The name of the service.</value>
+        </member>
+        <member name="F:MySoft.IoC.Services.BaseService.serviceName">
+            <summary>
+            The service name.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Services.BaseService.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.Services.BaseService"/> class.
+            </summary>
+            <param name="serviceName">Name of the service.</param>
+        </member>
+        <member name="M:MySoft.IoC.Services.BaseService.Run(MySoft.IoC.RequestMessage)">
+            <summary>
+            Runs the specified MSG.
+            </summary>
+            <param name="msg">The MSG.</param>
+            <returns>The msg.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Services.BaseService.CallService(MySoft.IoC.RequestMessage,System.Int32)">
+            <summary>
+            Calls the service.
+            </summary>
+            <param name="msg">The MSG.</param>
+            <returns>The msg.</returns>
+        </member>
+        <member name="P:MySoft.IoC.Services.BaseService.ServiceName">
+            <summary>
+            Gets the name of the service.
+            </summary>
+            <value>The name of the service.</value>
+        </member>
+        <member name="E:MySoft.IoC.Services.BaseService.OnLog">
+            <summary>
+            OnLog event.
+            </summary>
+        </member>
+        <member name="E:MySoft.IoC.Services.BaseService.OnError">
+            <summary>
+            OnError event.
+            </summary>
+        </member>
+        <member name="T:MySoft.Mvp.PresenterFactory">
+            <summary>
+            Presenter Factory
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.PresenterFactory.Create">
+            <summary>
+            Creates this singleton instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Mvp.PresenterFactory.GetPresenter``1(System.Object)">
+            <summary>
+            Gets the presenter.
+            </summary>
+            <param name="view">The view.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.Mvp.PresenterFactory.GetPresenter``1(System.String,System.Object)">
+            <summary>
+            Gets the presenter.
+            </summary>
+            <param name="presenterKey">The presenter key.</param>
+            <param name="view">The view.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.IoC.Configuration.ServiceNode">
+            <summary>
+            服务节点
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.ServiceNode.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.ServiceNode.Server">
+            <summary>
+            Gets or sets the server.
+            </summary>
+            <value>The server.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.ServiceNode.Port">
+            <summary>
+            Gets or sets the port.
+            </summary>
+            <value>The port.</value>
+        </member>
+        <member name="M:MySoft.IoC.BigInteger.Kernel.Multiply(System.UInt32[],System.UInt32,System.UInt32,System.UInt32[],System.UInt32,System.UInt32,System.UInt32[],System.UInt32)">
+            <summary>
+            Multiplies the data in x [xOffset:xOffset+xLen] by
+            y [yOffset:yOffset+yLen] and puts it into
+            d [dOffset:dOffset+xLen+yLen].
+            </summary>
+            <remarks>
+            This code is unsafe! It is the caller's responsibility to make
+            sure that it is safe to access x [xOffset:xOffset+xLen],
+            y [yOffset:yOffset+yLen], and d [dOffset:dOffset+xLen+yLen].
+            </remarks>
+        </member>
+        <member name="M:MySoft.IoC.BigInteger.Kernel.MultiplyMod2p32pmod(System.UInt32[],System.Int32,System.Int32,System.UInt32[],System.Int32,System.Int32,System.UInt32[],System.Int32,System.Int32)">
+            <summary>
+            Multiplies the data in x [xOffset:xOffset+xLen] by
+            y [yOffset:yOffset+yLen] and puts the low mod words into
+            d [dOffset:dOffset+mod].
+            </summary>
+            <remarks>
+            This code is unsafe! It is the caller's responsibility to make
+            sure that it is safe to access x [xOffset:xOffset+xLen],
+            y [yOffset:yOffset+yLen], and d [dOffset:dOffset+mod].
+            </remarks>
+        </member>
+        <member name="T:MySoft.IoC.InterceptorSelector">
+            <summary>
+            拦截器选择
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.AspectProxyAttribute">
+            <summary>
+            拦截器属性
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.AspectProxyAttribute.InterceptorType">
+            <summary>
+            拦截器对象
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.AspectProxyAttribute.Arguments">
+            <summary>
+            拦截器参数
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.Configuration.CastleFactoryConfiguration">
+            <summary>
+            The service factory configuration.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Configuration.CastleFactoryConfiguration.GetConfig">
+            <summary>
+            获取远程对象配置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Configuration.CastleFactoryConfiguration.LoadValuesFromConfigurationXml(System.Xml.XmlNode)">
+            <summary>
+            从配置文件加载配置值
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+            <value>The type.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.Encrypt">
+            <summary>
+            Gets or sets the encrypt.
+            </summary>
+            <value>The encrypt.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.Compress">
+            <summary>
+            Gets or sets the compress.
+            </summary>
+            <value>The format.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.Timeout">
+            <summary>
+            Gets or sets the timeout
+            </summary>
+            <value>The timeout.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.CacheTime">
+            <summary>
+            Gets or sets the cachetime
+            </summary>
+            <value>The cachetime.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.ShowlogTime">
+            <summary>
+            Gets or sets the showlogtime
+            </summary>
+            <value>The showlogtime.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.Default">
+            <summary>
+            Gets or sets the default
+            </summary>
+            <value>The default.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.ThrowError">
+            <summary>
+            Gets or sets the throwerror
+            </summary>
+            <value>The throwerror.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleFactoryConfiguration.Hosts">
+            <summary>
+            Gets or sets the hosts
+            </summary>
+            <value>The hosts.</value>
+        </member>
+        <member name="T:MySoft.IoC.SimpleServiceContainer">
+            <summary>
+            The simple service container.
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.IServiceContainer">
+            <summary>
+            The service container interface.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.RegisterComponent(System.String,System.Type)">
+            <summary>
+            Registers the component.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="classType">Type of the class.</param>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.RegisterComponent(System.String,System.Type,System.Type)">
+            <summary>
+            Registers the component.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="serviceType">Type of the service.</param>
+            <param name="classType">Type of the class.</param>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.RegisterComponents(System.Collections.IDictionary)">
+            <summary>
+            Registers the components.
+            </summary>
+            <param name="serviceKeyTypes">The service key types.</param>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.Release(System.Object)">
+            <summary>
+            Releases the specified obj.
+            </summary>
+            <param name="obj">The obj.</param>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.CallService(MySoft.IoC.RequestMessage)">
+            <summary>
+            Calls the service.
+            </summary>
+            <param name="reqMsg">The MSG.</param>
+            <returns>The response msg.</returns>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.GetServiceNodes">
+            <summary>
+            Gets the service nodes.
+            </summary>
+            <returns>The service nodes.</returns>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.GetDependerServiceNodes(System.String)">
+            <summary>
+            Gets the depender service nodes.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The service nodes.</returns>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.GetDependentServiceNodes(System.String)">
+            <summary>
+            Gets the dependent service nodes.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The service nodes.</returns>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.WriteLog(System.String,MySoft.Logger.LogType)">
+            <summary>
+            Writes the log.
+            </summary>
+            <param name="log">The log info.</param>
+        </member>
+        <member name="M:MySoft.IoC.IServiceContainer.WriteError(System.Exception)">
+            <summary>
+            Writes the exception.
+            </summary>
+            <param name="exception">The exception info.</param>
+        </member>
+        <member name="P:MySoft.IoC.IServiceContainer.Kernel">
+            <summary>
+            Gets the kernel.
+            </summary>
+            <value>The kernel.</value>
+        </member>
+        <member name="P:MySoft.IoC.IServiceContainer.Item(System.String)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:MySoft.IoC.IServiceContainer.Item(System.Type)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> with the specified service type.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:MySoft.IoC.IServiceContainer.Proxy">
+            <summary>
+            设置服务代理
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.IServiceContainer.Cache">
+            <summary>
+            缓存依赖
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER">
+            <summary>
+            The default timeout number. 
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.SimpleServiceContainer.DEFAULT_CACHETIME_NUMBER">
+            <summary>
+            The default cachetime number.
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.SimpleServiceContainer.DEFAULT_SHOWLOGTIME_NUMBER">
+            <summary>
+            The default showlogtime number.
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.SimpleServiceContainer.DEFAULT_MAXCONNECT_NUMBER">
+            <summary>
+            The default maxconnect number.
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.SimpleServiceContainer.DEFAULT_MAXBUFFER_NUMBER">
+            <summary>
+            The default maxbuffer number.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.SimpleServiceContainer"/> class.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.#ctor(System.Int32,System.Collections.IDictionary)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.SimpleServiceContainer"/> class.
+            </summary>
+            <param name="config"></param>
+            <param name="serviceKeyTypes">The service key types.</param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.RegisterComponent(System.String,System.Type,System.Type)">
+            <summary>
+            Registers the component.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="serviceType">Type of the service.</param>
+            <param name="classType">Type of the class.</param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.RegisterComponent(System.String,System.Type)">
+            <summary>
+            Registers the component.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="classType">Type of the class.</param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.RegisterComponents(System.Collections.IDictionary)">
+            <summary>
+            Registers the components.
+            </summary>
+            <param name="serviceKeyTypes">The service key types.</param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.Release(System.Object)">
+            <summary>
+            Releases the specified obj.
+            </summary>
+            <param name="obj">The obj.</param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.CallService(MySoft.IoC.RequestMessage)">
+            <summary>
+            Calls the service.
+            </summary>
+            <param name="reqMsg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.GetServiceNodes">
+            <summary>
+            Gets the service nodes.
+            </summary>
+            <returns>The service nodes.</returns>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.GetDependerServiceNodes(System.String)">
+            <summary>
+            Gets the depender service nodes.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The service nodes.</returns>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.GetDependentServiceNodes(System.String)">
+            <summary>
+            Gets the dependent service nodes.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The service nodes.</returns>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.WriteLog(System.String,MySoft.Logger.LogType)">
+            <summary>
+            输出日志
+            </summary>
+            <param name="log"></param>
+        </member>
+        <member name="M:MySoft.IoC.SimpleServiceContainer.WriteError(System.Exception)">
+            <summary>
+            输出错误
+            </summary>
+            <param name="exception"></param>
+        </member>
+        <member name="P:MySoft.IoC.SimpleServiceContainer.Proxy">
+            <summary>
+            设置服务代理
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.SimpleServiceContainer.Cache">
+            <summary>
+            缓存依赖
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.SimpleServiceContainer.Kernel">
+            <summary>
+            Gets the kernel.
+            </summary>
+            <value>The kernel.</value>
+        </member>
+        <member name="P:MySoft.IoC.SimpleServiceContainer.Item(System.String)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:MySoft.IoC.SimpleServiceContainer.Item(System.Type)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> with the specified service type.
+            </summary>
+            <value></value>
+        </member>
+        <member name="E:MySoft.IoC.SimpleServiceContainer.OnLog">
+            <summary>
+            OnLog event.
+            </summary>
+        </member>
+        <member name="E:MySoft.IoC.SimpleServiceContainer.OnError">
+            <summary>
+            OnError event.
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.TypeMismatchedException">
+            <summary>
+            TypeMismatchedException
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.TypeMismatchedException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.TypeMismatchedException"/> class.
+            </summary>
+            <param name="info">The info.</param>
+        </member>
+        <member name="T:MySoft.IoC.AspectFactory">
+            <summary>
+            AOP工厂类
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.AspectFactory.services">
+            <summary>
+            代理对象列表
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.AspectFactory.CreateProxy(System.Type,MySoft.IoC.AspectInterceptor[])">
+            <summary>
+            创建一个实例方式的拦截器
+            </summary>
+            <param name="instance"></param>
+            <param name="interceptors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.AspectFactory.CreateProxy``1(MySoft.IoC.AspectInterceptor[])">
+            <summary>
+            创建一个实例方式的拦截器
+            </summary>
+            <typeparam name="TServiceType"></typeparam>
+            <param name="interceptors"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.AspectFactory.CreateProxy``2(MySoft.IoC.AspectInterceptor[])">
+            <summary>
+            创建一个接口方式的拦截器
+            </summary>
+            <typeparam name="IServiceType"></typeparam>
+            <typeparam name="TServiceType"></typeparam>
+            <param name="interceptors"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.IoC.ServiceNodeInfo">
+            <summary>
+            The service node info.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.ServiceNodeInfo.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.ServiceNodeInfo"/> class.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.ServiceNodeInfo.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="P:MySoft.IoC.ServiceNodeInfo.Key">
+            <summary>
+            Gets or sets the DEFAULT_KEY.
+            </summary>
+            <value>The DEFAULT_KEY.</value>
+        </member>
+        <member name="P:MySoft.IoC.ServiceNodeInfo.Sevice">
+            <summary>
+            Gets or sets the sevice.
+            </summary>
+            <value>The sevice.</value>
+        </member>
+        <member name="P:MySoft.IoC.ServiceNodeInfo.Implementation">
+            <summary>
+            Gets or sets the implementation.
+            </summary>
+            <value>The implementation.</value>
+        </member>
+        <member name="T:MySoft.IoC.ResponseMessage">
+            <summary>
+            The response msg.
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.RequestMessage">
+            <summary>
+            The request msg.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.Compress">
+            <summary>
+            Gets or sets the compress of the service.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.Encrypt">
+            <summary>
+            Gets or sets the encrypt of the service.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.KeyLength">
+            <summary>
+            Gets or sets the keylength of the service.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.Timeout">
+            <summary>
+            Gets or sets the timeout of the service.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.RequestAddress">
+            <summary>
+            Gets or sets the request address
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.ServiceName">
+            <summary>
+            Gets or sets the name of the service.
+            </summary>
+            <value>The name of the service.</value>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.SubServiceName">
+            <summary>
+            Gets or sets the name of the sub service.
+            </summary>
+            <value>The name of the sub service.</value>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.TransactionId">
+            <summary>
+            Gets or sets the transaction id.
+            </summary>
+            <value>The transaction id.</value>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.Parameters">
+            <summary>
+            Gets or sets the parameters.
+            </summary>
+            <value>The parameters.</value>
+        </member>
+        <member name="P:MySoft.IoC.RequestMessage.Expiration">
+            <summary>
+            Gets or sets the expiration.
+            </summary>
+            <value>The expiration.</value>
+        </member>
+        <member name="P:MySoft.IoC.ResponseMessage.Keys">
+            <summary>
+            Gets or sets the keys of the service.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.ResponseMessage.Data">
+            <summary>
+            Gets or sets the data.
+            </summary>
+            <value>The data.</value>
+        </member>
+        <member name="P:MySoft.IoC.ResponseMessage.Exception">
+            <summary>
+            Gets or sets the exception.
+            </summary>
+            <value>The exception.</value>
+        </member>
+        <member name="P:MySoft.IoC.ResponseMessage.Message">
+            <summary>
+            Gets the message.
+            </summary>
+            <value>The message.</value>
+        </member>
+        <member name="T:MySoft.IoC.IoCException">
+            <summary>
+            IoC异常
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.IoCException.#ctor(System.String)">
+            <summary>
+            普通异常的构造方法
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MySoft.IoC.IoCException.#ctor(System.String,System.Exception)">
+            <summary>
+            内嵌异常的构造方法
+            </summary>
+            <param name="message"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="M:MySoft.IoC.IoCException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="info">存储对象序列化和反序列化所需的全部数据</param>
+            <param name="context">描述给定的序列化流的源和目标，并提供一个由调用方定义的附加上下文</param>
+        </member>
+        <member name="P:MySoft.IoC.IoCException.ExceptionHeader">
+            <summary>
+            错误头
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.AspectSwitcherAttribute">
+            <summary>
+            切面方法选择器
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.AspectSwitcherAttribute.InterceptorTypes">
+            <summary>
+            使用拦截器的类型
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.AspectSwitcherAttribute.UseAspect">
+            <summary>
+            是否使用切面处理
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.Configuration.CastleServiceConfiguration">
+            <summary>
+            The service factory configuration.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Configuration.CastleServiceConfiguration.GetConfig">
+            <summary>
+            获取远程对象配置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Configuration.CastleServiceConfiguration.LoadValuesFromConfigurationXml(System.Xml.XmlNode)">
+            <summary>
+            从配置文件加载配置值
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleServiceConfiguration.Host">
+            <summary>
+            Gets or sets the host.
+            </summary>
+            <value>The host.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleServiceConfiguration.Port">
+            <summary>
+            Gets or sets the port.
+            </summary>
+            <value>The port.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleServiceConfiguration.MaxConnect">
+            <summary>
+            Gets or sets the maxconnect
+            </summary>
+            <value>The maxconnect.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleServiceConfiguration.MaxBuffer">
+            <summary>
+            Gets or sets the maxbuffer
+            </summary>
+            <value>The maxbuffer.</value>
+        </member>
+        <member name="P:MySoft.IoC.Configuration.CastleServiceConfiguration.LogTimeout">
+            <summary>
+            Gets or sets the showlogtime
+            </summary>
+            <value>The showlogtime.</value>
+        </member>
+        <member name="T:MySoft.IoC.CastleFactoryType">
+            <summary>
+            Service facrory type
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.CastleFactoryType.Local">
+            <summary>
+            Local
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.CastleFactoryType.Remote">
+            <summary>
+            Remote
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.IServiceProxy">
+            <summary>
+            服务代理
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.IServiceProxy.CallMethod(MySoft.IoC.RequestMessage,System.Int32)">
+            <summary>
+            调用方法
+            </summary>
+            <param name="msg"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.IoC.IServiceProxy.Encrypt">
+            <summary>
+            是否加密
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.IServiceProxy.Compress">
+            <summary>
+            是否压缩
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.IServiceProxy.Timeout">
+            <summary>
+            尝试次数
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.IServiceProxy.ThrowError">
+            <summary>
+            是否抛出错误
+            </summary>
+        </member>
+        <member name="T:MySoft.Mvp.IPresenter">
+            <summary>
+            The extended interface of all presenters
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.IPresenter.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.IPresenter.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.IPresenter.TypeOfView">
+            <summary>
+            Gets the type of view.
+            </summary>
+            <value>The type of view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.IPresenter.TypeOfModels">
+            <summary>
+            Gets the types of model.
+            </summary>
+            <value>The types of model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`1">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`1.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`1.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`1.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`1.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`1"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`1.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`1.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`2">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`2.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`2.model">
+            <summary>
+            The model
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`2.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`2.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`2.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`2"/> is initialized.
+            Only when both view and model are binded, a presenter is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`2.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`2.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`3">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`3.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`3.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`3.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`3.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`3.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`3.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`3"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`3.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`3.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`4">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`4.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`4.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`4.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`4.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`4.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`4.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`4.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`4"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`4.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`4.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`5">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+            <typeparam name="IModelType4"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`5.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`5.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`5.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`5.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`5.model4">
+            <summary>
+            The model 4
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`5.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`5.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`5.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`5"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`5.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`5.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`6">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+            <typeparam name="IModelType4"></typeparam>
+            <typeparam name="IModelType5"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`6.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`6.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`6.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`6.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`6.model4">
+            <summary>
+            The model 4
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`6.model5">
+            <summary>
+            The model 5
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`6.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`6.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`6.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`6"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`6.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`6.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.Mvp.Presenter`7">
+            <summary>
+            Base class of all presenters
+            </summary>
+            <typeparam name="ViewType"></typeparam>
+            <typeparam name="IModelType1"></typeparam>
+            <typeparam name="IModelType2"></typeparam>
+            <typeparam name="IModelType3"></typeparam>
+            <typeparam name="IModelType4"></typeparam>
+            <typeparam name="IModelType5"></typeparam>
+            <typeparam name="IModelType6"></typeparam>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.view">
+            <summary>
+            The view
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.model1">
+            <summary>
+            The model 1
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.model2">
+            <summary>
+            The model 2
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.model3">
+            <summary>
+            The model 3
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.model4">
+            <summary>
+            The model 4
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.model5">
+            <summary>
+            The model 5
+            </summary>
+        </member>
+        <member name="F:MySoft.Mvp.Presenter`7.model6">
+            <summary>
+            The model 6
+            </summary>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`7.BindView(System.Object)">
+            <summary>
+            Binds the view.
+            </summary>
+            <param name="view">The view.</param>
+        </member>
+        <member name="M:MySoft.Mvp.Presenter`7.BindModels(System.Object[])">
+            <summary>
+            Binds the models.
+            </summary>
+            <param name="model">The models.</param>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`7.Initialized">
+            <summary>
+            Gets a value indicating whether this <see cref="T:MySoft.Mvp.Presenter`7"/> is initialized.
+            </summary>
+            <value><c>true</c> if initialized; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`7.TypeOfView">
+            <summary>
+            Gets the type of the view.
+            </summary>
+            <value>The type of the view.</value>
+        </member>
+        <member name="P:MySoft.Mvp.Presenter`7.TypeOfModels">
+            <summary>
+            Gets the types of the model.
+            </summary>
+            <value>The types of the model.</value>
+        </member>
+        <member name="T:MySoft.IoC.AspectInterceptor">
+            <summary>
+            AOP拦截器
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.AspectInterceptor.PerformProceed(Castle.Core.Interceptor.IInvocation)">
+            <summary>
+            进行时的方法
+            </summary>
+            <param name="invocation"></param>
+        </member>
+        <member name="M:MySoft.IoC.AspectInterceptor.PostProceed(Castle.Core.Interceptor.IInvocation)">
+            <summary>
+            处理后的方法
+            </summary>
+            <param name="invocation"></param>
+        </member>
+        <member name="M:MySoft.IoC.AspectInterceptor.PreProceed(Castle.Core.Interceptor.IInvocation)">
+            <summary>
+            处理前的方法
+            </summary>
+            <param name="invocation"></param>
+        </member>
+        <member name="M:MySoft.IoC.ServiceProxy.GetData``1(System.Collections.IDictionary,System.Guid)">
+            <summary>
+            获取数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="map"></param>
+            <param name="transactionId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.IoC.ServiceProxy.Encrypt">
+            <summary>
+            Gets or sets the encrypt.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.ServiceProxy.Compress">
+            <summary>
+            Gets or sets the compress.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.ServiceProxy.ThrowError">
+            <summary>
+            Gets or sets the throwerror
+            </summary>
+            <value>The throwerror.</value>
+        </member>
+        <member name="P:MySoft.IoC.ServiceProxy.Timeout">
+            <summary>
+            Socket超时时间
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.AspectManager">
+            <summary>
+            Aspect代理管理器
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.AspectManager.GetService``1(System.Object)">
+            <summary>
+            获取Aspect服务
+            </summary>
+            <typeparam name="IServiceType"></typeparam>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.AspectManager.GetService(System.Object)">
+            <summary>
+            获取Aspect服务
+            </summary>
+            <param name="service"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.AspectManager.CreateService(System.Type)">
+            <summary>
+            创建Aspect服务
+            </summary>
+            <param name="serviceType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.IoC.Services.DynamicService">
+            <summary>
+            The dynamic service.
+            </summary>
+        </member>
+        <member name="F:MySoft.IoC.Services.DynamicService.dictMethods">
+            <summary>
+            保存方法
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.Services.DynamicService.#ctor(MySoft.IoC.IServiceContainer,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.Services.DynamicService"/> class.
+            </summary>
+            <param name="container">The container.</param>
+            <param name="serviceInterfaceType">Type of the service interface.</param>
+        </member>
+        <member name="M:MySoft.IoC.Services.DynamicService.Run(MySoft.IoC.RequestMessage)">
+            <summary>
+            Runs the specified MSG.
+            </summary>
+            <param name="reqMsg">The MSG.</param>
+            <returns>The msg.</returns>
+        </member>
+        <member name="M:MySoft.IoC.Services.DynamicService.DefaultValue``1">
+            <summary>
+            Defaults the value.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.Services.DynamicService.GetNewException(System.Exception)">
+            <summary>
+            获取新的Exception
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.IoC.Configuration.CastleServiceConfigurationHandler">
+            <summary>
+            服务配置类
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.Configuration.CastleFactoryConfigurationHandler">
+            <summary>
+            服务配置类
+            </summary>
+        </member>
+        <member name="T:MySoft.IoC.ServiceInvocationHandler">
+            <summary>
+            The base impl class of the service interface, this class is used by service factory to emit service interface impl automatically at runtime.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.ServiceInvocationHandler.#ctor(MySoft.IoC.IServiceContainer,System.Type,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.ServiceInvocationHandler"/> class.
+            </summary>
+            <param name="container">The container.</param>
+            <param name="serviceInterfaceType">Type of the service interface.</param>
+        </member>
+        <member name="M:MySoft.IoC.ServiceInvocationHandler.CallService(System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            Calls the service.
+            </summary>
+            <param name="methodInfo">Name of the sub service.</param>
+            <param name="paramValues">The param values.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:MySoft.IoC.ServiceInvocationHandler.DefaultValue``1">
+            <summary>
+            Defaults the value.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.ServiceInvocationHandler.Invoke(System.Object,System.Reflection.MethodInfo,System.Object[])">
+            <summary>
+            响应委托
+            </summary>
+            <param name="proxy"></param>
+            <param name="method"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MySoft.IoC.ParameterCollection">
+            <summary>
+            The parameter collection type used by request msg.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.ParameterCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MySoft.IoC.ParameterCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.ParameterCollection.Remove(System.String)">
+            <summary>
+            Removes the specified param name.
+            </summary>
+            <param name="paramName">Name of the param.</param>
+        </member>
+        <member name="M:MySoft.IoC.ParameterCollection.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.ParameterCollection.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="P:MySoft.IoC.ParameterCollection.SerializedData">
+            <summary>
+            Gets or sets the serialized data.
+            </summary>
+            <value>The serialized data.</value>
+        </member>
+        <member name="P:MySoft.IoC.ParameterCollection.Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.String"/> with the specified param name.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:MySoft.IoC.CastleFactory">
+            <summary>
+            The service factory.
+            </summary>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.#ctor(MySoft.IoC.IServiceContainer)">
+            <summary>
+            Initializes a new instance of the <see cref="!:ServiceFactory"/> class.
+            </summary>
+            <param name="container">The container.</param>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.Create">
+            <summary>
+            Creates this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.CreateNew">
+            <summary>
+            Creates this instance. Used in a multithreaded environment
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.CreateNew(System.String)">
+            <summary>
+            Creates this instance. Used in a multithreaded environment
+            </summary>
+            <param name="name">service name</param>
+            <returns></returns>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.CreateNew(MySoft.IoC.Configuration.ServiceNode)">
+            <summary>
+            Creates this instance. Used in a multithreaded environment
+            </summary>
+            <param name="config"></param>
+            <returns>The service factoru new instance.</returns>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.CreateNew(MySoft.IoC.Configuration.CastleFactoryConfiguration,System.String)">
+            <summary>
+            Creates this instance. Used in a multithreaded environment
+            </summary>
+            <param name="config"></param>
+            <param name="name">service name</param>
+            <returns>The service factoru new instance.</returns>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.InjectCacheDependent(MySoft.Cache.ICacheDependent)">
+            <summary>
+            注入缓存依赖
+            </summary>
+            <param name="cache"></param>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.GetService``1">
+            <summary>
+            Gets the service.
+            </summary>
+            <returns>The service implemetation instance.</returns>
+        </member>
+        <member name="M:MySoft.IoC.CastleFactory.GetService``1(System.String)">
+            <summary>
+            Gets the service.
+            </summary>
+            <param name="key">The key.</param>
+            <returns></returns>
+        </member>
+        <member name="P:MySoft.IoC.CastleFactory.ServiceContainer">
+            <summary>
+            Gets the service container.
+            </summary>
+            <value>The service container.</value>
+        </member>
+        <member name="E:MySoft.IoC.CastleFactory.OnLog">
+            <summary>
+            OnLog event.
+            </summary>
+        </member>
+        <member name="E:MySoft.IoC.CastleFactory.OnError">
+            <summary>
+            OnError event.
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.ServiceCache.CacheObject">
+            <summary>
+            缓存对象
+            </summary>
+        </member>
+        <member name="P:MySoft.IoC.ServiceCache.Parameters">
+            <summary>
+            参数信息
+            </summary>
+        </member>
+    </members>
+</doc>
