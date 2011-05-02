@@ -29,7 +29,7 @@ namespace MySoft.PlatformService.UserService
 
             Thread.Sleep(1000);
 
-            //throw new Exception(username + " =>  出错啦！");
+            throw new Exception(username + " =>  出错啦！");
 
             return new UserInfo()
             {
