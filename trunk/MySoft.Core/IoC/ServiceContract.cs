@@ -8,6 +8,22 @@ namespace MySoft.IoC
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class OperationContractAttribute : Attribute
     {
+        private int timeout = -1;
+        /// <summary>
+        /// 超时时间（单位：ms）
+        /// </summary>
+        public int Timeout
+        {
+            get
+            {
+                return timeout;
+            }
+            set
+            {
+                timeout = value;
+            }
+        }
+
         private int cacheTime = -1;
         /// <summary>
         /// 缓存时间（单位：ms）
@@ -58,6 +74,22 @@ namespace MySoft.IoC
             set
             {
                 allowCache = value;
+            }
+        }
+
+        private int timeout = -1;
+        /// <summary>
+        /// 超时时间（单位：ms）
+        /// </summary>
+        public int Timeout
+        {
+            get
+            {
+                return timeout;
+            }
+            set
+            {
+                timeout = value;
             }
         }
 

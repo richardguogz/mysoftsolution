@@ -17,10 +17,11 @@ namespace MySoft.IoC.Configuration
         private bool compress = false;
 
         private IDictionary<string, ServiceNode> hosts = new Dictionary<string, ServiceNode>();
-        private bool throwerror = true; //抛出异常
-        private int logtimeout = 1000;  //超时多长输出日志，默认为1秒
         private string defaultservice;  //默认服务
-        private int timeout = SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER;
+        private bool throwerror = true; //抛出异常
+        private int showlogtime = SimpleServiceContainer.DEFAULT_SHOWLOGTIME_NUMBER;  //超时多长输出日志，默认为1秒
+        private int timeout = SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER;       //默认超时时间        10秒
+        private int cachetime = SimpleServiceContainer.DEFAULT_CACHETIME_NUMBER;   //默认缓存时间        60秒
 
         /// <summary>
         /// 获取远程对象配置
@@ -58,14 +59,17 @@ namespace MySoft.IoC.Configuration
             if (xmlnode["timeout"] != null && xmlnode["timeout"].Value.Trim() != string.Empty)
                 timeout = Convert.ToInt32(xmlnode["timeout"].Value);
 
+            if (xmlnode["cachetime"] != null && xmlnode["cachetime"].Value.Trim() != string.Empty)
+                cachetime = Convert.ToInt32(xmlnode["cachetime"].Value);
+
+            if (xmlnode["showlogtime"] != null && xmlnode["showlogtime"].Value.Trim() != string.Empty)
+                showlogtime = Convert.ToInt32(xmlnode["showlogtime"].Value);
+
             if (xmlnode["throwerror"] != null && xmlnode["throwerror"].Value.Trim() != string.Empty)
                 throwerror = Convert.ToBoolean(xmlnode["throwerror"].Value);
 
             if (xmlnode["default"] != null && xmlnode["default"].Value.Trim() != string.Empty)
                 defaultservice = xmlnode["default"].Value;
-
-            if (xmlnode["logtimeout"] != null && xmlnode["logtimeout"].Value.Trim() != string.Empty)
-                logtimeout = Convert.ToInt32(xmlnode["logtimeout"].Value);
 
             foreach (XmlNode child in node.ChildNodes)
             {
@@ -143,13 +147,23 @@ namespace MySoft.IoC.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the logtimeout
+        /// Gets or sets the cachetime
         /// </summary>
-        /// <value>The logtimeout.</value>
-        public int LogTimeout
+        /// <value>The cachetime.</value>
+        public int CacheTime
         {
-            get { return logtimeout; }
-            set { logtimeout = value; }
+            get { return cachetime; }
+            set { cachetime = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the showlogtime
+        /// </summary>
+        /// <value>The showlogtime.</value>
+        public int ShowlogTime
+        {
+            get { return showlogtime; }
+            set { showlogtime = value; }
         }
 
         /// <summary>

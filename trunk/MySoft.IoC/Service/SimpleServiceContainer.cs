@@ -23,14 +23,19 @@ namespace MySoft.IoC
         #region Const Members
 
         /// <summary>
-        /// The default timeout number.
+        /// The default timeout number. 
         /// </summary>
-        public const int DEFAULT_TIMEOUT_NUMBER = 30000;
+        public const int DEFAULT_TIMEOUT_NUMBER = 10000;
 
         /// <summary>
-        /// The default logtimeout number.
+        /// The default cachetime number.
         /// </summary>
-        public const int DEFAULT_LOGTIMEOUT_NUMBER = 1000;
+        public const int DEFAULT_CACHETIME_NUMBER = 60000;
+
+        /// <summary>
+        /// The default showlogtime number.
+        /// </summary>
+        public const int DEFAULT_SHOWLOGTIME_NUMBER = 1000;
 
         /// <summary>
         /// The default maxconnect number.
@@ -40,7 +45,7 @@ namespace MySoft.IoC
         /// <summary>
         /// The default maxbuffer number.
         /// </summary>
-        public const int DEFAULT_MAXBUFFER_NUMBER = 409600;
+        public const int DEFAULT_MAXBUFFER_NUMBER = 4096;
 
         #endregion
 
@@ -49,11 +54,11 @@ namespace MySoft.IoC
         private IWindsorContainer container;
         private IServiceProxy serviceProxy;
         private ICacheDependent cache;
-        private int logtimeout;
+        private int showlogtime;
 
-        private void Init(int logtimeout, IDictionary serviceKeyTypes)
+        private void Init(int showlogtime, IDictionary serviceKeyTypes)
         {
-            this.logtimeout = logtimeout;
+            this.showlogtime = showlogtime;
             if (System.Configuration.ConfigurationManager.GetSection("castle") != null)
             {
                 container = new WindsorContainer(new XmlInterpreter());
@@ -155,9 +160,9 @@ namespace MySoft.IoC
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
         /// <param name="config"></param>
-        public SimpleServiceContainer(int logtimeout)
+        public SimpleServiceContainer(int showlogtime)
         {
-            Init(logtimeout, null);
+            Init(showlogtime, null);
         }
 
         /// <summary>
@@ -165,9 +170,9 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(int logtimeout, IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(int showlogtime, IDictionary serviceKeyTypes)
         {
-            Init(logtimeout, serviceKeyTypes);
+            Init(showlogtime, serviceKeyTypes);
         }
 
         #endregion
@@ -279,101 +284,28 @@ namespace MySoft.IoC
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="msg"></param>
+        /// <param name="reqMsg"></param>
         /// <returns></returns>
-        public ResponseMessage CallService(RequestMessage msg)
+        public ResponseMessage CallService(RequestMessage reqMsg)
         {
             //check local service first
-            IService localService = (IService)GetLocalService(msg.ServiceName);
+            IService localService = (IService)GetLocalService(reqMsg.ServiceName);
             if (localService != null)
             {
-                return localService.CallService(msg, logtimeout);
+                return localService.CallService(reqMsg, showlogtime);
             }
 
-            return null;
-        }
-
-        /// <summary>
-        /// Calls the service.
-        /// </summary>
-        /// <param name="serviceType">Name of the serviceType.</param>
-        /// <param name="method">Name of the method.</param>
-        /// <param name="msg">The MSG.</param>
-        /// <returns>The msg.</returns>
-        public ResponseMessage CallService(Type serviceType, MethodInfo method, RequestMessage msg)
-        {
+            //判断代理是否为空
             if (serviceProxy == null)
             {
-                throw new IoCException(string.Format("Call remote service failure, serviceProxy undefined！({0},{1}).", msg.ServiceName, msg.SubServiceName));
+                throw new IoCException(string.Format("Call remote service failure, serviceProxy undefined！({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
             }
             else
             {
                 try
                 {
-                    //处理cacheKey信息
-                    var key = string.Format("{0}_{1}_{2}", msg.ServiceName, msg.SubServiceName, msg.Parameters);
-                    string cacheKey = "IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
-                    cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
-
-                    bool isAllowCache = false;
-                    int cacheTime = msg.Timeout; //默认缓存时间与超时时间一致
-
-                    //获取约束信息
-                    var serviceContract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceType);
-                    //判断约束
-                    if (serviceContract != null)
-                    {
-                        isAllowCache = serviceContract.AllowCache;
-                        if (serviceContract.CacheTime > 0) cacheTime = serviceContract.CacheTime;
-                    }
-
-                    if (isAllowCache)
-                    {
-                        //获取约束信息
-                        var operationContract = CoreHelper.GetMemberAttribute<OperationContractAttribute>(method);
-                        //判断约束
-                        if (operationContract != null)
-                        {
-                            if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
-                        }
-                    }
-
-                    //缓存对象
-                    object cacheValue = null;
-
-                    //缓存的处理
-                    if (isAllowCache && cache != null)
-                    {
-                        //从缓存获取数据
-                        cacheValue = cache.GetCache(cacheKey);
-                    }
-
-                    //如果缓存不为null;
-                    if (cacheValue != null)
-                    {
-                        var resMsg = cacheValue as ResponseMessage;
-
-                        //数据来自缓存
-                        //if (OnLog != null) OnLog(string.Format("【{4}】Call service ({0},{1}) from cache. ==> {2} <==> {3}", resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters, resMsg.Message, resMsg.TransactionId));
-
-                        return resMsg;
-                    }
-                    else
-                    {
-                        var resMsg = serviceProxy.CallMethod(msg, logtimeout);
-
-                        //缓存的处理
-                        if (isAllowCache && cache != null)
-                        {
-                            //如果数据是null或者值为Exception，则不使用缓存
-                            if (resMsg.Exception == null && resMsg.Data != null)
-                            {
-                                cache.AddCache(cacheKey, resMsg, cacheTime);
-                            }
-                        }
-
-                        return resMsg;
-                    }
+                    //通过代理调用
+                    return serviceProxy.CallMethod(reqMsg, showlogtime);
                 }
                 catch (Exception ex)
                 {

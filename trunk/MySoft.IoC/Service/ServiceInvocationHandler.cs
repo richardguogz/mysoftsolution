@@ -16,16 +16,18 @@ namespace MySoft.IoC
         private IServiceContainer container;
         private Type serviceInterfaceType;
         private PHPFormatter formatter;
+        private int cacheTimeout;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseServiceInterfaceImpl"/> class.
+        /// Initializes a new instance of the <see cref="ServiceInvocationHandler"/> class.
         /// </summary>
         /// <param name="container">The container.</param>
         /// <param name="serviceInterfaceType">Type of the service interface.</param>
-        public ServiceInvocationHandler(IServiceContainer container, Type serviceInterfaceType)
+        public ServiceInvocationHandler(IServiceContainer container, Type serviceInterfaceType, int cacheTimeout)
         {
             this.container = container;
             this.serviceInterfaceType = serviceInterfaceType;
+            this.cacheTimeout = cacheTimeout;
 
             //实现化系列化器
             this.formatter = new PHPFormatter(Encoding.UTF8, AppDomain.CurrentDomain.GetAssemblies());
@@ -60,6 +62,8 @@ namespace MySoft.IoC
 
             #endregion
 
+            #region 处理参数
+
             ParameterInfo[] pis = methodInfo.GetParameters();
             if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
@@ -82,57 +86,132 @@ namespace MySoft.IoC
                 }
             }
 
-            //调用服务
-            ResponseMessage resMsg = container.CallService(serviceInterfaceType, methodInfo, reqMsg);
+            #endregion
 
-            //如果数据为null,则返回null
-            if (resMsg == null || resMsg.Data == null)
+            #region 处理缓存
+
+            //处理cacheKey信息
+            var key = string.Format("{0}_{1}_{2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters);
+            string cacheKey = "IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
+            cacheKey = string.Format("{0}_{1}", serviceInterfaceType.FullName, cacheKey);
+
+            bool isAllowCache = false;
+            int cacheTime = cacheTimeout; //默认缓存时间与系统设置的时间一致
+
+            #region 读取约束信息
+
+            //获取约束信息
+            var serviceContract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
+
+            //获取约束信息
+            var operationContract = CoreHelper.GetMemberAttribute<OperationContractAttribute>(methodInfo);
+
+            //判断约束
+            if (serviceContract != null)
             {
-                return this.GetType().GetMethod("DefaultValue", BindingFlags.Instance | BindingFlags.NonPublic)
-                            .MakeGenericMethod(methodInfo.ReturnType).Invoke(this, null);
+                isAllowCache = serviceContract.AllowCache;
+                if (serviceContract.CacheTime > 0) cacheTime = serviceContract.CacheTime;
+                if (serviceContract.Timeout > 0) reqMsg.Timeout = serviceContract.Timeout;
             }
 
-            int index = 0;
-            foreach (var p in pis)
+            //判断约束
+            if (operationContract != null)
             {
-                if (p.ParameterType.IsByRef)
-                {
-                    //给参数赋值
-                    paramValues[index] = resMsg.Parameters[p.Name];
-                }
-                index++;
+                if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
+                if (operationContract.Timeout > 0) reqMsg.Timeout = operationContract.Timeout;
             }
 
-            //处理数据
-            #region 处理返回的数据
-
-            //处理是否解密
-            if (resMsg.Encrypt)
-            {
-                //这里暂时不处理
-                resMsg.Data = XXTEA.Decrypt(resMsg.Data, resMsg.Keys);
-            }
+            #endregion
 
             //定义返回的值
             object returnValue = null;
+            ParameterCollection parameters = null;
 
-            //处理是否压缩
-            if (resMsg.Compress)
+            //缓存对象
+            ServiceCache cacheValue = null;
+
+            //缓存的处理
+            if (isAllowCache && container.Cache != null)
             {
-                using (MemoryStream ms = new MemoryStream(resMsg.Data))
-                {
-                    returnValue = formatter.Deserialize(ms);
-                }
+                //从缓存获取数据
+                cacheValue = container.Cache.GetCache(cacheKey) as ServiceCache;
+            }
+
+            //如果缓存不为null;
+            if (cacheValue != null)
+            {
+                parameters = cacheValue.Parameters;
+                returnValue = cacheValue.CacheObject;
             }
             else
             {
-                //处理不压缩的反系列化
-                returnValue = SerializationManager.DeserializeBin(resMsg.Data);
+                //调用服务
+                ResponseMessage resMsg = container.CallService(reqMsg);
+
+                //如果数据为null,则返回null
+                if (resMsg == null || resMsg.Data == null)
+                {
+                    return this.GetType().GetMethod("DefaultValue", BindingFlags.Instance | BindingFlags.NonPublic)
+                                .MakeGenericMethod(methodInfo.ReturnType).Invoke(this, null);
+                }
+
+                #region 处理返回的数据
+
+                //参数
+                parameters = resMsg.Parameters;
+
+                //处理是否解密
+                if (resMsg.Encrypt)
+                {
+                    //这里暂时不处理
+                    resMsg.Data = XXTEA.Decrypt(resMsg.Data, resMsg.Keys);
+                }
+
+                //处理是否压缩
+                if (resMsg.Compress)
+                {
+                    using (MemoryStream ms = new MemoryStream(resMsg.Data))
+                    {
+                        returnValue = formatter.Deserialize(ms);
+                    }
+                }
+                else
+                {
+                    //处理不压缩的反系列化
+                    returnValue = SerializationManager.DeserializeBin(resMsg.Data);
+                }
+
+                #endregion
+
+                //缓存的处理
+                if (isAllowCache && container.Cache != null)
+                {
+                    //如果数据是null或者值为Exception，则不使用缓存
+                    if (resMsg.Exception == null && resMsg.Data != null)
+                    {
+                        cacheValue = new ServiceCache { CacheObject = returnValue, Parameters = resMsg.Parameters };
+
+                        //把值添加到缓存中
+                        container.Cache.AddCache(cacheKey, cacheValue, cacheTime);
+                    }
+                }
             }
 
-            return returnValue;
-
             #endregion
+
+            //给引用的参数赋值
+            for (int i = 0; i < pis.Length; i++)
+            {
+                Type type = pis[i].ParameterType;
+                if (type.IsByRef)
+                {
+                    //给参数赋值
+                    paramValues[i] = parameters[type.Name];
+                }
+            }
+
+            //返回数据
+            return returnValue;
         }
 
         /// <summary>

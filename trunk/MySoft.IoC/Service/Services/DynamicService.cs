@@ -44,26 +44,26 @@ namespace MySoft.IoC.Services
         /// <summary>
         /// Runs the specified MSG.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
+        /// <param name="reqMsg">The MSG.</param>
         /// <returns>The msg.</returns>
-        protected override ResponseMessage Run(RequestMessage msg)
+        protected override ResponseMessage Run(RequestMessage reqMsg)
         {
-            if (container == null || msg == null)
+            if (container == null || reqMsg == null)
             {
                 return null;
             }
 
             ResponseMessage resMsg = new ResponseMessage();
-            resMsg.TransactionId = msg.TransactionId;
-            resMsg.RequestAddress = msg.RequestAddress;
-            resMsg.Encrypt = msg.Encrypt;
-            resMsg.Compress = msg.Compress;
-            resMsg.Encrypt = msg.Encrypt;
-            resMsg.Timeout = msg.Timeout;
+            resMsg.TransactionId = reqMsg.TransactionId;
+            resMsg.RequestAddress = reqMsg.RequestAddress;
+            resMsg.Encrypt = reqMsg.Encrypt;
+            resMsg.Compress = reqMsg.Compress;
+            resMsg.Encrypt = reqMsg.Encrypt;
+            resMsg.Timeout = reqMsg.Timeout;
             resMsg.ServiceName = serviceInterfaceType.FullName;
-            resMsg.SubServiceName = msg.SubServiceName;
-            resMsg.Parameters = msg.Parameters;
-            resMsg.Expiration = msg.Expiration;
+            resMsg.SubServiceName = reqMsg.SubServiceName;
+            resMsg.Parameters = reqMsg.Parameters;
+            resMsg.Expiration = reqMsg.Expiration;
 
             object service = null;
             try
@@ -79,6 +79,8 @@ namespace MySoft.IoC.Services
 
             try
             {
+                #region 获取相应的方法
+
                 MethodInfo method = null;
                 if (dictMethods.ContainsKey(resMsg.SubServiceName))
                 {
@@ -114,49 +116,45 @@ namespace MySoft.IoC.Services
                 }
 
                 ParameterInfo[] pis = method.GetParameters();
-                object[] parms = new object[pis.Length];
+                object[] paramValues = new object[pis.Length];
 
                 for (int i = 0; i < pis.Length; i++)
                 {
                     Type type = pis[i].ParameterType;
-
-                    if (!pis[i].ParameterType.IsByRef)
+                    if (!type.IsByRef)
                     {
-                        parms[i] = resMsg.Parameters[pis[i].Name];
+                        paramValues[i] = resMsg.Parameters[pis[i].Name];
                     }
                     else
                     {
-                        parms[i] = this.GetType().GetMethod("DefaultValue", BindingFlags.Instance | BindingFlags.NonPublic)
-                            .MakeGenericMethod(pis[i].ParameterType.GetElementType()).Invoke(this, null);
+                        paramValues[i] = this.GetType().GetMethod("DefaultValue", BindingFlags.Instance | BindingFlags.NonPublic)
+                            .MakeGenericMethod(type.GetElementType()).Invoke(this, null);
                     }
                 }
+
+                #endregion
 
                 //返回拦截服务
                 service = AspectManager.GetService(service);
-                object returnValue = null;
-                try
-                {
-                    returnValue = DynamicCalls.GetMethodInvoker(method).Invoke(service, parms);
 
-                    //把返回值传递回去
-                    int index = 0;
-                    foreach (var p in pis)
-                    {
-                        if (p.ParameterType.IsByRef)
-                        {
-                            //给参数赋值
-                            resMsg.Parameters[p.Name] = parms[index];
-                        }
-                        index++;
-                    }
-                }
-                catch (Exception ex)
+                //调用对应的服务
+                object returnValue = DynamicCalls.GetMethodInvoker(method).Invoke(service, paramValues);
+
+                //把返回值传递回去
+                for (int i = 0; i < pis.Length; i++)
                 {
-                    resMsg.Exception = GetNewException(ex);
+                    Type type = pis[i].ParameterType;
+                    if (type.IsByRef)
+                    {
+                        //给参数赋值
+                        resMsg.Parameters[type.Name] = paramValues[i];
+                    }
                 }
 
                 if (returnValue != null)
                 {
+                    #region 处理数据
+
                     //判断是否压缩
                     if (resMsg.Compress)
                     {
@@ -176,9 +174,9 @@ namespace MySoft.IoC.Services
                     if (resMsg.Encrypt)
                     {
                         //长度能被16除，表示为有效的key
-                        if (msg.KeyLength != 0 && msg.KeyLength % 16 == 0)
+                        if (reqMsg.KeyLength != 0 && reqMsg.KeyLength % 16 == 0)
                         {
-                            resMsg.KeyLength = msg.KeyLength;
+                            resMsg.KeyLength = reqMsg.KeyLength;
                         }
                         else
                         {
@@ -192,6 +190,8 @@ namespace MySoft.IoC.Services
                         //这里暂时不处理
                         resMsg.Data = XXTEA.Encrypt(resMsg.Data, resMsg.Keys);
                     }
+
+                    #endregion
                 }
             }
             catch (Exception ex)

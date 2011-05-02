@@ -137,8 +137,8 @@ namespace MySoft.PlatformService.Client
                 try
                 {
                     int userid;
-                    UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
-                    //UserInfo info = service.GetUserInfo("maoyong");
+                    //UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
+                    UserInfo info = service.GetUserInfo("maoyong", out userid);
 
                     if (info == null)
                     {

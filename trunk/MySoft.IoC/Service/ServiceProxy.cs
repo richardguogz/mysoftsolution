@@ -124,7 +124,7 @@ namespace MySoft.IoC
             #endregion
         }
 
-        public ResponseMessage CallMethod(RequestMessage msg, int logtimeout)
+        public ResponseMessage CallMethod(RequestMessage msg, int showlogtime)
         {
             if (connected)
             {
@@ -181,7 +181,7 @@ namespace MySoft.IoC
                     int t2 = System.Environment.TickCount - t1;
 
                     //如果时间超过预定，则输出日志
-                    if (t2 > logtimeout)
+                    if (t2 > showlogtime)
                     {
                         //SerializationManager.Serialize(retMsg)
                         if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, msg.Parameters,

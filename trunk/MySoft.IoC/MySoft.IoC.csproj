@@ -74,6 +74,7 @@
     <Compile Include="PHP\Serializable.cs" />
     <Compile Include="PHP\XXTEA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ServiceCache.cs" />
     <Compile Include="Service\ServiceInvocationHandler.cs" />
     <Compile Include="Service\CastleFactory.cs" />
     <Compile Include="Service\CastleService.cs" />

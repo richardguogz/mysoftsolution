@@ -13,7 +13,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        ResponseMessage CallMethod(RequestMessage msg, int logtimeout);
+        ResponseMessage CallMethod(RequestMessage msg, int showlogtime);
 
         /// <summary>
         /// 是否加密

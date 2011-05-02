@@ -49,7 +49,7 @@ namespace MySoft.IoC.Services
         /// </summary>
         /// <param name="msg">The MSG.</param>
         /// <returns>The msg.</returns>
-        public ResponseMessage CallService(RequestMessage msg, int logtimeout)
+        public ResponseMessage CallService(RequestMessage msg, int showlogtime)
         {
             int t1 = System.Environment.TickCount;
             ResponseMessage retMsg = Run(msg);
@@ -68,7 +68,7 @@ namespace MySoft.IoC.Services
                 int t2 = System.Environment.TickCount - t1;
 
                 //如果时间超过预定，则输出日志
-                if (t2 > logtimeout)
+                if (t2 > showlogtime)
                 {
                     if (OnLog != null)
                     {

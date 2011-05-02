@@ -56,15 +56,9 @@ namespace MySoft.IoC
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
+        /// <param name="reqMsg">The MSG.</param>
         /// <returns>The response msg.</returns>
-        ResponseMessage CallService(RequestMessage msg);
-        /// <summary>
-        /// Calls the service.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <returns>The response msg.</returns>
-        ResponseMessage CallService(Type serviceType, MethodInfo method, RequestMessage msg);
+        ResponseMessage CallService(RequestMessage reqMsg);
         /// <summary>
         /// Gets the service nodes.
         /// </summary>
