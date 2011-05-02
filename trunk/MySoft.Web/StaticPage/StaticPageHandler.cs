@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
 using MySoft.Web.Configuration;
+using MySoft.URLRewriter;
 
 namespace MySoft.Web
 {
@@ -49,7 +50,7 @@ namespace MySoft.Web
                 for (int i = 0; i < rules.Count; i++)
                 {
                     // get the pattern to look for, and Resolve the Url (convert ~ into the appropriate directory)
-                    string lookFor = "^" + PageHelper.ResolveUrl(context.Request.ApplicationPath, rules[i].LookFor) + "$";
+                    string lookFor = "^" + RewriterUtils.ResolveUrl(context.Request.ApplicationPath, rules[i].LookFor) + "$";
 
                     // Create a regex (note that IgnoreCase is set...)
                     Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
@@ -58,7 +59,7 @@ namespace MySoft.Web
                     {
                         // match found - do any replacement needed
 
-                        string staticUrl = PageHelper.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
+                        string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
                         staticFile = context.Server.MapPath(staticUrl);
 
                         try
@@ -100,7 +101,7 @@ namespace MySoft.Web
                         }
                         catch (IOException ex)
                         {
-                            string logFile = PageHelper.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
+                            string logFile = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
                             logFile = context.Server.MapPath(logFile);
                             string logText = string.Format("{0} => {3}\r\n请求路径：{1}\r\n生成路径：{2}", DateTime.Now.ToString("HH:mm:ss"), context.Request.Url, staticFile, ex.Message);
                             logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
@@ -118,7 +119,7 @@ namespace MySoft.Web
             try
             {
                 string sendToUrlLessQString;
-                PageHelper.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
+                RewriterUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
                 IHttpHandler handler = PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
                 handler.ProcessRequest(context);
             }

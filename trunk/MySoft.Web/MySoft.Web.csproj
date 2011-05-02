@@ -71,6 +71,14 @@
   <ItemGroup>
     <Compile Include="Cache\CacheControlConfigurationSection.cs" />
     <Compile Include="Cache\CacheControlConfiguration.cs" />
+    <Compile Include="URLRewriter\BaseModuleRewriter.cs" />
+    <Compile Include="URLRewriter\Configuration\RewriterConfiguration.cs" />
+    <Compile Include="URLRewriter\Configuration\RewriterConfigurationHandler.cs" />
+    <Compile Include="URLRewriter\Configuration\RewriterRule.cs" />
+    <Compile Include="URLRewriter\Configuration\RewriterRuleCollection.cs" />
+    <Compile Include="URLRewriter\ModuleRewriter.cs" />
+    <Compile Include="URLRewriter\RewriterFactoryHandler.cs" />
+    <Compile Include="URLRewriter\RewriterUtils.cs" />
     <Compile Include="WebException.cs" />
     <Compile Include="Utils\CookieExpiresType.cs" />
     <Compile Include="Utils\HtmlPager.cs" />
@@ -83,14 +91,13 @@
     <Compile Include="WebUI\Ajax\AjaxCallbackParam.cs" />
     <Compile Include="WebUI\Ajax\AjaxMethodAttribute.cs" />
     <Compile Include="WebUI\Ajax\AjaxMethodHelper.cs" />
-    <Compile Include="Configuration\StaticPageConfigurationHandler.cs" />
-    <Compile Include="Configuration\StaticPageConfiguration.cs" />
-    <Compile Include="Configuration\StaticPageRule.cs" />
-    <Compile Include="Configuration\StaticPageRuleCollection.cs" />
-    <Compile Include="Handler\PageHelper.cs" />
-    <Compile Include="Handler\StaticPageHandler.cs" />
+    <Compile Include="StaticPage\Configuration\StaticPageConfigurationHandler.cs" />
+    <Compile Include="StaticPage\Configuration\StaticPageConfiguration.cs" />
+    <Compile Include="StaticPage\Configuration\StaticPageRule.cs" />
+    <Compile Include="StaticPage\Configuration\StaticPageRuleCollection.cs" />
+    <Compile Include="StaticPage\StaticPageHandler.cs" />
     <Compile Include="Handler\PageHandlerFactory.cs" />
-    <Compile Include="Handler\ResponseFilter.cs" />
+    <Compile Include="StaticPage\ResponseFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebUI\Ajax\AjaxRequest.cs" />
     <Compile Include="WebUI\Ajax\CallbackParam.cs" />
@@ -145,6 +152,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -238,9 +238,9 @@ namespace MySoft.Tools.EntityDesign
             txtConnStr.AutoCompleteCustomSource = connStrs;
         }
 
-        private void EnableGenEntity(bool enable)
+        private void EnableGenEntity(bool enabled)
         {
-            if (enable)
+            if (enabled)
             {
                 btnGen.Enabled = true;
                 chkCreateAssembly.Enabled = true;

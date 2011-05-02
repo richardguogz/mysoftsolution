@@ -1,14 +1,14 @@
 using System;
 using System.Web;
 
-namespace MySoft.Web
+namespace MySoft.URLRewriter
 {
     /// <summary>
     /// Provides utility helper methods for the rewriting HttpModule and HttpHandler.
     /// </summary>
     /// <remarks>This class is marked as internal, meaning only classes in the same assembly will be
     /// able to access its methods.</remarks>
-    internal class PageHelper
+    internal class RewriterUtils
     {
         #region RewriteUrl
         /// <summary>

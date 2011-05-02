@@ -1178,28 +1178,44 @@ namespace MySoft.Data
 
         #region 检测是否有缓存
 
+        /// <summary>
+        /// 获取缓存信息
+        /// </summary>
+        /// <typeparam name="CacheType"></typeparam>
+        /// <param name="prefix"></param>
+        /// <param name="cacheKey"></param>
+        /// <returns></returns>
         private object GetCache<CacheType>(string prefix, string cacheKey)
             where CacheType : Entity
         {
-            cacheKey = string.Concat(prefix, "|", cacheKey);
+            cacheKey = string.Concat(prefix, "|", Convert.ToBase64String(Encoding.UTF8.GetBytes(cacheKey)));
             cacheKey = string.Format("{0}_{1}", cacheKey, typeof(CacheType).FullName);
 
-            ICacheDependent cache = dbProvider.Cache;
-            return cache.GetCache(cacheKey);
+            if (dbProvider.Cache != null)
+                return dbProvider.Cache.GetCache(cacheKey);
+            else
+                return null;
         }
 
         #endregion
 
         #region 将数据装入缓存
 
+        /// <summary>
+        /// 设置缓存信息
+        /// </summary>
+        /// <typeparam name="CacheType"></typeparam>
+        /// <param name="prefix"></param>
+        /// <param name="cacheKey"></param>
+        /// <param name="obj"></param>
         private void SetCache<CacheType>(string prefix, string cacheKey, object obj)
             where CacheType : Entity
         {
-            cacheKey = string.Concat(prefix, "|", cacheKey);
+            cacheKey = string.Concat(prefix, "|", Convert.ToBase64String(Encoding.UTF8.GetBytes(cacheKey)));
             cacheKey = string.Format("{0}_{1}", cacheKey, typeof(CacheType).FullName);
 
-            ICacheDependent cache = dbProvider.Cache;
-            cache.AddCache(cacheKey, obj, -1);
+            if (dbProvider.Cache != null)
+                dbProvider.Cache.AddCache(cacheKey, obj, -1);
         }
 
         #endregion

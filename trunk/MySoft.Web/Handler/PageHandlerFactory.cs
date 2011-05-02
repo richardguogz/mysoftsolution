@@ -1,6 +1,7 @@
 using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
+using MySoft.URLRewriter;
 
 namespace MySoft.Web
 {
@@ -30,7 +31,7 @@ namespace MySoft.Web
             string sendToUrl = context.Request.Url.PathAndQuery;
             string filePath = pathTranslated;
             string sendToUrlLessQString;
-            PageHelper.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
+            RewriterUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
             return PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
         }
 
