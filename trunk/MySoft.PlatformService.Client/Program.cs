@@ -87,7 +87,7 @@ namespace MySoft.PlatformService.Client
             for (int i = 0; i < count; i++)
             {
                 var castle = CastleFactory.CreateNew();
-                castle.InjectCacheDependent(DefaultCacheDependent.Create(CacheType.Local, 10000));
+                castle.InjectCacheDependent(DefaultCacheDependent.Create());
                 castle.OnLog += new LogEventHandler(castle_OnLog);
                 castle.OnError += new ErrorLogEventHandler(castle_OnError);
                 IUserService service = castle.GetService<IUserService>();

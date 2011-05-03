@@ -68,7 +68,7 @@ namespace MySoft.IoC
                 container = new WindsorContainer();
             }
 
-            //加载自动自启动注入 
+            //加载自启动注入
             container.AddFacility("startable", new StartableFacility());
 
             if (serviceKeyTypes != null && serviceKeyTypes.Count > 0)
@@ -79,7 +79,7 @@ namespace MySoft.IoC
             this.DiscoverServices();
         }
 
-        private static ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
+        private ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
         {
             if (nodes == null)
             {

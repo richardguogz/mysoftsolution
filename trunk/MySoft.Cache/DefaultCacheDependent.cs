@@ -25,7 +25,7 @@ namespace MySoft.Cache
         /// 创建一个默认的缓存依赖
         /// </summary>
         /// <returns></returns>
-        public static DefaultCacheDependent Create()
+        public static ICacheDependent Create()
         {
             return Create(CacheType.Local);
         }
@@ -35,7 +35,7 @@ namespace MySoft.Cache
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static DefaultCacheDependent Create(CacheType type)
+        public static ICacheDependent Create(CacheType type)
         {
             return Create(type, DefaultCacheDependent.DEFAULT_TIMEOUT);
         }
@@ -46,7 +46,7 @@ namespace MySoft.Cache
         /// <param name="type"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public static DefaultCacheDependent Create(CacheType type, int timeout)
+        public static ICacheDependent Create(CacheType type, int timeout)
         {
             return new DefaultCacheDependent(CacheType.Local, timeout);
         }
