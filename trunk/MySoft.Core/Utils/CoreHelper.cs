@@ -26,11 +26,37 @@ namespace MySoft
         }
 
         /// <summary>
+        /// 获取指定类型的默认值
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static object GetTypeDefaultValue(Type type)
+        {
+            Type elementType = type;
+            if (type.IsByRef)
+            {
+                elementType = type.GetElementType();
+            }
+
+            return typeof(CoreHelper).GetMethod("DefaultValue", BindingFlags.Static | BindingFlags.NonPublic)
+                            .MakeGenericMethod(elementType).Invoke(null, null);
+        }
+
+        /// <summary>
+        /// Defaults the value.
+        /// </summary>
+        /// <returns></returns>
+        private static object DefaultValue<MemberType>()
+        {
+            return default(MemberType);
+        }
+
+        /// <summary>
         /// 检测是否为结构类型
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsStruct(Type type)
+        public static bool CheckTypeStruct(Type type)
         {
             //当属性为结构时进行系列化
             if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && string.Compare(type.Namespace, "System", true) != 0)
