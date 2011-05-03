@@ -27,15 +27,17 @@ namespace MySoft.PlatformService.UserService
             //    Thread.Sleep(1000);
             //}
 
-            //Thread.Sleep(1000);
+            Thread.Sleep(1000);
 
             //throw new Exception(username + " =>  出错啦！");
 
-            return new UserInfo()
+            var user = new UserInfo()
             {
                 Name = username,
-                Description = string.Format("{0} --> 您的用户名为：{1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), username)
+                Description = string.Format("您的用户名为：{0}", username)
             };
+
+            return user;
         }
 
         public DataTable GetDataTable()
