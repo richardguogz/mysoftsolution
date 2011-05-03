@@ -304,6 +304,12 @@ namespace MySoft.IoC
             {
                 try
                 {
+                    //如果未连接
+                    if (!serviceProxy.IsConnected)
+                    {
+                        serviceProxy.ConnectServer(true);
+                    }
+
                     //通过代理调用
                     return serviceProxy.CallMethod(reqMsg, showlogtime);
                 }

@@ -147,8 +147,7 @@ namespace MySoft.IoC
                 //如果数据为null,则返回null
                 if (resMsg == null || resMsg.Data == null)
                 {
-                    return this.GetType().GetMethod("DefaultValue", BindingFlags.Instance | BindingFlags.NonPublic)
-                                .MakeGenericMethod(methodInfo.ReturnType).Invoke(this, null);
+                    return CoreHelper.GetTypeDefaultValue(methodInfo.ReturnType);
                 }
 
                 #region 处理返回的数据
@@ -202,15 +201,6 @@ namespace MySoft.IoC
 
             //返回数据
             return returnValue;
-        }
-
-        /// <summary>
-        /// Defaults the value.
-        /// </summary>
-        /// <returns></returns>
-        protected object DefaultValue<MemberType>()
-        {
-            return default(MemberType);
         }
 
         #region IInvocationHandler 成员

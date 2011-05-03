@@ -13,6 +13,7 @@ namespace MySoft.IoC.Configuration
         private string server;
         private int port;
         private string name;
+        private string description;
 
         /// <summary>
         /// Gets or sets the name.
@@ -22,6 +23,15 @@ namespace MySoft.IoC.Configuration
         {
             get { return name; }
             set { name = value; }
+        }
+
+        /// <summary>
+        ///  Gets or sets the description.
+        /// </summary>
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
         }
 
         /// <summary>

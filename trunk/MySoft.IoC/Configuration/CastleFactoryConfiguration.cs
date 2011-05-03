@@ -80,6 +80,8 @@ namespace MySoft.IoC.Configuration
                 {
                     ServiceNode service = new ServiceNode();
                     service.Name = childnode["name"].Value;
+                    if (childnode["description"] != null)
+                        service.Description = childnode["description"].Value;
                     service.Server = childnode["server"].Value;
                     service.Port = Convert.ToInt32(childnode["port"].Value);
 

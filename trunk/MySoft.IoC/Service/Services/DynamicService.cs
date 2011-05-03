@@ -123,8 +123,7 @@ namespace MySoft.IoC.Services
                     }
                     else
                     {
-                        paramValues[i] = this.GetType().GetMethod("DefaultValue", BindingFlags.Instance | BindingFlags.NonPublic)
-                            .MakeGenericMethod(type.GetElementType()).Invoke(this, null);
+                        paramValues[i] = CoreHelper.GetTypeDefaultValue(type);
                     }
                 }
 
@@ -191,15 +190,6 @@ namespace MySoft.IoC.Services
             }
 
             return resMsg;
-        }
-
-        /// <summary>
-        /// Defaults the value.
-        /// </summary>
-        /// <returns></returns>
-        protected object DefaultValue<MemberType>()
-        {
-            return default(MemberType);
         }
 
         /// <summary>

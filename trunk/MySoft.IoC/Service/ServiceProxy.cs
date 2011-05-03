@@ -18,6 +18,7 @@ namespace MySoft.IoC
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private SocketClientConfiguration config;
         private SocketClientManager manager;
+        private string serviceName;
         private bool encrypt = false;
         private bool compress = false;
         private bool throwerror = true;
@@ -88,9 +89,52 @@ namespace MySoft.IoC
             }
         }
 
-        public ServiceProxy(SocketClientConfiguration config)
+        /// <summary>
+        /// 是否连接到服务器
+        /// </summary>
+        public bool IsConnected
+        {
+            get { return connected; }
+        }
+
+        /// <summary>
+        /// 连接到服务器
+        /// </summary>
+        public bool ConnectServer(bool isReconnect)
+        {
+            if (!connected)
+            {
+                //尝试连接到服务器
+                manager.Client.BeginConnectTo(config.IP, config.Port);
+
+                IWorkItemResult wir = pool.QueueWorkItem(() =>
+                {
+                    //连上服务器才能进行数据处理
+                    while (!connected)
+                    {
+                        Thread.Sleep(1);
+                    }
+                });
+
+                //等待5秒，连不上则返回false
+                if (!pool.WaitForIdle(5000))
+                {
+                    if (!wir.IsCompleted) wir.Cancel(true);
+
+                    if (isReconnect)
+                        throw new IoCException(string.Format("Reconnect to server ({0}:{1}) failure！service: {2}", config.IP, config.Port, serviceName));
+                    else
+                        throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
+                }
+            }
+
+            return connected;
+        }
+
+        public ServiceProxy(SocketClientConfiguration config, string serviceName)
         {
             this.config = config;
+            this.serviceName = serviceName;
 
             #region socket通讯
 
@@ -102,102 +146,79 @@ namespace MySoft.IoC
             manager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
             manager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
 
-            //启动一个检测线程
-            Thread thread = new Thread(() =>
-            {
-                while (true)
-                {
-                    if (!connected)
-                    {
-                        //尝试连接到服务器
-                        manager.Client.BeginConnectTo(config.IP, config.Port);
-                    }
-
-                    //每5秒检测一次
-                    Thread.Sleep(5000);
-                }
-            });
-
-            thread.IsBackground = true;
-            thread.Start();
+            //尝试连接到服务器
+            ConnectServer(false);
 
             #endregion
         }
 
         public ResponseMessage CallMethod(RequestMessage msg, int showlogtime)
         {
-            if (connected)
+            //处理过期时间
+            msg.Expiration = DateTime.Now.AddMilliseconds(msg.Timeout);
+
+            int t1 = System.Environment.TickCount;
+
+            //发送数据包到服务端
+            bool isSend = manager.Client.SendData(BufferFormat.FormatFCA(msg));
+
+            if (isSend)
             {
-                //处理过期时间
-                msg.Expiration = DateTime.Now.AddMilliseconds(msg.Timeout);
-
-                int t1 = System.Environment.TickCount;
-
-                //发送数据包到服务端
-                bool isSend = manager.Client.SendData(BufferFormat.FormatFCA(msg));
-
-                if (isSend)
+                //启动线程来处理数据
+                IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
                 {
-                    //启动线程来处理数据
-                    IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
+                    ResponseMessage ret = null;
+
+                    RequestMessage reqMsg = state as RequestMessage;
+                    while (true)
                     {
-                        ResponseMessage ret = null;
+                        ret = GetData<ResponseMessage>(responses, reqMsg.TransactionId);
 
-                        RequestMessage reqMsg = state as RequestMessage;
-                        while (true)
-                        {
-                            ret = GetData<ResponseMessage>(responses, reqMsg.TransactionId);
+                        //如果有数据返回，则响应
+                        if (ret != null) break;
 
-                            //如果有数据返回，则响应
-                            if (ret != null) break;
-
-                            //防止cpu使用率过高
-                            Thread.Sleep(1);
-                        }
-
-                        return ret;
-                    }, msg);
-
-                    if (!pool.WaitForIdle(msg.Timeout))
-                    {
-                        if (!wir.IsCompleted) wir.Cancel(true);
-                        int timeout = System.Environment.TickCount - t1;
-                        throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, timeout, msg.TransactionId));
+                        //防止cpu使用率过高
+                        Thread.Sleep(1);
                     }
 
-                    //从线程获取返回信息，超时等待
-                    ResponseMessage retMsg = wir.GetResult();
-                    if (retMsg == null)
-                    {
-                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
-                    }
+                    return ret;
+                }, msg);
 
-                    //如果发生了异常，则抛出异常
-                    if (retMsg.Exception != null)
-                    {
-                        throw retMsg.Exception;
-                    }
-
-                    int t2 = System.Environment.TickCount - t1;
-
-                    //如果时间超过预定，则输出日志
-                    if (t2 > showlogtime)
-                    {
-                        //SerializationManager.Serialize(retMsg)
-                        if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, msg.Parameters,
-                            "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId), LogType.Warning);
-                    }
-
-                    return retMsg;
-                }
-                else
+                if (!pool.WaitForIdle(msg.Timeout))
                 {
-                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
+                    if (!wir.IsCompleted) wir.Cancel(true);
+                    int timeout = System.Environment.TickCount - t1;
+                    throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, timeout, msg.TransactionId));
                 }
+
+                //从线程获取返回信息，超时等待
+                ResponseMessage retMsg = wir.GetResult();
+                if (retMsg == null)
+                {
+                    throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
+                }
+
+                //如果发生了异常，则抛出异常
+                if (retMsg.Exception != null)
+                {
+                    throw retMsg.Exception;
+                }
+
+                int t2 = System.Environment.TickCount - t1;
+
+                //如果时间超过预定，则输出日志
+                if (t2 > showlogtime)
+                {
+                    //SerializationManager.Serialize(retMsg)
+                    if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, msg.Parameters,
+                        "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId), LogType.Warning);
+                }
+
+                return retMsg;
             }
             else
             {
-                throw new IoCException(string.Format("Server ({0}:{1}) not connected！", config.IP, config.Port));
+                throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
             }
         }
 
@@ -253,11 +274,11 @@ namespace MySoft.IoC
         /// <summary>
         /// 获取数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="map"></param>
         /// <param name="transactionId"></param>
         /// <returns></returns>
-        T GetData<T>(IDictionary map, Guid transactionId)
+        private TResult GetData<TResult>(IDictionary map, Guid transactionId)
         {
             if (map.Contains(transactionId))
             {
@@ -267,12 +288,12 @@ namespace MySoft.IoC
                     {
                         object retObj = map[transactionId];
                         map.Remove(transactionId);
-                        return (T)retObj;
+                        return (TResult)retObj;
                     }
                 }
             }
 
-            return default(T);
+            return default(TResult);
         }
     }
 }

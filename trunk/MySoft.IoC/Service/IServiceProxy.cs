@@ -9,6 +9,16 @@ namespace MySoft.IoC
     public interface IServiceProxy : ILogable
     {
         /// <summary>
+        /// 是否连接到服务器
+        /// </summary>
+        bool IsConnected { get; }
+
+        /// <summary>
+        /// 连接服务器
+        /// </summary>
+        bool ConnectServer(bool isReconnect);
+
+        /// <summary>
         /// 调用方法
         /// </summary>
         /// <param name="msg"></param>

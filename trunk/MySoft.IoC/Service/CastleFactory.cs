@@ -131,14 +131,19 @@ namespace MySoft.IoC
             else
             {
                 IServiceContainer container = new SimpleServiceContainer(config.ShowlogTime);
+                if (!config.Hosts.ContainsKey(name))
+                {
+                    throw new IoCException("Not find the service node [" + name + "]！");
+                }
 
+                var serviceNode = config.Hosts[name];
                 //客户端配置
                 SocketClientConfiguration scc = new SocketClientConfiguration();
-                scc.IP = config.Hosts[name].Server;
-                scc.Port = config.Hosts[name].Port;
+                scc.IP = serviceNode.Server;
+                scc.Port = serviceNode.Port;
 
                 //设置服务代理
-                IServiceProxy serviceProxy = new ServiceProxy(scc);
+                IServiceProxy serviceProxy = new ServiceProxy(scc, (serviceNode.Description ?? serviceNode.Name));
                 serviceProxy.Timeout = config.Timeout;
                 serviceProxy.Encrypt = config.Encrypt;
                 serviceProxy.Compress = config.Compress;
