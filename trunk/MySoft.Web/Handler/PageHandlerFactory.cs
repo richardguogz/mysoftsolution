@@ -1,7 +1,6 @@
 using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
-using MySoft.URLRewriter;
 
 namespace MySoft.Web
 {
