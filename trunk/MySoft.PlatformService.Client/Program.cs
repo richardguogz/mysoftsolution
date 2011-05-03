@@ -86,16 +86,24 @@ namespace MySoft.PlatformService.Client
 
             for (int i = 0; i < count; i++)
             {
-                var castle = CastleFactory.CreateNew();
-                castle.InjectCacheDependent(DefaultCacheDependent.Create());
-                castle.OnLog += new LogEventHandler(castle_OnLog);
-                castle.OnError += new ErrorLogEventHandler(castle_OnError);
-                IUserService service = castle.GetService<IUserService>();
+                try
+                {
+                    var castle = CastleFactory.CreateNew();
+                    //castle.InjectCacheDependent(DefaultCacheDependent.Create());
+                    castle.OnLog += new LogEventHandler(castle_OnLog);
+                    castle.OnError += new ErrorLogEventHandler(castle_OnError);
+                    IUserService service = castle.GetService<IUserService>();
 
-                Thread thread = new Thread(DoWork);
-                thread.Name = string.Format("Thread-->{0}", i);
-                thread.IsBackground = true;
-                thread.Start(service);
+                    Thread thread = new Thread(DoWork);
+                    thread.Name = string.Format("Thread-->{0}", i);
+                    thread.IsBackground = true;
+                    thread.Start(service);
+                }
+                catch (Exception ex)
+                {
+                    //WriteMessage(msg);
+                    castle_OnError(ex);
+                }
             }
 
             Console.ReadKey();
@@ -120,6 +128,8 @@ namespace MySoft.PlatformService.Client
             lock (syncobj)
             {
                 string message = "[" + DateTime.Now.ToString() + "] " + log;
+                if (type == LogType.Error)
+                    Console.ForegroundColor = ConsoleColor.Red;
                 if (type == LogType.Warning)
                     Console.ForegroundColor = ConsoleColor.Blue;
                 else
@@ -137,8 +147,8 @@ namespace MySoft.PlatformService.Client
                 try
                 {
                     int userid;
-                    //UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
-                    UserInfo info = service.GetUserInfo("maoyong", out userid);
+                    UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
+                    //UserInfo info = service.GetUserInfo("maoyong", out userid);
 
                     if (info == null)
                     {
@@ -160,7 +170,7 @@ namespace MySoft.PlatformService.Client
                     castle_OnLog(msg, LogType.Error);
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(10);
             }
         }
     }

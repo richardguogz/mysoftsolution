@@ -925,7 +925,7 @@ namespace MySoft.Data
         {
             //当属性为结构时进行系列化
             Type type = value.GetType();
-            return CoreHelper.IsStruct(type);
+            return CoreHelper.CheckTypeStruct(type);
         }
     }
 }
