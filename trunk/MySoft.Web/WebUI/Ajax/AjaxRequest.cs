@@ -307,23 +307,16 @@ namespace MySoft.Web.UI
         /// <returns></returns>
         private string GetCache(string path, string parameter)
         {
-            try
-            {
-                path = path.ToLower();
-                string url = info.CurrentPage.Request.Url.PathAndQuery;
-                string key = url + "," + path + (parameter != string.Empty ? "?" + parameter : null);
+            string key = path + (parameter != string.Empty ? "?" + parameter : null);
+            key = "Cache_Control_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key.ToLower()));
 
-                if (CacheControlConfiguration.GetSection().Config.Enabled)
-                {
-                    object obj = HttpContext.Current.Cache[key];
-                    if (obj != null) return obj.ToString();
-                }
-                return null;
-            }
-            catch
+            if (CacheControlConfiguration.GetConfig().Enabled)
             {
-                throw;
+                object obj = HttpContext.Current.Cache[key];
+                if (obj != null) return obj.ToString();
             }
+
+            return null;
         }
 
         /// <summary>
@@ -334,25 +327,22 @@ namespace MySoft.Web.UI
         /// <param name="html"></param>
         private void SetCache(string path, string parameter, string html)
         {
-            try
-            {
-                if (html == null) return;
-                path = path.ToLower();
-                string url = info.CurrentPage.Request.Url.PathAndQuery;
-                string key = url + "," + path + (parameter != string.Empty ? "?" + parameter : null);
+            if (html == null) return;
+            string key = path + (parameter != string.Empty ? "?" + parameter : null);
+            key = "Cache_Control_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key.ToLower()));
 
-                if (CacheControlConfiguration.GetSection().Config.Enabled)
+            var config = CacheControlConfiguration.GetConfig();
+            if (config.Enabled)
+            {
+                for (int index = 0; index < config.Rules.Count; index++)
                 {
-                    Dictionary<string, int> rules = CacheControlConfiguration.GetSection().Rules;
-                    if (rules.ContainsKey(path))
+                    var rule = config.Rules[index];
+                    if (rule.CachePath.ToLower().Contains(path.ToLower()))
                     {
-                        HttpContext.Current.Cache.Insert(key, html, null, DateTime.Now.AddSeconds(rules[path]), System.Web.Caching.Cache.NoSlidingExpiration);
+                        HttpContext.Current.Cache.Insert(key, html, null, DateTime.Now.AddSeconds(rule.CacheTime), System.Web.Caching.Cache.NoSlidingExpiration);
+                        break;
                     }
                 }
-            }
-            catch
-            {
-                throw;
             }
         }
 
