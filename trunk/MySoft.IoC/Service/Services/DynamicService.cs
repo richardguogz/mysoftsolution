@@ -21,7 +21,6 @@ namespace MySoft.IoC.Services
 
         private IServiceContainer container;
         private Type serviceInterfaceType;
-        private PHPFormatter formatter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicService"/> class.
@@ -35,9 +34,6 @@ namespace MySoft.IoC.Services
             this.OnLog += container.WriteLog;
             this.OnError += container.WriteError;
             this.serviceInterfaceType = serviceInterfaceType;
-
-            //实现化系列化器
-            this.formatter = new PHPFormatter(Encoding.UTF8, AppDomain.CurrentDomain.GetAssemblies());
         }
 
 
@@ -155,19 +151,13 @@ namespace MySoft.IoC.Services
                 {
                     #region 处理数据
 
+                    //将对象系列化成byte数组
+                    resMsg.Data = SerializationManager.SerializeBin(returnValue);
+
                     //判断是否压缩
                     if (resMsg.Compress)
                     {
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            formatter.Serialize(ms, returnValue);
-                            resMsg.Data = ms.ToArray();
-                        }
-                    }
-                    else
-                    {
-                        //处理不压缩的系列化
-                        resMsg.Data = SerializationManager.SerializeBin(returnValue);
+                        resMsg.Data = CompressionManager.CompressSharpZip(resMsg.Data);
                     }
 
                     //判断是否加密

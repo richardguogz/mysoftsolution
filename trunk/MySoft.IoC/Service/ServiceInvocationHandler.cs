@@ -15,7 +15,6 @@ namespace MySoft.IoC
     {
         private IServiceContainer container;
         private Type serviceInterfaceType;
-        private PHPFormatter formatter;
         private int cacheTimeout;
 
         /// <summary>
@@ -28,9 +27,6 @@ namespace MySoft.IoC
             this.container = container;
             this.serviceInterfaceType = serviceInterfaceType;
             this.cacheTimeout = cacheTimeout;
-
-            //实现化系列化器
-            this.formatter = new PHPFormatter(Encoding.UTF8, AppDomain.CurrentDomain.GetAssemblies());
         }
 
         /// <summary>
@@ -170,24 +166,18 @@ namespace MySoft.IoC
                 //处理是否压缩
                 if (resMsg.Compress)
                 {
-                    using (MemoryStream ms = new MemoryStream(resMsg.Data))
-                    {
-                        returnValue = formatter.Deserialize(ms);
-                    }
+                    resMsg.Data = CompressionManager.DecompressSharpZip(resMsg.Data);
                 }
-                else
-                {
-                    //处理不压缩的反系列化
-                    returnValue = SerializationManager.DeserializeBin(resMsg.Data);
-                }
+
+                //将byte数组反系列化成对象
+                returnValue = SerializationManager.DeserializeBin(resMsg.Data);
 
                 #endregion
 
-                //缓存的处理
-                if (isAllowCache && container.Cache != null)
+                if (cacheValue != null)
                 {
-                    //如果数据是null或者值为Exception，则不使用缓存
-                    if (resMsg.Exception == null && resMsg.Data != null)
+                    //缓存的处理
+                    if (isAllowCache && container.Cache != null)
                     {
                         cacheValue = new ServiceCache { CacheObject = returnValue, Parameters = resMsg.Parameters };
 

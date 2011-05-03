@@ -14,7 +14,7 @@ namespace MySoft.IoC.Configuration
     {
         private CastleFactoryType type = CastleFactoryType.Local;
         private bool encrypt = false;
-        private bool compress = false;
+        private bool compress = true;
 
         private IDictionary<string, ServiceNode> hosts = new Dictionary<string, ServiceNode>();
         private string defaultservice;  //Ä¬ÈÏ·þÎñ
