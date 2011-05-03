@@ -14,16 +14,20 @@ namespace MySoft
         /// </summary>
         None,
         /// <summary>
-        /// 7Zip压缩
-        /// </summary>
-        SevenZip,
-        /// <summary>
         /// GZip压缩
         /// </summary>
         GZip,
         /// <summary>
         /// Deflate压缩
         /// </summary>
-        Deflate
+        Deflate,
+        /// <summary>
+        /// 7Zip压缩
+        /// </summary>
+        SevenZip,
+        /// <summary>
+        /// SharpZip压缩
+        /// </summary>
+        SharpZip
     }
 }

@@ -90,16 +90,19 @@ namespace MySoft
         /// <summary>
         /// 将数据反系列化成对象
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static object DeserializeBin(byte[] data)
+        public static object DeserializeBin(byte[] buffer)
         {
-            if (data == null || data.Length == 0) return null;
+            if (buffer == null || buffer.Length == 0)
+            {
+                return buffer;
+            }
 
             Object serializedObject;
             using (MemoryStream ms = new MemoryStream())
             {
-                ms.Write(data, 0, data.Length);
+                ms.Write(buffer, 0, buffer.Length);
                 ms.Seek(0, 0);
                 BinaryFormatter b = new BinaryFormatter();
                 serializedObject = b.Deserialize(ms);

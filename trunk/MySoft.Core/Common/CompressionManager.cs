@@ -2,22 +2,83 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using SharpZip.Zip.Compression;
+using SharpZip.Zip.Compression.Streams;
 
 namespace MySoft
 {
     /// <summary>
-    /// Compress Manager
+    /// Compression Manager
     /// </summary>
     public abstract class CompressionManager
     {
-        #region GZip
+        #region SharpZip
 
-        public static string CompressGZip(string str)
+        /// <summary>
+        /// SharpZip—πÀı
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static byte[] CompressSharpZip(byte[] buffer)
         {
-            byte[] buffer = UTF8Encoding.Unicode.GetBytes(str);
-            return Convert.ToBase64String(CompressGZip(buffer));
+            if (buffer == null || buffer.Length == 0)
+            {
+                return buffer;
+            }
+
+            using (MemoryStream inStream = new MemoryStream(buffer))
+            {
+                MemoryStream outStream = new MemoryStream();
+                Deflater mDeflater = new Deflater(Deflater.BEST_COMPRESSION);
+                DeflaterOutputStream compressStream = new DeflaterOutputStream(outStream, mDeflater);
+                int mSize;
+                byte[] mWriteData = new Byte[4096];
+                while ((mSize = inStream.Read(mWriteData, 0, 4096)) > 0)
+                {
+                    compressStream.Write(mWriteData, 0, mSize);
+                }
+                compressStream.Finish();
+                inStream.Close();
+                return outStream.ToArray();
+            }
         }
 
+        /// <summary>
+        /// SharpZipΩ‚—πÀı
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static byte[] DecompressSharpZip(byte[] buffer)
+        {
+            if (buffer == null || buffer.Length == 0)
+            {
+                return buffer;
+            }
+
+            using (MemoryStream inStream = new MemoryStream(buffer))
+            {
+                InflaterInputStream unCompressStream = new InflaterInputStream(inStream);
+                MemoryStream outStream = new MemoryStream();
+                int mSize;
+                Byte[] mWriteData = new Byte[4096];
+                while ((mSize = unCompressStream.Read(mWriteData, 0, mWriteData.Length)) > 0)
+                {
+                    outStream.Write(mWriteData, 0, mSize);
+                }
+                unCompressStream.Close();
+                return outStream.ToArray();
+            }
+        }
+
+        #endregion
+
+        #region GZip
+
+        /// <summary>
+        /// GZip—πÀı
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static byte[] CompressGZip(byte[] buffer)
         {
             if (buffer == null || buffer.Length == 0)
@@ -33,12 +94,11 @@ namespace MySoft
             return ms.ToArray();
         }
 
-        public static string DecompressGZip(string str)
-        {
-            byte[] buffer = Convert.FromBase64String(str);
-            return UTF8Encoding.Unicode.GetString(DecompressGZip(buffer));
-        }
-
+        /// <summary>
+        /// GZipΩ‚—πÀı
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static byte[] DecompressGZip(byte[] buffer)
         {
             if (buffer == null || buffer.Length == 0)
@@ -46,30 +106,31 @@ namespace MySoft
                 return buffer;
             }
 
-            MemoryStream ms = new MemoryStream(buffer, 0, buffer.Length);
-            MemoryStream msOut = new MemoryStream();
-            byte[] writeData = new byte[4096];
-            using (GZipStream gzip = new GZipStream(ms, CompressionMode.Decompress))
+            using (MemoryStream ms = new MemoryStream(buffer, 0, buffer.Length))
             {
-                int n;
-                while ((n = gzip.Read(writeData, 0, writeData.Length)) > 0)
+                MemoryStream msOut = new MemoryStream();
+                byte[] writeData = new byte[4096];
+                using (GZipStream gzip = new GZipStream(ms, CompressionMode.Decompress))
                 {
-                    msOut.Write(writeData, 0, n);
+                    int n;
+                    while ((n = gzip.Read(writeData, 0, writeData.Length)) > 0)
+                    {
+                        msOut.Write(writeData, 0, n);
+                    }
                 }
+                return msOut.ToArray();
             }
-            return msOut.ToArray();
         }
 
         #endregion
 
         #region Deflate
 
-        public static string CompressDeflate(string str)
-        {
-            byte[] buffer = UTF8Encoding.Unicode.GetBytes(str);
-            return Convert.ToBase64String(CompressDeflate(buffer));
-        }
-
+        /// <summary>
+        /// Deflate—πÀı
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static byte[] CompressDeflate(byte[] buffer)
         {
             if (buffer == null || buffer.Length == 0)
@@ -85,12 +146,11 @@ namespace MySoft
             return ms.ToArray();
         }
 
-        public static string DecompressDeflate(string str)
-        {
-            byte[] buffer = Convert.FromBase64String(str);
-            return UTF8Encoding.Unicode.GetString(DecompressDeflate(buffer));
-        }
-
+        /// <summary>
+        /// DeflateΩ‚—πÀı
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public static byte[] DecompressDeflate(byte[] buffer)
         {
             if (buffer == null || buffer.Length == 0)
@@ -98,18 +158,20 @@ namespace MySoft
                 return buffer;
             }
 
-            MemoryStream ms = new MemoryStream(buffer, 0, buffer.Length);
-            MemoryStream msOut = new MemoryStream();
-            byte[] writeData = new byte[4096];
-            using (DeflateStream gzip = new DeflateStream(ms, CompressionMode.Decompress))
+            using (MemoryStream ms = new MemoryStream(buffer, 0, buffer.Length))
             {
-                int n;
-                while ((n = gzip.Read(writeData, 0, writeData.Length)) > 0)
+                MemoryStream msOut = new MemoryStream();
+                byte[] writeData = new byte[4096];
+                using (DeflateStream gzip = new DeflateStream(ms, CompressionMode.Decompress))
                 {
-                    msOut.Write(writeData, 0, n);
+                    int n;
+                    while ((n = gzip.Read(writeData, 0, writeData.Length)) > 0)
+                    {
+                        msOut.Write(writeData, 0, n);
+                    }
                 }
+                return msOut.ToArray();
             }
-            return msOut.ToArray();
         }
 
         #endregion
@@ -117,17 +179,10 @@ namespace MySoft
         #region 7Zip
 
         /// <summary>
-        /// 7Zip Compress the str.
+        /// 7Zip—πÀı
         /// </summary>
-        /// <param name="str">The STR.</param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static string Compress7Zip(string str)
-        {
-            byte[] inbyt = UTF8Encoding.Unicode.GetBytes(str);
-            byte[] b = SevenZip.Compression.LZMA.SevenZipHelper.Compress(inbyt);
-            return Convert.ToBase64String(b);
-        }
-
         public static byte[] Compress7Zip(byte[] buffer)
         {
             if (buffer == null || buffer.Length == 0)
@@ -139,17 +194,10 @@ namespace MySoft
         }
 
         /// <summary>
-        /// 7Zip Decompress the str.
+        /// 7ZipΩ‚—πÀı
         /// </summary>
-        /// <param name="str">The STR.</param>
+        /// <param name="buffer"></param>
         /// <returns></returns>
-        public static string Decompress7Zip(string str)
-        {
-            byte[] inbyt = Convert.FromBase64String(str);
-            byte[] b = SevenZip.Compression.LZMA.SevenZipHelper.Decompress(inbyt);
-            return UTF8Encoding.Unicode.GetString(b);
-        }
-
         public static byte[] Decompress7Zip(byte[] buffer)
         {
             if (buffer == null || buffer.Length == 0)
