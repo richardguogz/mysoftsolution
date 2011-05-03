@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 
-namespace MySoft.URLRewriter
+namespace MySoft.Web
 {
     /// <summary>
     /// The base class for module rewriting.  This class is abstract, and therefore must be derived from.

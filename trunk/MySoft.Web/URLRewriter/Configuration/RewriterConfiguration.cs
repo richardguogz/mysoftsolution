@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Web;
 using System.Xml.Serialization;
 
-namespace MySoft.URLRewriter.Configuration
+namespace MySoft.Web.Configuration
 {
     /// <summary>
     /// Specifies the configuration settings in the Web.config for the RewriterRule.

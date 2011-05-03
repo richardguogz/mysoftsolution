@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace MySoft.URLRewriter.Configuration
+namespace MySoft.Web.Configuration
 {
     /// <summary>
     /// The RewriterRuleCollection models a set of RewriterRules in the Web.config file.

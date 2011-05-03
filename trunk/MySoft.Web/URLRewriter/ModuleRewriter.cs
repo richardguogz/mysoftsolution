@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
-using MySoft.URLRewriter.Configuration;
+using MySoft.Web.Configuration;
 
-namespace MySoft.URLRewriter
+namespace MySoft.Web
 {
     /// <summary>
     /// Provides a rewriting HttpModule.

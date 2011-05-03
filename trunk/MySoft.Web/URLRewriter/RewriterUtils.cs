@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 
-namespace MySoft.URLRewriter
+namespace MySoft.Web
 {
     /// <summary>
     /// Provides utility helper methods for the rewriting HttpModule and HttpHandler.

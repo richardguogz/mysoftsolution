@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace MySoft.URLRewriter.Configuration
+namespace MySoft.Web.Configuration
 {
     /// <summary>
     /// Deserializes the markup in Web.config into an instance of the <see cref="RewriterConfiguration"/> class.

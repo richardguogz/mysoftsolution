@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace MySoft.URLRewriter.Configuration
+namespace MySoft.Web.Configuration
 {
     /// <summary>
     /// Represents a rewriter rule.  A rewriter rule is composed of a pattern to search for and a string to replace
