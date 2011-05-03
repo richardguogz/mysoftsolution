@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
 using MySoft.Web.Configuration;
-using MySoft.URLRewriter;
 
 namespace MySoft.Web
 {
