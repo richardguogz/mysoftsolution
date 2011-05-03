@@ -15,16 +15,17 @@ namespace MySoft.PlatformService.Console
         private static readonly object syncobj = new object();
         static void Main(string[] args)
         {
+            System.Console.WriteLine("Service ready started...");
+
             CastleServiceConfiguration config = CastleServiceConfiguration.GetConfig();
             CastleService server = new CastleService(config);
             server.OnLog += new LogEventHandler(Program_OnLog);
             server.OnError += new ErrorLogEventHandler(Program_OnError);
             server.Start();
 
-            System.Console.WriteLine("Service host started...");
             System.Console.WriteLine("Server host -> {0}", server.ServerUrl);
-            System.Console.WriteLine("Logger Status: On  -> Show LogTime£º{0} ms", config.LogTimeout);
-            System.Console.WriteLine("Press any key to exit and stop host...");
+            System.Console.WriteLine("Logger status: On  -> Show log time£º{0} ms", config.LogTimeout);
+            System.Console.WriteLine("Press any key to exit and stop service...");
             System.Console.ReadLine();
         }
 
@@ -33,7 +34,9 @@ namespace MySoft.PlatformService.Console
             lock (syncobj)
             {
                 string message = "[" + DateTime.Now.ToString() + "] " + log;
-                if (type == LogType.Warning)
+                if (type == LogType.Error)
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                else if (type == LogType.Warning)
                     System.Console.ForegroundColor = ConsoleColor.Blue;
                 else
                     System.Console.ForegroundColor = ConsoleColor.White;
