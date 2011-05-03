@@ -76,6 +76,7 @@
     <Compile Include="Common\ResponseResult.cs" />
     <Compile Include="Common\MySoftException.cs" />
     <Compile Include="Common\ResponseFormat.cs" />
+    <Compile Include="IoC\OperationContract.cs" />
     <Compile Include="IoC\ServiceContract.cs" />
     <Compile Include="Json\Newtonsoft.Json\Bson\BsonBinaryType.cs" />
     <Compile Include="Json\Newtonsoft.Json\Bson\BsonBinaryWriter.cs" />
@@ -343,7 +344,6 @@
     <Compile Include="Utils\DnsHelper.cs" />
     <Compile Include="Utils\DynamicCalls.cs" />
     <Compile Include="Common\IDataPage.cs" />
-    <Compile Include="Utils\EmitHelper.cs" />
     <Compile Include="Logger\IErrorLogable.cs" />
     <Compile Include="Logger\ILogable.cs" />
     <Compile Include="Common\SerializationManager.cs" />

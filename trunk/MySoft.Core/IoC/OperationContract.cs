@@ -1,29 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MySoft.IoC
 {
     /// <summary>
     /// Attribute used to mark service interfaces.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    public class ServiceContractAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    public class OperationContractAttribute : Attribute
     {
-        private bool allowCache = false;
-        /// <summary>
-        /// 是否允许缓存
-        /// </summary>
-        public bool AllowCache
-        {
-            get
-            {
-                return allowCache;
-            }
-            set
-            {
-                allowCache = value;
-            }
-        }
-
         private int timeout = -1;
         /// <summary>
         /// 超时时间（单位：ms）
@@ -57,27 +44,18 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// 实例化ServiceContractAttribute
+        /// 实例化OperationContractAttribute
         /// </summary>
-        public ServiceContractAttribute() { }
+        public OperationContractAttribute() { }
 
         /// <summary>
-        /// 实例化ServiceContractAttribute
-        /// </summary>
-        /// <param name="allowCache"></param>
-        public ServiceContractAttribute(bool allowCache)
-        {
-            this.allowCache = allowCache;
-        }
-
-        /// <summary>
-        /// 实例化ServiceContractAttribute
+        /// 实例化OperationContractAttribute
         /// </summary>
         /// <param name="cacheTime"></param>
-        public ServiceContractAttribute(int cacheTime)
+        public OperationContractAttribute(int cacheTime)
         {
-            this.allowCache = true;
             this.cacheTime = cacheTime;
         }
     }
+
 }
