@@ -1,6 +1,6 @@
 using System;
 
-namespace MySoft.Remoting
+namespace MySoft.Remoting.Configuration
 {
     /// <summary>
     /// 远程服务器实体

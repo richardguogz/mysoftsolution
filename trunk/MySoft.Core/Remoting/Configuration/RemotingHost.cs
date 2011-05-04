@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MySoft.Remoting
+namespace MySoft.Remoting.Configuration
 {
     /// <summary>
     /// RemotingHost µÃÂ¿‡
