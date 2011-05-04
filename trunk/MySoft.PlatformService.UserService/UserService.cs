@@ -9,6 +9,12 @@ namespace MySoft.PlatformService.UserService
 {
     public class UserService : IUserService
     {
+        public int GetUserID()
+        {
+            return 1;
+        }
+
+
         public UserInfo GetUserInfo(string username, out int userid)
         {
             userid = username.Length;

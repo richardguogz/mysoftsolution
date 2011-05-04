@@ -89,47 +89,6 @@ namespace MySoft.IoC
             }
         }
 
-        /// <summary>
-        /// 是否连接到服务器
-        /// </summary>
-        public bool NeedConnect
-        {
-            get
-            {
-                return !connected;
-            }
-        }
-
-        /// <summary>
-        /// 连接到服务器
-        /// </summary>
-        public bool ConnectServer()
-        {
-            if (NeedConnect)
-            {
-                //尝试连接到服务器
-                manager.Client.BeginConnectTo(config.IP, config.Port);
-
-                IWorkItemResult wir = pool.QueueWorkItem(() =>
-                {
-                    //连上服务器才能进行数据处理
-                    while (!connected)
-                    {
-                        Thread.Sleep(1);
-                    }
-                });
-
-                //等待5秒，连不上则返回false
-                if (!pool.WaitForIdle(5000))
-                {
-                    if (!wir.IsCompleted) wir.Cancel(true);
-                    throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
-                }
-            }
-
-            return connected;
-        }
-
         public ServiceProxy(SocketClientConfiguration config, string serviceName)
         {
             this.config = config;
@@ -145,11 +104,48 @@ namespace MySoft.IoC
             manager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
             manager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
 
+            //开始连接到服务器
+            StartConnectThread();
+
             #endregion
+        }
+
+        /// <summary>
+        /// 连接到服务器
+        /// </summary>
+        private void StartConnectThread()
+        {
+            //启动检测线程
+            Thread thread = new Thread(() =>
+            {
+                while (true)
+                {
+                    if (!connected)
+                    {
+                        //尝试连接到服务器
+                        manager.Client.BeginConnectTo(config.IP, config.Port);
+                    }
+
+                    //等待5秒
+                    Thread.Sleep(5000);
+                }
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public ResponseMessage CallMethod(RequestMessage msg, int showlogtime)
         {
+            //如果连接断开，直接抛出异常
+            if (!connected)
+            {
+                //如果服务器断开，等待5秒
+                Thread.Sleep(msg.Timeout);
+
+                throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
+            }
+
             //处理过期时间
             msg.Expiration = DateTime.Now.AddMilliseconds(msg.Timeout);
 

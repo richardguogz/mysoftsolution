@@ -20,6 +20,11 @@ namespace MySoft.IoC
     /// </summary>
     public sealed class SimpleServiceContainer : IServiceContainer
     {
+        /// <summary>
+        /// 同步锁对象
+        /// </summary>
+        private readonly object syncObject = new object();
+
         #region Const Members
 
         /// <summary>
@@ -294,7 +299,10 @@ namespace MySoft.IoC
             IService localService = (IService)GetLocalService(reqMsg.ServiceName);
             if (localService != null)
             {
-                return localService.CallService(reqMsg, showlogtime);
+                lock (syncObject)
+                {
+                    return localService.CallService(reqMsg, showlogtime);
+                }
             }
 
             //判断代理是否为空
@@ -306,14 +314,11 @@ namespace MySoft.IoC
             {
                 try
                 {
-                    //如果需要重连接
-                    if (serviceProxy.NeedConnect)
+                    lock (syncObject)
                     {
-                        serviceProxy.ConnectServer();
+                        //通过代理调用
+                        return serviceProxy.CallMethod(reqMsg, showlogtime);
                     }
-
-                    //通过代理调用
-                    return serviceProxy.CallMethod(reqMsg, showlogtime);
                 }
                 catch (Exception ex)
                 {

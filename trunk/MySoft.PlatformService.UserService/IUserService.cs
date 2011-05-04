@@ -15,6 +15,8 @@ namespace MySoft.PlatformService.UserService
         UserInfo GetUserInfo(string username, out int userid);
 
         DataTable GetDataTable();
+
+        int GetUserID();
     }
 
     /// <summary>

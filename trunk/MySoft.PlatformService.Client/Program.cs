@@ -82,7 +82,7 @@ namespace MySoft.PlatformService.Client
             //CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
             //Console.ReadKey();
 
-            int count = 1;
+            int count = 100;
 
             for (int i = 0; i < count; i++)
             {
@@ -146,27 +146,22 @@ namespace MySoft.PlatformService.Client
                 Stopwatch watch = Stopwatch.StartNew();
                 try
                 {
-                    var status = CastleFactory.Create().GetService<IStatusService>().GetStatus();
-                    foreach (var client in status.Clients)
-                    {
-                        Console.WriteLine(client.ToString());
-                    }
-                    //int userid;
+                    int userid = service.GetUserID();
                     //UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
-                    ////UserInfo info = service.GetUserInfo("maoyong", out userid);
+                    //UserInfo info = service.GetUserInfo("maoyong", out userid);
 
-                    //if (info == null)
-                    //{
-                    //    string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
-                    //    //WriteMessage(msg);
-                    //    castle_OnLog(msg, LogType.Error);
-                    //}
-                    //else
-                    //{
-                    //    string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
-                    //    //WriteMessage(msg);
-                    //    castle_OnLog(msg, LogType.Information);
-                    //}
+                    if (userid == 0)
+                    {
+                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
+                        //WriteMessage(msg);
+                        castle_OnLog(msg, LogType.Error);
+                    }
+                    else
+                    {
+                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, userid); //info.Description
+                        //WriteMessage(msg);
+                        castle_OnLog(msg, LogType.Information);
+                    }
                 }
                 catch (Exception ex)
                 {
