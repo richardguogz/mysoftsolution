@@ -146,22 +146,27 @@ namespace MySoft.PlatformService.Client
                 Stopwatch watch = Stopwatch.StartNew();
                 try
                 {
-                    int userid;
-                    UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
-                    //UserInfo info = service.GetUserInfo("maoyong", out userid);
+                    var status = CastleFactory.Create().GetService<IStatusService>().GetStatus();
+                    foreach (var client in status.Clients)
+                    {
+                        Console.WriteLine(client.ToString());
+                    }
+                    //int userid;
+                    //UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
+                    ////UserInfo info = service.GetUserInfo("maoyong", out userid);
 
-                    if (info == null)
-                    {
-                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
-                        //WriteMessage(msg);
-                        castle_OnLog(msg, LogType.Error);
-                    }
-                    else
-                    {
-                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
-                        //WriteMessage(msg);
-                        castle_OnLog(msg, LogType.Information);
-                    }
+                    //if (info == null)
+                    //{
+                    //    string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
+                    //    //WriteMessage(msg);
+                    //    castle_OnLog(msg, LogType.Error);
+                    //}
+                    //else
+                    //{
+                    //    string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, info.Description);
+                    //    //WriteMessage(msg);
+                    //    castle_OnLog(msg, LogType.Information);
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -170,7 +175,7 @@ namespace MySoft.PlatformService.Client
                     castle_OnLog(msg, LogType.Error);
                 }
 
-                Thread.Sleep(10);
+                Thread.Sleep(1000);
             }
         }
     }

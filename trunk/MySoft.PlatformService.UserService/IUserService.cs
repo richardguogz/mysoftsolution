@@ -8,7 +8,7 @@ using MySoft.IoC;
 namespace MySoft.PlatformService.UserService
 {
     //[ServiceContract(Timeout = 1000, Format = ResponseFormat.Json, Compress = CompressType.GZip)]
-    [ServiceContract(AllowCache = true)]
+    [ServiceContract]
     public interface IUserService
     {
         [OperationContract(CacheTime = 30000)]

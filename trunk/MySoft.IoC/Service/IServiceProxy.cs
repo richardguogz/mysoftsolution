@@ -11,12 +11,12 @@ namespace MySoft.IoC
         /// <summary>
         /// 是否连接到服务器
         /// </summary>
-        bool IsConnected { get; }
+        bool NeedConnect { get; }
 
         /// <summary>
-        /// 连接服务器
+        /// 重新连接服务器
         /// </summary>
-        bool ConnectServer(bool isReconnect);
+        bool ConnectServer();
 
         /// <summary>
         /// 调用方法

@@ -10,7 +10,7 @@ namespace MySoft.IoC
     /// The response msg.
     /// </summary>
     [Serializable]
-    [BufferType(-20000)]
+    [BufferType(10000)]
     public class ResponseMessage : RequestMessage
     {
         private byte[] keys;

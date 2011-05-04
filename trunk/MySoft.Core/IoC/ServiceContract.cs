@@ -8,7 +8,7 @@ namespace MySoft.IoC
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
     public class ServiceContractAttribute : Attribute
     {
-        private bool allowCache = false;
+        private bool allowCache = true;
         /// <summary>
         /// 是否允许缓存
         /// </summary>
@@ -76,7 +76,6 @@ namespace MySoft.IoC
         /// <param name="cacheTime"></param>
         public ServiceContractAttribute(int cacheTime)
         {
-            this.allowCache = true;
             this.cacheTime = cacheTime;
         }
     }

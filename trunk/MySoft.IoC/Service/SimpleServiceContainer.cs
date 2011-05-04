@@ -243,14 +243,16 @@ namespace MySoft.IoC
         /// Registers the components.
         /// </summary>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public void RegisterComponents(System.Collections.IDictionary serviceKeyTypes)
+        public void RegisterComponents(IDictionary serviceKeyTypes)
         {
             System.Collections.IDictionaryEnumerator en = serviceKeyTypes.GetEnumerator();
             while (en.MoveNext())
             {
-                string key = en.Key.ToString();
-                Type type = (Type)(en.Value);
-                container.AddComponent(key, typeof(IService), type);
+                if (en.Value != null)
+                {
+                    DynamicService service = new DynamicService(this, (Type)en.Key, en.Value);
+                    Kernel.AddComponentInstance(service.ServiceName, service);
+                }
             }
         }
 
@@ -304,10 +306,10 @@ namespace MySoft.IoC
             {
                 try
                 {
-                    //如果未连接
-                    if (!serviceProxy.IsConnected)
+                    //如果需要重连接
+                    if (serviceProxy.NeedConnect)
                     {
-                        serviceProxy.ConnectServer(true);
+                        serviceProxy.ConnectServer();
                     }
 
                     //通过代理调用

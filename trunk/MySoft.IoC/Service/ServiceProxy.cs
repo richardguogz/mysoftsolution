@@ -92,17 +92,20 @@ namespace MySoft.IoC
         /// <summary>
         /// 是否连接到服务器
         /// </summary>
-        public bool IsConnected
+        public bool NeedConnect
         {
-            get { return connected; }
+            get
+            {
+                return !connected;
+            }
         }
 
         /// <summary>
         /// 连接到服务器
         /// </summary>
-        public bool ConnectServer(bool isReconnect)
+        public bool ConnectServer()
         {
-            if (!connected)
+            if (NeedConnect)
             {
                 //尝试连接到服务器
                 manager.Client.BeginConnectTo(config.IP, config.Port);
@@ -120,11 +123,7 @@ namespace MySoft.IoC
                 if (!pool.WaitForIdle(5000))
                 {
                     if (!wir.IsCompleted) wir.Cancel(true);
-
-                    if (isReconnect)
-                        throw new IoCException(string.Format("Reconnect to server ({0}:{1}) failure！service: {2}", config.IP, config.Port, serviceName));
-                    else
-                        throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
+                    throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
                 }
             }
 
@@ -145,9 +144,6 @@ namespace MySoft.IoC
             manager.OnConnected += new ConnectionEventHandler(SocketClientManager_OnConnected);
             manager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
             manager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
-
-            //尝试连接到服务器
-            ConnectServer(false);
 
             #endregion
         }
@@ -239,7 +235,7 @@ namespace MySoft.IoC
 
             if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && length == read.Length)
             {
-                if (cmd == -20000) //自定义的数据包，输出数据
+                if (cmd == 10000) //返回数据包
                 {
                     object responseObject;
                     if (read.ReadObject(out responseObject))

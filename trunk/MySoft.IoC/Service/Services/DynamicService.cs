@@ -21,6 +21,19 @@ namespace MySoft.IoC.Services
 
         private IServiceContainer container;
         private Type serviceInterfaceType;
+        private object serviceInstance;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicService"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="serviceInterfaceType">Type of the service interface.</param>
+        /// <param name="serviceInstance">Type of the service interface.</param>
+        public DynamicService(IServiceContainer container, Type serviceInterfaceType, object serviceInstance)
+            : this(container, serviceInterfaceType)
+        {
+            this.serviceInstance = serviceInstance;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicService"/> class.
@@ -61,12 +74,14 @@ namespace MySoft.IoC.Services
             resMsg.Parameters = reqMsg.Parameters;
             resMsg.Expiration = reqMsg.Expiration;
 
-            object service = null;
-            try
+            //获取相应服务
+            object service = serviceInstance;
+            if (service == null)
             {
-                service = container[serviceInterfaceType];
+                try { service = container[serviceInterfaceType]; }
+                catch { }
             }
-            catch { }
+
             if (service == null)
             {
                 resMsg.Exception = new IoCException(string.Format("The server not find matching service ({0}).", resMsg.ServiceName));
@@ -84,22 +99,7 @@ namespace MySoft.IoC.Services
                 }
                 else
                 {
-                    method = serviceInterfaceType.GetMethods()
-                               .Where(p => p.ToString() == resMsg.SubServiceName)
-                               .FirstOrDefault();
-
-                    if (method == null)
-                    {
-                        foreach (Type inheritedInterface in serviceInterfaceType.GetInterfaces())
-                        {
-                            method = inheritedInterface.GetMethods()
-                                    .Where(p => p.ToString() == resMsg.SubServiceName)
-                                    .FirstOrDefault();
-
-                            if (method != null) break;
-                        }
-                    }
-
+                    method = CoreHelper.GetMethodFromType(serviceInterfaceType, reqMsg.SubServiceName);
                     if (method == null)
                     {
                         resMsg.Exception = new IoCException(string.Format("The server not find called method ({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));

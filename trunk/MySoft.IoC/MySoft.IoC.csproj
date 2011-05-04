@@ -89,6 +89,8 @@
     <Compile Include="Service\Services\BaseService.cs" />
     <Compile Include="Service\Services\DynamicService.cs" />
     <Compile Include="Service\SimpleServiceContainer.cs" />
+    <Compile Include="Service\Status\IStatusService.cs" />
+    <Compile Include="Service\Status\ServerStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">

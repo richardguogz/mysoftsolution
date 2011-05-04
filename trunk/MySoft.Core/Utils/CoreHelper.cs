@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 using MySoft.Converter;
 
 namespace MySoft
@@ -292,6 +293,44 @@ namespace MySoft
         #endregion
 
         #region 属性操作
+
+        /// <summary>
+        /// 从类型中获取方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public static MethodInfo GetMethodFromType<T>(string methodName)
+        {
+            return GetMethodFromType(typeof(T), methodName);
+        }
+
+        /// <summary>
+        /// 从类型中获取方法
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public static MethodInfo GetMethodFromType(Type type, string methodName)
+        {
+            MethodInfo method = type.GetMethods()
+            .Where(p => p.ToString() == methodName)
+            .FirstOrDefault();
+
+            if (method == null)
+            {
+                foreach (Type inheritedInterface in type.GetInterfaces())
+                {
+                    method = inheritedInterface.GetMethods()
+                            .Where(p => p.ToString() == methodName)
+                            .FirstOrDefault();
+
+                    if (method != null) break;
+                }
+            }
+
+            return method;
+        }
 
         /// <summary>
         /// 获取自定义属性

@@ -1,21 +1,24 @@
 ﻿using System;
-using System.Net.Sockets;
-using MySoft.Net.Server;
-using MySoft.Net.Sockets;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.Sockets;
 using MySoft.IoC.Configuration;
 using MySoft.Logger;
+using MySoft.Net.Server;
+using MySoft.Net.Sockets;
 
 namespace MySoft.IoC
 {
     /// <summary>
     /// Castle服务
     /// </summary>
-    public class CastleService : IDisposable, ILogable, IErrorLogable
+    public class CastleService : IStatusService, IDisposable, ILogable, IErrorLogable
     {
         private IServiceContainer container;
         private CastleServiceConfiguration config;
         private SocketServerManager manager;
+        private IList<EndPoint> clients;
 
         /// <summary>
         /// 实例化CastleService
@@ -24,9 +27,15 @@ namespace MySoft.IoC
         public CastleService(CastleServiceConfiguration config)
         {
             this.config = config;
-            this.container = new SimpleServiceContainer(config.LogTimeout);
+
+            //注入内部的服务
+            Hashtable hashTypes = new Hashtable();
+            hashTypes[typeof(IStatusService)] = this;
+
+            this.container = new SimpleServiceContainer(config.LogTimeout, hashTypes);
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
+            this.clients = new List<EndPoint>();
 
             //服务器配置
             SocketServerConfiguration ssc = new SocketServerConfiguration
@@ -115,6 +124,10 @@ namespace MySoft.IoC
         {
             if (OnLog != null) OnLog(string.Format("User connection {0}！", socketAsync.AcceptSocket.RemoteEndPoint), LogType.Information);
             else Console.WriteLine("User connection {0}！", socketAsync.AcceptSocket.RemoteEndPoint);
+
+            //将地址加入到列表中
+            clients.Add(socketAsync.AcceptSocket.RemoteEndPoint);
+
             return true;
         }
 
@@ -129,6 +142,10 @@ namespace MySoft.IoC
             if (OnError != null) OnLog(string.Format("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint), LogType.Error);
             else Console.WriteLine("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint);
             socketAsync.UserToken = null;
+
+            //将地址从列表中移除
+            clients.Remove(socketAsync.AcceptSocket.RemoteEndPoint);
+
             socketAsync.AcceptSocket.Close();
         }
 
@@ -141,7 +158,7 @@ namespace MySoft.IoC
 
             if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && length == read.Length)
             {
-                if (cmd == -10000)//自定义的数据包，输入请求
+                if (cmd == -10000)//请求结果信息
                 {
                     object requestObject;
                     if (read.ReadObject(out requestObject))
@@ -152,8 +169,8 @@ namespace MySoft.IoC
 
                             //设置客户端IP
                             request.RequestAddress = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
-
                             ResponseMessage response = null;
+
                             try
                             {
                                 //获取返回的消息
@@ -182,6 +199,25 @@ namespace MySoft.IoC
             {
                 manager.Server.Disconnect(socketAsync.AcceptSocket);
             }
+        }
+
+        #endregion
+
+        #region IStatusService 成员
+
+        /// <summary>
+        /// 服务状态信息
+        /// </summary>
+        /// <returns></returns>
+        public ServerStatus GetStatus()
+        {
+            //服务器状态信息
+            var status = new ServerStatus
+            {
+                Clients = clients
+            };
+
+            return status;
         }
 
         #endregion
