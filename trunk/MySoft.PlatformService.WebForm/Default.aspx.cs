@@ -6,24 +6,26 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySoft.PlatformService.UserService;
 using MySoft.IoC;
+using System.Net;
 
 namespace MySoft.PlatformService.WebForm
 {
     public partial class _Default : System.Web.UI.Page
     {
+        protected ServerStatus status;
+        protected IList<EndPoint> clients;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            IList<UserInfo> list = new List<UserInfo>();
-
-            for (int i = 0; i < 100; i++)
+            try
             {
-                int userid;
-                var user = CastleFactory.Create().GetService<IUserService>().GetUserInfo(Guid.NewGuid().ToString(), out userid);
-                list.Add(user);
+                status = CastleFactory.Create().GetStatusService().GetServerStatus();
+                clients = CastleFactory.Create().GetStatusService().GetEndPoints();
             }
-
-            Repeater1.DataSource = list;
-            Repeater1.DataBind();
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
         }
     }
 }

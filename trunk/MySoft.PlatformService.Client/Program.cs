@@ -82,7 +82,7 @@ namespace MySoft.PlatformService.Client
             //CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
             //Console.ReadKey();
 
-            int count = 100;
+            int count = 200;
 
             for (int i = 0; i < count; i++)
             {
@@ -170,7 +170,7 @@ namespace MySoft.PlatformService.Client
                     castle_OnLog(msg, LogType.Error);
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(10);
             }
         }
     }

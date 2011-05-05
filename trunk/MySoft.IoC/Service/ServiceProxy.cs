@@ -140,9 +140,6 @@ namespace MySoft.IoC
             //如果连接断开，直接抛出异常
             if (!connected)
             {
-                //如果服务器断开，等待5秒
-                Thread.Sleep(msg.Timeout);
-
                 throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
             }
 

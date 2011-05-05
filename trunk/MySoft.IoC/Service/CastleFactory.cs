@@ -204,6 +204,15 @@ namespace MySoft.IoC
         #region Get Service
 
         /// <summary>
+        /// Gets the status service.
+        /// </summary>
+        /// <returns></returns>
+        public IStatusService GetStatusService()
+        {
+            return GetService<IStatusService>();
+        }
+
+        /// <summary>
         /// Gets the service.
         /// </summary>
         /// <returns>The service implemetation instance.</returns>

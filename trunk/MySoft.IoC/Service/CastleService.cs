@@ -7,6 +7,7 @@ using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using MySoft.Net.Server;
 using MySoft.Net.Sockets;
+using System.Threading;
 
 namespace MySoft.IoC
 {
@@ -19,6 +20,7 @@ namespace MySoft.IoC
         private CastleServiceConfiguration config;
         private SocketServerManager manager;
         private IList<EndPoint> clients;
+        private ServerStatus status;
 
         /// <summary>
         /// 实例化CastleService
@@ -36,6 +38,7 @@ namespace MySoft.IoC
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
+            this.status = new ServerStatus();
 
             //服务器配置
             SocketServerConfiguration ssc = new SocketServerConfiguration
@@ -52,6 +55,21 @@ namespace MySoft.IoC
             manager.OnDisconnected += new DisconnectionEventHandler(SocketServerManager_OnDisconnected);
             manager.OnBinaryInput += new BinaryInputEventHandler(SocketServerManager_OnBinaryInput);
             manager.OnMessageOutput += new EventHandler<LogOutEventArgs>(SocketServerManager_OnMessageOutput);
+
+            Thread thread = new Thread(() =>
+            {
+                while (true)
+                {
+                    //计算时间
+                    status.TotalSeconds++;
+
+                    //每秒处理一次
+                    Thread.Sleep(1000);
+                }
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         /// <summary>
@@ -169,24 +187,9 @@ namespace MySoft.IoC
 
                             //设置客户端IP
                             request.RequestAddress = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
-                            ResponseMessage response = null;
 
-                            try
-                            {
-                                //获取返回的消息
-                                response = container.CallService(request);
-                            }
-                            catch (Exception ex)
-                            {
-                                if (OnError != null) OnError(new IoCException(ex.Message, ex));
-                                return;
-                            }
-
-                            if (response != null)
-                            {
-                                //发送数据到服务端
-                                manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(response));
-                            }
+                            //发送响应信息
+                            GetSendResponse(socketAsync, request);
                         }
                     }
                 }
@@ -201,6 +204,51 @@ namespace MySoft.IoC
             }
         }
 
+        /// <summary>
+        /// 获取响应信息并发送
+        /// </summary>
+        /// <param name="socketAsync"></param>
+        /// <param name="request"></param>
+        private void GetSendResponse(SocketAsyncEventArgs socketAsync, RequestMessage request)
+        {
+            ResponseMessage response = null;
+
+            int t1 = Environment.TickCount;
+            try
+            {
+                //处理请求数
+                status.RequestCount++;
+
+                //获取返回的消息
+                response = container.CallService(request);
+            }
+            catch (Exception ex)
+            {
+                //处理错误数
+                status.ErrorCount++;
+
+                if (OnError != null) OnError(new IoCException(ex.Message, ex));
+            }
+            finally
+            {
+                int t2 = Environment.TickCount - t1;
+
+                //处理时间
+                status.ElapsedTime += t2;
+            }
+
+            if (response != null)
+            {
+                byte[] data = BufferFormat.FormatFCA(response);
+
+                //处理流量
+                status.DataFlow += data.Length;
+
+                //发送数据到服务端
+                manager.Server.SendData(socketAsync.AcceptSocket, data);
+            }
+        }
+
         #endregion
 
         #region IStatusService 成员
@@ -209,15 +257,18 @@ namespace MySoft.IoC
         /// 服务状态信息
         /// </summary>
         /// <returns></returns>
-        public ServerStatus GetStatus()
+        public ServerStatus GetServerStatus()
         {
-            //服务器状态信息
-            var status = new ServerStatus
-            {
-                Clients = clients
-            };
-
             return status;
+        }
+
+        /// <summary>
+        /// 获取连接终结点信息
+        /// </summary>
+        /// <returns></returns>
+        public IList<EndPoint> GetEndPoints()
+        {
+            return clients;
         }
 
         #endregion
