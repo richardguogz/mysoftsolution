@@ -80,6 +80,12 @@ namespace MySoft.IoC
                         //将状态添加到列表中
                         lock (statuslist)
                         {
+                            if (statuslist.Count >= config.Records)
+                            {
+                                //移除第一条
+                                statuslist.RemoveAt(0);
+                            }
+
                             statuslist.Add(state);
                         }
                     }

@@ -18,7 +18,7 @@
                 <li>总耗时:    <%=status.ElapsedTime %> ms</li>
                 <li>总流量:    <%=status.DataFlow %> bytes</li>
                 <li><br /></li>
-                <li>服务运行时间：<%=status.TotalSeconds %> seconds</li>
+                <li>服务计时区间：<%=status.TotalSeconds %> seconds</li>
                 <li>每秒请求数:<%=status.AverageRequestCount%> times</li>
                 <li>平均错误数:<%=status.AverageErrorCount%> times</li>
                 <li>平均耗时数:<%=status.AverageElapsedTime %> ms</li>

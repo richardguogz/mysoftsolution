@@ -14,7 +14,8 @@ namespace MySoft.IoC.Configuration
     {
         private string host = "any";
         private int port = 8888;
-        private int logtime = 1000;  //超时多长输出日志，默认为1秒
+        private int logtime = 1000;             //超时多长输出日志，默认为1秒
+        private int records = 3600;            //记录条数，默认为3600条，1小时记录
         private int maxconnect = SimpleServiceContainer.DEFAULT_MAXCONNECT_NUMBER;
         private int maxbuffer = SimpleServiceContainer.DEFAULT_MAXBUFFER_NUMBER;
 
@@ -56,6 +57,9 @@ namespace MySoft.IoC.Configuration
 
             if (xmlnode["logtime"] != null && xmlnode["logtime"].Value.Trim() != string.Empty)
                 logtime = Convert.ToInt32(xmlnode["logtime"].Value);
+
+            if (xmlnode["records"] != null && xmlnode["records"].Value.Trim() != string.Empty)
+                records = Convert.ToInt32(xmlnode["records"].Value);
         }
 
         /// <summary>
@@ -106,6 +110,16 @@ namespace MySoft.IoC.Configuration
         {
             get { return logtime; }
             set { logtime = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the records
+        /// </summary>
+        /// <value>The records.</value>
+        public int Records
+        {
+            get { return records; }
+            set { records = value; }
         }
     }
 }
