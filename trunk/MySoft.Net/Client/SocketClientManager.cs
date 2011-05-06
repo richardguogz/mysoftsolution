@@ -20,6 +20,11 @@ namespace MySoft.Net.Client
         /// 侦听端口
         /// </summary>
         public int Port { get; set; }
+
+        /// <summary>
+        /// 最大池大小
+        /// </summary>
+        public int Pools { get; set; }
     }
 
     /// <summary>

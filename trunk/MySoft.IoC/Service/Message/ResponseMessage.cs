@@ -11,7 +11,7 @@ namespace MySoft.IoC
     /// </summary>
     [Serializable]
     [BufferType(10000)]
-    public class ResponseMessage : RequestMessage
+    public class ResponseMessage : RequestBase
     {
         private byte[] keys;
 
@@ -70,7 +70,7 @@ namespace MySoft.IoC
         /// Gets the message.
         /// </summary>
         /// <value>The message.</value>
-        public string Message
+        public override string Message
         {
             get
             {

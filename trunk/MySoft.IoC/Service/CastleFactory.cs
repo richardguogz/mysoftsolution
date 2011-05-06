@@ -20,7 +20,7 @@ namespace MySoft.IoC
         #region Create Service Factory
 
         private IServiceContainer container;
-        private CastleFactoryConfiguration castleconfig;
+        private CastleFactoryConfiguration configuration;
 
         /// <summary>
         /// Gets the service container.
@@ -42,7 +42,7 @@ namespace MySoft.IoC
         {
             if (container == null)
             {
-                this.container = new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_SHOWLOGTIME_NUMBER);
+                this.container = new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER);
             }
             else
             {
@@ -56,6 +56,7 @@ namespace MySoft.IoC
         }
 
         private static CastleFactory singleton = null;
+        private static IDictionary<string, CastleFactory> services = new Dictionary<string, CastleFactory>();
 
         #region 创建单例
 
@@ -73,6 +74,36 @@ namespace MySoft.IoC
             return singleton;
         }
 
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static CastleFactory Create(string name)
+        {
+            if (!services.ContainsKey(name))
+            {
+                services[name] = CreateNew(name);
+            }
+
+            return services[name];
+        }
+
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public static CastleFactory Create(ServiceNode node)
+        {
+            if (!services.ContainsKey(node.Name))
+            {
+                services[node.Name] = CreateNew(node.Name);
+            }
+
+            return services[node.Name];
+        }
+
         #endregion
 
         #region 创建新实例
@@ -81,7 +112,7 @@ namespace MySoft.IoC
         /// Creates this instance. Used in a multithreaded environment
         /// </summary>
         /// <returns></returns>
-        public static CastleFactory CreateNew()
+        private static CastleFactory CreateNew()
         {
             var config = CastleFactoryConfiguration.GetConfig();
             return CreateNew(config, config.Default);
@@ -92,7 +123,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="name">service name</param>
         /// <returns></returns>
-        public static CastleFactory CreateNew(string name)
+        private static CastleFactory CreateNew(string name)
         {
             var config = CastleFactoryConfiguration.GetConfig();
             return CreateNew(config, name);
@@ -103,7 +134,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <returns>The service factoru new instance.</returns>
-        public static CastleFactory CreateNew(ServiceNode node)
+        private static CastleFactory CreateNew(ServiceNode node)
         {
             var config = CastleFactoryConfiguration.GetConfig();
             config.Hosts.Add(node.Name, node); //添加节点
@@ -124,7 +155,7 @@ namespace MySoft.IoC
             if (config == null || config.Type == CastleFactoryType.Local)
             {
                 if (config == null)
-                    instance = new CastleFactory(new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_SHOWLOGTIME_NUMBER));
+                    instance = new CastleFactory(new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER));
                 else
                     instance = new CastleFactory(new SimpleServiceContainer(config.ShowlogTime));
             }
@@ -136,22 +167,24 @@ namespace MySoft.IoC
                     throw new IoCException("Not find the service node [" + name + "]！");
                 }
 
+                if (config.MaxPool < 1) throw new IoCException("Minimum pool size 1！");
+                if (config.MaxPool > 100) throw new IoCException("Maximum pool size 100！");
+
                 var serviceNode = config.Hosts[name];
+
                 //客户端配置
-                SocketClientConfiguration scc = new SocketClientConfiguration();
-                scc.IP = serviceNode.Server;
-                scc.Port = serviceNode.Port;
+                SocketClientConfiguration clientconfig = new SocketClientConfiguration();
+                clientconfig.IP = serviceNode.Server;
+                clientconfig.Port = serviceNode.Port;
+                clientconfig.Pools = config.MaxPool;
 
                 //设置服务代理
-                IServiceProxy serviceProxy = new ServiceProxy(scc, (serviceNode.Description ?? serviceNode.Name));
-                serviceProxy.Timeout = config.Timeout;
-                serviceProxy.Encrypt = config.Encrypt;
-                serviceProxy.Compress = config.Compress;
-                serviceProxy.ThrowError = config.ThrowError;
-
-                container.Proxy = serviceProxy;
+                var proxy = new ServiceProxy(clientconfig, (serviceNode.Description ?? serviceNode.Name));
+                container.Proxy = proxy;
 
                 instance = new CastleFactory(container);
+
+                #region 设置委托
 
                 container.OnLog += (log, type) =>
                 {
@@ -169,17 +202,19 @@ namespace MySoft.IoC
                     }
                 };
 
-                serviceProxy.OnLog += (log, type) =>
+                proxy.OnLog += (log, type) =>
                 {
                     if (instance.OnLog != null)
                     {
                         instance.OnLog(log, type);
                     }
                 };
+
+                #endregion
             }
 
             //处理配置节
-            instance.castleconfig = config;
+            instance.configuration = config;
 
             return instance;
         }
@@ -271,7 +306,7 @@ namespace MySoft.IoC
             }
 
             //如果是本地配置，则抛出异常
-            if (castleconfig == null || castleconfig.Type == CastleFactoryType.Local)
+            if (configuration == null || configuration.Type == CastleFactoryType.Local)
             {
                 throw new IoCException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
             }
@@ -287,7 +322,7 @@ namespace MySoft.IoC
                     lock (syncObj)
                     {
                         var type = typeof(IServiceInterfaceType);
-                        var handler = new ServiceInvocationHandler(this.container, type, castleconfig.CacheTime);
+                        var handler = new ServiceInvocationHandler(this.configuration, this.container, type);
                         var service = (IServiceInterfaceType)DynamicProxy.NewInstance(AppDomain.CurrentDomain, new Type[] { type }, handler);
                         container.Kernel.AddComponentInstance(serviceKey, service);
 

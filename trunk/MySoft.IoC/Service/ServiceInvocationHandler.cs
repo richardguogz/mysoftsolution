@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Linq;
 using System.Reflection.Emit;
 using System.IO;
+using MySoft.IoC.Configuration;
 
 namespace MySoft.IoC
 {
@@ -13,20 +14,24 @@ namespace MySoft.IoC
     /// </summary>
     public class ServiceInvocationHandler : IInvocationHandler
     {
+        private CastleFactoryConfiguration config;
         private IServiceContainer container;
         private Type serviceInterfaceType;
-        private int cacheTimeout;
+        private string hostName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInvocationHandler"/> class.
         /// </summary>
+        /// <param name="container">config.</param>
         /// <param name="container">The container.</param>
         /// <param name="serviceInterfaceType">Type of the service interface.</param>
-        public ServiceInvocationHandler(IServiceContainer container, Type serviceInterfaceType, int cacheTimeout)
+        public ServiceInvocationHandler(CastleFactoryConfiguration config, IServiceContainer container, Type serviceInterfaceType)
         {
+            this.config = config;
             this.container = container;
             this.serviceInterfaceType = serviceInterfaceType;
-            this.cacheTimeout = cacheTimeout;
+
+            this.hostName = DnsHelper.GetHostName();
         }
 
         /// <summary>
@@ -37,24 +42,33 @@ namespace MySoft.IoC
         /// <returns>The result.</returns>
         private object CallService(MethodInfo methodInfo, params object[] paramValues)
         {
+            #region 设置请求信息
+
             RequestMessage reqMsg = new RequestMessage();
+
+            //应用名称
+            reqMsg.AppName = config.AppName;
+
+            //服务器名称
+            reqMsg.HostName = hostName;
+
+            //服务名称
             reqMsg.ServiceName = serviceInterfaceType.FullName;
+
+            //方法名称
             reqMsg.SubServiceName = methodInfo.ToString();
+
+            //传输ID号
             reqMsg.TransactionId = Guid.NewGuid();
 
-            #region 判断数据格式
+            //传递传输与压缩格式
+            reqMsg.Encrypt = config.Encrypt;
 
-            if (container.Proxy != null)
-            {
-                //传递传输与压缩格式
-                reqMsg.Encrypt = container.Proxy.Encrypt;
+            //设置压缩格式
+            reqMsg.Compress = config.Compress;
 
-                //设置压缩格式
-                reqMsg.Compress = container.Proxy.Compress;
-
-                //设置超时时间
-                reqMsg.Timeout = container.Proxy.Timeout;
-            }
+            //设置超时时间
+            reqMsg.Timeout = config.Timeout;
 
             #endregion
 
@@ -92,7 +106,7 @@ namespace MySoft.IoC
             cacheKey = string.Format("{0}_{1}", serviceInterfaceType.FullName, cacheKey);
 
             bool isAllowCache = false;
-            int cacheTime = cacheTimeout; //默认缓存时间与系统设置的时间一致
+            int cacheTime = config.CacheTime; //默认缓存时间与系统设置的时间一致
 
             #region 读取约束信息
 
@@ -116,6 +130,9 @@ namespace MySoft.IoC
                 if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
                 if (operationContract.Timeout > 0) reqMsg.Timeout = operationContract.Timeout;
             }
+
+            //设置过期时间
+            reqMsg.Expiration = DateTime.Now.AddMilliseconds(config.Timeout);
 
             #endregion
 
@@ -141,8 +158,18 @@ namespace MySoft.IoC
             }
             else
             {
-                //调用服务
-                ResponseMessage resMsg = container.CallService(reqMsg);
+                ResponseMessage resMsg = null;
+
+                try
+                {
+                    //调用服务
+                    resMsg = container.CallService(reqMsg);
+                }
+                catch (Exception ex)
+                {
+                    if (config.ThrowError)
+                        throw ex;
+                }
 
                 //如果数据为null,则返回null
                 if (resMsg == null || resMsg.Data == null)

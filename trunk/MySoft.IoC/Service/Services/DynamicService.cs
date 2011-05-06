@@ -64,11 +64,11 @@ namespace MySoft.IoC.Services
 
             ResponseMessage resMsg = new ResponseMessage();
             resMsg.TransactionId = reqMsg.TransactionId;
-            resMsg.RequestAddress = reqMsg.RequestAddress;
+            //resMsg.RequestAddress = reqMsg.RequestAddress;
             resMsg.Encrypt = reqMsg.Encrypt;
             resMsg.Compress = reqMsg.Compress;
             resMsg.Encrypt = reqMsg.Encrypt;
-            resMsg.Timeout = reqMsg.Timeout;
+            //resMsg.Timeout = reqMsg.Timeout;
             resMsg.ServiceName = serviceInterfaceType.FullName;
             resMsg.SubServiceName = reqMsg.SubServiceName;
             resMsg.Parameters = reqMsg.Parameters;
@@ -84,54 +84,58 @@ namespace MySoft.IoC.Services
 
             if (service == null)
             {
-                resMsg.Exception = new IoCException(string.Format("The server not find matching service ({0}).", resMsg.ServiceName));
+                resMsg.Exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName));
                 return resMsg;
             }
 
-            try
-            {
-                #region 获取相应的方法
+            #region 获取相应的方法
 
-                MethodInfo method = null;
-                if (dictMethods.ContainsKey(resMsg.SubServiceName))
+            MethodInfo method = null;
+            if (dictMethods.ContainsKey(reqMsg.SubServiceName))
+            {
+                method = dictMethods[reqMsg.SubServiceName];
+            }
+            else
+            {
+                method = CoreHelper.GetMethodFromType(serviceInterfaceType, reqMsg.SubServiceName);
+                if (method == null)
                 {
-                    method = dictMethods[resMsg.SubServiceName];
+                    resMsg.Exception = new IoCException(string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                    return resMsg;
                 }
                 else
                 {
-                    method = CoreHelper.GetMethodFromType(serviceInterfaceType, reqMsg.SubServiceName);
-                    if (method == null)
-                    {
-                        resMsg.Exception = new IoCException(string.Format("The server not find called method ({0},{1}).", resMsg.ServiceName, resMsg.SubServiceName));
-                        return resMsg;
-                    }
-                    else
-                    {
-                        dictMethods[resMsg.SubServiceName] = method;
-                    }
+                    dictMethods[reqMsg.SubServiceName] = method;
                 }
+            }
 
-                ParameterInfo[] pis = method.GetParameters();
-                object[] paramValues = new object[pis.Length];
+            ParameterInfo[] pis = method.GetParameters();
+            object[] paramValues = new object[pis.Length];
 
-                for (int i = 0; i < pis.Length; i++)
+            for (int i = 0; i < pis.Length; i++)
+            {
+                Type type = pis[i].ParameterType;
+                if (!type.IsByRef)
                 {
-                    Type type = pis[i].ParameterType;
-                    if (!type.IsByRef)
-                    {
-                        paramValues[i] = resMsg.Parameters[pis[i].Name];
-                    }
-                    else
-                    {
-                        paramValues[i] = CoreHelper.GetTypeDefaultValue(type);
-                    }
+                    paramValues[i] = resMsg.Parameters[pis[i].Name];
                 }
+                else
+                {
+                    paramValues[i] = CoreHelper.GetTypeDefaultValue(type);
+                }
+            }
 
-                #endregion
+            #endregion
 
-                //返回拦截服务
-                service = AspectManager.GetService(service);
+            //获取服务及方法名称
+            resMsg.ServiceName = service.GetType().FullName;
+            resMsg.SubServiceName = method.ToString();
 
+            //返回拦截服务
+            service = AspectManager.GetService(service);
+
+            try
+            {
                 //调用对应的服务
                 object returnValue = DynamicCalls.GetMethodInvoker(method).Invoke(service, paramValues);
 

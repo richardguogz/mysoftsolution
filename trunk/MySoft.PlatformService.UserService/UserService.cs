@@ -11,6 +11,7 @@ namespace MySoft.PlatformService.UserService
     {
         public int GetUserID()
         {
+            //Thread.Sleep(300);
             return 1;
         }
 

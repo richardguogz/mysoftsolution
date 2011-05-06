@@ -8,31 +8,12 @@ using System.Net;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// 服务器状态信息
+    /// 每秒服务器状态信息
     /// </summary>
     [Serializable]
-    public class ServerStatus
+    public class TimeServerStatus
     {
-        private int totalSeconds = 1;
-        /// <summary>
-        /// 运行总时间
-        /// </summary>
-        public int TotalSeconds
-        {
-            get
-            {
-                return totalSeconds;
-            }
-            set
-            {
-                lock (this)
-                {
-                    totalSeconds = value;
-                }
-            }
-        }
-
-        private long dataFlow;
+        protected long dataFlow;
         /// <summary>
         /// 数据流量
         /// </summary>
@@ -51,21 +32,7 @@ namespace MySoft.IoC
             }
         }
 
-        /// <summary>
-        /// 平均数据流量（每秒）
-        /// </summary>
-        public double AverageDataFlow
-        {
-            get
-            {
-                if (totalSeconds > 0)
-                    return Math.Round((dataFlow * 1.0) / (totalSeconds * 1.0), 4);
-                else
-                    return 0;
-            }
-        }
-
-        private int requestCount;
+        protected int requestCount;
         /// <summary>
         /// 请求数
         /// </summary>
@@ -84,21 +51,26 @@ namespace MySoft.IoC
             }
         }
 
+        protected int errorCount;
         /// <summary>
-        /// 平均请求数（每秒）
+        /// 错误数
         /// </summary>
-        public double AverageRequestCount
+        public int ErrorCount
         {
             get
             {
-                if (totalSeconds > 0)
-                    return Math.Round((requestCount * 1.0) / (totalSeconds * 1.0), 4);
-                else
-                    return 0;
+                return errorCount;
+            }
+            set
+            {
+                lock (this)
+                {
+                    errorCount = value;
+                }
             }
         }
 
-        private long elapsedTime;
+        protected long elapsedTime;
         /// <summary>
         /// 总耗时
         /// </summary>
@@ -116,6 +88,60 @@ namespace MySoft.IoC
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 服务器状态信息
+    /// </summary>
+    [Serializable]
+    public class ServerStatus : TimeServerStatus
+    {
+        private int totalSeconds;
+        /// <summary>
+        /// 运行总时间
+        /// </summary>
+        public int TotalSeconds
+        {
+            get
+            {
+                return totalSeconds;
+            }
+            set
+            {
+                lock (this)
+                {
+                    totalSeconds = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 平均数据流量（每秒）
+        /// </summary>
+        public double AverageDataFlow
+        {
+            get
+            {
+                if (totalSeconds > 0)
+                    return Math.Round((dataFlow * 1.0) / (totalSeconds * 1.0), 4);
+                else
+                    return 0;
+            }
+        }
+
+        /// <summary>
+        /// 平均请求数（每秒）
+        /// </summary>
+        public double AverageRequestCount
+        {
+            get
+            {
+                if (totalSeconds > 0)
+                    return Math.Round((requestCount * 1.0) / (totalSeconds * 1.0), 4);
+                else
+                    return 0;
+            }
+        }
 
         /// <summary>
         /// 平均耗时
@@ -128,25 +154,6 @@ namespace MySoft.IoC
                     return Math.Round((elapsedTime * 1.0) / (requestCount * 1.0), 4);
                 else
                     return 0;
-            }
-        }
-
-        private int errorCount;
-        /// <summary>
-        /// 错误数
-        /// </summary>
-        public int ErrorCount
-        {
-            get
-            {
-                return errorCount;
-            }
-            set
-            {
-                lock (this)
-                {
-                    errorCount = value;
-                }
             }
         }
 

@@ -14,7 +14,7 @@ namespace MySoft.IoC.Configuration
     {
         private string host = "any";
         private int port = 8888;
-        private int showlogtime = 1000;  //超时多长输出日志，默认为1秒
+        private int logtime = 1000;  //超时多长输出日志，默认为1秒
         private int maxconnect = SimpleServiceContainer.DEFAULT_MAXCONNECT_NUMBER;
         private int maxbuffer = SimpleServiceContainer.DEFAULT_MAXBUFFER_NUMBER;
 
@@ -54,8 +54,8 @@ namespace MySoft.IoC.Configuration
             if (xmlnode["maxbuffer"] != null && xmlnode["maxbuffer"].Value.Trim() != string.Empty)
                 maxbuffer = Convert.ToInt32(xmlnode["maxbuffer"].Value);
 
-            if (xmlnode["showlogtime"] != null && xmlnode["showlogtime"].Value.Trim() != string.Empty)
-                showlogtime = Convert.ToInt32(xmlnode["showlogtime"].Value);
+            if (xmlnode["logtime"] != null && xmlnode["logtime"].Value.Trim() != string.Empty)
+                logtime = Convert.ToInt32(xmlnode["logtime"].Value);
         }
 
         /// <summary>
@@ -99,13 +99,13 @@ namespace MySoft.IoC.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the showlogtime
+        /// Gets or sets the logtime
         /// </summary>
-        /// <value>The showlogtime.</value>
-        public int LogTimeout
+        /// <value>The logtime.</value>
+        public int LogTime
         {
-            get { return showlogtime; }
-            set { showlogtime = value; }
+            get { return logtime; }
+            set { logtime = value; }
         }
     }
 }

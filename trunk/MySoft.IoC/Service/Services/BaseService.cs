@@ -38,27 +38,27 @@ namespace MySoft.IoC.Services
         /// <summary>
         /// Runs the specified MSG.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
+        /// <param name="reqMsg">The MSG.</param>
         /// <returns>The msg.</returns>
-        protected abstract ResponseMessage Run(RequestMessage msg);
+        protected abstract ResponseMessage Run(RequestMessage reqMsg);
 
         #region IService Members
 
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
+        /// <param name="reqMsg">The MSG.</param>
         /// <returns>The msg.</returns>
-        public ResponseMessage CallService(RequestMessage msg, int showlogtime)
+        public ResponseMessage CallService(RequestMessage reqMsg, int logtime)
         {
             int t1 = System.Environment.TickCount;
-            ResponseMessage retMsg = Run(msg);
-            if (retMsg != null && retMsg.Exception != null)
+            ResponseMessage resMsg = Run(reqMsg);
+            if (resMsg != null && resMsg.Exception != null)
             {
-                var ex = retMsg.Exception;
+                var ex = resMsg.Exception;
 
                 int t2 = System.Environment.TickCount - t1;
-                string log = string.Format("【{5}】Dynamic ({0}) service ({1},{2}) error. ==> {3} {4}", retMsg.RequestAddress, retMsg.ServiceName, retMsg.SubServiceName, retMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", retMsg.TransactionId);
+                string log = string.Format("【{5}】Dynamic ({0}) service ({1},{2}) error. ==> {3} {4}", resMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", resMsg.TransactionId);
                 var exception = new IoCException(log, ex);
 
                 if (OnError != null) OnError(exception);
@@ -68,17 +68,17 @@ namespace MySoft.IoC.Services
                 int t2 = System.Environment.TickCount - t1;
 
                 //如果时间超过预定，则输出日志
-                if (t2 > showlogtime)
+                if (t2 > logtime)
                 {
                     if (OnLog != null)
                     {
-                        string log = string.Format("【{6}】Dynamic ({0}) service ({1},{2}). ==> {3} {4} <==> {5}", retMsg.RequestAddress, retMsg.ServiceName, retMsg.SubServiceName, retMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId);
+                        string log = string.Format("【{6}】Dynamic ({0}) service ({1},{2}). ==> {3} {4} <==> {5}", resMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", resMsg.Message, resMsg.TransactionId);
                         OnLog(log, LogType.Warning);
                     }
                 }
             }
 
-            return retMsg;
+            return resMsg;
         }
 
         #endregion

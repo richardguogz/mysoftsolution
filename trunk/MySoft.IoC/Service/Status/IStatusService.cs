@@ -13,10 +13,21 @@ namespace MySoft.IoC
     public interface IStatusService
     {
         /// <summary>
-        /// 获取状态信息
+        /// 获取总的服务状态信息
         /// </summary>
         /// <returns></returns>
         ServerStatus GetServerStatus();
+
+        /// <summary>
+        /// 清除服务器状态
+        /// </summary>
+        void ClearServerStatus();
+
+        /// <summary>
+        /// 获取时段的服务状态信息
+        /// </summary>
+        /// <returns></returns>
+        IList<TimeServerStatus> GetTimeServerStatus();
 
         /// <summary>
         /// 获取所有的终结点

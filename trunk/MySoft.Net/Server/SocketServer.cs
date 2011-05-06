@@ -444,7 +444,7 @@ namespace MySoft.Net.Server
                     {
                         if (!this.OnConnectFilter(e))
                         {
-                            LogOutEvent(null, LogType.Error, string.Format("The Socket Not Connect {0}！", e.AcceptSocket.RemoteEndPoint));
+                            LogOutEvent(null, LogType.Warning, string.Format("The Socket Not Connect {0}！", e.AcceptSocket.RemoteEndPoint));
                             e.AcceptSocket = null;
                             SocketAsynPool.Push(e);
 
@@ -471,7 +471,7 @@ namespace MySoft.Net.Server
                 {
                     e.AcceptSocket = null;
                     SocketAsynPool.Push(e);
-                    LogOutEvent(null, LogType.Error, "Not Accep！");
+                    LogOutEvent(null, LogType.Warning, "Not Accep！");
                 }
             }
             finally
@@ -498,7 +498,7 @@ namespace MySoft.Net.Server
             }
             else
             {
-                string message = string.Format("User Disconnect {0}！", e.AcceptSocket.RemoteEndPoint);
+                string message = string.Format("The Socket Disconnect {0}！", e.AcceptSocket.RemoteEndPoint);
                 LogOutEvent(null, LogType.Error, message);
 
                 if (OnDisconnected != null)

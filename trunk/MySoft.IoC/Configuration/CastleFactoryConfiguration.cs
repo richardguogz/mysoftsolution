@@ -17,11 +17,13 @@ namespace MySoft.IoC.Configuration
         private bool compress = false;
 
         private IDictionary<string, ServiceNode> hosts = new Dictionary<string, ServiceNode>();
-        private string defaultservice;  //默认服务
-        private bool throwerror = true; //抛出异常
-        private int showlogtime = SimpleServiceContainer.DEFAULT_SHOWLOGTIME_NUMBER;  //超时多长输出日志，默认为1秒
+        private string defaultService;          //默认服务
+        private string appName;                 //host名称
+        private bool throwerror = true;         //抛出异常
+        private int logtime = SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER;       //超时多长输出日志，默认为1秒
         private int timeout = SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER;       //默认超时时间        10秒
         private int cachetime = SimpleServiceContainer.DEFAULT_CACHETIME_NUMBER;   //默认缓存时间        60秒
+        private int maxpool = SimpleServiceContainer.DEFAULT_CLIENTPOOL_NUMBER;    //默认的池大小
 
         /// <summary>
         /// 获取远程对象配置
@@ -62,14 +64,26 @@ namespace MySoft.IoC.Configuration
             if (xmlnode["cachetime"] != null && xmlnode["cachetime"].Value.Trim() != string.Empty)
                 cachetime = Convert.ToInt32(xmlnode["cachetime"].Value);
 
-            if (xmlnode["showlogtime"] != null && xmlnode["showlogtime"].Value.Trim() != string.Empty)
-                showlogtime = Convert.ToInt32(xmlnode["showlogtime"].Value);
+            if (xmlnode["logtime"] != null && xmlnode["logtime"].Value.Trim() != string.Empty)
+                logtime = Convert.ToInt32(xmlnode["logtime"].Value);
 
             if (xmlnode["throwerror"] != null && xmlnode["throwerror"].Value.Trim() != string.Empty)
                 throwerror = Convert.ToBoolean(xmlnode["throwerror"].Value);
 
             if (xmlnode["default"] != null && xmlnode["default"].Value.Trim() != string.Empty)
-                defaultservice = xmlnode["default"].Value;
+                defaultService = xmlnode["default"].Value;
+
+            if (xmlnode["appname"] != null && xmlnode["appname"].Value.Trim() != string.Empty)
+                appName = xmlnode["appname"].Value;
+
+            if (xmlnode["maxpool"] != null && xmlnode["maxpool"].Value.Trim() != string.Empty)
+                maxpool = Convert.ToInt32(xmlnode["maxpool"].Value);
+
+            //如果app名称为空
+            if (string.IsNullOrEmpty(appName))
+            {
+                throw new IoCException("App name must be provided！");
+            }
 
             foreach (XmlNode child in node.ChildNodes)
             {
@@ -86,9 +100,9 @@ namespace MySoft.IoC.Configuration
                     service.Port = Convert.ToInt32(childnode["port"].Value);
 
                     //处理默认的服务
-                    if (string.IsNullOrEmpty(defaultservice))
+                    if (string.IsNullOrEmpty(defaultService))
                     {
-                        defaultservice = service.Name;
+                        defaultService = service.Name;
                     }
 
                     hosts.Add(service.Name, service);
@@ -102,9 +116,9 @@ namespace MySoft.IoC.Configuration
             }
 
             //判断是否包含默认的服务
-            if (!hosts.ContainsKey(defaultservice))
+            if (!hosts.ContainsKey(defaultService))
             {
-                throw new IoCException("Not find the default service node [" + defaultservice + "]！");
+                throw new IoCException("Not find the default service node [" + defaultService + "]！");
             }
         }
 
@@ -116,6 +130,16 @@ namespace MySoft.IoC.Configuration
         {
             get { return type; }
             set { type = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the app name.
+        /// </summary>
+        /// <value>The host name.</value>
+        public string AppName
+        {
+            get { return appName; }
+            set { appName = value; }
         }
 
         /// <summary>
@@ -159,13 +183,13 @@ namespace MySoft.IoC.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the showlogtime
+        /// Gets or sets the logtime
         /// </summary>
-        /// <value>The showlogtime.</value>
+        /// <value>The logtime.</value>
         public int ShowlogTime
         {
-            get { return showlogtime; }
-            set { showlogtime = value; }
+            get { return logtime; }
+            set { logtime = value; }
         }
 
         /// <summary>
@@ -174,8 +198,8 @@ namespace MySoft.IoC.Configuration
         /// <value>The default.</value>
         public string Default
         {
-            get { return defaultservice; }
-            set { defaultservice = value; }
+            get { return defaultService; }
+            set { defaultService = value; }
         }
 
         /// <summary>
@@ -186,6 +210,16 @@ namespace MySoft.IoC.Configuration
         {
             get { return throwerror; }
             set { throwerror = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maxpool
+        /// </summary>
+        /// <value>The timeout.</value>
+        public int MaxPool
+        {
+            get { return maxpool; }
+            set { maxpool = value; }
         }
 
         /// <summary>

@@ -20,11 +20,6 @@ namespace MySoft.IoC
     /// </summary>
     public sealed class SimpleServiceContainer : IServiceContainer
     {
-        /// <summary>
-        /// 同步锁对象
-        /// </summary>
-        private readonly object syncObject = new object();
-
         #region Const Members
 
         /// <summary>
@@ -38,9 +33,9 @@ namespace MySoft.IoC
         public const int DEFAULT_CACHETIME_NUMBER = 60000;
 
         /// <summary>
-        /// The default showlogtime number.
+        /// The default logtime number.
         /// </summary>
-        public const int DEFAULT_SHOWLOGTIME_NUMBER = 1000;
+        public const int DEFAULT_LOGTIME_NUMBER = 1000;
 
         /// <summary>
         /// The default maxconnect number.
@@ -52,6 +47,11 @@ namespace MySoft.IoC
         /// </summary>
         public const int DEFAULT_MAXBUFFER_NUMBER = 4096;
 
+        /// <summary>
+        /// The default maxpool number.
+        /// </summary>
+        public const int DEFAULT_CLIENTPOOL_NUMBER = 5;
+
         #endregion
 
         #region Private Members
@@ -59,11 +59,11 @@ namespace MySoft.IoC
         private IWindsorContainer container;
         private IServiceProxy serviceProxy;
         private ICacheDependent cache;
-        private int showlogtime;
+        private int logtime;
 
-        private void Init(int showlogtime, IDictionary serviceKeyTypes)
+        private void Init(int logtime, IDictionary serviceKeyTypes)
         {
-            this.showlogtime = showlogtime;
+            this.logtime = logtime;
             if (System.Configuration.ConfigurationManager.GetSection("castle") != null)
             {
                 container = new WindsorContainer(new XmlInterpreter());
@@ -165,9 +165,9 @@ namespace MySoft.IoC
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
         /// <param name="config"></param>
-        public SimpleServiceContainer(int showlogtime)
+        public SimpleServiceContainer(int logtime)
         {
-            Init(showlogtime, null);
+            Init(logtime, null);
         }
 
         /// <summary>
@@ -175,9 +175,9 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(int showlogtime, IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(int logtime, IDictionary serviceKeyTypes)
         {
-            Init(showlogtime, serviceKeyTypes);
+            Init(logtime, serviceKeyTypes);
         }
 
         #endregion
@@ -299,10 +299,7 @@ namespace MySoft.IoC
             IService localService = (IService)GetLocalService(reqMsg.ServiceName);
             if (localService != null)
             {
-                lock (syncObject)
-                {
-                    return localService.CallService(reqMsg, showlogtime);
-                }
+                return localService.CallService(reqMsg, logtime);
             }
 
             //判断代理是否为空
@@ -314,21 +311,13 @@ namespace MySoft.IoC
             {
                 try
                 {
-                    lock (syncObject)
-                    {
-                        //通过代理调用
-                        return serviceProxy.CallMethod(reqMsg, showlogtime);
-                    }
+                    //通过代理调用
+                    return serviceProxy.CallMethod(reqMsg, logtime);
                 }
                 catch (Exception ex)
                 {
                     WriteError(ex);
-
-                    //如果要抛出错误，则抛出
-                    if (serviceProxy.ThrowError)
-                        throw ex;
-                    else
-                        return null;
+                    throw ex;
                 }
             }
         }

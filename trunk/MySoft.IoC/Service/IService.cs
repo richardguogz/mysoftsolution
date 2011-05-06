@@ -19,6 +19,6 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="msg">The MSG.</param>
         /// <returns>The result.</returns>
-        ResponseMessage CallService(RequestMessage msg, int showlogtime);
+        ResponseMessage CallService(RequestMessage msg, int logtime);
     }
 }

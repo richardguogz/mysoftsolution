@@ -44,6 +44,14 @@ namespace MySoft.Net.Client
         private Socket socket;
 
         /// <summary>
+        /// SOCKET对象
+        /// </summary>
+        public Socket Socket
+        {
+            get { return socket; }
+        }
+
+        /// <summary>
         /// 连接成功事件
         /// </summary>
         public event ConnectionEventHandler OnConnected;

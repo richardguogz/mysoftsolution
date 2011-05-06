@@ -13,250 +13,179 @@ using MySoft.Logger;
 
 namespace MySoft.IoC
 {
-    internal class ServiceProxy : ILogable, IServiceProxy
+    internal class ServiceProxy : IServiceProxy
     {
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private SocketClientConfiguration config;
-        private SocketClientManager manager;
-        private string serviceName;
-        private bool encrypt = false;
-        private bool compress = false;
-        private bool throwerror = true;
-        private bool connected = false;
-        private int timeout;
-
-        //threading
+        private ServiceRequestPool<ResponseMessage> requestPool;
+        private string displayName;
         private SmartThreadPool pool;
 
-        /// <summary>
-        /// Gets or sets the encrypt.
-        /// </summary>
-        public bool Encrypt
-        {
-            get
-            {
-                return encrypt;
-            }
-            set
-            {
-                encrypt = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the compress.
-        /// </summary>
-        public bool Compress
-        {
-            get
-            {
-                return compress;
-            }
-            set
-            {
-                compress = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the throwerror
-        /// </summary>
-        /// <value>The throwerror.</value>
-        public bool ThrowError
-        {
-            get
-            {
-                return throwerror;
-            }
-            set
-            {
-                throwerror = value;
-            }
-        }
-
-        /// <summary>
-        /// Socket超时时间
-        /// </summary>
-        public int Timeout
-        {
-            get
-            {
-                return timeout;
-            }
-            set
-            {
-                timeout = value;
-            }
-        }
-
-        public ServiceProxy(SocketClientConfiguration config, string serviceName)
+        public ServiceProxy(SocketClientConfiguration config, string displayName)
         {
             this.config = config;
-            this.serviceName = serviceName;
+            this.displayName = displayName;
 
             #region socket通讯
 
             //实例化线程池
-            pool = new SmartThreadPool(30 * 1000, 1000, 0);
+            pool = new SmartThreadPool(30 * 1000, config.Pools * 2, 10);
 
-            manager = new SocketClientManager();
-            manager.OnConnected += new ConnectionEventHandler(SocketClientManager_OnConnected);
-            manager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
-            manager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
+            //实例化服务池
+            requestPool = new ServiceRequestPool<ResponseMessage>(config.Pools);
+            for (int i = 0; i < config.Pools; i++)
+            {
+                var request = new ServiceRequest<ResponseMessage>(config.IP, config.Port);
+                request.SendCallback += new SendMessageEventHandler<ResponseMessage>(client_SendMessage);
 
-            //开始连接到服务器
-            StartConnectThread();
+                //请求端入栈
+                requestPool.Push(request);
+            }
 
             #endregion
         }
 
-        /// <summary>
-        /// 连接到服务器
-        /// </summary>
-        private void StartConnectThread()
+        void client_SendMessage(ServiceRequestEventArgs<ResponseMessage> message)
         {
-            //启动检测线程
-            Thread thread = new Thread(() =>
+            //如果未过期，则加入队列中
+            if (message.Response.Expiration >= DateTime.Now)
             {
-                while (true)
+                lock (responses)
                 {
-                    if (!connected)
+                    var response = message.Response;
+                    responses[response.TransactionId] = response;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 调用方法
+        /// </summary>
+        /// <param name="reqMsg"></param>
+        /// <param name="logtime"></param>
+        /// <returns></returns>
+        public ResponseMessage CallMethod(RequestMessage reqMsg, int logtime)
+        {
+            //如果池为空，则检测
+            if (requestPool.Count == 0)
+            {
+                CheckPool(reqMsg.Timeout);
+            }
+
+            var request = requestPool.Pop();
+            if (request == null) return null;
+
+            try
+            {
+                //如果连接断开，直接抛出异常
+                if (!request.Connected)
+                {
+                    throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, displayName));
+                }
+
+                //发送数据包到服务端
+                bool isSend = request.Send(BufferFormat.FormatFCA(reqMsg));
+
+                if (isSend)
+                {
+                    //开始计时
+                    int t1 = System.Environment.TickCount;
+
+                    //获取消息
+                    ResponseMessage resMsg = GetResponse(reqMsg, t1);
+
+                    if (resMsg == null)
                     {
-                        //尝试连接到服务器
-                        manager.Client.BeginConnectTo(config.IP, config.Port);
+                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.TransactionId));
                     }
 
-                    //等待5秒
-                    Thread.Sleep(5000);
+                    //如果发生了异常，则抛出异常
+                    if (resMsg.Exception != null)
+                    {
+                        throw resMsg.Exception;
+                    }
+
+                    int t2 = System.Environment.TickCount - t1;
+
+                    //如果时间超过预定，则输出日志
+                    if (t2 > logtime)
+                    {
+                        //SerializationManager.Serialize(retMsg)
+                        if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters,
+                            "Spent time: (" + t2.ToString() + ") ms.", resMsg.Message, resMsg.TransactionId), LogType.Warning);
+                    }
+
+                    return resMsg;
+                }
+                else
+                {
+                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
+                }
+            }
+            finally
+            {
+                //将SocketRequest入栈
+                requestPool.Push(request);
+            }
+        }
+
+        private ResponseMessage GetResponse(RequestMessage reqMsg, int beginTick)
+        {
+            //启动线程来处理数据
+            IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
+            {
+                ResponseMessage resMsg = null;
+                RequestMessage request = state as RequestMessage;
+
+                while (true)
+                {
+                    resMsg = GetData<ResponseMessage>(responses, request.TransactionId);
+
+                    //如果有数据返回，则响应
+                    if (resMsg != null) break;
+
+                    //防止cpu使用率过高
+                    Thread.Sleep(1);
+                }
+
+                return resMsg;
+
+            }, reqMsg);
+
+            if (!pool.WaitForIdle(reqMsg.Timeout))
+            {
+                if (!wir.IsCompleted) wir.Cancel(true);
+                int timeout = System.Environment.TickCount - beginTick;
+                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, timeout, reqMsg.TransactionId));
+            }
+
+            //从线程获取返回信息，超时等待
+            return wir.GetResult();
+        }
+
+        private void CheckPool(int timeout)
+        {
+            //启动线程来处理数据
+            IWorkItemResult wir = pool.QueueWorkItem(() =>
+            {
+                while (requestPool.Count == 0)
+                {
+                    //防止cpu使用率过高
+                    Thread.Sleep(1);
                 }
             });
 
-            thread.IsBackground = true;
-            thread.Start();
-        }
-
-        public ResponseMessage CallMethod(RequestMessage msg, int showlogtime)
-        {
-            //如果连接断开，直接抛出异常
-            if (!connected)
+            //等待1秒，如果没有池可用，则返回
+            if (!pool.WaitForIdle(timeout))
             {
-                throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, serviceName));
-            }
-
-            //处理过期时间
-            msg.Expiration = DateTime.Now.AddMilliseconds(msg.Timeout);
-
-            int t1 = System.Environment.TickCount;
-
-            //发送数据包到服务端
-            bool isSend = manager.Client.SendData(BufferFormat.FormatFCA(msg));
-
-            if (isSend)
-            {
-                //启动线程来处理数据
-                IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
-                {
-                    ResponseMessage ret = null;
-
-                    RequestMessage reqMsg = state as RequestMessage;
-                    while (true)
-                    {
-                        ret = GetData<ResponseMessage>(responses, reqMsg.TransactionId);
-
-                        //如果有数据返回，则响应
-                        if (ret != null) break;
-
-                        //防止cpu使用率过高
-                        Thread.Sleep(1);
-                    }
-
-                    return ret;
-                }, msg);
-
-                if (!pool.WaitForIdle(msg.Timeout))
-                {
-                    if (!wir.IsCompleted) wir.Cancel(true);
-                    int timeout = System.Environment.TickCount - t1;
-                    throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, timeout, msg.TransactionId));
-                }
-
-                //从线程获取返回信息，超时等待
-                ResponseMessage retMsg = wir.GetResult();
-                if (retMsg == null)
-                {
-                    throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, msg.ServiceName, msg.SubServiceName, msg.TransactionId));
-                }
-
-                //如果发生了异常，则抛出异常
-                if (retMsg.Exception != null)
-                {
-                    throw retMsg.Exception;
-                }
-
-                int t2 = System.Environment.TickCount - t1;
-
-                //如果时间超过预定，则输出日志
-                if (t2 > showlogtime)
-                {
-                    //SerializationManager.Serialize(retMsg)
-                    if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, retMsg.ServiceName, retMsg.SubServiceName, msg.Parameters,
-                        "Spent time: (" + t2.ToString() + ") ms.", retMsg.Message, retMsg.TransactionId), LogType.Warning);
-                }
-
-                return retMsg;
-            }
-            else
-            {
-                throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
+                if (!wir.IsCompleted) wir.Cancel(true);
+                throw new IoCException("Socket pool is empty！");
             }
         }
 
         #region ILogable Members
 
         public event LogEventHandler OnLog;
-
-        #endregion
-
-        #region Socket消息委托
-
-        void SocketClientManager_OnReceived(byte[] buffer, Socket socket)
-        {
-            BufferRead read = new BufferRead(buffer);
-
-            int length;
-            int cmd;
-
-            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && length == read.Length)
-            {
-                if (cmd == 10000) //返回数据包
-                {
-                    object responseObject;
-                    if (read.ReadObject(out responseObject))
-                    {
-                        ResponseMessage result = responseObject as ResponseMessage;
-                        lock (responses)
-                        {
-                            responses[result.TransactionId] = result;
-                        }
-                    }
-                }
-            }
-        }
-
-        void SocketClientManager_OnDisconnected(string message, Socket socket)
-        {
-            //断开服务器
-            connected = false;
-
-            //断开套接字
-            socket.Disconnect(true);
-        }
-
-        void SocketClientManager_OnConnected(string message, bool connected, Socket socket)
-        {
-            //连上服务器
-            this.connected = connected;
-        }
 
         #endregion
 

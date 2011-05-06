@@ -8,6 +8,7 @@ using MySoft.Logger;
 using MySoft.Net.Server;
 using MySoft.Net.Sockets;
 using System.Threading;
+using System.Linq;
 
 namespace MySoft.IoC
 {
@@ -20,7 +21,8 @@ namespace MySoft.IoC
         private CastleServiceConfiguration config;
         private SocketServerManager manager;
         private IList<EndPoint> clients;
-        private ServerStatus status;
+        private IList<TimeServerStatus> statuslist;
+        private TimeServerStatus status;
 
         /// <summary>
         /// 实例化CastleService
@@ -34,11 +36,12 @@ namespace MySoft.IoC
             Hashtable hashTypes = new Hashtable();
             hashTypes[typeof(IStatusService)] = this;
 
-            this.container = new SimpleServiceContainer(config.LogTimeout, hashTypes);
+            this.container = new SimpleServiceContainer(config.LogTime, hashTypes);
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
-            this.status = new ServerStatus();
+            this.statuslist = new List<TimeServerStatus>();
+            this.status = new TimeServerStatus();
 
             //服务器配置
             SocketServerConfiguration ssc = new SocketServerConfiguration
@@ -61,9 +64,27 @@ namespace MySoft.IoC
                 while (true)
                 {
                     //计算时间
-                    status.TotalSeconds++;
+                    if (status.RequestCount > 0)
+                    {
+                        TimeServerStatus state = new TimeServerStatus
+                        {
+                            RequestCount = status.RequestCount,
+                            ErrorCount = status.ErrorCount,
+                            ElapsedTime = status.ElapsedTime,
+                            DataFlow = status.DataFlow
+                        };
 
-                    //每秒处理一次
+                        //重新实例化状态
+                        status = new TimeServerStatus();
+
+                        //将状态添加到列表中
+                        lock (statuslist)
+                        {
+                            statuslist.Add(state);
+                        }
+                    }
+
+                    //每1秒处理一次
                     Thread.Sleep(1000);
                 }
             });
@@ -144,7 +165,10 @@ namespace MySoft.IoC
             else Console.WriteLine("User connection {0}！", socketAsync.AcceptSocket.RemoteEndPoint);
 
             //将地址加入到列表中
-            clients.Add(socketAsync.AcceptSocket.RemoteEndPoint);
+            lock (clients)
+            {
+                clients.Add(socketAsync.AcceptSocket.RemoteEndPoint);
+            }
 
             return true;
         }
@@ -162,7 +186,10 @@ namespace MySoft.IoC
             socketAsync.UserToken = null;
 
             //将地址从列表中移除
-            clients.Remove(socketAsync.AcceptSocket.RemoteEndPoint);
+            lock (clients)
+            {
+                clients.Remove(socketAsync.AcceptSocket.RemoteEndPoint);
+            }
 
             socketAsync.AcceptSocket.Close();
         }
@@ -217,7 +244,8 @@ namespace MySoft.IoC
             try
             {
                 //处理请求数
-                status.RequestCount++;
+                if (request.ServiceName != typeof(IStatusService).FullName)
+                    status.RequestCount++;
 
                 //获取返回的消息
                 response = container.CallService(request);
@@ -225,7 +253,8 @@ namespace MySoft.IoC
             catch (Exception ex)
             {
                 //处理错误数
-                status.ErrorCount++;
+                if (request.ServiceName != typeof(IStatusService).FullName)
+                    status.ErrorCount++;
 
                 if (OnError != null) OnError(new IoCException(ex.Message, ex));
             }
@@ -234,15 +263,23 @@ namespace MySoft.IoC
                 int t2 = Environment.TickCount - t1;
 
                 //处理时间
-                status.ElapsedTime += t2;
+                if (request.ServiceName != typeof(IStatusService).FullName)
+                    status.ElapsedTime += t2;
             }
 
             if (response != null)
             {
-                byte[] data = BufferFormat.FormatFCA(response);
-
                 //处理流量
-                status.DataFlow += data.Length;
+                if (request.ServiceName != typeof(IStatusService).FullName)
+                {
+                    //计算流量
+                    if (response.Data != null)
+                    {
+                        status.DataFlow += response.Data.Length;
+                    }
+                }
+
+                byte[] data = BufferFormat.FormatFCA(response);
 
                 //发送数据到服务端
                 manager.Server.SendData(socketAsync.AcceptSocket, data);
@@ -254,12 +291,42 @@ namespace MySoft.IoC
         #region IStatusService 成员
 
         /// <summary>
+        /// 获取服务状态列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<TimeServerStatus> GetTimeServerStatus()
+        {
+            return statuslist;
+        }
+
+        /// <summary>
+        /// 清除服务器状态
+        /// </summary>
+        public void ClearServerStatus()
+        {
+            lock (statuslist)
+            {
+                statuslist.Clear();
+            }
+        }
+
+        /// <summary>
         /// 服务状态信息
         /// </summary>
         /// <returns></returns>
         public ServerStatus GetServerStatus()
         {
-            return status;
+            //统计状态信息
+            ServerStatus state = new ServerStatus
+            {
+                TotalSeconds = statuslist.Count,
+                RequestCount = statuslist.Sum(p => p.RequestCount),
+                ErrorCount = statuslist.Sum(p => p.ErrorCount),
+                ElapsedTime = statuslist.Sum(p => p.ElapsedTime),
+                DataFlow = statuslist.Sum(p => p.DataFlow),
+            };
+
+            return state;
         }
 
         /// <summary>

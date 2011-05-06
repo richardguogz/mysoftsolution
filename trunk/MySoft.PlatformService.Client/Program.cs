@@ -82,18 +82,18 @@ namespace MySoft.PlatformService.Client
             //CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
             //Console.ReadKey();
 
-            int count = 200;
+            int count = 100;
+
+            var castle = CastleFactory.Create();
+            castle.InjectCacheDependent(DefaultCacheDependent.Create());
+            castle.OnLog += new LogEventHandler(castle_OnLog);
+            castle.OnError += new ErrorLogEventHandler(castle_OnError);
+            IUserService service = castle.GetService<IUserService>();
 
             for (int i = 0; i < count; i++)
             {
                 try
                 {
-                    var castle = CastleFactory.CreateNew();
-                    //castle.InjectCacheDependent(DefaultCacheDependent.Create());
-                    castle.OnLog += new LogEventHandler(castle_OnLog);
-                    castle.OnError += new ErrorLogEventHandler(castle_OnError);
-                    IUserService service = castle.GetService<IUserService>();
-
                     Thread thread = new Thread(DoWork);
                     thread.Name = string.Format("Thread-->{0}", i);
                     thread.IsBackground = true;

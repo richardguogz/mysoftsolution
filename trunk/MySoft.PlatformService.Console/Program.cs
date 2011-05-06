@@ -26,7 +26,7 @@ namespace MySoft.PlatformService.Console
             server.Start();
 
             System.Console.WriteLine("Server host -> {0}", server.ServerUrl);
-            System.Console.WriteLine("Logger status: On  -> Show log time: {0} ms", config.LogTimeout);
+            System.Console.WriteLine("Logger status: On  -> Show log time: {0} ms", config.LogTime);
             System.Console.WriteLine("Press any key to exit and stop service...");
             System.Console.ReadLine();
         }
