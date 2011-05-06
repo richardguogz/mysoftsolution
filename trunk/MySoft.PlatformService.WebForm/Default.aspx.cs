@@ -13,6 +13,7 @@ namespace MySoft.PlatformService.WebForm
     public partial class _Default : System.Web.UI.Page
     {
         protected ServerStatus status;
+        protected SecondStatus timeStatus;
         protected IList<EndPoint> clients;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -20,6 +21,7 @@ namespace MySoft.PlatformService.WebForm
             try
             {
                 status = CastleFactory.Create().GetStatusService().GetServerStatus();
+                timeStatus = CastleFactory.Create().GetStatusService().GetLastSecondStatus();
                 clients = CastleFactory.Create().GetStatusService().GetEndPoints();
             }
             catch (Exception ex)

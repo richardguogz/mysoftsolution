@@ -11,7 +11,7 @@ namespace MySoft.IoC
     /// 每秒服务器状态信息
     /// </summary>
     [Serializable]
-    public class TimeServerStatus
+    public class SecondStatus
     {
         protected long dataFlow;
         /// <summary>
@@ -94,7 +94,7 @@ namespace MySoft.IoC
     /// 服务器状态信息
     /// </summary>
     [Serializable]
-    public class ServerStatus : TimeServerStatus
+    public class ServerStatus : SecondStatus
     {
         private int totalSeconds;
         /// <summary>

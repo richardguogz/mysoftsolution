@@ -21,8 +21,8 @@ namespace MySoft.IoC
         private CastleServiceConfiguration config;
         private SocketServerManager manager;
         private IList<EndPoint> clients;
-        private IList<TimeServerStatus> statuslist;
-        private TimeServerStatus status;
+        private IList<SecondStatus> statuslist;
+        private SecondStatus status;
 
         /// <summary>
         /// 实例化CastleService
@@ -40,8 +40,8 @@ namespace MySoft.IoC
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
-            this.statuslist = new List<TimeServerStatus>();
-            this.status = new TimeServerStatus();
+            this.statuslist = new List<SecondStatus>();
+            this.status = new SecondStatus();
 
             //服务器配置
             SocketServerConfiguration ssc = new SocketServerConfiguration
@@ -66,7 +66,7 @@ namespace MySoft.IoC
                     //计算时间
                     if (status.RequestCount > 0)
                     {
-                        TimeServerStatus state = new TimeServerStatus
+                        SecondStatus state = new SecondStatus
                         {
                             RequestCount = status.RequestCount,
                             ErrorCount = status.ErrorCount,
@@ -75,7 +75,7 @@ namespace MySoft.IoC
                         };
 
                         //重新实例化状态
-                        status = new TimeServerStatus();
+                        status = new SecondStatus();
 
                         //将状态添加到列表中
                         lock (statuslist)
@@ -297,10 +297,19 @@ namespace MySoft.IoC
         #region IStatusService 成员
 
         /// <summary>
+        /// 获取最后一次服务状态
+        /// </summary>
+        /// <returns></returns>
+        public SecondStatus GetLastSecondStatus()
+        {
+            return statuslist.LastOrDefault();
+        }
+
+        /// <summary>
         /// 获取服务状态列表
         /// </summary>
         /// <returns></returns>
-        public IList<TimeServerStatus> GetTimeServerStatus()
+        public IList<SecondStatus> GetSecondStatusList()
         {
             return statuslist;
         }

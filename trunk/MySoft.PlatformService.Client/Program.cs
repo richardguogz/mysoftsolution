@@ -154,23 +154,23 @@ namespace MySoft.PlatformService.Client
                     {
                         string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
                         //WriteMessage(msg);
-                        castle_OnLog(msg, LogType.Error);
+                        //castle_OnLog(msg, LogType.Error);
                     }
                     else
                     {
                         string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, userid); //info.Description
                         //WriteMessage(msg);
-                        castle_OnLog(msg, LogType.Information);
+                        //castle_OnLog(msg, LogType.Information);
                     }
                 }
                 catch (Exception ex)
                 {
                     string msg = string.Format("线程：{0} 耗时：{1} ms 异常：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, ex.Message);
                     //WriteMessage(msg);
-                    castle_OnLog(msg, LogType.Error);
+                    //castle_OnLog(msg, LogType.Error);
                 }
 
-                Thread.Sleep(10);
+                Thread.Sleep(100);
             }
         }
     }

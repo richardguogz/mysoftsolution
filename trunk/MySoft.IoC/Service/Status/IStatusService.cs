@@ -24,10 +24,16 @@ namespace MySoft.IoC
         void ClearServerStatus();
 
         /// <summary>
+        /// 获取最后一次服务状态
+        /// </summary>
+        /// <returns></returns>
+        SecondStatus GetLastSecondStatus();
+
+        /// <summary>
         /// 获取时段的服务状态信息
         /// </summary>
         /// <returns></returns>
-        IList<TimeServerStatus> GetTimeServerStatus();
+        IList<SecondStatus> GetSecondStatusList();
 
         /// <summary>
         /// 获取所有的终结点

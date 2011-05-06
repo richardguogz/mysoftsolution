@@ -26,6 +26,15 @@
             <% } %>
         </ul>
         <ul>
+            <%if (timeStatus != null)
+              { %>
+                <li>请求数:    <%=timeStatus.RequestCount%> times</li>
+                <li>错误数:    <%=timeStatus.ErrorCount%> times</li>
+                <li>耗时:      <%=timeStatus.ElapsedTime%> ms</li>
+                <li>流量:      <%=timeStatus.DataFlow%> bytes</li>
+            <% } %>
+        </ul>
+        <ul>
             <% if (clients != null)
                {
                    var index = 1;
