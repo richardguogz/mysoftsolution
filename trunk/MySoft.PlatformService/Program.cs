@@ -66,7 +66,7 @@ namespace MySoft.PlatformService
                         server.UninstallService();
                         break;
                     default:
-                        Console.WriteLine("输入的命令无效！");
+                        Console.WriteLine("输入的命令无效，输入/?显示帮助！");
                         break;
                 }
 
