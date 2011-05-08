@@ -33,8 +33,8 @@ namespace MySoft.Installer.Configuration
         /// <summary>
         /// 服务信息
         /// </summary>
-        [XmlElement("service")]
-        public string Service { get; set; }
+        [XmlElement("serviceType")]
+        public string ServiceType { get; set; }
 
         /// <summary>
         /// 服务名称

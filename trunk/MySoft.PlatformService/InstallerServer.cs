@@ -26,7 +26,7 @@ namespace MySoft.PlatformService
                 //读取配置节
                 this.config = InstallerConfiguration.GetConfig();
 
-                var type = Type.GetType(config.Service);
+                var type = Type.GetType(config.ServiceType);
                 if (type == null) throw new Exception("加载服务失败！");
                 this.service = (IServiceRun)Activator.CreateInstance(type);
             }

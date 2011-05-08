@@ -84,6 +84,7 @@ namespace MySoft.PlatformService
             Console.WriteLine(@"/install : 安装为window服务");
             Console.WriteLine(@"/uninstall : 卸载window服务");
             Console.WriteLine(@"/? : 显示帮助");
+            Console.WriteLine("------------------------------------");
         }
     }
 }
