@@ -65,6 +65,9 @@ namespace MySoft.PlatformService
                     case "/uninstall":
                         server.UninstallService();
                         break;
+                    default:
+                        Console.WriteLine("输入的命令无效！");
+                        break;
                 }
 
                 Console.BackgroundColor = ConsoleColor.Black;
