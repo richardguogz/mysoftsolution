@@ -122,7 +122,32 @@ namespace MySoft.IoC
         /// </summary>
         public string ServerUrl
         {
-            get { return string.Format("{0}://{1}/", manager.Server.Sock.ProtocolType, manager.Server.Sock.LocalEndPoint).ToLower(); }
+            get
+            {
+                return string.Format("{0}://{1}/", manager.Server.Sock.ProtocolType, manager.Server.Sock.LocalEndPoint).ToLower();
+            }
+        }
+
+        /// <summary>
+        /// 最大连接数
+        /// </summary>
+        public int MaxConnect
+        {
+            get
+            {
+                return config.MaxConnect;
+            }
+        }
+
+        /// <summary>
+        /// 最大缓冲区
+        /// </summary>
+        public int MaxBuffer
+        {
+            get
+            {
+                return config.MaxConnect * config.MaxBuffer;
+            }
         }
 
         /// <summary>
@@ -168,7 +193,6 @@ namespace MySoft.IoC
         bool SocketServerManager_OnConnectFilter(SocketAsyncEventArgs socketAsync)
         {
             if (OnLog != null) OnLog(string.Format("User connection {0}！", socketAsync.AcceptSocket.RemoteEndPoint), LogType.Information);
-            else Console.WriteLine("User connection {0}！", socketAsync.AcceptSocket.RemoteEndPoint);
 
             //将地址加入到列表中
             lock (clients)
@@ -181,14 +205,12 @@ namespace MySoft.IoC
 
         void SocketServerManager_OnMessageOutput(object sender, LogOutEventArgs e)
         {
-            if (OnLog != null) OnLog(string.Format("{0} ==> {1}", e.MessageType, e.Message), e.MessageType);
-            else Console.WriteLine("{0} <==> {1}", e.MessageType, e.Message);
+            if (OnLog != null) OnLog(e.Message, e.MessageType);
         }
 
         void SocketServerManager_OnDisconnected(int error, SocketAsyncEventArgs socketAsync)
         {
             if (OnError != null) OnLog(string.Format("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint), LogType.Error);
-            else Console.WriteLine("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint);
             socketAsync.UserToken = null;
 
             //将地址从列表中移除
