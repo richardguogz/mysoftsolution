@@ -51,6 +51,7 @@ namespace MySoft.PlatformService
                     case "/console":
                         server.StartConsole();
                         Console.ReadLine();
+                        InitColor();
                         server.StopConsole();
                         break;
                     case "/start":
@@ -70,8 +71,7 @@ namespace MySoft.PlatformService
                         break;
                 }
 
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.Gray;
+                InitColor();
                 optionalArgs = string.Empty;
             }
         }
@@ -88,6 +88,12 @@ namespace MySoft.PlatformService
             Console.WriteLine(@"/uninstall : 卸载window服务");
             Console.WriteLine(@"/? : 显示帮助");
             Console.WriteLine("------------------------------------");
+        }
+
+        static void InitColor()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }

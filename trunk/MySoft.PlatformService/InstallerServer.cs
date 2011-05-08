@@ -96,6 +96,7 @@ namespace MySoft.PlatformService
             service.StartMode = StartMode.Console;
             service.Start();
 
+            InitColor();
             Console.WriteLine("控制台已经启动......");
         }
 
@@ -108,6 +109,7 @@ namespace MySoft.PlatformService
             service.StartMode = StartMode.Console;
             service.Stop();
 
+            InitColor();
             Console.WriteLine("控制台已经退出......");
         }
 
@@ -198,7 +200,14 @@ namespace MySoft.PlatformService
             ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
             if (controller == null)
             {
-                ti.Install(new Hashtable());
+                try
+                {
+                    ti.Install(new Hashtable());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
@@ -216,17 +225,25 @@ namespace MySoft.PlatformService
             if (controller != null)
             {
                 //卸载之前先停止服务
-                if (controller.Status == ServiceControllerStatus.Running)
+                try
                 {
-                    StopService();
+                    ti.Uninstall(null);
                 }
-
-                ti.Uninstall(null);
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
                 PrintInstallMessage();
             }
+        }
+
+        private void InitColor()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }
