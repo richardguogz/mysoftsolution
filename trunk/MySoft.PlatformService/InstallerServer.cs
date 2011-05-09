@@ -20,31 +20,8 @@ namespace MySoft.PlatformService
 
         public InstallerServer()
         {
-            #region 动态加载服务
-
-            try
-            {
-                //读取配置节
-                this.config = InstallerConfiguration.GetConfig();
-
-                var type = Type.GetType(config.ServiceType);
-                if (type == null) throw new Exception("加载服务失败！");
-                this.service = (IServiceRun)Activator.CreateInstance(type);
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine(ex.InnerException.Message);
-                }
-                else
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-
-            #endregion
-
+            //读取配置节
+            this.config = InstallerConfiguration.GetConfig();
             this.ti = new TransactedInstaller();
             this.ti.BeforeInstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务正在安装......"); });
             this.ti.AfterInstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务安装完成！"); });
@@ -70,7 +47,35 @@ namespace MySoft.PlatformService
         /// </summary>
         public IServiceRun Service
         {
-            get { return service; }
+            get
+            {
+                if (service == null)
+                {
+                    #region 动态加载服务
+
+                    try
+                    {
+                        var type = Type.GetType(config.ServiceType);
+                        if (type == null) throw new Exception(string.Format("加载服务{0}失败！", config.ServiceType));
+                        this.service = (IServiceRun)Activator.CreateInstance(type);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine(ex.InnerException.Message);
+                        }
+                        else
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+
+                    #endregion
+                }
+
+                return service;
+            }
         }
 
         /// <summary>
@@ -120,10 +125,13 @@ namespace MySoft.PlatformService
                 }
             }
 
-            service.StartMode = StartMode.Console;
-            service.Start();
+            if (Service != null)
+            {
+                Service.StartMode = StartMode.Console;
+                Service.Start();
 
-            Console.WriteLine("控制台已经启动......");
+                Console.WriteLine("控制台已经启动......");
+            }
         }
 
         /// <summary>
@@ -132,10 +140,14 @@ namespace MySoft.PlatformService
         public void StopConsole()
         {
             if (config == null) return;
-            service.StartMode = StartMode.Console;
-            service.Stop();
 
-            Console.WriteLine("控制台已经退出......");
+            if (Service != null)
+            {
+                Service.StartMode = StartMode.Console;
+                Service.Stop();
+
+                Console.WriteLine("控制台已经退出......");
+            }
         }
 
         /// <summary>
@@ -158,7 +170,7 @@ namespace MySoft.PlatformService
                     try
                     {
                         controller.Start();
-                        controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
+                        controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
                         controller.Refresh();
 
                         if (controller.Status == ServiceControllerStatus.Running)
@@ -202,7 +214,7 @@ namespace MySoft.PlatformService
                     try
                     {
                         controller.Stop();
-                        controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+                        controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
                         controller.Refresh();
 
                         if (controller.Status == ServiceControllerStatus.Stopped)
