@@ -101,14 +101,7 @@ namespace MySoft.Remoting
                 T instance = (T)Activator.GetObject(typeof(T), objectUrl);
 
                 string key = string.Format("{0}${1}${2}", host.Name, serverUrl, m.Key);
-                if (!_RemoteObjects.ContainsKey(key))
-                {
-                    _RemoteObjects.Add(key, instance);
-                }
-                else
-                {
-                    _RemoteObjects[key] = instance;
-                }
+                _RemoteObjects[key] = instance;
             }
         }
 
@@ -128,8 +121,7 @@ namespace MySoft.Remoting
             {
                 string objectUrl = _RemotingConfiguration.GetRemoteObjectUrl(serverUrl, remoteObjectName);
                 T instance = (T)Activator.GetObject(typeof(T), objectUrl);
-
-                _RemoteObjects.Add(key, instance);
+                _RemoteObjects[key] = instance;
 
                 return instance;
             }
