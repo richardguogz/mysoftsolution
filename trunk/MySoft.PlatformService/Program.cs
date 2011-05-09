@@ -31,7 +31,12 @@ namespace MySoft.PlatformService
             {
                 if (string.IsNullOrEmpty(optionalArgs))
                 {
-                    optionalArgs = Console.ReadLine();
+                    string readLine = Console.ReadLine();
+                    args = readLine.Split(' ');
+                    if (args.Length > 0)
+                    {
+                        optionalArgs = args[0].Trim();
+                    }
                 }
 
                 //如果未接收到参数，则继续
@@ -45,19 +50,44 @@ namespace MySoft.PlatformService
                     case "/?":
                         PrintHelp();
                         break;
+                    case "/list":
+                        {
+                            string contains = null;
+                            if (args.Length == 2) contains = args[1].Trim();
+                            server.ListService(contains);
+                        }
+                        break;
                     case "/exit":
                         isExit = true;
                         break;
                     case "/console":
-                        server.StartConsole();
-                        Console.ReadLine();
-                        server.StopConsole();
+                        {
+                            server.StartConsole();
+                            Console.ReadLine();
+                            server.StopConsole();
+                        }
                         break;
                     case "/start":
-                        server.StartService();
+                        {
+                            string service = null;
+                            if (args.Length == 2) service = args[1].Trim();
+                            server.StartService(service);
+                        }
                         break;
                     case "/stop":
-                        server.StopService();
+                        {
+                            string service = null;
+                            if (args.Length == 2) service = args[1].Trim();
+                            server.StopService(service);
+                        }
+                        break;
+                    case "/restart":
+                        {
+                            string service = null;
+                            if (args.Length == 2) service = args[1].Trim();
+                            server.StopService(service);
+                            server.StartService(service);
+                        }
                         break;
                     case "/install":
                         server.InstallService();
@@ -83,9 +113,11 @@ namespace MySoft.PlatformService
             Console.WriteLine(@"/exit : 退出控制台");
             Console.WriteLine(@"/start : 启动服务");
             Console.WriteLine(@"/stop : 停止服务");
+            Console.WriteLine(@"/restart : 重启服务");
             Console.WriteLine(@"/install : 安装为window服务");
             Console.WriteLine(@"/uninstall : 卸载window服务");
             Console.WriteLine(@"/? : 显示帮助");
+            Console.WriteLine(@"/list -contains：列出服务");
             Console.WriteLine("------------------------------------");
         }
 

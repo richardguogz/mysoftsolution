@@ -73,9 +73,35 @@ namespace MySoft.PlatformService
             get { return service; }
         }
 
-        private void PrintInstallMessage()
+        /// <summary>
+        /// 列出服务
+        /// </summary>
+        public void ListService(string contains)
         {
-            Console.WriteLine("服务尚未安装,请安装window服务,输入'/?'查看帮助！");
+            Console.WriteLine("正在读取服务信息......");
+            if (string.IsNullOrEmpty(contains))
+            {
+                contains = "(Paltform Service)";
+            }
+
+            var list = InstallerUtils.GetServiceList(contains);
+            if (list.Count == 0)
+            {
+                Console.WriteLine("未能读取到相关的服务信息......");
+            }
+            else
+            {
+                foreach (var controller in list)
+                {
+                    Console.WriteLine("------------------------------------------------------------------------");
+                    Console.WriteLine("服务名：{0}", controller.ServiceName);
+                    Console.WriteLine("显示名：{0}", controller.DisplayName);
+                    Console.WriteLine("描  述：{0}", controller.Description);
+                    Console.WriteLine("状  态：{0}", controller.Status);
+                    Console.WriteLine("路  径：{0}", controller.ServicePath);
+                }
+                Console.WriteLine("------------------------------------------------------------------------");
+            }
         }
 
         /// <summary>
@@ -89,7 +115,7 @@ namespace MySoft.PlatformService
             {
                 if (controller.Status == ServiceControllerStatus.Running)
                 {
-                    Console.WriteLine("服务已经启动,不能控制台启动,请先停止服务后再执行该命令！");
+                    Console.WriteLine("服务已经启动,不能从控制台启动,请先停止服务后再执行该命令！");
                     return;
                 }
             }
@@ -115,25 +141,30 @@ namespace MySoft.PlatformService
         /// <summary>
         /// 运行服务服务
         /// </summary>
-        public void StartService()
+        public void StartService(string serviceName)
         {
-            if (config == null) return;
-            ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                if (config == null) return;
+                serviceName = config.ServiceName;
+            }
+
+            ServiceController controller = InstallerUtils.LookupService(serviceName);
             if (controller != null)
             {
                 if (controller.Status == ServiceControllerStatus.Stopped)
                 {
-                    Console.WriteLine("正在启动服务......");
+                    Console.WriteLine("正在启动服务{0}......", serviceName);
                     try
                     {
                         controller.Start();
 
                         Thread.Sleep(1000);
-                        controller = InstallerUtils.LookupService(config.ServiceName);
+                        controller = InstallerUtils.LookupService(serviceName);
                         if (controller.Status == ServiceControllerStatus.Running)
-                            Console.WriteLine("启动服务成功！");
+                            Console.WriteLine("启动服务{0}成功！", serviceName);
                         else
-                            Console.WriteLine("启动服务失败！");
+                            Console.WriteLine("启动服务{0}失败！", serviceName);
                     }
                     catch (Exception ex)
                     {
@@ -142,37 +173,42 @@ namespace MySoft.PlatformService
                 }
                 else
                 {
-                    Console.WriteLine("服务已经启动！");
+                    Console.WriteLine("服务{0}已经启动！", serviceName);
                 }
             }
             else
             {
-                PrintInstallMessage();
+                Console.WriteLine("不存在服务{0}！", serviceName);
             }
         }
 
         /// <summary>
         /// 停止服务服务
         /// </summary>
-        public void StopService()
+        public void StopService(string serviceName)
         {
-            if (config == null) return;
-            ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                if (config == null) return;
+                serviceName = config.ServiceName;
+            }
+
+            ServiceController controller = InstallerUtils.LookupService(serviceName);
             if (controller != null)
             {
                 if (controller.Status == ServiceControllerStatus.Running)
                 {
-                    Console.WriteLine("正在停止服务.....");
+                    Console.WriteLine("正在停止服务{0}.....", serviceName);
                     try
                     {
                         controller.Stop();
 
                         Thread.Sleep(1000);
-                        controller = InstallerUtils.LookupService(config.ServiceName);
+                        controller = InstallerUtils.LookupService(serviceName);
                         if (controller.Status == ServiceControllerStatus.Stopped)
-                            Console.WriteLine("停止服务成功！");
+                            Console.WriteLine("停止服务{0}成功！", serviceName);
                         else
-                            Console.WriteLine("停止服务失败！");
+                            Console.WriteLine("停止服务{0}失败！", serviceName);
                     }
                     catch (Exception ex)
                     {
@@ -181,12 +217,12 @@ namespace MySoft.PlatformService
                 }
                 else
                 {
-                    Console.WriteLine("服务已经停止！");
+                    Console.WriteLine("服务{0}已经停止！", serviceName);
                 }
             }
             else
             {
-                PrintInstallMessage();
+                Console.WriteLine("不存在服务{0}！", serviceName);
             }
         }
 
@@ -210,7 +246,7 @@ namespace MySoft.PlatformService
             }
             else
             {
-                Console.WriteLine("服务已经存在,请先卸载后再执行此命令！");
+                Console.WriteLine("服务{0}已经存在,请先卸载后再执行此命令！", config.ServiceName);
             }
         }
 
@@ -235,7 +271,7 @@ namespace MySoft.PlatformService
             }
             else
             {
-                PrintInstallMessage();
+                Console.WriteLine("服务{0}尚未安装,输入'/?'查看帮助！", config.ServiceName);
             }
         }
     }
