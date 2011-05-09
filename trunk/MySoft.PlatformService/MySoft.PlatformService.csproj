@@ -81,6 +81,18 @@
       <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
       <Name>MySoft.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MySoft.IoC.Service\MySoft.IoC.Service.csproj">
+      <Project>{D838F2CE-6919-466F-909F-FCEC5AE4CB79}</Project>
+      <Name>MySoft.IoC.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySoft.IoC\MySoft.IoC.csproj">
+      <Project>{075BD20E-ABD5-4754-8C40-58E3EC025E42}</Project>
+      <Name>MySoft.IoC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySoft.PlatformService.UserService\MySoft.PlatformService.UserService.csproj">
+      <Project>{4955AB17-A062-4399-8795-3D40F6FDB869}</Project>
+      <Name>MySoft.PlatformService.UserService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

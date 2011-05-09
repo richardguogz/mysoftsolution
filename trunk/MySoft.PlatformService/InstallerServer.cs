@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 using MySoft.Installer;
+using System.Reflection;
 
 namespace MySoft.PlatformService
 {
@@ -16,30 +17,25 @@ namespace MySoft.PlatformService
     {
         private InstallerConfiguration config;
         private IServiceRun service;
-        private TransactedInstaller ti;
 
         public InstallerServer()
         {
-            //读取配置节
-            this.config = InstallerConfiguration.GetConfig();
-            this.ti = new TransactedInstaller();
-            this.ti.BeforeInstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务正在安装......"); });
-            this.ti.AfterInstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务安装完成！"); });
-            this.ti.BeforeUninstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务正在卸载......"); });
-            this.ti.AfterUninstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务卸载完成！"); });
-
-            InitInstaller();
-        }
-
-        private void InitInstaller()
-        {
-            BusinessInstaller installer = new BusinessInstaller(config);
-            ti.Installers.Add(installer);
-            string logFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installer.log");
-            string path = string.Format("/assemblypath={0}", System.Reflection.Assembly.GetExecutingAssembly().Location);
-            string[] cmd = { path };
-            InstallContext context = new InstallContext(logFile, cmd);
-            ti.Context = context;
+            try
+            {
+                //读取配置节
+                this.config = InstallerConfiguration.GetConfig();
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+                else
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
 
         /// <summary>
@@ -99,10 +95,9 @@ namespace MySoft.PlatformService
                 foreach (var controller in list)
                 {
                     Console.WriteLine("------------------------------------------------------------------------");
-                    Console.WriteLine("服务名：{0}", controller.ServiceName);
+                    Console.WriteLine("服务名：{0} ({1})", controller.ServiceName, controller.Status);
                     Console.WriteLine("显示名：{0}", controller.DisplayName);
                     Console.WriteLine("描  述：{0}", controller.Description);
-                    Console.WriteLine("状  态：{0}", controller.Status);
                     Console.WriteLine("路  径：{0}", controller.ServicePath);
                 }
                 Console.WriteLine("------------------------------------------------------------------------");
@@ -249,7 +244,8 @@ namespace MySoft.PlatformService
             {
                 try
                 {
-                    ti.Install(new Hashtable());
+                    TransactedInstaller installer = GetTransactedInstaller();
+                    installer.Install(new Hashtable());
                 }
                 catch (Exception ex)
                 {
@@ -271,10 +267,10 @@ namespace MySoft.PlatformService
             ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
             if (controller != null)
             {
-                //卸载之前先停止服务
                 try
                 {
-                    ti.Uninstall(null);
+                    TransactedInstaller installer = GetTransactedInstaller();
+                    installer.Uninstall(null);
                 }
                 catch (Exception ex)
                 {
@@ -285,6 +281,29 @@ namespace MySoft.PlatformService
             {
                 Console.WriteLine("服务{0}尚未安装,输入'/?'查看帮助！", config.ServiceName);
             }
+        }
+
+        /// <summary>
+        /// 获取当前的安装信息
+        /// </summary>
+        /// <returns></returns>
+        private TransactedInstaller GetTransactedInstaller()
+        {
+            TransactedInstaller installer = new TransactedInstaller();
+            installer.BeforeInstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务正在安装......"); });
+            installer.AfterInstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务安装完成！"); });
+            installer.BeforeUninstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务正在卸载......"); });
+            installer.AfterUninstall += new InstallEventHandler((obj, state) => { Console.WriteLine("服务卸载完成！"); });
+
+            BusinessInstaller businessInstaller = new BusinessInstaller(config);
+            installer.Installers.Add(businessInstaller);
+            string logFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installer.log");
+            string path = string.Format("/assemblypath={0}", System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string[] cmd = { path };
+            InstallContext context = new InstallContext(logFile, cmd);
+            installer.Context = context;
+
+            return installer;
         }
     }
 }
