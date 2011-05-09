@@ -113,9 +113,10 @@ namespace MySoft.IoC.Service
 
         void server_OnError(Exception exception)
         {
-            lock (syncobj)
+
+            if (startMode == StartMode.Console)
             {
-                if (startMode == StartMode.Console)
+                lock (syncobj)
                 {
                     string message = string.Format("[{0}] => {1}", DateTime.Now, exception.ToString());
                     if (exception.InnerException != null)
@@ -125,11 +126,27 @@ namespace MySoft.IoC.Service
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(message);
                 }
-                else
+            }
+            else
+            {
+                SimpleLog.Instance.WriteLog(exception);
+
+                if (exception is IoCException)
                 {
-                    SimpleLog.Instance.WriteLogWithSendMail(exception, mailTo);
+                    var ex = exception as IoCException;
+
+                    if (string.IsNullOrEmpty(ex.ExceptionHeader))
+                        SendMail(ex, "调用IoC服务产生异常，请查证！");
+                    else
+                        SendMail(ex, "调用IoC服务产生异常，请查证！" + ex.ExceptionHeader);
                 }
             }
+        }
+
+        void SendMail(Exception ex, string title)
+        {
+            try { MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo); }
+            catch { }
         }
     }
 }
