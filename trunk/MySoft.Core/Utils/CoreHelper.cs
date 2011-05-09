@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
 using MySoft.Converter;
+using System.Text.RegularExpressions;
 
 namespace MySoft
 {
@@ -50,6 +51,22 @@ namespace MySoft
         private static object DefaultValue<MemberType>()
         {
             return default(MemberType);
+        }
+
+        /// <summary>
+        /// 移除多余的空格，保留一个空格
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string RemoveSurplusSpaces(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+
+            RegexOptions opt = RegexOptions.None;
+            Regex regex = new Regex(@"[ ]{2,}", opt);
+            string str = regex.Replace(value, " ").Trim();
+
+            return str;
         }
 
         /// <summary>

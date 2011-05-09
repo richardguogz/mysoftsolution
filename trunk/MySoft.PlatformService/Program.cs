@@ -32,7 +32,7 @@ namespace MySoft.PlatformService
                 if (string.IsNullOrEmpty(optionalArgs))
                 {
                     string readLine = Console.ReadLine();
-                    args = readLine.Split(' ');
+                    args = CoreHelper.RemoveSurplusSpaces(readLine).Split(' ');
                     if (args.Length > 0)
                     {
                         optionalArgs = args[0].Trim();
@@ -117,7 +117,7 @@ namespace MySoft.PlatformService
             Console.WriteLine(@"/install : 安装为window服务");
             Console.WriteLine(@"/uninstall : 卸载window服务");
             Console.WriteLine(@"/? : 显示帮助");
-            Console.WriteLine(@"/list -contains：列出服务");
+            Console.WriteLine(@"/list [名称]：列出服务");
             Console.WriteLine("------------------------------------");
         }
 

@@ -231,12 +231,12 @@ namespace MySoft.Data
                         .Replace("__[[", ' '.ToString())
                         .Replace("]]__", ' '.ToString());
 
-            return sql.Trim().Replace(" . ", ".")
-                            .Replace(" , ", ",")
-                            .Replace(" ( ", " (")
-                            .Replace(" ) ", ") ")
-                            .Replace("   ", " ")
-                            .Replace("  ", " ");
+            //string str = sql.Replace(" . ", ".")
+            //                .Replace(" , ", ",")
+            //                .Replace(" ( ", " (")
+            //                .Replace(" ) ", ") ");
+
+            return CoreHelper.RemoveSurplusSpaces(sql);
         }
 
         internal static object[] CheckAndReturnValues(object[] values)
