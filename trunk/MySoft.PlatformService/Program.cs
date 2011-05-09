@@ -93,12 +93,12 @@ namespace MySoft.PlatformService
             Console.WriteLine("------------------------------------");
             Console.WriteLine(@"/? : 显示帮助");
             Console.WriteLine(@"/console : 启动控制台");
-            Console.WriteLine(@"/start : 启动服务");
-            Console.WriteLine(@"/stop : 停止服务");
+            Console.WriteLine(@"/start [服务名称]: 启动服务");
+            Console.WriteLine(@"/stop [服务名称]: 停止服务");
             Console.WriteLine(@"/restart : 重启服务");
             Console.WriteLine(@"/install : 安装为window服务");
             Console.WriteLine(@"/uninstall : 卸载window服务");
-            Console.WriteLine(@"/list [名称]：列出服务");
+            Console.WriteLine(@"/list [模糊名称]：列出服务");
             Console.WriteLine("------------------------------------");
         }
 
