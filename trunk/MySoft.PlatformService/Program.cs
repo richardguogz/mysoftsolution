@@ -25,26 +25,11 @@ namespace MySoft.PlatformService
                 optionalArgs = args[0];
             }
 
+            InitColor();
             Console.Title = "PlatformService Installer";
-            bool isExit = false;
-            while (!isExit)
+
+            if (!string.IsNullOrEmpty(optionalArgs))
             {
-                if (string.IsNullOrEmpty(optionalArgs))
-                {
-                    string readLine = Console.ReadLine();
-                    args = CoreHelper.RemoveSurplusSpaces(readLine).Split(' ');
-                    if (args.Length > 0)
-                    {
-                        optionalArgs = args[0].Trim();
-                    }
-                }
-
-                //如果未接收到参数，则继续
-                if (string.IsNullOrEmpty(optionalArgs))
-                {
-                    continue;
-                }
-
                 switch (optionalArgs.ToLower())
                 {
                     case "/?":
@@ -56,9 +41,6 @@ namespace MySoft.PlatformService
                             if (args.Length == 2) contains = args[1].Trim();
                             server.ListService(contains);
                         }
-                        break;
-                    case "/exit":
-                        isExit = true;
                         break;
                     case "/console":
                         {
@@ -99,24 +81,22 @@ namespace MySoft.PlatformService
                         Console.WriteLine("输入的命令无效，输入/?显示帮助！");
                         break;
                 }
-
-                InitColor();
-                optionalArgs = string.Empty;
             }
+
+            InitColor();
         }
 
         static void PrintHelp()
         {
             Console.WriteLine("请输入命令启动相关操作:");
             Console.WriteLine("------------------------------------");
+            Console.WriteLine(@"/? : 显示帮助");
             Console.WriteLine(@"/console : 启动控制台");
-            Console.WriteLine(@"/exit : 退出控制台");
             Console.WriteLine(@"/start : 启动服务");
             Console.WriteLine(@"/stop : 停止服务");
             Console.WriteLine(@"/restart : 重启服务");
             Console.WriteLine(@"/install : 安装为window服务");
             Console.WriteLine(@"/uninstall : 卸载window服务");
-            Console.WriteLine(@"/? : 显示帮助");
             Console.WriteLine(@"/list [名称]：列出服务");
             Console.WriteLine("------------------------------------");
         }

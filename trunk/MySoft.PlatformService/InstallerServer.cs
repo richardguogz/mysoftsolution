@@ -158,9 +158,9 @@ namespace MySoft.PlatformService
                     try
                     {
                         controller.Start();
+                        controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
+                        controller.Refresh();
 
-                        Thread.Sleep(1000);
-                        controller = InstallerUtils.LookupService(serviceName);
                         if (controller.Status == ServiceControllerStatus.Running)
                             Console.WriteLine("启动服务{0}成功！", serviceName);
                         else
@@ -202,9 +202,9 @@ namespace MySoft.PlatformService
                     try
                     {
                         controller.Stop();
+                        controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+                        controller.Refresh();
 
-                        Thread.Sleep(1000);
-                        controller = InstallerUtils.LookupService(serviceName);
                         if (controller.Status == ServiceControllerStatus.Stopped)
                             Console.WriteLine("停止服务{0}成功！", serviceName);
                         else
