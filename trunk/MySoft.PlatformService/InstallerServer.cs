@@ -96,7 +96,6 @@ namespace MySoft.PlatformService
             service.StartMode = StartMode.Console;
             service.Start();
 
-            InitColor();
             Console.WriteLine("控制台已经启动......");
         }
 
@@ -109,7 +108,6 @@ namespace MySoft.PlatformService
             service.StartMode = StartMode.Console;
             service.Stop();
 
-            InitColor();
             Console.WriteLine("控制台已经退出......");
         }
 
@@ -238,12 +236,6 @@ namespace MySoft.PlatformService
             {
                 PrintInstallMessage();
             }
-        }
-
-        private void InitColor()
-        {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Gray;
         }
     }
 }

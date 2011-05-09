@@ -51,7 +51,6 @@ namespace MySoft.PlatformService
                     case "/console":
                         server.StartConsole();
                         Console.ReadLine();
-                        InitColor();
                         server.StopConsole();
                         break;
                     case "/start":
