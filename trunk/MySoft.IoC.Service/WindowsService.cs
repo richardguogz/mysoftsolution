@@ -117,10 +117,10 @@ namespace MySoft.IoC.Service
             {
                 if (startMode == StartMode.Console)
                 {
-                    string message = string.Format("[{0}] => {1}", DateTime.Now, exception.Message);
+                    string message = string.Format("[{0}] => {1}", DateTime.Now, exception.ToString());
                     if (exception.InnerException != null)
                     {
-                        message += "\r\n" + exception.InnerException.Message;
+                        message += "\r\n" + exception.InnerException.ToString();
                     }
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(message);

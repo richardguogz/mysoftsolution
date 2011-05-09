@@ -29,7 +29,7 @@ namespace MySoft.IoC
             #region socket通讯
 
             //实例化线程池
-            pool = new SmartThreadPool(30 * 1000, 100, 10);
+            pool = new SmartThreadPool(30 * 1000, 500, 10);
 
             //实例化服务池
             requestPool = new ServiceRequestPool<ResponseMessage>(config.Pools);
