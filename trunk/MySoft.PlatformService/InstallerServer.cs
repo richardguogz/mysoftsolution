@@ -33,7 +33,7 @@ namespace MySoft.PlatformService
                 }
                 else
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("加载安装配置节失败！");
                 }
             }
         }
@@ -107,16 +107,21 @@ namespace MySoft.PlatformService
         /// <summary>
         /// 从控制台运行
         /// </summary>
-        public void StartConsole()
+        public bool StartConsole()
         {
-            if (config == null) return;
+            if (config == null)
+            {
+                Console.WriteLine("无效的服务配置项！");
+                return false;
+            }
+
             ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
             if (controller != null)
             {
                 if (controller.Status == ServiceControllerStatus.Running)
                 {
                     Console.WriteLine("服务已经启动,不能从控制台启动,请先停止服务后再执行该命令！");
-                    return;
+                    return false;
                 }
             }
 
@@ -126,22 +131,12 @@ namespace MySoft.PlatformService
                 Service.Start();
 
                 Console.WriteLine("控制台已经启动......");
+                return true;
             }
-        }
-
-        /// <summary>
-        /// 停止控制台运行
-        /// </summary>
-        public void StopConsole()
-        {
-            if (config == null) return;
-
-            if (Service != null)
+            else
             {
-                Service.StartMode = StartMode.Console;
-                Service.Stop();
-
-                Console.WriteLine("控制台已经退出......");
+                Console.WriteLine("无效的服务启动项！");
+                return false;
             }
         }
 
@@ -152,7 +147,11 @@ namespace MySoft.PlatformService
         {
             if (string.IsNullOrEmpty(serviceName))
             {
-                if (config == null) return;
+                if (config == null)
+                {
+                    Console.WriteLine("无效的服务配置项！");
+                    return;
+                }
                 serviceName = config.ServiceName;
             }
 
@@ -196,7 +195,11 @@ namespace MySoft.PlatformService
         {
             if (string.IsNullOrEmpty(serviceName))
             {
-                if (config == null) return;
+                if (config == null)
+                {
+                    Console.WriteLine("无效的服务配置项！");
+                    return;
+                }
                 serviceName = config.ServiceName;
             }
 
@@ -238,7 +241,12 @@ namespace MySoft.PlatformService
         /// </summary>
         public void InstallService()
         {
-            if (config == null) return;
+            if (config == null)
+            {
+                Console.WriteLine("无效的服务配置项！");
+                return;
+            }
+
             ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
             if (controller == null)
             {
@@ -263,7 +271,12 @@ namespace MySoft.PlatformService
         /// </summary>
         public void UninstallService()
         {
-            if (config == null) return;
+            if (config == null)
+            {
+                Console.WriteLine("无效的服务配置项！");
+                return;
+            }
+
             ServiceController controller = InstallerUtils.LookupService(config.ServiceName);
             if (controller != null)
             {

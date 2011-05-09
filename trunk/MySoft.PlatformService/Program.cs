@@ -44,9 +44,10 @@ namespace MySoft.PlatformService
                         break;
                     case "/console":
                         {
-                            server.StartConsole();
-                            Console.ReadLine();
-                            server.StopConsole();
+                            if (server.StartConsole())
+                            {
+                                Console.ReadLine();
+                            }
                         }
                         break;
                     case "/start":
