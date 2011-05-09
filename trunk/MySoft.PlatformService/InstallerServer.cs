@@ -24,6 +24,10 @@ namespace MySoft.PlatformService
             {
                 //读取配置节
                 this.config = InstallerConfiguration.GetConfig();
+                if (this.config == null)
+                {
+                    Console.WriteLine("加载服务安装配置节失败！");
+                }
             }
             catch (Exception ex)
             {
@@ -33,7 +37,7 @@ namespace MySoft.PlatformService
                 }
                 else
                 {
-                    Console.WriteLine("加载安装配置节失败！");
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
@@ -45,6 +49,8 @@ namespace MySoft.PlatformService
         {
             get
             {
+                if (config == null) return null;
+
                 if (service == null)
                 {
                     #region 动态加载服务
