@@ -134,7 +134,7 @@
     <Compile Include="Common\CompressType.cs" />
     <Compile Include="Cache\ICacheDependent.cs" />
     <Compile Include="Common\DynamicProxy.cs" />
-    <Compile Include="Common\IServiceRun.cs" />
+    <Compile Include="Installer\IServiceRun.cs" />
     <Compile Include="Common\ResponseResult.cs" />
     <Compile Include="Common\MySoftException.cs" />
     <Compile Include="Common\ResponseFormat.cs" />

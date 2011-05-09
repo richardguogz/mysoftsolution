@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MySoft.Logger;
 
-namespace MySoft
+namespace MySoft.Installer
 {
     /// <summary>
     /// 服务运行基类

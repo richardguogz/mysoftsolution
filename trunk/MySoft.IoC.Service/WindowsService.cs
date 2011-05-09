@@ -5,6 +5,7 @@ using System.Text;
 using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using System.Configuration;
+using MySoft.Installer;
 
 namespace MySoft.IoC.Service
 {
