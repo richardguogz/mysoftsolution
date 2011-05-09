@@ -5,6 +5,7 @@ using MySoft.Installer.Configuration;
 using System;
 using System.IO;
 using System.Threading;
+using MySoft.Installer;
 
 namespace MySoft.PlatformService
 {

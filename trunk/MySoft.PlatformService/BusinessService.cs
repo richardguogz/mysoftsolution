@@ -10,6 +10,7 @@ using MySoft.IoC;
 using MySoft.Logger;
 using System.Configuration;
 using System.Threading;
+using MySoft.Installer;
 
 namespace MySoft.PlatformService
 {
