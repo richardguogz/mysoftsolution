@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 using MySoft.Installer;
-using System.Reflection;
+using System.Collections.Generic;
 
 namespace MySoft.PlatformService
 {
@@ -83,15 +83,43 @@ namespace MySoft.PlatformService
         /// <summary>
         /// 列出服务
         /// </summary>
-        public void ListService(string contains)
+        public void ListService(string contains, string status)
         {
             Console.WriteLine("正在读取服务信息......");
             if (string.IsNullOrEmpty(contains))
             {
                 contains = "(Paltform Service)";
             }
+            else
+            {
+                contains = contains.Substring(1);
+                if (string.IsNullOrEmpty(contains))
+                {
+                    Console.WriteLine("输入的参数无效！");
+                    return;
+                }
+            }
 
-            var list = InstallerUtils.GetServiceList(contains);
+            IList<ServiceInformation> list = new List<ServiceInformation>();
+            if (!string.IsNullOrEmpty(status))
+            {
+                try
+                {
+                    status = status.Substring(1);
+                    ServiceControllerStatus serviceStatus = (ServiceControllerStatus)Enum.Parse(typeof(ServiceControllerStatus), status, true);
+                    list = InstallerUtils.GetServiceList(contains, serviceStatus);
+                }
+                catch
+                {
+                    Console.WriteLine("输入的状态无效！");
+                    return;
+                }
+            }
+            else
+            {
+                list = InstallerUtils.GetServiceList(contains);
+            }
+
             if (list.Count == 0)
             {
                 Console.WriteLine("未能读取到相关的服务信息......");
@@ -160,6 +188,15 @@ namespace MySoft.PlatformService
                 }
                 serviceName = config.ServiceName;
             }
+            else
+            {
+                serviceName = serviceName.Substring(1);
+                if (string.IsNullOrEmpty(serviceName))
+                {
+                    Console.WriteLine("输入的参数无效！");
+                    return;
+                }
+            }
 
             ServiceController controller = InstallerUtils.LookupService(serviceName);
             if (controller != null)
@@ -170,7 +207,7 @@ namespace MySoft.PlatformService
                     try
                     {
                         controller.Start();
-                        controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMinutes(1));
+                        controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
                         controller.Refresh();
 
                         if (controller.Status == ServiceControllerStatus.Running)
@@ -208,6 +245,15 @@ namespace MySoft.PlatformService
                 }
                 serviceName = config.ServiceName;
             }
+            else
+            {
+                serviceName = serviceName.Substring(1);
+                if (string.IsNullOrEmpty(serviceName))
+                {
+                    Console.WriteLine("输入的参数无效！");
+                    return;
+                }
+            }
 
             ServiceController controller = InstallerUtils.LookupService(serviceName);
             if (controller != null)
@@ -218,7 +264,7 @@ namespace MySoft.PlatformService
                     try
                     {
                         controller.Stop();
-                        controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMinutes(1));
+                        controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
                         controller.Refresh();
 
                         if (controller.Status == ServiceControllerStatus.Stopped)

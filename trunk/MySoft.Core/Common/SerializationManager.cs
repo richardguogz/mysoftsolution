@@ -134,7 +134,7 @@ namespace MySoft
 
             if (returnType.IsEnum)
             {
-                return Enum.Parse(returnType, data);
+                return Enum.Parse(returnType, data, true);
             }
 
             if (returnType.IsArray && data != null && !data.StartsWith("["))

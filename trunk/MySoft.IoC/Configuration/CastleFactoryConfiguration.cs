@@ -50,7 +50,7 @@ namespace MySoft.IoC.Configuration
             XmlAttributeCollection xmlnode = node.Attributes;
 
             if (xmlnode["type"] != null && xmlnode["type"].Value.Trim() != string.Empty)
-                type = (CastleFactoryType)Enum.Parse(typeof(CastleFactoryType), xmlnode["type"].Value);
+                type = (CastleFactoryType)Enum.Parse(typeof(CastleFactoryType), xmlnode["type"].Value, true);
 
             if (xmlnode["encrypt"] != null && xmlnode["encrypt"].Value.Trim() != string.Empty)
                 encrypt = Convert.ToBoolean(xmlnode["encrypt"].Value);
