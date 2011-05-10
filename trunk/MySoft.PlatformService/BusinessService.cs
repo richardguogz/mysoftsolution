@@ -30,20 +30,40 @@ namespace MySoft.PlatformService
 
         protected override void OnStart(string[] args)
         {
-            if (service == null)
+            try
             {
-                throw new Exception("IServiceRun服务加载失败，服务未能正常启动！");
+                SimpleLog.Instance.WriteLog("正在启动服务......");
+                if (service == null)
+                {
+                    throw new Exception("IServiceRun服务加载失败，服务未能正常启动！");
+                }
+                service.Start();
+                SimpleLog.Instance.WriteLog("服务启动成功！");
             }
-            service.Start();
+            catch (Exception ex)
+            {
+                SimpleLog.Instance.WriteLog(ex);
+                throw ex;
+            }
         }
 
         protected override void OnStop()
         {
-            if (service == null)
+            try
             {
-                throw new Exception("IServiceRun服务加载失败，服务未能正常停止！");
+                SimpleLog.Instance.WriteLog("正在停止服务......");
+                if (service == null)
+                {
+                    throw new Exception("IServiceRun服务加载失败，服务未能正常停止！");
+                }
+                service.Stop();
+                SimpleLog.Instance.WriteLog("服务成功停止！");
             }
-            service.Stop();
+            catch (Exception ex)
+            {
+                SimpleLog.Instance.WriteLog(ex);
+                throw ex;
+            }
         }
     }
 }
