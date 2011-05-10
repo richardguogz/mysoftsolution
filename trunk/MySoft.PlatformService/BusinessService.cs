@@ -32,13 +32,15 @@ namespace MySoft.PlatformService
         {
             try
             {
-                SimpleLog.Instance.WriteLog("正在启动服务......");
                 if (service == null)
                 {
                     throw new Exception("IServiceRun服务加载失败，服务未能正常启动！");
                 }
+
+                string serviceName = service.GetType().FullName;
+                SimpleLog.Instance.WriteLog(string.Format("正在启动服务{0}......", serviceName));
                 service.Start();
-                SimpleLog.Instance.WriteLog("服务启动成功！");
+                SimpleLog.Instance.WriteLog(string.Format("服务{0}启动成功！", serviceName));
             }
             catch (Exception ex)
             {
@@ -51,13 +53,15 @@ namespace MySoft.PlatformService
         {
             try
             {
-                SimpleLog.Instance.WriteLog("正在停止服务......");
                 if (service == null)
                 {
                     throw new Exception("IServiceRun服务加载失败，服务未能正常停止！");
                 }
+
+                string serviceName = service.GetType().FullName;
+                SimpleLog.Instance.WriteLog(string.Format("正在停止服务{0}......", serviceName));
                 service.Stop();
-                SimpleLog.Instance.WriteLog("服务成功停止！");
+                SimpleLog.Instance.WriteLog(string.Format("服务{0}停止成功！", serviceName));
             }
             catch (Exception ex)
             {
