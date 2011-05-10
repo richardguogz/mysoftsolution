@@ -8,6 +8,11 @@ namespace MySoft.Installer
     public interface IServiceRun
     {
         /// <summary>
+        /// 初始化服务
+        /// </summary>
+        void Init();
+
+        /// <summary>
         /// 启动服务
         /// </summary>
         void Start();

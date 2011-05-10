@@ -20,7 +20,12 @@ namespace MySoft.IoC.Service
         private CastleService server;
         private string[] mailTo;
 
-        public WindowsService()
+        #region IServiceRun 成员
+
+        /// <summary>
+        /// 初始化方法
+        /// </summary>
+        public void Init()
         {
             this.config = CastleServiceConfiguration.GetConfig();
             this.server = new CastleService(config);
@@ -33,8 +38,6 @@ namespace MySoft.IoC.Service
             if (string.IsNullOrEmpty(address)) mailTo = new string[] { "maoyong@fund123.cn" };
             else mailTo = address.Split(',', ';', '|');
         }
-
-        #region IServiceRun 成员
 
         /// <summary>
         /// 设置运行类型

@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using MySoft.Installer;
 using System.Collections.Generic;
+using MySoft.Logger;
 
 namespace MySoft.PlatformService
 {
@@ -39,6 +40,9 @@ namespace MySoft.PlatformService
                 {
                     Console.WriteLine(ex.Message);
                 }
+
+                //写错误日志
+                SimpleLog.Instance.WriteLog(ex);
             }
         }
 
@@ -60,6 +64,7 @@ namespace MySoft.PlatformService
                         var type = Type.GetType(config.ServiceType);
                         if (type == null) throw new Exception(string.Format("加载服务{0}失败！", config.ServiceType));
                         this.service = (IServiceRun)Activator.CreateInstance(type);
+                        this.service.Init();
                     }
                     catch (Exception ex)
                     {
@@ -71,6 +76,9 @@ namespace MySoft.PlatformService
                         {
                             Console.WriteLine(ex.Message);
                         }
+
+                        //写错误日志
+                        SimpleLog.Instance.WriteLog(ex);
                     }
 
                     #endregion
