@@ -16,7 +16,7 @@ namespace MySoft.PlatformService
             if (args.Length == 0)
             {
                 ServiceBase[] ServicesToRun;
-                ServicesToRun = new ServiceBase[] { new BusinessService(server.Service) };
+                ServicesToRun = new ServiceBase[] { new BusinessService(server.WindowsService) };
                 ServiceBase.Run(ServicesToRun);
                 return;
             }
