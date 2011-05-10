@@ -527,9 +527,7 @@ namespace MySoft.Net.Server
                 case SocketAsyncOperation.Receive:
                     BeginReceive(e);
                     break;
-
             }
-
         }
 
         /// <summary>
@@ -545,9 +543,7 @@ namespace MySoft.Net.Server
                 {
                     sock.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, sock);
                 }
-                catch
-                {
-                }
+                catch { }
             }
         }
 
@@ -562,9 +558,7 @@ namespace MySoft.Net.Server
                     sock.EndSend(result);
                 }
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         /// <summary>
@@ -578,9 +572,7 @@ namespace MySoft.Net.Server
                 if (sock != null)
                     socks.BeginDisconnect(false, AsynCallBackDisconnect, socks);
             }
-            catch (ObjectDisposedException)
-            {
-            }
+            catch (ObjectDisposedException) { }
 
         }
 
@@ -595,9 +587,7 @@ namespace MySoft.Net.Server
                     sock.Shutdown(SocketShutdown.Both);
                     sock.EndDisconnect(result);
                 }
-                catch
-                {
-                }
+                catch { }
             }
         }
 

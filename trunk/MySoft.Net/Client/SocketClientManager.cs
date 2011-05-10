@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySoft.Net.Sockets;
 using System.Net.Sockets;
+using MySoft.Logger;
 
 namespace MySoft.Net.Client
 {
@@ -87,17 +88,21 @@ namespace MySoft.Net.Client
         {
             List<byte[]> datax;
 
-            ////整理从服务器上收到的数据包
-            if (BuffListManger.InsertByteArray(buffer, 4, out datax))
+            //整理从服务器上收到的数据包
+            try
             {
-                if (OnReceived != null)
+                if (BuffListManger.InsertByteArray(buffer, 4, out datax))
                 {
-                    foreach (byte[] mdata in datax)
+                    if (OnReceived != null)
                     {
-                        OnReceived(mdata, socket);
+                        foreach (byte[] mdata in datax)
+                        {
+                            OnReceived(mdata, socket);
+                        }
                     }
                 }
             }
+            catch { }
         }
     }
 }

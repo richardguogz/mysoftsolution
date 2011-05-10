@@ -126,16 +126,20 @@ namespace MySoft.Net.Server
             List<byte[]> datax;
 
             //整理从服务器上收到的数据包
-            if (BuffListManger.InsertByteArray(buffer, 4, out datax))
+            try
             {
-                if (OnBinaryInput != null)
+                if (BuffListManger.InsertByteArray(buffer, 4, out datax))
                 {
-                    foreach (byte[] mdata in datax)
+                    if (OnBinaryInput != null)
                     {
-                        OnBinaryInput(mdata, socketAsync);
+                        foreach (byte[] mdata in datax)
+                        {
+                            OnBinaryInput(mdata, socketAsync);
+                        }
                     }
                 }
             }
+            catch { }
         }
     }
 }
