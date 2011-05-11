@@ -8,7 +8,7 @@ namespace MySoft.Web.Configuration
     /// the pattern with (if matched).
     /// </summary>
     [Serializable]
-    [XmlRoot("rewriterRule")]
+    [XmlRoot("rule")]
     public class RewriterRule
     {
         // private member variables...

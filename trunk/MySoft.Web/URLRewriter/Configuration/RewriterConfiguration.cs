@@ -46,7 +46,7 @@ namespace MySoft.Web.Configuration
     /// </code>
     /// </remarks>
     [Serializable]
-    [XmlRoot("rewriterPage")]
+    [XmlRoot("rewriter")]
     public class RewriterConfiguration
     {
         // private member variables
@@ -60,7 +60,7 @@ namespace MySoft.Web.Configuration
         /// <returns>A <see cref="RewriterConfiguration"/> instance.</returns>
         public static RewriterConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/rewriterPage");
+            object obj = ConfigurationManager.GetSection("mysoft.framework/rewriter");
 
             if (obj != null)
                 return (RewriterConfiguration)obj;
@@ -73,7 +73,7 @@ namespace MySoft.Web.Configuration
         /// A <see cref="RewriterRuleCollection"/> instance that provides access to a set of <see cref="RewriterRule"/>s.
         /// </summary>
         [XmlArray("rules")]
-        [XmlArrayItem("rewriterRule")]
+        [XmlArrayItem("rule")]
         public RewriterRuleCollection Rules
         {
             get

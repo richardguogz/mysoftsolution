@@ -36,7 +36,7 @@ namespace MySoft.Web.Configuration
         /// A <see cref="StaticPageRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
         /// </summary>
         [XmlArray("rules")]
-        [XmlArrayItem("staticPageRule")]
+        [XmlArrayItem("rule")]
         public StaticPageRuleCollection Rules
         {
             get

@@ -8,7 +8,7 @@ namespace MySoft.Web.Configuration
     /// the pattern with (if matched).
     /// </summary>
     [Serializable]
-    [XmlRoot("staticPageRule")]
+    [XmlRoot("rule")]
     public class StaticPageRule
     {
         // private member variables...
