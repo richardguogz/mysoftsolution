@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net.Sockets;
 
 namespace MySoft.IoC
 {
@@ -16,9 +17,8 @@ namespace MySoft.IoC
         public T Response { get; set; }
 
         /// <summary>
-        /// 服务请求对象
+        /// 返回通讯的Socket对象
         /// </summary>
-        public ServiceRequest<T> Request { get; set; }
+        public Socket Socket { get; set; }
     }
-
 }

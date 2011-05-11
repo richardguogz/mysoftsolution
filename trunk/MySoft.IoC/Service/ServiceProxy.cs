@@ -18,13 +18,11 @@ namespace MySoft.IoC
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private SocketClientConfiguration config;
         private ServiceRequestPool<ResponseMessage> requestPool;
-        private string displayName;
         private SmartThreadPool pool;
 
         public ServiceProxy(SocketClientConfiguration config, string displayName)
         {
             this.config = config;
-            this.displayName = displayName;
 
             #region socket通讯
 
@@ -35,7 +33,7 @@ namespace MySoft.IoC
             requestPool = new ServiceRequestPool<ResponseMessage>(config.Pools);
             for (int i = 0; i < config.Pools; i++)
             {
-                var request = new ServiceRequest<ResponseMessage>(config.IP, config.Port);
+                var request = new ServiceRequest<ResponseMessage>(displayName, config.IP, config.Port);
                 request.SendCallback += new SendMessageEventHandler<ResponseMessage>(client_SendMessage);
 
                 //请求端入栈
@@ -45,7 +43,7 @@ namespace MySoft.IoC
             #endregion
         }
 
-        void client_SendMessage(ServiceRequestEventArgs<ResponseMessage> message)
+        void client_SendMessage(object sender, ServiceRequestEventArgs<ResponseMessage> message)
         {
             //如果未过期，则加入队列中
             if (message.Response.Expiration >= DateTime.Now)
@@ -67,24 +65,16 @@ namespace MySoft.IoC
         public ResponseMessage CallMethod(RequestMessage reqMsg, int logtime)
         {
             //如果池为空，则检测
-            if (requestPool.Count == 0)
-            {
-                CheckPool(reqMsg.Timeout);
-            }
+            if (requestPool.Count == 0) CheckPool(reqMsg.Timeout);
 
+            //从池中弹出一个可用请求
             var request = requestPool.Pop();
             if (request == null) return null;
 
             try
             {
-                //如果连接断开，直接抛出异常
-                if (!request.Connected)
-                {
-                    throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", config.IP, config.Port, displayName));
-                }
-
                 //发送数据包到服务端
-                bool isSend = request.Send(BufferFormat.FormatFCA(reqMsg));
+                bool isSend = request.Send(reqMsg);
 
                 if (isSend)
                 {
@@ -179,7 +169,7 @@ namespace MySoft.IoC
             if (!pool.WaitForIdle(timeout))
             {
                 if (!wir.IsCompleted) wir.Cancel(true);
-                throw new IoCException("Socket pool is empty！");
+                throw new IoCException("Request pool is empty！");
             }
         }
 

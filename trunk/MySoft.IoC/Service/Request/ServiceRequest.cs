@@ -18,11 +18,13 @@ namespace MySoft.IoC
 
         private SocketClientManager manager;
         private bool connected = false;
+        private string serviceName;
         private string ip;
         private int port;
 
-        public ServiceRequest(string ip, int port)
+        public ServiceRequest(string serviceName, string ip, int port)
         {
+            this.serviceName = serviceName;
             this.ip = ip;
             this.port = port;
 
@@ -36,34 +38,28 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// 连接状态
+        /// 是否连接
         /// </summary>
         public bool Connected
         {
-            get
-            {
-                return connected;
-            }
-        }
-
-        /// <summary>
-        /// 返回通讯的Socket对象
-        /// </summary>
-        public Socket Socket
-        {
-            get
-            {
-                return manager.Client.Socket;
-            }
+            get { return connected; }
         }
 
         /// <summary>
         /// 发送数据包
         /// </summary>
-        /// <param name="buffer"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
         /// <returns></returns>
-        public bool Send(byte[] buffer)
+        public bool Send<T>(T data)
         {
+            //如果连接断开，直接抛出异常
+            if (!connected)
+            {
+                throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", ip, port, serviceName));
+            }
+
+            byte[] buffer = BufferFormat.FormatFCA(data);
             return manager.Client.SendData(buffer);
         }
 
@@ -114,10 +110,10 @@ namespace MySoft.IoC
                             var args = new ServiceRequestEventArgs<T>
                             {
                                 Response = result,
-                                Request = this
+                                Socket = manager.Client.Socket
                             };
 
-                            SendCallback(args);
+                            SendCallback(this, args);
                         }
                     }
                 }

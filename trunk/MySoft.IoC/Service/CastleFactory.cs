@@ -168,7 +168,7 @@ namespace MySoft.IoC
                 }
 
                 if (config.MaxPool < 1) throw new IoCException("Minimum pool size 1£¡");
-                if (config.MaxPool > 100) throw new IoCException("Maximum pool size 100£¡");
+                if (config.MaxPool > 500) throw new IoCException("Maximum pool size 500£¡");
 
                 var serviceNode = config.Hosts[name];
 
