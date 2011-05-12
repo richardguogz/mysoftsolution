@@ -136,19 +136,19 @@ namespace MySoft.Data
         public static Table GetTable<T>()
             where T : Entity
         {
-            lock (dictTable)
+            if (dictTable.ContainsKey(typeof(T)))
             {
-                if (dictTable.ContainsKey(typeof(T)))
-                {
-                    return dictTable[typeof(T)];
-                }
-                else
+                return dictTable[typeof(T)];
+            }
+            else
+            {
+                lock (dictTable)
                 {
                     Table table = CoreHelper.CreateInstance<T>().GetTable();
-                    dictTable.Add(typeof(T), table);
-
-                    return table;
+                    dictTable[typeof(T)] = table;
                 }
+
+                return dictTable[typeof(T)];
             }
         }
 
