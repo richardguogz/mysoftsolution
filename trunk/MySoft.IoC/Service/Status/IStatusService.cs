@@ -36,9 +36,9 @@ namespace MySoft.IoC
         IList<SecondStatus> GetSecondStatusList();
 
         /// <summary>
-        /// 获取所有的终结点
+        /// 获取所有的客户端信息
         /// </summary>
         /// <returns></returns>
-        IList<EndPoint> GetEndPoints();
+        IList<ConnectInfo> GetConnectInfos();
     }
 }

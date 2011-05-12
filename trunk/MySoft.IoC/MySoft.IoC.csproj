@@ -92,6 +92,7 @@
     <Compile Include="Service\Message\ServiceMessageEventHandler.cs" />
     <Compile Include="Service\Message\ServiceMessageEventArgs.cs" />
     <Compile Include="Service\Message\ServiceMessagePool.cs" />
+    <Compile Include="Service\Status\ConnectInfo.cs" />
     <Compile Include="Service\Status\IStatusService.cs" />
     <Compile Include="Service\Status\ServerStatus.cs" />
     <Compile Include="Service\Message\ServiceMessage.cs" />

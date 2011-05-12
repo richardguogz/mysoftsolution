@@ -242,9 +242,12 @@ namespace MySoft.IoC
         /// Gets the status service.
         /// </summary>
         /// <returns></returns>
-        public IStatusService GetStatusService()
+        public IStatusService StatusService
         {
-            return GetService<IStatusService>();
+            get
+            {
+                return GetService<IStatusService>();
+            }
         }
 
         /// <summary>

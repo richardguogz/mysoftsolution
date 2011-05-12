@@ -14,15 +14,15 @@ namespace MySoft.PlatformService.WebForm
     {
         protected ServerStatus status;
         protected SecondStatus timeStatus;
-        protected IList<EndPoint> clients;
+        protected IList<ConnectInfo> clients;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                status = CastleFactory.Create().GetStatusService().GetServerStatus();
-                timeStatus = CastleFactory.Create().GetStatusService().GetLastSecondStatus();
-                clients = CastleFactory.Create().GetStatusService().GetEndPoints();
+                status = CastleFactory.Create().StatusService.GetServerStatus();
+                timeStatus = CastleFactory.Create().StatusService.GetLastSecondStatus();
+                clients = CastleFactory.Create().StatusService.GetConnectInfos();
             }
             catch (Exception ex)
             {

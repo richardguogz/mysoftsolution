@@ -40,7 +40,7 @@
                    var index = 1;
                    foreach (var client in clients)
                    {%>
-            <li>连接信息(<% = index %>)：<%= client.ToString() %></li>
+            <li>连接信息(<% = index %>)：<%= client.IP %>(<%= client.Count %>)</li>
             <%  index++;
                    }
                } %>

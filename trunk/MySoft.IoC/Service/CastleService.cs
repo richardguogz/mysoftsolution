@@ -367,12 +367,19 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// 获取连接终结点信息
+        /// 获取连接客户信息
         /// </summary>
         /// <returns></returns>
-        public IList<EndPoint> GetEndPoints()
+        public IList<ConnectInfo> GetConnectInfos()
         {
-            return clients;
+            var dict = clients.ToLookup(p => p.ToString().Split(':')[0]);
+            IList<ConnectInfo> list = new List<ConnectInfo>();
+            foreach (var item in dict)
+            {
+                list.Add(new ConnectInfo { IP = item.Key, Count = item.Count() });
+            }
+
+            return list;
         }
 
         #endregion

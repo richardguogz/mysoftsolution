@@ -7,6 +7,7 @@ namespace MySoft.PlatformService
 {
     static class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             InstallerServer server = new InstallerServer();

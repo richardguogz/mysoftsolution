@@ -98,8 +98,26 @@ namespace MySoft.Tools.EntityDesign
                     DbSession.SetDefault(dbProvider);
 
                     ADODB.ConnectionClass conn = new ADODB.ConnectionClass();
-                    conn.Provider = "Microsoft.Jet.OLEDB.4.0";
+
+                    //conn.Provider = "Microsoft.Jet.OLEDB.4.0";
+                    //string connStr = txtConnStr.Text;
+                    string provider = string.Empty;
                     string connStr = txtConnStr.Text;
+                    string[] strs = connStr.Split(new char[] { ';' });
+                    for (int i = 0; i < strs.Length; i++)
+                    {
+                        if (strs[i].ToLower().IndexOf("provider") > -1)
+                        {
+                            provider = connStr.Substring(connStr.ToLower().IndexOf("provider") + "provider".Length).Trim('=', ' ');
+                            break;
+                        }
+                    }
+                    if (provider.Length == 0)
+                    {
+                        provider = "Microsoft.Jet.OLEDB.4.0";
+                    }
+                    conn.Provider = provider;
+
                     conn.Open(connStr.Substring(connStr.ToLower().IndexOf("data source") + "data source".Length).Trim('=', ' '), null, null, 0);
 
                     ADODB.Recordset rsTables = conn.GetType().InvokeMember("OpenSchema", BindingFlags.InvokeMethod, null, conn, new object[] { ADODB.SchemaEnum.adSchemaTables }) as ADODB.Recordset;
