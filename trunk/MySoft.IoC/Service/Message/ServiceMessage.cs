@@ -10,11 +10,11 @@ using MySoft.Net.Sockets;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// 服务请求
+    /// 服务消息
     /// </summary>
-    public class ServiceRequest<T>
+    public class ServiceMessage<T>
     {
-        public event SendMessageEventHandler<T> SendCallback;
+        public event ServiceMessageEventHandler<T> SendCallback;
 
         private SocketClientManager manager;
         private bool connected = false;
@@ -22,7 +22,7 @@ namespace MySoft.IoC
         private string ip;
         private int port;
 
-        public ServiceRequest(string serviceName, string ip, int port)
+        public ServiceMessage(string serviceName, string ip, int port)
         {
             this.serviceName = serviceName;
             this.ip = ip;
@@ -48,10 +48,9 @@ namespace MySoft.IoC
         /// <summary>
         /// 发送数据包
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool Send<T>(T data)
+        public bool Send(object data)
         {
             //如果连接断开，直接抛出异常
             if (!connected)
@@ -59,6 +58,7 @@ namespace MySoft.IoC
                 throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", ip, port, serviceName));
             }
 
+            if (data == null) return false;
             byte[] buffer = BufferFormat.FormatFCA(data);
             return manager.Client.SendData(buffer);
         }
@@ -107,9 +107,9 @@ namespace MySoft.IoC
                         T result = (T)responseObject;
                         if (SendCallback != null)
                         {
-                            var args = new ServiceRequestEventArgs<T>
+                            var args = new ServiceMessageEventArgs<T>
                             {
-                                Response = result,
+                                Message = result,
                                 Socket = manager.Client.Socket
                             };
 

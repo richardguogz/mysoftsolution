@@ -7,14 +7,14 @@ using System.Net.Sockets;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// 服务请求事件参数
+    /// 服务响应事件参数
     /// </summary>
-    public class ServiceRequestEventArgs<T>
+    public class ServiceMessageEventArgs<T>
     {
         /// <summary>
         /// 响应的消息
         /// </summary>
-        public T Response { get; set; }
+        public T Message { get; set; }
 
         /// <summary>
         /// 返回通讯的Socket对象

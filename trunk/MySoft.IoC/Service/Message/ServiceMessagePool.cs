@@ -7,22 +7,22 @@ using MySoft.Net.Client;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// 服务请求池
+    /// 服务消息池
     /// </summary>
-    internal sealed class ServiceRequestPool<T>
+    internal sealed class ServiceMessagePool<T>
     {
         /// <summary>
         /// ServiceRequest栈
         /// </summary>
-        private Stack<ServiceRequest<T>> pool;
+        private Stack<ServiceMessage<T>> pool;
 
         /// <summary>
         /// 初始化ServiceRequest池
         /// </summary>
         /// <param name="capacity">最大可能使用的ServiceRequest对象.</param>
-        internal ServiceRequestPool(Int32 capacity)
+        internal ServiceMessagePool(Int32 capacity)
         {
-            this.pool = new Stack<ServiceRequest<T>>(capacity);
+            this.pool = new Stack<ServiceMessage<T>>(capacity);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace MySoft.IoC
         /// 弹出一个ServiceRequest
         /// </summary>
         /// <returns>ServiceRequest removed from the pool.</returns>
-        internal ServiceRequest<T> Pop()
+        internal ServiceMessage<T> Pop()
         {
             if (this.Count > 0)
             {
@@ -54,7 +54,7 @@ namespace MySoft.IoC
         /// 添加一个 ServiceRequest
         /// </summary>
         /// <param name="item">ServiceRequest instance to add to the pool.</param>
-        internal void Push(ServiceRequest<T> item)
+        internal void Push(ServiceMessage<T> item)
         {
             if (item == null)
             {

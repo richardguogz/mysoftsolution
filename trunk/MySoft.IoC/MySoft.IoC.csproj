@@ -89,12 +89,12 @@
     <Compile Include="Service\Services\BaseService.cs" />
     <Compile Include="Service\Services\DynamicService.cs" />
     <Compile Include="Service\SimpleServiceContainer.cs" />
-    <Compile Include="Service\Request\SendMessageEventHandler.cs" />
-    <Compile Include="Service\Request\ServiceRequestEventArgs.cs" />
-    <Compile Include="Service\Request\ServiceRequestPool.cs" />
+    <Compile Include="Service\Message\ServiceMessageEventHandler.cs" />
+    <Compile Include="Service\Message\ServiceMessageEventArgs.cs" />
+    <Compile Include="Service\Message\ServiceMessagePool.cs" />
     <Compile Include="Service\Status\IStatusService.cs" />
     <Compile Include="Service\Status\ServerStatus.cs" />
-    <Compile Include="Service\Request\ServiceRequest.cs" />
+    <Compile Include="Service\Message\ServiceMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">

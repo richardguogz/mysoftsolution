@@ -17,7 +17,7 @@ namespace MySoft.IoC
     {
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private SocketClientConfiguration config;
-        private ServiceRequestPool<ResponseMessage> requestPool;
+        private ServiceMessagePool<ResponseMessage> requestPool;
         private SmartThreadPool pool;
 
         public ServiceProxy(SocketClientConfiguration config, string displayName)
@@ -30,11 +30,11 @@ namespace MySoft.IoC
             pool = new SmartThreadPool(30 * 1000, 500, 10);
 
             //实例化服务池
-            requestPool = new ServiceRequestPool<ResponseMessage>(config.Pools);
+            requestPool = new ServiceMessagePool<ResponseMessage>(config.Pools);
             for (int i = 0; i < config.Pools; i++)
             {
-                var request = new ServiceRequest<ResponseMessage>(displayName, config.IP, config.Port);
-                request.SendCallback += new SendMessageEventHandler<ResponseMessage>(client_SendMessage);
+                var request = new ServiceMessage<ResponseMessage>(displayName, config.IP, config.Port);
+                request.SendCallback += new ServiceMessageEventHandler<ResponseMessage>(client_SendMessage);
 
                 //请求端入栈
                 requestPool.Push(request);
@@ -43,14 +43,15 @@ namespace MySoft.IoC
             #endregion
         }
 
-        void client_SendMessage(object sender, ServiceRequestEventArgs<ResponseMessage> message)
+        void client_SendMessage(object sender, ServiceMessageEventArgs<ResponseMessage> service)
         {
+            var response = service.Message;
+
             //如果未过期，则加入队列中
-            if (message.Response.Expiration >= DateTime.Now)
+            if (response.Expiration >= DateTime.Now)
             {
                 lock (responses)
                 {
-                    var response = message.Response;
                     responses[response.TransactionId] = response;
                 }
             }
