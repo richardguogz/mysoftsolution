@@ -12,8 +12,25 @@ namespace MySoft.Cache
     /// <summary>
     /// 分布式缓存管理类
     /// </summary>
-    public class SharedCacheStrategy : CacheStrategyBase, ICacheStrategy
+    public class SharedCacheStrategy : CacheStrategyBase, ISharedCacheStrategy
     {
+        private ICacheStrategy localCache;
+
+        /// <summary>
+        /// 设置本地缓存超时时间
+        /// </summary>
+        /// <param name="timeout">超时时间，单位：分钟</param>
+        public void SetLocalCacheTimeout(int timeout)
+        {
+            if (timeout > 0)
+            {
+                this.localCache = CacheFactory.CreateCache(base.regionName, CacheType.Local);
+                this.localCache.Timeout = timeout;
+            }
+            else
+                this.localCache = null;
+        }
+
         /// <summary>
         /// 移除对象
         /// </summary>
@@ -119,6 +136,9 @@ namespace MySoft.Cache
                 {
                     dataCache.Add(GetInputKey(objId), o);
                 }
+
+                //处理本地缓存
+                if (localCache != null) localCache.AddObject(objId, o);
             }
         }
 
@@ -154,6 +174,9 @@ namespace MySoft.Cache
                 {
                     dataCache.Add(GetInputKey(objId), o);
                 }
+
+                //处理本地缓存
+                if (localCache != null) localCache.AddObject(objId, o);
             }
         }
 
@@ -171,6 +194,9 @@ namespace MySoft.Cache
             lock (syncObject)
             {
                 dataCache.Remove(GetInputKey(objId));
+
+                //处理本地缓存
+                if (localCache != null) localCache.RemoveObject(objId);
             }
         }
 
@@ -188,7 +214,24 @@ namespace MySoft.Cache
 
             lock (syncObject)
             {
-                return dataCache.Get(GetInputKey(objId));
+                object returnObject = null;
+
+                //处理本地缓存
+                if (localCache != null)
+                {
+                    returnObject = localCache.GetObject(objId);
+                    if (returnObject != null) return returnObject;
+                }
+
+                returnObject = dataCache.Get(GetInputKey(objId));
+
+                //添加到本地缓存
+                if (returnObject != null && localCache != null)
+                {
+                    localCache.AddObject(objId, returnObject);
+                }
+
+                return returnObject;
             }
         }
 
@@ -199,15 +242,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public T GetObject<T>(string objId)
         {
-            if (objId == null || objId.Length == 0)
-            {
-                return default(T);
-            }
-
-            lock (syncObject)
-            {
-                return dataCache.Get<T>(GetInputKey(objId));
-            }
+            return (T)GetObject(objId);
         }
 
         /// <summary>

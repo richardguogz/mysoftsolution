@@ -127,6 +127,7 @@ namespace MySoft.IoC
             //判断约束
             if (operationContract != null)
             {
+                if (isAllowCache) isAllowCache = operationContract.AllowCache;
                 if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
                 if (operationContract.Timeout > 0) reqMsg.Timeout = operationContract.Timeout;
             }
@@ -200,7 +201,7 @@ namespace MySoft.IoC
 
                 #endregion
 
-                if (cacheValue != null)
+                if (returnValue != null)
                 {
                     //缓存的处理
                     if (isAllowCache && container.Cache != null)

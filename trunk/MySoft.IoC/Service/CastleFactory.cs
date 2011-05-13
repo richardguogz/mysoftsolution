@@ -154,37 +154,58 @@ namespace MySoft.IoC
             //本地匹配节
             if (config == null || config.Type == CastleFactoryType.Local)
             {
+                IServiceContainer container = null;
                 if (config == null)
-                    instance = new CastleFactory(new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER));
+                    container = new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER);
                 else
-                    instance = new CastleFactory(new SimpleServiceContainer(config.ShowlogTime));
+                    container = new SimpleServiceContainer(config.ShowlogTime);
+
+                instance = new CastleFactory(container);
             }
             else
             {
-                IServiceContainer container = new SimpleServiceContainer(config.ShowlogTime);
-                if (!config.Hosts.ContainsKey(name))
+                bool isProxy = true;
+                if (config.Hosts.Count == 0 && config.Type == CastleFactoryType.LocalRemote)
                 {
-                    throw new IoCException("Not find the service node [" + name + "]！");
+                    isProxy = false;
                 }
 
-                if (config.MaxPool < 1) throw new IoCException("Minimum pool size 1！");
-                if (config.MaxPool > 500) throw new IoCException("Maximum pool size 500！");
+                IServiceContainer container = new SimpleServiceContainer(config.ShowlogTime);
+                if (isProxy)
+                {
+                    if (!config.Hosts.ContainsKey(name))
+                    {
+                        throw new IoCException("Not find the service node [" + name + "]！");
+                    }
 
-                var serviceNode = config.Hosts[name];
+                    if (config.MaxPool < 1) throw new IoCException("Minimum pool size 1！");
+                    if (config.MaxPool > 500) throw new IoCException("Maximum pool size 500！");
 
-                //客户端配置
-                SocketClientConfiguration clientconfig = new SocketClientConfiguration();
-                clientconfig.IP = serviceNode.Server;
-                clientconfig.Port = serviceNode.Port;
-                clientconfig.Pools = config.MaxPool;
+                    var serviceNode = config.Hosts[name];
 
-                //设置服务代理
-                var proxy = new ServiceProxy(clientconfig, (serviceNode.Description ?? serviceNode.Name));
-                container.Proxy = proxy;
+                    //客户端配置
+                    SocketClientConfiguration clientconfig = new SocketClientConfiguration();
+                    clientconfig.IP = serviceNode.Server;
+                    clientconfig.Port = serviceNode.Port;
+                    clientconfig.Pools = config.MaxPool;
+
+                    //设置服务代理
+                    var proxy = new ServiceProxy(clientconfig, (serviceNode.Description ?? serviceNode.Name));
+                    container.Proxy = proxy;
+
+                    //设置代理的事件委托
+                    proxy.OnLog += (log, type) =>
+                    {
+                        if (instance.OnLog != null)
+                        {
+                            instance.OnLog(log, type);
+                        }
+                    };
+                }
 
                 instance = new CastleFactory(container);
 
-                #region 设置委托
+                #region 设置事件委托
 
                 container.OnLog += (log, type) =>
                 {
@@ -199,14 +220,6 @@ namespace MySoft.IoC
                     if (instance.OnError != null)
                     {
                         instance.OnError(exception);
-                    }
-                };
-
-                proxy.OnLog += (log, type) =>
-                {
-                    if (instance.OnLog != null)
-                    {
-                        instance.OnLog(log, type);
                     }
                 };
 
@@ -286,31 +299,31 @@ namespace MySoft.IoC
                 }
             }
 
-            //本地服务
-            if (!string.IsNullOrEmpty(key))
-            {
-                if (container.Kernel.HasComponent(key))
-                {
-                    var service = container[key];
-
-                    //返回拦截服务
-                    return AspectManager.GetService<IServiceInterfaceType>(service);
-                }
-            }
-            else
-            {
-                if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
-                {
-                    var service = container[typeof(IServiceInterfaceType)];
-
-                    //返回拦截服务
-                    return AspectManager.GetService<IServiceInterfaceType>(service);
-                }
-            }
-
             //如果是本地配置，则抛出异常
             if (configuration == null || configuration.Type == CastleFactoryType.Local)
             {
+                //本地服务
+                if (!string.IsNullOrEmpty(key))
+                {
+                    if (container.Kernel.HasComponent(key))
+                    {
+                        var service = container[key];
+
+                        //返回拦截服务
+                        return AspectManager.GetService<IServiceInterfaceType>(service);
+                    }
+                }
+                else
+                {
+                    if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
+                    {
+                        var service = container[typeof(IServiceInterfaceType)];
+
+                        //返回拦截服务
+                        return AspectManager.GetService<IServiceInterfaceType>(service);
+                    }
+                }
+
                 throw new IoCException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
             }
             else

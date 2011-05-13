@@ -51,6 +51,18 @@ namespace MySoft.Cache
     }
 
     /// <summary>
+    /// SharedCache策略接口
+    /// </summary>
+    public interface ISharedCacheStrategy : ICacheStrategy
+    {
+        /// <summary>
+        /// 设置本地缓存超时时间
+        /// </summary>
+        /// <param name="timeout"></param>
+        void SetLocalCacheTimeout(int timeout);
+    }
+
+    /// <summary>
     /// 公共缓存策略接口
     /// </summary>
     public interface ICacheStrategy

@@ -10,6 +10,7 @@ namespace MySoft.Cache
     /// </summary>
     public class CacheStrategyBase
     {
+        protected string regionName;
         protected string prefix;
         public CacheStrategyBase(string regionName)
         {
@@ -17,6 +18,8 @@ namespace MySoft.Cache
                 throw new ArgumentNullException("缓存分区名称不能为null！");
             else
                 this.prefix = "{" + regionName.ToUpper() + "}|";
+
+            this.regionName = regionName;
         }
 
         /// <summary>

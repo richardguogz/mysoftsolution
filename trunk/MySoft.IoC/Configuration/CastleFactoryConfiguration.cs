@@ -79,12 +79,6 @@ namespace MySoft.IoC.Configuration
             if (xmlnode["maxpool"] != null && xmlnode["maxpool"].Value.Trim() != string.Empty)
                 maxpool = Convert.ToInt32(xmlnode["maxpool"].Value);
 
-            //如果app名称为空
-            if (string.IsNullOrEmpty(appName))
-            {
-                throw new IoCException("App name must be provided！");
-            }
-
             foreach (XmlNode child in node.ChildNodes)
             {
                 if (child.NodeType == XmlNodeType.Comment) continue;
@@ -109,16 +103,25 @@ namespace MySoft.IoC.Configuration
                 }
             }
 
-            //判断是否配置了服务信息
-            if (hosts.Count == 0)
+            if (type == CastleFactoryType.Remote)
             {
-                throw new IoCException("Not configure any service node！");
-            }
+                //如果app名称为空
+                if (string.IsNullOrEmpty(appName))
+                {
+                    throw new IoCException("App name must be provided！");
+                }
 
-            //判断是否包含默认的服务
-            if (!hosts.ContainsKey(defaultService))
-            {
-                throw new IoCException("Not find the default service node [" + defaultService + "]！");
+                //判断是否配置了服务信息
+                if (hosts.Count == 0)
+                {
+                    throw new IoCException("Not configure any service node！");
+                }
+
+                //判断是否包含默认的服务
+                if (!hosts.ContainsKey(defaultService))
+                {
+                    throw new IoCException("Not find the default service node [" + defaultService + "]！");
+                }
             }
         }
 

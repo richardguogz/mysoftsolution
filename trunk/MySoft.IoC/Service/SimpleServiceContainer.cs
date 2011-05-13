@@ -299,7 +299,13 @@ namespace MySoft.IoC
             IService localService = (IService)GetLocalService(reqMsg.ServiceName);
             if (localService != null)
             {
-                return localService.CallService(reqMsg, logtime);
+                var resMsg = localService.CallService(reqMsg, logtime);
+                if (resMsg != null && resMsg.Exception != null)
+                {
+                    throw resMsg.Exception;
+                }
+
+                return resMsg;
             }
 
             //判断代理是否为空
