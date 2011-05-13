@@ -14,8 +14,8 @@ namespace SetupNBearVsPlugin
         static void Main(string[] args)
         {
             string myDocDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string visionName = ConfigurationManager.AppSettings["AddInVersionName"] ?? "2005";
-            string visionNo = ConfigurationManager.AppSettings["AddInVersionNo"] ?? "8.0";
+            string visionName = ConfigurationManager.AppSettings["AddInVersionName"] ?? "2008";
+            string visionNo = ConfigurationManager.AppSettings["AddInVersionNo"] ?? "9.0";
             string vsNetAddInDir = myDocDir + string.Format("\\Visual Studio {0}\\Addins", visionName);
             string addInFile = vsNetAddInDir + "\\MySoft.Tools.EntityDesignVsPlugin.AddIn";
 
