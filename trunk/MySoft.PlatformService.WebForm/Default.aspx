@@ -21,6 +21,7 @@
                 <li><br /></li>
                 <li>服务计时区间：<%=status.TotalSeconds %> seconds</li>
                 <li>每秒请求数:<%=status.AverageRequestCount%> times</li>
+                <li>平均成功数:<%=status.AverageSuccessCount%> times</li>
                 <li>平均错误数:<%=status.AverageErrorCount%> times</li>
                 <li>平均耗时数:<%=status.AverageElapsedTime %> ms</li>
                 <li>每秒流量数:<%=status.AverageDataFlow%> bytes</li>
@@ -30,6 +31,7 @@
             <%if (timeStatus != null)
               { %>
                 <li>请求数:    <%=timeStatus.RequestCount%> times</li>
+                <li>成功数:    <%=timeStatus.SuccessCount%> times</li>
                 <li>错误数:    <%=timeStatus.ErrorCount%> times</li>
                 <li>耗时:      <%=timeStatus.ElapsedTime%> ms</li>
                 <li>流量:      <%=timeStatus.DataFlow%> bytes</li>

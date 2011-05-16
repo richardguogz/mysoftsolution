@@ -75,9 +75,10 @@ namespace MySoft.IoC
                     //计算时间
                     if (status.RequestCount > 0)
                     {
-                        SecondStatus state = new SecondStatus
+                        SecondStatus tmpStatus = new SecondStatus
                         {
                             RequestCount = status.RequestCount,
+                            SuccessCount = status.SuccessCount,
                             ErrorCount = status.ErrorCount,
                             ElapsedTime = status.ElapsedTime,
                             DataFlow = status.DataFlow
@@ -95,7 +96,7 @@ namespace MySoft.IoC
                                 statuslist.RemoveAt(0);
                             }
 
-                            statuslist.Add(state);
+                            statuslist.Add(tmpStatus);
                         }
                     }
 
@@ -278,19 +279,18 @@ namespace MySoft.IoC
         private void GetSendResponse(SocketAsyncEventArgs socketAsync, RequestMessage request)
         {
             ResponseMessage response = null;
-
             Stopwatch watch = Stopwatch.StartNew();
 
             try
             {
                 //处理请求数
-                if (IsServiceCounter(response)) status.RequestCount++;
+                if (IsServiceCounter(request)) status.RequestCount++;
 
                 //获取返回的消息
                 response = container.CallService(request);
 
                 //处理错误数
-                if (IsServiceCounter(response))
+                if (IsServiceCounter(request))
                 {
                     if (response.Exception == null)
                         status.SuccessCount++;
@@ -301,7 +301,7 @@ namespace MySoft.IoC
                 byte[] data = BufferFormat.FormatFCA(response);
 
                 //计算流量
-                if (IsServiceCounter(response)) status.DataFlow += data.Length;
+                if (IsServiceCounter(request)) status.DataFlow += data.Length;
 
                 //发送数据到服务端
                 manager.Server.SendData(socketAsync.AcceptSocket, data);
@@ -315,18 +315,18 @@ namespace MySoft.IoC
                 watch.Stop();
 
                 //处理时间
-                if (IsServiceCounter(response)) status.ElapsedTime += watch.ElapsedMilliseconds;
+                if (IsServiceCounter(request)) status.ElapsedTime += watch.ElapsedMilliseconds;
             }
         }
 
         /// <summary>
         /// 判断是否需要计数
         /// </summary>
-        /// <param name="response"></param>
-        private bool IsServiceCounter(ResponseMessage response)
+        /// <param name="request"></param>
+        private bool IsServiceCounter(RequestMessage request)
         {
-            if (response == null) return false;
-            if (response.ServiceName == typeof(IStatusService).FullName) return false;
+            if (request == null) return false;
+            if (request.ServiceName == typeof(IStatusService).FullName) return false;
 
             return true;
         }
@@ -375,6 +375,7 @@ namespace MySoft.IoC
             {
                 TotalSeconds = statuslist.Count,
                 RequestCount = statuslist.Sum(p => p.RequestCount),
+                SuccessCount = statuslist.Sum(p => p.SuccessCount),
                 ErrorCount = statuslist.Sum(p => p.ErrorCount),
                 ElapsedTime = statuslist.Sum(p => p.ElapsedTime),
                 DataFlow = statuslist.Sum(p => p.DataFlow),

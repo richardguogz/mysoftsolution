@@ -63,7 +63,10 @@ namespace MySoft.IoC
             }
             set
             {
-                successCount = value;
+                lock (this)
+                {
+                    successCount = value;
+                }
             }
         }
 

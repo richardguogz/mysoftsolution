@@ -11,7 +11,10 @@ namespace MySoft.PlatformService.UserService
     {
         public int GetUserID()
         {
-            Thread.Sleep(300);
+            Thread.Sleep(100);
+            if (Environment.TickCount % 2 == 0)
+                throw new Exception(Environment.TickCount + "错误！");
+
             return 1;
         }
 
