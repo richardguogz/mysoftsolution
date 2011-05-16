@@ -9,12 +9,12 @@ namespace MySoft.IoC
     /// <summary>
     /// 服务响应事件参数
     /// </summary>
-    public class ServiceMessageEventArgs<T>
+    public class ServiceMessageEventArgs
     {
         /// <summary>
         /// 响应的消息
         /// </summary>
-        public T Message { get; set; }
+        public ResponseMessage Result { get; set; }
 
         /// <summary>
         /// 返回通讯的Socket对象

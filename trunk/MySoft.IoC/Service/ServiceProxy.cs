@@ -18,7 +18,7 @@ namespace MySoft.IoC
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private IServiceLog logger;
         private SocketClientConfiguration config;
-        private ServiceMessagePool<ResponseMessage> requestPool;
+        private ServiceMessagePool requestPool;
         private SmartThreadPool pool;
 
         public ServiceProxy(IServiceLog logger, SocketClientConfiguration config, string displayName)
@@ -32,11 +32,11 @@ namespace MySoft.IoC
             pool = new SmartThreadPool(30 * 1000, 500, 10);
 
             //实例化服务池
-            requestPool = new ServiceMessagePool<ResponseMessage>(config.Pools);
+            requestPool = new ServiceMessagePool(config.Pools);
             for (int i = 0; i < config.Pools; i++)
             {
-                var request = new ServiceMessage<ResponseMessage>(displayName, config.IP, config.Port);
-                request.SendCallback += new ServiceMessageEventHandler<ResponseMessage>(client_SendMessage);
+                var request = new ServiceMessage(displayName, config.IP, config.Port);
+                request.SendCallback += new ServiceMessageEventHandler(client_SendMessage);
 
                 //请求端入栈
                 requestPool.Push(request);
@@ -45,12 +45,12 @@ namespace MySoft.IoC
             #endregion
         }
 
-        void client_SendMessage(object sender, ServiceMessageEventArgs<ResponseMessage> service)
+        void client_SendMessage(object sender, ServiceMessageEventArgs message)
         {
             //将SocketRequest入栈
-            requestPool.Push(sender as ServiceMessage<ResponseMessage>);
+            requestPool.Push(sender as ServiceMessage);
 
-            var response = service.Message;
+            var response = message.Result;
 
             //如果未过期，则加入队列中
             if (response.Expiration >= DateTime.Now)

@@ -9,12 +9,12 @@ namespace MySoft.IoC
     /// <summary>
     /// 服务消息池
     /// </summary>
-    internal sealed class ServiceMessagePool<T>
+    internal sealed class ServiceMessagePool
     {
         /// <summary>
         /// ServiceRequest栈
         /// </summary>
-        private Stack<ServiceMessage<T>> pool;
+        private Stack<ServiceMessage> pool;
 
         /// <summary>
         /// 初始化ServiceRequest池
@@ -22,7 +22,7 @@ namespace MySoft.IoC
         /// <param name="capacity">最大可能使用的ServiceRequest对象.</param>
         internal ServiceMessagePool(Int32 capacity)
         {
-            this.pool = new Stack<ServiceMessage<T>>(capacity);
+            this.pool = new Stack<ServiceMessage>(capacity);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace MySoft.IoC
         /// 弹出一个ServiceRequest
         /// </summary>
         /// <returns>ServiceRequest removed from the pool.</returns>
-        internal ServiceMessage<T> Pop()
+        internal ServiceMessage Pop()
         {
             lock (this.pool)
             {
@@ -49,7 +49,7 @@ namespace MySoft.IoC
         /// 添加一个 ServiceRequest
         /// </summary>
         /// <param name="item">ServiceRequest instance to add to the pool.</param>
-        internal void Push(ServiceMessage<T> item)
+        internal void Push(ServiceMessage item)
         {
             if (item == null)
             {

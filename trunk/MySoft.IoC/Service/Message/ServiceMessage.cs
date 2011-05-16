@@ -12,9 +12,9 @@ namespace MySoft.IoC
     /// <summary>
     /// 服务消息
     /// </summary>
-    public class ServiceMessage<T>
+    public class ServiceMessage
     {
-        public event ServiceMessageEventHandler<T> SendCallback;
+        public event ServiceMessageEventHandler SendCallback;
 
         private SocketClientManager manager;
         private bool connected = false;
@@ -104,12 +104,12 @@ namespace MySoft.IoC
                     object responseObject;
                     if (read.ReadObject(out responseObject))
                     {
-                        T result = (T)responseObject;
+                        var result = responseObject as ResponseMessage;
                         if (SendCallback != null)
                         {
-                            var args = new ServiceMessageEventArgs<T>
+                            var args = new ServiceMessageEventArgs
                             {
-                                Message = result,
+                                Result = result,
                                 Socket = manager.Client.Socket
                             };
 
