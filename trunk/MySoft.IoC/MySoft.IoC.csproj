@@ -79,7 +79,6 @@
     <Compile Include="Configuration\CastleServiceConfiguration.cs" />
     <Compile Include="Configuration\CastleServiceConfigurationHandler.cs" />
     <Compile Include="Configuration\ServiceNode.cs" />
-    <Compile Include="Service\Exceptions.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\IServiceContainer.cs" />
     <Compile Include="Service\ParameterCollection.cs" />

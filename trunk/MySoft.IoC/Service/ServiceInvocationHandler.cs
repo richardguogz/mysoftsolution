@@ -73,8 +73,7 @@ namespace MySoft.IoC
                 {
                     if (paramValues[i] != null)
                     {
-                        Type type = pis[i].ParameterType;
-                        if (!type.IsByRef)
+                        if (!pis[i].ParameterType.IsByRef)
                         {
                             //如果传递的是引用，则跳过
                             reqMsg.Parameters[pis[i].Name] = paramValues[i];
@@ -209,8 +208,7 @@ namespace MySoft.IoC
             //给引用的参数赋值
             for (int i = 0; i < pis.Length; i++)
             {
-                Type type = pis[i].ParameterType;
-                if (type.IsByRef)
+                if (pis[i].ParameterType.IsByRef)
                 {
                     //给参数赋值
                     paramValues[i] = parameters[pis[i].Name];

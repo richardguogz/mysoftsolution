@@ -171,12 +171,14 @@ namespace MySoft.IoC
 
         void container_OnLog(string log, LogType type)
         {
-            if (OnLog != null) OnLog(log, type);
+            try { if (OnLog != null) OnLog(log, type); }
+            catch { }
         }
 
         void container_OnError(Exception exception)
         {
-            if (OnError != null) OnError(exception);
+            try { if (OnError != null) OnError(exception); }
+            catch { }
         }
 
         #region ILogable Members
@@ -282,44 +284,51 @@ namespace MySoft.IoC
             try
             {
                 //处理请求数
-                if (request.ServiceName != typeof(IStatusService).FullName)
-                    status.RequestCount++;
+                if (IsServiceCounter(response)) status.RequestCount++;
 
                 //获取返回的消息
                 response = container.CallService(request);
-            }
-            catch
-            {
+
                 //处理错误数
-                if (request.ServiceName != typeof(IStatusService).FullName)
-                    status.ErrorCount++;
+                if (IsServiceCounter(response))
+                {
+                    if (response.Exception == null)
+                        status.SuccessCount++;
+                    else
+                        status.ErrorCount++;
+                }
+
+                byte[] data = BufferFormat.FormatFCA(response);
+
+                //计算流量
+                if (IsServiceCounter(response)) status.DataFlow += data.Length;
+
+                //发送数据到服务端
+                manager.Server.SendData(socketAsync.AcceptSocket, data);
+            }
+            catch (Exception ex)
+            {
+                container_OnError(ex);
             }
             finally
             {
                 watch.Stop();
 
                 //处理时间
-                if (request.ServiceName != typeof(IStatusService).FullName)
-                    status.ElapsedTime += watch.ElapsedMilliseconds;
+                if (IsServiceCounter(response)) status.ElapsedTime += watch.ElapsedMilliseconds;
             }
+        }
 
-            if (response != null)
-            {
-                //处理流量
-                if (request.ServiceName != typeof(IStatusService).FullName)
-                {
-                    //计算流量
-                    if (response.Data != null)
-                    {
-                        status.DataFlow += response.Data.Length;
-                    }
-                }
+        /// <summary>
+        /// 判断是否需要计数
+        /// </summary>
+        /// <param name="response"></param>
+        private bool IsServiceCounter(ResponseMessage response)
+        {
+            if (response == null) return false;
+            if (response.ServiceName == typeof(IStatusService).FullName) return false;
 
-                byte[] data = BufferFormat.FormatFCA(response);
-
-                //发送数据到服务端
-                manager.Server.SendData(socketAsync.AcceptSocket, data);
-            }
+            return true;
         }
 
         #endregion

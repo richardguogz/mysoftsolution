@@ -14,6 +14,7 @@
                { %>
                 <li>服务端状态信息如下：</li>
                 <li>请求数:    <%=status.RequestCount %> times</li>
+                <li>成功数:    <%=status.SuccessCount %> times</li>
                 <li>错误数:    <%=status.ErrorCount %> times</li>
                 <li>总耗时:    <%=status.ElapsedTime %> ms</li>
                 <li>总流量:    <%=status.DataFlow %> bytes</li>

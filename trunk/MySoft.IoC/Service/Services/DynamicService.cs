@@ -97,14 +97,13 @@ namespace MySoft.IoC.Services
 
             for (int i = 0; i < pis.Length; i++)
             {
-                Type type = pis[i].ParameterType;
-                if (type.IsByRef)
+                if (!pis[i].ParameterType.IsByRef)
                 {
-                    paramValues[i] = CoreHelper.GetTypeDefaultValue(type);
+                    paramValues[i] = resMsg.Parameters[pis[i].Name];
                 }
                 else
                 {
-                    paramValues[i] = resMsg.Parameters[pis[i].Name];
+                    paramValues[i] = CoreHelper.GetTypeDefaultValue(pis[i].ParameterType);
                 }
             }
 
@@ -126,8 +125,7 @@ namespace MySoft.IoC.Services
                 //把返回值传递回去
                 for (int i = 0; i < pis.Length; i++)
                 {
-                    Type type = pis[i].ParameterType;
-                    if (type.IsByRef)
+                    if (pis[i].ParameterType.IsByRef)
                     {
                         //给参数赋值
                         resMsg.Parameters[pis[i].Name] = paramValues[i];

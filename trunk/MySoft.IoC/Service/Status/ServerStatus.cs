@@ -13,7 +13,7 @@ namespace MySoft.IoC
     [Serializable]
     public class SecondStatus
     {
-        protected long dataFlow;
+        private long dataFlow;
         /// <summary>
         /// 数据流量
         /// </summary>
@@ -32,7 +32,7 @@ namespace MySoft.IoC
             }
         }
 
-        protected int requestCount;
+        private int requestCount;
         /// <summary>
         /// 请求数
         /// </summary>
@@ -51,7 +51,23 @@ namespace MySoft.IoC
             }
         }
 
-        protected int errorCount;
+        private int successCount;
+        /// <summary>
+        /// 成功计数
+        /// </summary>
+        public int SuccessCount
+        {
+            get
+            {
+                return successCount;
+            }
+            set
+            {
+                successCount = value;
+            }
+        }
+
+        private int errorCount;
         /// <summary>
         /// 错误数
         /// </summary>
@@ -70,7 +86,7 @@ namespace MySoft.IoC
             }
         }
 
-        protected long elapsedTime;
+        private long elapsedTime;
         /// <summary>
         /// 总耗时
         /// </summary>
@@ -123,7 +139,7 @@ namespace MySoft.IoC
             get
             {
                 if (totalSeconds > 0)
-                    return Math.Round((dataFlow * 1.0) / (totalSeconds * 1.0), 4);
+                    return Math.Round((base.DataFlow * 1.0) / (totalSeconds * 1.0), 4);
                 else
                     return 0;
             }
@@ -137,7 +153,7 @@ namespace MySoft.IoC
             get
             {
                 if (totalSeconds > 0)
-                    return Math.Round((requestCount * 1.0) / (totalSeconds * 1.0), 4);
+                    return Math.Round((base.RequestCount * 1.0) / (totalSeconds * 1.0), 4);
                 else
                     return 0;
             }
@@ -150,8 +166,22 @@ namespace MySoft.IoC
         {
             get
             {
-                if (requestCount > 0)
-                    return Math.Round((elapsedTime * 1.0) / (requestCount * 1.0), 4);
+                if (base.RequestCount > 0)
+                    return Math.Round((base.ElapsedTime * 1.0) / (base.RequestCount * 1.0), 4);
+                else
+                    return 0;
+            }
+        }
+
+        /// <summary>
+        /// 平均成功数（每秒）
+        /// </summary>
+        public double AverageSuccessCount
+        {
+            get
+            {
+                if (totalSeconds > 0)
+                    return Math.Round((base.SuccessCount * 1.0) / (totalSeconds * 1.0), 4);
                 else
                     return 0;
             }
@@ -165,7 +195,7 @@ namespace MySoft.IoC
             get
             {
                 if (totalSeconds > 0)
-                    return Math.Round((errorCount * 1.0) / (totalSeconds * 1.0), 4);
+                    return Math.Round((base.ErrorCount * 1.0) / (totalSeconds * 1.0), 4);
                 else
                     return 0;
             }
