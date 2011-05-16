@@ -13,7 +13,8 @@ namespace MySoft.PlatformService.WebForm
     public partial class _Default : System.Web.UI.Page
     {
         protected ServerStatus status;
-        protected SecondStatus timeStatus;
+        protected TimeStatus timeStatus;
+        protected HighestStatus highestStatus;
         protected IList<ConnectInfo> clients;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -21,8 +22,9 @@ namespace MySoft.PlatformService.WebForm
             try
             {
                 status = CastleFactory.Create().StatusService.GetServerStatus();
-                timeStatus = CastleFactory.Create().StatusService.GetLastSecondStatus();
-                clients = CastleFactory.Create().StatusService.GetConnectInfos();
+                timeStatus = CastleFactory.Create().StatusService.GetLastTimeStatus();
+                highestStatus = CastleFactory.Create().StatusService.GetHighestStatus();
+                clients = CastleFactory.Create().StatusService.GetConnectInfoList();
             }
             catch (Exception ex)
             {

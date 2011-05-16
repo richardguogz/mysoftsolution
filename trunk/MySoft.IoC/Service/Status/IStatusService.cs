@@ -19,26 +19,32 @@ namespace MySoft.IoC
         ServerStatus GetServerStatus();
 
         /// <summary>
+        /// 获取最高状态信息
+        /// </summary>
+        /// <returns></returns>
+        HighestStatus GetHighestStatus();
+
+        /// <summary>
         /// 清除服务器状态
         /// </summary>
-        void ClearServerStatus();
+        void ClearAllStatus();
 
         /// <summary>
         /// 获取最后一次服务状态
         /// </summary>
         /// <returns></returns>
-        SecondStatus GetLastSecondStatus();
+        TimeStatus GetLastTimeStatus();
 
         /// <summary>
         /// 获取时段的服务状态信息
         /// </summary>
         /// <returns></returns>
-        IList<SecondStatus> GetSecondStatusList();
+        IList<TimeStatus> GetTimeStatusList();
 
         /// <summary>
         /// 获取所有的客户端信息
         /// </summary>
         /// <returns></returns>
-        IList<ConnectInfo> GetConnectInfos();
+        IList<ConnectInfo> GetConnectInfoList();
     }
 }

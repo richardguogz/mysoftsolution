@@ -96,6 +96,9 @@
     <Compile Include="Service\Status\IStatusService.cs" />
     <Compile Include="Service\Status\ServerStatus.cs" />
     <Compile Include="Service\Message\ServiceMessage.cs" />
+    <Compile Include="Service\Status\SecondStatus.cs" />
+    <Compile Include="Service\Status\HighestStatus.cs" />
+    <Compile Include="Service\Status\TimeStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">

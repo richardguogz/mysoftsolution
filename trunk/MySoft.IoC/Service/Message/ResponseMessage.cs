@@ -74,20 +74,8 @@ namespace MySoft.IoC
         {
             get
             {
-                //如果发生了异常
-                if (exception != null)
-                {
-                    return "Occured error: " + exception.Message;
-                }
-
-                if (data == null)
-                {
-                    return "Data is empty.";
-                }
-                else
-                {
-                    return string.Format("Packet size (return:{1} compress:{2} encrypt:{3}): {0} bytes.", data.Length, base.ReturnType, base.Compress, base.Encrypt);
-                }
+                int dataLength = (data == null) ? 0 : data.Length;
+                return string.Format("Packet size (return:{1} compress:{2} encrypt:{3}): {0} bytes.", dataLength, base.ReturnType, base.Compress, base.Encrypt);
             }
         }
     }

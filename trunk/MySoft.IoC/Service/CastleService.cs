@@ -22,8 +22,9 @@ namespace MySoft.IoC
         private CastleServiceConfiguration config;
         private SocketServerManager manager;
         private IList<EndPoint> clients;
-        private IList<SecondStatus> statuslist;
+        private IList<TimeStatus> statuslist;
         private SecondStatus status;
+        private HighestStatus highest;
 
         /// <summary>
         /// 服务容器
@@ -49,7 +50,8 @@ namespace MySoft.IoC
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
-            this.statuslist = new List<SecondStatus>();
+            this.statuslist = new List<TimeStatus>();
+            this.highest = new HighestStatus();
             this.status = new SecondStatus();
 
             //服务器配置
@@ -75,8 +77,9 @@ namespace MySoft.IoC
                     //计算时间
                     if (status.RequestCount > 0)
                     {
-                        SecondStatus tmpStatus = new SecondStatus
+                        TimeStatus tmpStatus = new TimeStatus
                         {
+                            CounterTime = DateTime.Now,
                             RequestCount = status.RequestCount,
                             SuccessCount = status.SuccessCount,
                             ErrorCount = status.ErrorCount,
@@ -86,6 +89,46 @@ namespace MySoft.IoC
 
                         //重新实例化状态
                         status = new SecondStatus();
+
+                        //处理最高值 
+                        #region 处理最高值
+
+                        //流量
+                        if (tmpStatus.DataFlow > highest.DataFlow)
+                        {
+                            highest.DataFlow = tmpStatus.DataFlow;
+                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                        }
+
+                        //请求
+                        if (tmpStatus.RequestCount > highest.RequestCount)
+                        {
+                            highest.RequestCount = tmpStatus.RequestCount;
+                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                        }
+
+                        //成功
+                        if (tmpStatus.SuccessCount > highest.SuccessCount)
+                        {
+                            highest.SuccessCount = tmpStatus.SuccessCount;
+                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                        }
+
+                        //失败
+                        if (tmpStatus.ErrorCount > highest.ErrorCount)
+                        {
+                            highest.ErrorCount = tmpStatus.ErrorCount;
+                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                        }
+
+                        //耗时
+                        if (tmpStatus.ElapsedTime > highest.ElapsedTime)
+                        {
+                            highest.ElapsedTime = tmpStatus.ElapsedTime;
+                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                        }
+
+                        #endregion
 
                         //将状态添加到列表中
                         lock (statuslist)
@@ -339,7 +382,7 @@ namespace MySoft.IoC
         /// 获取最后一次服务状态
         /// </summary>
         /// <returns></returns>
-        public SecondStatus GetLastSecondStatus()
+        public TimeStatus GetLastTimeStatus()
         {
             return statuslist.LastOrDefault();
         }
@@ -348,20 +391,29 @@ namespace MySoft.IoC
         /// 获取服务状态列表
         /// </summary>
         /// <returns></returns>
-        public IList<SecondStatus> GetSecondStatusList()
+        public IList<TimeStatus> GetTimeStatusList()
         {
             return statuslist;
         }
 
         /// <summary>
-        /// 清除服务器状态
+        /// 清除所有服务器状态
         /// </summary>
-        public void ClearServerStatus()
+        public void ClearAllStatus()
         {
             lock (statuslist)
             {
                 statuslist.Clear();
             }
+        }
+
+        /// <summary>
+        /// 获取最高状态信息
+        /// </summary>
+        /// <returns></returns>
+        public HighestStatus GetHighestStatus()
+        {
+            return highest;
         }
 
         /// <summary>
@@ -388,16 +440,19 @@ namespace MySoft.IoC
         /// 获取连接客户信息
         /// </summary>
         /// <returns></returns>
-        public IList<ConnectInfo> GetConnectInfos()
+        public IList<ConnectInfo> GetConnectInfoList()
         {
-            var dict = clients.ToLookup(p => p.ToString().Split(':')[0]);
-            IList<ConnectInfo> list = new List<ConnectInfo>();
-            foreach (var item in dict)
+            lock (clients)
             {
-                list.Add(new ConnectInfo { IP = item.Key, Count = item.Count() });
-            }
+                var dict = clients.ToLookup(p => p.ToString().Split(':')[0]);
+                IList<ConnectInfo> list = new List<ConnectInfo>();
+                foreach (var item in dict)
+                {
+                    list.Add(new ConnectInfo { IP = item.Key, Count = item.Count() });
+                }
 
-            return list;
+                return list;
+            }
         }
 
         #endregion
