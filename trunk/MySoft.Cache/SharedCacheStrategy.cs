@@ -19,7 +19,7 @@ namespace MySoft.Cache
         /// <summary>
         /// 设置本地缓存超时时间
         /// </summary>
-        /// <param name="timeout">超时时间，单位：分钟</param>
+        /// <param name="timeout">超时时间，单位：秒</param>
         public void SetLocalCacheTimeout(int timeout)
         {
             if (timeout > 0)
@@ -81,7 +81,7 @@ namespace MySoft.Cache
 
         private static volatile IndexusProviderBase dataCache = IndexusDistributionCache.SharedCache;
         private static readonly object syncObject = new object();
-        private int _timeOut = 1440; // 默认缓存存活期为1440分钟(24小时)
+        private int _timeOut = 1440 * 60; // 默认缓存存活期为1440分钟(24小时)
 
         /// <summary>
         /// 实例化分布式缓存
@@ -90,7 +90,7 @@ namespace MySoft.Cache
         public SharedCacheStrategy(string regionName) : base(regionName) { }
 
         /// <summary>
-        /// 设置到期相对时间[单位：／分钟] 
+        /// 设置到期相对时间[单位：秒] 
         /// </summary>
         public int Timeout
         {
@@ -130,7 +130,7 @@ namespace MySoft.Cache
             {
                 if (Timeout > 0)
                 {
-                    dataCache.Add(GetInputKey(objId), o, DateTime.Now.AddMinutes(Timeout));
+                    dataCache.Add(GetInputKey(objId), o, DateTime.Now.AddSeconds(Timeout));
                 }
                 else
                 {

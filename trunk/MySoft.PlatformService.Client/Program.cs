@@ -90,6 +90,12 @@ namespace MySoft.PlatformService.Client
             castle.OnError += new ErrorLogEventHandler(castle_OnError);
             IUserService service = castle.GetService<IUserService>();
 
+            //service.SetUser(new UserInfo { Name = "sadfsd", Description = "sdafsd" });
+            //return;
+
+            //int uid;
+            //var u = service.GetUserInfo("maoyong", out uid);
+
             for (int i = 0; i < count; i++)
             {
                 try

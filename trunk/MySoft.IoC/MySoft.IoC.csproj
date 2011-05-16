@@ -67,6 +67,7 @@
     <Compile Include="PHP\MD5.cs" />
     <Compile Include="PHP\XXTEA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceConfig.cs" />
     <Compile Include="Service\IServiceProxy.cs" />
     <Compile Include="Service\ServiceCache.cs" />
     <Compile Include="Service\ServiceInvocationHandler.cs" />

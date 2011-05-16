@@ -39,15 +39,10 @@ namespace MySoft.IoC
         /// <returns>ServiceRequest removed from the pool.</returns>
         internal ServiceMessage<T> Pop()
         {
-            if (this.Count > 0)
+            lock (this.pool)
             {
-                lock (this.pool)
-                {
-                    return this.pool.Pop();
-                }
+                return this.pool.Pop();
             }
-
-            return null;
         }
 
         /// <summary>

@@ -9,12 +9,14 @@ namespace MySoft.PlatformService.UserService
 {
     //[ServiceContract(Timeout = 1000, Format = ResponseFormat.Json, Compress = CompressType.GZip)]
     [ServiceContract]
-    public interface IUserService
+    public interface IUserService : Castle.Core.IStartable
     {
         [OperationContract(CacheTime = 30000)]
         UserInfo GetUserInfo(string username, out int userid);
 
         DataTable GetDataTable();
+
+        void SetUser(UserInfo user);
 
         int GetUserID();
     }

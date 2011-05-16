@@ -6,7 +6,7 @@ namespace MySoft.Data
     /// 只用于显示的实体
     /// </summary>
     [Serializable]
-    public class ViewEntity : Entity
+    internal class ViewEntity : Entity
     {
         /// <summary>
         /// 重载GetFields

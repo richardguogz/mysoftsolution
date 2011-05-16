@@ -710,6 +710,50 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        public QuerySection From<T>(TableRelation<T> relation)
+            where T : Entity
+        {
+            var query = relation.Section.Query;
+
+            //给查询设置驱动与事务
+            query.SetDbProvider(dbProvider, this);
+
+            //返回结果的查询
+            var newquery = query.CreateQuery<ViewEntity>();
+
+            return new QuerySection(newquery);
+        }
+
+        /// <summary>
+        /// 返回一个查询
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public RelationQuery<TResult> Query<TResult, T>()
+            where TResult : RelationEntity<T>
+            where T : Entity
+        {
+            //判断是否存在关系
+            var entity = CoreHelper.CreateInstance<TResult>();
+            var relation = entity.GetRelation();
+            var query = relation.Section.Query;
+
+            //给查询设置驱动与事务
+            query.SetDbProvider(dbProvider, this);
+
+            //返回结果的查询
+            var newquery = query.CreateQuery<ViewEntity>();
+
+            //返回关系查询
+            return new RelationQuery<TResult>(newquery);
+        }
+
+        /// <summary>
+        /// 返回一个From节
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public FromSection<T> From<T>(Table table)
             where T : Entity
         {
@@ -726,23 +770,6 @@ namespace MySoft.Data
             where T : Entity
         {
             return new FromSection<T>(dbProvider, this, aliasName);
-        }
-
-        /// <summary>
-        /// 返回一个From节
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public FromSection<T> From<T>(TableRelation<T> relation)
-            where T : Entity
-        {
-            FromSection<T> section = From<T>();
-            section.SetQuery(relation.Section.Query);
-
-            //给查询设置驱动与事务
-            section.Query.SetDbProvider(dbProvider, this);
-
-            return section;
         }
 
         /// <summary>
@@ -1180,7 +1207,7 @@ namespace MySoft.Data
                     var item = list.Find(p => p.Field.Name == fv.Field.Name);
                     if (item != null)
                     {
-                        if (fv.Value is DBValue && DBValue.Default.Equals(fv.Value))
+                        if (fv.Value is DbValue && DbValue.Default.Equals(fv.Value))
                         {
                             list.Remove(item);
                         }
@@ -1193,7 +1220,7 @@ namespace MySoft.Data
             #region 实体验证处理
 
             //对实体进行验证
-            ValidateResult result = entity.Validate();
+            ValidateResult result = entity.Validation();
             if (!result.IsSuccess)
             {
                 List<string> msgs = new List<string>();

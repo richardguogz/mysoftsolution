@@ -16,6 +16,9 @@ namespace MySoft.IoC
     public class CastleFactory : ILogable, IErrorLogable
     {
         private static object syncObj = new object();
+        private static CastleFactory singleton = null;
+        private static IDictionary<string, CastleFactory> services = new Dictionary<string, CastleFactory>();
+        private static IDictionary<Type, object> instances = new Dictionary<Type, object>();
 
         #region Create Service Factory
 
@@ -42,7 +45,7 @@ namespace MySoft.IoC
         {
             if (container == null)
             {
-                this.container = new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER);
+                this.container = new SimpleServiceContainer(ServiceConfig.DEFAULT_LOGTIME_NUMBER);
             }
             else
             {
@@ -54,9 +57,6 @@ namespace MySoft.IoC
         {
             if (OnLog != null) OnLog(log, type);
         }
-
-        private static CastleFactory singleton = null;
-        private static IDictionary<string, CastleFactory> services = new Dictionary<string, CastleFactory>();
 
         #region 创建单例
 
@@ -156,9 +156,9 @@ namespace MySoft.IoC
             {
                 IServiceContainer container = null;
                 if (config == null)
-                    container = new SimpleServiceContainer(SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER);
+                    container = new SimpleServiceContainer(ServiceConfig.DEFAULT_LOGTIME_NUMBER);
                 else
-                    container = new SimpleServiceContainer(config.ShowlogTime);
+                    container = new SimpleServiceContainer(config.LogTime);
 
                 instance = new CastleFactory(container);
             }
@@ -170,7 +170,7 @@ namespace MySoft.IoC
                     isProxy = false;
                 }
 
-                IServiceContainer container = new SimpleServiceContainer(config.ShowlogTime);
+                IServiceContainer container = new SimpleServiceContainer(config.LogTime);
                 if (isProxy)
                 {
                     if (!config.Hosts.ContainsKey(name))
@@ -190,17 +190,8 @@ namespace MySoft.IoC
                     clientconfig.Pools = config.MaxPool;
 
                     //设置服务代理
-                    var proxy = new ServiceProxy(clientconfig, (serviceNode.Description ?? serviceNode.Name));
+                    var proxy = new ServiceProxy(container, clientconfig, (serviceNode.Description ?? serviceNode.Name));
                     container.Proxy = proxy;
-
-                    //设置代理的事件委托
-                    proxy.OnLog += (log, type) =>
-                    {
-                        if (instance.OnLog != null)
-                        {
-                            instance.OnLog(log, type);
-                        }
-                    };
                 }
 
                 instance = new CastleFactory(container);
@@ -328,19 +319,18 @@ namespace MySoft.IoC
             }
             else
             {
-                string serviceKey = "CastleFactory_" + typeof(IServiceInterfaceType).FullName;
-                if (container.Kernel.HasComponent(serviceKey))
+                Type serviceType = typeof(IServiceInterfaceType);
+                if (instances.ContainsKey(serviceType))
                 {
-                    return (IServiceInterfaceType)container[serviceKey];
+                    return (IServiceInterfaceType)instances[serviceType];
                 }
                 else
                 {
                     lock (syncObj)
                     {
-                        var type = typeof(IServiceInterfaceType);
-                        var handler = new ServiceInvocationHandler(this.configuration, this.container, type);
-                        var service = (IServiceInterfaceType)DynamicProxy.NewInstance(AppDomain.CurrentDomain, new Type[] { type }, handler);
-                        container.Kernel.AddComponentInstance(serviceKey, service);
+                        var handler = new ServiceInvocationHandler(this.configuration, this.container, serviceType);
+                        var service = (IServiceInterfaceType)DynamicProxy.NewInstance(AppDomain.CurrentDomain, new Type[] { serviceType }, handler);
+                        instances[serviceType] = service;
 
                         return service;
                     }

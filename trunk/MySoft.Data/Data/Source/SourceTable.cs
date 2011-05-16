@@ -163,8 +163,15 @@ namespace MySoft.Data
         {
             get
             {
-                DataRow row = base.Rows[index];
-                return new SourceRow(row);
+                if (base.Rows.Count == 0) return null;
+
+                if (base.Rows.Count > index)
+                {
+                    DataRow row = base.Rows[index];
+                    return new SourceRow(row);
+                }
+
+                return null;
             }
         }
 

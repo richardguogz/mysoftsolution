@@ -74,7 +74,7 @@ namespace MySoft.Cache
 
         private static volatile System.Web.Caching.Cache webCache = System.Web.HttpRuntime.Cache;
         private static readonly object syncObject = new object();
-        private int _timeOut = 1440; // 默认缓存存活期为1440分钟(24小时)
+        private int _timeOut = 1440 * 60; // 默认缓存存活期为1440分钟(24小时)
 
         /// <summary>
         /// 实例化本地缓存
@@ -83,7 +83,7 @@ namespace MySoft.Cache
         public MemoryCacheStrategy(string regionName) : base(regionName) { }
 
         /// <summary>
-        /// 设置到期相对时间[单位：／分钟] 
+        /// 设置到期相对时间[单位：秒] 
         /// </summary>
         public int Timeout
         {
@@ -129,7 +129,7 @@ namespace MySoft.Cache
                 }
                 else
                 {
-                    webCache.Insert(GetInputKey(objId), o, null, DateTime.Now.AddMinutes(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, null, DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
                 }
             }
         }
@@ -183,7 +183,7 @@ namespace MySoft.Cache
 
                 CacheDependency dep = new CacheDependency(files, DateTime.Now);
 
-                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddMinutes(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
             }
         }
 
@@ -207,7 +207,7 @@ namespace MySoft.Cache
 
                 CacheDependency dep = new CacheDependency(null, dependKey, DateTime.Now);
 
-                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddMinutes(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
             }
         }
 

@@ -16,12 +16,14 @@ namespace MySoft.IoC
     internal class ServiceProxy : IServiceProxy
     {
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
+        private IServiceLog logger;
         private SocketClientConfiguration config;
         private ServiceMessagePool<ResponseMessage> requestPool;
         private SmartThreadPool pool;
 
-        public ServiceProxy(SocketClientConfiguration config, string displayName)
+        public ServiceProxy(IServiceLog logger, SocketClientConfiguration config, string displayName)
         {
+            this.logger = logger;
             this.config = config;
 
             #region socket通讯
@@ -45,6 +47,9 @@ namespace MySoft.IoC
 
         void client_SendMessage(object sender, ServiceMessageEventArgs<ResponseMessage> service)
         {
+            //将SocketRequest入栈
+            requestPool.Push(sender as ServiceMessage<ResponseMessage>);
+
             var response = service.Message;
 
             //如果未过期，则加入队列中
@@ -63,64 +68,56 @@ namespace MySoft.IoC
         /// <param name="reqMsg"></param>
         /// <param name="logtime"></param>
         /// <returns></returns>
-        public ResponseMessage CallMethod(RequestMessage reqMsg, int logtime)
+        public ResponseMessage CallMethod(RequestMessage reqMsg, double logtime)
         {
-            //如果池为空，则检测
-            if (requestPool.Count == 0) CheckPool(reqMsg.Timeout);
+            //如果池为空
+            if (requestPool.Count == 0)
+            {
+                throw new Exception("Service pool is empty！");
+            }
 
             //从池中弹出一个可用请求
             var request = requestPool.Pop();
-            if (request == null) return null;
 
-            try
+            //发送数据包到服务端
+            bool isSend = request.Send(reqMsg);
+
+            if (isSend)
             {
-                //发送数据包到服务端
-                bool isSend = request.Send(reqMsg);
+                //开始计时
+                Stopwatch watch = Stopwatch.StartNew();
 
-                if (isSend)
+                //获取消息
+                ResponseMessage resMsg = GetResponse(reqMsg, watch);
+
+                if (resMsg == null)
                 {
-                    //开始计时
-                    int t1 = System.Environment.TickCount;
+                    throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.TransactionId));
+                }
 
-                    //获取消息
-                    ResponseMessage resMsg = GetResponse(reqMsg, t1);
-
-                    if (resMsg == null)
-                    {
-                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.TransactionId));
-                    }
-
-                    //如果发生了异常，则抛出异常
-                    if (resMsg.Exception != null)
-                    {
-                        throw resMsg.Exception;
-                    }
-
-                    int t2 = System.Environment.TickCount - t1;
+                //如果数据不为空
+                if (resMsg.Data != null)
+                {
+                    watch.Stop();
 
                     //如果时间超过预定，则输出日志
-                    if (t2 > logtime)
+                    if (watch.ElapsedMilliseconds > logtime * 1000)
                     {
                         //SerializationManager.Serialize(retMsg)
-                        if (OnLog != null) OnLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {4} {5} <==> {6}", config.IP, config.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters,
-                            "Spent time: (" + t2.ToString() + ") ms.", resMsg.Message, resMsg.TransactionId), LogType.Warning);
+                        logger.WriteLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {5} <==> {6} \r\nParameters ==> {4}", config.IP, config.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData,
+                            "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId), LogType.Warning);
                     }
+                }
 
-                    return resMsg;
-                }
-                else
-                {
-                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
-                }
+                return resMsg;
             }
-            finally
+            else
             {
-                //将SocketRequest入栈
-                requestPool.Push(request);
+                throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
             }
         }
 
-        private ResponseMessage GetResponse(RequestMessage reqMsg, int beginTick)
+        private ResponseMessage GetResponse(RequestMessage reqMsg, Stopwatch watch)
         {
             //启动线程来处理数据
             IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
@@ -143,42 +140,17 @@ namespace MySoft.IoC
 
             }, reqMsg);
 
-            if (!pool.WaitForIdle(reqMsg.Timeout))
+            if (!pool.WaitForIdle((int)(reqMsg.Timeout * 1000)))
             {
                 if (!wir.IsCompleted) wir.Cancel(true);
-                int timeout = System.Environment.TickCount - beginTick;
-                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, timeout, reqMsg.TransactionId));
+                watch.Stop();
+
+                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId));
             }
 
             //从线程获取返回信息，超时等待
             return wir.GetResult();
         }
-
-        private void CheckPool(int timeout)
-        {
-            //启动线程来处理数据
-            IWorkItemResult wir = pool.QueueWorkItem(() =>
-            {
-                while (requestPool.Count == 0)
-                {
-                    //防止cpu使用率过高
-                    Thread.Sleep(1);
-                }
-            });
-
-            //等待1秒，如果没有池可用，则返回
-            if (!pool.WaitForIdle(timeout))
-            {
-                if (!wir.IsCompleted) wir.Cancel(true);
-                throw new IoCException("Request pool is empty！");
-            }
-        }
-
-        #region ILogable Members
-
-        public event LogEventHandler OnLog;
-
-        #endregion
 
         /// <summary>
         /// 获取数据

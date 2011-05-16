@@ -26,29 +26,15 @@ namespace MySoft.IoC.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicService"/> class.
         /// </summary>
-        /// <param name="container">The container.</param>
         /// <param name="serviceInterfaceType">Type of the service interface.</param>
         /// <param name="serviceInstance">Type of the service interface.</param>
         public DynamicService(IServiceContainer container, Type serviceInterfaceType, object serviceInstance)
-            : this(container, serviceInterfaceType)
-        {
-            this.serviceInstance = serviceInstance;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicService"/> class.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <param name="serviceInterfaceType">Type of the service interface.</param>
-        public DynamicService(IServiceContainer container, Type serviceInterfaceType)
-            : base(serviceInterfaceType.FullName)
+            : base(container, serviceInterfaceType.FullName)
         {
             this.container = container;
-            this.OnLog += container.WriteLog;
-            this.OnError += container.WriteError;
             this.serviceInterfaceType = serviceInterfaceType;
+            this.serviceInstance = serviceInstance;
         }
-
 
         /// <summary>
         /// Runs the specified MSG.
@@ -57,10 +43,8 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         protected override ResponseMessage Run(RequestMessage reqMsg)
         {
-            if (container == null || reqMsg == null)
-            {
-                return null;
-            }
+            //如果服务与请求为null
+            if (reqMsg == null) return null;
 
             ResponseMessage resMsg = new ResponseMessage();
             resMsg.TransactionId = reqMsg.TransactionId;
@@ -74,18 +58,17 @@ namespace MySoft.IoC.Services
             resMsg.Parameters = reqMsg.Parameters;
             resMsg.Expiration = reqMsg.Expiration;
 
-            //获取相应服务
-            object service = serviceInstance;
-            if (service == null)
+            //如果没有找到服务
+            if (serviceInstance == null)
             {
-                try { service = container[serviceInterfaceType]; }
+                try { serviceInstance = container[serviceInterfaceType]; }
                 catch { }
-            }
 
-            if (service == null)
-            {
-                resMsg.Exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName));
-                return resMsg;
+                if (serviceInstance == null)
+                {
+                    resMsg.Exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName));
+                    return resMsg;
+                }
             }
 
             #region 获取相应的方法
@@ -115,24 +98,25 @@ namespace MySoft.IoC.Services
             for (int i = 0; i < pis.Length; i++)
             {
                 Type type = pis[i].ParameterType;
-                if (!type.IsByRef)
+                if (type.IsByRef)
                 {
-                    paramValues[i] = resMsg.Parameters[pis[i].Name];
+                    paramValues[i] = CoreHelper.GetTypeDefaultValue(type);
                 }
                 else
                 {
-                    paramValues[i] = CoreHelper.GetTypeDefaultValue(type);
+                    paramValues[i] = resMsg.Parameters[pis[i].Name];
                 }
             }
 
             #endregion
 
             //获取服务及方法名称
-            resMsg.ServiceName = service.GetType().FullName;
+            resMsg.ServiceName = serviceInstance.GetType().FullName;
             resMsg.SubServiceName = method.ToString();
+            resMsg.ReturnType = method.ReturnType;
 
             //返回拦截服务
-            service = AspectManager.GetService(service);
+            var service = AspectManager.GetService(serviceInstance);
 
             try
             {
@@ -146,7 +130,7 @@ namespace MySoft.IoC.Services
                     if (type.IsByRef)
                     {
                         //给参数赋值
-                        resMsg.Parameters[type.Name] = paramValues[i];
+                        resMsg.Parameters[pis[i].Name] = paramValues[i];
                     }
                 }
 
@@ -158,10 +142,7 @@ namespace MySoft.IoC.Services
                     resMsg.Data = SerializationManager.SerializeBin(returnValue);
 
                     //判断是否压缩
-                    if (resMsg.Compress)
-                    {
-                        resMsg.Data = CompressionManager.CompressSharpZip(resMsg.Data);
-                    }
+                    if (resMsg.Compress) resMsg.Data = CompressionManager.CompressSharpZip(resMsg.Data);
 
                     //判断是否加密
                     if (resMsg.Encrypt)
@@ -204,9 +185,9 @@ namespace MySoft.IoC.Services
         private Exception GetNewException(Exception ex)
         {
             if (ex.InnerException == null)
-                return ex;
+                return ex.GetBaseException();
             else
-                return new IoCException(ex.Message, ErrorHelper.GetInnerException(ex.InnerException));
+                return ErrorHelper.GetInnerException(ex.InnerException);
         }
     }
 }

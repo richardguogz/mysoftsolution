@@ -97,26 +97,14 @@ namespace MySoft.Data
         #region 实现IDataQuery
 
         /// <summary>
-        /// 返回一个分页处理的Page节
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public PageSection<TEntity> GetPage<TEntity>(int pageSize)
-            where TEntity : Entity
-        {
-            return query.GetPage<TEntity>(pageSize);
-        }
-
-        /// <summary>
         /// 返回一个实体
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public TEntity ToSingle<TEntity>()
-            where TEntity : Entity
+        public TResult ToSingle<TResult>()
+            where TResult : class
         {
-            return query.ToSingle<TEntity>();
+            return query.ToSingle<TResult>();
         }
 
         #endregion
@@ -396,18 +384,20 @@ namespace MySoft.Data
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public SourceList<TEntity> ToList<TEntity>() where TEntity : Entity
+        public SourceList<TResult> ToList<TResult>()
+            where TResult : class
         {
-            return query.ToList<TEntity>();
+            return query.ToList<TResult>();
         }
 
         /// <summary>
         /// 返回IArrayList
         /// </summary>
         /// <returns></returns>
-        public SourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex) where TEntity : Entity
+        public SourceList<TResult> ToList<TResult>(int startIndex, int endIndex)
+            where TResult : class
         {
-            return query.ToList<TEntity>(startIndex, endIndex);
+            return query.ToList<TResult>(startIndex, endIndex);
         }
 
         #endregion

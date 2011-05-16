@@ -16,7 +16,7 @@ namespace MySoft.Cache
         /// <param name="cacheKey"></param>
         /// <param name="cacheValue"></param>
         /// <param name="cacheTime"></param>
-        void AddCache(string cacheKey, object cacheValue, int cacheTime);
+        void AddCache(string cacheKey, object cacheValue, double cacheTime);
 
         /// <summary>
         /// 移除缓存

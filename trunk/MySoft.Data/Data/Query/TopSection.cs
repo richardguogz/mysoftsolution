@@ -58,11 +58,11 @@ namespace MySoft.Data
         /// <summary>
         /// 返回实体列表
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public override SourceList<TEntity> ToList<TEntity>()
+        public override SourceList<TResult> ToList<TResult>()
         {
-            return base.ToList<TEntity>(0, topSize);
+            return base.ToList<TResult>(0, topSize);
         }
 
         /// <summary>

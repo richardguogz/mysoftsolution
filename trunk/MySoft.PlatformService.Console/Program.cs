@@ -26,7 +26,7 @@ namespace MySoft.PlatformService.Console
             server.Start();
 
             System.Console.WriteLine("Server host -> {0}", server.ServerUrl);
-            System.Console.WriteLine("Logger status: On  -> Show log time: {0} ms", config.LogTime);
+            System.Console.WriteLine("Logger status: On  -> Show log time: {0} seconds", config.LogTime);
             System.Console.WriteLine("Press any key to exit and stop service...");
             System.Console.ReadLine();
         }
@@ -53,7 +53,7 @@ namespace MySoft.PlatformService.Console
                 string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
                 if (exception.InnerException != null)
                 {
-                    message += "\r\n" + exception.InnerException.Message;
+                    message += "\r\n´íÎóÐÅÏ¢ => " + exception.InnerException.Message;
                 }
                 System.Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine(message);

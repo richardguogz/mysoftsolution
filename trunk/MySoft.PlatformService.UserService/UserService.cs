@@ -11,10 +11,15 @@ namespace MySoft.PlatformService.UserService
     {
         public int GetUserID()
         {
-            //Thread.Sleep(300);
+            Thread.Sleep(300);
             return 1;
         }
 
+        public void SetUser(UserInfo user)
+        {
+            throw new Exception("asdfsad");
+            Console.WriteLine(user.Name);
+        }
 
         public UserInfo GetUserInfo(string username, out int userid)
         {
@@ -55,5 +60,19 @@ namespace MySoft.PlatformService.UserService
             var data = dbSession.FromSql("select * from t_company").ToTable().OriginalData;
             return data;
         }
+
+        #region IStartable 成员
+
+        public void Start()
+        {
+            Console.WriteLine("autostart");
+        }
+
+        public void Stop()
+        {
+            Console.WriteLine("autostop");
+        }
+
+        #endregion
     }
 }

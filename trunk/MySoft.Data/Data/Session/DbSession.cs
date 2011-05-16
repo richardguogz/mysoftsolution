@@ -643,6 +643,30 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        public QuerySection From<T>(TableRelation<T> relation)
+            where T : Entity
+        {
+            return dbTrans.From<T>(relation);
+        }
+
+        /// <summary>
+        /// 返回一个查询
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public RelationQuery<TResult> Query<TResult, T>()
+            where TResult : RelationEntity<T>
+            where T : Entity
+        {
+            return dbTrans.Query<TResult, T>();
+        }
+
+        /// <summary>
+        /// 返回一个From节
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public FromSection<T> From<T>()
             where T : Entity
         {
@@ -670,17 +694,6 @@ namespace MySoft.Data
             where T : Entity
         {
             return dbTrans.From<T>(aliasName);
-        }
-
-        /// <summary>
-        /// 返回一个From节
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public FromSection<T> From<T>(TableRelation<T> relation)
-            where T : Entity
-        {
-            return dbTrans.From<T>(relation);
         }
 
         /// <summary>

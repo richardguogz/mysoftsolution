@@ -20,10 +20,10 @@ namespace MySoft.IoC.Configuration
         private string defaultService;          //默认服务
         private string appName;                 //host名称
         private bool throwerror = true;         //抛出异常
-        private int logtime = SimpleServiceContainer.DEFAULT_LOGTIME_NUMBER;       //超时多长输出日志，默认为1秒
-        private int timeout = SimpleServiceContainer.DEFAULT_TIMEOUT_NUMBER;       //默认超时时间        10秒
-        private int cachetime = SimpleServiceContainer.DEFAULT_CACHETIME_NUMBER;   //默认缓存时间        60秒
-        private int maxpool = SimpleServiceContainer.DEFAULT_CLIENTPOOL_NUMBER;    //默认的池大小
+        private double logtime = ServiceConfig.DEFAULT_LOGTIME_NUMBER;       //超时多长输出日志，默认为1秒
+        private double timeout = ServiceConfig.DEFAULT_TIMEOUT_NUMBER;       //默认超时时间        30秒
+        private double cachetime = ServiceConfig.DEFAULT_CACHETIME_NUMBER;   //默认缓存时间        60秒
+        private int maxpool = ServiceConfig.DEFAULT_CLIENTPOOL_NUMBER;    //默认的池大小
 
         /// <summary>
         /// 获取远程对象配置
@@ -59,13 +59,13 @@ namespace MySoft.IoC.Configuration
                 compress = Convert.ToBoolean(xmlnode["compress"].Value);
 
             if (xmlnode["timeout"] != null && xmlnode["timeout"].Value.Trim() != string.Empty)
-                timeout = Convert.ToInt32(xmlnode["timeout"].Value);
+                timeout = Convert.ToDouble(xmlnode["timeout"].Value);
 
             if (xmlnode["cachetime"] != null && xmlnode["cachetime"].Value.Trim() != string.Empty)
-                cachetime = Convert.ToInt32(xmlnode["cachetime"].Value);
+                cachetime = Convert.ToDouble(xmlnode["cachetime"].Value);
 
             if (xmlnode["logtime"] != null && xmlnode["logtime"].Value.Trim() != string.Empty)
-                logtime = Convert.ToInt32(xmlnode["logtime"].Value);
+                logtime = Convert.ToDouble(xmlnode["logtime"].Value);
 
             if (xmlnode["throwerror"] != null && xmlnode["throwerror"].Value.Trim() != string.Empty)
                 throwerror = Convert.ToBoolean(xmlnode["throwerror"].Value);
@@ -169,7 +169,7 @@ namespace MySoft.IoC.Configuration
         /// Gets or sets the timeout
         /// </summary>
         /// <value>The timeout.</value>
-        public int Timeout
+        public double Timeout
         {
             get { return timeout; }
             set { timeout = value; }
@@ -179,7 +179,7 @@ namespace MySoft.IoC.Configuration
         /// Gets or sets the cachetime
         /// </summary>
         /// <value>The cachetime.</value>
-        public int CacheTime
+        public double CacheTime
         {
             get { return cachetime; }
             set { cachetime = value; }
@@ -189,7 +189,7 @@ namespace MySoft.IoC.Configuration
         /// Gets or sets the logtime
         /// </summary>
         /// <value>The logtime.</value>
-        public int ShowlogTime
+        public double LogTime
         {
             get { return logtime; }
             set { logtime = value; }

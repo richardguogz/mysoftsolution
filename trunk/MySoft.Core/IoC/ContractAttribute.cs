@@ -11,7 +11,7 @@ namespace MySoft.IoC
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Method, AllowMultiple = false)]
     public abstract class ContractAttribute : Attribute
     {
-        protected bool allowCache = true;
+        protected bool allowCache;
         /// <summary>
         /// 是否允许缓存
         /// </summary>
@@ -27,11 +27,11 @@ namespace MySoft.IoC
             }
         }
 
-        protected int timeout = -1;
+        protected double timeout = -1;
         /// <summary>
-        /// 超时时间（单位：ms）
+        /// 超时时间（单位：秒）
         /// </summary>
-        public int Timeout
+        public double Timeout
         {
             get
             {
@@ -43,11 +43,11 @@ namespace MySoft.IoC
             }
         }
 
-        protected int cacheTime = -1;
+        protected double cacheTime = -1;
         /// <summary>
-        /// 缓存时间（单位：ms）
+        /// 缓存时间（单位：秒）
         /// </summary>
-        public int CacheTime
+        public double CacheTime
         {
             get
             {
@@ -56,6 +56,10 @@ namespace MySoft.IoC
             set
             {
                 cacheTime = value;
+                if (cacheTime > 0)
+                {
+                    allowCache = true;
+                }
             }
         }
     }

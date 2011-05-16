@@ -99,13 +99,13 @@ namespace MySoft.Data
         /// <summary>
         /// 转换成另一对象
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public TEntity As<TEntity>()
+        public TResult As<TResult>()
         {
             lock (this)
             {
-                return DataHelper.ConvertType<IEntityBase, TEntity>(this);
+                return DataHelper.ConvertType<IEntityBase, TResult>(this);
             }
         }
 
@@ -255,13 +255,6 @@ namespace MySoft.Data
         /// <param name="reader"></param>
         protected abstract void SetValues(IRowReader reader);
 
-        /// <summary>
-        /// 用于设置额外的值
-        /// </summary>
-        /// <param name="reader"></param>
-        protected virtual void SetPropertyValues(IRowReader reader)
-        { }
-
         #region 内部方法
 
         /// <summary>
@@ -319,15 +312,12 @@ namespace MySoft.Data
         /// 设置所有的值
         /// </summary>
         /// <param name="reader"></param>
-        internal void SetAllValues(IRowReader reader)
+        internal void SetDbValues(IRowReader reader)
         {
             lock (this)
             {
                 //设置内部的值
                 SetValues(reader);
-
-                //设置外部的值
-                SetPropertyValues(reader);
 
                 //设置来自数据库变量为true
                 isFromDB = true;
@@ -394,7 +384,7 @@ namespace MySoft.Data
         /// 验证实体的有效性
         /// </summary>
         /// <returns></returns>
-        public virtual ValidateResult Validate()
+        public virtual ValidateResult Validation()
         {
             return ValidateResult.Default;
         }

@@ -76,26 +76,6 @@ namespace MySoft.Data
         #endregion
 
         /// <summary>
-        /// 返回一个实体
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <returns></returns>
-        public T ToSingle(int pageIndex)
-        {
-            int startIndex = pageSize * (pageIndex - 1) + 1;
-            int endIndex = pageSize * pageIndex;
-            IList<T> list = query.ToList(startIndex, endIndex);
-            if (list.Count == 0)
-            {
-                return default(T);
-            }
-            else
-            {
-                return list[0];
-            }
-        }
-
-        /// <summary>
         /// 返回一个DbReader
         /// </summary>
         /// <param name="pageIndex"></param>

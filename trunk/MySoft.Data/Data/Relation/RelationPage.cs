@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MySoft.Data
 {
     /// <summary>
-    /// 分页器
+    /// 关系分页
     /// </summary>
-    public class PageSection : IPageQuery
+    public class RelationPage<T>
+        where T : class
     {
         private QuerySection<ViewEntity> query;
         private int? rowCount;
         private int pageSize;
-        internal PageSection(QuerySection<ViewEntity> query, int pageSize)
+        internal RelationPage(QuerySection<ViewEntity> query, int pageSize)
         {
             this.query = query;
             this.pageSize = pageSize;
@@ -62,8 +66,7 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public SourceList<T> ToList<T>(int pageIndex)
-            where T : class
+        public SourceList<T> ToList(int pageIndex)
         {
             return ToTable(pageIndex).ConvertTo<T>();
         }

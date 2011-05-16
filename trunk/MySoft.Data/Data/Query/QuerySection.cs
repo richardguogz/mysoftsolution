@@ -341,42 +341,16 @@ namespace MySoft.Data
         #region 实现IDataQuery
 
         /// <summary>
-        /// 返回一个分页处理的Page节
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="pageSize"></param>
-        /// <returns></returns>
-        public PageSection<TEntity> GetPage<TEntity>(int pageSize)
-            where TEntity : Entity
-        {
-            QuerySection<TEntity> query = CreateQuery<TEntity>();
-            if (this.unionQuery)
-            {
-                query = SubQuery<TEntity>();
-                query.OrderBy(this.orderBy);
-            }
-            return new PageSection<TEntity>(query, pageSize);
-        }
-
-        /// <summary>
         /// 返回一个列表
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public SourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex)
-            where TEntity : Entity
+        public SourceList<TResult> ToList<TResult>(int startIndex, int endIndex)
+            where TResult : class
         {
-            if (startIndex <= 0) startIndex = 1;
-            int topItem = endIndex - startIndex + 1;
-            QuerySection<TEntity> query = CreateQuery<TEntity>();
-            if (this.unionQuery)
-            {
-                query = SubQuery<TEntity>();
-                query.OrderBy(this.orderBy);
-            }
-            return GetList<TEntity>(query, topItem, endIndex - topItem);
+            return ToList(startIndex, endIndex).ConvertTo<TResult>();
         }
 
         /// <summary>
@@ -384,17 +358,10 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public virtual SourceList<TEntity> ToList<TEntity>()
-            where TEntity : Entity
+        public virtual SourceList<TResult> ToList<TResult>()
+            where TResult : class
         {
-            QuerySection<TEntity> query = CreateQuery<TEntity>();
-            if (this.unionQuery)
-            {
-                query = SubQuery<TEntity>();
-                query.OrderBy(this.orderBy);
-            }
-
-            return ExcuteDataList<TEntity>(query, true);
+            return ToList().ConvertTo<TResult>();
         }
 
         /// <summary>
@@ -402,25 +369,12 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public TEntity ToSingle<TEntity>()
-            where TEntity : Entity
+        public TResult ToSingle<TResult>()
+            where TResult : class
         {
-            QuerySection<TEntity> query = CreateQuery<TEntity>();
-            if (this.unionQuery)
-            {
-                query = SubQuery<TEntity>();
-                query.OrderBy(this.orderBy);
-            }
-
-            ISourceList<TEntity> list = GetList<TEntity>(query, 1, 0);
-            if (list.Count == 0)
-            {
-                return default(TEntity);
-            }
-            else
-            {
-                return list[0];
-            }
+            var entity = ToSingle();
+            if (entity != null) return entity.As<TResult>();
+            return default(TResult);
         }
 
         #endregion
@@ -1028,7 +982,7 @@ namespace MySoft.Data
                     while (reader.Read())
                     {
                         TResult entity = (TResult)creator();
-                        entity.SetAllValues(reader);
+                        entity.SetDbValues(reader);
                         entity.Attach();
                         list.Add(entity);
                     }

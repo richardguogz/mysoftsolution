@@ -9,6 +9,7 @@ using MySoft.Net.Server;
 using MySoft.Net.Sockets;
 using System.Threading;
 using System.Linq;
+using System.Diagnostics;
 
 namespace MySoft.IoC
 {
@@ -23,6 +24,14 @@ namespace MySoft.IoC
         private IList<EndPoint> clients;
         private IList<SecondStatus> statuslist;
         private SecondStatus status;
+
+        /// <summary>
+        /// 服务容器
+        /// </summary>
+        public IServiceContainer Container
+        {
+            get { return container; }
+        }
 
         /// <summary>
         /// 实例化CastleService
@@ -268,7 +277,8 @@ namespace MySoft.IoC
         {
             ResponseMessage response = null;
 
-            int t1 = Environment.TickCount;
+            Stopwatch watch = Stopwatch.StartNew();
+
             try
             {
                 //处理请求数
@@ -278,21 +288,19 @@ namespace MySoft.IoC
                 //获取返回的消息
                 response = container.CallService(request);
             }
-            catch (Exception ex)
+            catch
             {
                 //处理错误数
                 if (request.ServiceName != typeof(IStatusService).FullName)
                     status.ErrorCount++;
-
-                if (OnError != null) OnError(new IoCException(ex.Message, ex));
             }
             finally
             {
-                int t2 = Environment.TickCount - t1;
+                watch.Stop();
 
                 //处理时间
                 if (request.ServiceName != typeof(IStatusService).FullName)
-                    status.ElapsedTime += t2;
+                    status.ElapsedTime += watch.ElapsedMilliseconds;
             }
 
             if (response != null)

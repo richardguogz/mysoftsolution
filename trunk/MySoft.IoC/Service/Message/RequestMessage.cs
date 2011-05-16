@@ -19,6 +19,23 @@ namespace MySoft.IoC
         private bool encrypt = false;
         private int keylength = 128;
         private DateTime expiration;
+        private Type returnType;
+
+        /// <summary>
+        /// Gets or sets the returnType.
+        /// </summary>
+        /// <value>The returnType.</value>
+        public Type ReturnType
+        {
+            get
+            {
+                return returnType;
+            }
+            set
+            {
+                returnType = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the transaction id.
@@ -163,7 +180,7 @@ namespace MySoft.IoC
         private string appName;
         private string hostName;
         private string requestAddress;
-        private int timeout = -1;
+        private double timeout = -1;
 
         #endregion
 
@@ -202,7 +219,7 @@ namespace MySoft.IoC
         /// <summary>
         /// Gets or sets the timeout of the service.
         /// </summary>
-        public int Timeout
+        public double Timeout
         {
             get
             {

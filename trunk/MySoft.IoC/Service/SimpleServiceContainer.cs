@@ -9,6 +9,7 @@ using MySoft.IoC.Services;
 using Castle.MicroKernel;
 using System.Text;
 using System.IO;
+using System.Linq;
 using MySoft.Logger;
 using MySoft.Cache;
 using System.Reflection;
@@ -20,48 +21,14 @@ namespace MySoft.IoC
     /// </summary>
     public sealed class SimpleServiceContainer : IServiceContainer
     {
-        #region Const Members
-
-        /// <summary>
-        /// The default timeout number. 
-        /// </summary>
-        public const int DEFAULT_TIMEOUT_NUMBER = 10000;
-
-        /// <summary>
-        /// The default cachetime number.
-        /// </summary>
-        public const int DEFAULT_CACHETIME_NUMBER = 60000;
-
-        /// <summary>
-        /// The default logtime number.
-        /// </summary>
-        public const int DEFAULT_LOGTIME_NUMBER = 1000;
-
-        /// <summary>
-        /// The default maxconnect number.
-        /// </summary>
-        public const int DEFAULT_MAXCONNECT_NUMBER = 10000;
-
-        /// <summary>
-        /// The default maxbuffer number.
-        /// </summary>
-        public const int DEFAULT_MAXBUFFER_NUMBER = 4096;
-
-        /// <summary>
-        /// The default maxpool number.
-        /// </summary>
-        public const int DEFAULT_CLIENTPOOL_NUMBER = 5;
-
-        #endregion
-
         #region Private Members
 
         private IWindsorContainer container;
         private IServiceProxy serviceProxy;
         private ICacheDependent cache;
-        private int logtime;
+        private double logtime;
 
-        private void Init(int logtime, IDictionary serviceKeyTypes)
+        private void Init(double logtime, IDictionary serviceKeyTypes)
         {
             this.logtime = logtime;
             if (System.Configuration.ConfigurationManager.GetSection("castle") != null)
@@ -84,59 +51,6 @@ namespace MySoft.IoC
             this.DiscoverServices();
         }
 
-        private ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
-        {
-            if (nodes == null)
-            {
-                return null;
-            }
-
-            List<ServiceNodeInfo> serviceNodes = new List<ServiceNodeInfo>();
-
-            for (int i = 0; i < nodes.Length; i++)
-            {
-                ComponentModel node = (ComponentModel)nodes[i];
-                if (typeof(IService).IsAssignableFrom(node.Service))
-                {
-                    ServiceNodeInfo serviceNode = new ServiceNodeInfo();
-                    serviceNode.Key = node.Name;
-                    serviceNode.Sevice = node.Service.FullName;
-                    serviceNode.Implementation = node.Implementation.FullName;
-                    serviceNodes.Add(serviceNode);
-                }
-            }
-
-            return serviceNodes.ToArray();
-        }
-
-        private ComponentModel GetComponentModelByKey(string key)
-        {
-            GraphNode[] nodes = Kernel.GraphNodes;
-            foreach (ComponentModel node in nodes)
-            {
-                if (node.Name.Equals(key))
-                {
-                    return node;
-                }
-            }
-            return null;
-        }
-
-        private IService GetLocalService(string serviceName)
-        {
-            ServiceNodeInfo[] serviceNodes = GetServiceNodes();
-            foreach (ServiceNodeInfo serviceNode in serviceNodes)
-            {
-                IService obj = (IService)container[serviceNode.Key];
-                if ((obj).ServiceName == serviceName)
-                {
-                    return obj;
-                }
-            }
-
-            return null;
-        }
-
         private void DiscoverServices()
         {
             GraphNode[] nodes = this.Kernel.GraphNodes;
@@ -151,8 +65,20 @@ namespace MySoft.IoC
 
                 if (markedWithServiceContract)
                 {
-                    DynamicService service = new DynamicService(this, model.Service);
-                    Kernel.AddComponentInstance(service.ServiceName, service);
+                    object serviceInstance = null;
+                    try { serviceInstance = this[model.Service]; }
+                    catch { }
+
+                    if (serviceInstance != null)
+                    {
+                        IService service = new DynamicService(this, model.Service, serviceInstance);
+                        RegisterComponent(service.ServiceName, service);
+
+                        if (serviceInstance is IStartable)
+                        {
+                            RegisterComponent("Startable_" + service.ServiceName, serviceInstance.GetType());
+                        }
+                    }
                 }
             }
         }
@@ -165,7 +91,7 @@ namespace MySoft.IoC
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
         /// <param name="config"></param>
-        public SimpleServiceContainer(int logtime)
+        public SimpleServiceContainer(double logtime)
         {
             Init(logtime, null);
         }
@@ -175,7 +101,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(int logtime, IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(double logtime, IDictionary serviceKeyTypes)
         {
             Init(logtime, serviceKeyTypes);
         }
@@ -245,6 +171,16 @@ namespace MySoft.IoC
         }
 
         /// <summary>
+        /// Registers the component.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="instance">Type of the class.</param>
+        public void RegisterComponent(string key, object instance)
+        {
+            container.Kernel.AddComponentInstance(key, instance);
+        }
+
+        /// <summary>
         /// Registers the components.
         /// </summary>
         /// <param name="serviceKeyTypes">The service key types.</param>
@@ -255,8 +191,13 @@ namespace MySoft.IoC
             {
                 if (en.Value != null)
                 {
-                    DynamicService service = new DynamicService(this, (Type)en.Key, en.Value);
-                    Kernel.AddComponentInstance(service.ServiceName, service);
+                    IService service = new DynamicService(this, (Type)en.Key, en.Value);
+                    RegisterComponent(service.ServiceName, service);
+
+                    if (en.Value is IStartable)
+                    {
+                        RegisterComponent("Startable_" + service.ServiceName, en.Value.GetType());
+                    }
                 }
             }
         }
@@ -296,16 +237,10 @@ namespace MySoft.IoC
         public ResponseMessage CallService(RequestMessage reqMsg)
         {
             //check local service first
-            IService localService = (IService)GetLocalService(reqMsg.ServiceName);
+            IService localService = GetLocalService(reqMsg.ServiceName);
             if (localService != null)
             {
-                var resMsg = localService.CallService(reqMsg, logtime);
-                if (resMsg != null && resMsg.Exception != null)
-                {
-                    throw resMsg.Exception;
-                }
-
-                return resMsg;
+                return localService.CallService(reqMsg, logtime);
             }
 
             //判断代理是否为空
@@ -315,56 +250,53 @@ namespace MySoft.IoC
             }
             else
             {
-                try
-                {
-                    //通过代理调用
-                    return serviceProxy.CallMethod(reqMsg, logtime);
-                }
-                catch (Exception ex)
-                {
-                    WriteError(ex);
-                    throw ex;
-                }
+                //通过代理调用
+                return serviceProxy.CallMethod(reqMsg, logtime);
             }
         }
 
-        /// <summary>
-        /// Gets the service nodes.
-        /// </summary>
-        /// <returns>The service nodes.</returns>
-        public ServiceNodeInfo[] GetServiceNodes()
+        private IService GetLocalService(string serviceName)
         {
-            return ParseServiceNodes(Kernel.GraphNodes);
+            ServiceNodeInfo[] serviceNodes = ParseServiceNodes(Kernel.GraphNodes);
+            foreach (ServiceNodeInfo serviceNode in serviceNodes)
+            {
+                var obj = container[serviceNode.Key];
+                if (obj is IService)
+                {
+                    IService service = (IService)obj;
+                    if (service.ServiceName == serviceName)
+                    {
+                        return service;
+                    }
+                }
+            }
+
+            return null;
         }
 
-        /// <summary>
-        /// Gets the depender service nodes.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The service nodes.</returns>
-        public ServiceNodeInfo[] GetDependerServiceNodes(string key)
+        private ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
         {
-            ComponentModel node = GetComponentModelByKey(key);
-            if (node == null)
+            if (nodes == null)
             {
                 return null;
             }
-            return ParseServiceNodes(node.Dependers);
-        }
 
-        /// <summary>
-        /// Gets the dependent service nodes.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The service nodes.</returns>
-        public ServiceNodeInfo[] GetDependentServiceNodes(string key)
-        {
-            ComponentModel node = GetComponentModelByKey(key);
-            if (node == null)
+            List<ServiceNodeInfo> serviceNodes = new List<ServiceNodeInfo>();
+
+            for (int i = 0; i < nodes.Length; i++)
             {
-                return null;
+                ComponentModel node = (ComponentModel)nodes[i];
+                if (typeof(IService).IsAssignableFrom(node.Service))
+                {
+                    ServiceNodeInfo serviceNode = new ServiceNodeInfo();
+                    serviceNode.Key = node.Name;
+                    serviceNode.Sevice = node.Service.FullName;
+                    serviceNode.Implementation = node.Implementation.FullName;
+                    serviceNodes.Add(serviceNode);
+                }
             }
-            return ParseServiceNodes(node.Dependents);
+
+            return serviceNodes.ToArray();
         }
 
         #endregion
@@ -407,7 +339,8 @@ namespace MySoft.IoC
         /// <param name="log"></param>
         public void WriteLog(string log, LogType type)
         {
-            if (OnLog != null) OnLog(log, type);
+            try { if (OnLog != null) OnLog(log, type); }
+            catch { }
         }
 
         /// <summary>
@@ -416,7 +349,8 @@ namespace MySoft.IoC
         /// <param name="exception"></param>
         public void WriteError(Exception exception)
         {
-            if (OnError != null) OnError(exception);
+            try { if (OnError != null) OnError(exception); }
+            catch { }
         }
 
         #endregion

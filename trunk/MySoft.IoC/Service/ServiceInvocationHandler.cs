@@ -45,30 +45,16 @@ namespace MySoft.IoC
             #region 设置请求信息
 
             RequestMessage reqMsg = new RequestMessage();
-
-            //应用名称
-            reqMsg.AppName = config.AppName;
-
-            //服务器名称
-            reqMsg.HostName = hostName;
-
-            //服务名称
-            reqMsg.ServiceName = serviceInterfaceType.FullName;
-
-            //方法名称
-            reqMsg.SubServiceName = methodInfo.ToString();
-
-            //传输ID号
-            reqMsg.TransactionId = Guid.NewGuid();
-
-            //传递传输与压缩格式
-            reqMsg.Encrypt = config.Encrypt;
-
-            //设置压缩格式
-            reqMsg.Compress = config.Compress;
-
-            //设置超时时间
-            reqMsg.Timeout = config.Timeout;
+            reqMsg.AppName = config.AppName;                                //应用名称
+            reqMsg.HostName = hostName;                                     //服务器名称
+            reqMsg.ServiceName = serviceInterfaceType.FullName;             //服务名称
+            reqMsg.SubServiceName = methodInfo.ToString();                  //方法名称
+            reqMsg.ReturnType = methodInfo.ReturnType;                      //返回类型
+            reqMsg.TransactionId = Guid.NewGuid();                          //传输ID号
+            reqMsg.Encrypt = config.Encrypt;                                //传递传输与压缩格式
+            reqMsg.Compress = config.Compress;                              //设置压缩格式
+            reqMsg.Timeout = config.Timeout;                                //设置超时时间
+            reqMsg.Expiration = DateTime.Now.AddSeconds(config.Timeout);    //设置过期时间
 
             #endregion
 
@@ -78,7 +64,7 @@ namespace MySoft.IoC
             if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
                 //参数不正确直接返回异常
-                throw new IoCException(string.Format("Invalid parameters ({0},{1}). ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters));
+                throw new IoCException(string.Format("Invalid parameters ({0},{1}). ==> \r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData));
             }
 
             if (pis.Length > 0)
@@ -87,9 +73,10 @@ namespace MySoft.IoC
                 {
                     if (paramValues[i] != null)
                     {
-                        //如果传递的是引用，则跳过
-                        if (!pis[i].ParameterType.IsByRef)
+                        Type type = pis[i].ParameterType;
+                        if (!type.IsByRef)
                         {
+                            //如果传递的是引用，则跳过
                             reqMsg.Parameters[pis[i].Name] = paramValues[i];
                         }
                     }
@@ -106,7 +93,7 @@ namespace MySoft.IoC
             cacheKey = string.Format("{0}_{1}", serviceInterfaceType.FullName, cacheKey);
 
             bool isAllowCache = false;
-            int cacheTime = config.CacheTime; //默认缓存时间与系统设置的时间一致
+            double cacheTime = config.CacheTime; //默认缓存时间与系统设置的时间一致
 
             #region 读取约束信息
 
@@ -131,9 +118,11 @@ namespace MySoft.IoC
                 if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
                 if (operationContract.Timeout > 0) reqMsg.Timeout = operationContract.Timeout;
             }
-
-            //设置过期时间
-            reqMsg.Expiration = DateTime.Now.AddMilliseconds(config.Timeout);
+            else
+            {
+                //默认方法不进行缓存
+                isAllowCache = false;
+            }
 
             #endregion
 
@@ -165,17 +154,25 @@ namespace MySoft.IoC
                 {
                     //调用服务
                     resMsg = container.CallService(reqMsg);
+
+                    //如果有异常，向外抛出
+                    if (resMsg != null && resMsg.Exception != null)
+                    {
+                        throw resMsg.Exception;
+                    }
                 }
                 catch (Exception ex)
                 {
                     if (config.ThrowError)
                         throw ex;
+                    else
+                        container.WriteError(ex);
                 }
 
                 //如果数据为null,则返回null
                 if (resMsg == null || resMsg.Data == null)
                 {
-                    return CoreHelper.GetTypeDefaultValue(methodInfo.ReturnType);
+                    return CoreHelper.GetTypeDefaultValue(reqMsg.ReturnType);
                 }
 
                 #region 处理返回的数据
@@ -184,17 +181,10 @@ namespace MySoft.IoC
                 parameters = resMsg.Parameters;
 
                 //处理是否解密
-                if (resMsg.Encrypt)
-                {
-                    //这里暂时不处理
-                    resMsg.Data = XXTEA.Decrypt(resMsg.Data, resMsg.Keys);
-                }
+                if (resMsg.Encrypt) resMsg.Data = XXTEA.Decrypt(resMsg.Data, resMsg.Keys);
 
                 //处理是否压缩
-                if (resMsg.Compress)
-                {
-                    resMsg.Data = CompressionManager.DecompressSharpZip(resMsg.Data);
-                }
+                if (resMsg.Compress) resMsg.Data = CompressionManager.DecompressSharpZip(resMsg.Data);
 
                 //将byte数组反系列化成对象
                 returnValue = SerializationManager.DeserializeBin(resMsg.Data);
@@ -223,7 +213,7 @@ namespace MySoft.IoC
                 if (type.IsByRef)
                 {
                     //给参数赋值
-                    paramValues[i] = parameters[type.Name];
+                    paramValues[i] = parameters[pis[i].Name];
                 }
             }
 

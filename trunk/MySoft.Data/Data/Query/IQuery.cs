@@ -105,11 +105,9 @@ namespace MySoft.Data
         TopSection<T> GetTop(int topSize);
         PageSection<T> GetPage(int pageSize);
 
-        PageSection<TEntity> GetPage<TEntity>(int pageSize) where TEntity : Entity;
+        TResult ToSingle<TResult>() where TResult : class;
 
-        TEntity ToSingle<TEntity>() where TEntity : Entity;
-
-        SourceList<TEntity> ToList<TEntity>() where TEntity : Entity;
-        SourceList<TEntity> ToList<TEntity>(int startIndex, int endIndex) where TEntity : Entity;
+        SourceList<TResult> ToList<TResult>() where TResult : class;
+        SourceList<TResult> ToList<TResult>(int startIndex, int endIndex) where TResult : class;
     }
 }

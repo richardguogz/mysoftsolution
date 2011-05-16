@@ -86,7 +86,7 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    return string.Format("Packet size (compress:{1} encrypt:{2}): {0} bytes.", data.Length, base.Compress, base.Encrypt);
+                    return string.Format("Packet size (return:{1} compress:{2} encrypt:{3}): {0} bytes.", data.Length, base.ReturnType, base.Compress, base.Encrypt);
                 }
             }
         }

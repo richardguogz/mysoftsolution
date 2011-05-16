@@ -59,7 +59,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public FieldValue Set(DBValue value)
+        public FieldValue Set(DbValue value)
         {
             return new FieldValue(this, value);
         }

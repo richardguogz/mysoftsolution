@@ -6,8 +6,6 @@ namespace MySoft.Data
         int PageCount { get; }
         int RowCount { get; }
 
-        T ToSingle(int pageIndex);
-
         ArrayList<object> ToListResult(int pageIndex);
         ArrayList<TResult> ToListResult<TResult>(int pageIndex);
 

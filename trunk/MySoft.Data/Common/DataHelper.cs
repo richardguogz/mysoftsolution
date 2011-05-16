@@ -65,7 +65,7 @@ namespace MySoft.Data
                 //如果当前实体为Entity，数据源为IRowReader的话，可以通过内部方法赋值
                 if (t is Entity && obj is IRowReader)
                 {
-                    (t as Entity).SetAllValues(obj as IRowReader);
+                    (t as Entity).SetDbValues(obj as IRowReader);
                 }
                 else
                 {
@@ -192,9 +192,9 @@ namespace MySoft.Data
             {
                 return ((Field)val).Name;
             }
-            else if (val is DBValue)
+            else if (val is DbValue)
             {
-                return ((DBValue)val).Value;
+                return ((DbValue)val).Value;
             }
             else if (type.IsEnum)
             {

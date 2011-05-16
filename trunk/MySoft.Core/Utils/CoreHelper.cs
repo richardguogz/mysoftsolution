@@ -40,6 +40,9 @@ namespace MySoft
                 elementType = type.GetElementType();
             }
 
+            //如果是void类型，返回null
+            if (type == typeof(void)) return null;
+
             return typeof(CoreHelper).GetMethod("DefaultValue", BindingFlags.Static | BindingFlags.NonPublic)
                             .MakeGenericMethod(elementType).Invoke(null, null);
         }

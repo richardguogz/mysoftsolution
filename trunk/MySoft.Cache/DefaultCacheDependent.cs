@@ -10,15 +10,10 @@ namespace MySoft.Cache
     /// </summary>
     public class DefaultCacheDependent : ICacheDependent
     {
-        public static readonly int DEFAULT_TIMEOUT = 30 * 60 * 1000;
-
-        private int timeout = DefaultCacheDependent.DEFAULT_TIMEOUT; //默认30分钟
         private ICacheStrategy strategy;
-
-        private DefaultCacheDependent(CacheType type, int timeout)
+        private DefaultCacheDependent(CacheType type)
         {
             this.strategy = CacheFactory.CreateCache("DefaultCacheDependent", type);
-            this.timeout = timeout;
         }
 
         /// <summary>
@@ -37,18 +32,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public static ICacheDependent Create(CacheType type)
         {
-            return Create(type, DefaultCacheDependent.DEFAULT_TIMEOUT);
-        }
-
-        /// <summary>
-        /// 创建一个默认的缓存依赖
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
-        public static ICacheDependent Create(CacheType type, int timeout)
-        {
-            return new DefaultCacheDependent(CacheType.Local, timeout);
+            return new DefaultCacheDependent(type);
         }
 
         #region ICacheDependent 成员
@@ -59,12 +43,14 @@ namespace MySoft.Cache
         /// <param name="cacheKey"></param>
         /// <param name="cacheValue"></param>
         /// <param name="cacheTime"></param>
-        public void AddCache(string cacheKey, object cacheValue, int cacheTime)
+        public void AddCache(string cacheKey, object cacheValue, double cacheTime)
         {
             lock (strategy)
             {
-                var timer = cacheTime > 0 ? cacheTime : timeout;
-                strategy.AddObject(cacheKey, cacheValue, TimeSpan.FromMilliseconds(timer));
+                if (cacheTime > 0)
+                    strategy.AddObject(cacheKey, cacheValue, TimeSpan.FromSeconds(cacheTime));
+                else
+                    strategy.AddObject(cacheKey, cacheValue);
             }
         }
 

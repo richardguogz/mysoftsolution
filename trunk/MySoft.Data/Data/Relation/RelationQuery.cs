@@ -1,15 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Data;
 
 namespace MySoft.Data
 {
     /// <summary>
-    /// 查询器
+    /// 关系查询
     /// </summary>
-    public class QuerySection : IUserQuery
+    public class RelationQuery<T>
+        where T : class
     {
         private QuerySection<ViewEntity> query;
-        internal QuerySection(QuerySection<ViewEntity> query)
+        internal RelationQuery(QuerySection<ViewEntity> query)
         {
             this.query = query;
         }
@@ -19,7 +23,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pagingFieldName"></param>
         /// <returns></returns>
-        public QuerySection SetPagingField(string pagingFieldName)
+        public RelationQuery<T> SetPagingField(string pagingFieldName)
         {
             return SetPagingField(new Field(pagingFieldName));
         }
@@ -29,7 +33,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pagingField"></param>
         /// <returns></returns>
-        public QuerySection SetPagingField(Field pagingField)
+        public RelationQuery<T> SetPagingField(Field pagingField)
         {
             query.SetPagingField(pagingField);
             return this;
@@ -40,9 +44,9 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public PageSection GetPage(int pageSize)
+        public RelationPage<T> GetPage(int pageSize)
         {
-            return new PageSection(query, pageSize);
+            return new RelationPage<T>(query, pageSize);
         }
 
         /// <summary>
@@ -86,8 +90,7 @@ namespace MySoft.Data
         /// 返回T
         /// </summary>
         /// <returns></returns>
-        public T ToSingle<T>()
-            where T : class
+        public T ToSingle()
         {
             return query.GetTop(1).ToTable().ConvertTo<T>()[0];
         }
@@ -97,8 +100,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public SourceList<T> ToList<T>()
-            where T : class
+        public SourceList<T> ToList()
         {
             return query.ToTable().ConvertTo<T>();
         }
@@ -135,8 +137,7 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public SourceList<T> ToList<T>(int topSize)
-            where T : class
+        public SourceList<T> ToList(int topSize)
         {
             return ToTable(topSize).ConvertTo<T>();
         }
@@ -157,14 +158,13 @@ namespace MySoft.Data
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public DataPage<IList<T>> ToListPage<T>(int pageSize, int pageIndex)
-            where T : class
+        public DataPage<IList<T>> ToListPage(int pageSize, int pageIndex)
         {
             DataPage<IList<T>> view = new DataPage<IList<T>>(pageSize);
-            PageSection page = GetPage(pageSize);
+            RelationPage<T> page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;
-            view.DataSource = page.ToList<T>(pageIndex);
+            view.DataSource = page.ToList(pageIndex);
             return view;
         }
 
@@ -177,7 +177,7 @@ namespace MySoft.Data
         public DataPage<DataTable> ToTablePage(int pageSize, int pageIndex)
         {
             DataPage<DataTable> view = new DataPage<DataTable>(pageSize);
-            PageSection page = GetPage(pageSize);
+            RelationPage<T> page = GetPage(pageSize);
             view.CurrentPageIndex = pageIndex;
             view.RowCount = page.RowCount;
             view.DataSource = page.ToTable(pageIndex);

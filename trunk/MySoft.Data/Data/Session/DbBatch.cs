@@ -146,7 +146,7 @@ namespace MySoft.Data
             #region 实体验证处理
 
             //对实体进行验证
-            ValidateResult result = entity.Validate();
+            ValidateResult result = entity.Validation();
             if (!result.IsSuccess)
             {
                 List<string> msgs = new List<string>();

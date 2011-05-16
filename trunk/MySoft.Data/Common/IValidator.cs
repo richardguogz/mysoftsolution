@@ -11,7 +11,7 @@ namespace MySoft.Data
         /// 根据实体状态来验证实体的有效性，返回一组错误信息
         /// </summary>
         /// <returns></returns>
-        ValidateResult Validate();
+        ValidateResult Validation();
     }
 
     /// <summary>

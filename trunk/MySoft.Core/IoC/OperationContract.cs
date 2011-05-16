@@ -14,7 +14,10 @@ namespace MySoft.IoC
         /// <summary>
         /// 实例化OperationContractAttribute
         /// </summary>
-        public OperationContractAttribute() { }
+        public OperationContractAttribute()
+        {
+            this.allowCache = false;
+        }
 
         /// <summary>
         /// 实例化OperationContractAttribute
@@ -30,6 +33,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="cacheTime"></param>
         public OperationContractAttribute(int cacheTime)
+            : this(true)
         {
             this.cacheTime = cacheTime;
         }

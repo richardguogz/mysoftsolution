@@ -14,10 +14,10 @@ namespace MySoft.IoC.Configuration
     {
         private string host = "any";
         private int port = 8888;
-        private int logtime = 1000;             //超时多长输出日志，默认为1秒
-        private int records = 3600;            //记录条数，默认为3600条，1小时记录
-        private int maxconnect = SimpleServiceContainer.DEFAULT_MAXCONNECT_NUMBER;
-        private int maxbuffer = SimpleServiceContainer.DEFAULT_MAXBUFFER_NUMBER;
+        private double logtime = ServiceConfig.DEFAULT_LOGTIME_NUMBER;             //超时多长输出日志，默认为1秒
+        private int records = ServiceConfig.DEFAULT_RECORD_NUMBER;                 //默认记录3600次                                                         //记录条数，默认为3600条，1小时记录
+        private int maxconnect = ServiceConfig.DEFAULT_MAXCONNECT_NUMBER;
+        private int maxbuffer = ServiceConfig.DEFAULT_MAXBUFFER_NUMBER;
 
         /// <summary>
         /// 获取远程对象配置
@@ -56,7 +56,7 @@ namespace MySoft.IoC.Configuration
                 maxbuffer = Convert.ToInt32(xmlnode["maxbuffer"].Value);
 
             if (xmlnode["logtime"] != null && xmlnode["logtime"].Value.Trim() != string.Empty)
-                logtime = Convert.ToInt32(xmlnode["logtime"].Value);
+                logtime = Convert.ToDouble(xmlnode["logtime"].Value);
 
             if (xmlnode["records"] != null && xmlnode["records"].Value.Trim() != string.Empty)
                 records = Convert.ToInt32(xmlnode["records"].Value);
@@ -106,7 +106,7 @@ namespace MySoft.IoC.Configuration
         /// Gets or sets the logtime
         /// </summary>
         /// <value>The logtime.</value>
-        public int LogTime
+        public double LogTime
         {
             get { return logtime; }
             set { logtime = value; }

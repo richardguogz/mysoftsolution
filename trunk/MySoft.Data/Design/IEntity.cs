@@ -10,9 +10,9 @@ namespace MySoft.Data
         /// <summary>
         /// 转换成另一对象
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        TEntity As<TEntity>();
+        TResult As<TResult>();
 
         /// <summary>
         /// 返回一个行阅读对象

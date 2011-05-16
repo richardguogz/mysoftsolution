@@ -66,7 +66,7 @@ namespace MySoft.IoC.Service
 
                 Console.WriteLine("[{0}] => Server host: {1}", DateTime.Now, server.ServerUrl);
                 Console.WriteLine("[{0}] => Max connect: {1} -> Max Buffer: {2} bytes", DateTime.Now, server.MaxConnect, server.MaxBuffer);
-                Console.WriteLine("[{0}] => Logger status: On  -> Log time: {1} ms", DateTime.Now, config.LogTime);
+                Console.WriteLine("[{0}] => Logger status: On  -> Log time: {1} seconds", DateTime.Now, config.LogTime);
                 Console.WriteLine("[{0}] => Press enter to exit and stop service...", DateTime.Now);
             }
             else
@@ -122,10 +122,10 @@ namespace MySoft.IoC.Service
             {
                 lock (syncobj)
                 {
-                    string message = string.Format("[{0}] => {1}", DateTime.Now, exception.ToString());
+                    string message = string.Format("[{0}] => {1}", DateTime.Now, exception.Message);
                     if (exception.InnerException != null)
                     {
-                        message += "\r\n" + exception.InnerException.ToString();
+                        message += string.Format("\r\n错误信息 => {0}", exception.InnerException.Message);
                     }
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(message);

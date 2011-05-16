@@ -202,7 +202,7 @@ namespace MySoft.Data
                     while (reader.Read())
                     {
                         T entity = (T)creator();
-                        entity.SetAllValues(reader);
+                        entity.SetDbValues(reader);
                         entity.Attach();
                         list.Add(entity);
                     }

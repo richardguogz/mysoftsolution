@@ -31,6 +31,9 @@ namespace MySoft.Data
         {
             get
             {
+                if (base.Count == 0)
+                    return default(T);
+
                 if (base.Count > index)
                     return base[index];
 

@@ -320,7 +320,7 @@
     <Compile Include="Utils\ErrorHelper.cs" />
     <Compile Include="Mail\SMTP.cs" />
     <Compile Include="Mail\SmtpMail.cs" />
-    <Compile Include="Common\CompressionManager.cs" />
+    <Compile Include="Utils\CompressionManager.cs" />
     <Compile Include="Common\Compression\SevenZip\Common\CommandLineParser.cs" />
     <Compile Include="Common\Compression\SevenZip\Common\CRC.cs" />
     <Compile Include="Common\Compression\SevenZip\Common\InBuffer.cs" />
@@ -411,7 +411,7 @@
     <Compile Include="Common\IDataPage.cs" />
     <Compile Include="Logger\IErrorLogable.cs" />
     <Compile Include="Logger\ILogable.cs" />
-    <Compile Include="Common\SerializationManager.cs" />
+    <Compile Include="Utils\SerializationManager.cs" />
     <Compile Include="Logger\SimpleLog.cs" />
     <Compile Include="Utils\XmlHelper.cs" />
   </ItemGroup>

@@ -10,8 +10,13 @@ namespace MySoft.IoC.Services
     /// The base class of services.
     /// </summary>
     [Serializable]
-    public abstract class BaseService : IService, ILogable, IErrorLogable
+    public abstract class BaseService : IService
     {
+        /// <summary>
+        ///  The service logger
+        /// </summary>
+        private IServiceLog logger;
+
         /// <summary>
         /// The service name.
         /// </summary>
@@ -30,8 +35,9 @@ namespace MySoft.IoC.Services
         /// Initializes a new instance of the <see cref="BaseService"/> class.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        public BaseService(string serviceName)
+        public BaseService(IServiceLog logger, string serviceName)
         {
+            this.logger = logger;
             this.serviceName = serviceName;
         }
 
@@ -49,55 +55,38 @@ namespace MySoft.IoC.Services
         /// </summary>
         /// <param name="reqMsg">The MSG.</param>
         /// <returns>The msg.</returns>
-        public ResponseMessage CallService(RequestMessage reqMsg, int logtime)
+        public ResponseMessage CallService(RequestMessage reqMsg, double logtime)
         {
-            int t1 = System.Environment.TickCount;
+            Stopwatch watch = Stopwatch.StartNew();
+
+            //运行请求获得结果
             ResponseMessage resMsg = Run(reqMsg);
+
             if (resMsg != null && resMsg.Exception != null)
             {
                 var ex = resMsg.Exception;
 
-                int t2 = System.Environment.TickCount - t1;
-                string log = string.Format("【{5}】Dynamic ({0}) service ({1},{2}) error. ==> {3} {4}", resMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", resMsg.TransactionId);
+                watch.Stop();
+
+                string log = string.Format("【{5}】Dynamic ({0}) service ({1},{2}) error. ==> {4} \r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.TransactionId);
                 var exception = new IoCException(log, ex);
 
-                if (OnError != null) OnError(exception);
+                logger.WriteError(exception);
             }
             else
             {
-                int t2 = System.Environment.TickCount - t1;
+                watch.Stop();
 
                 //如果时间超过预定，则输出日志
-                if (t2 > logtime)
+                if (watch.ElapsedMilliseconds > logtime * 1000)
                 {
-                    if (OnLog != null)
-                    {
-                        string log = string.Format("【{6}】Dynamic ({0}) service ({1},{2}). ==> {3} {4} <==> {5}", resMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters, "Spent time: (" + t2.ToString() + ") ms.", resMsg.Message, resMsg.TransactionId);
-                        OnLog(log, LogType.Warning);
-                    }
+                    string log = string.Format("【{6}】Dynamic ({0}) service ({1},{2}). ==> {4} <==> {5} \r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
+                    logger.WriteLog(log, LogType.Warning);
                 }
             }
 
             return resMsg;
         }
-
-        #endregion
-
-        #region ILogable Members
-
-        /// <summary>
-        /// OnLog event.
-        /// </summary>
-        public event LogEventHandler OnLog;
-
-        #endregion
-
-        #region IErrorLogable Members
-
-        /// <summary>
-        /// OnError event.
-        /// </summary>
-        public event ErrorLogEventHandler OnError;
 
         #endregion
     }

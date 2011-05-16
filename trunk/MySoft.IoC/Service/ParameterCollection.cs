@@ -25,17 +25,7 @@ namespace MySoft.IoC
         {
             get
             {
-                JObject json = new JObject();
-                foreach (string key in parmValues.Keys)
-                {
-                    //将数据进行系列化
-                    var jsonString = SerializationManager.SerializeJson(parmValues[key]);
-
-                    //添加到json对象
-                    json.Add(key, JToken.Parse(jsonString));
-                }
-
-                return json.ToString(Formatting.None);
+                return GetJsonString(Formatting.Indented);
             }
         }
 
@@ -93,7 +83,34 @@ namespace MySoft.IoC
         /// </returns>
         public override string ToString()
         {
-            return SerializedData;
+            return GetJsonString(Formatting.None);
+        }
+
+        /// <summary>
+        /// 获取json字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        private string GetJsonString(Formatting format)
+        {
+            if (parmValues.Keys.Count == 0)
+            {
+                return "{ parameters is empty }";
+            }
+            else
+            {
+                JObject json = new JObject();
+                foreach (string key in parmValues.Keys)
+                {
+                    //将数据进行系列化
+                    var jsonString = SerializationManager.SerializeJson(parmValues[key]);
+
+                    //添加到json对象
+                    json.Add(key, JToken.Parse(jsonString));
+                }
+
+                return json.ToString(format);
+            }
         }
     }
 }
