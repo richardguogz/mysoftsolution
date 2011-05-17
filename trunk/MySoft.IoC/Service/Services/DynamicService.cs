@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Linq;
 using Castle.Core.Interceptor;
 using System.IO;
+using MySoft.Security;
 
 namespace MySoft.IoC.Services
 {
