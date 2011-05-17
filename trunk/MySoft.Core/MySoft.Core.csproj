@@ -295,6 +295,7 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Logger\ILog.cs" />
     <Compile Include="Security\MD5.cs" />
+    <Compile Include="Security\XXTEA.cs" />
     <Compile Include="Threading\CallerThreadContext.cs" />
     <Compile Include="Threading\CanceledWorkItemsGroup.cs" />
     <Compile Include="Threading\EventWaitHandle.cs" />
