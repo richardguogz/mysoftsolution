@@ -197,7 +197,6 @@ namespace MySoft.IoC
                 {
                     lock (syncObj)
                     {
-
                         IService service = container.GetLocalService(typeof(IServiceInterfaceType).FullName);
                         if (service == null)
                         {
