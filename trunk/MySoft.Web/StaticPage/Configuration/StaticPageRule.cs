@@ -13,7 +13,7 @@ namespace MySoft.Web.Configuration
     {
         // private member variables...
         private string lookFor, sendTo, validateString;
-        private int timeSpan;
+        private int timeout;
 
         #region Public Properties
         /// <summary>
@@ -24,7 +24,7 @@ namespace MySoft.Web.Configuration
         /// <p />
         /// The pattern is searched for using the <b>System.Text.RegularExpression.Regex</b> class's <b>IsMatch()</b>
         /// method.  The pattern is case insensitive.</remarks>
-        [XmlElement("lookFor")]
+        [XmlAttribute("lookFor")]
         public string LookFor
         {
             get
@@ -43,7 +43,7 @@ namespace MySoft.Web.Configuration
         /// <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
         /// <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
         /// the match in <see cref="LookFor"/> with the value in <b>SendTo</b>.</remarks>
-        [XmlElement("sendTo")]
+        [XmlAttribute("sendTo")]
         public string SendTo
         {
             get
@@ -59,23 +59,23 @@ namespace MySoft.Web.Configuration
         /// <summary>
         /// 过期时间，单位为秒
         /// </summary>
-        [XmlElement("timeSpan")]
-        public int TimeSpan
+        [XmlAttribute("timeout")]
+        public int Timeout
         {
             get
             {
-                return timeSpan;
+                return timeout;
             }
             set
             {
-                timeSpan = value;
+                timeout = value;
             }
         }
 
         /// <summary>
         /// 验证字符串
         /// </summary>
-        [XmlElement("validateString")]
+        [XmlAttribute("validate")]
         public string ValidateString
         {
             get

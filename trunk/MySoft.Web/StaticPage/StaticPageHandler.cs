@@ -78,9 +78,9 @@ namespace MySoft.Web
 
                                 //按秒检测页面重新生成
                                 int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
-                                int timeSpan = rules[i].TimeSpan;
+                                int timeout = rules[i].Timeout;
 
-                                if (timeSpan > 0 && span >= timeSpan) //静态页面过期
+                                if (timeout > 0 && span >= timeout) //静态页面过期
                                 {
                                     context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rules[i].ValidateString);
                                     break;

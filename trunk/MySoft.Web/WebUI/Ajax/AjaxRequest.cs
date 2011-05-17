@@ -337,9 +337,9 @@ namespace MySoft.Web.UI
                 for (int index = 0; index < config.Rules.Count; index++)
                 {
                     var rule = config.Rules[index];
-                    if (rule.CachePath.ToLower().Contains(path.ToLower()))
+                    if (rule.Path.ToLower().Contains(path.ToLower()))
                     {
-                        HttpContext.Current.Cache.Insert(key, html, null, DateTime.Now.AddSeconds(rule.CacheTime), System.Web.Caching.Cache.NoSlidingExpiration);
+                        HttpContext.Current.Cache.Insert(key, html, null, DateTime.Now.AddSeconds(rule.Timeout), System.Web.Caching.Cache.NoSlidingExpiration);
                         break;
                     }
                 }

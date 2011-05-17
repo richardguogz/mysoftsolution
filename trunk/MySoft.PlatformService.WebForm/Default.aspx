@@ -8,7 +8,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        &nbsp;<ul>
+        <ul>
             <% if (status != null)
                { %>
                 <li>服务端状态信息如下：(<% =DateTime.Now %>)<asp:Button ID="btnClear" runat="server" 

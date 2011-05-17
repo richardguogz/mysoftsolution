@@ -11,11 +11,11 @@ namespace MySoft.Web.Configuration
     /// the pattern with (if matched).
     /// </summary>
     [Serializable]
-    [XmlRoot("cacheControlRule")]
+    [XmlRoot("rule")]
     public class CacheControlRule
     {
-        private string cachePath;
-        private int cacheTime;
+        private string path;
+        private int timeout;
 
         #region Public Properties
         /// <summary>
@@ -26,16 +26,16 @@ namespace MySoft.Web.Configuration
         /// <p />
         /// The pattern is searched for using the <b>System.Text.RegularExpression.Regex</b> class's <b>IsMatch()</b>
         /// method.  The pattern is case insensitive.</remarks>
-        [XmlElement("cachePath")]
-        public string CachePath
+        [XmlAttribute("path")]
+        public string Path
         {
             get
             {
-                return cachePath;
+                return path;
             }
             set
             {
-                cachePath = value;
+                path = value;
             }
         }
 
@@ -44,17 +44,17 @@ namespace MySoft.Web.Configuration
         /// </summary>
         /// <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
         /// <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
-        /// the match in <see cref="CacheTime"/> with the value in <b>SendTo</b>.</remarks>
-        [XmlElement("cacheTime")]
-        public int CacheTime
+        /// the match in <see cref="Timeout"/> with the value in <b>SendTo</b>.</remarks>
+        [XmlAttribute("timeout")]
+        public int Timeout
         {
             get
             {
-                return cacheTime;
+                return timeout;
             }
             set
             {
-                cacheTime = value;
+                timeout = value;
             }
         }
 

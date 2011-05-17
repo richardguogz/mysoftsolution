@@ -25,12 +25,16 @@ namespace MySoft.Web.Configuration
         /// <returns>A <see cref="StaticPageConfiguration"/> instance.</returns>
         public static CacheControlConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/cacheControl");
+            string key = "mysoft.framework/cacheControl";
+            CacheControlConfiguration obj = CacheHelper.Get<CacheControlConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as CacheControlConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (CacheControlConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         #region Public Properties
@@ -52,7 +56,7 @@ namespace MySoft.Web.Configuration
         /// A <see cref="StaticPageRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
         /// </summary>
         [XmlArray("rules")]
-        [XmlArrayItem("cacheControlRule")]
+        [XmlArrayItem("rule")]
         public CacheControlRuleCollection Rules
         {
             get

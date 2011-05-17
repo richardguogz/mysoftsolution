@@ -60,12 +60,16 @@ namespace MySoft.Web.Configuration
         /// <returns>A <see cref="RewriterConfiguration"/> instance.</returns>
         public static RewriterConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/rewriter");
+            string key = "mysoft.framework/rewriter";
+            RewriterConfiguration obj = CacheHelper.Get<RewriterConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as RewriterConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (RewriterConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         #region Public Properties

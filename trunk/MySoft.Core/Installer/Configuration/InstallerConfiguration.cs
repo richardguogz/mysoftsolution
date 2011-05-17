@@ -20,12 +20,16 @@ namespace MySoft.Installer.Configuration
         /// <returns>A <see cref="StaticPageConfiguration"/> instance.</returns>
         public static InstallerConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/installer");
+            string key = "mysoft.framework/installer";
+            InstallerConfiguration obj = CacheHelper.Get<InstallerConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as InstallerConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (InstallerConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         #region Public Properties

@@ -25,12 +25,16 @@ namespace MySoft.IoC.Configuration
         /// <returns></returns>
         public static CastleServiceConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/castleService");
+            string key = "mysoft.framework/castleService";
+            CastleServiceConfiguration obj = CacheHelper.Get<CastleServiceConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as CastleServiceConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (CastleServiceConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         /// <summary>

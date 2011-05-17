@@ -30,12 +30,16 @@ namespace MySoft.IoC.Configuration
         /// <returns></returns>
         public static CastleFactoryConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/castleFactory");
+            string key = "mysoft.framework/castleFactory";
+            CastleFactoryConfiguration obj = CacheHelper.Get<CastleFactoryConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as CastleFactoryConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (CastleFactoryConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         /// <summary>

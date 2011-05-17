@@ -23,12 +23,16 @@ namespace MySoft.Web.Configuration
         /// <returns>A <see cref="StaticPageConfiguration"/> instance.</returns>
         public static StaticPageConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/staticPage");
+            string key = "mysoft.framework/staticPage";
+            StaticPageConfiguration obj = CacheHelper.Get<StaticPageConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as StaticPageConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (StaticPageConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         #region Public Properties

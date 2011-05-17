@@ -39,12 +39,16 @@ namespace MySoft.Remoting.Configuration
         /// <returns></returns>
         public static RemotingClientConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/remotingClient");
+            string key = "mysoft.framework/remotingClient";
+            RemotingClientConfiguration obj = CacheHelper.Get<RemotingClientConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as RemotingClientConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (RemotingClientConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         private bool _IsCheckServer = false;

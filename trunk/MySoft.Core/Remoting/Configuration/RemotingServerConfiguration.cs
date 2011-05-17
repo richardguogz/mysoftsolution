@@ -38,12 +38,16 @@ namespace MySoft.Remoting.Configuration
         /// <returns></returns>
         public static RemotingServerConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/remotingServer");
+            string key = "mysoft.framework/remotingServer";
+            RemotingServerConfiguration obj = CacheHelper.Get<RemotingServerConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as RemotingServerConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (RemotingServerConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         List<ServiceModule> _Modules = new List<ServiceModule>();

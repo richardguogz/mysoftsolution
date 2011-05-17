@@ -33,12 +33,16 @@ namespace MySoft.Task.Configuration
         /// <returns></returns>
         public static TaskConfiguration GetConfig()
         {
-            object obj = ConfigurationManager.GetSection("mysoft.framework/task");
+            string key = "mysoft.framework/task";
+            TaskConfiguration obj = CacheHelper.Get<TaskConfiguration>(key);
+            if (obj == null)
+            {
+                var tmp = ConfigurationManager.GetSection(key);
+                obj = tmp as TaskConfiguration;
+                CacheHelper.Set(key, obj);
+            }
 
-            if (obj != null)
-                return (TaskConfiguration)obj;
-            else
-                return null;
+            return obj;
         }
 
         private Dictionary<string, Job> _Jobs = new Dictionary<string, Job>();
