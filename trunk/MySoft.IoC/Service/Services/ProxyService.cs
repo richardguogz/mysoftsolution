@@ -101,8 +101,9 @@ namespace MySoft.IoC
                         if (watch.ElapsedMilliseconds > logtime * 1000)
                         {
                             //SerializationManager.Serialize(retMsg)
-                            logger.WriteLog(string.Format("¡¾{7}¡¿Call ({0}:{1}) remote service ({2},{3}). ==> {5} <==> {6} \r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData,
-                                "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId), LogType.Warning);
+                            string log = string.Format("¡¾{7}¡¿Call ({0}:{1}) remote service ({2},{3}). ==> {5} <==> {6} \r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
+                            log = string.Format("Elapsed time more than {0} ms, {1}", logtime * 1000, log);
+                            logger.WriteLog(log, LogType.Warning);
                         }
                     }
 
