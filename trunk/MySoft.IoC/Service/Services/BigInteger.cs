@@ -44,14 +44,14 @@
  * This library is free.  You can redistribute it and/or modify it under GPL.
  */
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Services
 {
     using System;
 #if !(PocketPC || Smartphone)
     using System.Security.Cryptography;
 #endif
 
-    public class BigInteger
+    internal class BigInteger
     {
 
         #region Data Storage

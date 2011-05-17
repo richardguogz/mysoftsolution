@@ -63,8 +63,7 @@
     <Compile Include="IoCException.cs" />
     <Compile Include="Mvp\Presenter\Presenter.cs" />
     <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
-    <Compile Include="PHP\BigInteger.cs" />
-    <Compile Include="PHP\XXTEA.cs" />
+    <Compile Include="Service\Services\BigInteger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="Service\ServiceCache.cs" />

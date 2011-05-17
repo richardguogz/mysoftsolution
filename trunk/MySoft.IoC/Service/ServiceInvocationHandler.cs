@@ -7,6 +7,7 @@ using System.Reflection.Emit;
 using System.IO;
 using MySoft.IoC.Configuration;
 using MySoft.Cache;
+using MySoft.Security;
 
 namespace MySoft.IoC
 {
