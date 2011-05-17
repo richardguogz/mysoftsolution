@@ -1005,15 +1005,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 设置超时显示日志
-        /// </summary>
-        /// <param name="timeout"></param>
-        public void SetLogTimeout(double timeout)
-        {
-            this.dbProvider.Timeout = timeout;
-        }
-
-        /// <summary>
         /// 注入日志依赖
         /// </summary>
         /// <param name="logger"></param>

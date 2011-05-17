@@ -33,7 +33,11 @@ namespace MySoft.Data
         /// </summary>
         internal IExcutingLog Logger
         {
-            set { logger = value; }
+            set
+            {
+                logger = value;
+                timeout = value.Timeout;
+            }
         }
 
         /// <summary>
@@ -237,7 +241,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (watch.ElapsedMilliseconds > timeout * 1000)
+                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
                     WriteLogCommand(cmd, LogType.Warning);
                 else
                     WriteLogCommand(cmd, LogType.Information);
@@ -282,7 +286,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (watch.ElapsedMilliseconds > timeout * 1000)
+                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
                     WriteLogCommand(cmd, LogType.Warning);
                 else
                     WriteLogCommand(cmd, LogType.Information);
@@ -325,7 +329,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (watch.ElapsedMilliseconds > timeout * 1000)
+                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
                     WriteLogCommand(cmd, LogType.Warning);
                 else
                     WriteLogCommand(cmd, LogType.Information);
@@ -368,7 +372,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (watch.ElapsedMilliseconds > timeout * 1000)
+                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
                     WriteLogCommand(cmd, LogType.Warning);
                 else
                     WriteLogCommand(cmd, LogType.Information);
@@ -411,7 +415,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (watch.ElapsedMilliseconds > timeout * 1000)
+                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
                     WriteLogCommand(cmd, LogType.Warning);
                 else
                     WriteLogCommand(cmd, LogType.Information);

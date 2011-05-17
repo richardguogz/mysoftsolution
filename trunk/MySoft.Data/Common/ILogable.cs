@@ -8,6 +8,8 @@ namespace MySoft.Data
     /// </summary>
     public interface IExcutingLog : ILog
     {
+        double Timeout { get; }
+
         /// <summary>
         /// ¿ªÊ¼Ö´ÐÐÃüÁî
         /// </summary>

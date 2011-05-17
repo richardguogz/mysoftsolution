@@ -31,12 +31,6 @@ namespace MySoft.Data
         void RegisterDecryptHandler(DecryptEventHandler handler);
 
         /// <summary>
-        /// 设置超时显示日志
-        /// </summary>
-        /// <param name="timeout"></param>
-        void SetLogTimeout(double timeout);
-
-        /// <summary>
         /// 注册日志依赖
         /// </summary>
         /// <param name="logger"></param>
