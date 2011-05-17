@@ -299,20 +299,14 @@ namespace MySoft.Web
                 //开始生成
                 if (OnStart != null)
                 {
-                    try
-                    {
-                        OnStart(createTime, dynamicurl, RemoveRootPath(staticurl));
-                    }
+                    try { OnStart(createTime, dynamicurl, RemoveRootPath(staticurl)); }
                     catch { };
                 }
 
                 //生成时回调
                 if (Callback != null)
                 {
-                    try
-                    {
-                        content = Callback(content);
-                    }
+                    try { content = Callback(content); }
                     catch { };
                 }
 
@@ -335,10 +329,7 @@ namespace MySoft.Web
                 //结束生成
                 if (OnEnd != null)
                 {
-                    try
-                    {
-                        OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl));
-                    }
+                    try { OnEnd(createTime, dynamicurl, RemoveRootPath(staticurl)); }
                     catch { };
                 }
 
