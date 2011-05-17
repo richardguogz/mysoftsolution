@@ -1,30 +1,29 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
-using Castle.Windsor;
-using MySoft.Net.Client;
-using System.Net.Sockets;
-using MySoft.Net.Sockets;
 using System.Collections;
-using MySoft.Threading;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using MySoft.IoC.Configuration;
 using MySoft.Logger;
+using MySoft.Threading;
 
 namespace MySoft.IoC
 {
-    internal class ServiceProxy : IServiceProxy
+    /// <summary>
+    /// 服务代理
+    /// </summary>
+    internal class ServiceProxy : IService
     {
         private Dictionary<Guid, ResponseMessage> responses = new Dictionary<Guid, ResponseMessage>();
         private IServiceLog logger;
-        private SocketClientConfiguration config;
-        private ServiceMessagePool requestPool;
+        private RemoteNode node;
+        private ServiceMessagePool reqPool;
         private SmartThreadPool pool;
 
-        public ServiceProxy(IServiceLog logger, SocketClientConfiguration config, string displayName)
+        public ServiceProxy(IServiceLog logger, RemoteNode node)
         {
             this.logger = logger;
-            this.config = config;
+            this.node = node;
 
             #region socket通讯
 
@@ -32,14 +31,14 @@ namespace MySoft.IoC
             pool = new SmartThreadPool(30 * 1000, 500, 10);
 
             //实例化服务池
-            requestPool = new ServiceMessagePool(config.Pools);
-            for (int i = 0; i < config.Pools; i++)
+            reqPool = new ServiceMessagePool(node.MaxPool);
+            for (int i = 0; i < node.MaxPool; i++)
             {
-                var request = new ServiceMessage(displayName, config.IP, config.Port);
+                var request = new ServiceMessage(node);
                 request.SendCallback += new ServiceMessageEventHandler(client_SendMessage);
 
                 //请求端入栈
-                requestPool.Push(request);
+                reqPool.Push(request);
             }
 
             #endregion
@@ -48,7 +47,7 @@ namespace MySoft.IoC
         void client_SendMessage(object sender, ServiceMessageEventArgs message)
         {
             //将SocketRequest入栈
-            requestPool.Push(sender as ServiceMessage);
+            reqPool.Push(sender as ServiceMessage);
 
             var response = message.Result;
 
@@ -68,16 +67,16 @@ namespace MySoft.IoC
         /// <param name="reqMsg"></param>
         /// <param name="logtime"></param>
         /// <returns></returns>
-        public ResponseMessage CallMethod(RequestMessage reqMsg, double logtime)
+        public ResponseMessage CallService(RequestMessage reqMsg, double logtime)
         {
             //如果池为空
-            if (requestPool.Count == 0)
+            if (reqPool.Count == 0)
             {
                 throw new Exception("Service pool is empty！");
             }
 
             //从池中弹出一个可用请求
-            var request = requestPool.Pop();
+            var request = reqPool.Pop();
 
             //发送数据包到服务端
             bool isSend = request.Send(reqMsg);
@@ -89,10 +88,9 @@ namespace MySoft.IoC
 
                 //获取消息
                 ResponseMessage resMsg = GetResponse(reqMsg, watch);
-
                 if (resMsg == null)
                 {
-                    throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.TransactionId));
+                    throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.TransactionId));
                 }
 
                 //如果数据不为空
@@ -104,7 +102,7 @@ namespace MySoft.IoC
                     if (watch.ElapsedMilliseconds > logtime * 1000)
                     {
                         //SerializationManager.Serialize(retMsg)
-                        logger.WriteLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {5} <==> {6} \r\nParameters ==> {4}", config.IP, config.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData,
+                        logger.WriteLog(string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {5} <==> {6} \r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData,
                             "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId), LogType.Warning);
                     }
                 }
@@ -113,7 +111,7 @@ namespace MySoft.IoC
             }
             else
             {
-                throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", config.IP, config.Port));
+                throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", node.IP, node.Port));
             }
         }
 
@@ -145,7 +143,7 @@ namespace MySoft.IoC
                 if (!wir.IsCompleted) wir.Cancel(true);
                 watch.Stop();
 
-                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", config.IP, config.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId));
+                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId));
             }
 
             //从线程获取返回信息，超时等待
@@ -176,5 +174,17 @@ namespace MySoft.IoC
 
             return default(TResult);
         }
+
+        #region IService 成员
+
+        /// <summary>
+        /// 服务名称
+        /// </summary>
+        public string ServiceName
+        {
+            get { return typeof(ServiceProxy).FullName; }
+        }
+
+        #endregion
     }
 }
