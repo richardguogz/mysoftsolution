@@ -12,7 +12,7 @@ namespace MySoft.Web.Configuration
     public class StaticPageRule
     {
         // private member variables...
-        private string lookFor, sendTo, validateString;
+        private string lookFor, writeTo, validateString;
         private int timeout;
 
         #region Public Properties
@@ -43,16 +43,16 @@ namespace MySoft.Web.Configuration
         /// <remarks>The replacement string may use grouping symbols, like $1, $2, etc.  Specifically, the
         /// <b>System.Text.RegularExpression.Regex</b> class's <b>Replace()</b> method is used to replace
         /// the match in <see cref="LookFor"/> with the value in <b>SendTo</b>.</remarks>
-        [XmlAttribute("sendTo")]
-        public string SendTo
+        [XmlAttribute("writeTo")]
+        public string WriteTo
         {
             get
             {
-                return sendTo;
+                return writeTo;
             }
             set
             {
-                sendTo = value;
+                writeTo = value;
             }
         }
 

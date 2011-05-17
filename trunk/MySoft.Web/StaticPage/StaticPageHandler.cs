@@ -58,7 +58,7 @@ namespace MySoft.Web
                     {
                         // match found - do any replacement needed
 
-                        string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
+                        string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].WriteTo));
                         staticFile = context.Server.MapPath(staticUrl);
 
                         try
