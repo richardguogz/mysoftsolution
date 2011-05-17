@@ -17,14 +17,17 @@ namespace MySoft.PlatformService.WebForm
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            if (!IsPostBack)
             {
-                status = CastleFactory.Create().GetService<IStatusService>().GetServerStatus();
-                clients = CastleFactory.Create().GetService<IStatusService>().GetConnectInfoList();
-            }
-            catch (Exception ex)
-            {
-                Response.Write(ex.Message);
+                try
+                {
+                    status = CastleFactory.Create().GetService<IStatusService>().GetServerStatus();
+                    clients = CastleFactory.Create().GetService<IStatusService>().GetConnectInfoList();
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.Message);
+                }
             }
         }
 
