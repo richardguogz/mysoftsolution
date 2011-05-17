@@ -6,6 +6,7 @@ using System.Text;
 using MySoft.Data.Design;
 using MySoft.Logger;
 using MySoft.Cache;
+using System.Diagnostics;
 
 namespace MySoft.Data
 {
@@ -16,10 +17,29 @@ namespace MySoft.Data
         private char rightToken;
         private char paramPrefixToken;
         private ICacheDependent cache;
+        private IExcutingLog logger;
+        private double timeout = -1;
+
+        /// <summary>
+        /// 设置超时日志输出时间
+        /// </summary>
+        internal double Timeout
+        {
+            set { timeout = value; }
+        }
+
+        /// <summary>
+        /// 日志依赖
+        /// </summary>
+        internal IExcutingLog Logger
+        {
+            set { logger = value; }
+        }
+
         /// <summary>
         /// 缓存依赖
         /// </summary>
-        public ICacheDependent Cache
+        internal ICacheDependent Cache
         {
             get { return cache; }
             set { cache = value; }
@@ -33,9 +53,9 @@ namespace MySoft.Data
             this.dbHelper = new DbHelper(connectionString, dbFactory);
         }
 
-        internal void SetDecryptHandler(DecryptEventHandler decryptEvent)
+        internal void SetDecryptHandler(DecryptEventHandler handler)
         {
-            this.dbHelper.SetDecryptHandler(decryptEvent);
+            this.dbHelper.SetDecryptHandler(handler);
         }
 
         #region 增加DbCommand参数
@@ -204,15 +224,29 @@ namespace MySoft.Data
 
             try
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                int retVal = -1;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
-                    return dbHelper.ExecuteNonQuery(cmd);
+                    retVal = dbHelper.ExecuteNonQuery(cmd);
                 }
-                return dbHelper.ExecuteNonQuery(cmd, trans);
+                else
+                {
+                    retVal = dbHelper.ExecuteNonQuery(cmd, trans);
+                }
+                watch.Stop();
+
+                //写日志
+                if (watch.ElapsedMilliseconds > timeout * 1000)
+                    WriteLogCommand(cmd, LogType.Warning);
+                else
+                    WriteLogCommand(cmd, LogType.Information);
+
+                return retVal;
             }
             catch (Exception ex)
             {
-                WriteExceptionLog(ex, cmd);
+                WriteErrorCommand(ex, cmd);
 
                 throw ex;
             }
@@ -233,6 +267,8 @@ namespace MySoft.Data
 
             try
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                SourceReader retVal = null;
                 IDataReader reader;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
@@ -242,11 +278,20 @@ namespace MySoft.Data
                 {
                     reader = dbHelper.ExecuteReader(cmd, trans);
                 }
-                return new SourceReader(reader);
+                retVal = new SourceReader(reader);
+                watch.Stop();
+
+                //写日志
+                if (watch.ElapsedMilliseconds > timeout * 1000)
+                    WriteLogCommand(cmd, LogType.Warning);
+                else
+                    WriteLogCommand(cmd, LogType.Information);
+
+                return retVal;
             }
             catch (Exception ex)
             {
-                WriteExceptionLog(ex, cmd);
+                WriteErrorCommand(ex, cmd);
 
                 throw ex;
             }
@@ -267,15 +312,29 @@ namespace MySoft.Data
 
             try
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                DataSet retVal = null;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
-                    return dbHelper.ExecuteDataSet(cmd);
+                    retVal = dbHelper.ExecuteDataSet(cmd);
                 }
-                return dbHelper.ExecuteDataSet(cmd, trans);
+                else
+                {
+                    retVal = dbHelper.ExecuteDataSet(cmd, trans);
+                }
+                watch.Stop();
+
+                //写日志
+                if (watch.ElapsedMilliseconds > timeout * 1000)
+                    WriteLogCommand(cmd, LogType.Warning);
+                else
+                    WriteLogCommand(cmd, LogType.Information);
+
+                return retVal;
             }
             catch (Exception ex)
             {
-                WriteExceptionLog(ex, cmd);
+                WriteErrorCommand(ex, cmd);
 
                 throw ex;
             }
@@ -296,15 +355,29 @@ namespace MySoft.Data
 
             try
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                DataTable retVal = null;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
-                    return dbHelper.ExecuteDataTable(cmd);
+                    retVal = dbHelper.ExecuteDataTable(cmd);
                 }
-                return dbHelper.ExecuteDataTable(cmd, trans);
+                else
+                {
+                    retVal = dbHelper.ExecuteDataTable(cmd, trans);
+                }
+                watch.Stop();
+
+                //写日志
+                if (watch.ElapsedMilliseconds > timeout * 1000)
+                    WriteLogCommand(cmd, LogType.Warning);
+                else
+                    WriteLogCommand(cmd, LogType.Information);
+
+                return retVal;
             }
             catch (Exception ex)
             {
-                WriteExceptionLog(ex, cmd);
+                WriteErrorCommand(ex, cmd);
 
                 throw ex;
             }
@@ -325,15 +398,29 @@ namespace MySoft.Data
 
             try
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                object retVal = null;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
-                    return dbHelper.ExecuteScalar(cmd);
+                    retVal = dbHelper.ExecuteScalar(cmd);
                 }
-                return dbHelper.ExecuteScalar(cmd, trans);
+                else
+                {
+                    retVal = dbHelper.ExecuteScalar(cmd, trans);
+                }
+                watch.Stop();
+
+                //写日志
+                if (watch.ElapsedMilliseconds > timeout * 1000)
+                    WriteLogCommand(cmd, LogType.Warning);
+                else
+                    WriteLogCommand(cmd, LogType.Information);
+
+                return retVal;
             }
             catch (Exception ex)
             {
-                WriteExceptionLog(ex, cmd);
+                WriteErrorCommand(ex, cmd);
 
                 throw ex;
             }
@@ -688,14 +775,10 @@ namespace MySoft.Data
         /// <param name="command">The command.</param>
         private void StartExcuteCommand(DbCommand command)
         {
-            if (OnLog != null)
+            if (logger != null)
             {
-                OnLog(GetLog(command), LogType.Information);
-            }
-
-            if (OnStart != null)
-            {
-                OnStart(command);
+                try { logger.StartExcute(command); }
+                catch { }
             }
         }
 
@@ -705,9 +788,24 @@ namespace MySoft.Data
         /// <param name="command"></param>
         private void EndExcuteCommand(DbCommand command)
         {
-            if (OnEnd != null)
+            if (logger != null)
             {
-                OnEnd(command);
+                try { logger.EndExcute(command); }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Writes the log.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="type"></param>
+        private void WriteLogCommand(DbCommand command, LogType type)
+        {
+            if (logger != null)
+            {
+                try { logger.WriteLog(GetLog(command), type); }
+                catch { }
             }
         }
 
@@ -716,12 +814,16 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="command"></param>
-        private void WriteExceptionLog(Exception ex, DbCommand command)
+        private void WriteErrorCommand(Exception ex, DbCommand command)
         {
-            if (OnError != null)
+            if (logger != null)
             {
-                var exception = new DataException(GetLog(command), ex);
-                OnError(exception);
+                try
+                {
+                    var exception = new DataException(GetLog(command), ex);
+                    logger.WriteError(exception);
+                }
+                catch { }
             }
         }
 
@@ -750,26 +852,6 @@ namespace MySoft.Data
 
             return sb.ToString();
         }
-
-        /// <summary>
-        /// OnLog event.
-        /// </summary>
-        public event LogEventHandler OnLog;
-
-        /// <summary>
-        /// OnExceptionLog event.
-        /// </summary>
-        public event ErrorLogEventHandler OnError;
-
-        /// <summary>
-        /// 开始事件
-        /// </summary>
-        public event ExcutingEventHandler OnStart;
-
-        /// <summary>
-        /// 结束事件
-        /// </summary>
-        public event ExcutingEventHandler OnEnd;
 
         #endregion
 

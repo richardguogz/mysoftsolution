@@ -11,83 +11,83 @@ namespace MySoft.IoC
     [Serializable]
     public class HighestStatus : SecondStatus
     {
-        private DateTime dataFlowOccurTime;
+        private DateTime dataFlowCounterTime;
         /// <summary>
         /// 最高流量发生时间
         /// </summary>
-        public DateTime DataFlowOccurTime
+        public DateTime DataFlowCounterTime
         {
             get
             {
-                return dataFlowOccurTime;
+                return dataFlowCounterTime;
             }
             set
             {
-                dataFlowOccurTime = value;
+                dataFlowCounterTime = value;
             }
         }
 
-        private DateTime requestCountOccurTime;
+        private DateTime requestCountCounterTime;
         /// <summary>
         /// 最大请求发生时间
         /// </summary>
-        public DateTime RequestCountOccurTime
+        public DateTime RequestCountCounterTime
         {
             get
             {
-                return requestCountOccurTime;
+                return requestCountCounterTime;
             }
             set
             {
-                requestCountOccurTime = value;
+                requestCountCounterTime = value;
             }
         }
 
-        private DateTime successCountOccurTime;
+        private DateTime successCountCounterTime;
         /// <summary>
         /// 最多成功请求发生时间
         /// </summary>
-        public DateTime SuccessCountOccurTime
+        public DateTime SuccessCountCounterTime
         {
             get
             {
-                return successCountOccurTime;
+                return successCountCounterTime;
             }
             set
             {
-                successCountOccurTime = value;
+                successCountCounterTime = value;
             }
         }
 
-        private DateTime errorCountOccurTime;
+        private DateTime errorCountCounterTime;
         /// <summary>
         /// 最多错误请求发生时间
         /// </summary>
-        public DateTime ErrorCountOccurTime
+        public DateTime ErrorCountCounterTime
         {
             get
             {
-                return errorCountOccurTime;
+                return errorCountCounterTime;
             }
             set
             {
-                errorCountOccurTime = value;
+                errorCountCounterTime = value;
             }
         }
 
-        private DateTime elapsedTimeOccurTime;
+        private DateTime elapsedTimeCounterTime;
         /// <summary>
         /// 最耗时请求发生时间
         /// </summary>
-        public DateTime ElapsedTimeOccurTime
+        public DateTime ElapsedTimeCounterTime
         {
             get
             {
-                return elapsedTimeOccurTime;
+                return elapsedTimeCounterTime;
             }
             set
             {
-                elapsedTimeOccurTime = value;
+                elapsedTimeCounterTime = value;
             }
         }
     }

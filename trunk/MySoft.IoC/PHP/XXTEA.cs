@@ -41,6 +41,12 @@ namespace MySoft.IoC
         {
         }
 
+        /// <summary>
+        /// 加密数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public static Byte[] Encrypt(Byte[] data, Byte[] Key)
         {
             if (data.Length == 0)
@@ -50,6 +56,12 @@ namespace MySoft.IoC
             return ToByteArray(Encrypt(ToUInt32Array(data, true), ToUInt32Array(Key, false)), false);
         }
 
+        /// <summary>
+        /// 解密数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public static Byte[] Decrypt(Byte[] data, Byte[] Key)
         {
             if (data.Length == 0)

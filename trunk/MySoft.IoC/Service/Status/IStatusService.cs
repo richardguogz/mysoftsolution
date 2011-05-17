@@ -13,10 +13,21 @@ namespace MySoft.IoC
     public interface IStatusService
     {
         /// <summary>
-        /// 获取总的服务状态信息
+        /// 清除服务器状态
+        /// </summary>
+        void ClearStatus();
+
+        /// <summary>
+        /// 获取服务状态信息（包括SummaryStatus，HighestStatus，TimeStatus）
         /// </summary>
         /// <returns></returns>
         ServerStatus GetServerStatus();
+
+        /// <summary>
+        /// 获取汇总状态信息
+        /// </summary>
+        /// <returns></returns>
+        SummaryStatus GetSummaryStatus();
 
         /// <summary>
         /// 获取最高状态信息
@@ -25,15 +36,10 @@ namespace MySoft.IoC
         HighestStatus GetHighestStatus();
 
         /// <summary>
-        /// 清除服务器状态
-        /// </summary>
-        void ClearAllStatus();
-
-        /// <summary>
         /// 获取最后一次服务状态
         /// </summary>
         /// <returns></returns>
-        TimeStatus GetLastTimeStatus();
+        TimeStatus GetLatestStatus();
 
         /// <summary>
         /// 获取时段的服务状态信息

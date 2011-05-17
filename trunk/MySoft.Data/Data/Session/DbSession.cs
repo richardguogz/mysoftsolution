@@ -173,93 +173,6 @@ namespace MySoft.Data
             return dbProvider.CreateParameter();
         }
 
-        /// <summary>
-        /// 解密ConnectionString
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <returns></returns>
-        protected virtual string Decrypt(string connectionString)
-        {
-            //添加解密的方式
-            return connectionString;
-        }
-
-        #region 注册Log
-
-        /// <summary>
-        /// 注册一个日志事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void RegisterSqlLogger(LogEventHandler handler)
-        {
-            dbProvider.OnLog += handler;
-        }
-
-        /// <summary>
-        /// 取消一个日志事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void UnregisterSqlLogger(LogEventHandler handler)
-        {
-            dbProvider.OnLog -= handler;
-        }
-
-        /// <summary>
-        /// 注册一个异常日志事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void RegisterSqlExceptionLogger(ErrorLogEventHandler handler)
-        {
-            dbProvider.OnError += handler;
-        }
-
-        /// <summary>
-        /// 取消一个异常日志事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler)
-        {
-            dbProvider.OnError -= handler;
-        }
-
-        /// <summary>
-        /// 注册执行命令前的事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void RegisterOnStartHandler(ExcutingEventHandler handler)
-        {
-            dbProvider.OnStart += handler;
-        }
-
-        /// <summary>
-        /// 取消执行命令前的事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void UnregisterOnStartHandler(ExcutingEventHandler handler)
-        {
-            dbProvider.OnStart -= handler;
-        }
-
-        /// <summary>
-        /// 注册执行命令后的事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void RegisterOnEndHandler(ExcutingEventHandler handler)
-        {
-            dbProvider.OnEnd += handler;
-        }
-
-        /// <summary>
-        /// 取消执行命令后的事件
-        /// </summary>
-        /// <param name="handler"></param>
-        public void UnregisterOnEndHandler(ExcutingEventHandler handler)
-        {
-            dbProvider.OnEnd -= handler;
-        }
-
-        #endregion
-
         #region 常用操作(指定表名)
 
         /// <summary>
@@ -1080,7 +993,34 @@ namespace MySoft.Data
 
         #endregion
 
-        #region 注入缓存
+        #region 注入信息
+
+        /// <summary>
+        /// 注册解密的Handler
+        /// </summary>
+        /// <param name="handler"></param>
+        public void RegisterDecryptHandler(DecryptEventHandler handler)
+        {
+            this.dbProvider.SetDecryptHandler(handler);
+        }
+
+        /// <summary>
+        /// 设置超时显示日志
+        /// </summary>
+        /// <param name="timeout"></param>
+        public void SetLogTimeout(double timeout)
+        {
+            this.dbProvider.Timeout = timeout;
+        }
+
+        /// <summary>
+        /// 注入日志依赖
+        /// </summary>
+        /// <param name="logger"></param>
+        public void InjectExcutingLog(IExcutingLog logger)
+        {
+            this.dbProvider.Logger = logger;
+        }
 
         /// <summary>
         /// 注入缓存依赖
@@ -1098,7 +1038,6 @@ namespace MySoft.Data
         private void InitSession(DbProvider dbProvider)
         {
             this.dbProvider = dbProvider;
-            this.dbProvider.SetDecryptHandler(Decrypt);
             this.dbTrans = new DbTrans(dbProvider, false);
         }
 

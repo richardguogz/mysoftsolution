@@ -293,6 +293,7 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\StringUtils.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\ThreadSafeStore.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
+    <Compile Include="Logger\ILog.cs" />
     <Compile Include="Threading\CallerThreadContext.cs" />
     <Compile Include="Threading\CanceledWorkItemsGroup.cs" />
     <Compile Include="Threading\EventWaitHandle.cs" />

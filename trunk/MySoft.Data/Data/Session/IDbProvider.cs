@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace MySoft.Data
 {
-    interface IDbProvider : IExcutingCommand
+    interface IDbProvider
     {
         #region ²ÎÊý²Ù×÷
 

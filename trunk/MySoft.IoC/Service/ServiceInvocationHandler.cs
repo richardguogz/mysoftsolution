@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.IO;
 using MySoft.IoC.Configuration;
+using MySoft.Cache;
 
 namespace MySoft.IoC
 {
@@ -16,7 +17,8 @@ namespace MySoft.IoC
     {
         private CastleFactoryConfiguration config;
         private IServiceContainer container;
-        private Type serviceInterfaceType;
+        private IService service;
+        private Type serviceType;
         private string hostName;
 
         /// <summary>
@@ -25,11 +27,12 @@ namespace MySoft.IoC
         /// <param name="container">config.</param>
         /// <param name="container">The container.</param>
         /// <param name="serviceInterfaceType">Type of the service interface.</param>
-        public ServiceInvocationHandler(CastleFactoryConfiguration config, IServiceContainer container, Type serviceInterfaceType)
+        public ServiceInvocationHandler(CastleFactoryConfiguration config, IServiceContainer container, IService service, Type serviceType)
         {
             this.config = config;
             this.container = container;
-            this.serviceInterfaceType = serviceInterfaceType;
+            this.service = service;
+            this.serviceType = serviceType;
 
             this.hostName = DnsHelper.GetHostName();
         }
@@ -47,7 +50,7 @@ namespace MySoft.IoC
             RequestMessage reqMsg = new RequestMessage();
             reqMsg.AppName = config.AppName;                                //应用名称
             reqMsg.HostName = hostName;                                     //服务器名称
-            reqMsg.ServiceName = serviceInterfaceType.FullName;             //服务名称
+            reqMsg.ServiceName = serviceType.FullName;             //服务名称
             reqMsg.SubServiceName = methodInfo.ToString();                  //方法名称
             reqMsg.ReturnType = methodInfo.ReturnType;                      //返回类型
             reqMsg.TransactionId = Guid.NewGuid();                          //传输ID号
@@ -89,7 +92,7 @@ namespace MySoft.IoC
             //处理cacheKey信息
             var key = string.Format("{0}_{1}_{2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters);
             string cacheKey = "IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
-            cacheKey = string.Format("{0}_{1}", serviceInterfaceType.FullName, cacheKey);
+            cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
 
             bool isAllowCache = false;
             double cacheTime = config.CacheTime; //默认缓存时间与系统设置的时间一致
@@ -97,7 +100,7 @@ namespace MySoft.IoC
             #region 读取约束信息
 
             //获取约束信息
-            var serviceContract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceInterfaceType);
+            var serviceContract = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(serviceType);
 
             //获取约束信息
             var operationContract = CoreHelper.GetMemberAttribute<OperationContractAttribute>(methodInfo);
@@ -148,11 +151,10 @@ namespace MySoft.IoC
             else
             {
                 ResponseMessage resMsg = null;
-
                 try
                 {
                     //调用服务
-                    resMsg = container.CallService(reqMsg);
+                    resMsg = service.CallService(reqMsg, config.LogTime);
 
                     //如果有异常，向外抛出
                     if (resMsg != null && resMsg.Exception != null)

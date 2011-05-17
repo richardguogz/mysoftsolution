@@ -8,27 +8,6 @@ using MySoft.Logger;
 namespace MySoft.Net.Client
 {
     /// <summary>
-    /// string host, int port
-    /// </summary>
-    public class SocketClientConfiguration
-    {
-        /// <summary>
-        /// 连接的IP信息
-        /// </summary>
-        public string IP { get; set; }
-
-        /// <summary>
-        /// 侦听端口
-        /// </summary>
-        public int Port { get; set; }
-
-        /// <summary>
-        /// 最大池大小
-        /// </summary>
-        public int Pools { get; set; }
-    }
-
-    /// <summary>
     /// 默认Socket客户端
     /// </summary>
     public class SocketClientManager

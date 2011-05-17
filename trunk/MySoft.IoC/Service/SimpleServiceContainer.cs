@@ -24,13 +24,10 @@ namespace MySoft.IoC
         #region Private Members
 
         private IWindsorContainer container;
-        private IServiceProxy serviceProxy;
         private ICacheDependent cache;
-        private double logtime;
 
-        private void Init(double logtime, IDictionary serviceKeyTypes)
+        private void Init(IDictionary serviceKeyTypes)
         {
-            this.logtime = logtime;
             if (System.Configuration.ConfigurationManager.GetSection("castle") != null)
             {
                 container = new WindsorContainer(new XmlInterpreter());
@@ -91,9 +88,9 @@ namespace MySoft.IoC
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
         /// <param name="config"></param>
-        public SimpleServiceContainer(double logtime)
+        public SimpleServiceContainer()
         {
-            Init(logtime, null);
+            Init(null);
         }
 
         /// <summary>
@@ -101,29 +98,14 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(double logtime, IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(IDictionary serviceKeyTypes)
         {
-            Init(logtime, serviceKeyTypes);
+            Init(serviceKeyTypes);
         }
 
         #endregion
 
         #region IServiceContainer Members
-
-        /// <summary>
-        /// 设置服务代理
-        /// </summary>
-        public IServiceProxy Proxy
-        {
-            get
-            {
-                return this.serviceProxy;
-            }
-            set
-            {
-                this.serviceProxy = value;
-            }
-        }
 
         /// <summary>
         /// 缓存依赖
@@ -234,28 +216,23 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="reqMsg"></param>
         /// <returns></returns>
-        public ResponseMessage CallService(RequestMessage reqMsg)
+        public ResponseMessage CallService(RequestMessage reqMsg, double logtime)
         {
             //check local service first
             IService localService = GetLocalService(reqMsg.ServiceName);
-            if (localService != null)
+            if (localService == null)
             {
-                return localService.CallService(reqMsg, logtime);
+                throw new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName));
             }
-
-            //判断代理是否为空
-            if (serviceProxy == null)
-            {
-                throw new IoCException(string.Format("Call remote service failure, serviceProxy undefined！({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
-            }
-            else
-            {
-                //通过代理调用
-                return serviceProxy.CallMethod(reqMsg, logtime);
-            }
+            return localService.CallService(reqMsg, logtime);
         }
 
-        private IService GetLocalService(string serviceName)
+        /// <summary>
+        /// get local service
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
+        public IService GetLocalService(string serviceName)
         {
             ServiceNodeInfo[] serviceNodes = ParseServiceNodes(Kernel.GraphNodes);
             foreach (ServiceNodeInfo serviceNode in serviceNodes)

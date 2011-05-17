@@ -122,10 +122,10 @@ namespace MySoft.PlatformService.Client
                 string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
                 if (exception.InnerException != null)
                 {
-                    message += "\r\n" + exception.InnerException.Message + "\r\n";
+                    message += "\r\n´íÎóÐÅÏ¢ => " + exception.InnerException.Message;
                 }
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(message);
+                System.Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine(message);
             }
         }
 
@@ -135,12 +135,12 @@ namespace MySoft.PlatformService.Client
             {
                 string message = "[" + DateTime.Now.ToString() + "] " + log;
                 if (type == LogType.Error)
-                    Console.ForegroundColor = ConsoleColor.Red;
-                if (type == LogType.Warning)
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                else if (type == LogType.Warning)
+                    System.Console.ForegroundColor = ConsoleColor.Yellow;
                 else
-                    Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(message);
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                System.Console.WriteLine(message);
             }
         }
 

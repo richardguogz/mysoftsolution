@@ -46,7 +46,7 @@ namespace MySoft.IoC
             Hashtable hashTypes = new Hashtable();
             hashTypes[typeof(IStatusService)] = this;
 
-            this.container = new SimpleServiceContainer(config.LogTime, hashTypes);
+            this.container = new SimpleServiceContainer(hashTypes);
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
@@ -97,35 +97,35 @@ namespace MySoft.IoC
                         if (tmpStatus.DataFlow > highest.DataFlow)
                         {
                             highest.DataFlow = tmpStatus.DataFlow;
-                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                            highest.DataFlowCounterTime = tmpStatus.CounterTime;
                         }
 
                         //请求
                         if (tmpStatus.RequestCount > highest.RequestCount)
                         {
                             highest.RequestCount = tmpStatus.RequestCount;
-                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                            highest.RequestCountCounterTime = tmpStatus.CounterTime;
                         }
 
                         //成功
                         if (tmpStatus.SuccessCount > highest.SuccessCount)
                         {
                             highest.SuccessCount = tmpStatus.SuccessCount;
-                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                            highest.SuccessCountCounterTime = tmpStatus.CounterTime;
                         }
 
                         //失败
                         if (tmpStatus.ErrorCount > highest.ErrorCount)
                         {
                             highest.ErrorCount = tmpStatus.ErrorCount;
-                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                            highest.ErrorCountCounterTime = tmpStatus.CounterTime;
                         }
 
                         //耗时
                         if (tmpStatus.ElapsedTime > highest.ElapsedTime)
                         {
                             highest.ElapsedTime = tmpStatus.ElapsedTime;
-                            highest.DataFlowOccurTime = tmpStatus.CounterTime;
+                            highest.ElapsedTimeCounterTime = tmpStatus.CounterTime;
                         }
 
                         #endregion
@@ -330,7 +330,7 @@ namespace MySoft.IoC
                 if (IsServiceCounter(request)) status.RequestCount++;
 
                 //获取返回的消息
-                response = container.CallService(request);
+                response = container.CallService(request, config.LogTime);
 
                 //处理错误数
                 if (IsServiceCounter(request))
@@ -379,32 +379,40 @@ namespace MySoft.IoC
         #region IStatusService 成员
 
         /// <summary>
-        /// 获取最后一次服务状态
-        /// </summary>
-        /// <returns></returns>
-        public TimeStatus GetLastTimeStatus()
-        {
-            return statuslist.LastOrDefault();
-        }
-
-        /// <summary>
-        /// 获取服务状态列表
-        /// </summary>
-        /// <returns></returns>
-        public IList<TimeStatus> GetTimeStatusList()
-        {
-            return statuslist;
-        }
-
-        /// <summary>
         /// 清除所有服务器状态
         /// </summary>
-        public void ClearAllStatus()
+        public void ClearStatus()
         {
             lock (statuslist)
             {
                 statuslist.Clear();
+                highest = new HighestStatus();
             }
+        }
+
+        /// <summary>
+        /// 服务状态信息
+        /// </summary>
+        /// <returns></returns>
+        public ServerStatus GetServerStatus()
+        {
+            ServerStatus status = new ServerStatus
+            {
+                Highest = GetHighestStatus(),
+                Latest = GetLatestStatus(),
+                Summary = GetSummaryStatus()
+            };
+
+            return status;
+        }
+
+        /// <summary>
+        /// 获取最后一次服务状态
+        /// </summary>
+        /// <returns></returns>
+        public TimeStatus GetLatestStatus()
+        {
+            return statuslist.LastOrDefault();
         }
 
         /// <summary>
@@ -417,15 +425,15 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// 服务状态信息
+        /// 汇总状态信息
         /// </summary>
         /// <returns></returns>
-        public ServerStatus GetServerStatus()
+        public SummaryStatus GetSummaryStatus()
         {
             //统计状态信息
-            ServerStatus state = new ServerStatus
+            SummaryStatus status = new SummaryStatus
             {
-                TotalSeconds = statuslist.Count,
+                RunningSeconds = statuslist.Count,
                 RequestCount = statuslist.Sum(p => p.RequestCount),
                 SuccessCount = statuslist.Sum(p => p.SuccessCount),
                 ErrorCount = statuslist.Sum(p => p.ErrorCount),
@@ -433,7 +441,16 @@ namespace MySoft.IoC
                 DataFlow = statuslist.Sum(p => p.DataFlow),
             };
 
-            return state;
+            return status;
+        }
+
+        /// <summary>
+        /// 获取服务状态列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<TimeStatus> GetTimeStatusList()
+        {
+            return statuslist;
         }
 
         /// <summary>

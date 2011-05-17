@@ -11,26 +11,9 @@ using System.Reflection;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// 日志接口
-    /// </summary>
-    public interface IServiceLog
-    {
-        /// <summary>
-        /// Writes the log.
-        /// </summary>
-        /// <param name="log">The log info.</param>
-        void WriteLog(string log, LogType type);
-        /// <summary>
-        /// Writes the exception.
-        /// </summary>
-        /// <param name="exception">The exception info.</param>
-        void WriteError(Exception exception);
-    }
-
-    /// <summary>
     /// The service container interface.
     /// </summary>
-    public interface IServiceContainer : IDisposable, IServiceLog, ILogable, IErrorLogable
+    public interface IServiceContainer : IDisposable, ILog, ILogable, IErrorLogable
     {
         /// <summary>
         /// Gets the kernel.
@@ -81,11 +64,13 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="reqMsg">The MSG.</param>
         /// <returns>The response msg.</returns>
-        ResponseMessage CallService(RequestMessage reqMsg);
+        ResponseMessage CallService(RequestMessage reqMsg, double logtime);
         /// <summary>
-        /// 设置服务代理
+        /// get local service
         /// </summary>
-        IServiceProxy Proxy { get; set; }
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
+        IService GetLocalService(string serviceName);
         /// <summary>
         /// 缓存依赖
         /// </summary>

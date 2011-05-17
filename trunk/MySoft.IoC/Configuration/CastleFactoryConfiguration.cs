@@ -16,14 +16,13 @@ namespace MySoft.IoC.Configuration
         private bool encrypt = false;
         private bool compress = false;
 
-        private IDictionary<string, ServiceNode> hosts = new Dictionary<string, ServiceNode>();
-        private string defaultService;          //默认服务
+        private IDictionary<string, RemoteNode> nodes = new Dictionary<string, RemoteNode>();
+        private string defaultKey;          //默认服务
         private string appName;                 //host名称
         private bool throwerror = true;         //抛出异常
         private double logtime = ServiceConfig.DEFAULT_LOGTIME_NUMBER;       //超时多长输出日志，默认为1秒
         private double timeout = ServiceConfig.DEFAULT_TIMEOUT_NUMBER;       //默认超时时间        30秒
         private double cachetime = ServiceConfig.DEFAULT_CACHETIME_NUMBER;   //默认缓存时间        60秒
-        private int maxpool = ServiceConfig.DEFAULT_CLIENTPOOL_NUMBER;    //默认的池大小
 
         /// <summary>
         /// 获取远程对象配置
@@ -71,35 +70,34 @@ namespace MySoft.IoC.Configuration
                 throwerror = Convert.ToBoolean(xmlnode["throwerror"].Value);
 
             if (xmlnode["default"] != null && xmlnode["default"].Value.Trim() != string.Empty)
-                defaultService = xmlnode["default"].Value;
+                defaultKey = xmlnode["default"].Value;
 
             if (xmlnode["appname"] != null && xmlnode["appname"].Value.Trim() != string.Empty)
                 appName = xmlnode["appname"].Value;
-
-            if (xmlnode["maxpool"] != null && xmlnode["maxpool"].Value.Trim() != string.Empty)
-                maxpool = Convert.ToInt32(xmlnode["maxpool"].Value);
 
             foreach (XmlNode child in node.ChildNodes)
             {
                 if (child.NodeType == XmlNodeType.Comment) continue;
 
                 XmlAttributeCollection childnode = child.Attributes;
-                if (child.Name == "service")
+                if (child.Name == "node")
                 {
-                    ServiceNode service = new ServiceNode();
-                    service.Name = childnode["name"].Value;
-                    if (childnode["description"] != null)
-                        service.Description = childnode["description"].Value;
-                    service.Server = childnode["server"].Value;
-                    service.Port = Convert.ToInt32(childnode["port"].Value);
+                    RemoteNode remoteNode = new RemoteNode();
+                    remoteNode.Key = childnode["key"].Value;
+                    remoteNode.IP = childnode["ip"].Value;
+                    remoteNode.Port = Convert.ToInt32(childnode["port"].Value);
+
+                    //最大连接池
+                    if (childnode["maxpool"] != null && childnode["maxpool"].Value.Trim() != string.Empty)
+                        remoteNode.MaxPool = Convert.ToInt32(childnode["maxpool"].Value);
 
                     //处理默认的服务
-                    if (string.IsNullOrEmpty(defaultService))
+                    if (string.IsNullOrEmpty(defaultKey))
                     {
-                        defaultService = service.Name;
+                        defaultKey = remoteNode.Key;
                     }
 
-                    hosts.Add(service.Name, service);
+                    nodes.Add(remoteNode.Key, remoteNode);
                 }
             }
 
@@ -112,15 +110,15 @@ namespace MySoft.IoC.Configuration
                 }
 
                 //判断是否配置了服务信息
-                if (hosts.Count == 0)
+                if (nodes.Count == 0)
                 {
                     throw new IoCException("Not configure any service node！");
                 }
 
                 //判断是否包含默认的服务
-                if (!hosts.ContainsKey(defaultService))
+                if (!nodes.ContainsKey(defaultKey))
                 {
-                    throw new IoCException("Not find the default service node [" + defaultService + "]！");
+                    throw new IoCException("Not find the default service node [" + defaultKey + "]！");
                 }
             }
         }
@@ -201,8 +199,8 @@ namespace MySoft.IoC.Configuration
         /// <value>The default.</value>
         public string Default
         {
-            get { return defaultService; }
-            set { defaultService = value; }
+            get { return defaultKey; }
+            set { defaultKey = value; }
         }
 
         /// <summary>
@@ -216,23 +214,13 @@ namespace MySoft.IoC.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the maxpool
+        /// Gets or sets the nodes
         /// </summary>
-        /// <value>The timeout.</value>
-        public int MaxPool
+        /// <value>The nodes.</value>
+        public IDictionary<string, RemoteNode> Nodes
         {
-            get { return maxpool; }
-            set { maxpool = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the hosts
-        /// </summary>
-        /// <value>The hosts.</value>
-        public IDictionary<string, ServiceNode> Hosts
-        {
-            get { return hosts; }
-            set { hosts = value; }
+            get { return nodes; }
+            set { nodes = value; }
         }
     }
 }

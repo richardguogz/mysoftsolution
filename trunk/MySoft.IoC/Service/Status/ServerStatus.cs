@@ -9,94 +9,53 @@ namespace MySoft.IoC
     /// 服务器状态信息
     /// </summary>
     [Serializable]
-    public class ServerStatus : SecondStatus
+    public class ServerStatus
     {
-        private int totalSeconds;
+        private SummaryStatus summary;
         /// <summary>
-        /// 运行总时间
+        /// 汇总状态信息
         /// </summary>
-        public int TotalSeconds
+        public SummaryStatus Summary
         {
             get
             {
-                return totalSeconds;
+                return summary;
             }
             set
             {
-                lock (this)
-                {
-                    totalSeconds = value;
-                }
+                summary = value;
             }
         }
 
+        private HighestStatus highest;
         /// <summary>
-        /// 平均数据流量（每秒）
+        /// 最高状态信息
         /// </summary>
-        public double AverageDataFlow
+        public HighestStatus Highest
         {
             get
             {
-                if (totalSeconds > 0)
-                    return Math.Round((base.DataFlow * 1.0) / (totalSeconds * 1.0), 4);
-                else
-                    return 0;
+                return highest;
+            }
+            set
+            {
+                highest = value;
             }
         }
 
+        private TimeStatus latest;
         /// <summary>
-        /// 平均请求数（每秒）
+        /// 最新状态信息
         /// </summary>
-        public double AverageRequestCount
+        public TimeStatus Latest
         {
             get
             {
-                if (totalSeconds > 0)
-                    return Math.Round((base.RequestCount * 1.0) / (totalSeconds * 1.0), 4);
-                else
-                    return 0;
+                return latest;
             }
-        }
-
-        /// <summary>
-        /// 平均耗时
-        /// </summary>
-        public double AverageElapsedTime
-        {
-            get
+            set
             {
-                if (base.RequestCount > 0)
-                    return Math.Round((base.ElapsedTime * 1.0) / (base.RequestCount * 1.0), 4);
-                else
-                    return 0;
-            }
-        }
-
-        /// <summary>
-        /// 平均成功数（每秒）
-        /// </summary>
-        public double AverageSuccessCount
-        {
-            get
-            {
-                if (totalSeconds > 0)
-                    return Math.Round((base.SuccessCount * 1.0) / (totalSeconds * 1.0), 4);
-                else
-                    return 0;
-            }
-        }
-
-        /// <summary>
-        /// 平均错误数（每秒）
-        /// </summary>
-        public double AverageErrorCount
-        {
-            get
-            {
-                if (totalSeconds > 0)
-                    return Math.Round((base.ErrorCount * 1.0) / (totalSeconds * 1.0), 4);
-                else
-                    return 0;
+                latest = value;
             }
         }
     }

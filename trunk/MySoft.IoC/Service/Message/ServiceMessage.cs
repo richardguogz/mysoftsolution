@@ -6,6 +6,7 @@ using System.Threading;
 using MySoft.Net.Client;
 using System.Net.Sockets;
 using MySoft.Net.Sockets;
+using MySoft.IoC.Configuration;
 
 namespace MySoft.IoC
 {
@@ -18,15 +19,15 @@ namespace MySoft.IoC
 
         private SocketClientManager manager;
         private bool connected = false;
-        private string serviceName;
+        private string node;
         private string ip;
         private int port;
 
-        public ServiceMessage(string serviceName, string ip, int port)
+        public ServiceMessage(RemoteNode node)
         {
-            this.serviceName = serviceName;
-            this.ip = ip;
-            this.port = port;
+            this.node = node.Key;
+            this.ip = node.IP;
+            this.port = node.Port;
 
             manager = new SocketClientManager();
             manager.OnConnected += new ConnectionEventHandler(SocketClientManager_OnConnected);
@@ -55,7 +56,7 @@ namespace MySoft.IoC
             //如果连接断开，直接抛出异常
             if (!connected)
             {
-                throw new IoCException(string.Format("Can't connect to server ({0}:{1})！service: {2}", ip, port, serviceName));
+                throw new IoCException(string.Format("Can't connect to server ({0}:{1})！Remote node : {2}", ip, port, node));
             }
 
             if (data == null) return false;

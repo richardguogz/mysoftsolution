@@ -4,26 +4,20 @@ using MySoft.Logger;
 namespace MySoft.Data
 {
     /// <summary>
-    /// 数据处理事件委托
+    /// 执行并输出日志的接口
     /// </summary>
-    /// <param name="command"></param>
-    public delegate void ExcutingEventHandler(IDbCommand command);
-
-    interface IExcutingCommand : ILogable
+    public interface IExcutingLog : ILog
     {
         /// <summary>
-        /// OnDbException event;
+        /// 开始执行命令
         /// </summary>
-        event ErrorLogEventHandler OnError;
+        /// <param name="cmd"></param>
+        void StartExcute(IDbCommand cmd);
 
         /// <summary>
-        /// 开始事件
+        /// 结束执行命令
         /// </summary>
-        event ExcutingEventHandler OnStart;
-
-        /// <summary>
-        /// 结束事件
-        /// </summary>
-        event ExcutingEventHandler OnEnd;
+        /// <param name="cmd"></param>
+        void EndExcute(IDbCommand cmd);
     }
 }

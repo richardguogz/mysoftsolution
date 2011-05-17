@@ -15,7 +15,7 @@ namespace MySoft.IoC.Services
         /// <summary>
         ///  The service logger
         /// </summary>
-        private IServiceLog logger;
+        private ILog logger;
 
         /// <summary>
         /// The service name.
@@ -35,7 +35,7 @@ namespace MySoft.IoC.Services
         /// Initializes a new instance of the <see cref="BaseService"/> class.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        public BaseService(IServiceLog logger, string serviceName)
+        public BaseService(ILog logger, string serviceName)
         {
             this.logger = logger;
             this.serviceName = serviceName;

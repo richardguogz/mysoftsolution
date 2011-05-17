@@ -6,9 +6,12 @@ namespace MySoft.Data
 {
     public delegate string DecryptEventHandler(string connectionString);
 
+    /// <summary>
+    /// 数据库操作类
+    /// </summary>
     public sealed class DbHelper
     {
-        private DecryptEventHandler decryptProxy;
+        private DecryptEventHandler handler;
         private System.Data.Common.DbProviderFactory dbFactory;
         private string dbConnectionString;
 
@@ -18,9 +21,10 @@ namespace MySoft.Data
             this.dbFactory = dbFactory;
         }
 
-        public void SetDecryptHandler(DecryptEventHandler decryptProxy)
+        //设置解密的handler
+        public void SetDecryptHandler(DecryptEventHandler handler)
         {
-            this.decryptProxy = decryptProxy;
+            this.handler = handler;
         }
 
         #region 创建供外部调用的对象
@@ -28,10 +32,10 @@ namespace MySoft.Data
         public DbConnection CreateConnection()
         {
             DbConnection dbconn = dbFactory.CreateConnection();
-            if (decryptProxy != null)
+            if (handler != null)
             {
-                dbConnectionString = decryptProxy(dbConnectionString);
-                decryptProxy = null;
+                dbConnectionString = handler(dbConnectionString);
+                handler = null;
             }
             dbconn.ConnectionString = dbConnectionString;
             return dbconn;

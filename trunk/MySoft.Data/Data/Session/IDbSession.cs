@@ -22,23 +22,25 @@ namespace MySoft.Data
         DbParameter CreateParameter();
         #endregion
 
-        #region 注册Log
+        #region 注入信息
 
-        void RegisterSqlLogger(LogEventHandler handler);
-        void UnregisterSqlLogger(LogEventHandler handler);
+        /// <summary>
+        /// 注册解密的Handler
+        /// </summary>
+        /// <param name="handler"></param>
+        void RegisterDecryptHandler(DecryptEventHandler handler);
 
-        void RegisterSqlExceptionLogger(ErrorLogEventHandler handler);
-        void UnregisterSqlExceptionLogger(ErrorLogEventHandler handler);
+        /// <summary>
+        /// 设置超时显示日志
+        /// </summary>
+        /// <param name="timeout"></param>
+        void SetLogTimeout(double timeout);
 
-        void RegisterOnStartHandler(ExcutingEventHandler handler);
-        void UnregisterOnStartHandler(ExcutingEventHandler handler);
-
-        void RegisterOnEndHandler(ExcutingEventHandler handler);
-        void UnregisterOnEndHandler(ExcutingEventHandler handler);
-
-        #endregion
-
-        #region 注入缓存
+        /// <summary>
+        /// 注册日志依赖
+        /// </summary>
+        /// <param name="logger"></param>
+        void InjectExcutingLog(IExcutingLog logger);
 
         /// <summary>
         /// 注入缓存依赖

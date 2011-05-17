@@ -13,23 +13,24 @@ namespace MySoft.PlatformService.WebForm
     public partial class _Default : System.Web.UI.Page
     {
         protected ServerStatus status;
-        protected TimeStatus timeStatus;
-        protected HighestStatus highestStatus;
         protected IList<ConnectInfo> clients;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                status = CastleFactory.Create().StatusService.GetServerStatus();
-                timeStatus = CastleFactory.Create().StatusService.GetLastTimeStatus();
-                highestStatus = CastleFactory.Create().StatusService.GetHighestStatus();
-                clients = CastleFactory.Create().StatusService.GetConnectInfoList();
+                status = CastleFactory.Create().GetService<IStatusService>().GetServerStatus();
+                clients = CastleFactory.Create().GetService<IStatusService>().GetConnectInfoList();
             }
             catch (Exception ex)
             {
                 Response.Write(ex.Message);
             }
+        }
+
+        protected void btnClear_Click(object sender, EventArgs e)
+        {
+            CastleFactory.Create().GetService<IStatusService>().ClearStatus();
         }
     }
 }
