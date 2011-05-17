@@ -29,13 +29,13 @@
  * This library is free.  You can redistribute it and/or modify it under GPL.
  */
 
-namespace MySoft.IoC
+namespace MySoft.Security
 {
+    /// <summary>
+    /// MD5º”√‹
+    /// </summary>
     public sealed class MD5
     {
-        private MD5()
-        {
-        }
         private static uint bitrol(uint n, byte c)
         {
             return (n << c) | (n >> (32 - c));

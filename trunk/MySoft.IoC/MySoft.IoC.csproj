@@ -64,7 +64,6 @@
     <Compile Include="Mvp\Presenter\Presenter.cs" />
     <Compile Include="Mvp\Presenter\PresenterFactory.cs" />
     <Compile Include="PHP\BigInteger.cs" />
-    <Compile Include="PHP\MD5.cs" />
     <Compile Include="PHP\XXTEA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceConfig.cs" />

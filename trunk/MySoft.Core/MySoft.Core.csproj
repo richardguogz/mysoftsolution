@@ -294,6 +294,7 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\ThreadSafeStore.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Security\MD5.cs" />
     <Compile Include="Threading\CallerThreadContext.cs" />
     <Compile Include="Threading\CanceledWorkItemsGroup.cs" />
     <Compile Include="Threading\EventWaitHandle.cs" />
@@ -339,8 +340,8 @@
     <Compile Include="Common\Compression\SevenZip\Compress\RangeCoder\RangeCoderBitTree.cs" />
     <Compile Include="Common\Compression\SevenZip\ICoder.cs" />
     <Compile Include="Remoting\RemotingException.cs" />
-    <Compile Include="Security\AESEncrypt.cs" />
-    <Compile Include="Security\DESEncrypt.cs" />
+    <Compile Include="Security\AES.cs" />
+    <Compile Include="Security\DES.cs" />
     <Compile Include="Common\ConfigurationBase.cs" />
     <Compile Include="Remoting\Configuration\RemotingClientConfiguration.cs" />
     <Compile Include="Remoting\Configuration\RemotingClientConfigurationHandler.cs" />

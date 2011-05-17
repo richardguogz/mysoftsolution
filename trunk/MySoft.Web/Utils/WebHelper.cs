@@ -394,8 +394,7 @@ namespace MySoft.Web
         /// <returns></returns>
         public static string MD5Encrypt(string str)
         {
-            str = NoneEncrypt(str, 1);
-            return str;
+            return NoneEncrypt(str, 1);
         }
 
         /// <summary>

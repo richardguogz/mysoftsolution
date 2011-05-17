@@ -18,7 +18,7 @@ namespace MySoft.Security
         /// <param name="encryptString"></param>
         /// <param name="encryptKey"></param>
         /// <returns></returns>
-        public static string Encode(string encryptString, string encryptKey)
+        public static string Encrypt(string encryptString, string encryptKey)
         {
             encryptKey = CoreHelper.GetSubString(encryptKey, 32, "");
             encryptKey = encryptKey.PadRight(32, ' ');
@@ -40,7 +40,7 @@ namespace MySoft.Security
         /// <param name="decryptString"></param>
         /// <param name="decryptKey"></param>
         /// <returns></returns>
-        public static string Decode(string decryptString, string decryptKey)
+        public static string Decrypt(string decryptString, string decryptKey)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace MySoft.Security
         /// <param name="iv">向量128位</param>
         /// <param name="strKey">加密密钥</param>
         /// <returns></returns>
-        public static byte[] Encode(byte[] inputdata, byte[] iv, string strKey)
+        public static byte[] Encrypt(byte[] inputdata, byte[] iv, string strKey)
         {
             //分组加密算法   
             SymmetricAlgorithm des = Rijndael.Create();
@@ -101,7 +101,7 @@ namespace MySoft.Security
         /// <param name="iv">向量128</param>
         /// <param name="strKey">key</param>
         /// <returns></returns>
-        public static byte[] Decode(byte[] inputdata, byte[] iv, string strKey)
+        public static byte[] Decrypt(byte[] inputdata, byte[] iv, string strKey)
         {
             SymmetricAlgorithm des = Rijndael.Create();
             des.Key = Encoding.UTF8.GetBytes(strKey.Substring(0, 32));

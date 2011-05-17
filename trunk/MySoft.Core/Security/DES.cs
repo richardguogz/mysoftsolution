@@ -20,7 +20,7 @@ namespace MySoft.Security
         /// <param name="encryptString">待加密的字符串</param>
         /// <param name="encryptKey">加密密钥,要求为8位</param>
         /// <returns>加密成功返回加密后的字符串,失败返回源串</returns>
-        public static string Encode(string encryptString, string encryptKey)
+        public static string Encrypt(string encryptString, string encryptKey)
         {
             encryptKey = CoreHelper.GetSubString(encryptKey, 8, "");
             encryptKey = encryptKey.PadRight(8, ' ');
@@ -42,7 +42,7 @@ namespace MySoft.Security
         /// <param name="decryptString">待解密的字符串</param>
         /// <param name="decryptKey">解密密钥,要求为8位,和加密密钥相同</param>
         /// <returns>解密成功返回解密后的字符串,失败返源串</returns>
-        public static string Decode(string decryptString, string decryptKey)
+        public static string Decrypt(string decryptString, string decryptKey)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace MySoft.Security
         /// <param >待加密的字符串</param>
         /// <param >加密密钥,要求为8位</param>
         /// <returns>加密成功返回加密后的字符串，失败返回源串</returns>
-        public static byte[] Encode(byte[] data, byte[] iv, string encryptKey)
+        public static byte[] Encrypt(byte[] data, byte[] iv, string encryptKey)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace MySoft.Security
         /// <param >待解密的字符串</param>
         /// <param >解密密钥,要求为8位,和加密密钥相同</param>
         /// <returns>解密成功返回解密后的字符串，失败返源串</returns>      
-        public static byte[] Decode(byte[] data, byte[] iv, string decryptKey)
+        public static byte[] Decrypt(byte[] data, byte[] iv, string decryptKey)
         {
             try
             {
