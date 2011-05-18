@@ -29,7 +29,7 @@ namespace MySoft.Web.Configuration
             {
                 var tmp = ConfigurationManager.GetSection(key);
                 obj = tmp as StaticPageConfiguration;
-                CacheHelper.Set(key, obj);
+                CacheHelper.Permanent(key, obj);
             }
 
             return obj;

@@ -9,11 +9,11 @@ namespace MySoft.Data
     public interface IExcutingLog
     {
         /// <summary>
-        /// 开始执行命令
+        /// 开始执行命令，返回是否需要执行
         /// </summary>
         /// <param name="cmdText"></param>
         /// <param name="parameter"></param>
-        void StartExcute(string cmdText, SQLParameter[] parameter);
+        bool StartExcute(string cmdText, SQLParameter[] parameter);
 
         /// <summary>
         /// 结束执行命令
@@ -29,11 +29,5 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="exception"></param>
         void ExcuteError(Exception exception);
-
-        /// <summary>
-        /// 执行的sql日志
-        /// </summary>
-        /// <param name="log"></param>
-        void ExcuteLog(string log);
     }
 }

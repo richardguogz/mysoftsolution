@@ -208,13 +208,16 @@ namespace MySoft.Data
 
         #region 执行SQL语句
 
-        public int ExecuteNonQuery(DbCommand cmd, DbTrans trans)
+        internal int ExecuteNonQuery(DbCommand cmd, DbTrans trans)
         {
             //调整DbCommand;
             PrepareCommand(cmd);
 
             //执行命令前的事件
-            StartExcuteCommand(cmd);
+            if (!StartExcuteCommand(cmd))
+            {
+                throw new DataException("当前数据库操作被拦截 ==> " + GetLog(cmd));
+            }
 
             int retVal = -1;
             Stopwatch watch = Stopwatch.StartNew();
@@ -228,11 +231,6 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteNonQuery(cmd, trans);
                 }
-
-                //写日志
-                WriteLogCommand(cmd);
-
-                return retVal;
             }
             catch (Exception ex)
             {
@@ -247,15 +245,20 @@ namespace MySoft.Data
                 //执行命令后的事件
                 EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
+
+            return retVal;
         }
 
-        public SourceReader ExecuteReader(DbCommand cmd, DbTrans trans)
+        internal SourceReader ExecuteReader(DbCommand cmd, DbTrans trans)
         {
             //调整DbCommand;
             PrepareCommand(cmd);
 
             //执行命令前的事件
-            StartExcuteCommand(cmd);
+            if (!StartExcuteCommand(cmd))
+            {
+                throw new DataException("当前数据库操作被拦截 ==> " + GetLog(cmd));
+            }
 
             SourceReader retVal = null;
             Stopwatch watch = Stopwatch.StartNew();
@@ -271,11 +274,6 @@ namespace MySoft.Data
                     reader = dbHelper.ExecuteReader(cmd, trans);
                 }
                 retVal = new SourceReader(reader);
-
-                //写日志
-                WriteLogCommand(cmd);
-
-                return retVal;
             }
             catch (Exception ex)
             {
@@ -290,15 +288,17 @@ namespace MySoft.Data
                 //执行命令后的事件
                 EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
+
+            return retVal;
         }
 
-        public DataSet ExecuteDataSet(DbCommand cmd, DbTrans trans)
+        internal DataSet ExecuteDataSet(DbCommand cmd, DbTrans trans)
         {
             //调整DbCommand;
             PrepareCommand(cmd);
 
             //执行命令前的事件
-            StartExcuteCommand(cmd);
+            if (!StartExcuteCommand(cmd)) return null;
 
             DataSet retVal = null;
             Stopwatch watch = Stopwatch.StartNew();
@@ -312,11 +312,6 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteDataSet(cmd, trans);
                 }
-
-                //写日志
-                WriteLogCommand(cmd);
-
-                return retVal;
             }
             catch (Exception ex)
             {
@@ -331,15 +326,20 @@ namespace MySoft.Data
                 //执行命令后的事件
                 EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
+
+            return retVal;
         }
 
-        public DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans)
+        internal DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans)
         {
             //调整DbCommand;
             PrepareCommand(cmd);
 
             //执行命令前的事件
-            StartExcuteCommand(cmd);
+            if (!StartExcuteCommand(cmd))
+            {
+                throw new DataException("当前数据库操作被拦截 ==> " + GetLog(cmd));
+            }
 
             DataTable retVal = null;
             Stopwatch watch = Stopwatch.StartNew();
@@ -353,11 +353,6 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteDataTable(cmd, trans);
                 }
-
-                //写日志
-                WriteLogCommand(cmd);
-
-                return retVal;
             }
             catch (Exception ex)
             {
@@ -372,15 +367,20 @@ namespace MySoft.Data
                 //执行命令后的事件
                 EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
+
+            return retVal;
         }
 
-        public object ExecuteScalar(DbCommand cmd, DbTrans trans)
+        internal object ExecuteScalar(DbCommand cmd, DbTrans trans)
         {
             //调整DbCommand;
             PrepareCommand(cmd);
 
             //执行命令前的事件
-            StartExcuteCommand(cmd);
+            if (!StartExcuteCommand(cmd))
+            {
+                throw new DataException("当前数据库操作被拦截 ==> " + GetLog(cmd));
+            }
 
             object retVal = null;
             Stopwatch watch = Stopwatch.StartNew();
@@ -394,11 +394,6 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteScalar(cmd, trans);
                 }
-
-                //写日志
-                WriteLogCommand(cmd);
-
-                return retVal;
             }
             catch (Exception ex)
             {
@@ -413,6 +408,8 @@ namespace MySoft.Data
                 //执行命令后的事件
                 EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
+
+            return retVal;
         }
 
         #endregion
@@ -459,13 +456,13 @@ namespace MySoft.Data
                 if (AccessProvider)
                 {
                     returnValue = ExecuteNonQuery(cmd, trans);
-                    cmd = CreateSqlCommand(string.Format(RowAutoID, identityfield.Name, tableName));
+                    cmd = CreateSqlCommand(string.Format(AutoIncrementValue, identityfield.Name, tableName));
 
                     if (isOutValue) retVal = ExecuteScalar(cmd, trans);
                 }
                 else
                 {
-                    if (UseAutoIncrement)
+                    if (AllowAutoIncrement)
                     {
                         returnValue = ExecuteNonQuery(cmd, trans);
 
@@ -473,7 +470,7 @@ namespace MySoft.Data
                         {
                             if (!string.IsNullOrEmpty(autoIncrementName))
                             {
-                                cmd = CreateSqlCommand(string.Format(RowAutoID, autoIncrementName));
+                                cmd = CreateSqlCommand(string.Format(AutoIncrementValue, autoIncrementName));
                                 retVal = ExecuteScalar(cmd, trans);
                             }
                         }
@@ -482,7 +479,7 @@ namespace MySoft.Data
                     {
                         if (isOutValue)
                         {
-                            cmd.CommandText += ";" + string.Format(RowAutoID, identityfield.Name, tableName);
+                            cmd.CommandText += ";" + string.Format(AutoIncrementValue, identityfield.Name, tableName);
                             retVal = ExecuteScalar(cmd, trans);
                             returnValue = 1;
                         }
@@ -520,12 +517,12 @@ namespace MySoft.Data
             StringBuilder sbsql = new StringBuilder();
             StringBuilder sbparam = new StringBuilder();
 
-            if (UseAutoIncrement)
+            if (AllowAutoIncrement)
             {
                 //如果标识列和标识名称都不为null
                 if ((IField)identityfield != null && !string.IsNullOrEmpty(autoIncrementName))
                 {
-                    string identityName = FormatIdentityName(autoIncrementName);
+                    string identityName = GetAutoIncrement(autoIncrementName);
                     bool exist = false;
                     fvlist.ForEach(fv =>
                     {
@@ -757,7 +754,7 @@ namespace MySoft.Data
         /// Writes the log.
         /// </summary>
         /// <param name="command">The command.</param>
-        private void StartExcuteCommand(DbCommand command)
+        private bool StartExcuteCommand(DbCommand command)
         {
             if (logger != null)
             {
@@ -769,10 +766,12 @@ namespace MySoft.Data
                     {
                         parameters.Add(new SQLParameter(p));
                     }
-                    logger.StartExcute(cmdText, parameters.ToArray());
+                    return logger.StartExcute(cmdText, parameters.ToArray());
                 }
                 catch { }
             }
+
+            return true;
         }
 
         /// <summary>
@@ -798,19 +797,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// Writes the log.
-        /// </summary>
-        /// <param name="command"></param>
-        private void WriteLogCommand(DbCommand command)
-        {
-            if (logger != null)
-            {
-                try { logger.ExcuteLog(GetLog(command)); }
-                catch { }
-            }
-        }
-
-        /// <summary>
         /// Writes the exception log.
         /// </summary>
         /// <param name="ex"></param>
@@ -821,7 +807,7 @@ namespace MySoft.Data
             {
                 try
                 {
-                    var exception = new DataException(GetLog(command), ex);
+                    var exception = new DataException(GetLog(command), ex.GetBaseException());
                     logger.ExcuteError(exception);
                 }
                 catch { }
@@ -833,7 +819,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        protected virtual string GetLog(DbCommand command)
+        protected string GetLog(DbCommand command)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -843,10 +829,7 @@ namespace MySoft.Data
                 sb.Append("Parameters:\r\n");
                 foreach (DbParameter p in command.Parameters)
                 {
-                    if (p.Size > 0)
-                        sb.Append(string.Format("{0}[{2}({3})] = {1}\r\n", p.ParameterName, p.Value, p.DbType, p.Size));
-                    else
-                        sb.Append(string.Format("{0}[{2}] = {1}\r\n", p.ParameterName, p.Value, p.DbType));
+                    sb.Append(string.Format("{0}[{1}({2})] = {3}\r\n", p.ParameterName, p.DbType, p.Size, p.Value));
                 }
             }
             sb.Append("\r\n");
@@ -859,11 +842,11 @@ namespace MySoft.Data
         #region 需重写的方法
 
         /// <summary>
-        /// 格式化IdentityName
+        /// 获取IdentityName
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected virtual string FormatIdentityName(string name)
+        protected virtual string GetAutoIncrement(string name)
         {
             return name;
         }
@@ -950,7 +933,7 @@ namespace MySoft.Data
         /// <summary>
         /// 是否使用自增列
         /// </summary>
-        protected virtual bool UseAutoIncrement
+        protected virtual bool AllowAutoIncrement
         {
             get { return false; }
         }
@@ -963,7 +946,7 @@ namespace MySoft.Data
         /// <summary>
         /// 返回自动ID的sql语句
         /// </summary>
-        protected abstract string RowAutoID { get; }
+        protected abstract string AutoIncrementValue { get; }
 
         /// <summary>
         /// 创建DbParameter

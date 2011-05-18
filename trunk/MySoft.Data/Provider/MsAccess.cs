@@ -35,39 +35,9 @@ namespace MySoft.Data.MsAccess
         /// <summary>
         /// 返回自动ID的sql语句
         /// </summary>
-        protected override string RowAutoID
+        protected override string AutoIncrementValue
         {
             get { return "select max({0}) from {1}"; }
-        }
-
-        /// <summary>
-        /// 获取输出日志
-        /// </summary>
-        /// <param name="command">The command.</param>
-        protected override string GetLog(DbCommand command)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(string.Format("{0}\t{1}\t\r\n", command.CommandType, command.CommandText));
-            if (command.Parameters != null && command.Parameters.Count > 0)
-            {
-                sb.Append("Parameters:\r\n");
-                foreach (OleDbParameter p in command.Parameters)
-                {
-                    if (p.Size > 0)
-                    {
-                        if (p.Scale > 0)
-                            sb.Append(string.Format("{0}[{2}][{3}({4},{5})] = {1}\r\n", p.ParameterName, p.Value, p.DbType, p.OleDbType, p.Size, p.Scale));
-                        else
-                            sb.Append(string.Format("{0}[{2}][{3}({4})] = {1}\r\n", p.ParameterName, p.Value, p.DbType, p.OleDbType, p.Size));
-                    }
-                    else
-                        sb.Append(string.Format("{0}[{2}][{3}] = {1}\r\n", p.ParameterName, p.Value, p.DbType, p.OleDbType));
-                }
-            }
-            sb.Append("\r\n");
-
-            return sb.ToString();
         }
 
         /// <summary>

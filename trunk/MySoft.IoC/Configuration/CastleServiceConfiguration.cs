@@ -31,7 +31,7 @@ namespace MySoft.IoC.Configuration
             {
                 var tmp = ConfigurationManager.GetSection(key);
                 obj = tmp as CastleServiceConfiguration;
-                CacheHelper.Set(key, obj);
+                CacheHelper.Permanent(key, obj);
             }
 
             return obj;

@@ -37,7 +37,6 @@ namespace MySoft.Data
 
         DbParameter GetParameter(DbCommand cmd, string parameterName);
 
-
         /// <summary>
         /// ´´½¨DbConnection
         /// </summary>
@@ -51,10 +50,5 @@ namespace MySoft.Data
         DbParameter CreateParameter();
 
         #endregion
-
-        int ExecuteNonQuery(DbCommand cmd, DbTrans trans);
-        SourceReader ExecuteReader(DbCommand cmd, DbTrans trans);
-        DataTable ExecuteDataTable(DbCommand cmd, DbTrans trans);
-        object ExecuteScalar(DbCommand cmd, DbTrans trans);
     }
 }

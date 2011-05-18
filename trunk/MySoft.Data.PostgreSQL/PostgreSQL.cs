@@ -31,7 +31,7 @@ namespace MySoft.Data.PostgreSQL
         /// <summary>
         /// 是否使用自增列
         /// </summary>
-        protected override bool UseAutoIncrement
+        protected override bool AllowAutoIncrement
         {
             get { return true; }
         }
@@ -39,7 +39,7 @@ namespace MySoft.Data.PostgreSQL
         /// <summary>
         /// 返回自动ID的sql语句
         /// </summary>
-        protected override string RowAutoID
+        protected override string AutoIncrementValue
         {
             get { return "select currval('{0}')"; }
         }
@@ -49,7 +49,7 @@ namespace MySoft.Data.PostgreSQL
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected override string FormatIdentityName(string name)
+        protected override string GetAutoIncrement(string name)
         {
             return string.Format("nextval({0})", name);
         }

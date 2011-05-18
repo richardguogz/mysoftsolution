@@ -39,7 +39,7 @@ namespace MySoft.Task.Configuration
             {
                 var tmp = ConfigurationManager.GetSection(key);
                 obj = tmp as TaskConfiguration;
-                CacheHelper.Set(key, obj);
+                CacheHelper.Permanent(key, obj);
             }
 
             return obj;

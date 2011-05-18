@@ -28,7 +28,7 @@ namespace MySoft.Data.Oracle
         /// <summary>
         /// 是否使用自增列
         /// </summary>
-        protected override bool UseAutoIncrement
+        protected override bool AllowAutoIncrement
         {
             get { return true; }
         }
@@ -36,12 +36,9 @@ namespace MySoft.Data.Oracle
         /// <summary>
         /// 返回自动ID的sql语句
         /// </summary>
-        protected override string RowAutoID
+        protected override string AutoIncrementValue
         {
-            get
-            {
-                return "select {0}.currval from dual";
-            }
+            get { return "select {0}.currval from dual"; }
         }
 
         /// <summary>
@@ -49,34 +46,9 @@ namespace MySoft.Data.Oracle
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected override string FormatIdentityName(string name)
+        protected override string GetAutoIncrement(string name)
         {
             return string.Format("{0}.nextval", name);
-        }
-
-        /// <summary>
-        /// 获取输出日志
-        /// </summary>
-        /// <param name="command">The command.</param>
-        protected override string GetLog(DbCommand command)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(string.Format("{0}\t{1}\t\r\n", command.CommandType, command.CommandText));
-            if (command.Parameters != null && command.Parameters.Count > 0)
-            {
-                sb.Append("Parameters:\r\n");
-                foreach (OracleParameter p in command.Parameters)
-                {
-                    if (p.Size > 0)
-                        sb.Append(string.Format("{0}[{2}][{3}({4})] = {1}\r\n", p.ParameterName, p.Value, p.DbType, p.OracleType, p.Size));
-                    else
-                        sb.Append(string.Format("{0}[{2}][{3}] = {1}\r\n", p.ParameterName, p.Value, p.DbType, p.OracleType));
-                }
-            }
-            sb.Append("\r\n");
-
-            return sb.ToString();
         }
 
         /// <summary>

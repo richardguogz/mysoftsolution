@@ -1,195 +1,265 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Web.Caching;
+using System.Collections;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace MySoft
 {
     /// <summary>
-    /// 缓存操作
+    /// 缓存管理类
     /// </summary>
-    public static class CacheHelper
+    public class CacheHelper
     {
-        private static IDictionary<Type, object> mItemCaches = new Dictionary<Type, object>();
+        /// <summary>
+        /// DayFactor
+        /// </summary>
+        public static readonly int DayFactor = 17280;
+        /// <summary>
+        /// HourFactor
+        /// </summary>
+        public static readonly int HourFactor = 720;
+        /// <summary>
+        /// MinuteFactor
+        /// </summary>
+        public static readonly int MinuteFactor = 12;
+        /// <summary>
+        /// SecondFactor
+        /// </summary>
+        public static readonly double SecondFactor = 0.2;
 
-        static CacheHelper()
+        private static readonly System.Web.Caching.Cache _cache;
+
+        private static int Factor = 1;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cacheFactor"></param>
+        public static void ReSetFactor(int cacheFactor)
         {
-            Timer timer = new Timer(new TimerCallback(CacheHelper.DoClear), null, 3600000, 3600000);
+            Factor = cacheFactor;
         }
 
         /// <summary>
-        /// 获取指定key的缓存
+        /// 确保当前HttpContext只有一个Cache实例
+        /// </summary>
+        static CacheHelper()
+        {
+            HttpContext context = HttpContext.Current;
+            if (context != null)
+            {
+                _cache = context.Cache;
+            }
+            else
+            {
+                _cache = HttpRuntime.Cache;
+            }
+        }
+
+        /// <summary>
+        /// 清空Cache
+        /// </summary>
+        public static void Clear()
+        {
+            IDictionaryEnumerator CacheEnum = _cache.GetEnumerator();
+
+            while (CacheEnum.MoveNext())
+            {
+                _cache.Remove(CacheEnum.Key.ToString());
+            }
+        }
+
+        /// <summary>
+        /// 根据正则表达式的模式移除Cache
+        /// </summary>
+        /// <param name="pattern">模式</param>
+        public static void RemoveByPattern(string pattern)
+        {
+            IDictionaryEnumerator CacheEnum = _cache.GetEnumerator();
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            while (CacheEnum.MoveNext())
+            {
+                if (regex.IsMatch(CacheEnum.Key.ToString()))
+                    _cache.Remove(CacheEnum.Key.ToString());
+            }
+        }
+
+        /// <summary>
+        /// 根据键值移除Cache
+        /// </summary>
+        /// <param name="key"></param>
+        public static void Remove(string key)
+        {
+            _cache.Remove(key);
+        }
+
+        /// <summary>
+        /// 把对象加载到Cache
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <param name="obj">对象</param>
+        public static void Insert(string key, object obj)
+        {
+            Insert(key, obj, null, 1);
+        }
+
+        /// <summary>
+        /// 把对象加载到Cache,附加缓存依赖信息
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="dep"></param>
+        public static void Insert(string key, object obj, CacheDependency dep)
+        {
+            Insert(key, obj, dep, MinuteFactor * 3);
+        }
+
+        /// <summary>
+        /// 把对象加载到Cache,附加过期时间信息
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="seconds"></param>
+        public static void Insert(string key, object obj, int seconds)
+        {
+            Insert(key, obj, null, seconds);
+        }
+
+        /// <summary>
+        /// 把对象加载到Cache,附加过期时间信息和优先级
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="seconds"></param>
+        /// <param name="priority"></param>
+        public static void Insert(string key, object obj, int seconds, CacheItemPriority priority)
+        {
+            Insert(key, obj, null, seconds, priority);
+        }
+
+        /// <summary>
+        /// 把对象加载到Cache,附加缓存依赖和过期时间(多少秒后过期)
+        /// (默认优先级为Normal)
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="dep"></param>
+        /// <param name="seconds"></param>
+        public static void Insert(string key, object obj, CacheDependency dep, int seconds)
+        {
+            Insert(key, obj, dep, seconds, CacheItemPriority.Normal);
+        }
+
+        /// <summary>
+        /// 把对象加载到Cache,附加缓存依赖和过期时间(多少秒后过期)及优先级
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="dep"></param>
+        /// <param name="seconds"></param>
+        /// <param name="priority"></param>
+        public static void Insert(string key, object obj, CacheDependency dep, int seconds, CacheItemPriority priority)
+        {
+            if (obj != null)
+            {
+                _cache.Insert(key, obj, dep, DateTime.Now.AddSeconds(Factor * seconds), TimeSpan.Zero, priority, null);
+            }
+
+        }
+
+        /// <summary>
+        /// 把对象加到缓存并忽略优先级
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="secondFactor"></param>
+        public static void MicroInsert(string key, object obj, int secondFactor)
+        {
+            if (obj != null)
+            {
+                _cache.Insert(key, obj, null, DateTime.Now.AddSeconds(Factor * secondFactor), TimeSpan.Zero);
+            }
+        }
+
+        /// <summary>
+        /// 把对象加到缓存,并把过期时间设为最大值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        public static void Max(string key, object obj)
+        {
+            Max(key, obj, null);
+        }
+
+        /// <summary>
+        /// 把对象加到缓存,并把过期时间设为最大值,附加缓存依赖信息
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="dep"></param>
+        public static void Max(string key, object obj, CacheDependency dep)
+        {
+            if (obj != null)
+            {
+                _cache.Insert(key, obj, dep, DateTime.MaxValue, TimeSpan.Zero, CacheItemPriority.AboveNormal, null);
+            }
+        }
+
+        /// <summary>
+        /// 插入持久性缓存
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        public static void Permanent(string key, object obj)
+        {
+            Permanent(key, obj, null);
+        }
+
+        /// <summary>
+        /// 插入持久性缓存,附加缓存依赖
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="obj"></param>
+        /// <param name="dep"></param>
+        public static void Permanent(string key, object obj, CacheDependency dep)
+        {
+            if (obj != null)
+            {
+                _cache.Insert(key, obj, dep, DateTime.MaxValue, TimeSpan.Zero, CacheItemPriority.NotRemovable, null);
+            }
+        }
+
+        /// <summary>
+        /// 根据键获取被缓存的对象
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static object Get(string key)
+        {
+            return _cache[key];
+        }
+
+        /// <summary>
+        /// 根据键获取被缓存的对象
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
         public static T Get<T>(string key)
         {
-            return GetTypeCache<T>()[key];
+            return (T)Get(key);
         }
 
         /// <summary>
-        /// 移除指定key的缓存
+        /// Return int of seconds * SecondFactor
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        public static void Remove<T>(string key)
+        public static int SecondFactorCalculate(int seconds)
         {
-            GetTypeCache<T>().Remove(key);
-        }
-
-        /// <summary>
-        /// 移除所有缓存
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        public static void RemoveAll<T>()
-        {
-            GetTypeCache<T>().RemoveAll();
-        }
-
-        /// <summary>
-        /// 设置缓存信息
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="key"></param>
-        /// <param name="item"></param>
-        public static void Set<T>(string key, T item)
-        {
-            GetTypeCache<T>()[key] = item;
-        }
-
-        private static void DoClear(object state)
-        {
-            lock (typeof(CacheHelper))
-            {
-                foreach (Type type in mItemCaches.Keys)
-                {
-                    ((IDisposable)mItemCaches[type]).Dispose();
-                }
-            }
-        }
-
-        private static TypeCache<T> GetTypeCache<T>()
-        {
-            Type key = typeof(T);
-            if (mItemCaches.ContainsKey(key))
-            {
-                return (TypeCache<T>)mItemCaches[key];
-            }
-            lock (typeof(CacheHelper))
-            {
-                if (mItemCaches.ContainsKey(key))
-                {
-                    return (TypeCache<T>)mItemCaches[key];
-                }
-                TypeCache<T> cache = new TypeCache<T>();
-                mItemCaches.Add(key, cache);
-                return cache;
-            }
-        }
-
-        private class CacheItem<T>
-        {
-            private DateTime mLastTime;
-            private T mSource;
-
-            public CacheItem(T value)
-            {
-                this.Source = value;
-            }
-
-            public T Source
-            {
-                get
-                {
-                    this.mLastTime = DateTime.Now;
-                    return this.mSource;
-                }
-                set
-                {
-                    this.mLastTime = DateTime.Now;
-                    this.mSource = value;
-                }
-            }
-
-            public bool TimeOut
-            {
-                get
-                {
-                    TimeSpan span = (TimeSpan)(DateTime.Now - this.mLastTime);
-                    return (span.Hours > 1);
-                }
-            }
-        }
-
-        private class TypeCache<T> : IDisposable
-        {
-            private IDictionary<string, CacheHelper.CacheItem<T>> mCache;
-
-            public TypeCache()
-            {
-                this.mCache = new Dictionary<string, CacheHelper.CacheItem<T>>();
-            }
-
-            public void Dispose()
-            {
-                lock (((CacheHelper.TypeCache<T>)this))
-                {
-                    string[] array = new string[this.mCache.Keys.Count];
-                    this.mCache.Keys.CopyTo(array, 0);
-                    foreach (string str in array)
-                    {
-                        if (this.mCache[str].TimeOut)
-                        {
-                            this.mCache.Remove(str);
-                        }
-                    }
-                }
-            }
-
-            public void Remove(string key)
-            {
-                lock (((CacheHelper.TypeCache<T>)this))
-                {
-                    this.mCache.Remove(key);
-                }
-            }
-
-            public void RemoveAll()
-            {
-                lock (((CacheHelper.TypeCache<T>)this))
-                {
-                    this.mCache.Clear();
-                }
-            }
-
-            public T this[string key]
-            {
-                get
-                {
-                    lock (((CacheHelper.TypeCache<T>)this))
-                    {
-                        if (this.mCache.ContainsKey(key))
-                        {
-                            return this.mCache[key].Source;
-                        }
-                        return default(T);
-                    }
-                }
-                set
-                {
-                    lock (((CacheHelper.TypeCache<T>)this))
-                    {
-                        if (this.mCache.ContainsKey(key))
-                        {
-                            this.mCache[key].Source = value;
-                        }
-                        else
-                        {
-                            this.mCache.Add(key, new CacheHelper.CacheItem<T>(value));
-                        }
-                    }
-                }
-            }
+            // Insert method below takes integer seconds, so we have to round any fractional values
+            return Convert.ToInt32(Math.Round((double)seconds * SecondFactor));
         }
     }
 }

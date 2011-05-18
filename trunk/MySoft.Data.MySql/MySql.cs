@@ -26,7 +26,7 @@ namespace MySoft.Data.MySql
         /// <summary>
         /// 返回自动ID的sql语句
         /// </summary>
-        protected override string RowAutoID
+        protected override string AutoIncrementValue
         {
             get { return "select last_insert_id()"; }
         }
