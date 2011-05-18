@@ -829,7 +829,10 @@ namespace MySoft.Data
                 sb.Append("Parameters:\r\n");
                 foreach (DbParameter p in command.Parameters)
                 {
-                    sb.Append(string.Format("{0}[{1}({2})] = {3}\r\n", p.ParameterName, p.DbType, p.Size, p.Value));
+                    if (p.Size > 0)
+                        sb.Append(string.Format("{0}[{1}({2})] = {3}\r\n", p.ParameterName, p.DbType, p.Size, p.Value));
+                    else
+                        sb.Append(string.Format("{0}[{1}] = {2}\r\n", p.ParameterName, p.DbType, p.Value));
                 }
             }
             sb.Append("\r\n");
