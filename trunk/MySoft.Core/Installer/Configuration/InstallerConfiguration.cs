@@ -61,13 +61,13 @@ namespace MySoft.Installer.Configuration
         /// <summary>
         /// ”√ªß√˚
         /// </summary>
-        [XmlElement("userName")]
+        [XmlAttribute("userName")]
         public string UserName { get; set; }
 
         /// <summary>
         /// √‹¬Î
         /// </summary>
-        [XmlElement("password")]
+        [XmlAttribute("password")]
         public string Password { get; set; }
 
         #endregion
