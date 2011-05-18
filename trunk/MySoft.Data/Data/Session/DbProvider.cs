@@ -228,10 +228,9 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteNonQuery(cmd, trans);
                 }
-                watch.Stop();
 
                 //写日志
-                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
+                WriteLogCommand(cmd);
 
                 return retVal;
             }
@@ -243,10 +242,10 @@ namespace MySoft.Data
             }
             finally
             {
-                if (watch.IsRunning) watch.Stop();
+                watch.Stop();
 
                 //执行命令后的事件
-                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
+                EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
         }
 
@@ -272,10 +271,9 @@ namespace MySoft.Data
                     reader = dbHelper.ExecuteReader(cmd, trans);
                 }
                 retVal = new SourceReader(reader);
-                watch.Stop();
 
                 //写日志
-                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
+                WriteLogCommand(cmd);
 
                 return retVal;
             }
@@ -287,10 +285,10 @@ namespace MySoft.Data
             }
             finally
             {
-                if (watch.IsRunning) watch.Stop();
+                watch.Stop();
 
                 //执行命令后的事件
-                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
+                EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
         }
 
@@ -314,10 +312,9 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteDataSet(cmd, trans);
                 }
-                watch.Stop();
 
                 //写日志
-                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
+                WriteLogCommand(cmd);
 
                 return retVal;
             }
@@ -329,10 +326,10 @@ namespace MySoft.Data
             }
             finally
             {
-                if (watch.IsRunning) watch.Stop();
+                watch.Stop();
 
                 //执行命令后的事件
-                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
+                EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
         }
 
@@ -356,10 +353,9 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteDataTable(cmd, trans);
                 }
-                watch.Stop();
 
                 //写日志
-                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
+                WriteLogCommand(cmd);
 
                 return retVal;
             }
@@ -371,10 +367,10 @@ namespace MySoft.Data
             }
             finally
             {
-                if (watch.IsRunning) watch.Stop();
+                watch.Stop();
 
                 //执行命令后的事件
-                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
+                EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
         }
 
@@ -398,10 +394,9 @@ namespace MySoft.Data
                 {
                     retVal = dbHelper.ExecuteScalar(cmd, trans);
                 }
-                watch.Stop();
 
                 //写日志
-                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
+                WriteLogCommand(cmd);
 
                 return retVal;
             }
@@ -413,10 +408,10 @@ namespace MySoft.Data
             }
             finally
             {
-                if (watch.IsRunning) watch.Stop();
+                watch.Stop();
 
                 //执行命令后的事件
-                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
+                EndExcuteCommand(cmd, retVal, (int)watch.ElapsedMilliseconds);
             }
         }
 
@@ -784,7 +779,7 @@ namespace MySoft.Data
         /// 结束时执行的操作
         /// </summary>
         /// <param name="command"></param>
-        private void EndExcuteCommand(DbCommand command, object result, double elapsedTime)
+        private void EndExcuteCommand(DbCommand command, object result, int elapsedTime)
         {
             if (logger != null)
             {
@@ -806,9 +801,7 @@ namespace MySoft.Data
         /// Writes the log.
         /// </summary>
         /// <param name="command"></param>
-        /// <param name="type"></param>
-        /// <param name="elapsedTime"></param>
-        private void WriteLogCommand(DbCommand command, LogType type, double elapsedTime)
+        private void WriteLogCommand(DbCommand command)
         {
             if (logger != null)
             {

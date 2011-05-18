@@ -22,7 +22,7 @@ namespace MySoft.Data
         /// <param name="parameter"></param>
         /// <param name="result"></param>
         /// <param name="elapsedTime"></param>
-        void EndExcute(string cmdText, SQLParameter[] parameter, object result, double elapsedTime);
+        void EndExcute(string cmdText, SQLParameter[] parameter, object result, int elapsedTime);
 
         /// <summary>
         /// 执行的错误信息
