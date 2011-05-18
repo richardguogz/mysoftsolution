@@ -1005,19 +1005,19 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// ◊¢»Î»’÷æ“¿¿µ
+        /// ◊¢≤·»’÷æ“¿¿µ
         /// </summary>
         /// <param name="logger"></param>
-        public void InjectExcutingLog(IExcutingLog logger)
+        public void RegisterExcutingLog(IExcutingLog logger)
         {
             this.dbProvider.Logger = logger;
         }
 
         /// <summary>
-        /// ◊¢»Îª∫¥Ê“¿¿µ
+        /// ◊¢≤·ª∫¥Ê“¿¿µ
         /// </summary>
         /// <param name="cache"></param>
-        public void InjectCacheDependent(ICacheDependent cache)
+        public void RegisterCacheDependent(ICacheDependent cache)
         {
             this.dbProvider.Cache = cache;
         }

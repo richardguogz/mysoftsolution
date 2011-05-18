@@ -34,13 +34,13 @@ namespace MySoft.Data
         /// ◊¢≤·»’÷æ“¿¿µ
         /// </summary>
         /// <param name="logger"></param>
-        void InjectExcutingLog(IExcutingLog logger);
+        void RegisterExcutingLog(IExcutingLog logger);
 
         /// <summary>
-        /// ◊¢»Îª∫¥Ê“¿¿µ
+        /// ◊¢≤·ª∫¥Ê“¿¿µ
         /// </summary>
         /// <param name="cache"></param>
-        void InjectCacheDependent(ICacheDependent cache);
+        void RegisterCacheDependent(ICacheDependent cache);
 
         #endregion
 

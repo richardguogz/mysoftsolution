@@ -18,15 +18,6 @@ namespace MySoft.Data
         private char paramPrefixToken;
         private ICacheDependent cache;
         private IExcutingLog logger;
-        private double timeout = -1;
-
-        /// <summary>
-        /// 设置超时日志输出时间
-        /// </summary>
-        internal double Timeout
-        {
-            set { timeout = value; }
-        }
 
         /// <summary>
         /// 日志依赖
@@ -36,7 +27,6 @@ namespace MySoft.Data
             set
             {
                 logger = value;
-                timeout = value.Timeout;
             }
         }
 
@@ -226,10 +216,10 @@ namespace MySoft.Data
             //执行命令前的事件
             StartExcuteCommand(cmd);
 
+            int retVal = -1;
+            Stopwatch watch = Stopwatch.StartNew();
             try
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                int retVal = -1;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     retVal = dbHelper.ExecuteNonQuery(cmd);
@@ -241,10 +231,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
-                    WriteLogCommand(cmd, LogType.Warning);
-                else
-                    WriteLogCommand(cmd, LogType.Information);
+                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
 
                 return retVal;
             }
@@ -256,8 +243,10 @@ namespace MySoft.Data
             }
             finally
             {
+                if (watch.IsRunning) watch.Stop();
+
                 //执行命令后的事件
-                EndExcuteCommand(cmd);
+                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
             }
         }
 
@@ -269,10 +258,10 @@ namespace MySoft.Data
             //执行命令前的事件
             StartExcuteCommand(cmd);
 
+            SourceReader retVal = null;
+            Stopwatch watch = Stopwatch.StartNew();
             try
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                SourceReader retVal = null;
                 IDataReader reader;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
@@ -286,10 +275,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
-                    WriteLogCommand(cmd, LogType.Warning);
-                else
-                    WriteLogCommand(cmd, LogType.Information);
+                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
 
                 return retVal;
             }
@@ -301,8 +287,10 @@ namespace MySoft.Data
             }
             finally
             {
+                if (watch.IsRunning) watch.Stop();
+
                 //执行命令后的事件
-                EndExcuteCommand(cmd);
+                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
             }
         }
 
@@ -314,10 +302,10 @@ namespace MySoft.Data
             //执行命令前的事件
             StartExcuteCommand(cmd);
 
+            DataSet retVal = null;
+            Stopwatch watch = Stopwatch.StartNew();
             try
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                DataSet retVal = null;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     retVal = dbHelper.ExecuteDataSet(cmd);
@@ -329,10 +317,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
-                    WriteLogCommand(cmd, LogType.Warning);
-                else
-                    WriteLogCommand(cmd, LogType.Information);
+                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
 
                 return retVal;
             }
@@ -344,8 +329,10 @@ namespace MySoft.Data
             }
             finally
             {
+                if (watch.IsRunning) watch.Stop();
+
                 //执行命令后的事件
-                EndExcuteCommand(cmd);
+                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
             }
         }
 
@@ -357,10 +344,10 @@ namespace MySoft.Data
             //执行命令前的事件
             StartExcuteCommand(cmd);
 
+            DataTable retVal = null;
+            Stopwatch watch = Stopwatch.StartNew();
             try
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                DataTable retVal = null;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     retVal = dbHelper.ExecuteDataTable(cmd);
@@ -372,10 +359,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
-                    WriteLogCommand(cmd, LogType.Warning);
-                else
-                    WriteLogCommand(cmd, LogType.Information);
+                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
 
                 return retVal;
             }
@@ -387,8 +371,10 @@ namespace MySoft.Data
             }
             finally
             {
+                if (watch.IsRunning) watch.Stop();
+
                 //执行命令后的事件
-                EndExcuteCommand(cmd);
+                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
             }
         }
 
@@ -400,10 +386,10 @@ namespace MySoft.Data
             //执行命令前的事件
             StartExcuteCommand(cmd);
 
+            object retVal = null;
+            Stopwatch watch = Stopwatch.StartNew();
             try
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                object retVal = null;
                 if (trans.Connection == null && trans.Transaction == null)
                 {
                     retVal = dbHelper.ExecuteScalar(cmd);
@@ -415,10 +401,7 @@ namespace MySoft.Data
                 watch.Stop();
 
                 //写日志
-                if (timeout > 0 && watch.ElapsedMilliseconds > timeout * 1000)
-                    WriteLogCommand(cmd, LogType.Warning);
-                else
-                    WriteLogCommand(cmd, LogType.Information);
+                WriteLogCommand(cmd, LogType.Information, watch.ElapsedMilliseconds);
 
                 return retVal;
             }
@@ -430,8 +413,10 @@ namespace MySoft.Data
             }
             finally
             {
+                if (watch.IsRunning) watch.Stop();
+
                 //执行命令后的事件
-                EndExcuteCommand(cmd);
+                EndExcuteCommand(cmd, retVal, watch.ElapsedMilliseconds);
             }
         }
 
@@ -781,7 +766,16 @@ namespace MySoft.Data
         {
             if (logger != null)
             {
-                try { logger.StartExcute(command); }
+                try
+                {
+                    string cmdText = command.CommandText;
+                    List<SQLParameter> parameters = new List<SQLParameter>();
+                    foreach (DbParameter p in command.Parameters)
+                    {
+                        parameters.Add(new SQLParameter(p));
+                    }
+                    logger.StartExcute(cmdText, parameters.ToArray());
+                }
                 catch { }
             }
         }
@@ -790,11 +784,20 @@ namespace MySoft.Data
         /// 结束时执行的操作
         /// </summary>
         /// <param name="command"></param>
-        private void EndExcuteCommand(DbCommand command)
+        private void EndExcuteCommand(DbCommand command, object result, double elapsedTime)
         {
             if (logger != null)
             {
-                try { logger.EndExcute(command); }
+                try
+                {
+                    string cmdText = command.CommandText;
+                    List<SQLParameter> parameters = new List<SQLParameter>();
+                    foreach (DbParameter p in command.Parameters)
+                    {
+                        parameters.Add(new SQLParameter(p));
+                    }
+                    logger.EndExcute(cmdText, parameters.ToArray(), result, elapsedTime);
+                }
                 catch { }
             }
         }
@@ -804,11 +807,12 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="command"></param>
         /// <param name="type"></param>
-        private void WriteLogCommand(DbCommand command, LogType type)
+        /// <param name="elapsedTime"></param>
+        private void WriteLogCommand(DbCommand command, LogType type, double elapsedTime)
         {
             if (logger != null)
             {
-                try { logger.WriteLog(GetLog(command), type); }
+                try { logger.ExcuteLog(GetLog(command)); }
                 catch { }
             }
         }
@@ -825,7 +829,7 @@ namespace MySoft.Data
                 try
                 {
                     var exception = new DataException(GetLog(command), ex);
-                    logger.WriteError(exception);
+                    logger.ExcuteError(exception);
                 }
                 catch { }
             }

@@ -111,10 +111,10 @@ namespace MySoft.IoC
         #region ×¢Èë»º´æ
 
         /// <summary>
-        /// ×¢Èë»º´æÒÀÀµ
+        /// ×¢²á»º´æÒÀÀµ
         /// </summary>
         /// <param name="cache"></param>
-        public void InjectCacheDependent(ICacheDependent cache)
+        public void RegisterCacheDependent(ICacheDependent cache)
         {
             this.container.Cache = cache;
         }
