@@ -33,6 +33,15 @@ namespace MySoft.Data
             return new UpdateCreator(table);
         }
 
+        /// <summary>
+        /// 创建一个新的更新器
+        /// </summary>
+        public static UpdateCreator NewCreator<T>() where T : Entity
+        {
+            var table = Table.GetTable<T>();
+            return new UpdateCreator(table);
+        }
+
         private Table table;
         private IList<WhereClip> whereList;
         private List<FieldValue> fvlist;

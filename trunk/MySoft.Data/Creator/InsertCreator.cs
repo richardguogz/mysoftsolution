@@ -33,6 +33,15 @@ namespace MySoft.Data
             return new InsertCreator(table);
         }
 
+        /// <summary>
+        /// 创建一个新的插入器
+        /// </summary>
+        public static InsertCreator NewCreator<T>() where T : Entity
+        {
+            var table = Table.GetTable<T>();
+            return new InsertCreator(table);
+        }
+
         private Table table;
         private Field identityField;
         private string sequenceName;

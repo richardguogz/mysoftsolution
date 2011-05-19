@@ -26,10 +26,19 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 创建一个新的插入器
+        /// 创建一个新的删除器
         /// </summary>
         public static DeleteCreator NewCreator(Table table)
         {
+            return new DeleteCreator(table);
+        }
+
+        /// <summary>
+        /// 创建一个新的删除器
+        /// </summary>
+        public static DeleteCreator NewCreator<T>() where T : Entity
+        {
+            var table = Table.GetTable<T>();
             return new DeleteCreator(table);
         }
 

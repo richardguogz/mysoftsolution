@@ -44,6 +44,15 @@ namespace MySoft.Data
             return new QueryCreator(table);
         }
 
+        /// <summary>
+        /// 创建一个新的查询器（条件为全部，排序为默认)
+        /// </summary>
+        public static QueryCreator NewCreator<T>() where T : Entity
+        {
+            var table = Table.GetTable<T>();
+            return new QueryCreator(table);
+        }
+
         private Table table;
         private IDictionary<string, TableJoin> joinTables;
         private IList<WhereClip> whereList;
