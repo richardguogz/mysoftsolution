@@ -19,9 +19,7 @@ namespace MySoft.IoC
         /// <param name="message"></param>
         public IoCException(string message)
             : base(ExceptionType.RemotingException, message)
-        {
-            this.ExceptionHeader = string.Format("异常信息来自：{0}({1})", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-        }
+        { }
 
         /// <summary>
         /// 内嵌异常的构造方法
@@ -30,9 +28,7 @@ namespace MySoft.IoC
         /// <param name="ex"></param>
         public IoCException(string message, Exception ex)
             : base(ExceptionType.RemotingException, message, ex)
-        {
-            this.ExceptionHeader = string.Format("异常信息来自：{0}({1})", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-        }
+        { }
 
         /// <summary>
         /// 构造函数

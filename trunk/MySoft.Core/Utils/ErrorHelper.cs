@@ -65,10 +65,10 @@ namespace MySoft
             // Populate Error Information Collection
             NameValueCollection error_info = new NameValueCollection();
             error_info.Add("Type", ex.GetType().FullName);
-            error_info.Add("Message", CleanHTML(ex.Message));
-            error_info.Add("Source", CleanHTML(ex.Source));
-            error_info.Add("TargetSite", CleanHTML(ex.TargetSite == null ? null : ex.TargetSite.ToString()));
-            error_info.Add("StackTrace", CleanHTML(ex.StackTrace));
+            error_info.Add("Message", ex.Message);
+            error_info.Add("Source", ex.Source);
+            error_info.Add("TargetSite", ex.TargetSite == null ? null : ex.TargetSite.ToString());
+            error_info.Add("StackTrace", ex.StackTrace);
 
             // Error Information
             html += heading.Replace("<!--HEADER-->", "Error Information");
@@ -105,7 +105,7 @@ namespace MySoft
 
             if (ex.InnerException != null) html += GetHtmlError(ex.InnerException);
 
-            return html;
+            return CleanHTML(html);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace MySoft
                 //html = HttpContext.Current.Request.ServerVariables["Remote_Addr"];
             }
 
-            return html;
+            return CleanHTML(html);
         }
 
         private static string CollectionToHtmlTable(NameValueCollection collection)
@@ -257,7 +257,12 @@ namespace MySoft
         {
             if (html == null) return html;
             // Cleans the string for HTML friendly display
-            return (html.Length == 0) ? "" : html.Replace("<", "&lt;").Replace("\r\n", "<br/ >").Replace("&", "&amp;").Replace(" ", "&nbsp;");
+            return (html.Length == 0) ? "" : html.Replace("<", "&lt;")
+                                                .Replace(">", "&gt;")
+                                                .Replace("\r\n", "<br/ >")
+                                                .Replace("\n", "<br/ >")
+                                                .Replace("&", "&amp;")
+                                                .Replace(" ", "&nbsp;");
         }
     }
 }

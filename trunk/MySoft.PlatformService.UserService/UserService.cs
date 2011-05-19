@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace MySoft.PlatformService.UserService
 {
-    public class UserService : IUserService
+    public class UserService : IUserService, Castle.Core.IStartable
     {
         public int GetUserID()
         {

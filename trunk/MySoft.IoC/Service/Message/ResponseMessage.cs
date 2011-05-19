@@ -75,7 +75,7 @@ namespace MySoft.IoC
             get
             {
                 int dataLength = (data == null) ? 0 : data.Length;
-                return string.Format("Packet size (return:{1} compress:{2} encrypt:{3}): {0} bytes.", dataLength, base.ReturnType, base.Compress, base.Encrypt);
+                return string.Format("Packet size {0} bytes (Type:{1} Compress:{2} Encrypt:{3}).", dataLength, base.ReturnType, base.Compress, base.Encrypt);
             }
         }
     }

@@ -222,7 +222,10 @@ namespace MySoft.IoC
             IService localService = GetLocalService(reqMsg.ServiceName);
             if (localService == null)
             {
-                throw new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName));
+                throw new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
+                {
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                };
             }
             return localService.CallService(reqMsg, logtime);
         }

@@ -67,7 +67,11 @@ namespace MySoft.IoC.Services
 
                 if (serviceInstance == null)
                 {
-                    resMsg.Exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName));
+                    var exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
+                    {
+                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    };
+                    resMsg.Exception = exception;
                     return resMsg;
                 }
             }
@@ -84,7 +88,12 @@ namespace MySoft.IoC.Services
                 method = CoreHelper.GetMethodFromType(serviceInterfaceType, reqMsg.SubServiceName);
                 if (method == null)
                 {
-                    resMsg.Exception = new IoCException(string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName));
+                    var exception = new IoCException(string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName))
+                    {
+                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    };
+
+                    resMsg.Exception = exception;
                     return resMsg;
                 }
                 else

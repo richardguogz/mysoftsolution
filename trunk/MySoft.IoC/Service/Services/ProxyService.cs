@@ -86,11 +86,7 @@ namespace MySoft.IoC
                     Stopwatch watch = Stopwatch.StartNew();
 
                     //获取消息
-                    ResponseMessage resMsg = GetResponse(reqMsg, watch);
-                    if (resMsg == null)
-                    {
-                        throw new IoCException(string.Format("【{4}】Call ({0}:{1}) remote service ({2},{3}) failure. result is empty！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.TransactionId));
-                    }
+                    var resMsg = GetResponse(reqMsg, watch);
 
                     //如果数据不为空
                     if (resMsg.Data != null)
@@ -101,7 +97,7 @@ namespace MySoft.IoC
                         if (watch.ElapsedMilliseconds > logtime * 1000)
                         {
                             //SerializationManager.Serialize(retMsg)
-                            string log = string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). ==> {5} <==> {6} \r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
+                            string log = string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). {5}\r\nMessage ==> {6}\r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
                             log = string.Format("Elapsed time more than {0} ms, {1}", logtime * 1000, log);
                             logger.WriteLog(log, LogType.Warning);
                         }
@@ -111,7 +107,10 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", node.IP, node.Port));
+                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure！", node.IP, node.Port))
+                    {
+                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    };
                 }
             }
             finally
@@ -149,7 +148,10 @@ namespace MySoft.IoC
                 if (!wir.IsCompleted) wir.Cancel(true);
                 watch.Stop();
 
-                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId));
+                throw new IoCException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
+                {
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                };
             }
 
             //从线程获取返回信息，超时等待

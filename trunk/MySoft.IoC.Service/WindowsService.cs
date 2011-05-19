@@ -134,15 +134,14 @@ namespace MySoft.IoC.Service
             else
             {
                 SimpleLog.Instance.WriteLog(exception);
-
                 if (exception is IoCException)
                 {
                     var ex = exception as IoCException;
-
                     if (string.IsNullOrEmpty(ex.ExceptionHeader))
-                        SendMail(ex, "调用IoC服务产生异常，请查证！");
-                    else
-                        SendMail(ex, "调用IoC服务产生异常，请查证！" + ex.ExceptionHeader);
+                    {
+                        ex.ExceptionHeader = ex.Message + string.Format(" Comes from {0}({1}).", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
+                    }
+                    SendMail(ex, ex.ExceptionHeader);
                 }
             }
         }

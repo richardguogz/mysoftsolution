@@ -51,7 +51,7 @@ namespace MySoft.IoC
             RequestMessage reqMsg = new RequestMessage();
             reqMsg.AppName = config.AppName;                                //应用名称
             reqMsg.HostName = hostName;                                     //服务器名称
-            reqMsg.ServiceName = serviceType.FullName;             //服务名称
+            reqMsg.ServiceName = serviceType.FullName;                      //服务名称
             reqMsg.SubServiceName = methodInfo.ToString();                  //方法名称
             reqMsg.ReturnType = methodInfo.ReturnType;                      //返回类型
             reqMsg.TransactionId = Guid.NewGuid();                          //传输ID号
@@ -68,7 +68,10 @@ namespace MySoft.IoC
             if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
                 //参数不正确直接返回异常
-                throw new IoCException(string.Format("Invalid parameters ({0},{1}). ==> \r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData));
+                throw new IoCException(string.Format("Invalid parameters ({0},{1}).\r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData))
+                {
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                };
             }
 
             if (pis.Length > 0)

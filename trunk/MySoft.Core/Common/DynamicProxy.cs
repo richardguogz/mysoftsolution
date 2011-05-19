@@ -179,7 +179,7 @@ namespace MySoft
                     gen.Emit(OpCodes.Call, DynamicProxy_Ctor);
                     gen.Emit(OpCodes.Ret);
 
-                    MakeMethods(typeBuilder, typeof(Object), true);
+                    //MakeMethods(typeBuilder, typeof(Object), true);
 
                     foreach (Type interfac in interfaces)
                     {
