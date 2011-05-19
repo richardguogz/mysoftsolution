@@ -627,8 +627,11 @@ namespace MySoft.Data
         internal int Update<T>(Table table, List<FieldValue> fvlist, WhereClip where, DbTrans trans)
             where T : Entity
         {
-            //如果没有设置更新的字段，返回-1
-            if (fvlist.FindAll(fv => { return fv.IsChanged; }).Count == 0) return -1;
+            //如果没有设置更新的字段，抛出异常
+            if (fvlist.FindAll(fv => { return fv.IsChanged; }).Count == 0)
+            {
+                throw new DataException("更新数据异常，没有需要更新的数据！");
+            }
 
             DbCommand cmd = CreateUpdate<T>(table, fvlist, where);
             return ExecuteNonQuery(cmd, trans);
@@ -760,6 +763,9 @@ namespace MySoft.Data
             {
                 try
                 {
+                    //输出sql日志
+                    logger.WriteLog(GetLog(command), LogType.Information);
+
                     string cmdText = command.CommandText;
                     List<SQLParameter> parameters = new List<SQLParameter>();
                     foreach (DbParameter p in command.Parameters)
@@ -807,8 +813,11 @@ namespace MySoft.Data
             {
                 try
                 {
+                    //输出错误日志
+                    logger.WriteLog(GetLog(command) + " ==> Error: " + ex.Message, LogType.Error);
+
                     var exception = new DataException(GetLog(command), ex.GetBaseException());
-                    logger.ExcuteError(exception);
+                    logger.WriteError(exception);
                 }
                 catch { }
             }

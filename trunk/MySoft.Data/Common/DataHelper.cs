@@ -69,8 +69,7 @@ namespace MySoft.Data
                 }
                 else
                 {
-                    foreach (PropertyInfo p in t.GetType().GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+                    foreach (PropertyInfo p in t.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public))
                     {
                         object value = null;
                         if (obj is NameValueCollection)

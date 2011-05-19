@@ -1,12 +1,13 @@
 using System;
 using System.Data;
+using MySoft.Logger;
 
 namespace MySoft.Data
 {
     /// <summary>
     /// 执行并输出日志的接口
     /// </summary>
-    public interface IExcutingLog
+    public interface IExcutingLog : ILog
     {
         /// <summary>
         /// 开始执行命令，返回是否需要执行
@@ -23,11 +24,5 @@ namespace MySoft.Data
         /// <param name="result"></param>
         /// <param name="elapsedTime"></param>
         void EndExcute(string cmdText, SQLParameter[] parameter, object result, int elapsedTime);
-
-        /// <summary>
-        /// 执行的错误信息
-        /// </summary>
-        /// <param name="exception"></param>
-        void ExcuteError(Exception exception);
     }
 }

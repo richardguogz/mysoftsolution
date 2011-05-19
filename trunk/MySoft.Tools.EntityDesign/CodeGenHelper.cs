@@ -135,8 +135,7 @@ namespace MySoft.Tools.EntityDesign
                 GenPropertyQueryCodeEx(entity, item, generatedProperties, isReadonly);
             }
 
-            foreach (PropertyInfo item in type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo item in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 //暂不支持关联处理，所以是类则跳过
                 if (item.PropertyType.IsInterface) continue;
@@ -233,8 +232,7 @@ namespace MySoft.Tools.EntityDesign
 
             ReadOnlyAttribute read = GetEntityAttribute<ReadOnlyAttribute>(type);
 
-            foreach (PropertyInfo item in type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo item in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 //暂不支持关联处理，所以是类则跳过
                 if (item.PropertyType.IsInterface) continue;
@@ -262,8 +260,7 @@ namespace MySoft.Tools.EntityDesign
                 GenGetPrimaryKeyFieldListEx(sb, item, generatedProperties, outLang);
             }
 
-            foreach (PropertyInfo item in type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo item in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 //暂不支持关联处理，所以是类则跳过
                 if (item.PropertyType.IsInterface) continue;
@@ -293,8 +290,7 @@ namespace MySoft.Tools.EntityDesign
                 GenGetFieldListEx(sb, item, generatedProperties, outLang);
             }
 
-            foreach (PropertyInfo item in type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo item in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 //暂不支持关联处理，所以是类则跳过
                 if (item.PropertyType.IsInterface) continue;
@@ -320,8 +316,7 @@ namespace MySoft.Tools.EntityDesign
                 GenGetPropertyValues(sb, item, generatedProperties);
             }
 
-            foreach (PropertyInfo item in type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo item in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 //暂不支持关联处理，所以是类则跳过
                 if (item.PropertyType.IsInterface) continue;
@@ -788,8 +783,7 @@ namespace MySoft.Tools.EntityDesign
                 GenSetPropertyValuesFromReaderEx(statements, interfaceType, generatedProperties, outLang);
             }
 
-            foreach (PropertyInfo item in type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+            foreach (PropertyInfo item in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 //暂不支持关联处理，所以是类则跳过
                 if (item.PropertyType.IsInterface) continue;
@@ -900,8 +894,7 @@ namespace MySoft.Tools.EntityDesign
         private void GenPropertiesEx(CodeTypeDeclaration entity, CodeStatementCollection reloadQueryStatements, Type type, bool isReadOnly, int outLang)
         {
             List<PropertyInfo> list = new List<PropertyInfo>();
-            PropertyInfo[] pis = type.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] pis = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (PropertyInfo pi in pis)
             {
                 list.Add(pi);
@@ -1041,8 +1034,7 @@ namespace MySoft.Tools.EntityDesign
             {
                 if (t != null)
                 {
-                    foreach (PropertyInfo pi in t.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public))
+                    foreach (PropertyInfo pi in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
                     {
                         list.Add(pi);
                     }

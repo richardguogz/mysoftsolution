@@ -12,15 +12,20 @@ namespace MySoft
     public class ErrorHelper
     {
         /// <summary>
-        /// 获取内部异常
+        /// 获取内部异常，为了最上层不依赖MySoft而处理
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
         public static Exception GetInnerException(Exception ex)
         {
-            if (ex.InnerException != null)
-                return GetInnerException(ex.InnerException);
-
+            if (ex == null) return ex;
+            if (ex is MySoftException)
+            {
+                if (ex.InnerException != null)
+                    return GetInnerException(ex.InnerException);
+                else
+                    return new Exception(ex.Message);
+            }
             return ex;
         }
 

@@ -254,8 +254,7 @@ namespace MySoft.Data
             DataTable dt = new DataTable();
             dt.TableName = currType.Name;
 
-            PropertyInfo[] plist = currType.GetProperties(BindingFlags.DeclaredOnly
-                        | BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] plist = currType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (PropertyInfo p in plist)
             {
                 Type propertyType = p.PropertyType;
