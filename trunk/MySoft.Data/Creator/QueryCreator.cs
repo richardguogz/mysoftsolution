@@ -126,7 +126,7 @@ namespace MySoft.Data
         {
             get
             {
-                OrderByClip newOrder = OrderByClip.Default;
+                OrderByClip newOrder = OrderByClip.None;
                 foreach (OrderByClip order in orderList)
                 {
                     newOrder &= order;
