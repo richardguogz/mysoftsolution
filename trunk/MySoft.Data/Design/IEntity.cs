@@ -34,26 +34,40 @@ namespace MySoft.Data
         /// <summary>
         /// 获取对象状态
         /// </summary>
-        EntityState ObjectState { get; }
+        EntityState GetObjectState();
 
         /// <summary>
         /// 获取原始对象
         /// </summary>
-        EntityBase OriginalObject { get; }
+        EntityBase GetOriginalObject();
 
         /// <summary>
         /// 使用this获取值信息
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        object this[string propertyName] { get; set; }
+        object GetValue(string propertyName);
+
+        /// <summary>
+        /// 使用this获设置信息
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        void SetValue(string propertyName, object value);
 
         /// <summary>
         /// 使用this获取值信息
         /// </summary>
         /// <param name="FieldName"></param>
         /// <returns></returns>
-        object this[Field field] { get; set; }
+        object GetValue(Field field);
+
+        /// <summary>
+        /// 使用this获设置信息
+        /// </summary>
+        /// <param name="FieldName"></param>
+        /// <returns></returns>
+        void SetValue(Field field, object value);
     }
 }
 
@@ -62,24 +76,17 @@ namespace MySoft.Data.Design
     /// <summary>
     /// 实体接口
     /// </summary>
-    public interface IEntity : IEntityBase
+    public interface IEntity
     {
         #region 状态操作
 
-        void Attach();
         void Attach(params Field[] removeFields);
-
-        void Detach();
-        void Detach(params Field[] removeFields);
-
-        void AttachAll();
+        void AttachSet(params Field[] setFields);
         void AttachAll(params Field[] removeFields);
 
-        void DetachAll();
-        void DetachAll(params Field[] removeFields);
-
-        void AttachSet(params Field[] setFields);
+        void Detach(params Field[] removeFields);
         void DetachSet(params Field[] setFields);
+        void DetachAll(params Field[] removeFields);
 
         #endregion
     }

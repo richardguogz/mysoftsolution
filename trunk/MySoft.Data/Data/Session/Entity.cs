@@ -8,37 +8,11 @@ namespace MySoft.Data
     /// 实体基类
     /// </summary>
     [Serializable]
-    public abstract class Entity : EntityBase, IEntity, IEntityInfo
+    public abstract class Entity : EntityBase, IEntity
     {
         #region 公用方法
 
         #region 实体更新插入操作(对原有的字段)
-
-        #region 改变更新状态
-
-        /// <summary>
-        /// 将实体置为修改状态
-        /// </summary>
-        public void Attach()
-        {
-            lock (this)
-            {
-                isUpdate = true;
-            }
-        }
-
-        /// <summary>
-        /// 将实体置为插入状态
-        /// </summary>
-        public void Detach()
-        {
-            lock (this)
-            {
-                isUpdate = false;
-            }
-        }
-
-        #endregion
 
         #region 移除指定的列
 
@@ -73,34 +47,6 @@ namespace MySoft.Data
         #endregion
 
         #region 实体更新插入操作(对所有的字段)
-
-        #region 改变更新状态
-
-        /// <summary>
-        /// 将实体置为修改状态(所有字段)
-        /// </summary>
-        public void AttachAll()
-        {
-            lock (this)
-            {
-                AddFieldsToUpdate(this.GetFields());
-                Attach();
-            }
-        }
-
-        /// <summary>
-        /// 将实体置为插入状态(所有字段)
-        /// </summary>
-        public void DetachAll()
-        {
-            lock (this)
-            {
-                removeinsertlist.Clear();
-                Detach();
-            }
-        }
-
-        #endregion
 
         #region 移除指定的列
 
@@ -273,54 +219,6 @@ namespace MySoft.Data
                 {
                     removeinsertlist.Add(field);
                 }
-            }
-        }
-
-        #endregion
-
-        #region IEntityInfo 成员
-
-        /// <summary>
-        /// 表信息
-        /// </summary>
-        Table IEntityInfo.Table
-        {
-            get
-            {
-                return GetTable();
-            }
-        }
-
-        /// <summary>
-        /// 字段信息
-        /// </summary>
-        Field[] IEntityInfo.Fields
-        {
-            get
-            {
-                return GetFields();
-            }
-        }
-
-        /// <summary>
-        /// 字段及值信息
-        /// </summary>
-        FieldValue[] IEntityInfo.FieldValues
-        {
-            get
-            {
-                return GetFieldValues().ToArray();
-            }
-        }
-
-        /// <summary>
-        /// 是否只读
-        /// </summary>
-        bool IEntityInfo.ReadOnly
-        {
-            get
-            {
-                return GetReadOnly();
             }
         }
 

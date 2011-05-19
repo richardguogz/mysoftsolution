@@ -52,49 +52,13 @@ namespace MySoft.Data
     /// Entity基类
     /// </summary>
     [Serializable]
-    public abstract class EntityBase : IEntityBase, IValidator
+    public abstract class EntityBase : IEntityBase, IEntityInfo, IValidator
     {
         protected List<Field> updatelist = new List<Field>();
         protected List<Field> removeinsertlist = new List<Field>();
         protected EntityBase originalObject;
         protected bool isUpdate = false;
         protected bool isFromDB = false;
-
-        /// <summary>
-        /// 使用this获取值信息
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        [JsonIgnore]
-        public object this[string propertyName]
-        {
-            get
-            {
-                return CoreHelper.GetPropertyValue(this, propertyName);
-            }
-            set
-            {
-                CoreHelper.SetPropertyValue(this, propertyName, value);
-            }
-        }
-
-        /// <summary>
-        /// 使用this获取值信息
-        /// </summary>
-        /// <param name="field"></param>
-        /// <returns></returns>
-        [JsonIgnore]
-        public object this[Field field]
-        {
-            get
-            {
-                return CoreHelper.GetPropertyValue(this, field.PropertyName);
-            }
-            set
-            {
-                CoreHelper.SetPropertyValue(this, field.PropertyName, value);
-            }
-        }
 
         /// <summary>
         /// 转换成另一对象
@@ -155,25 +119,59 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        object IEntityBase.GetValue(string propertyName)
+        {
+            return CoreHelper.GetPropertyValue(this, propertyName);
+        }
+
+        /// <summary>
+        /// 使用this获设置信息
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        void IEntityBase.SetValue(string propertyName, object value)
+        {
+            CoreHelper.SetPropertyValue(this, propertyName, value);
+        }
+
+        /// <summary>
+        /// 使用this获取值信息
+        /// </summary>
+        /// <param name="FieldName"></param>
+        /// <returns></returns>
+        object IEntityBase.GetValue(Field field)
+        {
+            return CoreHelper.GetPropertyValue(this, field.PropertyName);
+        }
+
+        /// <summary>
+        /// 使用this获设置信息
+        /// </summary>
+        /// <param name="FieldName"></param>
+        /// <returns></returns>
+        void IEntityBase.SetValue(Field field, object value)
+        {
+            CoreHelper.SetPropertyValue(this, field.PropertyName, value);
+        }
+
+        /// <summary>
         /// 获取原始对象
         /// </summary>
-        EntityBase IEntityBase.OriginalObject
+        EntityBase IEntityBase.GetOriginalObject()
         {
-            get
-            {
-                return originalObject;
-            }
+            return originalObject;
         }
 
         /// <summary>
         /// 获取对象状态
         /// </summary>
-        EntityState IEntityBase.ObjectState
+        EntityState IEntityBase.GetObjectState()
         {
-            get
-            {
-                return isUpdate ? EntityState.Update : EntityState.Insert;
-            }
+            return isUpdate ? EntityState.Update : EntityState.Insert;
         }
 
         /// <summary>
@@ -387,6 +385,54 @@ namespace MySoft.Data
         public virtual ValidateResult Validation()
         {
             return ValidateResult.Default;
+        }
+
+        #endregion
+
+        #region IEntityInfo 成员
+
+        /// <summary>
+        /// 表信息
+        /// </summary>
+        Table IEntityInfo.Table
+        {
+            get
+            {
+                return this.GetTable();
+            }
+        }
+
+        /// <summary>
+        /// 字段信息
+        /// </summary>
+        Field[] IEntityInfo.Fields
+        {
+            get
+            {
+                return this.GetFields();
+            }
+        }
+
+        /// <summary>
+        /// 字段及值信息
+        /// </summary>
+        FieldValue[] IEntityInfo.FieldValues
+        {
+            get
+            {
+                return this.GetFieldValues().ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 是否只读
+        /// </summary>
+        bool IEntityInfo.ReadOnly
+        {
+            get
+            {
+                return this.GetReadOnly();
+            }
         }
 
         #endregion

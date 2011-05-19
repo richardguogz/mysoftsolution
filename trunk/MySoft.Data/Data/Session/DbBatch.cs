@@ -162,7 +162,7 @@ namespace MySoft.Data
             #endregion
 
             //获取实体状态
-            EntityState state = entity.As<IEntityBase>().ObjectState;
+            EntityState state = entity.As<IEntityBase>().GetObjectState();
 
             //判断实体的状态
             if (state == EntityState.Insert)

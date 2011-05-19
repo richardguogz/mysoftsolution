@@ -22,7 +22,7 @@ namespace MySoft.Data
             this.messages = new List<string>();
 
             //获取需要处理的字段列表
-            if (entity.As<IEntityBase>().ObjectState == EntityState.Insert)
+            if (entity.As<IEntityBase>().GetObjectState() == EntityState.Insert)
                 this.vlist = entity.GetFieldValues().FindAll(fv => !fv.IsChanged)
                     .ConvertAll<Field>(fv => fv.Field);
             else

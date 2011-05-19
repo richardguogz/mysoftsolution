@@ -107,6 +107,9 @@ namespace MySoft.Data
                     }
                 }
 
+                //通过此方式处理的对象将修改列清除
+                if (t != null && t is Entity) (t as Entity).AttachSet();
+
                 return t;
             }
         }
