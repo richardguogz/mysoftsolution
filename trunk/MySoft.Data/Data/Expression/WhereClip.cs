@@ -9,7 +9,10 @@ namespace MySoft.Data
     [Serializable]
     public class WhereClip
     {
-        public static readonly WhereClip All = new WhereClip((string)null);
+        /// <summary>
+        /// 默认的无条件对象
+        /// </summary>
+        public static readonly WhereClip None = new WhereClip((string)null);
         private List<SQLParameter> plist = new List<SQLParameter>();
         private string where;
 
@@ -97,7 +100,7 @@ namespace MySoft.Data
         {
             if (DataHelper.IsNullOrEmpty(leftWhere) && DataHelper.IsNullOrEmpty(rightWhere))
             {
-                return WhereClip.All;
+                return WhereClip.None;
             }
             if (DataHelper.IsNullOrEmpty(leftWhere))
             {
@@ -124,7 +127,7 @@ namespace MySoft.Data
         {
             if (DataHelper.IsNullOrEmpty(leftWhere) && DataHelper.IsNullOrEmpty(rightWhere))
             {
-                return WhereClip.All;
+                return WhereClip.None;
             }
             if (DataHelper.IsNullOrEmpty(leftWhere))
             {

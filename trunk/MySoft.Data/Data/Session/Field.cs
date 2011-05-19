@@ -762,7 +762,7 @@ namespace MySoft.Data
         public WhereClip In<T>(Table table, Field field)
             where T : Entity
         {
-            return In<T>(table, field, WhereClip.All);
+            return In<T>(table, field, WhereClip.None);
         }
 
         /// <summary>

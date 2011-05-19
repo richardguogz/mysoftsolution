@@ -8,6 +8,9 @@ namespace MySoft.Data
     [Serializable]
     public class GroupByClip
     {
+        /// <summary>
+        /// 默认的无分组对象
+        /// </summary>
         public static readonly GroupByClip None = new GroupByClip((string)null);
         private string groupBy;
 

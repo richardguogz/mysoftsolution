@@ -8,7 +8,10 @@ namespace MySoft.Data
     [Serializable]
     public class OrderByClip
     {
-        public static readonly OrderByClip Default = new OrderByClip((string)null);
+        /// <summary>
+        /// 默认的无排序对象
+        /// </summary>
+        public static readonly OrderByClip None = new OrderByClip((string)null);
         private string orderBy;
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace MySoft.Data
         {
             if (DataHelper.IsNullOrEmpty(leftOrder) && DataHelper.IsNullOrEmpty(rightOrder))
             {
-                return OrderByClip.Default;
+                return OrderByClip.None;
             }
             if (DataHelper.IsNullOrEmpty(leftOrder))
             {

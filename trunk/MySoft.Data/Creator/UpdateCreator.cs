@@ -112,7 +112,7 @@ namespace MySoft.Data
         {
             get
             {
-                WhereClip newWhere = WhereClip.All;
+                WhereClip newWhere = WhereClip.None;
                 foreach (WhereClip where in whereList)
                 {
                     newWhere &= where;

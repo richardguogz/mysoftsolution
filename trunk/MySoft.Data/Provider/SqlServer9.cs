@@ -42,7 +42,7 @@ namespace MySoft.Data.SqlServer9
                 }
 
                 ((IPaging)query).Suffix(",row_number() over(" + query.OrderString + ") as tmp__rowid");
-                query.OrderBy(OrderByClip.Default);
+                query.OrderBy(OrderByClip.None);
 
                 QuerySection<T> jquery = query.SubQuery("tmp_table");
                 jquery.Where(new WhereClip("tmp__rowid between " + (skipCount + 1) + " and " + (itemCount + skipCount)));
