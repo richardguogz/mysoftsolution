@@ -100,15 +100,15 @@ namespace MySoft.PlatformService
         /// </summary>
         public void ListService(string contains, string status)
         {
-            Console.WriteLine("正在读取服务信息......");
             if (string.IsNullOrEmpty(contains))
             {
                 contains = "(Paltform Service)";
             }
             else
             {
+                var prefix = contains.Substring(0, 1);
                 contains = contains.Substring(1);
-                if (string.IsNullOrEmpty(contains))
+                if (prefix != "-" || string.IsNullOrEmpty(contains))
                 {
                     Console.WriteLine("输入的参数无效！");
                     return;
@@ -120,7 +120,15 @@ namespace MySoft.PlatformService
             {
                 try
                 {
+                    var prefix = status.Substring(0, 1);
                     status = status.Substring(1);
+                    if (prefix != "-" || string.IsNullOrEmpty(status))
+                    {
+                        Console.WriteLine("输入的参数无效！");
+                        return;
+                    }
+
+                    Console.WriteLine("正在读取服务信息......");
                     ServiceControllerStatus serviceStatus = (ServiceControllerStatus)Enum.Parse(typeof(ServiceControllerStatus), status, true);
                     list = InstallerUtils.GetServiceList(contains, serviceStatus);
                 }
@@ -132,6 +140,7 @@ namespace MySoft.PlatformService
             }
             else
             {
+                Console.WriteLine("正在读取服务信息......");
                 list = InstallerUtils.GetServiceList(contains);
             }
 
