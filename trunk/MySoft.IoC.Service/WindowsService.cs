@@ -133,7 +133,6 @@ namespace MySoft.IoC.Service
             }
             else
             {
-                SimpleLog.Instance.WriteLog(exception);
                 if (exception is IoCException)
                 {
                     var ex = exception as IoCException;
@@ -141,8 +140,9 @@ namespace MySoft.IoC.Service
                     {
                         ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
                     }
-                    SendMail(ex, ex.ExceptionHeader);
+                    exception = new Exception(ex.ExceptionHeader, exception);
                 }
+                SimpleLog.Instance.WriteLogWithSendMail(exception);
             }
         }
 
