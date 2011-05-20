@@ -12,7 +12,6 @@ namespace LiveChat.Service.Manager
     public class CompanyManager
     {
         private DbSession dbSession;
-        private static readonly object syncobj = new object();
         private static Dictionary<string, Company> dictCompany = new Dictionary<string, Company>();
         public static readonly CompanyManager Instance = new CompanyManager();
 
@@ -67,35 +66,34 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool AddCompany(Company company)
         {
-            lock (syncobj)
+
+            if (!dictCompany.ContainsKey(company.CompanyID))
             {
-                if (!dictCompany.ContainsKey(company.CompanyID))
+                t_Company c = new t_Company()
                 {
-                    t_Company c = new t_Company()
-                    {
-                        CompanyID = company.CompanyID,
-                        CompanyName = company.CompanyName,
-                        CompanyLogo = company.CompanyLogo,
-                        ChatWebSite = company.ChatWebSite,
-                        IsHeadquarters = false,
-                        WebSite = company.WebSite,
-                        AddTime = DateTime.Now
-                    };
+                    CompanyID = company.CompanyID,
+                    CompanyName = company.CompanyName,
+                    CompanyLogo = company.CompanyLogo,
+                    ChatWebSite = company.ChatWebSite,
+                    IsHeadquarters = false,
+                    WebSite = company.WebSite,
+                    AddTime = DateTime.Now
+                };
 
-                    int ret = dbSession.Save(c);
-                    if (ret > 0)
+                int ret = dbSession.Save(c);
+                if (ret > 0)
+                {
+                    if (company.Seats == null)
                     {
-                        if (company.Seats == null)
-                        {
-                            company.Seats = new SeatList();
-                        }
-
-                        dictCompany.Add(company.CompanyID, company);
+                        company.Seats = new SeatList();
                     }
-                }
 
-                return true;
+                    dictCompany.Add(company.CompanyID, company);
+                }
             }
+
+            return true;
+
         }
 
         /// <summary>
@@ -105,33 +103,32 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool DeleteCompany(string companyID)
         {
-            lock (syncobj)
+
+            if (dictCompany.ContainsKey(companyID))
             {
-                if (dictCompany.ContainsKey(companyID))
+                using (var trans = dbSession.BeginTrans())
                 {
-                    using (var trans = dbSession.BeginTrans())
+                    try
                     {
-                        try
-                        {
-                            int ret = trans.Delete<t_Seat>(t_Seat._.CompanyID == companyID);
-                            ret += trans.Delete<t_Company>(t_Company._.CompanyID == companyID);
+                        int ret = trans.Delete<t_Seat>(t_Seat._.CompanyID == companyID);
+                        ret += trans.Delete<t_Company>(t_Company._.CompanyID == companyID);
 
-                            if (ret > 0)
-                            {
-                                dictCompany.Remove(companyID);
-                            }
-
-                            trans.Commit();
-                        }
-                        catch
+                        if (ret > 0)
                         {
-                            trans.Rollback();
+                            dictCompany.Remove(companyID);
                         }
+
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
                     }
                 }
-
-                return true;
             }
+
+            return true;
+
         }
 
         /// <summary>
@@ -141,14 +138,13 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public Company GetCompany(string companyID)
         {
-            lock (syncobj)
+
+            if (!dictCompany.ContainsKey(companyID))
             {
-                if (!dictCompany.ContainsKey(companyID))
-                {
-                    return null;
-                }
-                return dictCompany[companyID];
+                return null;
             }
+            return dictCompany[companyID];
+
         }
 
         /// <summary>
@@ -158,17 +154,16 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public Company GetCompanyForName(string companyName)
         {
-            lock (syncobj)
+
+            foreach (Company company in dictCompany.Values)
             {
-                foreach (Company company in dictCompany.Values)
+                if (company.CompanyName == companyName)
                 {
-                    if (company.CompanyName == companyName)
-                    {
-                        return company;
-                    }
+                    return company;
                 }
-                return null;
             }
+            return null;
+
         }
 
         /// <summary>
@@ -177,10 +172,9 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IList<Company> GetCompanies()
         {
-            lock (syncobj)
-            {
-                return new List<Company>(dictCompany.Values);
-            }
+
+            return new List<Company>(dictCompany.Values);
+
         }
 
         /// <summary>
@@ -190,27 +184,26 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool UpdateCompany(Company company)
         {
-            lock (syncobj)
+
+            t_Company c = dbSession.Single<t_Company>(t_Company._.CompanyID == company.CompanyID);
+            c.CompanyName = company.CompanyName;
+            c.CompanyLogo = company.CompanyLogo;
+            c.WebSite = company.WebSite;
+            c.ChatWebSite = company.ChatWebSite;
+            c.Attach();
+
+            bool ret = dbSession.Save(c) > 0;
+            if (ret)
             {
-                t_Company c = dbSession.Single<t_Company>(t_Company._.CompanyID == company.CompanyID);
-                c.CompanyName = company.CompanyName;
-                c.CompanyLogo = company.CompanyLogo;
-                c.WebSite = company.WebSite;
-                c.ChatWebSite = company.ChatWebSite;
-                c.Attach();
-
-                bool ret = dbSession.Save(c) > 0;
-                if (ret)
-                {
-                    Company cc = dictCompany[c.CompanyID];
-                    cc.CompanyName = c.CompanyName;
-                    cc.CompanyLogo = c.CompanyLogo;
-                    cc.WebSite = c.WebSite;
-                    cc.ChatWebSite = c.ChatWebSite;
-                }
-
-                return ret;
+                Company cc = dictCompany[c.CompanyID];
+                cc.CompanyName = c.CompanyName;
+                cc.CompanyLogo = c.CompanyLogo;
+                cc.WebSite = c.WebSite;
+                cc.ChatWebSite = c.ChatWebSite;
             }
+
+            return ret;
+
         }
     }
 }

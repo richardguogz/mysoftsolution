@@ -9,16 +9,9 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using MySoft;
 using System.IO;
+using System.Windows.Forms;
 
 namespace LiveChat.Client
 {
@@ -55,7 +48,7 @@ namespace LiveChat.Client
 
         private void FormBack_Load(object sender, EventArgs e)
         {
-            string path = CoreHelper.GetFullPath("cur.cur");
+            string path = ClientUtils.GetFullPath("cur.cur");
             if (File.Exists(path))
                 this.Cursor = new Cursor(new FileStream(path, FileMode.Open));
 

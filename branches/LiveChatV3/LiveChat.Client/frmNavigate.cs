@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using LiveChat.Interface;
 using LiveChat.Entity;
-using MySoft;
-using System.Runtime.InteropServices;
-using System.IO;
-using MySoft.Data;
-using System.Diagnostics;
-using System.Configuration;
+using LiveChat.Interface;
 
 namespace LiveChat.Client
 {
@@ -185,7 +180,7 @@ namespace LiveChat.Client
 
         void tvSeatGroup_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right || e.Button == MouseButtons.Left)
             {
                 var node = tvSeatGroup.GetNodeAt(e.X, e.Y);
                 if (node != null && node.Tag != null)
@@ -197,7 +192,7 @@ namespace LiveChat.Client
 
         void tvLinkman_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right || e.Button == MouseButtons.Left)
             {
                 var node = tvLinkman.GetNodeAt(e.X, e.Y);
                 if (node != null && node.Tag != null)
@@ -209,7 +204,7 @@ namespace LiveChat.Client
 
         void tvSession_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right || e.Button == MouseButtons.Left)
             {
                 var node = tvSession.GetNodeAt(e.X, e.Y);
                 if (node != null && node.Tag != null)
@@ -519,9 +514,7 @@ namespace LiveChat.Client
 
             SingletonMul.Show<frmPopup>(tip.Id, () =>
             {
-                frmPopup frm = new frmPopup(tip);
-                frm.CallbackView += viewHandler;
-                frm.CallbackCancel += cancelHandler;
+                frmPopup frm = new frmPopup(tip, viewHandler, cancelHandler);
                 return frm;
             });
         }
@@ -664,6 +657,11 @@ namespace LiveChat.Client
 
                     tn.Tag = kv.Key;
                 }
+                else
+                {
+                    TreeNode tn1 = CreateGroupNode(kv.Key);
+                    tvSeatGroup.Nodes.Add(tn1);
+                }
             }
         }
 
@@ -675,28 +673,33 @@ namespace LiveChat.Client
             IList<SeatGroup> list = service.GetSeatGroups(loginSeat.SeatID);
             foreach (var group in list)
             {
-                TreeNode tn = new TreeNode(string.Format("{0} [{1}/{2}]", group.MemoName ?? group.GroupName,
-                    group.PersonOnlineCount, group.PersonCount));
-
-                tn.SelectedImageIndex = 2;
-                tn.ImageIndex = 2;
-                tn.ContextMenuStrip = contextMenuStrip8;
-
-                if (group.CreateID == loginSeat.SeatID)
-                {
-                    退出群QToolStripMenuItem.Visible = false;
-                    解散群JToolStripMenuItem.Visible = true;
-                }
-                else
-                {
-                    退出群QToolStripMenuItem.Visible = true;
-                    解散群JToolStripMenuItem.Visible = false;
-                }
-
-                tn.Tag = group;
-
+                TreeNode tn = CreateGroupNode(group);
                 tvSeatGroup.Nodes.Add(tn);
             }
+        }
+
+        private TreeNode CreateGroupNode(SeatGroup group)
+        {
+            TreeNode tn = new TreeNode(string.Format("{0} [{1}/{2}]", group.MemoName ?? group.GroupName,
+                group.PersonOnlineCount, group.PersonCount));
+
+            tn.SelectedImageIndex = 2;
+            tn.ImageIndex = 2;
+            tn.ContextMenuStrip = contextMenuStrip8;
+
+            if (group.CreateID == loginSeat.SeatID)
+            {
+                退出群QToolStripMenuItem.Visible = false;
+                解散群JToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                退出群QToolStripMenuItem.Visible = true;
+                解散群JToolStripMenuItem.Visible = false;
+            }
+
+            tn.Tag = group;
+            return tn;
         }
 
         private void RefreshSeatFriend()
@@ -723,8 +726,10 @@ namespace LiveChat.Client
                             tn.Text = string.Format("{0} {1}", kv.Key.ShowName, kv.Key.Sign);
                     }
 
+                    bool isSort = false;
                     if (kv.Key.State != (tn.Tag as Seat).State)
                     {
+                        isSort = true;
                         if (kv.Key.State == OnlineState.Online)
                         {
                             tn.SelectedImageIndex = 0;
@@ -747,7 +752,60 @@ namespace LiveChat.Client
                         }
 
                         tn.Tag = kv.Key;
+
+                        if (isSort)
+                        {
+                            var parent = tn.Parent;
+                            tn.Remove();
+
+                            if (kv.Key.State != OnlineState.Offline)
+                            {
+                                parent.Nodes.Insert(0, tn);
+                                ShowTip(new TipInfo()
+                                {
+                                    Key = Guid.NewGuid().ToString(),
+                                    Id = Guid.NewGuid().ToString(),
+                                    Title = "上线提示",
+                                    Message = string.Format("【{0}】的【{1}】上线了！", kv.Key.CompanyName, kv.Key.MemoName ?? kv.Key.ShowName)
+                                }, null, null);
+                            }
+                            else
+                            {
+                                parent.Nodes.Add(tn);
+                                ShowTip(new TipInfo()
+                                {
+                                    Key = Guid.NewGuid().ToString(),
+                                    Id = Guid.NewGuid().ToString(),
+                                    Title = "下线提示",
+                                    Message = string.Format("【{0}】的【{1}】下线了！", kv.Key.CompanyName, kv.Key.MemoName ?? kv.Key.ShowName)
+                                }, null, null);
+                            }
+                        }
                     }
+                }
+                else
+                {
+                    TreeNode node = CreateFriendNode(kv.Key);
+                    TreeNode parent = tvLinkman.Nodes[0];
+                    foreach (TreeNode tvNode in tvLinkman.Nodes)
+                    {
+                        if (tvNode != null && tvNode.Tag is SeatGroup)
+                        {
+                            var group = tvNode.Tag as SeatGroup;
+                            if (group.GroupID == kv.Key.GroupID)
+                            {
+                                parent = tvNode;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (kv.Key.State != OnlineState.Offline)
+                        parent.Nodes.Insert(0, node);
+                    else
+                        parent.Nodes.Add(node);
+
+                    parent.Expand();
                 }
             }
         }
@@ -853,32 +911,7 @@ namespace LiveChat.Client
                 tempFriends.Sort((p1, p2) => p1.State.CompareTo(p2.State));
                 foreach (var friend in tempFriends)
                 {
-                    TreeNode tn = new TreeNode(string.Format("{0} {1}", friend.ShowName, friend.Sign));
-                    if (!string.IsNullOrEmpty(friend.MemoName))
-                        tn = new TreeNode(string.Format("{0} {1}", friend.MemoName, friend.Sign));
-
-                    if (friend.State == OnlineState.Online)
-                    {
-                        tn.SelectedImageIndex = 0;
-                        tn.ImageIndex = 0;
-                    }
-                    else if (friend.State == OnlineState.Busy)
-                    {
-                        tn.SelectedImageIndex = 6;
-                        tn.ImageIndex = 6;
-                    }
-                    else if (friend.State == OnlineState.Leave)
-                    {
-                        tn.SelectedImageIndex = 7;
-                        tn.ImageIndex = 7;
-                    }
-                    else
-                    {
-                        tn.SelectedImageIndex = 1;
-                        tn.ImageIndex = 1;
-                    }
-                    tn.Tag = friend;
-                    tn.ContextMenuStrip = contextMenuStrip2;
+                    TreeNode tn = CreateFriendNode(friend);
                     node.Nodes.Add(tn);
                 }
 
@@ -914,36 +947,42 @@ namespace LiveChat.Client
 
                 foreach (var friend in tempFriends)
                 {
-                    TreeNode tn = new TreeNode(string.Format("{0} {1}", friend.ShowName, friend.Sign));
-                    if (!string.IsNullOrEmpty(friend.MemoName))
-                        tn = new TreeNode(string.Format("{0} {1}", friend.MemoName, friend.Sign));
-
-                    if (friend.State == OnlineState.Online)
-                    {
-                        tn.SelectedImageIndex = 0;
-                        tn.ImageIndex = 0;
-                    }
-                    else if (friend.State == OnlineState.Busy)
-                    {
-                        tn.SelectedImageIndex = 6;
-                        tn.ImageIndex = 6;
-                    }
-                    else if (friend.State == OnlineState.Leave)
-                    {
-                        tn.SelectedImageIndex = 7;
-                        tn.ImageIndex = 7;
-                    }
-                    else
-                    {
-                        tn.SelectedImageIndex = 1;
-                        tn.ImageIndex = 1;
-                    }
-
+                    TreeNode tn = CreateFriendNode(friend);
                     tn.ContextMenuStrip = contextMenuStrip3;
-                    tn.Tag = friend;
                     tn1.Nodes.Add(tn);
                 }
             }
+        }
+
+        private TreeNode CreateFriendNode(SeatFriend friend)
+        {
+            TreeNode tn = new TreeNode(string.Format("{0} {1}", friend.ShowName, friend.Sign));
+            if (!string.IsNullOrEmpty(friend.MemoName))
+                tn = new TreeNode(string.Format("{0} {1}", friend.MemoName, friend.Sign));
+
+            if (friend.State == OnlineState.Online)
+            {
+                tn.SelectedImageIndex = 0;
+                tn.ImageIndex = 0;
+            }
+            else if (friend.State == OnlineState.Busy)
+            {
+                tn.SelectedImageIndex = 6;
+                tn.ImageIndex = 6;
+            }
+            else if (friend.State == OnlineState.Leave)
+            {
+                tn.SelectedImageIndex = 7;
+                tn.ImageIndex = 7;
+            }
+            else
+            {
+                tn.SelectedImageIndex = 1;
+                tn.ImageIndex = 1;
+            }
+            tn.Tag = friend;
+            tn.ContextMenuStrip = contextMenuStrip2;
+            return tn;
         }
 
         //查找节点
@@ -971,9 +1010,9 @@ namespace LiveChat.Client
 
                 if (tn.Tag == null) continue;
                 T target = (T)tn.Tag;
-                object value1 = CoreHelper.GetPropertyValue(target, propertyName);
-                object value2 = CoreHelper.GetPropertyValue(entity, propertyName);
-                int ret = CoreHelper.Compare<object>(value1, value2);
+                object value1 = ClientUtils.GetPropertyValue(target, propertyName);
+                object value2 = ClientUtils.GetPropertyValue(entity, propertyName);
+                int ret = ClientUtils.Compare<object>(value1, value2);
                 if (ret == 0) return tn;
             }
 
@@ -1170,17 +1209,15 @@ namespace LiveChat.Client
 
         private void tvLinkman_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Node.Tag == null || e.Node.Tag is SeatFriendGroup)
+            var node = tvLinkman.SelectedNode;
+            if (node == null || node.Tag == null) return;
+
+            if (node.Tag is SeatFriendGroup)
             {
-                foreach (TreeNode node in tvLinkman.Nodes)
-                {
-                    if (node != e.Node)
-                        node.Collapse();
-                }
                 return;
             }
 
-            SeatFriend toSeat = (SeatFriend)e.Node.Tag;
+            SeatFriend toSeat = (SeatFriend)node.Tag;
             if (toSeat.SeatID == loginSeat.SeatID)
             {
                 ClientUtils.ShowMessage("不能自己与自己聊天！");
@@ -1200,9 +1237,10 @@ namespace LiveChat.Client
 
         private void tvSeatGroup_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Node.Tag == null) return;
+            var node = tvSeatGroup.SelectedNode;
+            if (node == null || node.Tag == null) return;
 
-            SeatGroup group = ((SeatGroup)e.Node.Tag);
+            SeatGroup group = ((SeatGroup)node.Tag);
 
             string key = string.Format("GroupChat_{0}_{1}", loginSeat.SeatID, group.GroupID);
             SingletonMul.Show(key, () =>
@@ -1221,11 +1259,13 @@ namespace LiveChat.Client
 
         private void tvSession_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Node.Tag == null) return;
-            P2SSession session = ((P2SSession)e.Node.Tag);
+            var node = tvSession.SelectedNode;
+            if (node == null || node.Tag == null) return;
+
+            P2SSession session = ((P2SSession)node.Tag);
             if (service.GetSession(session.SessionID) == null)
             {
-                tvSession.Nodes.Remove(e.Node);
+                node.Remove();
                 return;
             }
 
@@ -1666,7 +1706,7 @@ namespace LiveChat.Client
             {
                 ClientUtils.ExitApplication();
 
-                ProcessStartInfo process = new ProcessStartInfo(CoreHelper.GetFullPath("AutoUpdate.exe"));
+                ProcessStartInfo process = new ProcessStartInfo(ClientUtils.GetFullPath("AutoUpdate.exe"));
                 Process p = Process.Start(process);
             }
         }

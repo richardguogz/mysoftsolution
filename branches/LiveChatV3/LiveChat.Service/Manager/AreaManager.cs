@@ -12,7 +12,6 @@ namespace LiveChat.Service.Manager
     public class AreaManager
     {
         private DbSession dbSession;
-        private static readonly object syncobj = new object();
         public static readonly AreaManager Instance = new AreaManager();
 
         public AreaManager()
@@ -28,11 +27,10 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IList<Area> GetAreas()
         {
-            lock (syncobj)
-            {
-                return dbSession.From<t_Area>().OrderBy(t_Area._.AreaID.Asc)
-                    .ToList().ConvertTo<Area>();
-            }
+
+            return dbSession.From<t_Area>().OrderBy(t_Area._.AreaID.Asc)
+                .ToList().ConvertTo<Area>().OriginalData;
+
         }
 
         #endregion

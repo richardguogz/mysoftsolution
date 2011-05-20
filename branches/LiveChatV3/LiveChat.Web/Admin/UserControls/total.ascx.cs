@@ -21,8 +21,8 @@ namespace LiveChat.Web.Admin.UserControls
         protected bool isMonth = false;
         public override void OnAjaxProcess(CallbackParams callbackParams)
         {
-            WhereClip where = WhereClip.All;
-            WhereClip whereTime = WhereClip.All;
+            WhereClip where = WhereClip.None;
+            WhereClip whereTime = WhereClip.None;
 
             string showType = callbackParams["type"].Value;
             if (showType == "day")
@@ -73,7 +73,7 @@ namespace LiveChat.Web.Admin.UserControls
                         @" group by SeatID,substring(CONVERT(varchar,StartTime,120),1,10)) a left join t_Seat b
                         on a.SeatID = b.CompanyID + '_' + b.SeatCode
                         left join t_Company c on b.CompanyID = c.CompanyID
-                        where a.SeatID is not null " + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
+                        where a.SeatID is not null " + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
                         @" order by a.SeatID,a.TotalDate";
 
             }
@@ -86,7 +86,7 @@ namespace LiveChat.Web.Admin.UserControls
                         @" group by SeatID,substring(CONVERT(varchar,StartTime,120),1,7)) a left join t_Seat b
                         on a.SeatID = b.CompanyID + '_' + b.SeatCode
                         left join t_Company c on b.CompanyID = c.CompanyID
-                        where a.SeatID is not null " + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
+                        where a.SeatID is not null " + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
                         @" order by a.SeatID,a.TotalDate";
             }
 

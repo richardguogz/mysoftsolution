@@ -36,9 +36,9 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(200, 79);
@@ -55,7 +55,7 @@
             this.linkLabel1.Size = new System.Drawing.Size(72, 21);
             this.linkLabel1.TabIndex = 2;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "查看(&V)";
+            this.linkLabel1.Text = "确定(&O)";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 

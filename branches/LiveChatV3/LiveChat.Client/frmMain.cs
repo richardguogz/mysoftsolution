@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using LiveChat.Entity;
 using LiveChat.Interface;
 using LiveChat.Utils;
-using MySoft;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace LiveChat.Client
 {
@@ -243,8 +241,7 @@ namespace LiveChat.Client
         {
             SingletonMul.Show<frmPopup>(tip.Key, () =>
             {
-                frmPopup frm = new frmPopup(tip);
-                frm.CallbackView += handler;
+                frmPopup frm = new frmPopup(tip, handler, null);
                 return frm;
             });
         }

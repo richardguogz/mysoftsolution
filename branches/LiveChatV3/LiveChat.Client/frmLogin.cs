@@ -1,19 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using LiveChat.Interface;
-using LiveChat.Entity;
-using LiveChat.Utils;
-using LiveChat.Remoting;
-using MySoft;
-using System.IO;
-using MySoft.Security;
-using System.Net.Sockets;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using LiveChat.Entity;
+using LiveChat.Interface;
+using LiveChat.Utils;
 
 namespace LiveChat.Client
 {
@@ -37,7 +29,7 @@ namespace LiveChat.Client
         {
             this.Left = 50;
             this.Top = (Screen.PrimaryScreen.Bounds.Height - this.Height - 50) / 2;
-            this.path = CoreHelper.GetFullPath("/user.dat");
+            this.path = ClientUtils.GetFullPath("/user.dat");
 
             if (service == null)
             {
@@ -219,7 +211,7 @@ namespace LiveChat.Client
             }
             catch { }
 
-            this.skinEngine1.SkinFile = CoreHelper.GetFullPath(string.Format("/skin/{0}.ssk", style));
+            this.skinEngine1.SkinFile = ClientUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
         }
 
         private void ReadUserInfoForFile()
@@ -276,13 +268,13 @@ namespace LiveChat.Client
         private string Encode(object value)
         {
             if (value == null) return null;
-            return AESEncrypt.Encode(value.ToString(), "LiveChat");
+            return AES.Encrypt(value.ToString(), "LiveChat");
         }
 
         private string Decode(object value)
         {
             if (value == null) return null;
-            return AESEncrypt.Decode(value.ToString(), "LiveChat");
+            return AES.Decrypt(value.ToString(), "LiveChat");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -320,7 +312,7 @@ namespace LiveChat.Client
         {
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
             string style = item.ToString();
-            this.skinEngine1.SkinFile = CoreHelper.GetFullPath(string.Format("/skin/{0}.ssk", style));
+            this.skinEngine1.SkinFile = ClientUtils.GetFullPath(string.Format("/skin/{0}.ssk", style));
         }
 
         private void ÔÚÏßÉý¼¶ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -329,7 +321,7 @@ namespace LiveChat.Client
             {
                 ClientUtils.ExitApplication();
 
-                ProcessStartInfo process = new ProcessStartInfo(CoreHelper.GetFullPath("AutoUpdate.exe"));
+                ProcessStartInfo process = new ProcessStartInfo(ClientUtils.GetFullPath("AutoUpdate.exe"));
                 Process p = Process.Start(process);
             }
         }

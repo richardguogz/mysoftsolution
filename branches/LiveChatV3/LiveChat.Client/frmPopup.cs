@@ -12,17 +12,19 @@ namespace LiveChat.Client
     public partial class frmPopup : Form
     {
         //查看事件
-        public event CallbackEventHandler CallbackView;
+        private CallbackEventHandler CallbackView;
 
         //取消事件
-        public event CallbackEventHandler CallbackCancel;
+        private CallbackEventHandler CallbackCancel;
 
         private IntPtr HWND_TOPMOST = new IntPtr(-1);
         private TipInfo tip;
 
-        public frmPopup(TipInfo tip)
+        public frmPopup(TipInfo tip, CallbackEventHandler CallbackView, CallbackEventHandler CallbackCancel)
         {
             this.tip = tip;
+            this.CallbackView = CallbackView;
+            this.CallbackCancel = CallbackCancel;
 
             InitializeComponent();
         }
@@ -38,6 +40,17 @@ namespace LiveChat.Client
                 Screen.PrimaryScreen.Bounds.Height - this.Height - 30, 50, 50, 1); //设置弹出位置
 
             Win32.AnimateWindow(this.Handle, 500, Win32.AW_VER_NEGATIVE); //设置弹出的动作
+
+            if (CallbackCancel == null)
+            {
+                linkLabel1.Left = linkLabel2.Left;
+                linkLabel2.Visible = false;
+            }
+
+            if (CallbackView == null)
+            {
+                linkLabel1.Visible = false;
+            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

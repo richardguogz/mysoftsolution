@@ -15,7 +15,6 @@ namespace LiveChat.Service.Manager
         private DbSession dbSession;
         private Timer timer;
 
-        private static readonly object syncobj = new object();
         private static Dictionary<string, User> dictUser = new Dictionary<string, User>();
         public static readonly UserManager Instance = new UserManager();
 
@@ -88,14 +87,13 @@ namespace LiveChat.Service.Manager
         /// <param name="user"></param>
         public void AddUser(User user)
         {
-            lock (syncobj)
+
+            if (!dictUser.ContainsKey(user.UserID))
             {
-                if (!dictUser.ContainsKey(user.UserID))
-                {
-                    dictUser[user.UserID] = user;
-                    this.newUsers.Add(user);
-                }
+                dictUser[user.UserID] = user;
+                this.newUsers.Add(user);
             }
+
         }
 
         /// <summary>
@@ -105,14 +103,11 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public User GetUser(string userID)
         {
-            lock (syncobj)
+            if (!dictUser.ContainsKey(userID))
             {
-                if (!dictUser.ContainsKey(userID))
-                {
-                    return null;
-                }
-                return dictUser[userID];
+                return null;
             }
+            return dictUser[userID];
         }
 
         /// <summary>
@@ -121,10 +116,7 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IList<User> GetUsers()
         {
-            lock (syncobj)
-            {
-                return new List<User>(dictUser.Values);
-            }
+            return new List<User>(dictUser.Values);
         }
 
         /// <summary>
@@ -136,26 +128,23 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool UpdateChatInfo(string userID, DateTime lastChatTime, int chatCount)
         {
-            lock (syncobj)
+            if (!dictUser.ContainsKey(userID))
             {
-                if (!dictUser.ContainsKey(userID))
-                {
-                    return false;
-                }
-
-                User user = dictUser[userID];
-                WhereClip where = t_User._.UserID == user.UserID;
-                bool ret = dbSession.Update<t_User>(new Field[] { t_User._.LastChatTime, t_User._.ChatCount },
-                    new object[] { lastChatTime, chatCount }, where) > 0;
-
-                if (ret)
-                {
-                    user.LastChatTime = lastChatTime;
-                    user.ChatCount = chatCount;
-                }
-
-                return ret;
+                return false;
             }
+
+            User user = dictUser[userID];
+            WhereClip where = t_User._.UserID == user.UserID;
+            bool ret = dbSession.Update<t_User>(new Field[] { t_User._.LastChatTime, t_User._.ChatCount },
+                new object[] { lastChatTime, chatCount }, where) > 0;
+
+            if (ret)
+            {
+                user.LastChatTime = lastChatTime;
+                user.ChatCount = chatCount;
+            }
+
+            return ret;
         }
 
         #region 实现ITimerTask接口
@@ -165,56 +154,53 @@ namespace LiveChat.Service.Manager
         /// </summary>
         public void SaveUser()
         {
-            lock (syncobj)
+            if (this.newUsers.Count > 0)
             {
-                if (this.newUsers.Count > 0)
+                using (DbTrans trans = dbSession.BeginTrans())
                 {
-                    using (DbTrans trans = dbSession.BeginTrans())
+                    try
                     {
-                        try
+                        DbBatch batch = trans.BeginBatch(10);
+                        foreach (User user in this.newUsers)
                         {
-                            DbBatch batch = trans.BeginBatch(10);
-                            foreach (User user in this.newUsers)
+                            t_User u = DataHelper.ConvertType<User, t_User>(user);
+
+                            //如果不是匿名用户，则还需要从扩展信息中获取
+                            if (user.UserType != UserType.TempUser)
                             {
-                                t_User u = DataHelper.ConvertType<User, t_User>(user);
-
-                                //如果不是匿名用户，则还需要从扩展信息中获取
-                                if (user.UserType != UserType.TempUser)
-                                {
-                                    u.ChatCount = user.ChatCount;
-                                    u.LastChatTime = user.LastChatTime;
-                                }
-
-                                batch.Save<t_User>(u);
+                                u.ChatCount = user.ChatCount;
+                                u.LastChatTime = user.LastChatTime;
                             }
 
-                            IList<DataException> exps;
-                            batch.Execute(out exps);
-
-                            if (exps.Count > 0)
-                            {
-                                //将错误写入日志中
-                                foreach (Exception exp in exps)
-                                {
-                                    Logger.Instance.WriteLog(exp.ToString());
-                                }
-
-                                //回滚事务
-                                trans.Rollback();
-                            }
-                            else
-                            {
-                                //提交事务
-                                trans.Commit();
-
-                                //保存成功，则清除新增用户
-                                this.newUsers.Clear();
-                            }
+                            batch.Save<t_User>(u);
                         }
-                        catch
+
+                        IList<DataException> exps;
+                        batch.Execute(out exps);
+
+                        if (exps.Count > 0)
                         {
+                            //将错误写入日志中
+                            foreach (Exception exp in exps)
+                            {
+                                Logger.Instance.WriteLog(exp.ToString());
+                            }
+
+                            //回滚事务
                             trans.Rollback();
                         }
+                        else
+                        {
+                            //提交事务
+                            trans.Commit();
+
+                            //保存成功，则清除新增用户
+                            this.newUsers.Clear();
+                        }
+                    }
+                    catch
+                    {
+                        trans.Rollback();
                     }
                 }
             }

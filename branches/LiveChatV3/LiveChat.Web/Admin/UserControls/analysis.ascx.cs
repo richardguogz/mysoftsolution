@@ -22,7 +22,7 @@ namespace LiveChat.Web.Admin.UserControls
         protected DateTime startDate, endDate;
         public override void OnAjaxProcess(CallbackParams callbackParams)
         {
-            WhereClip where = WhereClip.All;
+            WhereClip where = WhereClip.None;
             if (callbackParams.Contains("startDate"))
             {
                 startDate = ConvertTo<DateTime>(callbackParams["startDate"].Value);
@@ -48,7 +48,7 @@ namespace LiveChat.Web.Admin.UserControls
             string countsql = @"select count(*) from t_P2SSession a left join t_Seat b
                         on a.SeatID = b.CompanyID + '_' + b.SeatCode
                         left join t_Company c on b.CompanyID = c.CompanyID
-                        where a.SeatID is not null " + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where));
+                        where a.SeatID is not null " + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where));
 
             if (callbackParams.Contains("pageIndex"))
             {
@@ -66,7 +66,7 @@ namespace LiveChat.Web.Admin.UserControls
                 sql = @"select c.CompanyName,b.SeatName,a.*,RowNumber=identity(int,1,1) into #tempTable from t_P2SSession a left join t_Seat b
                         on a.SeatID = b.CompanyID + '_' + b.SeatCode
                         left join t_Company c on b.CompanyID = c.CompanyID
-                        where a.SeatID is not null " + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
+                        where a.SeatID is not null " + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
                         @" order by a.StartTime desc;select * from #tempTable where RowNumber between " + ((pageIndex - 1) * PageSize + 1) + " and " + (pageIndex * PageSize);
             }
             else
@@ -74,7 +74,7 @@ namespace LiveChat.Web.Admin.UserControls
                 sql = @"select top " + PageSize + @" c.CompanyName,b.SeatName,a.* from t_P2SSession a left join t_Seat b
                         on a.SeatID = b.CompanyID + '_' + b.SeatCode
                         left join t_Company c on b.CompanyID = c.CompanyID
-                        where a.SeatID is not null " + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
+                        where a.SeatID is not null " + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
                         @" order by  a.StartTime desc";
             }
 

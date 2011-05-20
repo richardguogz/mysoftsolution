@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MySoft.Data;
+using MySoft.Logger;
 
 namespace LiveChat.Service
 {
@@ -10,23 +11,48 @@ namespace LiveChat.Service
     /// </summary>
     internal class DataAccess
     {
-        public static readonly FundLiveChat DbLiveChat = new FundLiveChat();
+        public static readonly DbSession DbLiveChat;
+
+        static DataAccess()
+        {
+            DbLiveChat = new DbSession("FundLiveChat");
+            DbLiveChat.RegisterExcutingLog(new LiveChatExcuting());
+        }
     }
 
     /// <summary>
-    /// Chat数据库重载
+    /// 处理日志处理
     /// </summary>
-    public class FundLiveChat : DbSession
+    public class LiveChatExcuting : IExcutingLog
     {
-        public FundLiveChat()
-            : base("FundLiveChat")
+        #region IExcutingLog 成员
+
+        public void EndExcute(string cmdText, SQLParameter[] parameter, object result, int elapsedTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool StartExcute(string cmdText, SQLParameter[] parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region ILog 成员
+
+        public void WriteError(Exception exception)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteLog(string log, LogType type)
         {
 #if DEBUG
-            this.RegisterSqlLogger(delegate(string log)
-            {
-                Console.Write(log);
-            });
+            Console.WriteLine(log);
 #endif
         }
+
+        #endregion
     }
 }

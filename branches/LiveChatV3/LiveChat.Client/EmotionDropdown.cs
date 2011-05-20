@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using MySoft;
+﻿using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 using CSharpWin;
 
 namespace LiveChat.Client

@@ -12,7 +12,6 @@ namespace LiveChat.Service.Manager
     public class ReplyManager
     {
         private DbSession dbSession;
-        private static readonly object syncobj = new object();
         public static readonly ReplyManager Instance = new ReplyManager();
 
         public ReplyManager()
@@ -29,12 +28,11 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public Reply GetReply(string replyID)
         {
-            lock (syncobj)
-            {
-                t_Reply reply = dbSession.Single<t_Reply>(t_Reply._.ReplyID == replyID);
-                Reply rReply = DataHelper.ConvertType<t_Reply, Reply>(reply);
-                return rReply;
-            }
+
+            t_Reply reply = dbSession.Single<t_Reply>(t_Reply._.ReplyID == replyID);
+            Reply rReply = DataHelper.ConvertType<t_Reply, Reply>(reply);
+            return rReply;
+
         }
 
         /// <summary>
@@ -44,17 +42,16 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IList<Reply> GetReplys(string companyID)
         {
-            lock (syncobj)
+
+            IList<t_Reply> list = dbSession.From<t_Reply>().Where(t_Reply._.CompanyID == companyID).ToList();
+            IList<Reply> replies = new List<Reply>();
+            foreach (t_Reply reply in list)
             {
-                IList<t_Reply> list = dbSession.From<t_Reply>().Where(t_Reply._.CompanyID == companyID).ToList();
-                IList<Reply> replies = new List<Reply>();
-                foreach (t_Reply reply in list)
-                {
-                    Reply rReply = DataHelper.ConvertType<t_Reply, Reply>(reply);
-                    replies.Add(rReply);
-                }
-                return replies;
+                Reply rReply = DataHelper.ConvertType<t_Reply, Reply>(reply);
+                replies.Add(rReply);
             }
+            return replies;
+
         }
 
         /// <summary>
@@ -64,16 +61,15 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public int AddReply(Reply rp)
         {
-            lock (syncobj)
-            {
-                t_Reply reply = new t_Reply();
-                reply.CompanyID = rp.CompanyID;
-                reply.Title = rp.Title;
-                reply.Content = rp.Content;
-                reply.AddTime = rp.AddTime;
-                dbSession.Save(reply);
-                return reply.ReplyID;
-            }
+
+            t_Reply reply = new t_Reply();
+            reply.CompanyID = rp.CompanyID;
+            reply.Title = rp.Title;
+            reply.Content = rp.Content;
+            reply.AddTime = rp.AddTime;
+            dbSession.Save(reply);
+            return reply.ReplyID;
+
         }
 
         /// <summary>
@@ -83,10 +79,8 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool DeleteReply(int replyID)
         {
-            lock (syncobj)
-            {
-                return dbSession.Delete<t_Reply>(replyID) > 0;
-            }
+
+            return dbSession.Delete<t_Reply>(replyID) > 0;
         }
 
         /// <summary>
@@ -96,16 +90,15 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool UpdateReply(Reply rp)
         {
-            lock (syncobj)
-            {
-                t_Reply reply = new t_Reply();
-                reply.ReplyID = rp.ReplyID;
-                reply.Title = rp.Title;
-                reply.Content = rp.Content;
-                reply.Attach();
 
-                return dbSession.Save(reply) > 0;
-            }
+            t_Reply reply = new t_Reply();
+            reply.ReplyID = rp.ReplyID;
+            reply.Title = rp.Title;
+            reply.Content = rp.Content;
+            reply.Attach();
+
+            return dbSession.Save(reply) > 0;
+
         }
 
         #endregion

@@ -59,7 +59,7 @@ namespace LiveChat.Web.Admin.UserControls
         private void GetTimeInfo(WhereClip where)
         {
             string sql = @"select SeatID, substring(convert(varchar(13), StartTime,120),12,2) as totalData,count(*) as totalCount from t_P2SSession where SeatID is not null"
-                            + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
+                            + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
                             @" group by SeatID, substring(convert(varchar(13), StartTime,120),12,2)
                             order by SeatID, substring(convert(varchar(13), StartTime,120),12,2)";
 
@@ -92,7 +92,7 @@ namespace LiveChat.Web.Admin.UserControls
         {
             string whereSql = DataAccess.DbChat.Serialization(where);
             string sql = @"select SeatID, FromAddress as totalData,count(*) as totalCount from t_P2SSession where SeatID is not null"
-                         + (where == WhereClip.All ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
+                         + (where == WhereClip.None ? "" : " and " + DataAccess.DbChat.Serialization(where)) +
                          @" group by SeatID, FromAddress
                             order by SeatID, FromAddress";
 

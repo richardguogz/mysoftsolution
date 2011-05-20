@@ -12,7 +12,6 @@ namespace LiveChat.Service.Manager
     public class LeaveManager
     {
         private DbSession dbSession;
-        private static readonly object syncobj = new object();
         public static readonly LeaveManager Instance = new LeaveManager();
 
         public LeaveManager()
@@ -31,11 +30,10 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public int AddLeave(Leave leave)
         {
-            lock (syncobj)
-            {
-                t_Leave msg = DataHelper.ConvertType<Leave, t_Leave>(leave);
-                return dbSession.Save(msg);
-            }
+
+            t_Leave msg = DataHelper.ConvertType<Leave, t_Leave>(leave);
+            return dbSession.Save(msg);
+
         }
 
         /// <summary>
@@ -45,13 +43,12 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public Leave GetLeave(int id)
         {
-            lock (syncobj)
-            {
-                t_Leave leave = dbSession.Single<t_Leave>(t_Leave._.ID == id);
-                if (leave == null) return null;
 
-                return leave.As<Leave>();
-            }
+            t_Leave leave = dbSession.Single<t_Leave>(t_Leave._.ID == id);
+            if (leave == null) return null;
+
+            return leave.As<Leave>();
+
         }
 
         /// <summary>
@@ -61,10 +58,7 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool DeleteLeave(int id)
         {
-            lock (syncobj)
-            {
-                return dbSession.Delete<t_Leave>(t_Leave._.ID == id) > 0;
-            }
+            return dbSession.Delete<t_Leave>(t_Leave._.ID == id) > 0;
         }
 
         /// <summary>
@@ -78,28 +72,25 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public DataView<IList<Leave>> GetLeaves(string companyID, DateTime beginTime, DateTime endTime, int pIndex, int pSize)
         {
-            lock (syncobj)
+            WhereClip where = t_Leave._.CompanyID == companyID;
+            where &= t_Leave._.AddTime.Between(beginTime, endTime);
+
+            OrderByClip order = t_Leave._.AddTime.Desc;
+
+            var page = dbSession.From<t_Leave>().Where(where).OrderBy(order).GetPage(pSize);
+
+
+            DataView<IList<Leave>> dataPage = new DataView<IList<Leave>>(pSize);
+            dataPage.PageIndex = pIndex;
+            dataPage.RowCount = page.RowCount;
+            dataPage.DataSource = page.ToList(pIndex).ConvertTo<Leave>().OriginalData;
+
+            foreach (Leave leave in dataPage.DataSource)
             {
-                WhereClip where = t_Leave._.CompanyID == companyID;
-                where &= t_Leave._.AddTime.Between(beginTime, endTime);
-
-                OrderByClip order = t_Leave._.AddTime.Desc;
-
-                var page = dbSession.From<t_Leave>().Where(where).OrderBy(order).GetPage(pSize);
-
-
-                DataView<IList<Leave>> dataPage = new DataView<IList<Leave>>(pSize);
-                dataPage.PageIndex = pIndex;
-                dataPage.RowCount = page.RowCount;
-                dataPage.DataSource = page.ToList(pIndex).ConvertTo<Leave>();
-
-                foreach (Leave leave in dataPage.DataSource)
-                {
-                    leave.PostArea = PHCZIP.Get(leave.PostIP);
-                }
-
-                return dataPage;
+                leave.PostArea = PHCZIP.Get(leave.PostIP);
             }
+
+            return dataPage;
         }
 
         #endregion

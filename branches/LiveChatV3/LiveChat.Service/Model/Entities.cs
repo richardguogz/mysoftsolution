@@ -7,7 +7,7 @@ namespace LiveChat.Service
 {
     public partial class t_Leave
     {
-        public override ValidateResult Validate()
+        public override ValidateResult Validation()
         {
             return new Validator<t_Leave>(this)
                     .Check(p => string.IsNullOrEmpty(p.Name), "姓名不能为空！")

@@ -10,7 +10,6 @@ namespace LiveChat.Service.Manager
     public class SeatFriendManager
     {
         private DbSession dbSession;
-        private static readonly object syncobj = new object();
         public static readonly SeatFriendManager Instance = new SeatFriendManager();
 
         /// <summary>
@@ -29,8 +28,7 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IDictionary<Seat, RequestInfo> GetRequestFriends(string seatID)
         {
-            lock (syncobj)
-            {
+           
                 WhereClip where = t_SeatFriendRequest._.FriendID == seatID && t_SeatFriendRequest._.ConfirmState == 0;
                 var list = dbSession.From<t_SeatFriendRequest>().Where(where).ToList();
 
@@ -53,7 +51,7 @@ namespace LiveChat.Service.Manager
                 });
 
                 return items;
-            }
+            
         }
 
         /// <summary>
@@ -64,11 +62,10 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool UpdateMemoName(string seatID, string friendID, string name)
         {
-            lock (syncobj)
-            {
-                WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
-                return dbSession.Update<t_SeatFriend>(t_SeatFriend._.MemoName.Set(name), where) > 0;
-            }
+
+            WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
+            return dbSession.Update<t_SeatFriend>(t_SeatFriend._.MemoName.Set(name), where) > 0;
+
         }
 
         /// <summary>
@@ -79,31 +76,30 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool DeleteFriendGroup(string seatID, Guid groupID)
         {
-            lock (syncobj)
+
+            using (DbTrans trans = dbSession.BeginTrans())
             {
-                using (DbTrans trans = dbSession.BeginTrans())
+                try
                 {
-                    try
-                    {
-                        int ret = 0;
-                        WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.GroupID == groupID;
-                        ret = trans.Update<t_SeatFriend>(t_SeatFriend._.GroupID, null, where);
+                    int ret = 0;
+                    WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.GroupID == groupID;
+                    ret = trans.Update<t_SeatFriend>(t_SeatFriend._.GroupID, null, where);
 
-                        where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupID == groupID;
-                        ret += trans.Delete<t_SeatFriendGroup>(where);
+                    where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupID == groupID;
+                    ret += trans.Delete<t_SeatFriendGroup>(where);
 
-                        trans.Commit();
+                    trans.Commit();
 
-                        return ret > 0;
-                    }
-                    catch
-                    {
-                        trans.Rollback();
+                    return ret > 0;
+                }
+                catch
+                {
+                    trans.Rollback();
 
-                        return false;
-                    }
+                    return false;
                 }
             }
+
         }
 
         /// <summary>
@@ -114,20 +110,19 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool AddFriendGroup(string seatID, SeatFriendGroup group)
         {
-            lock (syncobj)
+
+            WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupName == group.GroupName;
+            if (dbSession.Exists<t_SeatFriendGroup>(where))
             {
-                WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupName == group.GroupName;
-                if (dbSession.Exists<t_SeatFriendGroup>(where))
-                {
-                    throw new LiveChatException("存在此名称的组名");
-                }
-
-                t_SeatFriendGroup g = DataHelper.ConvertType<SeatFriendGroup, t_SeatFriendGroup>(group);
-                g.SeatID = seatID;
-                g.AddTime = DateTime.Now;
-
-                return dbSession.Save(g) > 0;
+                throw new LiveChatException("存在此名称的组名");
             }
+
+            t_SeatFriendGroup g = DataHelper.ConvertType<SeatFriendGroup, t_SeatFriendGroup>(group);
+            g.SeatID = seatID;
+            g.AddTime = DateTime.Now;
+
+            return dbSession.Save(g) > 0;
+
         }
 
         /// <summary>
@@ -139,17 +134,16 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool UpdateFriendGroupName(string seatID, Guid groupID, string groupName)
         {
-            lock (syncobj)
-            {
-                WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupName == groupName;
-                if (dbSession.Exists<t_SeatFriendGroup>(where))
-                {
-                    throw new LiveChatException("存在此名称的组名");
-                }
 
-                where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupID == groupID;
-                return dbSession.Update<t_SeatFriendGroup>(t_SeatFriendGroup._.GroupName.Set(groupName), where) > 0;
+            WhereClip where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupName == groupName;
+            if (dbSession.Exists<t_SeatFriendGroup>(where))
+            {
+                throw new LiveChatException("存在此名称的组名");
             }
+
+            where = t_SeatFriendGroup._.SeatID == seatID && t_SeatFriendGroup._.GroupID == groupID;
+            return dbSession.Update<t_SeatFriendGroup>(t_SeatFriendGroup._.GroupName.Set(groupName), where) > 0;
+
         }
 
         /// <summary>
@@ -161,15 +155,14 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool UpdateGroupID(string seatID, string friendID, Guid groupID)
         {
-            lock (syncobj)
-            {
-                WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
 
-                if (groupID == Guid.Empty)
-                    return dbSession.Update<t_SeatFriend>(t_SeatFriend._.GroupID, null, where) > 0;
-                else
-                    return dbSession.Update<t_SeatFriend>(t_SeatFriend._.GroupID, groupID, where) > 0;
-            }
+            WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
+
+            if (groupID == Guid.Empty)
+                return dbSession.Update<t_SeatFriend>(t_SeatFriend._.GroupID, null, where) > 0;
+            else
+                return dbSession.Update<t_SeatFriend>(t_SeatFriend._.GroupID, groupID, where) > 0;
+
         }
 
         /// <summary>
@@ -180,7 +173,7 @@ namespace LiveChat.Service.Manager
         public IList<SeatFriendGroup> GetSeatFriendGroup(string seatID)
         {
             var grouplist = dbSession.From<t_SeatFriendGroup>().Where(t_SeatFriendGroup._.SeatID == seatID).ToList();
-            var list = grouplist.ConvertTo<SeatFriendGroup>();
+            var list = grouplist.ConvertTo<SeatFriendGroup>().OriginalData;
 
             return list;
         }
@@ -193,63 +186,62 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IList<SeatFriend> GetFriends(string seatID, bool isFriend)
         {
-            lock (syncobj)
-            {
-                WhereClip where = WhereClip.All;
-                if (isFriend) where = t_SeatFriend._.SeatID == seatID;
-                else where = t_SeatFriend._.FriendID == seatID;
 
-                var list = dbSession.From<t_SeatFriend>().Where(where).ToList();
+            WhereClip where = WhereClip.None;
+            if (isFriend) where = t_SeatFriend._.SeatID == seatID;
+            else where = t_SeatFriend._.FriendID == seatID;
 
-                var friendlist = list.ConvertAll<SeatFriend>(p =>
+            var list = dbSession.From<t_SeatFriend>().Where(where).ToList();
+
+            var friendlist = list.ConvertAll<SeatFriend>(p =>
+                {
+                    var seat1 = SeatManager.Instance.GetSeat(p.SeatID);
+                    var seat2 = SeatManager.Instance.GetSeat(p.FriendID);
+
+                    if (!isFriend)
                     {
-                        var seat1 = SeatManager.Instance.GetSeat(p.SeatID);
-                        var seat2 = SeatManager.Instance.GetSeat(p.FriendID);
+                        seat2 = SeatManager.Instance.GetSeat(p.SeatID);
+                        seat1 = SeatManager.Instance.GetSeat(p.FriendID);
+                    }
 
-                        if (!isFriend)
-                        {
-                            seat2 = SeatManager.Instance.GetSeat(p.SeatID);
-                            seat1 = SeatManager.Instance.GetSeat(p.FriendID);
-                        }
+                    if (seat1 == null || seat2 == null) return null;
+                    var company = CompanyManager.Instance.GetCompany(seat2.CompanyID);
 
-                        if (seat1 == null || seat2 == null) return null;
-                        var company = CompanyManager.Instance.GetCompany(seat2.CompanyID);
+                    var friend = new SeatFriend()
+                    {
+                        Owner = seat1,
+                        ClientID = seat2.ClientID,
+                        CompanyID = seat2.CompanyID,
+                        CompanyName = company.CompanyName,
+                        Email = seat2.Email,
+                        LoginCount = seat2.LoginCount,
+                        LoginTime = seat2.LoginTime,
+                        LogoutTime = seat2.LogoutTime,
+                        MobileNumber = seat2.MobileNumber,
+                        Password = seat2.Password,
+                        SeatCode = seat2.SeatCode,
+                        SeatName = seat2.SeatName,
+                        SeatType = seat2.SeatType,
+                        State = seat2.State,
+                        Telephone = seat2.Telephone,
+                        FaceImage = seat2.FaceImage,
+                        Sign = seat2.Sign,
+                        Introduction = seat2.Introduction,
+                        MemoName = p.MemoName,
+                        GroupID = p.GroupID
+                    };
 
-                        var friend = new SeatFriend()
-                        {
-                            Owner = seat1,
-                            ClientID = seat2.ClientID,
-                            CompanyID = seat2.CompanyID,
-                            CompanyName = company.CompanyName,
-                            Email = seat2.Email,
-                            LoginCount = seat2.LoginCount,
-                            LoginTime = seat2.LoginTime,
-                            LogoutTime = seat2.LogoutTime,
-                            MobileNumber = seat2.MobileNumber,
-                            Password = seat2.Password,
-                            SeatCode = seat2.SeatCode,
-                            SeatName = seat2.SeatName,
-                            SeatType = seat2.SeatType,
-                            State = seat2.State,
-                            Telephone = seat2.Telephone,
-                            FaceImage = seat2.FaceImage,
-                            Sign = seat2.Sign,
-                            Introduction = seat2.Introduction,
-                            MemoName = p.MemoName,
-                            GroupID = p.GroupID
-                        };
+                    //如果是陌生人，则显示原来的名字
+                    if (!isFriend) friend.MemoName = null;
 
-                        //如果是陌生人，则显示原来的名字
-                        if (!isFriend) friend.MemoName = null;
+                    return friend;
+                });
 
-                        return friend;
-                    });
+            //移除为null的数据
+            friendlist.RemoveAll(p => p == null);
 
-                //移除为null的数据
-                friendlist.RemoveAll(p => p == null);
+            return friendlist.OriginalData;
 
-                return friendlist;
-            }
         }
 
         /// <summary>
@@ -260,132 +252,131 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool AcceptFriend(int requestID, AcceptType type, string refuse)
         {
-            lock (syncobj)
+
+            //获取请求对象
+            t_SeatFriendRequest request = dbSession.Single<t_SeatFriendRequest>(t_SeatFriendRequest._.RequestID == requestID);
+
+            if (type == AcceptType.Accept)
             {
-                //获取请求对象
-                t_SeatFriendRequest request = dbSession.Single<t_SeatFriendRequest>(t_SeatFriendRequest._.RequestID == requestID);
+                int ret = 0;
 
-                if (type == AcceptType.Accept)
+                using (DbTrans trans = dbSession.BeginTrans())
                 {
-                    int ret = 0;
-
-                    using (DbTrans trans = dbSession.BeginTrans())
+                    try
                     {
-                        try
-                        {
-                            //处理接受
-                            WhereClip where = t_SeatFriend._.SeatID == request.SeatID && t_SeatFriend._.FriendID == request.FriendID;
+                        //处理接受
+                        WhereClip where = t_SeatFriend._.SeatID == request.SeatID && t_SeatFriend._.FriendID == request.FriendID;
 
-                            if (!trans.Exists<t_SeatFriend>(where))
+                        if (!trans.Exists<t_SeatFriend>(where))
+                        {
+                            //把对方加为好友
+                            t_SeatFriend friend = new t_SeatFriend()
                             {
-                                //把对方加为好友
-                                t_SeatFriend friend = new t_SeatFriend()
-                                {
-                                    SeatID = request.SeatID,
-                                    FriendID = request.FriendID,
-                                    AddTime = DateTime.Now
-                                };
+                                SeatID = request.SeatID,
+                                FriendID = request.FriendID,
+                                AddTime = DateTime.Now
+                            };
 
-                                ret = trans.Save(friend);
-                            }
-
-                            WhereClip where1 = t_SeatFriendRequest._.RequestID == requestID;
-                            ret = trans.Update<t_SeatFriendRequest>(t_SeatFriendRequest._.ConfirmState, 1, where1);
-
-                            trans.Commit();
+                            ret = trans.Save(friend);
                         }
-                        catch
-                        {
-                            trans.Rollback();
-                        }
+
+                        WhereClip where1 = t_SeatFriendRequest._.RequestID == requestID;
+                        ret = trans.Update<t_SeatFriendRequest>(t_SeatFriendRequest._.ConfirmState, 1, where1);
+
+                        trans.Commit();
                     }
-
-                    return ret > 0;
-                }
-                else if (type == AcceptType.AcceptAdd)
-                {
-                    int ret = 0;
-
-                    using (DbTrans trans = dbSession.BeginTrans())
+                    catch
                     {
-                        try
-                        {
-                            //处理接受并添加
-                            //处理接受
-                            WhereClip where = t_SeatFriend._.SeatID == request.SeatID && t_SeatFriend._.FriendID == request.FriendID;
-
-                            if (!dbSession.Exists<t_SeatFriend>(where))
-                            {
-                                //把对方加为好友
-                                t_SeatFriend friend = new t_SeatFriend()
-                                {
-                                    SeatID = request.SeatID,
-                                    FriendID = request.FriendID,
-                                    AddTime = DateTime.Now
-                                };
-
-                                ret = dbSession.Save(friend);
-                            }
-
-                            where = t_SeatFriend._.SeatID == request.FriendID && t_SeatFriend._.FriendID == request.SeatID;
-                            if (!dbSession.Exists<t_SeatFriend>(where))
-                            {
-                                //把自己加为对方好友请求
-                                //t_SeatFriend friend = new t_SeatFriend()
-                                //{
-                                //    SeatID = request.FriendID,
-                                //    FriendID = request.SeatID,
-                                //    AddTime = DateTime.Now
-                                //};
-
-                                //ret = dbSession.Save(friend);
-
-                                //把对方加为好友
-                                t_SeatFriendRequest friend = new t_SeatFriendRequest()
-                                {
-                                    SeatID = request.FriendID,
-                                    FriendID = request.SeatID,
-                                    Request = "对方同意并请求加你为好友！",
-                                    ConfirmState = 0,
-                                    AddTime = DateTime.Now
-                                };
-
-                                ret += dbSession.Save(friend);
-                            }
-
-                            WhereClip where1 = t_SeatFriendRequest._.RequestID == requestID;
-                            ret = dbSession.Update<t_SeatFriendRequest>(t_SeatFriendRequest._.ConfirmState, 2, where1);
-
-                            trans.Commit();
-                        }
-                        catch
-                        {
-                            trans.Rollback();
-                        }
+                        trans.Rollback();
                     }
-
-                    return ret > 0;
-                }
-                else if (type == AcceptType.Refuse)
-                {
-                    //处理拒绝
-                    WhereClip where = t_SeatFriendRequest._.RequestID == requestID;
-
-                    return dbSession.Update<t_SeatFriendRequest>(
-                        new Field[] { t_SeatFriendRequest._.Refuse, t_SeatFriendRequest._.ConfirmState },
-                       new object[] { refuse, -1 }, where) > 0;
-                }
-                else if (type == AcceptType.Cancel)
-                {
-                    //处理拒绝
-                    WhereClip where = t_SeatFriendRequest._.RequestID == requestID;
-
-                    return dbSession.Update<t_SeatFriendRequest>(
-                       t_SeatFriendRequest._.ConfirmState, -2, where) > 0;
                 }
 
-                return false;
+                return ret > 0;
             }
+            else if (type == AcceptType.AcceptAdd)
+            {
+                int ret = 0;
+
+                using (DbTrans trans = dbSession.BeginTrans())
+                {
+                    try
+                    {
+                        //处理接受并添加
+                        //处理接受
+                        WhereClip where = t_SeatFriend._.SeatID == request.SeatID && t_SeatFriend._.FriendID == request.FriendID;
+
+                        if (!dbSession.Exists<t_SeatFriend>(where))
+                        {
+                            //把对方加为好友
+                            t_SeatFriend friend = new t_SeatFriend()
+                            {
+                                SeatID = request.SeatID,
+                                FriendID = request.FriendID,
+                                AddTime = DateTime.Now
+                            };
+
+                            ret = dbSession.Save(friend);
+                        }
+
+                        where = t_SeatFriend._.SeatID == request.FriendID && t_SeatFriend._.FriendID == request.SeatID;
+                        if (!dbSession.Exists<t_SeatFriend>(where))
+                        {
+                            //把自己加为对方好友请求
+                            //t_SeatFriend friend = new t_SeatFriend()
+                            //{
+                            //    SeatID = request.FriendID,
+                            //    FriendID = request.SeatID,
+                            //    AddTime = DateTime.Now
+                            //};
+
+                            //ret = dbSession.Save(friend);
+
+                            //把对方加为好友
+                            t_SeatFriendRequest friend = new t_SeatFriendRequest()
+                            {
+                                SeatID = request.FriendID,
+                                FriendID = request.SeatID,
+                                Request = "对方同意并请求加你为好友！",
+                                ConfirmState = 0,
+                                AddTime = DateTime.Now
+                            };
+
+                            ret += dbSession.Save(friend);
+                        }
+
+                        WhereClip where1 = t_SeatFriendRequest._.RequestID == requestID;
+                        ret = dbSession.Update<t_SeatFriendRequest>(t_SeatFriendRequest._.ConfirmState, 2, where1);
+
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                    }
+                }
+
+                return ret > 0;
+            }
+            else if (type == AcceptType.Refuse)
+            {
+                //处理拒绝
+                WhereClip where = t_SeatFriendRequest._.RequestID == requestID;
+
+                return dbSession.Update<t_SeatFriendRequest>(
+                    new Field[] { t_SeatFriendRequest._.Refuse, t_SeatFriendRequest._.ConfirmState },
+                   new object[] { refuse, -1 }, where) > 0;
+            }
+            else if (type == AcceptType.Cancel)
+            {
+                //处理拒绝
+                WhereClip where = t_SeatFriendRequest._.RequestID == requestID;
+
+                return dbSession.Update<t_SeatFriendRequest>(
+                   t_SeatFriendRequest._.ConfirmState, -2, where) > 0;
+            }
+
+            return false;
+
         }
 
         /// <summary>
@@ -396,26 +387,25 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool AddFriendRequest(string seatID, string friendID, string request)
         {
-            lock (syncobj)
+
+            WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
+            if (dbSession.Exists<t_SeatFriend>(where))
             {
-                WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
-                if (dbSession.Exists<t_SeatFriend>(where))
-                {
-                    throw new LiveChatException("此客服已经是您的好友，不能重复添加！");
-                }
-
-                //把对方加为好友
-                t_SeatFriendRequest friend = new t_SeatFriendRequest()
-                {
-                    SeatID = seatID,
-                    FriendID = friendID,
-                    Request = request,
-                    ConfirmState = 0,
-                    AddTime = DateTime.Now
-                };
-
-                return dbSession.Save(friend) > 0;
+                throw new LiveChatException("此客服已经是您的好友，不能重复添加！");
             }
+
+            //把对方加为好友
+            t_SeatFriendRequest friend = new t_SeatFriendRequest()
+            {
+                SeatID = seatID,
+                FriendID = friendID,
+                Request = request,
+                ConfirmState = 0,
+                AddTime = DateTime.Now
+            };
+
+            return dbSession.Save(friend) > 0;
+
         }
 
         /// <summary>
@@ -427,11 +417,10 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool DeleteFriend(string seatID, string friendID)
         {
-            lock (syncobj)
-            {
-                WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
-                return dbSession.Delete<t_SeatFriend>(where) > 0;
-            }
+
+            WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
+            return dbSession.Delete<t_SeatFriend>(where) > 0;
+
         }
 
         /// <summary>
@@ -443,30 +432,29 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool DeleteFriendAndRemoveOwner(string seatID, string friendID)
         {
-            lock (syncobj)
+
+            using (DbTrans trans = dbSession.BeginTrans())
             {
-                using (DbTrans trans = dbSession.BeginTrans())
+                try
                 {
-                    try
-                    {
-                        int ret = 0;
+                    int ret = 0;
 
-                        WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
-                        ret = dbSession.Delete<t_SeatFriend>(where);
+                    WhereClip where = t_SeatFriend._.SeatID == seatID && t_SeatFriend._.FriendID == friendID;
+                    ret = dbSession.Delete<t_SeatFriend>(where);
 
-                        where = t_SeatFriend._.SeatID == friendID && t_SeatFriend._.FriendID == seatID;
-                        ret += dbSession.Delete<t_SeatFriend>(where);
+                    where = t_SeatFriend._.SeatID == friendID && t_SeatFriend._.FriendID == seatID;
+                    ret += dbSession.Delete<t_SeatFriend>(where);
 
-                        trans.Commit();
+                    trans.Commit();
 
-                        return ret > 0;
-                    }
-                    catch
-                    {
-                        trans.Rollback();
-                        return false;
-                    }
+                    return ret > 0;
                 }
+                catch
+                {
+                    trans.Rollback();
+                    return false;
+                }
+
             }
         }
     }

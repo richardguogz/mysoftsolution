@@ -14,7 +14,6 @@ namespace LiveChat.Service.Manager
     {
         private DbSession dbSession;
         private Timer timer, chatTimer;
-        private static readonly object syncobj = new object();
         private static Dictionary<string, Session> dictSession = new Dictionary<string, Session>();
         private static Dictionary<string, Session> closeSession = new Dictionary<string, Session>();
         private static IList<string> timeoutSessions = new List<string>();
@@ -350,23 +349,22 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public P2CSession CreateP2CSession(string userID, string companyID, string seatCode, string senderIP)
         {
-            lock (syncobj)
-            {
-                User user = UserManager.Instance.GetUser(userID);
-                Company company = CompanyManager.Instance.GetCompany(companyID);
 
-                //实例化一个用户与公司的会话
-                P2CSession session = new P2CSession(user, company);
-                session.FromIP = senderIP;
-                session.FromAddress = PHCZIP.Get(senderIP);
-                session.RequestCode = seatCode;
-                session.State = SessionState.WaitAccept;
+            User user = UserManager.Instance.GetUser(userID);
+            Company company = CompanyManager.Instance.GetCompany(companyID);
 
-                //添加到会话列表中
-                dictSession.Add(session.SessionID, session);
+            //实例化一个用户与公司的会话
+            P2CSession session = new P2CSession(user, company);
+            session.FromIP = senderIP;
+            session.FromAddress = PHCZIP.Get(senderIP);
+            session.RequestCode = seatCode;
+            session.State = SessionState.WaitAccept;
 
-                return session;
-            }
+            //添加到会话列表中
+            dictSession.Add(session.SessionID, session);
+
+            return session;
+
         }
 
         /// <summary>
@@ -377,22 +375,21 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public P2PSession CreateP2PSession(string user1ID, string user2ID)
         {
-            lock (syncobj)
-            {
-                User user1 = UserManager.Instance.GetUser(user1ID);
-                User user2 = UserManager.Instance.GetUser(user2ID);
 
-                P2PSession session = new P2PSession(user1, user2);
-                session.State = SessionState.Talking;
+            User user1 = UserManager.Instance.GetUser(user1ID);
+            User user2 = UserManager.Instance.GetUser(user2ID);
 
-                user1.AddSession(session);
-                user2.AddSession(session);
+            P2PSession session = new P2PSession(user1, user2);
+            session.State = SessionState.Talking;
 
-                //添加到会话列表中
-                dictSession.Add(session.SessionID, session);
+            user1.AddSession(session);
+            user2.AddSession(session);
 
-                return session;
-            }
+            //添加到会话列表中
+            dictSession.Add(session.SessionID, session);
+
+            return session;
+
         }
 
         /// <summary>
@@ -403,22 +400,21 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public S2SSession CreateS2SSession(string seat1ID, string seat2ID)
         {
-            lock (syncobj)
-            {
-                Seat seat1 = SeatManager.Instance.GetSeat(seat1ID);
-                Seat seat2 = SeatManager.Instance.GetSeat(seat2ID);
 
-                S2SSession session = new S2SSession(seat1, seat2);
-                session.State = SessionState.Talking;
+            Seat seat1 = SeatManager.Instance.GetSeat(seat1ID);
+            Seat seat2 = SeatManager.Instance.GetSeat(seat2ID);
 
-                seat1.AddSession(session);
-                seat2.AddSession(session);
+            S2SSession session = new S2SSession(seat1, seat2);
+            session.State = SessionState.Talking;
 
-                //添加到会话列表中
-                dictSession.Add(session.SessionID, session);
+            seat1.AddSession(session);
+            seat2.AddSession(session);
 
-                return session;
-            }
+            //添加到会话列表中
+            dictSession.Add(session.SessionID, session);
+
+            return session;
+
         }
 
         #region 会话操作
@@ -429,47 +425,46 @@ namespace LiveChat.Service.Manager
         /// <param name="sessionID"></param>
         public void CloseSession(string sessionID)
         {
-            lock (syncobj)
+
+            if (dictSession.ContainsKey(sessionID))
             {
-                if (dictSession.ContainsKey(sessionID))
+                //关闭后，把会话加入到关闭的会话列表中
+                Session session = dictSession[sessionID];
+                if (session != null)
                 {
-                    //关闭后，把会话加入到关闭的会话列表中
-                    Session session = dictSession[sessionID];
-                    if (session != null)
+                    if (session is P2SSession)
                     {
-                        if (session is P2SSession)
-                        {
-                            P2SSession ps = session as P2SSession;
-                            ps.EndTime = DateTime.Now;
-                            ps.State = SessionState.Closed;
-                            closeSession[sessionID] = ps;
+                        P2SSession ps = session as P2SSession;
+                        ps.EndTime = DateTime.Now;
+                        ps.State = SessionState.Closed;
+                        closeSession[sessionID] = ps;
 
-                            ps.Seat.RemoveSession(ps);
-                            ps.User.RemoveSession(ps);
-                        }
-                        else if (session is S2SSession)
-                        {
-                            S2SSession ss = session as S2SSession;
-                            ss.State = SessionState.Closed;
-                            closeSession[sessionID] = ss;
-
-                            ss.Owner.RemoveSession(ss);
-                            ss.Friend.RemoveSession(ss);
-                        }
-                        else if (session is P2PSession)
-                        {
-                            P2PSession pps = session as P2PSession;
-                            pps.State = SessionState.Closed;
-                            closeSession[sessionID] = pps;
-
-                            pps.Owner.RemoveSession(pps);
-                            pps.Friend.RemoveSession(pps);
-                        }
+                        ps.Seat.RemoveSession(ps);
+                        ps.User.RemoveSession(ps);
                     }
+                    else if (session is S2SSession)
+                    {
+                        S2SSession ss = session as S2SSession;
+                        ss.State = SessionState.Closed;
+                        closeSession[sessionID] = ss;
 
-                    RemoveSession(sessionID);
+                        ss.Owner.RemoveSession(ss);
+                        ss.Friend.RemoveSession(ss);
+                    }
+                    else if (session is P2PSession)
+                    {
+                        P2PSession pps = session as P2PSession;
+                        pps.State = SessionState.Closed;
+                        closeSession[sessionID] = pps;
+
+                        pps.Owner.RemoveSession(pps);
+                        pps.Friend.RemoveSession(pps);
+                    }
                 }
+
+                RemoveSession(sessionID);
             }
+
         }
 
         /// <summary>
@@ -478,13 +473,12 @@ namespace LiveChat.Service.Manager
         /// <param name="session"></param>
         public void AddSession(Session session)
         {
-            lock (syncobj)
+
+            if (!dictSession.ContainsKey(session.SessionID))
             {
-                if (!dictSession.ContainsKey(session.SessionID))
-                {
-                    dictSession.Add(session.SessionID, session);
-                }
+                dictSession.Add(session.SessionID, session);
             }
+
         }
 
         /// <summary>
@@ -493,13 +487,12 @@ namespace LiveChat.Service.Manager
         /// <param name="sessionID"></param>
         public void RemoveSession(string sessionID)
         {
-            lock (syncobj)
+
+            if (dictSession.ContainsKey(sessionID))
             {
-                if (dictSession.ContainsKey(sessionID))
-                {
-                    dictSession.Remove(sessionID);
-                }
+                dictSession.Remove(sessionID);
             }
+
         }
 
         /// <summary>
@@ -509,10 +502,9 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool ExistsSession(string sessionID)
         {
-            lock (syncobj)
-            {
-                return dictSession.ContainsKey(sessionID);
-            }
+
+            return dictSession.ContainsKey(sessionID);
+
         }
 
         #endregion
@@ -524,10 +516,9 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public bool IsTimeout(string sessionID)
         {
-            lock (syncobj)
-            {
-                return timeoutSessions.Contains(sessionID);
-            }
+
+            return timeoutSessions.Contains(sessionID);
+
         }
 
         /// <summary>
@@ -537,14 +528,13 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public Session GetSession(string sessionID)
         {
-            lock (syncobj)
+
+            if (dictSession.ContainsKey(sessionID))
             {
-                if (dictSession.ContainsKey(sessionID))
-                {
-                    return dictSession[sessionID];
-                }
-                return null;
+                return dictSession[sessionID];
             }
+            return null;
+
         }
 
         /// <summary>
@@ -553,10 +543,9 @@ namespace LiveChat.Service.Manager
         /// <returns></returns>
         public IList<Session> GetSessions()
         {
-            lock (syncobj)
-            {
-                return new List<Session>(dictSession.Values);
-            }
+
+            return new List<Session>(dictSession.Values);
+
         }
 
         #endregion
@@ -574,7 +563,7 @@ namespace LiveChat.Service.Manager
         {
             IList<P2SSession> list = new List<P2SSession>();
 
-            WhereClip where = WhereClip.All;
+            WhereClip where = WhereClip.None;
             where &= t_P2SSession._.SeatID == seatID;
             where &= !t_P2SSession._.SeatID.IsNull();
             where &= t_P2SSession._.UserID.Like(userID + "%");

@@ -5,6 +5,7 @@ using LiveChat.Interface;
 using LiveChat.Entity;
 using LiveChat.Utils;
 using LiveChat.Service.Manager;
+using MySoft;
 
 namespace LiveChat.Service
 {
@@ -18,14 +19,14 @@ namespace LiveChat.Service
         {
             try
             {
-                var connection = FundLiveChat.Default.CreateConnection();
+                var connection = DataAccess.DbLiveChat.CreateConnection();
                 string connectionString = connection.ConnectionString;
                 connection.Close();
                 return connectionString;
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -42,7 +43,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -70,7 +71,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -119,7 +120,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -154,7 +155,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -176,7 +177,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -210,7 +211,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -270,7 +271,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -314,7 +315,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -356,7 +357,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -383,7 +384,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -425,7 +426,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -441,7 +442,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -461,7 +462,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -478,7 +479,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -495,7 +496,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -513,7 +514,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -555,7 +556,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -573,7 +574,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -594,7 +595,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -612,7 +613,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -628,7 +629,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -663,7 +664,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -680,7 +681,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -712,7 +713,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -736,7 +737,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -759,7 +760,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -789,7 +790,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -819,7 +820,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -839,7 +840,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -866,7 +867,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -886,7 +887,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -904,7 +905,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -941,7 +942,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 
@@ -960,7 +961,7 @@ namespace LiveChat.Service
             }
             catch (Exception ex)
             {
-                throw new LiveChatException(ex.Message, ex);
+                throw new LiveChatException(ex.Message, ErrorHelper.GetInnerException(ex));
             }
         }
 

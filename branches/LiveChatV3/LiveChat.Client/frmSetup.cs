@@ -454,7 +454,7 @@ namespace LiveChat.Client
                 }
                 else
                 {
-                    ClientUtils.ShowMessage("保存链接信息失败！");
+                    ClientUtils.ShowMessage("修改公司信息失败！");
                 }
             }
             catch (Exception ex)
