@@ -109,7 +109,7 @@ namespace MySoft.IoC
                 {
                     throw new IoCException(string.Format("Send data to ({0}:{1}) failure£¡", node.IP, node.Port))
                     {
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
                     };
                 }
             }
@@ -150,7 +150,7 @@ namespace MySoft.IoC
 
                 throw new IoCException(string.Format("¡¾{5}¡¿Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)£¡", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
                 {
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
                 };
             }
 

@@ -139,7 +139,7 @@ namespace MySoft.IoC.Service
                     var ex = exception as IoCException;
                     if (string.IsNullOrEmpty(ex.ExceptionHeader))
                     {
-                        ex.ExceptionHeader = ex.Message + string.Format(" Comes from {0}({1}).", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
+                        ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
                     }
                     SendMail(ex, ex.ExceptionHeader);
                 }

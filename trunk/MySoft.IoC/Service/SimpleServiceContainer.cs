@@ -224,7 +224,7 @@ namespace MySoft.IoC
             {
                 throw new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
                 {
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
                 };
             }
             return localService.CallService(reqMsg, logtime);

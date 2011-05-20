@@ -70,7 +70,7 @@ namespace MySoft.IoC
                 //参数不正确直接返回异常
                 throw new IoCException(string.Format("Invalid parameters ({0},{1}).\r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData))
                 {
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
                 };
             }
 

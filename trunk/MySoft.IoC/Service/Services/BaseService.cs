@@ -69,7 +69,7 @@ namespace MySoft.IoC.Services
                 var ex = resMsg.Exception;
                 var exception = new IoCException(string.Format("¡¾{5}¡¿Dynamic ({0}) service ({1},{2}) error. {4}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.TransactionId), ex)
                 {
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, DnsHelper.GetHostName(), DnsHelper.GetIPAddress())
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
                 };
                 logger.WriteError(exception);
             }
