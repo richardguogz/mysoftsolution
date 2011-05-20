@@ -49,9 +49,10 @@
         </ul>
         <hr />
         <ul>
-            <li>客户端连接信息</li>
                 <% if (clients != null)
-               {
+               { %>
+            <li>客户端连接信息</li>
+                <%
                    int index = 1;
                    foreach (MySoft.IoC.ConnectInfo client in clients)
                    {%>
