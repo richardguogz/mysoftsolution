@@ -294,6 +294,7 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\ThreadSafeStore.cs" />
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Mail\SendResult.cs" />
     <Compile Include="Security\MD5.cs" />
     <Compile Include="Security\XXTEA.cs" />
     <Compile Include="Threading\CallerThreadContext.cs" />

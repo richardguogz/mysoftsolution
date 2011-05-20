@@ -700,7 +700,7 @@ namespace MySoft.Mail
             #endregion
 
             //状态码为0表示成功
-            var result = new ResponseResult { StatusCode = HttpStatusCode.OK, ResponseMessage = "发送成功！" };
+            var result = new SendResult { Success = true, Message = "邮件发送成功！" };
 
             try
             {
@@ -718,20 +718,20 @@ namespace MySoft.Mail
             }
             catch (SmtpFailedRecipientsException ex)
             {
-                result.ResponseMessage = ErrorHelper.GetInnerException(ex).Message;
+                result.Message = ErrorHelper.GetInnerException(ex).Message;
 
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
                 mailSent = false;
             }
             catch (Exception ex)
             {
-                result.ResponseMessage = ErrorHelper.GetInnerException(ex).Message;
+                result.Message = ErrorHelper.GetInnerException(ex).Message;
 
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
                 mailSent = false;
             }
 
-            result.StatusCode = mailSent ? HttpStatusCode.OK : HttpStatusCode.PaymentRequired;
+            result.Success = mailSent;
 
             return result;
         }

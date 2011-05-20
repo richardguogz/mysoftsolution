@@ -12,31 +12,26 @@ namespace MySoft
     public class ResponseResult
     {
         /// <summary>
-        /// 响应的状态代码（跟http的状态码对应，默认为200）
+        /// 返回的代码（用于自定义代码）
         /// </summary>
-        public HttpStatusCode StatusCode { get; set; }
-        /// <summary>
-        /// 响应的代码（可用于自定义代码）
-        /// </summary>
-        public string ResponseCode { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
-        /// 响应的消息
+        /// 返回的消息
         /// </summary>
-        public string ResponseMessage { get; set; }
+        public string Message { get; set; }
 
         /// <summary>
-        /// 响应的对应
+        /// 返回的数据
         /// </summary>
-        public object ResponseValue { get; set; }
+        public object Result { get; set; }
 
         /// <summary>
         /// 实例化ResponseResult
         /// </summary>
         public ResponseResult()
         {
-            this.StatusCode = HttpStatusCode.OK;
-            this.ResponseMessage = "响应成功！";
+            this.Message = "返回成功！";
         }
 
         /// <summary>
@@ -44,10 +39,10 @@ namespace MySoft
         /// </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
-        public ResponseResult(HttpStatusCode code, string message)
+        public ResponseResult(string code, string message)
         {
-            this.StatusCode = code;
-            this.ResponseMessage = message;
+            this.Code = code;
+            this.Message = message;
         }
     }
 
@@ -59,12 +54,12 @@ namespace MySoft
     public class ResponseResult<T> : ResponseResult
     {
         /// <summary>
-        /// 响应的对应
+        /// 返回的结果
         /// </summary>
-        public new T ResponseValue
+        public new T Result
         {
-            get { return (T)base.ResponseValue; }
-            set { base.ResponseValue = value; }
+            get { return (T)base.Result; }
+            set { base.Result = value; }
         }
 
         /// <summary>
@@ -79,7 +74,7 @@ namespace MySoft
         /// </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
-        public ResponseResult(HttpStatusCode code, string message)
+        public ResponseResult(string code, string message)
             : base(code, message)
         { }
     }
