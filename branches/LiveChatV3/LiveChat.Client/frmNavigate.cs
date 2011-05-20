@@ -1001,6 +1001,19 @@ namespace LiveChat.Client
         //查找节点
         private TreeNode FindTreeNode<T>(TreeNode parent, T entity, string propertyName)
         {
+            if (parent.Nodes.Count == 0)
+            {
+                if (parent.Tag != null)
+                {
+                    T target = (T)parent.Tag;
+                    object value1 = ClientUtils.GetPropertyValue(target, propertyName);
+                    object value2 = ClientUtils.GetPropertyValue(entity, propertyName);
+                    int ret = ClientUtils.Compare<object>(value1, value2);
+                    if (ret == 0) return parent;
+                }
+                return null;
+            }
+
             foreach (TreeNode tn in parent.Nodes)
             {
                 if (tn.Nodes.Count > 0)
