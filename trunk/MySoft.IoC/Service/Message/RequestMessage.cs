@@ -254,7 +254,7 @@ namespace MySoft.IoC
             get
             {
 
-                return string.Format("{0} <-> {1}({2})", this.appName, this.hostName, this.requestAddress);
+                return string.Format("{0}£º{1}({2})", this.appName, this.hostName, this.requestAddress);
             }
         }
     }
