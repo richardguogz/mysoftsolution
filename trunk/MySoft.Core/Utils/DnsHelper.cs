@@ -24,8 +24,7 @@ namespace MySoft
         /// <returns></returns>
         public static string GetIPAddress()
         {
-            System.Net.IPAddress addr;
-            addr = new System.Net.IPAddress(Dns.GetHostByName(Dns.GetHostName()).AddressList[0].Address);
+            System.Net.IPAddress addr = Dns.GetHostAddresses(Dns.GetHostName())[0];
             return addr.ToString();
         }
 
@@ -35,8 +34,7 @@ namespace MySoft
         /// <returns></returns>
         public static string GetDynamicIPAddress()
         {
-            System.Net.IPAddress addr;
-            addr = new System.Net.IPAddress(Dns.GetHostByName(Dns.GetHostName()).AddressList[1].Address);
+            System.Net.IPAddress addr = Dns.GetHostAddresses(Dns.GetHostName())[1];
             return addr.ToString();
         }
     }

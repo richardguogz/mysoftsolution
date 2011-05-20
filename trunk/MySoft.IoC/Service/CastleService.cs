@@ -295,9 +295,6 @@ namespace MySoft.IoC
                         {
                             RequestMessage request = requestObject as RequestMessage;
 
-                            //设置客户端IP
-                            request.RequestAddress = socketAsync.AcceptSocket.RemoteEndPoint.ToString();
-
                             //发送响应信息
                             GetSendResponse(socketAsync, request);
                         }

@@ -69,7 +69,7 @@ namespace MySoft.IoC.Services
                 {
                     var exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
                     {
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
+                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
                     resMsg.Exception = exception;
                     return resMsg;
@@ -90,7 +90,7 @@ namespace MySoft.IoC.Services
                 {
                     var exception = new IoCException(string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName))
                     {
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
+                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
 
                     resMsg.Exception = exception;

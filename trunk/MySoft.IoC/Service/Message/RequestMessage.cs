@@ -234,7 +234,7 @@ namespace MySoft.IoC
         /// <summary>
         /// Gets or sets the request address
         /// </summary>
-        public string RequestAddress
+        public string IPAddress
         {
             get
             {

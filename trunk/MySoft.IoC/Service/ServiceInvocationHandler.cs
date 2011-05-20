@@ -21,6 +21,7 @@ namespace MySoft.IoC
         private IService service;
         private Type serviceType;
         private string hostName;
+        private string ipAddress;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceInvocationHandler"/> class.
@@ -36,6 +37,7 @@ namespace MySoft.IoC
             this.serviceType = serviceType;
 
             this.hostName = DnsHelper.GetHostName();
+            this.ipAddress = DnsHelper.GetIPAddress();
         }
 
         /// <summary>
@@ -50,7 +52,8 @@ namespace MySoft.IoC
 
             RequestMessage reqMsg = new RequestMessage();
             reqMsg.AppName = config.AppName;                                //应用名称
-            reqMsg.HostName = hostName;                                     //服务器名称
+            reqMsg.HostName = hostName;                                     //客户端名称
+            reqMsg.IPAddress = ipAddress;                                   //客户端IP地址
             reqMsg.ServiceName = serviceType.FullName;                      //服务名称
             reqMsg.SubServiceName = methodInfo.ToString();                  //方法名称
             reqMsg.ReturnType = methodInfo.ReturnType;                      //返回类型
@@ -70,7 +73,7 @@ namespace MySoft.IoC
                 //参数不正确直接返回异常
                 throw new IoCException(string.Format("Invalid parameters ({0},{1}).\r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData))
                 {
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.RequestAddress)
+                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                 };
             }
 
