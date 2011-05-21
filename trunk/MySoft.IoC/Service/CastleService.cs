@@ -74,6 +74,12 @@ namespace MySoft.IoC
             {
                 while (true)
                 {
+                    //如果请求数小于成功与失败的总和
+                    if (status.RequestCount < status.SuccessCount + status.ErrorCount)
+                    {
+                        status.RequestCount = status.SuccessCount + status.ErrorCount;
+                    }
+
                     //计算时间
                     if (status.RequestCount > 0)
                     {

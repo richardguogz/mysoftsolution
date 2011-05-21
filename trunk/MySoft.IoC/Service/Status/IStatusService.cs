@@ -7,9 +7,9 @@ using System.Net;
 namespace MySoft.IoC
 {
     /// <summary>
-    /// 状态服务 (超时为30秒，缓存1秒)
+    /// 状态服务 (超时为10秒，缓存1秒)
     /// </summary>
-    [ServiceContract(Timeout = 30000, CacheTime = 1000)]
+    [ServiceContract(Timeout = 10000, CacheTime = 1000)]
     public interface IStatusService
     {
         /// <summary>
