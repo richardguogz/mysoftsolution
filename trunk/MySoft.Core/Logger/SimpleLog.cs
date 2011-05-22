@@ -146,7 +146,7 @@ namespace MySoft.Logger
                 {
                     WriteLog(ex);
 
-                    string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出，{2}", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.Message);
+                    string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
                     MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
                 }
                 catch { }
@@ -282,7 +282,7 @@ namespace MySoft.Logger
                 {
                     WriteLog(fileName, ex);
 
-                    string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出，{2}", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.Message);
+                    string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
                     MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
                 }
                 catch { }
