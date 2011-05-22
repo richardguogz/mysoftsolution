@@ -126,7 +126,7 @@ namespace MySoft.Net.Client
         {
             BeginConnectTo(host, port);
 
-            wait.WaitOne();
+            wait.WaitOne(30000); //连接等待30秒
             wait.Reset();
 
             return connected;

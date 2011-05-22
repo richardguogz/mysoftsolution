@@ -816,7 +816,7 @@ namespace MySoft.Data
                     //Êä³ö´íÎóÈÕÖ¾
                     logger.WriteLog(GetLog(command) + " ==> Error: " + ex.Message, LogType.Error);
 
-                    var exception = new DataException(GetLog(command), ex.GetBaseException());
+                    var exception = new DataException(GetLog(command), ex);
                     logger.WriteError(exception);
                 }
                 catch { }

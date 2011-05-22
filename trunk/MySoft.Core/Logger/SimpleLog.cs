@@ -88,10 +88,25 @@ namespace MySoft.Logger
         /// </summary>
         /// <param name="log"></param>
         /// <param name="mailTo"></param>
-        public void WriteLogWithSendMail(string log, params string[] mailTo)
+        public void WriteLogWithSendMail(string log, string mailTo)
+        {
+            WriteLogWithSendMail(log, new string[] { mailTo });
+        }
+
+        /// <summary>
+        /// 写日志并发送邮件
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="mailTo"></param>
+        public void WriteLogWithSendMail(string log, string[] mailTo)
         {
             lock (syncobj)
             {
+                if (mailTo == null || mailTo.Length == 0)
+                {
+                    throw new Exception("请传入收件人地址信息参数！");
+                }
+
                 try
                 {
                     WriteLog(log);
@@ -108,18 +123,31 @@ namespace MySoft.Logger
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="mailTo"></param>
-        public void WriteLogWithSendMail(Exception ex, params string[] mailTo)
+        public void WriteLogWithSendMail(Exception ex, string mailTo)
+        {
+            WriteLogWithSendMail(ex, new string[] { mailTo });
+        }
+
+        /// <summary>
+        /// 写错误日志并发送邮件
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="mailTo"></param>
+        public void WriteLogWithSendMail(Exception ex, string[] mailTo)
         {
             lock (syncobj)
             {
+                if (mailTo == null || mailTo.Length == 0)
+                {
+                    throw new Exception("请传入收件人地址信息参数！");
+                }
+
                 try
                 {
                     WriteLog(ex);
 
-                    string log = ErrorHelper.GetHtmlError(ex);
                     string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出，{2}", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.Message);
-
-                    MySoft.Mail.SmtpMail.Instance.SendAsync(title, log, mailTo);
+                    MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
                 }
                 catch { }
             }
@@ -193,10 +221,26 @@ namespace MySoft.Logger
         /// <param name="fileName"></param>
         /// <param name="log"></param>
         /// <param name="mailTo"></param>
-        public void WriteLogWithSendMail(string fileName, string log, params string[] mailTo)
+        public void WriteLogWithSendMail(string fileName, string log, string mailTo)
+        {
+            WriteLogWithSendMail(fileName, log, new string[] { mailTo });
+        }
+
+        /// <summary>
+        /// 写日志并发送邮件
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="log"></param>
+        /// <param name="mailTo"></param>
+        public void WriteLogWithSendMail(string fileName, string log, string[] mailTo)
         {
             lock (syncobj)
             {
+                if (mailTo == null || mailTo.Length == 0)
+                {
+                    throw new Exception("请传入收件人地址信息参数！");
+                }
+
                 try
                 {
                     WriteLog(fileName, log);
@@ -214,18 +258,32 @@ namespace MySoft.Logger
         /// <param name="fileName"></param>
         /// <param name="ex"></param>
         /// <param name="mailTo"></param>
-        public void WriteLogWithSendMail(string fileName, Exception ex, params string[] mailTo)
+        public void WriteLogWithSendMail(string fileName, Exception ex, string mailTo)
+        {
+            WriteLogWithSendMail(fileName, ex, new string[] { mailTo });
+        }
+
+        /// <summary>
+        /// 写错误日志并发送邮件
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="ex"></param>
+        /// <param name="mailTo"></param>
+        public void WriteLogWithSendMail(string fileName, Exception ex, string[] mailTo)
         {
             lock (syncobj)
             {
+                if (mailTo == null || mailTo.Length == 0)
+                {
+                    throw new Exception("请传入收件人地址信息参数！");
+                }
+
                 try
                 {
                     WriteLog(fileName, ex);
 
-                    string log = ErrorHelper.GetHtmlError(ex);
                     string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出，{2}", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.Message);
-
-                    MySoft.Mail.SmtpMail.Instance.SendAsync(title, log, mailTo);
+                    MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
                 }
                 catch { }
             }

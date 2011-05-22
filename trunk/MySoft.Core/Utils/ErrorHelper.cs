@@ -12,21 +12,17 @@ namespace MySoft
     public class ErrorHelper
     {
         /// <summary>
-        /// 获取内部异常，为了最上层不依赖MySoft而处理
+        /// 获取最内部的异常
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
         public static Exception GetInnerException(Exception ex)
         {
             if (ex == null) return ex;
-            if (ex is MySoftException)
-            {
-                if (ex.InnerException != null)
-                    return GetInnerException(ex.InnerException);
-                else
-                    return new Exception(ex.Message);
-            }
-            return ex;
+            if (ex.InnerException != null)
+                return GetInnerException(ex.InnerException);
+            else
+                return ex;
         }
 
         /// <summary>
@@ -39,10 +35,10 @@ namespace MySoft
             {
                 StringBuilder sbLog = new StringBuilder("\r\n===================================================================================================================\r\n");
                 sbLog.Append("\r\nType:" + ex.GetType().FullName)
-                .Append("\r\nMessage:" + ex.Message)
-                .Append("\r\nSource:" + ex.Source)
-                .Append("\r\nTargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
-                .Append("\r\nStackTrace:" + ex.StackTrace)
+                .Append("\r\nMessage:" + CleanHTML(ex.Message))
+                .Append("\r\nSource:" + CleanHTML(ex.Source))
+                .Append("\r\nTargetSite:" + CleanHTML(ex.TargetSite == null ? null : ex.TargetSite.ToString()))
+                .Append("\r\nStackTrace:" + CleanHTML(ex.StackTrace))
                 .Append("\r\n===================================================================================================================\r\n");
 
                 if (ex.InnerException != null) sbLog.Append(GetErrorWithoutHtml(ex.InnerException));
@@ -70,10 +66,10 @@ namespace MySoft
             // Populate Error Information Collection
             NameValueCollection error_info = new NameValueCollection();
             error_info.Add("Type", ex.GetType().FullName);
-            error_info.Add("Message", ex.Message);
-            error_info.Add("Source", ex.Source);
-            error_info.Add("TargetSite", ex.TargetSite == null ? null : ex.TargetSite.ToString());
-            error_info.Add("StackTrace", ex.StackTrace);
+            error_info.Add("Message", CleanHTML(ex.Message));
+            error_info.Add("Source", CleanHTML(ex.Source));
+            error_info.Add("TargetSite", CleanHTML(ex.TargetSite == null ? null : ex.TargetSite.ToString()));
+            error_info.Add("StackTrace", CleanHTML(ex.StackTrace));
 
             // Error Information
             html += heading.Replace("<!--HEADER-->", "Error Information");
@@ -110,7 +106,7 @@ namespace MySoft
 
             if (ex.InnerException != null) html += GetHtmlError(ex.InnerException);
 
-            return CleanHTML(html);
+            return html;
         }
 
         /// <summary>
@@ -155,7 +151,7 @@ namespace MySoft
                 //html = HttpContext.Current.Request.ServerVariables["Remote_Addr"];
             }
 
-            return CleanHTML(html);
+            return html;
         }
 
         private static string CollectionToHtmlTable(NameValueCollection collection)
@@ -264,10 +260,11 @@ namespace MySoft
             // Cleans the string for HTML friendly display
             return (html.Length == 0) ? "" : html.Replace("<", "&lt;")
                                                 .Replace(">", "&gt;")
-                                                .Replace("\r\n", "<br/ >")
-                                                .Replace("\n", "<br/ >")
                                                 .Replace("&", "&amp;")
-                                                .Replace(" ", "&nbsp;");
+                                                .Replace(" ", "&nbsp;")
+                                                .Replace("\r\n", "<br/ >")
+                                                .Replace("\n", "<br/ >");
+
         }
     }
 }

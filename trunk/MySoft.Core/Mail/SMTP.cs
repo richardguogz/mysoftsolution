@@ -748,16 +748,14 @@ namespace MySoft.Mail
             }
             if (e.Error != null)
             {
-                Console.WriteLine("[{0}] {1}", token, e.Error.ToString());
+                Console.WriteLine("[{0}] Send error. {1}", token, e.Error);
                 mailSent = false;
             }
             else
             {
-                Console.WriteLine("Message sent.");
-                mailSent = false;
+                Console.WriteLine("[{0}] Message sent.", token);
+                mailSent = true;
             }
-
-            mailSent = true;
         }
 
         #endregion

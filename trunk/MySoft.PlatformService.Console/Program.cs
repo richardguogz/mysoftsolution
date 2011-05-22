@@ -35,14 +35,20 @@ namespace MySoft.PlatformService.Console
         {
             lock (syncobj)
             {
-                string message = "[" + DateTime.Now.ToString() + "] " + log;
-                if (type == LogType.Error)
-                    System.Console.ForegroundColor = ConsoleColor.Red;
-                else if (type == LogType.Warning)
-                    System.Console.ForegroundColor = ConsoleColor.Yellow;
-                else
-                    System.Console.ForegroundColor = ConsoleColor.White;
-                System.Console.WriteLine(message);
+                //string message = "[" + DateTime.Now.ToString() + "] " + log;
+                //if (type == LogType.Error)
+                //    System.Console.ForegroundColor = ConsoleColor.Red;
+                //else if (type == LogType.Warning)
+                //    System.Console.ForegroundColor = ConsoleColor.Yellow;
+                //else
+                //    System.Console.ForegroundColor = ConsoleColor.White;
+                //System.Console.WriteLine(message);
+
+                if (type == LogType.Warning)
+                {
+                    string message = string.Format("({0}) {1}", type, log);
+                    SimpleLog.Instance.WriteLogWithSendMail(message, "maoyong@fund123.cn");
+                }
             }
         }
 
@@ -50,13 +56,24 @@ namespace MySoft.PlatformService.Console
         {
             lock (syncobj)
             {
-                string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
-                if (exception.InnerException != null)
+                //string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
+                //if (exception.InnerException != null)
+                //{
+                //    message += "\r\n错误信息 => " + exception.InnerException.Message;
+                //}
+                //System.Console.ForegroundColor = ConsoleColor.Red;
+                //System.Console.WriteLine(message);
+
+                if (exception is IoCException)
                 {
-                    message += "\r\n错误信息 => " + exception.InnerException.Message;
+                    var ex = exception as IoCException;
+                    if (string.IsNullOrEmpty(ex.ExceptionHeader))
+                    {
+                        ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
+                    }
+                    exception = new Exception(ex.ExceptionHeader, exception);
                 }
-                System.Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine(message);
+                SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
             }
         }
     }

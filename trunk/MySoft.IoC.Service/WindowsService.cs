@@ -142,7 +142,7 @@ namespace MySoft.IoC.Service
                     }
                     exception = new Exception(ex.ExceptionHeader, exception);
                 }
-                SimpleLog.Instance.WriteLogWithSendMail(exception);
+                SimpleLog.Instance.WriteLogWithSendMail(exception, mailTo);
             }
         }
 

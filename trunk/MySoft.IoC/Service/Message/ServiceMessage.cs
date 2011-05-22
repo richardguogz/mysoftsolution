@@ -34,9 +34,6 @@ namespace MySoft.IoC
             manager.OnDisconnected += new DisconnectionEventHandler(SocketClientManager_OnDisconnected);
             manager.OnReceived += new ReceiveEventHandler(SocketClientManager_OnReceived);
 
-            //同步连接
-            connected = manager.Client.ConnectTo(ip, port); 
-
             //开始连接到服务器
             StartConnectThread();
         }
@@ -80,7 +77,7 @@ namespace MySoft.IoC
                     if (!connected)
                     {
                         //尝试连接到服务器
-                        manager.Client.BeginConnectTo(ip, port);
+                        connected = manager.Client.ConnectTo(ip, port);
                     }
 
                     //等待5秒
