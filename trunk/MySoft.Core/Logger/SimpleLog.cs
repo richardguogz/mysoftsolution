@@ -45,7 +45,7 @@ namespace MySoft.Logger
                         Directory.CreateDirectory(filePath);
                     }
 
-                    log = string.Format("{0} -> {1}{2}---------------------------------------------------------------------------------------------------------------{2}{2}",
+                    log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
                        DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
 
                     File.AppendAllText(logFileName, log);
@@ -74,7 +74,7 @@ namespace MySoft.Logger
 
                     string log = ErrorHelper.GetErrorWithoutHtml(ex);
 
-                    log = string.Format("{0} -> {1}{2}---------------------------------------------------------------------------------------------------------------{2}{2}",
+                    log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
                         DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
 
                     File.AppendAllText(logFileName, log);
@@ -176,7 +176,7 @@ namespace MySoft.Logger
                         Directory.CreateDirectory(Path.GetDirectoryName(logFileName));
                     }
 
-                    log = string.Format("{0} -> {1}{2}---------------------------------------------------------------------------------------------------------------{2}{2}",
+                    log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
                        DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
 
                     File.AppendAllText(logFileName, log);
@@ -206,7 +206,7 @@ namespace MySoft.Logger
 
                     string log = ErrorHelper.GetErrorWithoutHtml(ex);
 
-                    log = string.Format("{0} -> {1}{2}---------------------------------------------------------------------------------------------------------------{2}{2}",
+                    log = string.Format("{0} -> {1}{2}==================================================================================================================================={2}{2}",
                         DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
 
                     File.AppendAllText(logFileName, log);

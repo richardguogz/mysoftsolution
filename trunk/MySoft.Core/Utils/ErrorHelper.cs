@@ -33,15 +33,20 @@ namespace MySoft
         {
             try
             {
-                StringBuilder sbLog = new StringBuilder("\r\n===================================================================================================================\r\n");
+                StringBuilder sbLog = new StringBuilder(ex.Message + "\r\n");
                 sbLog.Append("\r\nType:" + ex.GetType().FullName)
-                .Append("\r\nMessage:" + CleanHTML(ex.Message))
-                .Append("\r\nSource:" + CleanHTML(ex.Source))
-                .Append("\r\nTargetSite:" + CleanHTML(ex.TargetSite == null ? null : ex.TargetSite.ToString()))
-                .Append("\r\nStackTrace:" + CleanHTML(ex.StackTrace))
-                .Append("\r\n===================================================================================================================\r\n");
+                .Append("\r\nMessage:" + ex.Message)
+                .Append("\r\nSource:" + ex.Source)
+                .Append("\r\nTargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
+                .Append("\r\nStackTrace:" + ex.StackTrace)
+                .Append("\r\n");
 
-                if (ex.InnerException != null) sbLog.Append(GetErrorWithoutHtml(ex.InnerException));
+                if (ex.InnerException != null)
+                {
+                    sbLog.Append("---------------------------------------------------------------------------------------------------------------\r\n");
+                    sbLog.Append(GetErrorWithoutHtml(ex.InnerException));
+                }
+
                 return sbLog.ToString();
             }
             catch (Exception)
