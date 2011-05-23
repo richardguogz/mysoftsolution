@@ -74,19 +74,12 @@ namespace MySoft.IoC
             {
                 while (true)
                 {
-                    //如果请求数小于成功与失败的总和
-                    if (status.RequestCount < status.SuccessCount + status.ErrorCount)
-                    {
-                        status.RequestCount = status.SuccessCount + status.ErrorCount;
-                    }
-
                     //计算时间
                     if (status.RequestCount > 0)
                     {
                         TimeStatus tmpStatus = new TimeStatus
                         {
                             CounterTime = DateTime.Now,
-                            RequestCount = status.RequestCount,
                             SuccessCount = status.SuccessCount,
                             ErrorCount = status.ErrorCount,
                             ElapsedTime = status.ElapsedTime,
@@ -104,13 +97,6 @@ namespace MySoft.IoC
                         {
                             highest.DataFlow = tmpStatus.DataFlow;
                             highest.DataFlowCounterTime = tmpStatus.CounterTime;
-                        }
-
-                        //请求
-                        if (tmpStatus.RequestCount > highest.RequestCount)
-                        {
-                            highest.RequestCount = tmpStatus.RequestCount;
-                            highest.RequestCountCounterTime = tmpStatus.CounterTime;
                         }
 
                         //成功
@@ -329,9 +315,6 @@ namespace MySoft.IoC
 
             try
             {
-                //处理请求数
-                if (IsServiceCounter(request)) status.RequestCount++;
-
                 //获取返回的消息
                 response = container.CallService(request, config.LogTime);
 
@@ -355,6 +338,7 @@ namespace MySoft.IoC
             catch (Exception ex)
             {
                 status.ErrorCount++;
+
                 container_OnError(ex);
             }
             finally
@@ -438,7 +422,6 @@ namespace MySoft.IoC
             SummaryStatus status = new SummaryStatus
             {
                 RunningSeconds = statuslist.Count,
-                RequestCount = statuslist.Sum(p => p.RequestCount),
                 SuccessCount = statuslist.Sum(p => p.SuccessCount),
                 ErrorCount = statuslist.Sum(p => p.ErrorCount),
                 ElapsedTime = statuslist.Sum(p => p.ElapsedTime),

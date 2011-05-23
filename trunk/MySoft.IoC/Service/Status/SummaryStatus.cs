@@ -33,7 +33,7 @@ namespace MySoft.IoC
         /// <summary>
         /// 平均数据流量（每秒）
         /// </summary>
-        public double AverageDataFlow
+        public new double AverageDataFlow
         {
             get
             {
@@ -53,20 +53,6 @@ namespace MySoft.IoC
             {
                 if (runningSeconds > 0)
                     return Math.Round((base.RequestCount * 1.0) / (runningSeconds * 1.0), 4);
-                else
-                    return 0;
-            }
-        }
-
-        /// <summary>
-        /// 平均耗时
-        /// </summary>
-        public double AverageElapsedTime
-        {
-            get
-            {
-                if (base.RequestCount > 0)
-                    return Math.Round((base.ElapsedTime * 1.0) / (base.RequestCount * 1.0), 4);
                 else
                     return 0;
             }

@@ -30,7 +30,6 @@ namespace MySoft.IoC
             }
         }
 
-        private int requestCount;
         /// <summary>
         /// 请求数
         /// </summary>
@@ -38,14 +37,7 @@ namespace MySoft.IoC
         {
             get
             {
-                return requestCount;
-            }
-            set
-            {
-                lock (this)
-                {
-                    requestCount = value;
-                }
+                return successCount + errorCount;
             }
         }
 
@@ -103,6 +95,34 @@ namespace MySoft.IoC
                 {
                     elapsedTime = value;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 平均数据流量（每次请求）
+        /// </summary>
+        public double AverageDataFlow
+        {
+            get
+            {
+                if (this.RequestCount > 0)
+                    return Math.Round((dataFlow * 1.0) / (this.RequestCount * 1.0), 4);
+                else
+                    return 0;
+            }
+        }
+
+        /// <summary>
+        /// 平均耗时（每次请求）
+        /// </summary>
+        public double AverageElapsedTime
+        {
+            get
+            {
+                if (this.RequestCount > 0)
+                    return Math.Round((elapsedTime * 1.0) / (this.RequestCount * 1.0), 4);
+                else
+                    return 0;
             }
         }
     }

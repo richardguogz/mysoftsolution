@@ -42,8 +42,10 @@
                 <li>请求数:    <%=status.Latest.RequestCount%>times</li>
                 <li>成功数:    <%=status.Latest.SuccessCount%>times</li>
                 <li>错误数:    <%=status.Latest.ErrorCount%>times</li>
-                <li>耗时:      <%=status.Latest.ElapsedTime%>ms</li>
-                <li>流量:      <%=Math.Round(status.Latest.DataFlow * 1.0 / 1024, 4)%>kb</li>
+                <li>总耗时:    <%=status.Latest.ElapsedTime%>ms</li>
+                <li>总流量:    <%=Math.Round(status.Latest.DataFlow * 1.0 / 1024, 4)%>kb</li>
+                <li>平均耗时:  <%=status.Latest.AverageElapsedTime%>ms</li>
+                <li>平均流量:  <%=Math.Round(status.Latest.AverageDataFlow * 1.0 / 1024, 4)%>kb</li>
                     <% }
                } %>
         </ul>
