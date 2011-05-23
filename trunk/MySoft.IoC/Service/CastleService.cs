@@ -24,6 +24,7 @@ namespace MySoft.IoC
         private IList<EndPoint> clients;
         private TimeStatusCollection statuslist;
         private HighestStatus highest;
+        private DateTime startTime;
 
         /// <summary>
         /// 服务容器
@@ -51,6 +52,7 @@ namespace MySoft.IoC
             this.clients = new List<EndPoint>();
             this.statuslist = new TimeStatusCollection();
             this.highest = new HighestStatus();
+            this.startTime = DateTime.Now;
 
             //服务器配置
             SocketServerConfiguration ssc = new SocketServerConfiguration
@@ -296,7 +298,24 @@ namespace MySoft.IoC
         /// <param name="request"></param>
         private void GetSendResponse(SocketAsyncEventArgs socketAsync, RequestMessage request)
         {
-            ResponseMessage response = null;
+            //如果是状态请求，则直接返回数据
+            if (!IsServiceCounter(request))
+            {
+                try
+                {
+                    ResponseMessage msg = container.CallService(request, config.LogTime);
+
+                    //发送数据到服务端
+                    manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(msg));
+                }
+                catch (Exception ex)
+                {
+                    container_OnError(ex);
+                }
+
+                return;
+            }
+
             Stopwatch watch = Stopwatch.StartNew();
 
             //获取或创建一个对象
@@ -305,21 +324,19 @@ namespace MySoft.IoC
             try
             {
                 //获取返回的消息
-                response = container.CallService(request, config.LogTime);
+                ResponseMessage response = container.CallService(request, config.LogTime);
 
                 //处理错误数
-                if (IsServiceCounter(request))
-                {
-                    if (response.Exception == null)
-                        status.SuccessCount++;
-                    else
-                        status.ErrorCount++;
-                }
+
+                if (response.Exception == null)
+                    status.SuccessCount++;
+                else
+                    status.ErrorCount++;
 
                 byte[] data = BufferFormat.FormatFCA(response);
 
                 //计算流量
-                if (IsServiceCounter(request)) status.DataFlow += data.Length;
+                status.DataFlow += data.Length;
 
                 //发送数据到服务端
                 manager.Server.SendData(socketAsync.AcceptSocket, data);
@@ -327,7 +344,6 @@ namespace MySoft.IoC
             catch (Exception ex)
             {
                 status.ErrorCount++;
-
                 container_OnError(ex);
             }
             finally
@@ -335,7 +351,7 @@ namespace MySoft.IoC
                 watch.Stop();
 
                 //处理时间
-                if (IsServiceCounter(request)) status.ElapsedTime += watch.ElapsedMilliseconds;
+                status.ElapsedTime += watch.ElapsedMilliseconds;
             }
         }
 
@@ -375,6 +391,8 @@ namespace MySoft.IoC
         {
             ServerStatus status = new ServerStatus
             {
+                StartDate = startTime,
+                TotalSeconds = (int)DateTime.Now.Subtract(startTime).TotalSeconds,
                 Highest = GetHighestStatus(),
                 Latest = GetLatestStatus(),
                 Summary = GetSummaryStatus()

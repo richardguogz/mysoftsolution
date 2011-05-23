@@ -11,6 +11,44 @@ namespace MySoft.IoC
     [Serializable]
     public class ServerStatus
     {
+        private DateTime startDate;
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime StartDate
+        {
+            get
+            {
+                return startDate;
+            }
+            set
+            {
+                lock (this)
+                {
+                    startDate = value;
+                }
+            }
+        }
+
+        private int totalSeconds;
+        /// <summary>
+        /// 汇总时间
+        /// </summary>
+        public int TotalSeconds
+        {
+            get
+            {
+                return totalSeconds;
+            }
+            set
+            {
+                lock (this)
+                {
+                    totalSeconds = value;
+                }
+            }
+        }
+
         private SummaryStatus summary;
         /// <summary>
         /// 汇总状态信息

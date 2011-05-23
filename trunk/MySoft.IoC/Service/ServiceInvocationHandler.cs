@@ -133,6 +133,9 @@ namespace MySoft.IoC
                 isAllowCache = false;
             }
 
+            //设置过期时间
+            reqMsg.Expiration = DateTime.Now.AddSeconds(reqMsg.Timeout);
+
             #endregion
 
             //定义返回的值

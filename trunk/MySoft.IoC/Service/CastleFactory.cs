@@ -93,7 +93,7 @@ namespace MySoft.IoC
                     foreach (var node in config.Nodes)
                     {
                         if (node.Value.MaxPool < 1) throw new IoCException("Minimum pool size 1£¡");
-                        if (node.Value.MaxPool > 500) throw new IoCException("Maximum pool size 500£¡");
+                        if (node.Value.MaxPool > 100) throw new IoCException("Maximum pool size 100£¡");
 
                         var proxy = new ProxyService(container, node.Value);
                         instance.proxies[node.Key] = proxy;
