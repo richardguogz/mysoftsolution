@@ -78,7 +78,7 @@ namespace MySoft.IoC
             try
             {
                 //发送数据包到服务端
-                bool isSend = request.Send(reqMsg);
+                bool isSend = request.Send(reqMsg, (int)(reqMsg.Timeout * 1000));
 
                 if (isSend)
                 {

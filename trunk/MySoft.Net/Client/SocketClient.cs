@@ -121,12 +121,29 @@ namespace MySoft.Net.Client
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public bool ConnectTo(string host, int port, int timeout)
+        {
+            BeginConnectTo(host, port);
+
+            wait.WaitOne(timeout);
+            wait.Reset();
+
+            return connected;
+        }
+
+        /// <summary>
+        /// 连接到指定服务器
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
         /// <returns></returns>
         public bool ConnectTo(string host, int port)
         {
             BeginConnectTo(host, port);
 
-            wait.WaitOne(30000); //连接等待30秒
+            wait.WaitOne();
             wait.Reset();
 
             return connected;
