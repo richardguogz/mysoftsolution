@@ -354,6 +354,7 @@ namespace MySoft.IoC
             }
             catch (Exception ex)
             {
+                status.ErrorCount++;
                 container_OnError(ex);
             }
             finally
