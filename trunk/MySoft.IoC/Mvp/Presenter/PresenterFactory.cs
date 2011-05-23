@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using MySoft.IoC;
 
-namespace MySoft.Mvp
+namespace MySoft.IoC
 {
     /// <summary>
     /// Presenter Factory
@@ -38,24 +38,9 @@ namespace MySoft.Mvp
         /// <returns></returns>
         public IPresenterType GetPresenter<IPresenterType>(object view)
         {
-            return GetPresenter<IPresenterType>(null, view);
-        }
-
-        /// <summary>
-        /// Gets the presenter.
-        /// </summary>
-        /// <param name="presenterKey">The presenter key.</param>
-        /// <param name="view">The view.</param>
-        /// <returns></returns>
-        public IPresenterType GetPresenter<IPresenterType>(string presenterKey, object view)
-        {
-            if (string.IsNullOrEmpty(presenterKey) ? container.ServiceContainer.Kernel.HasComponent(typeof(IPresenterType)) :
-                container.ServiceContainer.Kernel.HasComponent(presenterKey))
+            if (container.ServiceContainer.Kernel.HasComponent(typeof(IPresenterType)))
             {
-                IPresenterType _presenter = string.IsNullOrEmpty(presenterKey) ?
-                    (IPresenterType)container.ServiceContainer.Kernel[typeof(IPresenterType)] :
-                    (IPresenterType)container.ServiceContainer.Kernel[presenterKey];
-
+                IPresenterType _presenter = (IPresenterType)container.ServiceContainer.Kernel[typeof(IPresenterType)];
                 if (typeof(IPresenter).IsAssignableFrom(_presenter.GetType()))
                 {
                     IPresenter presenter = (IPresenter)_presenter;

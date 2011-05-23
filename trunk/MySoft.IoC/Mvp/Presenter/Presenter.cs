@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MySoft.Mvp
+namespace MySoft.IoC
 {
     /// <summary>
     /// The extended interface of all presenters
