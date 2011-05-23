@@ -22,8 +22,7 @@ namespace MySoft.IoC
         private CastleServiceConfiguration config;
         private SocketServerManager manager;
         private IList<EndPoint> clients;
-        private IList<TimeStatus> statuslist;
-        private SecondStatus status;
+        private TimeStatusCollection statuslist;
         private HighestStatus highest;
 
         /// <summary>
@@ -50,9 +49,8 @@ namespace MySoft.IoC
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
-            this.statuslist = new List<TimeStatus>();
+            this.statuslist = new TimeStatusCollection();
             this.highest = new HighestStatus();
-            this.status = new SecondStatus();
 
             //服务器配置
             SocketServerConfiguration ssc = new SocketServerConfiguration
@@ -74,65 +72,53 @@ namespace MySoft.IoC
             {
                 while (true)
                 {
+                    //清除记录，每秒清除一条
+                    statuslist.Clean(config.Records);
+
+                    //获取最后一秒状态
+                    var status = statuslist.GetLast();
+
                     //计算时间
                     if (status.RequestCount > 0)
                     {
-                        TimeStatus tmpStatus = new TimeStatus
-                        {
-                            CounterTime = DateTime.Now,
-                            SuccessCount = status.SuccessCount,
-                            ErrorCount = status.ErrorCount,
-                            ElapsedTime = status.ElapsedTime,
-                            DataFlow = status.DataFlow
-                        };
-
-                        //重新实例化状态
-                        status = new SecondStatus();
-
                         //处理最高值 
                         #region 处理最高值
 
                         //流量
-                        if (tmpStatus.DataFlow > highest.DataFlow)
+                        if (status.DataFlow > highest.DataFlow)
                         {
-                            highest.DataFlow = tmpStatus.DataFlow;
-                            highest.DataFlowCounterTime = tmpStatus.CounterTime;
+                            highest.DataFlow = status.DataFlow;
+                            highest.DataFlowCounterTime = status.CounterTime;
+                        }
+
+                        //请求总数
+                        if (status.RequestCount > highest.RequestCount)
+                        {
+                            highest.RequestCountCounterTime = status.CounterTime;
                         }
 
                         //成功
-                        if (tmpStatus.SuccessCount > highest.SuccessCount)
+                        if (status.SuccessCount > highest.SuccessCount)
                         {
-                            highest.SuccessCount = tmpStatus.SuccessCount;
-                            highest.SuccessCountCounterTime = tmpStatus.CounterTime;
+                            highest.SuccessCount = status.SuccessCount;
+                            highest.SuccessCountCounterTime = status.CounterTime;
                         }
 
                         //失败
-                        if (tmpStatus.ErrorCount > highest.ErrorCount)
+                        if (status.ErrorCount > highest.ErrorCount)
                         {
-                            highest.ErrorCount = tmpStatus.ErrorCount;
-                            highest.ErrorCountCounterTime = tmpStatus.CounterTime;
+                            highest.ErrorCount = status.ErrorCount;
+                            highest.ErrorCountCounterTime = status.CounterTime;
                         }
 
                         //耗时
-                        if (tmpStatus.ElapsedTime > highest.ElapsedTime)
+                        if (status.ElapsedTime > highest.ElapsedTime)
                         {
-                            highest.ElapsedTime = tmpStatus.ElapsedTime;
-                            highest.ElapsedTimeCounterTime = tmpStatus.CounterTime;
+                            highest.ElapsedTime = status.ElapsedTime;
+                            highest.ElapsedTimeCounterTime = status.CounterTime;
                         }
 
                         #endregion
-
-                        //将状态添加到列表中
-                        lock (statuslist)
-                        {
-                            if (statuslist.Count >= config.Records)
-                            {
-                                //移除第一条
-                                statuslist.RemoveAt(0);
-                            }
-
-                            statuslist.Add(tmpStatus);
-                        }
                     }
 
                     //每1秒处理一次
@@ -313,6 +299,9 @@ namespace MySoft.IoC
             ResponseMessage response = null;
             Stopwatch watch = Stopwatch.StartNew();
 
+            //获取或创建一个对象
+            TimeStatus status = statuslist.GetOrCreate(DateTime.Now);
+
             try
             {
                 //获取返回的消息
@@ -400,7 +389,7 @@ namespace MySoft.IoC
         /// <returns></returns>
         public TimeStatus GetLatestStatus()
         {
-            return statuslist.LastOrDefault();
+            return statuslist.GetLast();
         }
 
         /// <summary>
@@ -418,14 +407,17 @@ namespace MySoft.IoC
         /// <returns></returns>
         public SummaryStatus GetSummaryStatus()
         {
+            //获取状态列表
+            var list = GetTimeStatusList();
+
             //统计状态信息
             SummaryStatus status = new SummaryStatus
             {
-                RunningSeconds = statuslist.Count,
-                SuccessCount = statuslist.Sum(p => p.SuccessCount),
-                ErrorCount = statuslist.Sum(p => p.ErrorCount),
-                ElapsedTime = statuslist.Sum(p => p.ElapsedTime),
-                DataFlow = statuslist.Sum(p => p.DataFlow),
+                RunningSeconds = list.Count,
+                SuccessCount = list.Sum(p => p.SuccessCount),
+                ErrorCount = list.Sum(p => p.ErrorCount),
+                ElapsedTime = list.Sum(p => p.ElapsedTime),
+                DataFlow = list.Sum(p => p.DataFlow),
             };
 
             return status;
@@ -437,7 +429,7 @@ namespace MySoft.IoC
         /// <returns></returns>
         public IList<TimeStatus> GetTimeStatusList()
         {
-            return statuslist;
+            return statuslist.ToList();
         }
 
         /// <summary>

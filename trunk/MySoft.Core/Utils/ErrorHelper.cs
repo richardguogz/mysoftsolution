@@ -33,13 +33,13 @@ namespace MySoft
         {
             try
             {
-                StringBuilder sbLog = new StringBuilder(ex.Message + "\r\n");
-                sbLog.Append("\r\nType:" + ex.GetType().FullName)
-                .Append("\r\nMessage:" + ex.Message)
-                .Append("\r\nSource:" + ex.Source)
-                .Append("\r\nTargetSite:" + ex.TargetSite == null ? null : ex.TargetSite.ToString())
-                .Append("\r\nStackTrace:" + ex.StackTrace)
-                .Append("\r\n");
+                StringBuilder sbLog = new StringBuilder();
+                sbLog.Append("\r\nType:" + ex.GetType().FullName);
+                sbLog.Append("\r\nMessage:" + ex.Message);
+                sbLog.Append("\r\nSource:" + ex.Source);
+                sbLog.Append("\r\nTargetSite:" + (ex.TargetSite == null ? null : ex.TargetSite.ToString()));
+                sbLog.Append("\r\nStackTrace:" + ex.StackTrace);
+                sbLog.Append("\r\n");
 
                 if (ex.InnerException != null)
                 {
