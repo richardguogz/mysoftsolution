@@ -11,11 +11,11 @@
         <ul>
             <% if (status != null)
                { %>
-                <li>服务端状态信息如下：(<% =DateTime.Now%>)<asp:Button ID="btnClear" runat="server" 
+                <li>服务端状态信息如下：(<% =status.StartDate %>)<asp:Button ID="btnClear" runat="server" 
                         onclick="btnClear_Click" Text="清除所有状态" />
             </li>
                 <li><hr /></li>
-                <li>汇总状态信息 (<% =status.StartDate %>)</li>
+                <li>汇总状态信息</li>
                 <li>运行总时间：   <%=status.TotalSeconds %> 秒</li>
                 <li>请求数:        <%=status.Summary.RequestCount%> 次</li>
                 <li>成功数:        <%=status.Summary.SuccessCount%> 次</li>
