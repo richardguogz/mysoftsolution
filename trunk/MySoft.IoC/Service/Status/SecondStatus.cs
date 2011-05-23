@@ -9,7 +9,7 @@ namespace MySoft.IoC
     /// 每秒服务器状态信息
     /// </summary>
     [Serializable]
-    public class SecondStatus
+    public abstract class SecondStatus
     {
         private long dataFlow;
         /// <summary>

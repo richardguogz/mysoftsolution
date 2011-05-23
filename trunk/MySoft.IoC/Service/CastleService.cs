@@ -91,12 +91,6 @@ namespace MySoft.IoC
                             highest.DataFlowCounterTime = status.CounterTime;
                         }
 
-                        //请求总数
-                        if (status.RequestCount > highest.RequestCount)
-                        {
-                            highest.RequestCountCounterTime = status.CounterTime;
-                        }
-
                         //成功
                         if (status.SuccessCount > highest.SuccessCount)
                         {
@@ -109,6 +103,12 @@ namespace MySoft.IoC
                         {
                             highest.ErrorCount = status.ErrorCount;
                             highest.ErrorCountCounterTime = status.CounterTime;
+                        }
+
+                        //请求总数
+                        if (status.RequestCount > highest.RequestCount)
+                        {
+                            highest.RequestCountCounterTime = status.CounterTime;
                         }
 
                         //耗时
