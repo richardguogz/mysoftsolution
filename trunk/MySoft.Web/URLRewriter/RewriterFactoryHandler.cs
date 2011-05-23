@@ -34,43 +34,41 @@ namespace MySoft.Web
 
             var config = RewriterConfiguration.GetConfig();
 
-            //如果配置节没有获取到，直接当前Handler
-            if (config == null) return context.Handler;
-
-            // get the configuration rules
-            RewriterRuleCollection rules = config.Rules;
-
-            // iterate through the rules
-            for (int i = 0; i < rules.Count; i++)
+             //判断config配置信息
+            if (config != null && config.Enabled)
             {
-                // Get the pattern to look for (and resolve its URL)
-                string lookFor = "^" + RewriterUtils.ResolveUrl(context.Request.ApplicationPath, rules[i].LookFor) + "$";
-
-                // Create a regular expression object that ignores case...
-                Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
-
-                // Check to see if we've found a match
-                if (re.IsMatch(url))
+                // iterate through the rules
+                foreach (RewriterRule rule in config.Rules)
                 {
-                    // do any replacement needed
-                    sendToUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rules[i].SendTo));
+                    // Get the pattern to look for (and resolve its URL)
+                    string lookFor = "^" + RewriterUtils.ResolveUrl(context.Request.ApplicationPath, rule.LookFor) + "$";
 
-                    // log info to the Trace object...
-                    context.Trace.Write("RewriterFactoryHandler", "Found match, rewriting to " + sendToUrl);
+                    // Create a regular expression object that ignores case...
+                    Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
 
-                    // Rewrite the path, getting the querystring-less url and the physical file path
-                    string sendToUrlLessQString;
-                    RewriterUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
+                    // Check to see if we've found a match
+                    if (re.IsMatch(url))
+                    {
+                        // do any replacement needed
+                        sendToUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rule.SendTo));
 
-                    // return a compiled version of the page
-                    context.Trace.Write("RewriterFactoryHandler", "Exiting RewriterFactoryHandler");	// log info to the Trace object...
-                    return PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
+                        // log info to the Trace object...
+                        context.Trace.Write("RewriterFactoryHandler", "Found match, rewriting to " + sendToUrl);
+
+                        // Rewrite the path, getting the querystring-less url and the physical file path
+                        string sendToUrlLessQString;
+                        RewriterUtils.RewriteUrl(context, sendToUrl, out sendToUrlLessQString, out filePath);
+
+                        // return a compiled version of the page
+                        context.Trace.Write("RewriterFactoryHandler", "Exiting RewriterFactoryHandler");	// log info to the Trace object...
+                        return PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
+                    }
                 }
             }
 
-
             // if we reached this point, we didn't find a rewrite match
             context.Trace.Write("RewriterFactoryHandler", "Exiting RewriterFactoryHandler");	// log info to the Trace object...
+
             return PageParser.GetCompiledPageInstance(url, filePath, context);
         }
 

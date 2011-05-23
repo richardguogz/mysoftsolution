@@ -12,8 +12,7 @@ namespace MySoft.Web.Configuration
     [XmlRoot("cacheControl")]
     public class CacheControlConfiguration
     {
-        private bool enabled = false;
-
+        private bool enabled = true;
         // private member variables
         private CacheControlRuleCollection rules;			// an instance of the StaticPageRuleCollection class...
 
@@ -39,6 +38,9 @@ namespace MySoft.Web.Configuration
 
         #region Public Properties
 
+        /// <summary>
+        /// 是否启用配置
+        /// </summary>
         [XmlAttribute("enabled")]
         public bool Enabled
         {
@@ -56,7 +58,7 @@ namespace MySoft.Web.Configuration
         /// A <see cref="StaticPageRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
         /// </summary>
         [XmlArray("rules")]
-        [XmlArrayItem("rule")]
+        [XmlArrayItem("rule", typeof(CacheControlRule))]
         public CacheControlRuleCollection Rules
         {
             get

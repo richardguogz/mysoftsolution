@@ -49,6 +49,7 @@ namespace MySoft.Web.Configuration
     [XmlRoot("rewriter")]
     public class RewriterConfiguration
     {
+        private bool enabled = true;
         // private member variables
         private RewriterRuleCollection rules;			// an instance of the RewriterRuleCollection class...
 
@@ -73,11 +74,28 @@ namespace MySoft.Web.Configuration
         }
 
         #region Public Properties
+
+        /// <summary>
+        ///  «∑Ò∆Ù”√≈‰÷√
+        /// </summary>
+        [XmlAttribute("enabled")]
+        public bool Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+            set
+            {
+                enabled = value;
+            }
+        }
+
         /// <summary>
         /// A <see cref="RewriterRuleCollection"/> instance that provides access to a set of <see cref="RewriterRule"/>s.
         /// </summary>
         [XmlArray("rules")]
-        [XmlArrayItem("rule")]
+        [XmlArrayItem("rule", typeof(RewriterRule))]
         public RewriterRuleCollection Rules
         {
             get

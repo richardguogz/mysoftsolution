@@ -19,29 +19,33 @@ namespace MySoft.Web
             app.Context.Trace.Write("ModuleRewriter", "Entering ModuleRewriter");
 
             // get the configuration rules
-            RewriterRuleCollection rules = RewriterConfiguration.GetConfig().Rules;
+            var config = RewriterConfiguration.GetConfig();
 
-            // iterate through each rule...
-            for (int i = 0; i < rules.Count; i++)
+             //ÅÐ¶ÏconfigÅäÖÃÐÅÏ¢
+            if (config != null && config.Enabled)
             {
-                // get the pattern to look for, and Resolve the Url (convert ~ into the appropriate directory)
-                string lookFor = "^" + RewriterUtils.ResolveUrl(app.Context.Request.ApplicationPath, rules[i].LookFor) + "$";
-
-                // Create a regex (note that IgnoreCase is set...)
-                Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
-
-                // See if a match is found
-                if (re.IsMatch(requestedPath))
+                // iterate through each rule...
+                foreach (RewriterRule rule in config.Rules)
                 {
-                    // match found - do any replacement needed
-                    string sendToUrl = RewriterUtils.ResolveUrl(app.Context.Request.ApplicationPath, re.Replace(requestedPath, rules[i].SendTo));
+                    // get the pattern to look for, and Resolve the Url (convert ~ into the appropriate directory)
+                    string lookFor = "^" + RewriterUtils.ResolveUrl(app.Context.Request.ApplicationPath, rule.LookFor) + "$";
 
-                    // log rewriting information to the Trace object
-                    app.Context.Trace.Write("ModuleRewriter", "Rewriting URL to " + sendToUrl);
+                    // Create a regex (note that IgnoreCase is set...)
+                    Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
 
-                    // Rewrite the URL
-                    RewriterUtils.RewriteUrl(app.Context, sendToUrl);
-                    break;		// exit the for loop
+                    // See if a match is found
+                    if (re.IsMatch(requestedPath))
+                    {
+                        // match found - do any replacement needed
+                        string sendToUrl = RewriterUtils.ResolveUrl(app.Context.Request.ApplicationPath, re.Replace(requestedPath, rule.SendTo));
+
+                        // log rewriting information to the Trace object
+                        app.Context.Trace.Write("ModuleRewriter", "Rewriting URL to " + sendToUrl);
+
+                        // Rewrite the URL
+                        RewriterUtils.RewriteUrl(app.Context, sendToUrl);
+                        break;		// exit the for loop
+                    }
                 }
             }
 

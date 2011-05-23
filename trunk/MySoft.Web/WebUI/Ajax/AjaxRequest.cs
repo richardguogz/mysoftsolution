@@ -310,10 +310,12 @@ namespace MySoft.Web.UI
             string key = path + (parameter != string.Empty ? "?" + parameter : null);
             key = "Cache_Control_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key.ToLower()));
 
-            if (CacheControlConfiguration.GetConfig().Enabled)
+            var config = CacheControlConfiguration.GetConfig();
+
+            //判断config配置信息
+            if (config != null && config.Enabled)
             {
-                object obj = HttpContext.Current.Cache[key];
-                if (obj != null) return obj.ToString();
+                return CacheHelper.Get<string>(key);
             }
 
             return null;
@@ -332,14 +334,16 @@ namespace MySoft.Web.UI
             key = "Cache_Control_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key.ToLower()));
 
             var config = CacheControlConfiguration.GetConfig();
-            if (config.Enabled)
+
+            //判断config配置信息
+            if (config != null && config.Enabled)
             {
                 for (int index = 0; index < config.Rules.Count; index++)
                 {
                     var rule = config.Rules[index];
                     if (rule.Path.ToLower().Contains(path.ToLower()))
                     {
-                        HttpContext.Current.Cache.Insert(key, html, null, DateTime.Now.AddSeconds(rule.Timeout), System.Web.Caching.Cache.NoSlidingExpiration);
+                        CacheHelper.Insert(key, html, null, rule.Timeout);
                         break;
                     }
                 }

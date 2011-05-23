@@ -12,6 +12,7 @@ namespace MySoft.Web.Configuration
     [XmlRoot("staticPage")]
     public class StaticPageConfiguration
     {
+        private bool enabled = true;
         // private member variables
         private StaticPageRuleCollection rules;			// an instance of the StaticPageRuleCollection class...
 
@@ -36,11 +37,28 @@ namespace MySoft.Web.Configuration
         }
 
         #region Public Properties
+
+        /// <summary>
+        ///  «∑Ò∆Ù”√≈‰÷√
+        /// </summary>
+        [XmlAttribute("enabled")]
+        public bool Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+            set
+            {
+                enabled = value;
+            }
+        }
+
         /// <summary>
         /// A <see cref="StaticPageRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
         /// </summary>
         [XmlArray("rules")]
-        [XmlArrayItem("rule")]
+        [XmlArrayItem("rule", typeof(StaticPageRule))]
         public StaticPageRuleCollection Rules
         {
             get
