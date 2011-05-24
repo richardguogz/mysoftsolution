@@ -83,7 +83,7 @@ namespace MySoft.Data.FireBird
         /// </summary>
         /// <param name="cmd"></param>
         /// <returns></returns>
-        protected override DbCommand PrepareCommand(DbCommand cmd)
+        protected override void PrepareParameter(DbCommand cmd)
         {
             //replace "N'" to "'"
             cmd.CommandText = cmd.CommandText.Replace("N'", "'");
@@ -108,8 +108,6 @@ namespace MySoft.Data.FireBird
                     }
                 }
             }
-
-            return base.PrepareCommand(cmd);
         }
 
         /// <summary>

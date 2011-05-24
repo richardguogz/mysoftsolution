@@ -189,7 +189,7 @@ namespace MySoft.Tools.EntityDesign
             //new CodeObjectCreateExpression(typeof(AllField), new CodeExpression[] { new CodePrimitiveExpression(tableName) });
 
             //new CodeTypeReference(type.Name, )
-            CodeTypeReference reference = new CodeTypeReference(typeof(Field), CodeTypeReferenceOptions.GenericTypeParameter);
+            CodeTypeReference reference = new CodeTypeReference(typeof(Field).FullName, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
 
             if (item.Name == fieldName)
                 memberfield.InitExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(fieldName) });
@@ -505,6 +505,9 @@ namespace MySoft.Tools.EntityDesign
 
             #region 重载获取表名和只读
 
+            CodeTypeReference reference = new CodeTypeReference(typeof(Table).FullName, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
+            CodeExpression codeExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(tableName) });
+
             //生成重载的方法
             method = new CodeMemberMethod();
             method.Name = "GetTable";
@@ -529,8 +532,6 @@ namespace MySoft.Tools.EntityDesign
             //entity.Members.Add(method);
 
             //new CodeTypeReference(type.Name,
-            CodeTypeReference reference = new CodeTypeReference(typeof(Table), CodeTypeReferenceOptions.GenericTypeParameter);
-            CodeExpression codeExpression = new CodeObjectCreateExpression(reference, new CodeExpression[] { new CodePrimitiveExpression(tableName) });
 
             method.Statements.Add(new CodeMethodReturnStatement(codeExpression));
             entity.Members.Add(method);
@@ -760,7 +761,7 @@ namespace MySoft.Tools.EntityDesign
                 field.Type = new CodeTypeReference(typeof(AllField));
 
                 //new CodeTypeReference(type.Name,
-                reference = new CodeTypeReference(typeof(AllField), CodeTypeReferenceOptions.GenericTypeParameter);
+                reference = new CodeTypeReference(typeof(AllField).FullName, new CodeTypeReference(type.Name, CodeTypeReferenceOptions.GenericTypeParameter));
                 field.InitExpression = new CodeObjectCreateExpression(reference);
 
                 //添加注释

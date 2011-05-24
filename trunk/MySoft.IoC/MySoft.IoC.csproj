@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -90,6 +91,7 @@
     <Compile Include="Service\Message\ServiceMessageEventHandler.cs" />
     <Compile Include="Service\Message\ServiceMessageEventArgs.cs" />
     <Compile Include="Service\Message\ServiceMessagePool.cs" />
+    <Compile Include="Service\Status\ServiceInfo.cs" />
     <Compile Include="Service\Status\SummaryStatus.cs" />
     <Compile Include="Service\Status\ConnectInfo.cs" />
     <Compile Include="Service\Status\IStatusService.cs" />

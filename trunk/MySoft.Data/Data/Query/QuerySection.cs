@@ -1121,7 +1121,7 @@ namespace MySoft.Data
         /// <param name="parameters"></param>
         private string GetCacheKey(string sql, SQLParameter[] parameters)
         {
-            sql = dbProvider.Serialization(sql);
+            sql = dbProvider.FormatCommandText(sql);
             if (parameters == null) return sql;
             foreach (var p in parameters)
             {

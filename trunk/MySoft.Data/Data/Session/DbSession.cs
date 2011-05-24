@@ -973,7 +973,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public string Serialization(WhereClip where)
         {
-            string sql = dbProvider.Serialization(where.ToString());
+            string sql = dbProvider.FormatCommandText(where.ToString());
             foreach (SQLParameter p in where.Parameters)
             {
                 sql = sql.Replace(p.Name, DataHelper.FormatValue(p.Value));
@@ -988,7 +988,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public string Serialization(OrderByClip order)
         {
-            return dbProvider.Serialization(order.ToString());
+            return dbProvider.FormatCommandText(order.ToString());
         }
 
         #endregion

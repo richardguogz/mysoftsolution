@@ -64,7 +64,7 @@ namespace MySoft.Data.MySql
         /// </summary>
         /// <param name="cmd"></param>
         /// <returns></returns>
-        protected override DbCommand PrepareCommand(DbCommand cmd)
+        protected override void PrepareParameter(DbCommand cmd)
         {
             //替换系统日期值
             cmd.CommandText = cmd.CommandText.Replace("getdate()", "now()");
@@ -92,8 +92,6 @@ namespace MySoft.Data.MySql
                     }
                 }
             }
-
-            return base.PrepareCommand(cmd);
         }
 
         /// <summary>

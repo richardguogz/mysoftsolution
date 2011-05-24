@@ -372,6 +372,26 @@ namespace MySoft.IoC
         #region IStatusService 成员
 
         /// <summary>
+        /// 获取服务信息列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ServiceInfo> GetServiceInfoList()
+        {
+            var list = new List<ServiceInfo>();
+            foreach (Type type in container.GetContractInterfaces())
+            {
+                var service = new ServiceInfo
+                {
+                    Name = type.FullName,
+                    Methods = CoreHelper.GetAllMethodFromType(type)
+                };
+
+                list.Add(service);
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
         /// 清除所有服务器状态
         /// </summary>
         public void ClearStatus()

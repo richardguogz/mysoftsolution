@@ -8,6 +8,7 @@ using System.Text;
 using System.Linq;
 using MySoft.Converter;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json.Utilities;
 
 namespace MySoft
 {
@@ -313,6 +314,26 @@ namespace MySoft
         #region 属性操作
 
         /// <summary>
+        /// 获取所有方法
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static MethodInfo[] GetAllMethodFromType(Type type)
+        {
+            return type.AllMethods().ToArray();
+        }
+
+        /// <summary>
+        /// 获取所有方法
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static MethodInfo[] GetAllMethodFromType<T>()
+        {
+            return typeof(T).AllMethods().ToArray();
+        }
+
+        /// <summary>
         /// 从类型中获取方法
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -331,7 +352,7 @@ namespace MySoft
         /// <returns></returns>
         public static MethodInfo GetMethodFromType(Type type, string methodName)
         {
-            MethodInfo method = type.GetMethods()
+            MethodInfo method = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
             .Where(p => p.ToString() == methodName)
             .FirstOrDefault();
 
@@ -339,7 +360,7 @@ namespace MySoft
             {
                 foreach (Type inheritedInterface in type.GetInterfaces())
                 {
-                    method = inheritedInterface.GetMethods()
+                    method = inheritedInterface.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                             .Where(p => p.ToString() == methodName)
                             .FirstOrDefault();
 

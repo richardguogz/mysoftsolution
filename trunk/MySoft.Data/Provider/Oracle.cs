@@ -84,7 +84,7 @@ namespace MySoft.Data.Oracle
         /// </summary>
         /// <param name="cmd"></param>
         /// <returns></returns>
-        protected override DbCommand PrepareCommand(DbCommand cmd)
+        protected override void PrepareParameter(DbCommand cmd)
         {
             //将sql转换成大写
             cmd.CommandText = cmd.CommandText.ToUpper();
@@ -129,8 +129,6 @@ namespace MySoft.Data.Oracle
                     p.Value = Convert.ToBoolean(p.Value) ? 1 : 0;
                 }
             }
-
-            return base.PrepareCommand(cmd);
         }
 
         /// <summary>

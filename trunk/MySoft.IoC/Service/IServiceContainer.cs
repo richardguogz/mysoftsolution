@@ -66,6 +66,11 @@ namespace MySoft.IoC
         /// <returns>The response msg.</returns>
         ResponseMessage CallService(RequestMessage reqMsg, double logtime);
         /// <summary>
+        /// 获取约束的接口
+        /// </summary>
+        /// <returns></returns>
+        Type[] GetContractInterfaces();
+        /// <summary>
         /// get local service
         /// </summary>
         /// <param name="serviceName"></param>

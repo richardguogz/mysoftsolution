@@ -412,6 +412,40 @@ namespace MySoft.Data
             return retVal;
         }
 
+        /// <summary>
+        /// 调整DbCommand命令
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        private void PrepareCommand(DbCommand cmd)
+        {
+            //调整参数
+            PrepareParameter(cmd);
+
+            //处理command命令
+            cmd.CommandText = FormatCommandText(cmd.CommandText);
+
+            int index = 0;
+            foreach (DbParameter p in cmd.Parameters)
+            {
+                string oldName = p.ParameterName;
+                if (cmd.CommandType == CommandType.Text)
+                {
+                    if (oldName.Length >= 100)
+                        p.ParameterName = FormatParameter("p" + index++);
+                    else
+                        p.ParameterName = FormatParameter(oldName);
+
+                    cmd.CommandText = cmd.CommandText.Replace(oldName, p.ParameterName);
+                }
+                else
+                {
+                    p.ParameterName = FormatParameter(oldName);
+                    cmd.CommandText = cmd.CommandText.Replace(oldName, p.ParameterName);
+                }
+            }
+        }
+
         #endregion
 
         #region 创建DbConnection及DbParameter
@@ -704,11 +738,11 @@ namespace MySoft.Data
         /// <summary>
         /// 返回最终排序的SQL
         /// </summary>
-        /// <param name="sql"></param>
+        /// <param name="cmdText"></param>
         /// <returns></returns>
-        internal protected string Serialization(string sql)
+        internal string FormatCommandText(string cmdText)
         {
-            return DataHelper.FormatSQL(sql, leftToken, rightToken, AccessProvider);
+            return DataHelper.FormatSQL(cmdText, leftToken, rightToken, AccessProvider);
         }
 
         internal DbCommand CreateSqlCommand(string cmdText)
@@ -737,16 +771,6 @@ namespace MySoft.Data
         internal DbCommand CreateProcCommand(string procName)
         {
             return dbHelper.CreateStoredProcCommand(procName);
-        }
-
-        /// <summary>
-        /// 格式化命令
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        internal DbCommand FormatCommand(DbCommand cmd)
-        {
-            return PrepareCommand(cmd);
         }
 
         #endregion
@@ -864,30 +888,6 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 调整DbCommand命令
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        protected virtual DbCommand PrepareCommand(DbCommand cmd)
-        {
-            cmd.CommandText = Serialization(cmd.CommandText);
-            foreach (DbParameter p in cmd.Parameters)
-            {
-                string oldName = p.ParameterName;
-                p.ParameterName = FormatParameter(p.ParameterName);
-
-                if (cmd.CommandType == CommandType.Text)
-                {
-                    if (cmd.CommandText.Contains(oldName) && !cmd.CommandText.Contains(p.ParameterName))
-                    {
-                        cmd.CommandText = cmd.CommandText.Replace(oldName, p.ParameterName);
-                    }
-                }
-            }
-            return cmd;
-        }
-
-        /// <summary>
         /// 创建分页查询
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -968,6 +968,13 @@ namespace MySoft.Data
         /// <returns></returns>
         protected abstract DbParameter CreateParameter(string parameterName, object val);
 
+        /// <summary>
+        /// 调整DbCommand参数
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        protected abstract void PrepareParameter(DbCommand cmd);
+
         #endregion
 
         /// <summary>
@@ -976,7 +983,7 @@ namespace MySoft.Data
         /// <returns></returns>
         private SQLParameter CreateOrmParameter(object value)
         {
-            string pName = CoreHelper.MakeUniqueKey(30, "$p");
+            string pName = CoreHelper.MakeUniqueKey(100, "$");
             return new SQLParameter(pName, value);
         }
 

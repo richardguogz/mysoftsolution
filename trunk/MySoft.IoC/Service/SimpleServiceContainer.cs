@@ -50,31 +50,20 @@ namespace MySoft.IoC
 
         private void DiscoverServices()
         {
-            GraphNode[] nodes = this.Kernel.GraphNodes;
-            foreach (ComponentModel model in nodes)
+            foreach (Type type in GetContractInterfaces())
             {
-                bool markedWithServiceContract = false;
-                var attr = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(model.Service);
-                if (attr != null)
-                {
-                    markedWithServiceContract = true;
-                }
+                object serviceInstance = null;
+                try { serviceInstance = this[type]; }
+                catch { }
 
-                if (markedWithServiceContract)
+                if (serviceInstance != null)
                 {
-                    object serviceInstance = null;
-                    try { serviceInstance = this[model.Service]; }
-                    catch { }
+                    IService service = new DynamicService(this, type, serviceInstance);
+                    RegisterComponent(service.ServiceName, service);
 
-                    if (serviceInstance != null)
+                    if (serviceInstance is IStartable)
                     {
-                        IService service = new DynamicService(this, model.Service, serviceInstance);
-                        RegisterComponent(service.ServiceName, service);
-
-                        if (serviceInstance is IStartable)
-                        {
-                            RegisterComponent("Startable_" + service.ServiceName, serviceInstance.GetType());
-                        }
+                        RegisterComponent("Startable_" + service.ServiceName, serviceInstance.GetType());
                     }
                 }
             }
@@ -231,6 +220,31 @@ namespace MySoft.IoC
         }
 
         /// <summary>
+        /// 获取约束的接口
+        /// </summary>
+        /// <returns></returns>
+        public Type[] GetContractInterfaces()
+        {
+            List<Type> typelist = new List<Type>();
+            GraphNode[] nodes = this.Kernel.GraphNodes;
+            foreach (ComponentModel model in nodes)
+            {
+                bool markedWithServiceContract = false;
+                var attr = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(model.Service);
+                if (attr != null)
+                {
+                    markedWithServiceContract = true;
+                }
+
+                if (markedWithServiceContract)
+                {
+                    typelist.Add(model.Service);
+                }
+            }
+            return typelist.ToArray();
+        }
+
+        /// <summary>
         /// get local service
         /// </summary>
         /// <param name="serviceName"></param>
@@ -256,12 +270,8 @@ namespace MySoft.IoC
 
         private ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
         {
-            if (nodes == null)
-            {
-                return null;
-            }
-
             List<ServiceNodeInfo> serviceNodes = new List<ServiceNodeInfo>();
+            if (nodes == null) return serviceNodes.ToArray();
 
             for (int i = 0; i < nodes.Length; i++)
             {

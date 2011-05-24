@@ -70,7 +70,7 @@ namespace MySoft.Data.SqlServer
         /// </summary>
         /// <param name="cmd"></param>
         /// <returns></returns>
-        protected override DbCommand PrepareCommand(DbCommand cmd)
+        protected override void PrepareParameter(DbCommand cmd)
         {
             foreach (SqlParameter p in cmd.Parameters)
             {
@@ -96,7 +96,6 @@ namespace MySoft.Data.SqlServer
                     }
                 }
             }
-            return base.PrepareCommand(cmd);
         }
     }
 }
