@@ -321,13 +321,41 @@ namespace MySoft.IoC
             //获取或创建一个对象
             TimeStatus status = statuslist.GetOrCreate(DateTime.Now);
 
+            //获取返回的消息
+            ResponseMessage response = null;
             try
             {
-                //获取返回的消息
-                ResponseMessage response = container.CallService(request, config.LogTime);
+                response = container.CallService(request, config.LogTime);
+            }
+            catch (Exception ex)
+            {
+                //抛出错误信息
+                container_OnError(ex);
 
-                //处理错误数
+                response = new ResponseMessage();
+                response.TransactionId = request.TransactionId;
+                //resMsg.RequestAddress = reqMsg.RequestAddress;
+                response.Encrypt = request.Encrypt;
+                response.Compress = request.Compress;
+                response.Encrypt = request.Encrypt;
+                //resMsg.Timeout = reqMsg.Timeout;
+                response.ServiceName = request.ServiceName;
+                response.SubServiceName = request.SubServiceName;
+                response.Parameters = request.Parameters;
+                response.Expiration = request.Expiration;
+                response.Exception = ex;
+            }
+            finally
+            {
+                watch.Stop();
 
+                //处理时间
+                status.ElapsedTime += watch.ElapsedMilliseconds;
+            }
+
+            if (response != null)
+            {
+                //错误及成功计数
                 if (response.Exception == null)
                     status.SuccessCount++;
                 else
@@ -340,18 +368,6 @@ namespace MySoft.IoC
 
                 //发送数据到服务端
                 manager.Server.SendData(socketAsync.AcceptSocket, data);
-            }
-            catch (Exception ex)
-            {
-                status.ErrorCount++;
-                container_OnError(ex);
-            }
-            finally
-            {
-                watch.Stop();
-
-                //处理时间
-                status.ElapsedTime += watch.ElapsedMilliseconds;
             }
         }
 

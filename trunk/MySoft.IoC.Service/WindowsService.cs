@@ -104,14 +104,6 @@ namespace MySoft.IoC.Service
                         Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(message);
                 }
-                else
-                {
-                    if (type == LogType.Warning)
-                    {
-                        string message = string.Format("({0}) {1}", type, log);
-                        SimpleLog.Instance.WriteLogWithSendMail(message, mailTo);
-                    }
-                }
             }
         }
 

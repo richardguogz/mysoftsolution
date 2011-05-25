@@ -214,8 +214,9 @@ namespace MySoft.PlatformService
             }
             else
             {
+                var prefix = serviceName.Substring(0, 1);
                 serviceName = serviceName.Substring(1);
-                if (string.IsNullOrEmpty(serviceName))
+                if (prefix != "-" || string.IsNullOrEmpty(serviceName))
                 {
                     Console.WriteLine("输入的参数无效！");
                     return;
@@ -271,8 +272,9 @@ namespace MySoft.PlatformService
             }
             else
             {
+                var prefix = serviceName.Substring(0, 1);
                 serviceName = serviceName.Substring(1);
-                if (string.IsNullOrEmpty(serviceName))
+                if (prefix != "-" || string.IsNullOrEmpty(serviceName))
                 {
                     Console.WriteLine("输入的参数无效！");
                     return;

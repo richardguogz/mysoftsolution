@@ -29,6 +29,8 @@ namespace MySoft.PlatformService.UserService
         {
             userid = username.Length;
 
+            return null;
+
             //if (username.Length % 2 == 0)
             //{
             //    throw new Exception(username + " =>  出错啦！");

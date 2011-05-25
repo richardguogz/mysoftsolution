@@ -59,23 +59,6 @@ namespace MySoft.IoC.Services
             resMsg.Parameters = reqMsg.Parameters;
             resMsg.Expiration = reqMsg.Expiration;
 
-            //如果没有找到服务
-            if (serviceInstance == null)
-            {
-                try { serviceInstance = container[serviceInterfaceType]; }
-                catch { }
-
-                if (serviceInstance == null)
-                {
-                    var exception = new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
-                    {
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
-                    };
-                    resMsg.Exception = exception;
-                    return resMsg;
-                }
-            }
-
             #region 获取相应的方法
 
             MethodInfo method = null;
