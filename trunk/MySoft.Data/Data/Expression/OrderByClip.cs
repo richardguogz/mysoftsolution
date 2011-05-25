@@ -3,7 +3,7 @@ using System;
 namespace MySoft.Data
 {
     /// <summary>
-    /// 
+    /// ≈≈–Úππ‘Ï∆˜
     /// </summary>
     [Serializable]
     public class OrderByClip

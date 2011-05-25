@@ -71,10 +71,10 @@ namespace MySoft
             // Populate Error Information Collection
             NameValueCollection error_info = new NameValueCollection();
             error_info.Add("Type", ex.GetType().FullName);
-            error_info.Add("Message", CleanHTML(ex.Message));
-            error_info.Add("Source", CleanHTML(ex.Source));
-            error_info.Add("TargetSite", CleanHTML(ex.TargetSite == null ? null : ex.TargetSite.ToString()));
-            error_info.Add("StackTrace", CleanHTML(ex.StackTrace));
+            error_info.Add("Message", ReplaceNewline(ex.Message));
+            error_info.Add("Source", ReplaceNewline(ex.Source));
+            error_info.Add("TargetSite", ReplaceNewline(ex.TargetSite == null ? null : ex.TargetSite.ToString()));
+            error_info.Add("StackTrace", ReplaceNewline(ex.StackTrace));
 
             // Error Information
             html += heading.Replace("<!--HEADER-->", "Error Information");
@@ -259,17 +259,12 @@ namespace MySoft
             return CollectionToHtmlTable(NVC);
         }
 
-        private static string CleanHTML(string html)
+        private static string ReplaceNewline(string html)
         {
-            if (html == null) return html;
-            // Cleans the string for HTML friendly display
-            return (html.Length == 0) ? "" : html.Replace("<", "&lt;")
-                                                .Replace(">", "&gt;")
-                                                .Replace("&", "&amp;")
-                                                .Replace(" ", "&nbsp;")
-                                                .Replace("\r\n", "<br/ >")
-                                                .Replace("\n", "<br/ >");
+            if (string.IsNullOrEmpty(html)) return html;
 
+            // Cleans the string for HTML friendly display
+            return html.Replace("\r\n", "<br/ >").Replace("\n", "<br/ >");
         }
     }
 }

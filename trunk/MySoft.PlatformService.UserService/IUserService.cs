@@ -12,7 +12,7 @@ namespace MySoft.PlatformService.UserService
     public interface IUserService
     {
         [OperationContract(CacheTime = 30000)]
-        UserInfo GetUserInfo(string username, out int userid);
+        UserInfo GetUserInfo(string username, string user, out int userid);
 
         DataTable GetDataTable();
 
@@ -29,5 +29,13 @@ namespace MySoft.PlatformService.UserService
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return typeof(Data.DataHelper).FullName;
+            }
+        }
     }
 }

@@ -35,20 +35,14 @@ namespace MySoft.PlatformService.Console
         {
             lock (syncobj)
             {
-                //string message = "[" + DateTime.Now.ToString() + "] " + log;
-                //if (type == LogType.Error)
-                //    System.Console.ForegroundColor = ConsoleColor.Red;
-                //else if (type == LogType.Warning)
-                //    System.Console.ForegroundColor = ConsoleColor.Yellow;
-                //else
-                //    System.Console.ForegroundColor = ConsoleColor.White;
-                //System.Console.WriteLine(message);
-
-                if (type == LogType.Warning)
-                {
-                    string message = string.Format("({0}) {1}", type, log);
-                    SimpleLog.Instance.WriteLogWithSendMail(message, "maoyong@fund123.cn");
-                }
+                string message = "[" + DateTime.Now.ToString() + "] " + log;
+                if (type == LogType.Error)
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                else if (type == LogType.Warning)
+                    System.Console.ForegroundColor = ConsoleColor.Yellow;
+                else
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                System.Console.WriteLine(message);
             }
         }
 
@@ -56,24 +50,24 @@ namespace MySoft.PlatformService.Console
         {
             lock (syncobj)
             {
-                //string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
-                //if (exception.InnerException != null)
-                //{
-                //    message += "\r\n错误信息 => " + exception.InnerException.Message;
-                //}
-                //System.Console.ForegroundColor = ConsoleColor.Red;
-                //System.Console.WriteLine(message);
-
-                if (exception is IoCException)
+                string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
+                if (exception.InnerException != null)
                 {
-                    var ex = exception as IoCException;
-                    if (string.IsNullOrEmpty(ex.ExceptionHeader))
-                    {
-                        ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                    }
-                    exception = new Exception(ex.ExceptionHeader, exception);
+                    message += "\r\n错误信息 => " + exception.InnerException.Message;
                 }
-                SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
+                System.Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine(message);
+
+                //if (exception is IoCException)
+                //{
+                //    var ex = exception as IoCException;
+                //    if (string.IsNullOrEmpty(ex.ExceptionHeader))
+                //    {
+                //        ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
+                //    }
+                //    exception = new Exception(ex.ExceptionHeader, exception);
+                //}
+                //SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
             }
         }
     }

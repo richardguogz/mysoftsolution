@@ -20,6 +20,7 @@ namespace MySoft.Mail
             : base()
         {
             this.Success = true;
+            this.Message = "邮件处理成功！";
         }
     }
 }

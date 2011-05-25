@@ -25,29 +25,9 @@ namespace MySoft.PlatformService.UserService
             Console.WriteLine(user.Name);
         }
 
-        public UserInfo GetUserInfo(string username, out int userid)
+        public UserInfo GetUserInfo(string username, string user1, out int userid)
         {
             userid = username.Length;
-
-            return null;
-
-            //if (username.Length % 2 == 0)
-            //{
-            //    throw new Exception(username + " =>  出错啦！");
-            //}
-
-            //if (username.Length % 2 == 0)
-            //{
-            //    Thread.Sleep(2000);
-            //}
-            //else
-            //{
-            //    Thread.Sleep(1000);
-            //}
-
-            Thread.Sleep(1000);
-
-            //throw new Exception(username + " =>  出错啦！");
 
             var user = new UserInfo()
             {
