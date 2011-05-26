@@ -12,7 +12,7 @@ namespace MySoft.PlatformService.UserService
     public interface IUserService
     {
         [OperationContract(CacheTime = 30000)]
-        UserInfo GetUserInfo(string username, string user, out int userid);
+        UserInfo GetUserInfo(string username, out int userid);
 
         DataTable GetDataTable();
 

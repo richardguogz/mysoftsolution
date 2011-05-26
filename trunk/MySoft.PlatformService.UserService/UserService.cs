@@ -25,7 +25,7 @@ namespace MySoft.PlatformService.UserService
             Console.WriteLine(user.Name);
         }
 
-        public UserInfo GetUserInfo(string username, string user1, out int userid)
+        public UserInfo GetUserInfo(string username, out int userid)
         {
             userid = username.Length;
 
