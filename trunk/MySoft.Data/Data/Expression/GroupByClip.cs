@@ -13,6 +13,19 @@ namespace MySoft.Data
         /// </summary>
         public static readonly GroupByClip None = new GroupByClip((string)null);
         private string groupBy;
+        /// <summary>
+        /// GroupBy的值
+        /// </summary>
+        public string Value
+        {
+            get { return groupBy; }
+            set { groupBy = value; }
+        }
+
+        /// <summary>
+        /// 自定义一个GroupBy条件
+        /// </summary>
+        public GroupByClip() { }
 
         /// <summary>
         /// 自定义一个GroupBy条件

@@ -26,7 +26,12 @@ namespace MySoft.Data
         public ParameterDirection Direction { get; set; }
 
         /// <summary>
-        /// 初始化OrmParameter
+        /// 初始化SQLParameter
+        /// </summary>
+        public SQLParameter() { }
+
+        /// <summary>
+        /// 初始化SQLParameter
         /// </summary>
         /// <param name="pName"></param>
         public SQLParameter(string pName)

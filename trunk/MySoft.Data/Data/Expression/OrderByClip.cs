@@ -13,6 +13,19 @@ namespace MySoft.Data
         /// </summary>
         public static readonly OrderByClip None = new OrderByClip((string)null);
         private string orderBy;
+        /// <summary>
+        /// OrderBy的值
+        /// </summary>
+        public string Value
+        {
+            get { return orderBy; }
+            set { orderBy = value; }
+        }
+
+        /// <summary>
+        /// 自定义一个OrderBy条件
+        /// </summary>
+        public OrderByClip() { }
 
         /// <summary>
         /// 自定义一个OrderBy条件

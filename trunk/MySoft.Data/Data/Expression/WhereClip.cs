@@ -15,17 +15,28 @@ namespace MySoft.Data
         public static readonly WhereClip None = new WhereClip((string)null);
         private List<SQLParameter> plist = new List<SQLParameter>();
         private string where;
+        /// <summary>
+        /// Where的值
+        /// </summary>
+        public string Value
+        {
+            get { return where; }
+            set { where = value; }
+        }
 
         /// <summary>
         /// 返回参数列表
         /// </summary>
-        internal SQLParameter[] Parameters
+        public SQLParameter[] Parameters
         {
-            get
-            {
-                return plist.ToArray();
-            }
+            get { return plist.ToArray(); }
+            set { plist.Clear(); plist.AddRange(value); }
         }
+
+        /// <summary>
+        /// 自定义一个Where条件
+        /// </summary>
+        public WhereClip() { }
 
         /// <summary>
         /// 自定义一个Where条件
