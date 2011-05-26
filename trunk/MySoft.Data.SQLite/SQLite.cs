@@ -31,6 +31,15 @@ namespace MySoft.Data.SQLite
             get { return "select last_insert_rowid()"; }
         }
 
+        /// <summary>
+        /// 获取参数类型
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        protected override object GetParameterType(DbParameter parameter)
+        {
+            return (parameter as SQLiteParameter).DbType;
+        }
 
         /// <summary>
         /// 创建DbParameter

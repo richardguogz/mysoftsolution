@@ -94,7 +94,7 @@ namespace MySoft.PlatformService.Client
             //var str = service.GetUserID();
 
             int userid;
-            var user = service.GetUserInfo("maoyong", "us", out userid);
+            var user = service.GetUserInfo("maoyong", out userid);
 
             return;
 

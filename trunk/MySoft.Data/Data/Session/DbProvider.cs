@@ -863,9 +863,9 @@ namespace MySoft.Data
                 foreach (DbParameter p in command.Parameters)
                 {
                     if (p.Size > 0)
-                        sb.Append(string.Format("{0}[{1}({2})] = {3}\r\n", p.ParameterName, p.DbType, p.Size, p.Value));
+                        sb.Append(string.Format("{0}[{1}][{2}({3})] = {4}\r\n", p.ParameterName, p.DbType, GetParameterType(p), p.Size, p.Value));
                     else
-                        sb.Append(string.Format("{0}[{1}] = {2}\r\n", p.ParameterName, p.DbType, p.Value));
+                        sb.Append(string.Format("{0}[{1}][{2}] = {3}\r\n", p.ParameterName, p.DbType, GetParameterType(p), p.Value));
                 }
             }
             sb.Append("\r\n");
@@ -959,6 +959,13 @@ namespace MySoft.Data
         /// 返回自动ID的sql语句
         /// </summary>
         protected abstract string AutoIncrementValue { get; }
+
+        /// <summary>
+        /// 获取参数类型
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        protected abstract object GetParameterType(DbParameter parameter);
 
         /// <summary>
         /// 创建DbParameter
