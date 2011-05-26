@@ -200,6 +200,11 @@ namespace MySoft.IoC
                         IService service = container.GetLocalService(typeof(IServiceInterfaceType).FullName);
                         if (service == null)
                         {
+                            if (singleton.proxies.Count == 0)
+                            {
+                                throw new IoCException("Not find any service node£¡");
+                            }
+
                             if (string.IsNullOrEmpty(nodeKey)) nodeKey = config.Default;
                             if (!string.IsNullOrEmpty(nodeKey))
                             {
