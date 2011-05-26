@@ -37,6 +37,19 @@ namespace MySoft.Data
         /// 字段*
         /// </summary>
         public static readonly AllField All = new AllField();
+
+        /// <summary>
+        /// 从属性转换成Field
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public static Field Parse<T>(string propertyName)
+            where T : Entity
+        {
+            return CoreHelper.CreateInstance<T>().As<IEntityBase>().GetField(propertyName);
+        }
+
         protected string propertyName;
         protected string tableName;
         protected string fieldName;
@@ -275,7 +288,8 @@ namespace MySoft.Data
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            if (obj == null) return false;
+            return this.FieldName == (obj as Field).FieldName;
         }
 
         public override int GetHashCode()
