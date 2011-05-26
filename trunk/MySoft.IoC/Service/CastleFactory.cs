@@ -96,7 +96,7 @@ namespace MySoft.IoC
                         if (node.Value.MaxPool > 100) throw new IoCException("Maximum pool size 100！");
 
                         var proxy = new ProxyService(container, node.Value);
-                        instance.proxies[node.Key] = proxy;
+                        instance.proxies[node.Key.ToLower()] = proxy;
                     }
                 }
             }
@@ -206,16 +206,20 @@ namespace MySoft.IoC
                             }
 
                             if (string.IsNullOrEmpty(nodeKey)) nodeKey = config.Default;
-                            if (!string.IsNullOrEmpty(nodeKey))
+
+                            //如果不存在当前配置节，则使用默认配置节
+                            if (!singleton.proxies.ContainsKey(nodeKey.ToLower()))
                             {
-                                if (singleton.proxies.ContainsKey(nodeKey))
-                                {
-                                    service = singleton.proxies[nodeKey];
-                                }
-                                else
-                                {
-                                    throw new IoCException("Not find the service node [" + nodeKey + "]！");
-                                }
+                                nodeKey = "default";
+                            }
+
+                            if (singleton.proxies.ContainsKey(nodeKey.ToLower()))
+                            {
+                                service = singleton.proxies[nodeKey.ToLower()];
+                            }
+                            else
+                            {
+                                throw new IoCException("Not find the service node [" + nodeKey + "]！");
                             }
                         }
 

@@ -42,32 +42,39 @@ namespace MySoft.Data
         EntityBase GetOriginalObject();
 
         /// <summary>
-        /// 使用this获取值信息
+        /// 使用propertyName获取值信息
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
         object GetValue(string propertyName);
 
         /// <summary>
-        /// 使用this获设置信息
+        /// 使用propertyName获设置信息
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
         void SetValue(string propertyName, object value);
 
         /// <summary>
-        /// 使用this获取值信息
+        /// 使用field获取值信息
         /// </summary>
         /// <param name="FieldName"></param>
         /// <returns></returns>
         object GetValue(Field field);
 
         /// <summary>
-        /// 使用this获设置信息
+        /// 使用field获设置信息
         /// </summary>
         /// <param name="FieldName"></param>
         /// <returns></returns>
         void SetValue(Field field, object value);
+
+        /// <summary>
+        /// 通过属性获取字段
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        Field GetField(string propertyName);
     }
 }
 

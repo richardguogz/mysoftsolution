@@ -169,6 +169,7 @@ namespace MySoft
         /// <param name="value"></param>
         public static void SetPropertyValue(object obj, PropertyInfo property, object value)
         {
+            if (obj == null) return;
             if (!property.CanWrite) return;
             try
             {
@@ -190,7 +191,8 @@ namespace MySoft
         /// <param name="value"></param>
         public static void SetPropertyValue(object obj, string propertyName, object value)
         {
-            PropertyInfo property = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
+            if (obj == null) return;
+            PropertyInfo property = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
             if (property != null)
             {
                 SetPropertyValue(obj, property, value);
@@ -205,6 +207,7 @@ namespace MySoft
         /// <returns></returns>
         public static object GetPropertyValue(object obj, PropertyInfo property)
         {
+            if (obj == null) return null;
             if (!property.CanRead) return null;
             try
             {
@@ -225,7 +228,8 @@ namespace MySoft
         /// <returns></returns>
         public static object GetPropertyValue(object obj, string propertyName)
         {
-            PropertyInfo property = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
+            if (obj == null) return null;
+            PropertyInfo property = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
             if (property != null)
             {
                 return GetPropertyValue(obj, property);

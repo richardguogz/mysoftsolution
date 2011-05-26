@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using MySoft.Data.Design;
-using Newtonsoft.Json;
+using System.Linq;
 
 namespace MySoft.Data
 {
@@ -119,7 +119,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 使用this获取值信息
+        /// 使用propertyName获取值信息
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -129,7 +129,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 使用this获设置信息
+        /// 使用propertyName获设置信息
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
@@ -139,7 +139,7 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 使用this获取值信息
+        /// 使用field获取值信息
         /// </summary>
         /// <param name="FieldName"></param>
         /// <returns></returns>
@@ -149,13 +149,23 @@ namespace MySoft.Data
         }
 
         /// <summary>
-        /// 使用this获设置信息
+        /// 使用field获设置信息
         /// </summary>
         /// <param name="FieldName"></param>
         /// <returns></returns>
         void IEntityBase.SetValue(Field field, object value)
         {
             CoreHelper.SetPropertyValue(this, field.PropertyName, value);
+        }
+
+        /// <summary>
+        /// 通过属性获取字段
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        Field IEntityBase.GetField(string propertyName)
+        {
+            return this.GetFields().FirstOrDefault(p => string.Compare(p.PropertyName, propertyName, true) == 0);
         }
 
         /// <summary>
