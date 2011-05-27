@@ -65,6 +65,7 @@ namespace MySoft.Logger
                 try
                 {
                     string filePath = Path.Combine(dir, "ErrorLog");
+                    filePath = Path.Combine(filePath, ex.GetType().Name);
                     string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
 
                     if (!Directory.Exists(filePath))

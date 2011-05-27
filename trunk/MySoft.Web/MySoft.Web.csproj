@@ -69,10 +69,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\Configuration\CacheControlConfigurationHandler.cs" />
-    <Compile Include="Cache\Configuration\CacheControlConfiguration.cs" />
-    <Compile Include="Cache\Configuration\CacheControlRule.cs" />
-    <Compile Include="Cache\Configuration\CacheControlRuleCollection.cs" />
+    <Compile Include="CacheControl\Configuration\CacheControlConfigurationHandler.cs" />
+    <Compile Include="CacheControl\Configuration\CacheControlConfiguration.cs" />
+    <Compile Include="CacheControl\Configuration\CacheControlRule.cs" />
+    <Compile Include="CacheControl\Configuration\CacheControlRuleCollection.cs" />
+    <Compile Include="StaticPage\StaticPageException.cs" />
     <Compile Include="URLRewriter\BaseModuleRewriter.cs" />
     <Compile Include="URLRewriter\Configuration\RewriterConfiguration.cs" />
     <Compile Include="URLRewriter\Configuration\RewriterConfigurationHandler.cs" />
@@ -86,9 +87,9 @@
     <Compile Include="Utils\HtmlPager.cs" />
     <Compile Include="Utils\WebHelper.cs" />
     <Compile Include="WebUI\Ajax\AjaxNamespaceAttribute.cs" />
-    <Compile Include="Static\UpdateDependency.cs" />
-    <Compile Include="Static\StaticPageManager.cs" />
-    <Compile Include="Static\StaticPageItem.cs" />
+    <Compile Include="StaticPage\UpdateDependency.cs" />
+    <Compile Include="StaticPage\StaticPageManager.cs" />
+    <Compile Include="StaticPage\StaticPageItem.cs" />
     <Compile Include="Handler\AjaxPageHandler.cs" />
     <Compile Include="WebUI\Ajax\AjaxCallbackParam.cs" />
     <Compile Include="WebUI\Ajax\AjaxMethodAttribute.cs" />

@@ -46,7 +46,7 @@ namespace MySoft.IoC
             Hashtable hashTypes = new Hashtable();
             hashTypes[typeof(IStatusService)] = this;
 
-            this.container = new SimpleServiceContainer(hashTypes);
+            this.container = new SimpleServiceContainer(CastleFactoryType.Local, hashTypes);
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();

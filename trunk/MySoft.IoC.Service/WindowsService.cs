@@ -117,7 +117,7 @@ namespace MySoft.IoC.Service
                     string message = string.Format("[{0}] => {1}", DateTime.Now, exception.Message);
                     if (exception.InnerException != null)
                     {
-                        message += string.Format("\r\n错误信息 => {0}", exception.InnerException.Message);
+                        message += string.Format("\r\n错误信息 => {0}", ErrorHelper.GetInnerException(exception.InnerException).Message);
                     }
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(message);
@@ -125,15 +125,6 @@ namespace MySoft.IoC.Service
             }
             else
             {
-                if (exception is IoCException)
-                {
-                    var ex = exception as IoCException;
-                    if (string.IsNullOrEmpty(ex.ExceptionHeader))
-                    {
-                        ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                    }
-                    exception = new Exception(ex.ExceptionHeader, exception);
-                }
                 SimpleLog.Instance.WriteLogWithSendMail(exception, mailTo);
             }
         }

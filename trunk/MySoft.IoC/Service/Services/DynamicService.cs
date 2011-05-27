@@ -71,7 +71,7 @@ namespace MySoft.IoC.Services
                 method = CoreHelper.GetMethodFromType(serviceInterfaceType, reqMsg.SubServiceName);
                 if (method == null)
                 {
-                    var exception = new IoCException(string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName))
+                    var exception = new WarningException(string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName))
                     {
                         ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
@@ -91,6 +91,10 @@ namespace MySoft.IoC.Services
             for (int i = 0; i < pis.Length; i++)
             {
                 if (!pis[i].ParameterType.IsByRef)
+                {
+                    paramValues[i] = resMsg.Parameters[pis[i].Name];
+                }
+                else if (!pis[i].IsOut)
                 {
                     paramValues[i] = resMsg.Parameters[pis[i].Name];
                 }

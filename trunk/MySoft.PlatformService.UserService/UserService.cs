@@ -19,10 +19,12 @@ namespace MySoft.PlatformService.UserService
             return 1;
         }
 
-        public void SetUser(UserInfo user)
+        public void SetUser(UserInfo user, ref int userid)
         {
-            throw new Exception("asdfsad");
-            Console.WriteLine(user.Name);
+            //throw new Exception("asdfsad");
+            //Console.WriteLine(user.Name);
+
+            userid = userid + 1;
         }
 
         public UserInfo GetUserInfo(string username, out int userid)

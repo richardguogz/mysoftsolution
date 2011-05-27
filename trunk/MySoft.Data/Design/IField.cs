@@ -6,7 +6,6 @@ namespace MySoft.Data.Design
     /// </summary>
     public interface IField
     {
-        string Name { get; }
         string OriginalName { get; }
 
         #region Ìõ¼þ²Ù×÷

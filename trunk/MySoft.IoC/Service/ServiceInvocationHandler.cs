@@ -71,7 +71,7 @@ namespace MySoft.IoC
             if ((pis.Length == 0 && paramValues != null && paramValues.Length > 0) || (paramValues != null && pis.Length != paramValues.Length))
             {
                 //参数不正确直接返回异常
-                throw new IoCException(string.Format("Invalid parameters ({0},{1}).\r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData))
+                throw new WarningException(string.Format("Invalid parameters ({0},{1}).\r\nParameters ==> {2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters.SerializedData))
                 {
                     ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                 };
@@ -84,6 +84,11 @@ namespace MySoft.IoC
                     if (paramValues[i] != null)
                     {
                         if (!pis[i].ParameterType.IsByRef)
+                        {
+                            //如果传递的是引用，则跳过
+                            reqMsg.Parameters[pis[i].Name] = paramValues[i];
+                        }
+                        else if (!pis[i].IsOut)
                         {
                             //如果传递的是引用，则跳过
                             reqMsg.Parameters[pis[i].Name] = paramValues[i];
@@ -180,16 +185,26 @@ namespace MySoft.IoC
                         container.WriteError(ex);
                 }
 
+                //参数
+                parameters = resMsg.Parameters;
+
                 //如果数据为null,则返回null
                 if (resMsg == null || resMsg.Data == null)
                 {
+                    //给引用的参数赋值
+                    for (int i = 0; i < pis.Length; i++)
+                    {
+                        if (pis[i].ParameterType.IsByRef)
+                        {
+                            //给参数赋值
+                            paramValues[i] = parameters[pis[i].Name];
+                        }
+                    }
+
                     return CoreHelper.GetTypeDefaultValue(reqMsg.ReturnType);
                 }
 
                 #region 处理返回的数据
-
-                //参数
-                parameters = resMsg.Parameters;
 
                 //处理是否解密
                 if (resMsg.Encrypt) resMsg.Data = XXTEA.Decrypt(resMsg.Data, resMsg.Keys);

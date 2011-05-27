@@ -15,7 +15,10 @@ namespace MySoft.Data
             base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
         }
 
-        public override string Name
+        /// <summary>
+        /// 重载名称
+        /// </summary>
+        internal override string Name
         {
             get
             {
@@ -52,7 +55,10 @@ namespace MySoft.Data
             base.fieldName = string.Format("{0} = ({1})", base.Name, qString);
         }
 
-        public override string Name
+        /// <summary>
+        /// 重载名称
+        /// </summary>
+        internal override string Name
         {
             get
             {

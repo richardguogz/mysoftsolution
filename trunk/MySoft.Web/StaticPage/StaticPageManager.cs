@@ -99,8 +99,12 @@ namespace MySoft.Web
                     }
                     catch (Exception ex)
                     {
-                        var exception = new WebException("执行页面生成出现异常：" + ex.Message, ex);
-                        if (OnError != null) OnError(exception);
+                        var exception = new StaticPageException("执行页面生成出现异常：" + ex.Message, ex);
+                        if (OnError != null)
+                        {
+                            try { OnError(exception); }
+                            catch { }
+                        }
                     }
                 }
             }
@@ -418,8 +422,9 @@ namespace MySoft.Web
         {
             if (OnError != null)
             {
-                var exception = new WebException(log, ex);
-                OnError(exception);
+                var exception = new StaticPageException(log, ex);
+                try { OnError(exception); }
+                catch { }
             }
         }
 

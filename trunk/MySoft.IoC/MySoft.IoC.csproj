@@ -100,6 +100,7 @@
     <Compile Include="Service\Status\SecondStatus.cs" />
     <Compile Include="Service\Status\HighestStatus.cs" />
     <Compile Include="Service\Status\TimeStatus.cs" />
+    <Compile Include="WarningException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">

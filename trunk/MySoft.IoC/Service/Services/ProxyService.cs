@@ -98,8 +98,8 @@ namespace MySoft.IoC
                         {
                             //SerializationManager.Serialize(retMsg)
                             string log = string.Format("¡¾{7}¡¿Call ({0}:{1}) remote service ({2},{3}). {5}\r\nMessage ==> {6}\r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
-                            log = string.Format("Elapsed time more than {0} ms, {1}", logtime * 1000, log);
-                            var exception = new IoCException(log)
+                            log = string.Format("Elapsed time ({2}) ms more than ({0}) ms, {1}", logtime * 1000, log, watch.ElapsedMilliseconds);
+                            var exception = new WarningException(log)
                             {
                                 ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                             };
@@ -111,7 +111,7 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    throw new IoCException(string.Format("Send data to ({0}:{1}) failure£¡", node.IP, node.Port))
+                    throw new WarningException(string.Format("Send data to ({0}:{1}) failure£¡", node.IP, node.Port))
                     {
                         ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
@@ -152,7 +152,7 @@ namespace MySoft.IoC
                 if (!wir.IsCompleted) wir.Cancel(true);
                 watch.Stop();
 
-                throw new IoCException(string.Format("¡¾{5}¡¿Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)£¡", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
+                throw new WarningException(string.Format("¡¾{5}¡¿Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)£¡", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
                 {
                     ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                 };

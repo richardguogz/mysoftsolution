@@ -18,8 +18,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="message"></param>
         public IoCException(string message)
-            : base(ExceptionType.RemotingException, message)
-        { }
+            : base(ExceptionType.IoCException, message) { }
 
         /// <summary>
         /// 内嵌异常的构造方法
@@ -27,8 +26,7 @@ namespace MySoft.IoC
         /// <param name="message"></param>
         /// <param name="ex"></param>
         public IoCException(string message, Exception ex)
-            : base(ExceptionType.RemotingException, message, ex)
-        { }
+            : base(ExceptionType.IoCException, message, ex) { }
 
         /// <summary>
         /// 构造函数
@@ -45,6 +43,17 @@ namespace MySoft.IoC
         {
             info.AddValue("ExceptionHeader", this.ExceptionHeader);
             base.GetObjectData(info, context);
+        }
+
+        /// <summary>
+        /// 获取描述信息
+        /// </summary>
+        public override string Message
+        {
+            get
+            {
+                return string.Format("{0}\r\n\r\n{1}", this.ExceptionHeader, base.Message);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace MySoft.PlatformService.UserService
 
         DataTable GetDataTable();
 
-        void SetUser(UserInfo user);
+        void SetUser(UserInfo user, ref int userid);
 
         int GetUserID();
     }

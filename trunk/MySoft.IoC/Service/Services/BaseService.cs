@@ -81,8 +81,8 @@ namespace MySoft.IoC.Services
                 if (watch.ElapsedMilliseconds > logtime * 1000)
                 {
                     string log = string.Format("¡¾{6}¡¿Dynamic ({0}) service ({1},{2}). {4}\r\nMessage ==> {5}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
-                    log = string.Format("Elapsed time more than {0} ms, {1}", logtime * 1000, log);
-                    var exception = new IoCException(log)
+                    log = string.Format("Elapsed time ({2}) ms more than ({0}) ms, {1}", logtime * 1000, log, watch.ElapsedMilliseconds);
+                    var exception = new WarningException(log)
                     {
                         ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };

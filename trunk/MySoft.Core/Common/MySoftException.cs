@@ -36,7 +36,7 @@ namespace MySoft
         /// <summary>
         /// Task异常
         /// </summary>
-        TaskException
+        TaskException,
     }
 
     /// <summary>

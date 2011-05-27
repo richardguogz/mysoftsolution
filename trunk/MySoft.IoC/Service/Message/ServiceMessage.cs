@@ -58,7 +58,7 @@ namespace MySoft.IoC
                 isConnected = manager.Client.ConnectTo(ip, port, timeout);
                 if (!isConnected)
                 {
-                    throw new IoCException(string.Format("Can't connect to server ({0}:{1})！Remote node : {2}", ip, port, node));
+                    throw new WarningException(string.Format("Can't connect to server ({0}:{1})！Remote node : {2}", ip, port, node));
                 }
             }
 

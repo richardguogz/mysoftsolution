@@ -38,18 +38,6 @@ namespace MySoft.Data
         /// </summary>
         public static readonly AllField All = new AllField();
 
-        /// <summary>
-        /// 从属性转换成Field
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        public static Field Parse<T>(string propertyName)
-            where T : Entity
-        {
-            return CoreHelper.CreateInstance<T>().As<IEntityBase>().GetField(propertyName);
-        }
-
         protected string propertyName;
         protected string tableName;
         protected string fieldName;
@@ -170,7 +158,7 @@ namespace MySoft.Data
         /// <summary>
         /// 获取真实字段名
         /// </summary>
-        public virtual string Name
+        internal virtual string Name
         {
             get
             {

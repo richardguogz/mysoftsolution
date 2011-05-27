@@ -13,6 +13,7 @@ using System.Linq;
 using MySoft.Logger;
 using MySoft.Cache;
 using System.Reflection;
+using System.Configuration;
 
 namespace MySoft.IoC
 {
@@ -26,16 +27,13 @@ namespace MySoft.IoC
         private IWindsorContainer container;
         private ICacheDependent cache;
 
-        private void Init(IDictionary serviceKeyTypes)
+        private void Init(CastleFactoryType type, IDictionary serviceKeyTypes)
         {
-            if (System.Configuration.ConfigurationManager.GetSection("castle") != null)
-            {
-                container = new WindsorContainer(new XmlInterpreter());
-            }
-            else
-            {
+            //如果不是远程模式，则加载配置节
+            if (type == CastleFactoryType.Remote || ConfigurationManager.GetSection("castle") == null)
                 container = new WindsorContainer();
-            }
+            else
+                container = new WindsorContainer(new XmlInterpreter());
 
             //加载自启动注入
             container.AddFacility("startable", new StartableFacility());
@@ -77,9 +75,9 @@ namespace MySoft.IoC
         /// Initializes a new instance of the <see cref="SimpleServiceContainer"/> class.
         /// </summary>
         /// <param name="config"></param>
-        public SimpleServiceContainer()
+        public SimpleServiceContainer(CastleFactoryType type)
         {
-            Init(null);
+            Init(type, null);
         }
 
         /// <summary>
@@ -87,9 +85,9 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="config"></param>
         /// <param name="serviceKeyTypes">The service key types.</param>
-        public SimpleServiceContainer(IDictionary serviceKeyTypes)
+        public SimpleServiceContainer(CastleFactoryType type, IDictionary serviceKeyTypes)
         {
-            Init(serviceKeyTypes);
+            Init(type, serviceKeyTypes);
         }
 
         #endregion
@@ -211,7 +209,7 @@ namespace MySoft.IoC
             IService localService = GetLocalService(reqMsg.ServiceName);
             if (localService == null)
             {
-                throw new IoCException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
+                throw new WarningException(string.Format("The server not find matching service ({0}).", reqMsg.ServiceName))
                 {
                     ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                 };

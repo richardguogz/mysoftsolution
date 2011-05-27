@@ -85,7 +85,7 @@ namespace MySoft.PlatformService.Client
             int count = 1;
 
             var castle = CastleFactory.Create();
-            castle.RegisterCacheDependent(DefaultCacheDependent.Create());
+            //castle.RegisterCacheDependent(DefaultCacheDependent.Create());
             castle.OnLog += new LogEventHandler(castle_OnLog);
             castle.OnError += new ErrorLogEventHandler(castle_OnError);
             IUserService service = castle.GetService<IUserService>();
@@ -93,8 +93,24 @@ namespace MySoft.PlatformService.Client
             //IList<ServiceInfo> list = castle.GetService<IStatusService>().GetServiceInfoList();
             //var str = service.GetUserID();
 
-            int userid;
-            var user = service.GetUserInfo("maoyong", out userid);
+
+            try
+            {
+                int userid;
+                var user = service.GetUserInfo("maoyong", out userid);
+                user = service.GetUserInfo("maoyong", out userid);
+                user = service.GetUserInfo("maoyong", out userid);
+                user = service.GetUserInfo("maoyong", out userid);
+                user = service.GetUserInfo("maoyong", out userid);
+
+                service.SetUser(null, ref userid);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            Console.ReadLine();
 
             return;
 

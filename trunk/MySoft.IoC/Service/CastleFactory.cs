@@ -78,11 +78,11 @@ namespace MySoft.IoC
             //±¾µØÆ¥Åä½Ú
             if (config == null || config.Type == CastleFactoryType.Local)
             {
-                instance = new CastleFactory(config, new SimpleServiceContainer());
+                instance = new CastleFactory(config, new SimpleServiceContainer(CastleFactoryType.Local));
             }
             else
             {
-                IServiceContainer container = new SimpleServiceContainer();
+                IServiceContainer container = new SimpleServiceContainer(config.Type);
                 container.OnLog += (log, type) => { if (instance.OnLog != null) instance.OnLog(log, type); };
                 container.OnError += (exception) => { if (instance.OnError != null) instance.OnError(exception); };
 
@@ -92,8 +92,8 @@ namespace MySoft.IoC
                 {
                     foreach (var node in config.Nodes)
                     {
-                        if (node.Value.MaxPool < 1) throw new IoCException("Minimum pool size 1£¡");
-                        if (node.Value.MaxPool > 100) throw new IoCException("Maximum pool size 100£¡");
+                        if (node.Value.MaxPool < 1) throw new WarningException("Minimum pool size 1£¡");
+                        if (node.Value.MaxPool > 100) throw new WarningException("Maximum pool size 100£¡");
 
                         var proxy = new ProxyService(container, node.Value);
                         instance.proxies[node.Key.ToLower()] = proxy;
@@ -184,7 +184,7 @@ namespace MySoft.IoC
                     return AspectManager.GetService<IServiceInterfaceType>(service);
                 }
 
-                throw new IoCException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
+                throw new WarningException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
             }
             else
             {
@@ -202,7 +202,7 @@ namespace MySoft.IoC
                         {
                             if (singleton.proxies.Count == 0)
                             {
-                                throw new IoCException("Not find any service node£¡");
+                                throw new WarningException("Not find any service node£¡");
                             }
 
                             if (string.IsNullOrEmpty(nodeKey)) nodeKey = config.Default;
@@ -219,7 +219,7 @@ namespace MySoft.IoC
                             }
                             else
                             {
-                                throw new IoCException("Not find the service node [" + nodeKey + "]£¡");
+                                throw new WarningException("Not find the service node [" + nodeKey + "]£¡");
                             }
                         }
 
