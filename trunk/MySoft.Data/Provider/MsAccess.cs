@@ -111,7 +111,7 @@ namespace MySoft.Data.MsAccess
                         p.OleDbType = OleDbType.LongVarWChar;
                     }
                 }
-                else if (p.DbType == DbType.Date || p.DbType == DbType.DateTime)
+                else if (p.DbType == DbType.Date || p.DbType == DbType.Time || p.DbType == DbType.DateTime)
                 {
                     p.Value = p.Value.ToString();
                 }
