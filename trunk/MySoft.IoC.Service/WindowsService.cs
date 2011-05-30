@@ -110,11 +110,11 @@ namespace MySoft.IoC.Service
 
         void server_OnLog(string log, LogType type)
         {
-            lock (syncobj)
+            if (startMode == StartMode.Console)
             {
-                if (startMode == StartMode.Console)
+                string message = string.Format("[{0}] => ({1}) {2}", DateTime.Now, type, log);
+                lock (syncobj)
                 {
-                    string message = string.Format("[{0}] => ({1}) {2}", DateTime.Now, type, log);
                     if (type == LogType.Error)
                         Console.ForegroundColor = ConsoleColor.Red;
                     else if (type == LogType.Warning)
@@ -130,14 +130,17 @@ namespace MySoft.IoC.Service
         {
             if (startMode == StartMode.Console)
             {
+                string message = string.Format("[{0}] => {1}", DateTime.Now, exception.Message);
+                if (exception.InnerException != null)
+                {
+                    message += string.Format("\r\n错误信息 => {0}", ErrorHelper.GetInnerException(exception.InnerException).Message);
+                }
                 lock (syncobj)
                 {
-                    string message = string.Format("[{0}] => {1}", DateTime.Now, exception.Message);
-                    if (exception.InnerException != null)
-                    {
-                        message += string.Format("\r\n错误信息 => {0}", ErrorHelper.GetInnerException(exception.InnerException).Message);
-                    }
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    if (exception is WarningException)
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    else
+                        Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(message);
                 }
             }

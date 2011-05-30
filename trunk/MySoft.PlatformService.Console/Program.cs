@@ -33,9 +33,9 @@ namespace MySoft.PlatformService.Console
 
         static void Program_OnLog(string log, LogType type)
         {
+            string message = "[" + DateTime.Now.ToString() + "] " + log;
             lock (syncobj)
             {
-                string message = "[" + DateTime.Now.ToString() + "] " + log;
                 if (type == LogType.Error)
                     System.Console.ForegroundColor = ConsoleColor.Red;
                 else if (type == LogType.Warning)
@@ -48,14 +48,18 @@ namespace MySoft.PlatformService.Console
 
         static void Program_OnError(Exception exception)
         {
+            string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
+            if (exception.InnerException != null)
+            {
+                message += "\r\n错误信息 => " + exception.InnerException.Message;
+            }
+
             lock (syncobj)
             {
-                string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
-                if (exception.InnerException != null)
-                {
-                    message += "\r\n错误信息 => " + exception.InnerException.Message;
-                }
-                System.Console.ForegroundColor = ConsoleColor.Red;
+                if (exception is WarningException)
+                    System.Console.ForegroundColor = ConsoleColor.Yellow;
+                else
+                    System.Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine(message);
 
                 //if (exception is IoCException)

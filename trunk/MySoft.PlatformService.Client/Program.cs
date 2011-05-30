@@ -110,16 +110,6 @@ namespace MySoft.PlatformService.Client
                 Console.WriteLine(ex.Message);
             }
 
-            Console.ReadLine();
-
-            return;
-
-            //service.SetUser(new UserInfo { Name = "sadfsd", Description = "sdafsd" });
-            //return;
-
-            //int uid;
-            //var u = service.GetUserInfo("maoyong", out uid);
-
             for (int i = 0; i < count; i++)
             {
                 try
@@ -141,23 +131,26 @@ namespace MySoft.PlatformService.Client
 
         static void castle_OnError(Exception exception)
         {
+            string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
+            if (exception.InnerException != null)
+            {
+                message += "\r\n错误信息 => " + exception.InnerException.Message;
+            }
             lock (syncobj)
             {
-                string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
-                if (exception.InnerException != null)
-                {
-                    message += "\r\n错误信息 => " + exception.InnerException.Message;
-                }
-                System.Console.ForegroundColor = ConsoleColor.Red;
+                if (exception is WarningException)
+                    System.Console.ForegroundColor = ConsoleColor.Yellow;
+                else
+                    System.Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine(message);
             }
         }
 
         static void castle_OnLog(string log, LogType type)
         {
+            string message = "[" + DateTime.Now.ToString() + "] " + log;
             lock (syncobj)
             {
-                string message = "[" + DateTime.Now.ToString() + "] " + log;
                 if (type == LogType.Error)
                     System.Console.ForegroundColor = ConsoleColor.Red;
                 else if (type == LogType.Warning)
