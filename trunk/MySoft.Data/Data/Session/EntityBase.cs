@@ -165,7 +165,12 @@ namespace MySoft.Data
         /// <returns></returns>
         Field IEntityBase.GetField(string propertyName)
         {
-            return this.GetFields().FirstOrDefault(p => string.Compare(p.PropertyName, propertyName, true) == 0);
+            var field = this.GetFields().FirstOrDefault(p => string.Compare(p.PropertyName, propertyName, true) == 0);
+            if ((IField)field == null)
+            {
+                throw new DataException(string.Format("实体【{0}】中未找到属性为【{1}】的字段信息！", this.GetType().FullName, propertyName));
+            }
+            return field;
         }
 
         /// <summary>

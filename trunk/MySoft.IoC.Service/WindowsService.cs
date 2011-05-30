@@ -6,6 +6,7 @@ using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using System.Configuration;
 using MySoft.Installer;
+using System.Threading;
 
 namespace MySoft.IoC.Service
 {
@@ -19,6 +20,25 @@ namespace MySoft.IoC.Service
         private StartMode startMode = StartMode.Service;
         private CastleService server;
         private string[] mailTo;
+
+        /// <summary>
+        /// 实例化Windows服务
+        /// </summary>
+        public WindowsService()
+        {
+            Thread.GetDomain().UnhandledException += new UnhandledExceptionEventHandler(WindowsService_UnhandledException);
+        }
+
+        /// <summary>
+        /// 处理线程异常
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void WindowsService_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = e.ExceptionObject as Exception;
+            SimpleLog.Instance.WriteLogWithSendMail(exception, mailTo);
+        }
 
         #region IServiceRun 成员
 
@@ -35,8 +55,7 @@ namespace MySoft.IoC.Service
 
             //处理邮件地址
             string address = ConfigurationManager.AppSettings["SendMailAddress"];
-            if (string.IsNullOrEmpty(address)) mailTo = new string[] { "maoyong@fund123.cn" };
-            else mailTo = address.Split(',', ';', '|');
+            if (!string.IsNullOrEmpty(address)) mailTo = address.Split(',', ';', '|');
         }
 
         /// <summary>
@@ -109,7 +128,6 @@ namespace MySoft.IoC.Service
 
         void server_OnError(Exception exception)
         {
-
             if (startMode == StartMode.Console)
             {
                 lock (syncobj)
@@ -127,12 +145,6 @@ namespace MySoft.IoC.Service
             {
                 SimpleLog.Instance.WriteLogWithSendMail(exception, mailTo);
             }
-        }
-
-        void SendMail(Exception ex, string title)
-        {
-            try { MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo); }
-            catch { }
         }
     }
 }
