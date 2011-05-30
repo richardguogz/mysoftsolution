@@ -66,7 +66,7 @@ namespace MySoft
             const string heading = "<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\"><TR><TD bgcolor=\"black\" COLSPAN=\"2\"><FONT face=\"Arial\" color=\"white\"><B>&nbsp;<!--HEADER--></B></FONT></TD></TR></TABLE>";
 
             // Error Message Header
-            string html = "<FONT face=\"Arial\" size=\"5\" color=\"red\">Error - " + ex.Message + "</FONT><BR><BR>";
+            string html = "<FONT face=\"Arial\" size=\"5\" color=\"red\">Error - " + ReplaceNewline(ex.Message) + "</FONT><BR><BR>";
 
             // Populate Error Information Collection
             NameValueCollection error_info = new NameValueCollection();
