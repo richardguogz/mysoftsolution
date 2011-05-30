@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Serialization.Formatters;
 
 namespace MySoft
 {
@@ -53,16 +54,22 @@ namespace MySoft
         {
             if (obj == null) return new byte[0];
 
-            byte[] serializedObject;
-            using (MemoryStream ms = new MemoryStream())
+            byte[] buffer = new byte[4096];
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                BinaryFormatter b = new BinaryFormatter();
-                b.Serialize(ms, obj);
-                ms.Seek(0, 0);
-                serializedObject = ms.ToArray();
+                BinaryFormatter bformatter = new BinaryFormatter();
+                bformatter.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
+                bformatter.Serialize(memoryStream, obj);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+
+                if (memoryStream.Length > buffer.Length)
+                {
+                    buffer = new byte[memoryStream.Length];
+                }
+                buffer = memoryStream.ToArray();
             }
 
-            return serializedObject;
+            return buffer;
         }
 
         /// <summary>
@@ -96,15 +103,15 @@ namespace MySoft
         {
             if (buffer == null || buffer.Length == 0)
             {
-                return buffer;
+                return null;
             }
 
             Object serializedObject;
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(buffer))
             {
-                ms.Write(buffer, 0, buffer.Length);
-                ms.Seek(0, 0);
+                ms.Seek(0, SeekOrigin.Begin);
                 BinaryFormatter b = new BinaryFormatter();
+                b.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
                 serializedObject = b.Deserialize(ms);
             }
 
