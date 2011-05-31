@@ -5,11 +5,18 @@ using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
 using MySoft.Web.Configuration;
+using MySoft.Logger;
 
 namespace MySoft.Web
 {
     public class StaticPageHandler : IHttpHandler, IRequiresSessionState
     {
+        private static readonly SimpleLog logger;
+        static StaticPageHandler()
+        {
+            logger = new SimpleLog(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StaticLog"));
+        }
+
         // 摘要:
         //     获取一个值，该值指示其他请求是否可以使用 System.Web.IHttpHandler 实例。
         //
@@ -98,17 +105,19 @@ namespace MySoft.Web
                                     }
                                 }
                             }
-                            catch (IOException ex)
+                            catch (Exception ex)
                             {
-                                string logFile = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, string.Format("/StaticLog/ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd")));
-                                logFile = context.Server.MapPath(logFile);
-                                string logText = string.Format("{0} => {3}\r\n请求路径：{1}\r\n生成路径：{2}", DateTime.Now.ToString("HH:mm:ss"), context.Request.Url, staticFile, ex.Message);
-                                logText += "\r\n\r\n=======================================================================================================================================================================\r\n\r\n";
-                                if (!Directory.Exists(Path.GetDirectoryName(logFile)))
+                                string logFile = string.Format("ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd"));
+                                string logText = string.Format("{0}\r\n请求路径：{1}\r\n生成路径：{2}", ex.Message, context.Request.Url, staticFile);
+
+                                //将日志写入文件
+                                logger.WriteLog(logFile, logText);
+
+                                //如果不是IO错误，继续抛出错误
+                                if (!(ex is IOException))
                                 {
-                                    Directory.CreateDirectory(Path.GetDirectoryName(logFile));
+                                    throw ex;
                                 }
-                                File.AppendAllText(logFile, logText);
                             }
                         }
                     }
@@ -123,7 +132,7 @@ namespace MySoft.Web
                 IHttpHandler handler = PageParser.GetCompiledPageInstance(sendToUrlLessQString, filePath, context);
                 handler.ProcessRequest(context);
             }
-            catch (HttpException ex)
+            catch (Exception ex)
             {
                 if (htmlExists && !string.IsNullOrEmpty(staticFile))
                 {

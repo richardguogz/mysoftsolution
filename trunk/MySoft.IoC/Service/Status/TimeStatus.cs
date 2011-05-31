@@ -64,10 +64,10 @@ namespace MySoft.IoC
         {
             if (base.Count >= maxCount)
             {
-                var key = base.Keys.FirstOrDefault();
-                if (key != null && base.ContainsKey(key))
+                lock (this)
                 {
-                    lock (this)
+                    var key = base.Keys.FirstOrDefault();
+                    if (key != null && base.ContainsKey(key))
                     {
                         base.Remove(key);
                     }
@@ -81,7 +81,10 @@ namespace MySoft.IoC
         /// <returns></returns>
         public IList<TimeStatus> ToList()
         {
-            return base.Values.ToList();
+            lock (this)
+            {
+                return base.Values.ToList();
+            }
         }
 
         /// <summary>
@@ -90,11 +93,14 @@ namespace MySoft.IoC
         /// <returns></returns>
         public TimeStatus GetLast()
         {
-            var status = base.Values.LastOrDefault();
-            if (status == null)
-                return new TimeStatus { CounterTime = DateTime.Now };
-            else
-                return status;
+            lock (this)
+            {
+                var status = base.Values.LastOrDefault();
+                if (status == null)
+                    return new TimeStatus { CounterTime = DateTime.Now };
+                else
+                    return status;
+            }
         }
     }
 }

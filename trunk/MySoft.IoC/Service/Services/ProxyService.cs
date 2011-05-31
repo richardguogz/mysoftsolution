@@ -6,6 +6,7 @@ using System.Threading;
 using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using MySoft.Threading;
+using System.Linq;
 
 namespace MySoft.IoC
 {
@@ -27,6 +28,23 @@ namespace MySoft.IoC
 
             #region socket通讯
 
+            //启动线程来清除过期的数据
+            ThreadPool.QueueUserWorkItem((state) =>
+            {
+                //一分钟清除一次
+                Thread.Sleep(TimeSpan.FromMinutes(1));
+
+                //将过期的数据移除掉
+                var keys = responses.Where(p => p.Value.Expiration < DateTime.Now).Select(p => p.Key).ToList();
+                foreach (var key in keys)
+                {
+                    lock (responses)
+                    {
+                        if (responses.ContainsKey(key)) responses.Remove(key);
+                    }
+                }
+            });
+
             //实例化线程池
             pool = new SmartThreadPool(30 * 1000, 500, 10);
 
@@ -47,14 +65,10 @@ namespace MySoft.IoC
         void client_SendMessage(object sender, ServiceMessageEventArgs message)
         {
             var response = message.Result;
-
-            //如果未过期，则加入队列中
-            if (response.Expiration >= DateTime.Now)
+            lock (responses)
             {
-                lock (responses)
-                {
-                    responses[response.TransactionId] = response;
-                }
+                //数据结果加入到集合中
+                responses[response.TransactionId] = response;
             }
         }
 

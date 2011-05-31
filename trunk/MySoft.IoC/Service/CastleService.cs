@@ -74,53 +74,61 @@ namespace MySoft.IoC
             {
                 while (true)
                 {
-                    //清除记录，每秒清除一条
-                    statuslist.Clean(config.Records);
-
-                    //获取最后一秒状态
-                    var status = statuslist.GetLast();
-
-                    //计算时间
-                    if (status.RequestCount > 0)
+                    try
                     {
-                        //处理最高值 
-                        #region 处理最高值
+                        //清除记录，每秒清除一条
+                        statuslist.Clean(config.Records);
 
-                        //流量
-                        if (status.DataFlow > highest.DataFlow)
+                        //获取最后一秒状态
+                        var status = statuslist.GetLast();
+
+                        //计算时间
+                        if (status.RequestCount > 0)
                         {
-                            highest.DataFlow = status.DataFlow;
-                            highest.DataFlowCounterTime = status.CounterTime;
-                        }
+                            //处理最高值 
+                            #region 处理最高值
 
-                        //成功
-                        if (status.SuccessCount > highest.SuccessCount)
-                        {
-                            highest.SuccessCount = status.SuccessCount;
-                            highest.SuccessCountCounterTime = status.CounterTime;
-                        }
+                            //流量
+                            if (status.DataFlow > highest.DataFlow)
+                            {
+                                highest.DataFlow = status.DataFlow;
+                                highest.DataFlowCounterTime = status.CounterTime;
+                            }
 
-                        //失败
-                        if (status.ErrorCount > highest.ErrorCount)
-                        {
-                            highest.ErrorCount = status.ErrorCount;
-                            highest.ErrorCountCounterTime = status.CounterTime;
-                        }
+                            //成功
+                            if (status.SuccessCount > highest.SuccessCount)
+                            {
+                                highest.SuccessCount = status.SuccessCount;
+                                highest.SuccessCountCounterTime = status.CounterTime;
+                            }
 
-                        //请求总数
-                        if (status.RequestCount > highest.RequestCount)
-                        {
-                            highest.RequestCountCounterTime = status.CounterTime;
-                        }
+                            //失败
+                            if (status.ErrorCount > highest.ErrorCount)
+                            {
+                                highest.ErrorCount = status.ErrorCount;
+                                highest.ErrorCountCounterTime = status.CounterTime;
+                            }
 
-                        //耗时
-                        if (status.ElapsedTime > highest.ElapsedTime)
-                        {
-                            highest.ElapsedTime = status.ElapsedTime;
-                            highest.ElapsedTimeCounterTime = status.CounterTime;
-                        }
+                            //请求总数
+                            if (status.RequestCount > highest.RequestCount)
+                            {
+                                highest.RequestCountCounterTime = status.CounterTime;
+                            }
 
-                        #endregion
+                            //耗时
+                            if (status.ElapsedTime > highest.ElapsedTime)
+                            {
+                                highest.ElapsedTime = status.ElapsedTime;
+                                highest.ElapsedTimeCounterTime = status.CounterTime;
+                            }
+
+                            #endregion
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //写错误日志
+                        SimpleLog.Instance.WriteLog(ex);
                     }
 
                     //每1秒处理一次
