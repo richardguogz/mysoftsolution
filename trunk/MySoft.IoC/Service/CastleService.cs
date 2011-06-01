@@ -335,9 +335,6 @@ namespace MySoft.IoC
             ResponseMessage response = null;
             try
             {
-                //请求数累计
-                status.RequestCount++;
-
                 //生成一个异常调用委托
                 AsyncMethodCaller caller = new AsyncMethodCaller(CallMethod);
 
@@ -378,6 +375,9 @@ namespace MySoft.IoC
 
             if (response != null)
             {
+                //请求数累计
+                status.RequestCount++;
+
                 //错误及成功计数
                 if (response.Exception == null)
                     status.SuccessCount++;
