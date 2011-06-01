@@ -501,6 +501,7 @@ namespace MySoft.IoC
             SummaryStatus status = new SummaryStatus
             {
                 RunningSeconds = list.Count,
+                RequestCount = list.Sum(p => p.RequestCount),
                 SuccessCount = list.Sum(p => p.SuccessCount),
                 ErrorCount = list.Sum(p => p.ErrorCount),
                 ElapsedTime = list.Sum(p => p.ElapsedTime),
