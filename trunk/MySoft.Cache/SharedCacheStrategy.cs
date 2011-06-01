@@ -15,6 +15,7 @@ namespace MySoft.Cache
     public class SharedCacheStrategy : CacheStrategyBase, ISharedCacheStrategy
     {
         private ICacheStrategy localCache;
+        private TimeSpan localTimeSpan;
 
         /// <summary>
         /// 设置本地缓存超时时间
@@ -24,8 +25,9 @@ namespace MySoft.Cache
         {
             if (timeout > 0)
             {
-                this.localCache = CacheFactory.CreateCache(base.regionName, CacheType.Local);
+                this.localCache = CacheFactory.CreateCache("Local_" + base.regionName, CacheType.Local);
                 this.localCache.Timeout = timeout;
+                this.localTimeSpan = TimeSpan.FromSeconds(timeout);
             }
             else
                 this.localCache = null;
@@ -77,26 +79,16 @@ namespace MySoft.Cache
         /// <summary>
         /// 分布式缓存单例
         /// </summary>
-        public static readonly SharedCacheStrategy Default = new SharedCacheStrategy("default");
+        public static readonly SharedCacheStrategy Default = new SharedCacheStrategy("defaultCache");
 
         private static volatile IndexusProviderBase dataCache = IndexusDistributionCache.SharedCache;
         private static readonly object syncObject = new object();
-        private int _timeOut = 1440 * 60; // 默认缓存存活期为1440分钟(24小时)
 
         /// <summary>
         /// 实例化分布式缓存
         /// </summary>
         /// <param name="regionName"></param>
         public SharedCacheStrategy(string regionName) : base(regionName) { }
-
-        /// <summary>
-        /// 设置到期相对时间[单位：秒] 
-        /// </summary>
-        public int Timeout
-        {
-            set { _timeOut = value; }
-            get { return _timeOut; }
-        }
 
         /// <summary>
         /// 缓存对象
@@ -128,17 +120,17 @@ namespace MySoft.Cache
 
             lock (syncObject)
             {
-                if (Timeout > 0)
-                {
-                    dataCache.Add(GetInputKey(objId), o, DateTime.Now.AddSeconds(Timeout));
-                }
-                else
+                if (Timeout <= 0)
                 {
                     dataCache.Add(GetInputKey(objId), o);
                 }
+                else
+                {
+                    dataCache.Add(GetInputKey(objId), o, DateTime.Now.AddSeconds(Timeout));
+                }
 
                 //处理本地缓存
-                if (localCache != null) localCache.AddObject(objId, o);
+                if (localCache != null) localCache.AddObject(objId, o, localTimeSpan);
             }
         }
 
@@ -176,7 +168,7 @@ namespace MySoft.Cache
                 }
 
                 //处理本地缓存
-                if (localCache != null) localCache.AddObject(objId, o);
+                if (localCache != null) localCache.AddObject(objId, o, localTimeSpan);
             }
         }
 
@@ -228,7 +220,7 @@ namespace MySoft.Cache
                 //添加到本地缓存
                 if (returnObject != null && localCache != null)
                 {
-                    localCache.AddObject(objId, returnObject);
+                    localCache.AddObject(objId, returnObject, localTimeSpan);
                 }
 
                 return returnObject;

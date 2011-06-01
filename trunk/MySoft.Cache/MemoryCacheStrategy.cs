@@ -70,26 +70,16 @@ namespace MySoft.Cache
         /// <summary>
         /// 内存缓存单例
         /// </summary>
-        public static readonly MemoryCacheStrategy Default = new MemoryCacheStrategy("default");
+        public static readonly MemoryCacheStrategy Default = new MemoryCacheStrategy("defaultCache");
 
         private static volatile System.Web.Caching.Cache webCache = System.Web.HttpRuntime.Cache;
         private static readonly object syncObject = new object();
-        private int _timeOut = 1440 * 60; // 默认缓存存活期为1440分钟(24小时)
 
         /// <summary>
         /// 实例化本地缓存
         /// </summary>
         /// <param name="regionName"></param>
         public MemoryCacheStrategy(string regionName) : base(regionName) { }
-
-        /// <summary>
-        /// 设置到期相对时间[单位：秒] 
-        /// </summary>
-        public int Timeout
-        {
-            set { _timeOut = value > 0 ? value : 6000; }
-            get { return _timeOut > 0 ? _timeOut : 6000; }
-        }
 
         /// <summary>
         /// 缓存对象
@@ -123,7 +113,7 @@ namespace MySoft.Cache
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
-                if (Timeout == 6000)
+                if (Timeout <= 0)
                 {
                     webCache.Insert(GetInputKey(objId), o, null, DateTime.MaxValue, TimeSpan.Zero, System.Web.Caching.CacheItemPriority.High, callBack);
                 }
@@ -183,7 +173,14 @@ namespace MySoft.Cache
 
                 CacheDependency dep = new CacheDependency(files, DateTime.Now);
 
-                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                if (Timeout <= 0)
+                {
+                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.MaxValue, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                }
+                else
+                {
+                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                }
             }
         }
 
@@ -207,7 +204,14 @@ namespace MySoft.Cache
 
                 CacheDependency dep = new CacheDependency(null, dependKey, DateTime.Now);
 
-                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                if (Timeout <= 0)
+                {
+                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.MaxValue, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                }
+                else
+                {
+                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                }
             }
         }
 
@@ -266,7 +270,7 @@ namespace MySoft.Cache
         /// <param name="reason"></param>
         public void onRemove(string objId, object val, CacheItemRemovedReason reason)
         {
-
+            //移除缓存事件
             switch (reason)
             {
                 case CacheItemRemovedReason.DependencyChanged:

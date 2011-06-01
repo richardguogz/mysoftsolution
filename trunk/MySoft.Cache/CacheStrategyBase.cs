@@ -22,6 +22,18 @@ namespace MySoft.Cache
             this.regionName = regionName;
         }
 
+        // 默认缓存存活期为1440分钟(24小时)
+        private int _timeOut = (int)TimeSpan.FromDays(1).TotalSeconds;
+
+        /// <summary>
+        /// 设置到期相对时间[单位：秒] 
+        /// </summary>
+        public int Timeout
+        {
+            set { _timeOut = value; }
+            get { return _timeOut; }
+        }
+
         /// <summary>
         /// 获取输入的Key
         /// </summary>

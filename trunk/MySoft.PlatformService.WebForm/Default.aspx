@@ -70,27 +70,7 @@
                 <hr />
             </li>
             <li>
-                <div style="float: left; width:400px;">
-                    <ul>
-                        <li><b>最高状态信息</b></li>
-                        <li>最大请求数:
-                            <%=status.Highest.RequestCount%>
-                            次 (<%= status.Highest.RequestCountCounterTime%>)</li>
-                        <li>最大成功数:
-                            <%=status.Highest.SuccessCount%>
-                            次 (<%= status.Highest.SuccessCountCounterTime%>)</li>
-                        <li>最大错误数:
-                            <%=status.Highest.ErrorCount%>
-                            次 (<%= status.Highest.ErrorCountCounterTime%>)</li>
-                        <li>最大耗时:
-                            <%=status.Highest.ElapsedTime%>
-                            毫秒 (<%= status.Highest.ElapsedTimeCounterTime%>)</li>
-                        <li>最大流量:
-                            <%=Math.Round(status.Highest.DataFlow * 1.0 / 1024, 4)%>
-                            KB (<%= status.Highest.DataFlowCounterTime%>)</li>
-                    </ul>
-                </div>
-                <div>
+                <div style="float: left; width: 400px;">
                     <ul>
                         <li><b>当前状态信息</b></li>
                         <li>时间:
@@ -116,6 +96,26 @@
                         <li>平均流量:
                             <%=Math.Round(status.Latest.AverageDataFlow * 1.0 / 1024, 4)%>
                             KB</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul>
+                        <li><b>最高状态信息</b></li>
+                        <li>最大请求数:
+                            <%=status.Highest.RequestCount%>
+                            次 (<%= status.Highest.RequestCountCounterTime%>)</li>
+                        <li>最大成功数:
+                            <%=status.Highest.SuccessCount%>
+                            次 (<%= status.Highest.SuccessCountCounterTime%>)</li>
+                        <li>最大错误数:
+                            <%=status.Highest.ErrorCount%>
+                            次 (<%= status.Highest.ErrorCountCounterTime%>)</li>
+                        <li>最大耗时:
+                            <%=status.Highest.ElapsedTime%>
+                            毫秒 (<%= status.Highest.ElapsedTimeCounterTime%>)</li>
+                        <li>最大流量:
+                            <%=Math.Round(status.Highest.DataFlow * 1.0 / 1024, 4)%>
+                            KB (<%= status.Highest.DataFlowCounterTime%>)</li>
                     </ul>
                 </div>
                 <div style="clear: both;">
