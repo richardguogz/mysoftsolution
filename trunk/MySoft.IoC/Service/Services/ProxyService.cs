@@ -7,6 +7,7 @@ using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using MySoft.Threading;
 using System.Linq;
+using MySoft.IoC.Services;
 
 namespace MySoft.IoC
 {
@@ -34,13 +35,17 @@ namespace MySoft.IoC
                 //一分钟清除一次
                 Thread.Sleep(TimeSpan.FromMinutes(1));
 
-                //将过期的数据移除掉
-                var keys = responses.Where(p => p.Value.Expiration < DateTime.Now).Select(p => p.Key).ToList();
-                foreach (var key in keys)
+                //如果结果多于0个
+                if (responses.Count > 0)
                 {
                     lock (responses)
                     {
-                        if (responses.ContainsKey(key)) responses.Remove(key);
+                        //将过期的数据移除掉
+                        var keys = responses.Where(p => p.Value.Expiration < DateTime.Now).Select(p => p.Key).ToArray();
+                        foreach (var key in keys)
+                        {
+                            responses.Remove(key);
+                        }
                     }
                 }
             });
@@ -92,7 +97,7 @@ namespace MySoft.IoC
             try
             {
                 //发送数据包到服务端
-                bool isSend = request.Send(reqMsg, (int)(reqMsg.Timeout * 1000));
+                bool isSend = request.Send(reqMsg, TimeSpan.FromSeconds(reqMsg.Timeout));
 
                 if (isSend)
                 {
@@ -100,7 +105,23 @@ namespace MySoft.IoC
                     Stopwatch watch = Stopwatch.StartNew();
 
                     //获取消息
-                    var resMsg = GetResponse(reqMsg, watch);
+                    AsyncMethodCaller caller = new AsyncMethodCaller(GetResponse);
+
+                    //异常调用
+                    IAsyncResult result = caller.BeginInvoke(reqMsg, null, null);
+
+                    // Wait for the WaitHandle to become signaled.
+                    if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(reqMsg.Timeout)))
+                    {
+                        throw new WarningException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
+                        {
+                            ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                        };
+                    }
+
+                    // Perform additional processing here.
+                    // Call EndInvoke to retrieve the results.
+                    var resMsg = caller.EndInvoke(result);
 
                     //如果数据不为空
                     if (resMsg.Data != null)
@@ -138,42 +159,28 @@ namespace MySoft.IoC
             }
         }
 
-        private ResponseMessage GetResponse(RequestMessage reqMsg, Stopwatch watch)
+        /// <summary>
+        /// 获取响应的消息
+        /// </summary>
+        /// <param name="reqMsg"></param>
+        /// <returns></returns>
+        private ResponseMessage GetResponse(RequestMessage reqMsg)
         {
-            //启动线程来处理数据
-            IWorkItemResult<ResponseMessage> wir = pool.QueueWorkItem(state =>
+            ResponseMessage resMsg;
+
+            //启动线程来
+            while (true)
             {
-                ResponseMessage resMsg = null;
-                RequestMessage request = state as RequestMessage;
+                resMsg = GetData<ResponseMessage>(responses, reqMsg.TransactionId);
 
-                while (true)
-                {
-                    resMsg = GetData<ResponseMessage>(responses, request.TransactionId);
+                //如果有数据返回，则响应
+                if (resMsg != null) break;
 
-                    //如果有数据返回，则响应
-                    if (resMsg != null) break;
-
-                    //防止cpu使用率过高
-                    Thread.Sleep(1);
-                }
-
-                return resMsg;
-
-            }, reqMsg);
-
-            if (!pool.WaitForIdle((int)(reqMsg.Timeout * 1000)))
-            {
-                if (!wir.IsCompleted) wir.Cancel(true);
-                watch.Stop();
-
-                throw new WarningException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
-                {
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
-                };
+                //防止cpu使用率过高
+                Thread.Sleep(1);
             }
 
-            //从线程获取返回信息，超时等待
-            return wir.GetResult();
+            return resMsg;
         }
 
         /// <summary>

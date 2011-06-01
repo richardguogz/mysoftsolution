@@ -206,6 +206,7 @@ namespace MySoft.IoC
                             }
 
                             if (string.IsNullOrEmpty(nodeKey)) nodeKey = config.Default;
+                            string oldNodeKey = nodeKey;
 
                             //如果不存在当前配置节，则使用默认配置节
                             if (!singleton.proxies.ContainsKey(nodeKey.ToLower()))
@@ -219,7 +220,10 @@ namespace MySoft.IoC
                             }
                             else
                             {
-                                throw new WarningException("Not find the service node [" + nodeKey + "]！");
+                                if (oldNodeKey == nodeKey)
+                                    throw new WarningException("Not find the service node [" + nodeKey + "]！");
+                                else
+                                    throw new WarningException("Not find the service node [" + oldNodeKey + "] or [" + nodeKey + "]！");
                             }
                         }
 

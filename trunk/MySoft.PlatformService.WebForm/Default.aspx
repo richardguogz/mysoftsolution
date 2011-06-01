@@ -11,11 +11,11 @@
         <ul>
             <% if (status != null)
                { %>
-                <li>服务端状态信息如下：(<% =status.StartDate %>)<asp:Button ID="btnClear" runat="server" 
+                <li><b>服务端状态信息如下：</b>(<% =status.StartDate %>)<asp:Button ID="btnClear" runat="server" 
                         onclick="btnClear_Click" Text="清除所有状态" />
             </li>
                 <li><hr /></li>
-                <li>汇总状态信息</li>
+                <li><b>汇总状态信息</b></li>
                 <li>运行总时间：   <%=status.TotalSeconds %> 秒</li>
                 <li>请求数:        <%=status.Summary.RequestCount%> 次</li>
                 <li>成功数:        <%=status.Summary.SuccessCount%> 次</li>
@@ -29,14 +29,14 @@
                 <li>平均耗时数:    <%=status.Summary.AverageElapsedTime%> 毫秒</li>
                 <li>每秒流量数:    <%=Math.Round(status.Summary.AverageDataFlow * 1.0 / 1024, 4)%> KB</li>
                 <li><hr /></li>
-                <li>最高状态信息</li>
+                <li><b>最高状态信息</b></li>
                 <li>最大请求数:    <%=status.Highest.RequestCount%> 次 (<%= status.Highest.RequestCountCounterTime%>)</li>
                 <li>最大成功数:    <%=status.Highest.SuccessCount%> 次 (<%= status.Highest.SuccessCountCounterTime%>)</li>
                 <li>最大错误数:    <%=status.Highest.ErrorCount%> 次 (<%= status.Highest.ErrorCountCounterTime%>)</li>
                 <li>最大耗时:      <%=status.Highest.ElapsedTime%> 毫秒 (<%= status.Highest.ElapsedTimeCounterTime%>)</li>
                 <li>最大流量:      <%=Math.Round(status.Highest.DataFlow * 1.0 / 1024, 4)%> KB (<%= status.Highest.DataFlowCounterTime%>)</li>
                 <li><hr /></li>
-                <li>当前状态信息</li>
+                <li><b>当前状态信息</b></li>
                 <li>时间:      <%=status.Latest.CounterTime%></li>
                 <li>请求数:    <%=status.Latest.RequestCount%> 次</li>
                 <li>成功数:    <%=status.Latest.SuccessCount%> 次</li>
@@ -51,7 +51,7 @@
         <ul>
                 <% if (clients != null)
                { %>
-            <li>客户端连接信息</li>
+            <li><b>客户端连接信息</b></li>
                 <%
                    int index = 1;
                    foreach (MySoft.IoC.ConnectInfo client in clients)

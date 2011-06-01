@@ -102,9 +102,7 @@ namespace MySoft.IoC
             #region 处理缓存
 
             //处理cacheKey信息
-            var key = string.Format("{0}_{1}_{2}", reqMsg.ServiceName, reqMsg.SubServiceName, reqMsg.Parameters);
-            string cacheKey = "IoC_Cache_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
-            cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
+            string cacheKey = string.Format("IoC_Cache_{0}_{1}", reqMsg.SubServiceName, reqMsg.Parameters);
 
             bool isAllowCache = false;
             double cacheTime = config.CacheTime; //默认缓存时间与系统设置的时间一致
@@ -154,7 +152,7 @@ namespace MySoft.IoC
             if (isAllowCache && container.Cache != null)
             {
                 //从缓存获取数据
-                cacheValue = container.Cache.GetCache(cacheKey) as ServiceCache;
+                cacheValue = container.Cache.GetCache(serviceType, cacheKey) as ServiceCache;
             }
 
             //如果缓存不为null;
@@ -225,7 +223,7 @@ namespace MySoft.IoC
                         cacheValue = new ServiceCache { CacheObject = returnValue, Parameters = resMsg.Parameters };
 
                         //把值添加到缓存中
-                        container.Cache.AddCache(cacheKey, cacheValue, cacheTime);
+                        container.Cache.AddCache(serviceType, cacheKey, cacheValue, cacheTime);
                     }
                 }
             }

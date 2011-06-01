@@ -49,7 +49,7 @@ namespace MySoft.IoC
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public bool Send(object data, int timeout)
+        public bool Send(object data, TimeSpan timeout)
         {
             //如果连接断开，直接抛出异常
             if (!isConnected)

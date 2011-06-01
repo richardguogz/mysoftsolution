@@ -40,7 +40,8 @@ namespace MySoft.Data
         /// ◊¢≤·ª∫¥Ê“¿¿µ
         /// </summary>
         /// <param name="cache"></param>
-        void RegisterCacheDependent(ICacheDependent cache);
+        /// <param name="timeout"></param>
+        void RegisterCacheDependent(ICacheDependent cache, int timeout);
 
         #endregion
 

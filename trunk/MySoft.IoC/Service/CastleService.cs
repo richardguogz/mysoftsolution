@@ -10,6 +10,7 @@ using MySoft.Net.Sockets;
 using System.Threading;
 using System.Linq;
 using System.Diagnostics;
+using MySoft.IoC.Services;
 
 namespace MySoft.IoC
 {
@@ -303,18 +304,18 @@ namespace MySoft.IoC
         /// 获取响应信息并发送
         /// </summary>
         /// <param name="socketAsync"></param>
-        /// <param name="request"></param>
-        private void GetSendResponse(SocketAsyncEventArgs socketAsync, RequestMessage request)
+        /// <param name="reqMsg"></param>
+        private void GetSendResponse(SocketAsyncEventArgs socketAsync, RequestMessage reqMsg)
         {
             //如果是状态请求，则直接返回数据
-            if (!IsServiceCounter(request))
+            if (!IsServiceCounter(reqMsg))
             {
                 try
                 {
-                    ResponseMessage msg = container.CallService(request, config.LogTime);
+                    ResponseMessage resMsg = container.CallService(reqMsg, config.LogTime);
 
                     //发送数据到服务端
-                    manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(msg));
+                    manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(resMsg));
                 }
                 catch (Exception ex)
                 {
@@ -333,7 +334,17 @@ namespace MySoft.IoC
             ResponseMessage response = null;
             try
             {
-                response = container.CallService(request, config.LogTime);
+                //生成一个异常调用委托
+                AsyncMethodCaller caller = new AsyncMethodCaller(CallMethod);
+
+                //开始异常调用
+                IAsyncResult result = caller.BeginInvoke(reqMsg, null, null);
+
+                //等待信号
+                if (result.AsyncWaitHandle.WaitOne())
+                    response = caller.EndInvoke(result);
+                else
+                    throw new NullReferenceException("调用返回的结果为null！");
             }
             catch (Exception ex)
             {
@@ -341,16 +352,16 @@ namespace MySoft.IoC
                 container_OnError(ex);
 
                 response = new ResponseMessage();
-                response.TransactionId = request.TransactionId;
+                response.TransactionId = reqMsg.TransactionId;
                 //resMsg.RequestAddress = reqMsg.RequestAddress;
-                response.Encrypt = request.Encrypt;
-                response.Compress = request.Compress;
-                response.Encrypt = request.Encrypt;
+                response.Encrypt = reqMsg.Encrypt;
+                response.Compress = reqMsg.Compress;
+                response.Encrypt = reqMsg.Encrypt;
                 //resMsg.Timeout = reqMsg.Timeout;
-                response.ServiceName = request.ServiceName;
-                response.SubServiceName = request.SubServiceName;
-                response.Parameters = request.Parameters;
-                response.Expiration = request.Expiration;
+                response.ServiceName = reqMsg.ServiceName;
+                response.SubServiceName = reqMsg.SubServiceName;
+                response.Parameters = reqMsg.Parameters;
+                response.Expiration = reqMsg.Expiration;
                 response.Exception = ex;
             }
             finally
@@ -377,6 +388,16 @@ namespace MySoft.IoC
                 //发送数据到服务端
                 manager.Server.SendData(socketAsync.AcceptSocket, data);
             }
+        }
+
+        /// <summary>
+        /// 调用 方法
+        /// </summary>
+        /// <param name="reqMsg"></param>
+        /// <returns></returns>
+        private ResponseMessage CallMethod(RequestMessage reqMsg)
+        {
+            return container.CallService(reqMsg, config.LogTime);
         }
 
         /// <summary>

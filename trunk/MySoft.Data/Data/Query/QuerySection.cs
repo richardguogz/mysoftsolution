@@ -1142,13 +1142,12 @@ namespace MySoft.Data
         private object GetCache<CacheType>(string prefix, string cacheKey)
             where CacheType : Entity
         {
-            cacheKey = string.Concat(prefix, "|", Convert.ToBase64String(Encoding.UTF8.GetBytes(cacheKey)));
-            cacheKey = string.Format("{0}_{1}", cacheKey, typeof(CacheType).FullName);
-
+            string key = "IoC_Cache_" + string.Concat(prefix, "_", cacheKey);
             if (dbProvider.Cache != null)
-                return dbProvider.Cache.GetCache(cacheKey);
-            else
-                return null;
+            {
+                return dbProvider.Cache.GetCache(typeof(CacheType), key);
+            }
+            return null;
         }
 
         #endregion
@@ -1165,11 +1164,11 @@ namespace MySoft.Data
         private void SetCache<CacheType>(string prefix, string cacheKey, object obj)
             where CacheType : Entity
         {
-            cacheKey = string.Concat(prefix, "|", Convert.ToBase64String(Encoding.UTF8.GetBytes(cacheKey)));
-            cacheKey = string.Format("{0}_{1}", cacheKey, typeof(CacheType).FullName);
-
+            string key = "IoC_Cache_" + string.Concat(prefix, "_", cacheKey);
             if (dbProvider.Cache != null)
-                dbProvider.Cache.AddCache(cacheKey, obj, -1);
+            {
+                dbProvider.Cache.AddCache(typeof(CacheType), key, obj, dbProvider.Timeout);
+            }
         }
 
         #endregion

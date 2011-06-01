@@ -123,7 +123,7 @@ namespace MySoft.Net.Client
         /// <param name="port"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public bool ConnectTo(string host, int port, int timeout)
+        public bool ConnectTo(string host, int port, TimeSpan timeout)
         {
             BeginConnectTo(host, port);
 

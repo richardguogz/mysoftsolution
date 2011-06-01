@@ -11,28 +11,22 @@ namespace MySoft.Cache
     public class DefaultCacheDependent : ICacheDependent
     {
         private ICacheStrategy strategy;
-        private DefaultCacheDependent(CacheType type)
-        {
-            this.strategy = CacheFactory.CreateCache("DefaultCacheDependent", type);
-        }
-
         /// <summary>
-        /// 创建一个默认的缓存依赖
+        /// 实例化默认缓存依赖
         /// </summary>
-        /// <returns></returns>
-        public static ICacheDependent Create()
+        /// <param name="strategy"></param>
+        public DefaultCacheDependent(ICacheStrategy strategy)
         {
-            return Create(CacheType.Local);
+            this.strategy = strategy;
         }
 
         /// <summary>
-        /// 创建一个默认的缓存依赖
+        /// 实例化默认缓存依赖
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
-        public static ICacheDependent Create(CacheType type)
+        public DefaultCacheDependent(CacheType type)
         {
-            return new DefaultCacheDependent(type);
+            this.strategy = CacheFactory.CreateCache("DefaultCacheDependent", type);
         }
 
         #region ICacheDependent 成员
@@ -40,13 +34,17 @@ namespace MySoft.Cache
         /// <summary>
         /// 添加缓存
         /// </summary>
+        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
         /// <param name="cacheValue"></param>
         /// <param name="cacheTime"></param>
-        public void AddCache(string cacheKey, object cacheValue, double cacheTime)
+        public virtual void AddCache(Type serviceType, string cacheKey, object cacheValue, double cacheTime)
         {
             lock (strategy)
             {
+                //组合CacheKey
+                cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
+
                 if (cacheTime > 0)
                     strategy.AddObject(cacheKey, cacheValue, TimeSpan.FromSeconds(cacheTime));
                 else
@@ -57,11 +55,15 @@ namespace MySoft.Cache
         /// <summary>
         /// 移除缓存
         /// </summary>
+        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
-        public void RemoveCache(string cacheKey)
+        public virtual void RemoveCache(Type serviceType, string cacheKey)
         {
             lock (strategy)
             {
+                //组合CacheKey
+                cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
+
                 strategy.RemoveObject(cacheKey);
             }
         }
@@ -69,12 +71,16 @@ namespace MySoft.Cache
         /// <summary>
         /// 获取缓存
         /// </summary>
+        /// <param name="serviceType"></param>
         /// <param name="cacheKey"></param>
         /// <returns></returns>
-        public object GetCache(string cacheKey)
+        public virtual object GetCache(Type serviceType, string cacheKey)
         {
             lock (strategy)
             {
+                //组合CacheKey
+                cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
+
                 return strategy.GetObject(cacheKey);
             }
         }
@@ -87,7 +93,7 @@ namespace MySoft.Cache
         /// 移除缓存
         /// </summary>
         /// <param name="serviceType"></param>
-        public void RemoveCache(Type serviceType)
+        public virtual void RemoveCache(Type serviceType)
         {
             lock (strategy)
             {
@@ -100,7 +106,7 @@ namespace MySoft.Cache
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
-        public IList<object> GetCache(Type serviceType)
+        public virtual IList<object> GetCache(Type serviceType)
         {
             lock (strategy)
             {

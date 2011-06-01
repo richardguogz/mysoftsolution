@@ -11,6 +11,13 @@ using MySoft.Security;
 namespace MySoft.IoC.Services
 {
     /// <summary>
+    /// 异常调用委托
+    /// </summary>
+    /// <param name="reqMsg"></param>
+    /// <returns></returns>
+    public delegate ResponseMessage AsyncMethodCaller(RequestMessage reqMsg);
+
+    /// <summary>
     /// The dynamic service.
     /// </summary>
     public class DynamicService : BaseService

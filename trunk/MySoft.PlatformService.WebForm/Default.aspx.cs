@@ -21,8 +21,8 @@ namespace MySoft.PlatformService.WebForm
             {
                 try
                 {
-                    status = CastleFactory.Create().GetService<IStatusService>().GetServerStatus();
-                    clients = CastleFactory.Create().GetService<IStatusService>().GetConnectInfoList();
+                    status = CastleFactory.Create().GetService<IStatusService>("bbbb").GetServerStatus();
+                    clients = CastleFactory.Create().GetService<IStatusService>("bbbb").GetConnectInfoList();
                 }
                 catch (Exception ex)
                 {

@@ -1017,9 +1017,11 @@ namespace MySoft.Data
         /// ◊¢≤·ª∫¥Ê“¿¿µ
         /// </summary>
         /// <param name="cache"></param>
-        public void RegisterCacheDependent(ICacheDependent cache)
+        /// <param name="timeout"></param>
+        public void RegisterCacheDependent(ICacheDependent cache, int timeout)
         {
             this.dbProvider.Cache = cache;
+            this.dbProvider.Timeout = timeout;
         }
 
         #endregion

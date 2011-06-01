@@ -308,7 +308,7 @@ namespace MySoft.Web.UI
         private string GetCache(string path, string parameter)
         {
             string key = path + (parameter != string.Empty ? "?" + parameter : null);
-            key = "Cache_Control_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key.ToLower()));
+            key = "Cache_Control_" + key.ToLower();
 
             var config = CacheControlConfiguration.GetConfig();
 
@@ -331,7 +331,7 @@ namespace MySoft.Web.UI
         {
             if (html == null) return;
             string key = path + (parameter != string.Empty ? "?" + parameter : null);
-            key = "Cache_Control_" + Convert.ToBase64String(Encoding.UTF8.GetBytes(key.ToLower()));
+            key = "Cache_Control_" + key.ToLower();
 
             var config = CacheControlConfiguration.GetConfig();
 

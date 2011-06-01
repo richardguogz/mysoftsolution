@@ -16,7 +16,6 @@ namespace MySoft.Data
         private char leftToken;
         private char rightToken;
         private char paramPrefixToken;
-        private ICacheDependent cache;
         private IExcutingLog logger;
 
         /// <summary>
@@ -33,11 +32,12 @@ namespace MySoft.Data
         /// <summary>
         /// ª∫¥Ê“¿¿µ
         /// </summary>
-        internal ICacheDependent Cache
-        {
-            get { return cache; }
-            set { cache = value; }
-        }
+        internal ICacheDependent Cache { get; set; }
+
+        /// <summary>
+        /// ≥¨ ± ±º‰
+        /// </summary>
+        internal int Timeout { get; set; }
 
         protected DbProvider(string connectionString, System.Data.Common.DbProviderFactory dbFactory, char leftToken, char rightToken, char paramPrefixToken)
         {

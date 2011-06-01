@@ -38,6 +38,16 @@ namespace MySoft.IoC
         /// <returns></returns>
         public IPresenterType GetPresenter<IPresenterType>(object view)
         {
+            return GetPresenter<IPresenterType>(view);
+        }
+
+        /// <summary>
+        /// Gets the presenter.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <returns></returns>
+        public IPresenterType GetPresenter<IPresenterType>(object view, params object[] parameters)
+        {
             if (container.ServiceContainer.Kernel.HasComponent(typeof(IPresenterType)))
             {
                 IPresenterType _presenter = (IPresenterType)container.ServiceContainer.Kernel[typeof(IPresenterType)];
@@ -48,7 +58,7 @@ namespace MySoft.IoC
                     for (int i = 0; i < models.Length; i++)
                     {
                         MethodInfo method = container.GetType().GetMethod("GetService", Type.EmptyTypes).MakeGenericMethod(presenter.TypeOfModels[i]);
-                        models[i] = DynamicCalls.GetMethodInvoker(method).Invoke(container, null);
+                        models[i] = DynamicCalls.GetMethodInvoker(method).Invoke(container, parameters);
                     }
                     presenter.BindView(view);
                     presenter.BindModels(models);
