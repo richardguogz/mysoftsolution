@@ -58,7 +58,7 @@ namespace MySoft
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 BinaryFormatter bformatter = new BinaryFormatter();
-                bformatter.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
+                //bformatter.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
                 bformatter.Serialize(memoryStream, obj);
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
@@ -111,7 +111,7 @@ namespace MySoft
             {
                 ms.Seek(0, SeekOrigin.Begin);
                 BinaryFormatter b = new BinaryFormatter();
-                b.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
+                //b.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
                 serializedObject = b.Deserialize(ms);
             }
 
