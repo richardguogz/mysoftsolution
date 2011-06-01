@@ -113,6 +113,7 @@ namespace MySoft.IoC
                             //请求总数
                             if (status.RequestCount > highest.RequestCount)
                             {
+                                highest.RequestCount = status.RequestCount;
                                 highest.RequestCountCounterTime = status.CounterTime;
                             }
 
@@ -334,6 +335,9 @@ namespace MySoft.IoC
             ResponseMessage response = null;
             try
             {
+                //请求数累计
+                status.RequestCount++;
+
                 //生成一个异常调用委托
                 AsyncMethodCaller caller = new AsyncMethodCaller(CallMethod);
 
