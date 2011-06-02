@@ -269,7 +269,7 @@ namespace MySoft.IoC
 
         void SocketServerManager_OnBinaryInput(byte[] buffer, SocketAsyncEventArgs socketAsync)
         {
-            BufferRead read = new BufferRead(buffer);
+            BufferReader read = new BufferReader(buffer);
 
             int length;
             int cmd;
@@ -335,10 +335,10 @@ namespace MySoft.IoC
             ResponseMessage response = null;
             try
             {
-                //生成一个异常调用委托
+                //生成一个异步调用委托
                 AsyncMethodCaller caller = new AsyncMethodCaller(CallMethod);
 
-                //开始异常调用
+                //开始异步调用
                 IAsyncResult result = caller.BeginInvoke(reqMsg, null, null);
 
                 //等待信号

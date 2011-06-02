@@ -11,7 +11,7 @@ using MySoft.Security;
 namespace MySoft.IoC.Services
 {
     /// <summary>
-    /// 异常调用委托
+    /// 异步调用委托
     /// </summary>
     /// <param name="reqMsg"></param>
     /// <returns></returns>
@@ -141,10 +141,10 @@ namespace MySoft.IoC.Services
                     #region 处理数据
 
                     //将对象系列化成byte数组
-                    resMsg.Data = SerializationManager.SerializeBin(returnValue);
+                    byte[] buffer = SerializationManager.SerializeBin(returnValue);
 
                     //判断是否压缩
-                    if (resMsg.Compress) resMsg.Data = CompressionManager.CompressSharpZip(resMsg.Data);
+                    if (resMsg.Compress) buffer = CompressionManager.CompressSharpZip(buffer);
 
                     //判断是否加密
                     if (resMsg.Encrypt)
@@ -163,9 +163,12 @@ namespace MySoft.IoC.Services
                         var encrypt = BigInteger.GenerateRandom(resMsg.KeyLength).ToString();
                         resMsg.Keys = MD5.Hash(Encoding.UTF8.GetBytes(encrypt));
 
-                        //这里暂时不处理
-                        resMsg.Data = XXTEA.Encrypt(resMsg.Data, resMsg.Keys);
+                        //加密处理
+                        buffer = XXTEA.Encrypt(buffer, resMsg.Keys);
                     }
+
+                    //返回base64字符串
+                    resMsg.Data = Convert.ToBase64String(buffer);
 
                     #endregion
                 }

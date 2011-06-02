@@ -230,7 +230,7 @@ namespace MySoft.Net.Sockets
             if (finish)
                 throw new ObjectDisposedException("BufferFormat", "无法使用已经调用了 Finish 方法的BufferFormat对象");
 
-            byte[] data = SerializeObject(obj);
+            byte[] data = SerializationManager.SerializeBin(obj);
             buffList.AddRange(GetSocketBytes(data.Length));
             buffList.AddRange(data);
         }
@@ -246,7 +246,6 @@ namespace MySoft.Net.Sockets
             if (finish)
                 throw new ObjectDisposedException("BufferFormat", "无法使用已经调用了 Finish 方法的BufferFormat对象");
 
-
             if (dataextra != null)
             {
                 byte[] fdata = dataextra(buffList.ToArray());
@@ -254,24 +253,15 @@ namespace MySoft.Net.Sockets
                 buffList.AddRange(fdata);
             }
 
-
             int l = buffList.Count + 4;
-
             byte[] data = GetSocketBytes(l);
-
             for (int i = data.Length - 1; i >= 0; i--)
             {
                 buffList.Insert(0, data[i]);
             }
 
-            byte[] datap = new byte[buffList.Count];
-
-            buffList.CopyTo(0, datap, 0, datap.Length);
-
-            buffList.Clear();
             finish = true;
-
-            return datap;
+            return buffList.ToArray();
         }
 
         #region 系列化数据
@@ -294,74 +284,37 @@ namespace MySoft.Net.Sockets
         /// <returns></returns>
         public static byte[] FormatFCA(object o, FDataExtraHandle dataExtra)
         {
-            Type otype = o.GetType();
-            Attribute[] Attributes = Attribute.GetCustomAttributes(otype);
+            if (o == null) return new byte[0];
 
-            foreach (Attribute p in Attributes)
+            BufferTypeAttribute fca = CoreHelper.GetTypeAttribute<BufferTypeAttribute>(o.GetType());
+            if (fca != null)
             {
-                BufferTypeAttribute fca = p as BufferTypeAttribute;
+                List<byte> bufflist = new List<byte>();
 
-                if (fca != null)
+                bufflist.AddRange(GetSocketBytes(fca.BufferCmdType));
+
+                byte[] classdata = SerializationManager.SerializeBin(o);
+                bufflist.AddRange(GetSocketBytes(classdata.Length));
+                bufflist.AddRange(classdata);
+
+                if (dataExtra != null)
                 {
-                    List<byte> bufflist = new List<byte>();
-
-                    bufflist.AddRange(GetSocketBytes(fca.BufferCmdType));
-
-                    byte[] classdata = SerializeObject(o);
-                    bufflist.AddRange(GetSocketBytes(classdata.Length));
-                    bufflist.AddRange(classdata);
-
-                    if (dataExtra != null)
-                    {
-                        byte[] fdata = dataExtra(bufflist.ToArray());
-                        bufflist.Clear();
-                        bufflist.AddRange(fdata);
-                    }
-
-
-                    int l = bufflist.Count + 4;
-                    byte[] data = GetSocketBytes(l);
-                    for (int i = data.Length - 1; i >= 0; i--)
-                    {
-                        bufflist.Insert(0, data[i]);
-                    }
-
-                    byte[] datap = new byte[bufflist.Count];
-
-                    bufflist.CopyTo(0, datap, 0, datap.Length);
-
+                    byte[] fdata = dataExtra(bufflist.ToArray());
                     bufflist.Clear();
-
-                    return datap;
+                    bufflist.AddRange(fdata);
                 }
+
+                int l = bufflist.Count + 4;
+                byte[] data = GetSocketBytes(l);
+                for (int i = data.Length - 1; i >= 0; i--)
+                {
+                    bufflist.Insert(0, data[i]);
+                }
+                return bufflist.ToArray();
             }
 
             throw new EntryPointNotFoundException("无法找到 BufferTypeAttribute 标签");
         }
-
-        #endregion
-
-        #region V对象
-
-        /// <summary>
-        /// 把对象序列化并返回相应的字节
-        /// </summary>
-        /// <param name="pObj">需要序列化的对象</param>
-        /// <returns>byte[]</returns>
-        public static byte[] SerializeObject(object pObj)
-        {
-            System.IO.MemoryStream _memory = new System.IO.MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            // formatter.TypeFormat=System.Runtime.Serialization.Formatters.FormatterTypeStyle.XsdString;
-            formatter.Serialize(_memory, pObj);
-            _memory.Position = 0;
-            byte[] read = new byte[_memory.Length];
-            _memory.Read(read, 0, read.Length);
-            _memory.Close();
-
-            return read;
-        }
-
 
         #endregion
 

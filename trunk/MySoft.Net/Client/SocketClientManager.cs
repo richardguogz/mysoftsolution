@@ -43,7 +43,7 @@ namespace MySoft.Net.Client
         public SocketClientManager()
         {
             //初始化数据包缓冲区,并设置了最大数据包尽可能的大 
-            BuffListManger = new BufferList(4096 * 4096);
+            BuffListManger = new BufferList(1024 * 1024 * 8); //最大为8兆数据
 
             Client = new SocketClient();
             Client.OnReceived += new ReceiveEventHandler(Client_OnReceived);

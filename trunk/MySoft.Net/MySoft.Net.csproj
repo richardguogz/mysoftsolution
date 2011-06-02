@@ -74,7 +74,7 @@
     <Compile Include="Sockets\BufferFormat.cs" />
     <Compile Include="Sockets\BufferTypeAttribute.cs" />
     <Compile Include="Sockets\BufferList.cs" />
-    <Compile Include="Sockets\BufferRead.cs" />
+    <Compile Include="Sockets\BufferReader.cs" />
     <Compile Include="Sockets\SocketConfig.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -285,33 +285,24 @@ namespace MySoft.Web
         /// <returns></returns>
         internal static string GetLocalPageString(string templatePath, string query, Encoding encoding, string validateString)
         {
-            try
+            StringBuilder sb = new StringBuilder();
+            using (StringWriter sw = new StringWriter(sb))
             {
-                StringBuilder result = new StringBuilder();
-                using (StringWriter sw = new StringWriter(result))
-                {
-                    string path = templatePath.TrimStart('/');
-                    HttpRuntime.ProcessRequest(new EncodingWorkerRequest(path, query, sw, encoding));
-                }
-
-                string content = result.ToString();
-                if (!string.IsNullOrEmpty(validateString))
-                {
-                    if (content.IndexOf(validateString) >= 0)
-                    {
-                        return content;
-                    }
-                    else
-                    {
-                        throw new Exception("执行本地页面" + templatePath + (query == null ? "" : "?" + query) + "出错，页面内容和验证字符串匹配失败。");
-                    }
-                }
-
-                return content;
+                string path = templatePath.TrimStart('/');
+                HttpRuntime.ProcessRequest(new EncodingWorkerRequest(path, query, sw, encoding));
             }
-            catch (Exception ex)
+
+            string content = sb.ToString();
+
+            //验证字符串
+            if (string.IsNullOrEmpty(validateString))
             {
-                throw ex;
+                throw new Exception("执行本地页面" + templatePath + (query == null ? "" : "?" + query) + "出错，验证字符串不能为空。");
+            }
+            else
+            {
+                if (content.IndexOf(validateString) >= 0) return content;
+                throw new Exception("执行本地页面" + templatePath + (query == null ? "" : "?" + query) + "出错，页面内容和验证字符串匹配失败。");
             }
         }
 
@@ -325,36 +316,20 @@ namespace MySoft.Web
         internal static string GetRemotePageString(string templatePath, Encoding encoding, string validateString)
         {
             WebClient wc = new WebClient();
-            string result;
-            try
-            {
-                using (Stream stream = wc.OpenRead(templatePath))
-                {
-                    using (StreamReader sr = new StreamReader(stream, encoding))
-                    {
-                        result = sr.ReadToEnd();
-                        if (string.IsNullOrEmpty(validateString))
-                        {
-                            throw new Exception("执行远程页面" + templatePath + "出错，验证字符串不能为空。");
-                        }
-                        else
-                        {
-                            if (result.IndexOf(validateString) >= 0)
-                            {
-                                return result;
-                            }
-                            else
-                            {
-                                throw new Exception("执行远程页面" + templatePath + "出错，页面内容和验证字符串匹配失败。");
-                            }
-                        }
-                    }
+            wc.Encoding = encoding;
 
-                }
-            }
-            catch (Exception ex)
+            //下载内容
+            string result = wc.DownloadString(templatePath);
+
+            //验证字符串
+            if (string.IsNullOrEmpty(validateString))
             {
-                throw ex;
+                throw new Exception("执行远程页面" + templatePath + "出错，验证字符串不能为空。");
+            }
+            else
+            {
+                if (result.IndexOf(validateString) >= 0) return result;
+                throw new Exception("执行远程页面" + templatePath + "出错，页面内容和验证字符串匹配失败。");
             }
         }
 
@@ -382,7 +357,6 @@ namespace MySoft.Web
                 {
                     writer = new StreamWriter(savePath, false, outEncoding);
                 }
-
                 writer.Write(result);
 
                 //生成文件成功写日志

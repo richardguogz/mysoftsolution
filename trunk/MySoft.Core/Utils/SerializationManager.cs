@@ -54,19 +54,19 @@ namespace MySoft
         {
             if (obj == null) return new byte[0];
 
-            byte[] buffer = new byte[4096];
-            using (MemoryStream memoryStream = new MemoryStream())
+            byte[] buffer = new byte[512];
+            using (MemoryStream ms = new MemoryStream())
             {
                 BinaryFormatter bformatter = new BinaryFormatter();
-                //bformatter.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
-                bformatter.Serialize(memoryStream, obj);
-                memoryStream.Seek(0, SeekOrigin.Begin);
+                //bformatter.TypeFormat = FormatterTypeStyle.TypesAlways;
+                bformatter.Serialize(ms, obj);
+                ms.Position = 0;
 
-                if (memoryStream.Length > buffer.Length)
+                if (ms.Length > buffer.Length)
                 {
-                    buffer = new byte[memoryStream.Length];
+                    buffer = new byte[ms.Length];
                 }
-                buffer = memoryStream.ToArray();
+                buffer = ms.ToArray();
             }
 
             return buffer;
@@ -109,9 +109,9 @@ namespace MySoft
             Object serializedObject;
             using (MemoryStream ms = new MemoryStream(buffer))
             {
-                ms.Seek(0, SeekOrigin.Begin);
+                ms.Position = 0;
                 BinaryFormatter b = new BinaryFormatter();
-                //b.TypeFormat = FormatterTypeStyle.TypesWhenNeeded;
+                //b.TypeFormat = FormatterTypeStyle.TypesAlways;
                 serializedObject = b.Deserialize(ms);
             }
 

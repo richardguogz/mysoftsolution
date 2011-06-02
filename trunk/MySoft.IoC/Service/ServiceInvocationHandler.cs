@@ -204,14 +204,17 @@ namespace MySoft.IoC
 
                 #region 处理返回的数据
 
+                //将base64转换为byte[]
+                byte[] buffer = Convert.FromBase64String(resMsg.Data);
+
                 //处理是否解密
-                if (resMsg.Encrypt) resMsg.Data = XXTEA.Decrypt(resMsg.Data, resMsg.Keys);
+                if (resMsg.Encrypt) buffer = XXTEA.Decrypt(buffer, resMsg.Keys);
 
                 //处理是否压缩
-                if (resMsg.Compress) resMsg.Data = CompressionManager.DecompressSharpZip(resMsg.Data);
+                if (resMsg.Compress) buffer = CompressionManager.DecompressSharpZip(buffer);
 
                 //将byte数组反系列化成对象
-                returnValue = SerializationManager.DeserializeBin(resMsg.Data);
+                returnValue = SerializationManager.DeserializeBin(buffer);
 
                 #endregion
 

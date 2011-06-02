@@ -71,7 +71,7 @@ namespace MySoft.IoC
 
         void SocketClientManager_OnReceived(byte[] buffer, Socket socket)
         {
-            BufferRead read = new BufferRead(buffer);
+            BufferReader read = new BufferReader(buffer);
 
             int length;
             int cmd;

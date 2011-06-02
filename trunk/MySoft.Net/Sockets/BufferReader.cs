@@ -5,15 +5,11 @@
  *  Updated 2011-04-9 
  */
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.IO;
 using System.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MySoft.Net.Sockets
 {
-
     /// <summary>
     /// 数据包在读取前需要额外的处理回调方法。（例如解密，解压缩等）
     /// </summary>
@@ -21,14 +17,12 @@ namespace MySoft.Net.Sockets
     /// <returns></returns>
     public delegate byte[] RDataExtraHandle(byte[] data);
 
-
     /// <summary>
     /// 数据包读取类
     /// （此类的功能是讲通讯数据包重新转换成.NET 数据类型）
     /// </summary>
-    public class BufferRead
+    public class BufferReader
     {
-
         private int current;
 
         public byte[] Data { get; set; }
@@ -68,7 +62,7 @@ namespace MySoft.Net.Sockets
         }
 
 
-        public BufferRead(Byte[] data)
+        public BufferReader(Byte[] data)
         {
             Data = data;
             this.Length = Data.Length;
@@ -83,7 +77,7 @@ namespace MySoft.Net.Sockets
         /// <param name="startIndex">需要载入数据额外处理的开始位置</param>
         /// <param name="length">需要载入数据额外处理的数据长度 -1为，开始INDEX到结束位置,-2就是保留最后1位</param>
         ///  <param name="dataExtraCallBack"> 数据包在读取前需要额外的处理回调方法。（例如加密，解压缩等）</param>
-        public BufferRead(Byte[] data, int startIndex, int length, RDataExtraHandle dataExtraCallBack)
+        public BufferReader(Byte[] data, int startIndex, int length, RDataExtraHandle dataExtraCallBack)
         {
             try
             {
@@ -92,7 +86,6 @@ namespace MySoft.Net.Sockets
                 if (length < 0)
                 {
                     endlengt = (data.Length + length + 1) - startIndex;
-
                 }
                 else
                 {
@@ -127,7 +120,6 @@ namespace MySoft.Net.Sockets
                 IsDataExtraSuccess = false;
             }
         }
-
 
         #region 整数
         /// <summary>
@@ -366,25 +358,6 @@ namespace MySoft.Net.Sockets
         #region 对象
 
         /// <summary>
-        /// 把字节反序列化成相应的对象
-        /// </summary>
-        /// <param name="pBytes">字节流</param>
-        /// <returns>object</returns>
-        private object DeserializeObject(byte[] pBytes)
-        {
-            object _newOjb = null;
-            if (pBytes == null)
-                return _newOjb;
-            System.IO.MemoryStream _memory = new System.IO.MemoryStream(pBytes);
-            _memory.Position = 0;
-            BinaryFormatter formatter = new BinaryFormatter();
-            //  formatter.TypeFormat = System.Runtime.Serialization.Formatters.FormatterTypeStyle.XsdString;
-            _newOjb = formatter.Deserialize(_memory);
-            _memory.Close();
-            return _newOjb;
-        }
-
-        /// <summary>
         /// 读取一个对象
         /// </summary>
         /// <param name="obj"></param>
@@ -394,7 +367,7 @@ namespace MySoft.Net.Sockets
             byte[] data;
             if (this.ReadByteArray(out data))
             {
-                obj = DeserializeObject(data);
+                obj = SerializationManager.DeserializeBin(data);
                 return true;
             }
             else
@@ -402,12 +375,8 @@ namespace MySoft.Net.Sockets
                 obj = null;
                 return false;
             }
-
         }
 
         #endregion
-
     }
-
-
 }

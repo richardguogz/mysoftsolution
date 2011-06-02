@@ -107,12 +107,14 @@ namespace MySoft.IoC
                     //获取消息
                     AsyncMethodCaller caller = new AsyncMethodCaller(GetResponse);
 
-                    //异常调用
+                    //异步调用
                     IAsyncResult result = caller.BeginInvoke(reqMsg, null, null);
 
                     // Wait for the WaitHandle to become signaled.
                     if (!result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(reqMsg.Timeout)))
                     {
+                        watch.Stop();
+
                         throw new WarningException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
                         {
                             ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
