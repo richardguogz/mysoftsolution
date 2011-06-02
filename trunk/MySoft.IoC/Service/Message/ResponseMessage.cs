@@ -30,13 +30,13 @@ namespace MySoft.IoC
             }
         }
 
-        private string data;
+        private byte[] data;
 
         /// <summary>
         /// Gets or sets the data.
         /// </summary>
         /// <value>The data.</value>
-        public string Data
+        public byte[] Data
         {
             get
             {

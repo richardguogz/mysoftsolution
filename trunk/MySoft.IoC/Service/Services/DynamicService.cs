@@ -168,7 +168,7 @@ namespace MySoft.IoC.Services
                     }
 
                     //·µ»Øbase64×Ö·û´®
-                    resMsg.Data = Convert.ToBase64String(buffer);
+                    resMsg.Data = buffer;
 
                     #endregion
                 }
