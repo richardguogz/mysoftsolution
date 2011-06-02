@@ -205,8 +205,7 @@ namespace MySoft.IoC
                 #region 处理返回的数据
 
                 //将base64转换为byte[]
-                byte[] buffer = new byte[resMsg.Data.Length];
-                resMsg.Data.CopyTo(buffer, 0);
+                byte[] buffer = resMsg.Data;
 
                 //处理是否解密
                 if (resMsg.Encrypt) buffer = XXTEA.Decrypt(buffer, resMsg.Keys);
