@@ -16,14 +16,14 @@ namespace MySoft.Logger
         /// </summary>
         public static readonly SimpleLog Instance = new SimpleLog(AppDomain.CurrentDomain.BaseDirectory);
 
-        private string dir;
+        private string basedir;
         /// <summary>
         /// 实例化简单日志组件
         /// </summary>
-        /// <param name="dir">日志存储根目录，下面会自动创建Log与ErrorLog文件夹</param>
-        public SimpleLog(string dir)
+        /// <param name="basedir">日志存储根目录，下面会自动创建Log与ErrorLog文件夹</param>
+        public SimpleLog(string basedir)
         {
-            this.dir = dir;
+            this.basedir = basedir;
         }
 
         #region 自动创建文件
@@ -34,11 +34,20 @@ namespace MySoft.Logger
         /// <param name="ex"></param>
         public void WriteLog(Exception ex)
         {
-            string filePath = Path.Combine(dir, "ErrorLog");
-            filePath = Path.Combine(filePath, ex.GetType().Name);
-            string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
+            WriteLogForDir("ErrorLog", ex);
+        }
 
-            WriteLog(logFileName, ex);
+        /// <summary>
+        /// 写错误日志
+        /// </summary>
+        /// <param name="ex"></param>
+        public void WriteLogForDir(string dir, Exception ex)
+        {
+            string filePath = Path.Combine(basedir, dir);
+            filePath = Path.Combine(filePath, ex.GetType().Name);
+            filePath = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
+
+            WriteFileLog(filePath, ex);
         }
 
         /// <summary>
@@ -46,10 +55,18 @@ namespace MySoft.Logger
         /// </summary>
         public void WriteLog(string log)
         {
-            string filePath = Path.Combine(dir, "Log");
-            string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
+            WriteLogForDir("Log", log);
+        }
 
-            WriteLog(logFileName, log);
+        /// <summary>
+        /// 写入日志
+        /// </summary>
+        public void WriteLogForDir(string dir, string log)
+        {
+            string filePath = Path.Combine(basedir, dir);
+            filePath = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
+
+            WriteFileLog(filePath, log);
         }
 
         /// <summary>
@@ -116,22 +133,8 @@ namespace MySoft.Logger
         /// <param name="log"></param>
         public void WriteLog(string fileName, string log)
         {
-            try
-            {
-                string logFileName = Path.Combine(dir, fileName);
-                //string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
-
-                if (!Directory.Exists(Path.GetDirectoryName(logFileName)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(logFileName));
-                }
-
-                log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
-                   DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
-
-                File.AppendAllText(logFileName, log);
-            }
-            catch { }
+            string filePath = Path.Combine(basedir, fileName);
+            WriteFileLog(filePath, log);
         }
 
         /// <summary>
@@ -212,6 +215,39 @@ namespace MySoft.Logger
             var body = CoreHelper.GetSubString(ex.ToString(), 100, "...");
             string title = string.Format("({2}){3} - 异常邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.GetType().Name, body);
             SmtpMail.Instance.SendExceptionAsync(ex, title, to);
+        }
+
+        /// <summary>
+        /// 写文件日志
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="ex"></param>
+        private void WriteFileLog(string filePath, Exception ex)
+        {
+            string log = ErrorHelper.GetErrorWithoutHtml(ex);
+            WriteFileLog(filePath, log);
+        }
+
+        /// <summary>
+        /// 写文件日志
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="log"></param>
+        private void WriteFileLog(string filePath, string log)
+        {
+            try
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                }
+
+                log = string.Format("【{0}】 ==> {1}{2}{2}==============================================================================================================={2}{2}",
+                   DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
+
+                File.AppendAllText(filePath, log);
+            }
+            catch { }
         }
 
         #endregion

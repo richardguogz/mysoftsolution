@@ -8,6 +8,7 @@ using System.Net.Configuration;
 using System.Net.Mail;
 using System.Net.Sockets;
 using System.Text;
+using MySoft.Logger;
 
 namespace MySoft.Mail
 {
@@ -602,6 +603,31 @@ namespace MySoft.Mail
         /// <returns></returns>
         public SendResult Send()
         {
+            var result = SendMail(false);
+
+            string log = string.Format("SyncSendMail from ({0}) to ({1}), {2}.", mMailFrom, String.Join("|", mMailTo), result.Message);
+            //写邮件发送日志
+            SimpleLog.Instance.WriteLog("Mail", string.Format("{0} subject: {1}", log, mMailSubject));
+            Console.WriteLine(log);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 异步发送邮件
+        /// </summary>
+        public void SendAsync()
+        {
+            SendMail(true);
+        }
+
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="isAsync"></param>
+        /// <returns></returns>
+        private SendResult SendMail(bool isAsync)
+        {
             #region 设置属性值
 
             string[] mailTos = mMailTo;
@@ -678,23 +704,58 @@ namespace MySoft.Mail
 
             try
             {
-                SmtpMail.Send(Email);
-                result.Success = true;
+                if (isAsync)
+                {
+                    SmtpMail.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                    SmtpMail.SendAsync(Email, null);
+                }
+                else
+                {
+                    SmtpMail.Send(Email);
+                    result.Success = true;
+                }
             }
             catch (SmtpFailedRecipientsException ex)
             {
                 result.Message = ErrorHelper.GetInnerException(ex).Message;
-                //System.Windows.Forms.MessageBox.Show(ex.Message);
                 result.Success = false;
             }
             catch (Exception ex)
             {
                 result.Message = ErrorHelper.GetInnerException(ex).Message;
-                //System.Windows.Forms.MessageBox.Show(ex.Message);
                 result.Success = false;
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 发送完成回调
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SendCompletedCallback(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            string log = string.Empty;
+            if (e.Cancelled)
+            {
+                //输出日志
+                log = string.Format("AsyncSendMail from ({0}) to ({1}), Send canceled.", mMailFrom, String.Join("|", mMailTo));
+            }
+            if (e.Error != null)
+            {
+                //输出日志
+                log = string.Format("AsyncSendMail from ({1}) to ({2}), {3}.", DateTime.Now, mMailFrom, String.Join("|", mMailTo), e.Error.Message);
+            }
+            else
+            {
+                //输出日志
+                log = string.Format("AsyncSendMail from ({1}) to ({2}), Send success.", DateTime.Now, mMailFrom, String.Join("|", mMailTo));
+            }
+
+            //写邮件发送日志
+            SimpleLog.Instance.WriteLogForDir("Mail", string.Format("{0} subject: {1}", log, mMailSubject));
+            Console.WriteLine(log);
         }
 
         #endregion

@@ -8,7 +8,7 @@ namespace MySoft.Mail
     /// 异常邮件发送
     /// </summary>
     /// <param name="smtp"></param>
-    public delegate SendResult AsyncMailSender(SMTP smtp);
+    public delegate void AsyncMailSender(SMTP smtp);
 
     /// <summary>
     /// 邮件发送
@@ -86,7 +86,7 @@ namespace MySoft.Mail
             set { isSystemMail = value; }
         }
 
-        public SmtpMail()
+        private SmtpMail()
         {
             this.smtpServer = "smtp.163.com";
             this.UserName = "mysoft2011@163.com";
@@ -112,7 +112,7 @@ namespace MySoft.Mail
         /// <param name="body"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult Send(string title, string body, string to)
+        public SendResult Send(string title, string body, string to)
         {
             lock (lockObject)
             {
@@ -144,7 +144,7 @@ namespace MySoft.Mail
         /// <param name="body"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult Send(string title, string body, string[] to)
+        public SendResult Send(string title, string body, string[] to)
         {
             lock (lockObject)
             {
@@ -176,16 +176,9 @@ namespace MySoft.Mail
                 smtp.IsBodyHtml = true;
 
                 //启用线程池来实现异步发送
-                AsyncMailSender sender = new AsyncMailSender((mail) => mail.Send());
-                IAsyncResult result = sender.BeginInvoke(smtp, (r) =>
-                {
-                    //异常结束发送
-                    AsyncMailSender m = r.AsyncState as AsyncMailSender;
-                    SendResult sr = m.EndInvoke(r);
-
-                    //输出日志
-                    Console.WriteLine("[{0}] ({1}) ==> ({2}), {3}", DateTime.Now, smtp.MailFrom, String.Join("|", smtp.MailTo), sr.Message);
-                }, sender);
+                AsyncMailSender sender = new AsyncMailSender(mail => mail.SendAsync());
+                IAsyncResult result = sender.BeginInvoke(smtp, null, null);
+                sender.EndInvoke(result);
             }
         }
 
@@ -198,7 +191,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(Exception ex, string title, string to)
+        public SendResult SendException(Exception ex, string title, string to)
         {
             lock (lockObject)
             {
@@ -214,7 +207,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendSampleException(Exception ex, string title, string to)
+        public SendResult SendSampleException(Exception ex, string title, string to)
         {
             lock (lockObject)
             {
@@ -230,7 +223,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(HttpContext current, string title, string to)
+        public SendResult SendException(HttpContext current, string title, string to)
         {
             lock (lockObject)
             {
@@ -252,7 +245,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(Exception ex, string title, string[] to)
+        public SendResult SendException(Exception ex, string title, string[] to)
         {
             lock (lockObject)
             {
@@ -268,7 +261,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendSampleException(Exception ex, string title, string[] to)
+        public SendResult SendSampleException(Exception ex, string title, string[] to)
         {
             lock (lockObject)
             {
@@ -284,7 +277,7 @@ namespace MySoft.Mail
         /// <param name="title"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(HttpContext current, string title, string[] to)
+        public SendResult SendException(HttpContext current, string title, string[] to)
         {
             lock (lockObject)
             {
