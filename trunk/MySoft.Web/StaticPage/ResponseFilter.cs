@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Web;
+using System.Threading;
 
 namespace MySoft.Web
 {
@@ -68,9 +69,16 @@ namespace MySoft.Web
         {
             this.m_sink.Close();
 
-            //获取页面的内容
-            string content = pageContent.ToString();
+            //写文件
+            WriteFile(pageContent.ToString());
+        }
 
+        /// <summary>
+        /// 写文件
+        /// </summary>
+        /// <param name="content"></param>
+        private void WriteFile(string content)
+        {
             //如果页面内容中包含指定的验证字符串则生成
             if (string.IsNullOrEmpty(validateString) || content.Contains(validateString))
             {
@@ -80,44 +88,27 @@ namespace MySoft.Web
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                 }
 
-                FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
-                if (fs != null)
+                //内容进行编码处理
+                enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
+                string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
+                string staticurl = filePath;
+
+                string extension = Path.GetExtension(staticurl);
+                if (extension != null && extension.ToLower() == ".js")
                 {
-                    fs.SetLength(0);
-
-                    //能写入时才处理
-                    if (fs.CanWrite)
-                    {
-                        //内容进行编码处理
-                        enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
-
-                        string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
-                        string staticurl = filePath;
-
-                        string extension = Path.GetExtension(staticurl);
-                        if (extension != null && extension.ToLower() == ".js")
-                        {
-                            //加入静态页生成元素
-                            content = string.Format("{3}\r\n\r\n//<!-- 生成方式：被动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
-                        }
-                        else
-                        {
-                            //加入静态页生成元素
-                            content = string.Format("{3}\r\n\r\n<!-- 生成方式：被动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
-                                                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
-                        }
-
-                        byte[] _buffer = enc.GetBytes(content);
-                        int _count = enc.GetByteCount(content);
-
-                        //将数据写入静态文件.
-                        fs.Write(_buffer, 0, _count);
-                    }
-
-                    //关闭流
-                    fs.Close();
+                    //加入静态页生成元素
+                    content = string.Format("{3}\r\n\r\n//<!-- 生成方式：被动生成 -->\r\n//<!-- 更新时间：{0} -->\r\n//<!-- 动态URL：{1} -->\r\n//<!-- 静态URL：{2} -->",
+                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
+                else
+                {
+                    //加入静态页生成元素
+                    content = string.Format("{3}\r\n\r\n<!-- 生成方式：被动生成 -->\r\n<!-- 更新时间：{0} -->\r\n<!-- 动态URL：{1} -->\r\n<!-- 静态URL：{2} -->",
+                                        DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
+                }
+
+                //将内容写入文件
+                File.WriteAllText(filePath, content, enc);
             }
         }
 
