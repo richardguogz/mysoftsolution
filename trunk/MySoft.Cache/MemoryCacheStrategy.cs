@@ -19,7 +19,7 @@ namespace MySoft.Cache
         /// <param name="objId"></param>
         public static void Remove(string objId)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 if (objId == null || objId.Length == 0)
                 {
@@ -35,7 +35,7 @@ namespace MySoft.Cache
         /// </summary>
         public static void Clear()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 foreach (string objId in AllKeys)
                 {
@@ -52,7 +52,7 @@ namespace MySoft.Cache
         {
             get
             {
-                lock (syncObject)
+                lock (lockObject)
                 {
                     IDictionaryEnumerator cacheEnum = webCache.GetEnumerator();
                     IList<string> objIds = new List<string>();
@@ -73,7 +73,7 @@ namespace MySoft.Cache
         public static readonly MemoryCacheStrategy Default = new MemoryCacheStrategy("defaultCache");
 
         private static volatile System.Web.Caching.Cache webCache = System.Web.HttpRuntime.Cache;
-        private static readonly object syncObject = new object();
+        private static readonly object lockObject = new object();
 
         /// <summary>
         /// 实例化本地缓存
@@ -109,7 +109,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
@@ -146,7 +146,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
@@ -167,7 +167,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
@@ -198,7 +198,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
@@ -228,7 +228,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
@@ -252,7 +252,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
@@ -299,7 +299,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 webCache.Remove(GetInputKey(objId));
             }
@@ -317,7 +317,7 @@ namespace MySoft.Cache
                 return null;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 return webCache.Get(GetInputKey(objId));
             }
@@ -335,7 +335,7 @@ namespace MySoft.Cache
                 return default(T);
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 return (T)GetObject(GetInputKey(objId));
             }
@@ -348,7 +348,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public object GetMatchObject(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, object> values = GetMatchObjects(regularExpression);
                 return values.Count > 0 ? values.First().Value : null;
@@ -362,7 +362,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public T GetMatchObject<T>(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, T> values = GetMatchObjects<T>(regularExpression);
                 return values.Count > 0 ? values.First().Value : default(T);
@@ -376,7 +376,7 @@ namespace MySoft.Cache
         /// </summary>
         public void RemoveAllObjects()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IList<string> allKeys = GetAllKeys();
                 RemoveObjects(allKeys);
@@ -389,7 +389,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IList<string> GetAllKeys()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionaryEnumerator cacheEnum = webCache.GetEnumerator();
                 List<string> objIds = new List<string>();
@@ -410,7 +410,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public int GetCacheCount()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetAllKeys().Count;
             }
@@ -422,7 +422,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, object> GetAllObjects()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects(GetAllKeys());
             }
@@ -435,7 +435,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, T> GetAllObjects<T>()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects<T>(GetAllKeys());
             }
@@ -448,7 +448,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IList<string> GetKeys(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 if (regularExpression == null || regularExpression.Length == 0)
                 {
@@ -473,7 +473,7 @@ namespace MySoft.Cache
         /// <param name="data"></param>
         public void AddObjects(IDictionary<string, object> data)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 foreach (KeyValuePair<string, object> kv in data)
                 {
@@ -488,7 +488,7 @@ namespace MySoft.Cache
         /// <param name="data"></param>
         public void AddObjects<T>(IDictionary<string, T> data)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 foreach (KeyValuePair<string, T> kv in data)
                 {
@@ -503,7 +503,7 @@ namespace MySoft.Cache
         /// <param name="regularExpression">匹配KEY正则表示式</param>
         public void RemoveMatchObjects(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 var objIds = GetKeys(regularExpression);
                 RemoveObjects(objIds);
@@ -516,7 +516,7 @@ namespace MySoft.Cache
         /// <param name="objIds"></param>
         public void RemoveObjects(IList<string> objIds)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 foreach (string objId in objIds)
                 {
@@ -532,7 +532,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, object> GetObjects(IList<string> objIds)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, object> cacheData = new Dictionary<string, object>();
                 foreach (string objId in objIds)
@@ -556,7 +556,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, T> GetObjects<T>(IList<string> objIds)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, T> cacheData = new Dictionary<string, T>();
                 foreach (string objId in objIds)
@@ -579,7 +579,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, object> GetMatchObjects(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects(GetKeys(regularExpression));
             }
@@ -592,7 +592,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, T> GetMatchObjects<T>(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects<T>(GetKeys(regularExpression));
             }

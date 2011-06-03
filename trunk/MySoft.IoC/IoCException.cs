@@ -9,6 +9,11 @@ namespace MySoft.IoC
     public class IoCException : MySoftException
     {
         /// <summary>
+        /// 错误标题
+        /// </summary>
+        public string ExceptionTitle { get; set; }
+
+        /// <summary>
         /// 错误头
         /// </summary>
         public string ExceptionHeader { get; set; }
@@ -36,24 +41,38 @@ namespace MySoft.IoC
         protected IoCException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
+            this.ExceptionTitle = (string)info.GetValue("ExceptionTitle", typeof(string));
             this.ExceptionHeader = (string)info.GetValue("ExceptionHeader", typeof(string));
         }
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
+            info.AddValue("ExceptionTitle", this.ExceptionTitle);
             info.AddValue("ExceptionHeader", this.ExceptionHeader);
             base.GetObjectData(info, context);
         }
 
         /// <summary>
-        /// 获取描述信息
+        /// 返回消息
         /// </summary>
         public override string Message
         {
             get
             {
-                return string.Format("{0}\r\n\r\n{1}", this.ExceptionHeader, base.Message);
+                if (string.IsNullOrEmpty(this.ExceptionHeader))
+                    return string.Format("{0}\r\n\r\n{1}", this.ExceptionHeader, base.Message);
+                else
+                    return base.Message;
             }
+        }
+
+        /// <summary>
+        /// 返回标题
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.ExceptionTitle;
         }
     }
 }

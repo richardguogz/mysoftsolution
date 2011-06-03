@@ -55,7 +55,7 @@ namespace MySoft.IoC.Services
         /// </summary>
         /// <param name="reqMsg">The MSG.</param>
         /// <returns>The msg.</returns>
-        public ResponseMessage CallService(RequestMessage reqMsg, double logtime)
+        public ResponseMessage CallService(RequestMessage reqMsg, double logTimeout)
         {
             Stopwatch watch = Stopwatch.StartNew();
 
@@ -67,9 +67,13 @@ namespace MySoft.IoC.Services
                 watch.Stop();
 
                 var ex = resMsg.Exception;
-                var exception = new IoCException(string.Format("【{5}】Dynamic ({0}) service ({1},{2}) error. {4}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.TransactionId), ex)
+                string title = ErrorHelper.GetInnerException(ex).Message;
+                string body = string.Format("【{5}】Dynamic ({0}) service ({1},{2}) error. {4}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.TransactionId);
+                var exception = new IoCException(body, ex)
                 {
+                    ExceptionTitle = string.Format("【{0}】{1}", reqMsg.AppName, title),
                     ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+
                 };
                 logger.WriteError(exception);
             }
@@ -78,12 +82,14 @@ namespace MySoft.IoC.Services
                 watch.Stop();
 
                 //如果时间超过预定，则输出日志
-                if (watch.ElapsedMilliseconds > logtime * 1000)
+                if (watch.ElapsedMilliseconds > logTimeout * 1000)
                 {
                     string log = string.Format("【{6}】Dynamic ({0}) service ({1},{2}). {4}\r\nMessage ==> {5}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
-                    log = string.Format("Elapsed time ({2}) ms more than ({0}) ms, {1}", logtime * 1000, log, watch.ElapsedMilliseconds);
-                    var exception = new WarningException(log)
+                    string title = string.Format("Elapsed time ({0}) ms more than ({1}) ms.", watch.ElapsedMilliseconds, logTimeout * 1000);
+                    string body = string.Format("{0} {1}", title, log);
+                    var exception = new WarningException(body)
                     {
+                        ExceptionTitle = string.Format("【{0}】{1}", reqMsg.AppName, title),
                         ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
                     logger.WriteError(exception);

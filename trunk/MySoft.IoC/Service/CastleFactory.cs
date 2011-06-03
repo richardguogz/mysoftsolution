@@ -152,7 +152,9 @@ namespace MySoft.IoC
         /// <returns></returns>
         public IServiceInterfaceType GetService<IServiceInterfaceType>(string nodeKey)
         {
-            Exception ex = new ArgumentException("Generic parameter type - IServiceInterfaceType must be an interface marked with ServiceContractAttribute.");
+            Exception ex = new ArgumentException("Generic parameter type - ¡¾" + typeof(IServiceInterfaceType).FullName
+                + "¡¿ must be an interface marked with ServiceContractAttribute.");
+
             if (!typeof(IServiceInterfaceType).IsInterface)
             {
                 throw ex;

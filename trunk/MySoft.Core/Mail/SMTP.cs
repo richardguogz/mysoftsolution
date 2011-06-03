@@ -328,8 +328,6 @@ namespace MySoft.Mail
         private bool mSMTPSSL;
         private MailPriority mPriority = MailPriority.Normal;
         private bool mIsBodyHtml = false;
-        private MailMessage MailObject;
-        bool mailSent = false;
 
         #endregion
 
@@ -491,7 +489,6 @@ namespace MySoft.Mail
             System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             MailSettingsSectionGroup mailSettings = NetSectionGroup.GetSectionGroup(config).MailSettings;
 
-            MailObject = new MailMessage();
             mMailFrom = mailSettings.Smtp.From;
             mMailDisplyName = mailSettings.Smtp.From;
             mMailTo = mailTo;
@@ -580,7 +577,6 @@ namespace MySoft.Mail
         public SMTP(string mailFrom, string displayName, string[] mailTo, string[] mailCc, string[] mailBcc, string mailSubject, string mailBody,
             string[] attachments, string smtpServer, int smtpPort, string userName, string password, bool smtpSsl)
         {
-            MailObject = new MailMessage();
             mMailFrom = mailFrom;
             mMailDisplyName = displayName;
             mMailTo = mailTo;
@@ -604,31 +600,9 @@ namespace MySoft.Mail
         /// 同步发送邮件
         /// </summary>
         /// <returns></returns>
-        public ResponseResult Send()
-        {
-            return SendMail(false, null);
-        }
-
-        /// <summary>
-        /// 异步发送邮件
-        /// </summary>
-        /// <param name="userState">异步任务的唯一标识符</param>
-        /// <returns></returns>
-        public void SendAsync(object userState)
-        {
-            SendMail(true, userState);
-        }
-
-        /// <summary>
-        /// 发送邮件
-        /// </summary>
-        /// <param name="isAsync">是否异步发送邮件</param>
-        /// <param name="userState">异步任务的唯一标识符，当 isAsync 为 True 时必须设置该属性， 当 isAsync 为 False 时可设置为 null</param>
-        /// <returns></returns>
-        private ResponseResult SendMail(bool isAsync, object userState)
+        public SendResult Send()
         {
             #region 设置属性值
-
 
             string[] mailTos = mMailTo;
             string[] mailCcs = mMailCc;
@@ -704,58 +678,23 @@ namespace MySoft.Mail
 
             try
             {
-                if (!isAsync)
-                {
-                    SmtpMail.Send(Email);
-                    mailSent = true;
-                }
-                else
-                {
-                    userState = (userState == null) ? Guid.NewGuid() : userState;
-                    SmtpMail.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
-                    SmtpMail.SendAsync(Email, userState);
-                }
+                SmtpMail.Send(Email);
+                result.Success = true;
             }
             catch (SmtpFailedRecipientsException ex)
             {
                 result.Message = ErrorHelper.GetInnerException(ex).Message;
-
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
-                mailSent = false;
+                result.Success = false;
             }
             catch (Exception ex)
             {
                 result.Message = ErrorHelper.GetInnerException(ex).Message;
-
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
-                mailSent = false;
+                result.Success = false;
             }
-
-            result.Success = mailSent;
 
             return result;
-        }
-
-        private void SendCompletedCallback(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            // Get the unique identifier for this asynchronous operation.
-            String token = e.UserState.ToString();
-
-            if (e.Cancelled)
-            {
-                Console.WriteLine("[{0}] Send canceled.", token);
-                mailSent = false;
-            }
-            if (e.Error != null)
-            {
-                Console.WriteLine("[{0}] Send error. {1}", token, e.Error);
-                mailSent = false;
-            }
-            else
-            {
-                Console.WriteLine("[{0}] Message sent.", token);
-                mailSent = true;
-            }
         }
 
         #endregion

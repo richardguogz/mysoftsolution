@@ -95,7 +95,7 @@ namespace MySoft.IoC
         {
             if (parmValues.Keys.Count == 0)
             {
-                return "{ parameters is empty }";
+                return "{}";
             }
             else
             {
@@ -103,7 +103,15 @@ namespace MySoft.IoC
                 foreach (string key in parmValues.Keys)
                 {
                     //将数据进行系列化
-                    var jsonString = SerializationManager.SerializeJson(parmValues[key]);
+                    var jsonString = string.Empty;
+                    try
+                    {
+                        jsonString = SerializationManager.SerializeJson(parmValues[key]);
+                    }
+                    catch (Exception ex)
+                    {
+                        jsonString = SerializationManager.SerializeJson(ex.Message);
+                    }
 
                     //添加到json对象
                     json.Add(key, JToken.Parse(jsonString));

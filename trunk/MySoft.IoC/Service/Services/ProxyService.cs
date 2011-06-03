@@ -81,9 +81,9 @@ namespace MySoft.IoC
         /// 调用方法
         /// </summary>
         /// <param name="reqMsg"></param>
-        /// <param name="logtime"></param>
+        /// <param name="logTimeout"></param>
         /// <returns></returns>
-        public ResponseMessage CallService(RequestMessage reqMsg, double logtime)
+        public ResponseMessage CallService(RequestMessage reqMsg, double logTimeout)
         {
             //如果池为空
             if (reqPool.Count == 0)
@@ -115,8 +115,11 @@ namespace MySoft.IoC
                     {
                         watch.Stop();
 
-                        throw new WarningException(string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId))
+                        string title = string.Format("Call ({0}:{1}) remote service ({2},{3}) failure.", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName);
+                        string body = string.Format("【{5}】Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)！", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId);
+                        throw new WarningException(body)
                         {
+                            ExceptionTitle = string.Format("【{0}】{1}", reqMsg.AppName, title),
                             ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                         };
                     }
@@ -131,13 +134,15 @@ namespace MySoft.IoC
                         watch.Stop();
 
                         //如果时间超过预定，则输出日志
-                        if (watch.ElapsedMilliseconds > logtime * 1000)
+                        if (watch.ElapsedMilliseconds > logTimeout * 1000)
                         {
                             //SerializationManager.Serialize(retMsg)
                             string log = string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). {5}\r\nMessage ==> {6}\r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
-                            log = string.Format("Elapsed time ({2}) ms more than ({0}) ms, {1}", logtime * 1000, log, watch.ElapsedMilliseconds);
-                            var exception = new WarningException(log)
+                            string title = string.Format("Elapsed time ({0}) ms more than ({1}) ms.", watch.ElapsedMilliseconds, logTimeout * 1000);
+                            string body = string.Format("{0} {1}", title, log);
+                            var exception = new WarningException(body)
                             {
+                                ExceptionTitle = string.Format("【{0}】{1}", reqMsg.AppName, title),
                                 ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                             };
                             logger.WriteError(exception);
@@ -148,8 +153,10 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    throw new WarningException(string.Format("Send data to ({0}:{1}) failure！", node.IP, node.Port))
+                    string title = string.Format("Send data to ({0}:{1}) failure！", node.IP, node.Port);
+                    throw new WarningException(title)
                     {
+                        ExceptionTitle = string.Format("【{0}】{1}", reqMsg.AppName, title),
                         ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
                 }

@@ -5,12 +5,19 @@ using System.Web;
 namespace MySoft.Mail
 {
     /// <summary>
+    /// 异常邮件发送
+    /// </summary>
+    /// <param name="smtp"></param>
+    public delegate SendResult AsyncMailSender(SMTP smtp);
+
+    /// <summary>
     /// 邮件发送
     /// </summary>
     public class SmtpMail
     {
         public static readonly SmtpMail Instance = new SmtpMail();
 
+        private static readonly object lockObject = new object();
         private string smtpServer;
         /// <summary>
         /// 邮件发送服务器
@@ -103,12 +110,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="title"></param>
         /// <param name="body"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult Send(string title, string body, string mailTo)
+        public ResponseResult Send(string title, string body, string to)
         {
-            string[] mailto = new string[] { mailTo };
-            return Send(title, body, mailto);
+            lock (lockObject)
+            {
+                string[] mailto = new string[] { to };
+                return Send(title, body, mailto);
+            }
         }
 
         /// <summary>
@@ -116,12 +126,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="title"></param>
         /// <param name="body"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public void SendAsync(string title, string body, string mailTo)
+        public void SendAsync(string title, string body, string to)
         {
-            string[] mailto = new string[] { mailTo };
-            SendAsync(title, body, mailto);
+            lock (lockObject)
+            {
+                string[] mailto = new string[] { to };
+                SendAsync(title, body, mailto);
+            }
         }
 
         /// <summary>
@@ -129,17 +142,20 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="title"></param>
         /// <param name="body"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult Send(string title, string body, string[] mailTo)
+        public ResponseResult Send(string title, string body, string[] to)
         {
-            if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
-            SMTP smtp = new SMTP(this.mailFrom, mailTo, title, body, this.smtpServer, userName, password);
-            smtp.SMTPPort = this.smtpPort;
-            smtp.MailDisplyName = this.displayName;
-            smtp.IsBodyHtml = true;
+            lock (lockObject)
+            {
+                if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
+                SMTP smtp = new SMTP(this.mailFrom, to, title, body, this.smtpServer, userName, password);
+                smtp.SMTPPort = this.smtpPort;
+                smtp.MailDisplyName = this.displayName;
+                smtp.IsBodyHtml = true;
 
-            return smtp.Send();
+                return smtp.Send();
+            }
         }
 
         /// <summary>
@@ -147,30 +163,30 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="title"></param>
         /// <param name="body"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public void SendAsync(string title, string body, string[] mailTo)
+        public void SendAsync(string title, string body, string[] to)
         {
-            if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
-            SMTP smtp = new SMTP(this.mailFrom, mailTo, title, body, this.smtpServer, userName, password);
-            smtp.SMTPPort = this.smtpPort;
-            smtp.MailDisplyName = this.displayName;
-            smtp.IsBodyHtml = true;
+            lock (lockObject)
+            {
+                if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
+                SMTP smtp = new SMTP(this.mailFrom, to, title, body, this.smtpServer, userName, password);
+                smtp.SMTPPort = this.smtpPort;
+                smtp.MailDisplyName = this.displayName;
+                smtp.IsBodyHtml = true;
 
-            //启用线程池来实现异步发送
-            ThreadPool.QueueUserWorkItem(DoSend, smtp);
-        }
+                //启用线程池来实现异步发送
+                AsyncMailSender sender = new AsyncMailSender((mail) => mail.Send());
+                IAsyncResult result = sender.BeginInvoke(smtp, (r) =>
+                {
+                    //异常结束发送
+                    AsyncMailSender m = r.AsyncState as AsyncMailSender;
+                    SendResult sr = m.EndInvoke(r);
 
-        /// <summary>
-        /// 异步发送邮件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <returns></returns>
-        void DoSend(object sender)
-        {
-            if (sender == null) return;
-            SMTP smtp = sender as SMTP;
-            smtp.SendAsync(null);
+                    //输出日志
+                    Console.WriteLine("[{0}] ({1}) ==> ({2}), {3}", DateTime.Now, smtp.MailFrom, String.Join("|", smtp.MailTo), sr.Message);
+                }, sender);
+            }
         }
 
         #region 发送错误
@@ -180,12 +196,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(Exception ex, string title, string mailTo)
+        public ResponseResult SendException(Exception ex, string title, string to)
         {
-            string msg = ErrorHelper.GetHtmlError(ex);
-            return Send(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetHtmlError(ex);
+                return Send(title, msg, to);
+            }
         }
 
         /// <summary>
@@ -193,12 +212,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendSampleException(Exception ex, string title, string mailTo)
+        public ResponseResult SendSampleException(Exception ex, string title, string to)
         {
-            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
-            return Send(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetErrorWithoutHtml(ex);
+                return Send(title, msg, to);
+            }
         }
 
         /// <summary>
@@ -206,14 +228,17 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="current"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(HttpContext current, string title, string mailTo)
+        public ResponseResult SendException(HttpContext current, string title, string to)
         {
-            HttpContext ctx = HttpContext.Current;
-            Exception ex = ctx.Server.GetLastError();
+            lock (lockObject)
+            {
+                HttpContext ctx = HttpContext.Current;
+                Exception ex = ctx.Server.GetLastError();
 
-            return SendException(ex, title, mailTo);
+                return SendException(ex, title, to);
+            }
         }
 
         #endregion
@@ -225,12 +250,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(Exception ex, string title, string[] mailTo)
+        public ResponseResult SendException(Exception ex, string title, string[] to)
         {
-            string msg = ErrorHelper.GetHtmlError(ex);
-            return Send(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetHtmlError(ex);
+                return Send(title, msg, to);
+            }
         }
 
         /// <summary>
@@ -238,12 +266,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendSampleException(Exception ex, string title, string[] mailTo)
+        public ResponseResult SendSampleException(Exception ex, string title, string[] to)
         {
-            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
-            return Send(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetErrorWithoutHtml(ex);
+                return Send(title, msg, to);
+            }
         }
 
         /// <summary>
@@ -251,14 +282,17 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="current"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public ResponseResult SendException(HttpContext current, string title, string[] mailTo)
+        public ResponseResult SendException(HttpContext current, string title, string[] to)
         {
-            HttpContext ctx = HttpContext.Current;
-            Exception ex = ctx.Server.GetLastError();
+            lock (lockObject)
+            {
+                HttpContext ctx = HttpContext.Current;
+                Exception ex = ctx.Server.GetLastError();
 
-            return SendException(ex, title, mailTo);
+                return SendException(ex, title, to);
+            }
         }
 
         #endregion
@@ -272,12 +306,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public void SendExceptionAsync(Exception ex, string title, string mailTo)
+        public void SendExceptionAsync(Exception ex, string title, string to)
         {
-            string msg = ErrorHelper.GetHtmlError(ex);
-            SendAsync(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetHtmlError(ex);
+                SendAsync(title, msg, to);
+            }
         }
 
         /// <summary>
@@ -285,12 +322,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public void SendSampleExceptionAsync(Exception ex, string title, string mailTo)
+        public void SendSampleExceptionAsync(Exception ex, string title, string to)
         {
-            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
-            SendAsync(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetErrorWithoutHtml(ex);
+                SendAsync(title, msg, to);
+            }
         }
 
         #endregion
@@ -302,12 +342,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public void SendExceptionAsync(Exception ex, string title, string[] mailTo)
+        public void SendExceptionAsync(Exception ex, string title, string[] to)
         {
-            string msg = ErrorHelper.GetHtmlError(ex);
-            SendAsync(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetHtmlError(ex);
+                SendAsync(title, msg, to);
+            }
         }
 
         /// <summary>
@@ -315,12 +358,15 @@ namespace MySoft.Mail
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="title"></param>
-        /// <param name="mailTo"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public void SendSampleExceptionAsync(Exception ex, string title, string[] mailTo)
+        public void SendSampleExceptionAsync(Exception ex, string title, string[] to)
         {
-            string msg = ErrorHelper.GetErrorWithoutHtml(ex);
-            SendAsync(title, msg, mailTo);
+            lock (lockObject)
+            {
+                string msg = ErrorHelper.GetErrorWithoutHtml(ex);
+                SendAsync(title, msg, to);
+            }
         }
 
         #endregion

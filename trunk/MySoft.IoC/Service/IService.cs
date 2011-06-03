@@ -17,8 +17,8 @@ namespace MySoft.IoC
         /// <summary>
         /// Calls the service.
         /// </summary>
-        /// <param name="msg">The MSG.</param>
+        /// <param name="reqMsg">The MSG.</param>
         /// <returns>The result.</returns>
-        ResponseMessage CallService(RequestMessage msg, double logtime);
+        ResponseMessage CallService(RequestMessage reqMsg, double logTimeout);
     }
 }

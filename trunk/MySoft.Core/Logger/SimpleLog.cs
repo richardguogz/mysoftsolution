@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySoft.Mail;
 
 namespace MySoft.Logger
 {
@@ -14,7 +15,6 @@ namespace MySoft.Logger
         /// 简单日志的单例
         /// </summary>
         public static readonly SimpleLog Instance = new SimpleLog(AppDomain.CurrentDomain.BaseDirectory);
-        private static readonly object syncobj = new object();
 
         private string dir;
         /// <summary>
@@ -29,59 +29,27 @@ namespace MySoft.Logger
         #region 自动创建文件
 
         /// <summary>
-        /// 写入日志
-        /// </summary>
-        public void WriteLog(string log)
-        {
-            lock (syncobj)
-            {
-                try
-                {
-                    string filePath = Path.Combine(dir, "Log");
-                    string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
-
-                    if (!Directory.Exists(filePath))
-                    {
-                        Directory.CreateDirectory(filePath);
-                    }
-
-                    log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
-                       DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
-
-                    File.AppendAllText(logFileName, log);
-                }
-                catch { }
-            }
-        }
-
-        /// <summary>
         /// 写错误日志
         /// </summary>
         /// <param name="ex"></param>
         public void WriteLog(Exception ex)
         {
-            lock (syncobj)
-            {
-                try
-                {
-                    string filePath = Path.Combine(dir, "ErrorLog");
-                    filePath = Path.Combine(filePath, ex.GetType().Name);
-                    string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
+            string filePath = Path.Combine(dir, "ErrorLog");
+            filePath = Path.Combine(filePath, ex.GetType().Name);
+            string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
 
-                    if (!Directory.Exists(filePath))
-                    {
-                        Directory.CreateDirectory(filePath);
-                    }
+            WriteLog(logFileName, ex);
+        }
 
-                    string log = ErrorHelper.GetErrorWithoutHtml(ex);
+        /// <summary>
+        /// 写入日志
+        /// </summary>
+        public void WriteLog(string log)
+        {
+            string filePath = Path.Combine(dir, "Log");
+            string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
 
-                    log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
-                        DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
-
-                    File.AppendAllText(logFileName, log);
-                }
-                catch { }
-            }
+            WriteLog(logFileName, log);
         }
 
         /// <summary>
@@ -101,22 +69,8 @@ namespace MySoft.Logger
         /// <param name="mailTo"></param>
         public void WriteLogWithSendMail(string log, string[] mailTo)
         {
-            lock (syncobj)
-            {
-                if (mailTo == null || mailTo.Length == 0)
-                {
-                    throw new Exception("请传入收件人地址信息参数！");
-                }
-
-                try
-                {
-                    WriteLog(log);
-
-                    string title = string.Format("普通日志邮件-由客户端【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                    MySoft.Mail.SmtpMail.Instance.SendAsync(title, log, mailTo);
-                }
-                catch { }
-            }
+            WriteLog(log);
+            SendMail(log, mailTo);
         }
 
         /// <summary>
@@ -136,55 +90,13 @@ namespace MySoft.Logger
         /// <param name="mailTo"></param>
         public void WriteLogWithSendMail(Exception ex, string[] mailTo)
         {
-            lock (syncobj)
-            {
-                if (mailTo == null || mailTo.Length == 0)
-                {
-                    throw new Exception("请传入收件人地址信息参数！");
-                }
-
-                try
-                {
-                    WriteLog(ex);
-
-                    string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                    MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
-                }
-                catch { }
-            }
+            WriteLog(ex);
+            SendMail(ex, mailTo);
         }
 
         #endregion
 
         #region 传入文件信息
-
-        /// <summary>
-        /// 写入日志
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="log"></param>
-        public void WriteLog(string fileName, string log)
-        {
-            lock (syncobj)
-            {
-                try
-                {
-                    string logFileName = Path.Combine(dir, fileName);
-                    //string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
-
-                    if (!Directory.Exists(Path.GetDirectoryName(logFileName)))
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(logFileName));
-                    }
-
-                    log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
-                       DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
-
-                    File.AppendAllText(logFileName, log);
-                }
-                catch { }
-            }
-        }
 
         /// <summary>
         /// 写错误日志
@@ -193,27 +105,33 @@ namespace MySoft.Logger
         /// <param name="ex"></param>
         public void WriteLog(string fileName, Exception ex)
         {
-            lock (syncobj)
+            string log = ErrorHelper.GetErrorWithoutHtml(ex);
+            WriteLog(fileName, log);
+        }
+
+        /// <summary>
+        /// 写入日志
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="log"></param>
+        public void WriteLog(string fileName, string log)
+        {
+            try
             {
-                try
+                string logFileName = Path.Combine(dir, fileName);
+                //string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
+
+                if (!Directory.Exists(Path.GetDirectoryName(logFileName)))
                 {
-                    string logFileName = Path.Combine(dir, fileName);
-                    //string logFileName = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
-
-                    if (!Directory.Exists(Path.GetDirectoryName(logFileName)))
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(logFileName));
-                    }
-
-                    string log = ErrorHelper.GetErrorWithoutHtml(ex);
-
-                    log = string.Format("{0} -> {1}{2}==================================================================================================================================={2}{2}",
-                        DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
-
-                    File.AppendAllText(logFileName, log);
+                    Directory.CreateDirectory(Path.GetDirectoryName(logFileName));
                 }
-                catch { }
+
+                log = string.Format("{0} -> {1}{2}==============================================================================================================={2}{2}",
+                   DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
+
+                File.AppendAllText(logFileName, log);
             }
+            catch { }
         }
 
         /// <summary>
@@ -235,22 +153,8 @@ namespace MySoft.Logger
         /// <param name="mailTo"></param>
         public void WriteLogWithSendMail(string fileName, string log, string[] mailTo)
         {
-            lock (syncobj)
-            {
-                if (mailTo == null || mailTo.Length == 0)
-                {
-                    throw new Exception("请传入收件人地址信息参数！");
-                }
-
-                try
-                {
-                    WriteLog(fileName, log);
-
-                    string title = string.Format("普通日志邮件-由客户端【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                    MySoft.Mail.SmtpMail.Instance.SendAsync(title, log, mailTo);
-                }
-                catch { }
-            }
+            WriteLog(fileName, log);
+            SendMail(log, mailTo);
         }
 
         /// <summary>
@@ -272,22 +176,42 @@ namespace MySoft.Logger
         /// <param name="mailTo"></param>
         public void WriteLogWithSendMail(string fileName, Exception ex, string[] mailTo)
         {
-            lock (syncobj)
+            WriteLog(fileName, ex);
+            SendMail(ex, mailTo);
+        }
+
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="to"></param>
+        private void SendMail(string log, string[] to)
+        {
+            if (to == null || to.Length == 0)
             {
-                if (mailTo == null || mailTo.Length == 0)
-                {
-                    throw new Exception("请传入收件人地址信息参数！");
-                }
-
-                try
-                {
-                    WriteLog(fileName, ex);
-
-                    string title = string.Format("异常日志邮件-由客户端【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                    MySoft.Mail.SmtpMail.Instance.SendExceptionAsync(ex, title, mailTo);
-                }
-                catch { }
+                throw new ArgumentException("请传入收件人地址信息参数！");
             }
+
+            var body = CoreHelper.GetSubString(log, 100, "...");
+            string title = string.Format("{2} - 普通邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), body);
+            SmtpMail.Instance.SendAsync(title, log, to);
+        }
+
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="to"></param>
+        private void SendMail(Exception ex, string[] to)
+        {
+            if (to == null || to.Length == 0)
+            {
+                throw new ArgumentException("请传入收件人地址信息参数！");
+            }
+
+            var body = CoreHelper.GetSubString(ex.ToString(), 100, "...");
+            string title = string.Format("({2}){3} - 异常邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.GetType().Name, body);
+            SmtpMail.Instance.SendExceptionAsync(ex, title, to);
         }
 
         #endregion

@@ -582,8 +582,10 @@ namespace MySoft
         /// <param name="p_Length"></param>
         /// <param name="p_TailString"></param>
         /// <returns></returns>
-        internal static string GetSubString(string p_SrcString, int p_Length, string p_TailString)
+        public static string GetSubString(string p_SrcString, int p_Length, string p_TailString)
         {
+            if (string.IsNullOrEmpty(p_SrcString)) return p_SrcString;
+
             string text = p_SrcString;
             if (p_Length < 0)
             {

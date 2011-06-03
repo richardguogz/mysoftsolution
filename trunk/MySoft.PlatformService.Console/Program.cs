@@ -62,16 +62,7 @@ namespace MySoft.PlatformService.Console
                     System.Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine(message);
 
-                //if (exception is IoCException)
-                //{
-                //    var ex = exception as IoCException;
-                //    if (string.IsNullOrEmpty(ex.ExceptionHeader))
-                //    {
-                //        ex.ExceptionHeader = string.Format("Error: {0}. Comes from {1}({2}).", ex.Message, DnsHelper.GetHostName(), DnsHelper.GetIPAddress());
-                //    }
-                //    exception = new Exception(ex.ExceptionHeader, exception);
-                //}
-                //SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
+                SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
             }
         }
     }

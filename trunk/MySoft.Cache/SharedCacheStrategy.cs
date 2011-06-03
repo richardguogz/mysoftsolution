@@ -39,7 +39,7 @@ namespace MySoft.Cache
         /// <param name="objId"></param>
         public static void Remove(string objId)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 if (objId == null || objId.Length == 0)
                 {
@@ -55,7 +55,7 @@ namespace MySoft.Cache
         /// </summary>
         public static void Clear()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 dataCache.Clear();
             }
@@ -69,7 +69,7 @@ namespace MySoft.Cache
         {
             get
             {
-                lock (syncObject)
+                lock (lockObject)
                 {
                     return dataCache.GetAllKeys();
                 }
@@ -82,7 +82,7 @@ namespace MySoft.Cache
         public static readonly SharedCacheStrategy Default = new SharedCacheStrategy("defaultCache");
 
         private static volatile IndexusProviderBase dataCache = IndexusDistributionCache.SharedCache;
-        private static readonly object syncObject = new object();
+        private static readonly object lockObject = new object();
 
         /// <summary>
         /// 实例化分布式缓存
@@ -118,7 +118,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 if (Timeout <= 0)
                 {
@@ -156,7 +156,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 if (Timeout > 0)
                 {
@@ -183,7 +183,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 dataCache.Remove(GetInputKey(objId));
 
@@ -204,7 +204,7 @@ namespace MySoft.Cache
                 return null;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 object returnObject = null;
 
@@ -244,7 +244,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public object GetMatchObject(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, object> values = GetMatchObjects(regularExpression);
                 return values.Count > 0 ? values.First().Value : null;
@@ -258,7 +258,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public T GetMatchObject<T>(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, T> values = GetMatchObjects<T>(regularExpression);
                 return values.Count > 0 ? values.First().Value : default(T);
@@ -272,7 +272,7 @@ namespace MySoft.Cache
         /// </summary>
         public void RemoveAllObjects()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 RemoveObjects(GetAllKeys());
             }
@@ -284,7 +284,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IList<string> GetAllKeys()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 var objIds = dataCache.GetAllKeys();
 
@@ -299,7 +299,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public int GetCacheCount()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetAllKeys().Count;
             }
@@ -311,7 +311,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, object> GetAllObjects()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects(GetAllKeys());
             }
@@ -324,7 +324,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, T> GetAllObjects<T>()
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects<T>(GetAllKeys());
             }
@@ -342,7 +342,7 @@ namespace MySoft.Cache
                 return new List<string>();
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 IList<string> objIds = new List<string>();
                 Regex regex = new Regex(regularExpression, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
@@ -362,7 +362,7 @@ namespace MySoft.Cache
         /// <param name="data"></param>
         public void AddObjects(IDictionary<string, object> data)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, byte[]> cacheData = new Dictionary<string, byte[]>();
                 foreach (KeyValuePair<string, object> kv in data)
@@ -381,7 +381,7 @@ namespace MySoft.Cache
         /// <param name="data"></param>
         public void AddObjects<T>(IDictionary<string, T> data)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 IDictionary<string, byte[]> cacheData = new Dictionary<string, byte[]>();
                 foreach (KeyValuePair<string, T> kv in data)
@@ -405,7 +405,7 @@ namespace MySoft.Cache
                 return;
             }
 
-            lock (syncObject)
+            lock (lockObject)
             {
                 dataCache.RegexRemove(prefix + regularExpression);
             }
@@ -417,7 +417,7 @@ namespace MySoft.Cache
         /// <param name="objIds"></param>
         public void RemoveObjects(IList<string> objIds)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 var objIdList = new List<string>(objIds);
                 objIdList = objIdList.ConvertAll<string>(objId => GetInputKey(objId));
@@ -434,7 +434,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, object> GetObjects(IList<string> objIds)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 var objIdList = new List<string>(objIds);
                 objIdList = objIdList.ConvertAll<string>(objId => GetInputKey(objId));
@@ -466,7 +466,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, T> GetObjects<T>(IList<string> objIds)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 var objIdList = new List<string>(objIds);
                 objIdList = objIdList.ConvertAll<string>(objId => GetInputKey(objId));
@@ -497,7 +497,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, object> GetMatchObjects(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects(GetKeys(regularExpression));
             }
@@ -510,7 +510,7 @@ namespace MySoft.Cache
         /// <returns></returns>
         public IDictionary<string, T> GetMatchObjects<T>(string regularExpression)
         {
-            lock (syncObject)
+            lock (lockObject)
             {
                 return GetObjects<T>(GetKeys(regularExpression));
             }

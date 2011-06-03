@@ -64,7 +64,7 @@ namespace MySoft.IoC
         /// </summary>
         /// <param name="reqMsg">The MSG.</param>
         /// <returns>The response msg.</returns>
-        ResponseMessage CallService(RequestMessage reqMsg, double logtime);
+        ResponseMessage CallService(RequestMessage reqMsg, double logTimeout);
         /// <summary>
         /// 获取约束的接口
         /// </summary>
