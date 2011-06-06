@@ -59,7 +59,7 @@ namespace MySoft.IoC
         {
             get
             {
-                if (string.IsNullOrEmpty(this.ExceptionHeader))
+                if (!string.IsNullOrEmpty(this.ExceptionHeader))
                     return string.Format("{0}\r\n\r\n{1}", this.ExceptionHeader, base.Message);
                 else
                     return base.Message;
