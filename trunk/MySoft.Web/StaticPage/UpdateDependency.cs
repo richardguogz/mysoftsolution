@@ -56,7 +56,7 @@ namespace MySoft.Web
     /// <summary>
     /// 定时生成基类
     /// </summary>
-    public abstract class UpdateTime : IUpdateDependency
+    public abstract class AbstractUpdateDependency : IUpdateDependency
     {
         /// <summary>
         /// 检测是否需要更新
@@ -143,7 +143,7 @@ namespace MySoft.Web
     /// <summary>
     /// 定时生成策略（按间隔时间）
     /// </summary>
-    public sealed class SlidingUpdateTime : UpdateTime
+    public sealed class SlidingUpdateTime : AbstractUpdateDependency
     {
         private TimeSpan slidingTimeSpan;
         private SlidingParamInfo[] slidingTimeParams;
@@ -262,7 +262,7 @@ namespace MySoft.Web
     /// <summary>
     /// 绝对时间生成策略
     /// </summary>
-    public sealed class AbsoluteUpdateTime : UpdateTime
+    public sealed class AbsoluteUpdateTime : AbstractUpdateDependency
     {
         private DateTime[] absoluteDateTimes;
         private UpdateType updateType;

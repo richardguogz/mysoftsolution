@@ -5,7 +5,7 @@ using System.Web;
 namespace MySoft.Mail
 {
     /// <summary>
-    /// 异常邮件发送
+    /// 异步邮件发送
     /// </summary>
     /// <param name="smtp"></param>
     public delegate void AsyncMailSender(SMTP smtp);

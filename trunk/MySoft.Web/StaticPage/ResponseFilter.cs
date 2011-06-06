@@ -89,7 +89,6 @@ namespace MySoft.Web
                 }
 
                 //内容进行编码处理
-                enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
                 string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
                 string staticurl = filePath;
 
