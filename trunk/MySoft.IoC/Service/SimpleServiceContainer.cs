@@ -8,6 +8,7 @@ using Castle.Windsor;
 using MySoft.Cache;
 using MySoft.IoC.Services;
 using MySoft.Logger;
+using System.Configuration;
 
 namespace MySoft.IoC
 {
@@ -24,7 +25,7 @@ namespace MySoft.IoC
         private void Init(CastleFactoryType type, IDictionary serviceKeyTypes)
         {
             //如果不是远程模式，则加载配置节
-            if (type == CastleFactoryType.Remote)
+            if (type == CastleFactoryType.Remote || ConfigurationManager.GetSection("castle") == null)
                 container = new WindsorContainer();
             else
                 container = new WindsorContainer(new ServiceInterpreter());
