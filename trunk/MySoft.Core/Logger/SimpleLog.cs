@@ -242,7 +242,7 @@ namespace MySoft.Logger
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                 }
 
-                log = string.Format("【{0}】 ==> {1}{2}{2}==============================================================================================================={2}{2}",
+                log = string.Format("【{0}】 ==> {1}{2}{2}========================================================================================================================{2}{2}",
                    DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
 
                 File.AppendAllText(filePath, log);

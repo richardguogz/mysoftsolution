@@ -159,8 +159,17 @@ namespace MySoft.IoC
         /// </summary>
         public void Start()
         {
+            Start(false);
+        }
+
+        /// <summary>
+        /// 启用服务
+        /// </summary>
+        /// <param name="isWriteLog"></param>
+        public void Start(bool isWriteLog)
+        {
             //写发布服务信息
-            Publish();
+            if (isWriteLog) Publish();
 
             manager.Server.Start();
         }
@@ -172,9 +181,10 @@ namespace MySoft.IoC
         {
             var list = this.GetServiceInfoList();
 
-            string log = string.Format("此次发布的服务有{0}个，共有{1}个方法，详细信息如下：\r\n", list.Count, list.Sum(p => p.Methods.Count()));
+            string log = string.Format("此次发布的服务有{0}个，共有{1}个方法，详细信息如下：\r\n\r\n", list.Count, list.Sum(p => p.Methods.Count()));
             StringBuilder sb = new StringBuilder(log);
 
+            int index = 0;
             foreach (var info in list)
             {
                 sb.AppendFormat("{0}, {1}\r\n", info.Name, info.Assembly);
@@ -183,13 +193,18 @@ namespace MySoft.IoC
                 {
                     sb.AppendLine(method.ToString());
                 }
-                sb.AppendLine();
-                sb.AppendLine("========================================================================================================================");
-                sb.AppendLine();
+
+                if (index < list.Count - 1)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                    sb.AppendLine();
+                }
+
+                index++;
             }
 
-            string fileName = Path.Combine("Log", string.Format("Publish_{0}.log", DateTime.Now.ToString("yyyyMMddHHmmss")));
-            SimpleLog.Instance.WriteLog(fileName, sb.ToString());
+            SimpleLog.Instance.WriteLog(sb.ToString());
         }
 
         /// <summary>

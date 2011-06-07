@@ -90,7 +90,7 @@ namespace MySoft.IoC.Service
             }
             else
             {
-                server.Start();
+                server.Start(true);
             }
         }
 
