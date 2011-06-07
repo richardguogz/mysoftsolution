@@ -12,6 +12,16 @@ namespace MySoft.IoC
     [Serializable]
     public class ServiceInfo
     {
+        private string assembly;
+        /// <summary>
+        /// 程序集
+        /// </summary>
+        public string Assembly
+        {
+            get { return assembly; }
+            set { assembly = value; }
+        }
+
         private string name;
         /// <summary>
         /// 服务名称

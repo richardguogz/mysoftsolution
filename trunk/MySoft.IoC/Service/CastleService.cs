@@ -11,6 +11,8 @@ using System.Threading;
 using System.Linq;
 using System.Diagnostics;
 using MySoft.IoC.Services;
+using System.Text;
+using System.IO;
 
 namespace MySoft.IoC
 {
@@ -157,7 +159,37 @@ namespace MySoft.IoC
         /// </summary>
         public void Start()
         {
+            //写发布服务信息
+            Publish();
+
             manager.Server.Start();
+        }
+
+        /// <summary>
+        /// 发布服务
+        /// </summary>
+        private void Publish()
+        {
+            var list = this.GetServiceInfoList();
+
+            string log = string.Format("此次发布的服务有{0}个，共有{1}个方法，详细信息如下：\r\n", list.Count, list.Sum(p => p.Methods.Count()));
+            StringBuilder sb = new StringBuilder(log);
+
+            foreach (var info in list)
+            {
+                sb.AppendFormat("{0}, {1}\r\n", info.Name, info.Assembly);
+                sb.AppendLine("------------------------------------------------------------------------------------------------------------------------");
+                foreach (var method in info.Methods)
+                {
+                    sb.AppendLine(method.ToString());
+                }
+                sb.AppendLine();
+                sb.AppendLine("========================================================================================================================");
+                sb.AppendLine();
+            }
+
+            string fileName = Path.Combine("Log", string.Format("Publish_{0}.log", DateTime.Now.ToString("yyyyMMddHHmmss")));
+            SimpleLog.Instance.WriteLog(fileName, sb.ToString());
         }
 
         /// <summary>
@@ -431,6 +463,7 @@ namespace MySoft.IoC
             {
                 var service = new ServiceInfo
                 {
+                    Assembly = type.Assembly.FullName,
                     Name = type.FullName,
                     Methods = CoreHelper.GetAllMethodFromType(type)
                 };
