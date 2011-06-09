@@ -23,20 +23,25 @@ namespace MySoft.IoC
             base.ProcessResource(source, store);
 
             var baseDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            foreach (var extraConfig in Directory.GetFiles(baseDir, "*.dll.config"))
+            var dir = Path.Combine(baseDir, "Services\\");
+
+            if (Directory.Exists(dir))
             {
-                try
+                foreach (var extraConfig in Directory.GetFiles(dir, "*.dll.config"))
                 {
-                    var interpreter = new XmlInterpreter(extraConfig) { Kernel = Kernel };
-                    interpreter.ProcessResource(interpreter.Source, store);
-                }
-                catch (ConfigurationErrorsException)
-                {
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Failed to load configuration: " + extraConfig, ex);
+                    try
+                    {
+                        var interpreter = new XmlInterpreter(extraConfig) { Kernel = Kernel };
+                        interpreter.ProcessResource(interpreter.Source, store);
+                    }
+                    catch (ConfigurationErrorsException)
+                    {
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException("Failed to load configuration: " + extraConfig, ex);
+                    }
                 }
             }
         }
