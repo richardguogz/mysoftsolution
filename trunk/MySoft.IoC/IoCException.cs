@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace MySoft.IoC
 {
@@ -9,9 +10,13 @@ namespace MySoft.IoC
     public class IoCException : MySoftException
     {
         /// <summary>
-        /// 错误标题
+        /// 应用名称
         /// </summary>
-        public string ExceptionTitle { get; set; }
+        public string ApplicationName
+        {
+            get { return base.Source; }
+            set { base.Source = value; }
+        }
 
         /// <summary>
         /// 错误头
@@ -41,13 +46,11 @@ namespace MySoft.IoC
         protected IoCException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            this.ExceptionTitle = (string)info.GetValue("ExceptionTitle", typeof(string));
             this.ExceptionHeader = (string)info.GetValue("ExceptionHeader", typeof(string));
         }
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
-            info.AddValue("ExceptionTitle", this.ExceptionTitle);
             info.AddValue("ExceptionHeader", this.ExceptionHeader);
             base.GetObjectData(info, context);
         }
@@ -67,12 +70,12 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// 返回标题
+        /// 对象名称
         /// </summary>
-        /// <returns></returns>
-        public override string ToString()
+        public override string Source
         {
-            return this.ExceptionTitle;
+            get { return base.Source; }
+            set { base.Source = value; }
         }
     }
 }

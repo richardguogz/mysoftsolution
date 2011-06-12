@@ -322,7 +322,7 @@ namespace MySoft
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static MethodInfo[] GetAllMethodFromType(Type type)
+        public static MethodInfo[] GetMethodsFromType(Type type)
         {
             return type.AllMethods().ToArray();
         }
@@ -332,7 +332,7 @@ namespace MySoft
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static MethodInfo[] GetAllMethodFromType<T>()
+        public static MethodInfo[] GetMethodsFromType<T>()
         {
             return typeof(T).AllMethods().ToArray();
         }

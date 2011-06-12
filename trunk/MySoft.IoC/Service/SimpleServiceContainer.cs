@@ -43,7 +43,7 @@ namespace MySoft.IoC
 
         private void DiscoverServices()
         {
-            foreach (Type type in GetContractInterfaces())
+            foreach (Type type in GetInterfaces<ServiceContractAttribute>())
             {
                 object serviceInstance = null;
                 try { serviceInstance = this[type]; }
@@ -207,8 +207,8 @@ namespace MySoft.IoC
                 string title = string.Format("The server not find matching service ({0}).", reqMsg.ServiceName);
                 throw new WarningException(title)
                 {
-                    ExceptionTitle = string.Format("【{0}】{1}", reqMsg.AppName, title),
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                    ApplicationName = reqMsg.AppName,
+                    ExceptionHeader = string.Format("Application【{0}】occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                 };
             }
             return localService.CallService(reqMsg, logTimeout);
@@ -218,14 +218,14 @@ namespace MySoft.IoC
         /// 获取约束的接口
         /// </summary>
         /// <returns></returns>
-        public Type[] GetContractInterfaces()
+        public Type[] GetInterfaces<ContractType>()
         {
             List<Type> typelist = new List<Type>();
             GraphNode[] nodes = this.Kernel.GraphNodes;
             foreach (ComponentModel model in nodes)
             {
                 bool markedWithServiceContract = false;
-                var attr = CoreHelper.GetTypeAttribute<ServiceContractAttribute>(model.Service);
+                var attr = CoreHelper.GetTypeAttribute<ContractType>(model.Service);
                 if (attr != null)
                 {
                     markedWithServiceContract = true;

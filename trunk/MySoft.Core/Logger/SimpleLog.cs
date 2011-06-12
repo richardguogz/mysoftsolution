@@ -195,7 +195,7 @@ namespace MySoft.Logger
                 throw new ArgumentException("请传入收件人地址信息参数！");
             }
 
-            var body = CoreHelper.GetSubString(log, 100, "...");
+            var body = CoreHelper.GetSubString(log, 20, "...");
             string title = string.Format("{2} - 普通邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), body);
             SmtpMail.Instance.SendAsync(title, log, to);
         }
@@ -212,8 +212,7 @@ namespace MySoft.Logger
                 throw new ArgumentException("请传入收件人地址信息参数！");
             }
 
-            var body = CoreHelper.GetSubString(ex.ToString(), 100, "...");
-            string title = string.Format("({2}){3} - 异常邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.GetType().Name, body);
+            string title = string.Format("({2})【{3}】 - 异常邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.GetType().Name, ex.Source);
             SmtpMail.Instance.SendExceptionAsync(ex, title, to);
         }
 

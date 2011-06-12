@@ -474,13 +474,13 @@ namespace MySoft.IoC
         public IList<ServiceInfo> GetServiceInfoList()
         {
             var list = new List<ServiceInfo>();
-            foreach (Type type in container.GetContractInterfaces())
+            foreach (Type type in container.GetInterfaces<ServiceContractAttribute>())
             {
                 var service = new ServiceInfo
                 {
                     Assembly = type.Assembly.FullName,
                     Name = type.FullName,
-                    Methods = CoreHelper.GetAllMethodFromType(type)
+                    Methods = CoreHelper.GetMethodsFromType(type)
                 };
 
                 list.Add(service);

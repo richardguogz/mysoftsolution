@@ -429,6 +429,8 @@ namespace MySoft.Data
             foreach (DbParameter p in cmd.Parameters)
             {
                 string oldName = p.ParameterName;
+
+                //如果sql方式，才进行参数处理
                 if (cmd.CommandType == CommandType.Text)
                 {
                     if (oldName.Length >= 100)
@@ -441,7 +443,6 @@ namespace MySoft.Data
                 else
                 {
                     p.ParameterName = FormatParameter(oldName);
-                    cmd.CommandText = cmd.CommandText.Replace(oldName, p.ParameterName);
                 }
             }
         }

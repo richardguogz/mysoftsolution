@@ -81,8 +81,8 @@ namespace MySoft.IoC.Services
                     string title = string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName);
                     var exception = new WarningException(title)
                     {
-                        ExceptionTitle = string.Format("¡¾{0}¡¿{1}", reqMsg.AppName, title),
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                        ApplicationName = reqMsg.AppName,
+                        ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
 
                     resMsg.Exception = exception;

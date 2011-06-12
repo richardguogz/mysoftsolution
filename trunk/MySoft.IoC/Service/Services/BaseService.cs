@@ -67,12 +67,11 @@ namespace MySoft.IoC.Services
                 watch.Stop();
 
                 var ex = resMsg.Exception;
-                string title = ErrorHelper.GetInnerException(ex).Message;
                 string body = string.Format("¡¾{5}¡¿Dynamic ({0}) service ({1},{2}) error. {4}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.TransactionId);
                 var exception = new IoCException(body, ex)
                 {
-                    ExceptionTitle = string.Format("¡¾{0}¡¿{1}", reqMsg.AppName, title),
-                    ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                    ApplicationName = reqMsg.AppName,
+                    ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
 
                 };
                 logger.WriteError(exception);
@@ -89,8 +88,8 @@ namespace MySoft.IoC.Services
                     string body = string.Format("{0} {1}", title, log);
                     var exception = new WarningException(body)
                     {
-                        ExceptionTitle = string.Format("¡¾{0}¡¿{1}", reqMsg.AppName, title),
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                        ApplicationName = reqMsg.AppName,
+                        ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
                     logger.WriteError(exception);
                 }

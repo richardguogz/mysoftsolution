@@ -119,8 +119,8 @@ namespace MySoft.IoC
                         string body = string.Format("¡¾{5}¡¿Call ({0}:{1}) remote service ({2},{3}) failure. timeout ({4} ms)£¡", node.IP, node.Port, reqMsg.ServiceName, reqMsg.SubServiceName, watch.ElapsedMilliseconds, reqMsg.TransactionId);
                         throw new WarningException(body)
                         {
-                            ExceptionTitle = string.Format("¡¾{0}¡¿{1}", reqMsg.AppName, title),
-                            ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                            ApplicationName = reqMsg.AppName,
+                            ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                         };
                     }
 
@@ -142,8 +142,8 @@ namespace MySoft.IoC
                             string body = string.Format("{0} {1}", title, log);
                             var exception = new WarningException(body)
                             {
-                                ExceptionTitle = string.Format("¡¾{0}¡¿{1}", reqMsg.AppName, title),
-                                ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                                ApplicationName = reqMsg.AppName,
+                                ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                             };
                             logger.WriteError(exception);
                         }
@@ -156,8 +156,8 @@ namespace MySoft.IoC
                     string title = string.Format("Send data to ({0}:{1}) failure£¡", node.IP, node.Port);
                     throw new WarningException(title)
                     {
-                        ExceptionTitle = string.Format("¡¾{0}¡¿{1}", reqMsg.AppName, title),
-                        ExceptionHeader = string.Format("Application \"{0}\" occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                        ApplicationName = reqMsg.AppName,
+                        ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                     };
                 }
             }

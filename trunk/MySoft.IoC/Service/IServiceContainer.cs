@@ -69,7 +69,7 @@ namespace MySoft.IoC
         /// 获取约束的接口
         /// </summary>
         /// <returns></returns>
-        Type[] GetContractInterfaces();
+        Type[] GetInterfaces<ContractType>();
         /// <summary>
         /// get local service
         /// </summary>

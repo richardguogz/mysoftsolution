@@ -14,7 +14,7 @@ namespace MySoft
         /// <summary>
         /// 返回的代码（用于自定义代码）
         /// </summary>
-        public string Code { get; set; }
+        public int Code { get; set; }
 
         /// <summary>
         /// 返回的消息
@@ -39,7 +39,7 @@ namespace MySoft
         /// </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
-        public ResponseResult(string code, string message)
+        public ResponseResult(int code, string message)
         {
             this.Code = code;
             this.Message = message;
@@ -74,7 +74,7 @@ namespace MySoft
         /// </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
-        public ResponseResult(string code, string message)
+        public ResponseResult(int code, string message)
             : base(code, message)
         { }
     }
