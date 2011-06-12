@@ -30,6 +30,13 @@ namespace MySoft.RESTful.Demo
         User GetLoginUser();
 
         /// <summary>
+        /// 获取一个用户
+        /// </summary>
+        /// <returns></returns>
+        [PublishMethod("getuser", Description = "获取一个用户")]
+        User GetUser(int id, string name);
+
+        /// <summary>
         /// 获取一组用户
         /// </summary>
         /// <returns></returns>
@@ -53,6 +60,16 @@ namespace MySoft.RESTful.Demo
         {
             string username = AuthenticationContext.Current.User.AuthName;
             return new User { Id = username.Length, Name = username };
+        }
+
+        /// <summary>
+        /// 获取一个用户
+        /// </summary>
+        /// <returns></returns>
+        [PublishMethod("getuser", Description = "获取一个用户")]
+        public User GetUser(int id, string name)
+        {
+            return new User { Id = id, Name = name };
         }
 
         /// <summary>
