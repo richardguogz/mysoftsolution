@@ -8,7 +8,7 @@ using System.Configuration;
 using MySoft.Installer;
 using System.Threading;
 
-namespace MySoft.IoC.Service
+namespace MySoft.PlatformService.IoC
 {
     /// <summary>
     /// Windows服务

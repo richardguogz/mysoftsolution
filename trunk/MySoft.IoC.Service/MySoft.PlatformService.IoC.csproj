@@ -8,8 +8,8 @@
     <ProjectGuid>{D838F2CE-6919-466F-909F-FCEC5AE4CB79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MySoft.IoC.Service</RootNamespace>
-    <AssemblyName>MySoft.IoC.Service</AssemblyName>
+    <RootNamespace>MySoft.PlatformService.IoC</RootNamespace>
+    <AssemblyName>MySoft.PlatformService.IoC</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,8 +34,6 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>

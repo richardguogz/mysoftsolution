@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("MySoft.IoC.Service")]
+[assembly: AssemblyTitle("MySoft.PlatformService.IoC")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MySoft开发组")]
-[assembly: AssemblyProduct("MySoft.IoC.Service")]
+[assembly: AssemblyProduct("MySoft.PlatformService.IoC")]
 [assembly: AssemblyCopyright("版权所有 © MySoft 2011")]
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]
