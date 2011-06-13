@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Collections.Specialized;
 using System.IO;
-using System.ServiceModel;
+using System.Linq;
 using System.Net;
+using System.ServiceModel;
+using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.ServiceModel.Activation;
 using MySoft.RESTful.Business;
 
 namespace MySoft.RESTful

@@ -6,14 +6,46 @@ using MySoft.RESTful.Configuration;
 using System.Net;
 using System.ServiceModel.Web;
 using System.Web;
+using MySoft.Logger;
 
 namespace MySoft.RESTful
 {
     /// <summary>
     /// 认证工厂
     /// </summary>
-    public class AuthenticationUtils
+    public static class AuthenticationUtils
     {
+        /// <summary>
+        /// RESTful配置文件
+        /// </summary>
+        private static IList<IAuthentication> auths = new List<IAuthentication>();
+
+        static AuthenticationUtils()
+        {
+            //读取配置文件
+            var config = RESTfulConfiguration.GetConfig();
+            if (config != null && config.Auths != null)
+            {
+                foreach (Authentication auth in config.Auths)
+                {
+                    try
+                    {
+                        var type = Type.GetType(auth.Type);
+                        if (type == null) continue;
+                        var obj = Activator.CreateInstance(type);
+                        if (obj is IAuthentication)
+                        {
+                            auths.Add((IAuthentication)obj);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SimpleLog.Instance.WriteLog(ex);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 初始化上下文
         /// </summary>
@@ -85,26 +117,17 @@ namespace MySoft.RESTful
 
             try
             {
-                var config = RESTfulConfiguration.GetConfig();
-                if (config == null || config.Auths == null || config.Auths.Count == 0)
+                if (auths.Count == 0)
                 {
                     result.Code = (int)RESTfulCode.AUTH_ERROR_CODE;
                     result.Message = "No any authentication!";
                     return result;
                 }
 
-                bool isAuth = false;
-
                 //如果配置了服务
-                foreach (Authentication auth in config.Auths)
+                foreach (IAuthentication auth in auths)
                 {
-                    var type = Type.GetType(auth.Type);
-                    if (type == null) continue;
-
-                    var service = (IAuthentication)Activator.CreateInstance(type);
-                    isAuth = service.Authorize();
-
-                    if (isAuth)
+                    if (auth.Authorize())
                     {
                         //检测是否设置了Current.User
                         if (AuthenticationContext.Current.User == null)
