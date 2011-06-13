@@ -491,9 +491,11 @@ namespace MySoft.Data
                 if (AccessProvider)
                 {
                     returnValue = ExecuteNonQuery(cmd, trans);
-                    cmd = CreateSqlCommand(string.Format(AutoIncrementValue, identityfield.Name, tableName));
-
-                    if (isOutValue) retVal = ExecuteScalar(cmd, trans);
+                    if (isOutValue)
+                    {
+                        cmd = CreateSqlCommand(string.Format(AutoIncrementValue, identityfield.Name, tableName));
+                        retVal = ExecuteScalar(cmd, trans);
+                    }
                 }
                 else
                 {

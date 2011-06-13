@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Web;
-using MySoft.RESTful.Business;
 using MySoft.RESTful.Business.Pool;
 using MySoft.RESTful.Business.Register;
 using Newtonsoft.Json.Linq;
-using System.Reflection;
 
 namespace MySoft.RESTful.Business
 {
@@ -69,46 +67,6 @@ namespace MySoft.RESTful.Business
         }
 
         /// <summary>
-        /// 设置Cookie
-        /// </summary>
-        /// <param name="cookie"></param>
-        private void SaveCookie(string cookie)
-        {
-            if (!string.IsNullOrEmpty(cookie))
-            {
-                HttpCookieCollection collection = new HttpCookieCollection();
-                string[] cookies = cookie.Split(';');
-                HttpCookie cook = null;
-                foreach (string e in cookies)
-                {
-                    if (!string.IsNullOrEmpty(e))
-                    {
-                        string[] values = e.Split(new char[] { '=' }, 2);
-                        if (values.Length == 2)
-                        {
-                            cook = new HttpCookie(values[0], values[1]);
-                        }
-                        collection.Add(cook);
-                    }
-                }
-
-                AuthenticationContext.Current.Token.Cookies = collection;
-            }
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Initialize()
-        {
-            WebOperationContext context = WebOperationContext.Current;
-
-            //初始化AuthenticationContext
-            AuthenticationToken authToken = new AuthenticationToken(context.IncomingRequest.UriTemplateMatch.RequestUri, context.IncomingRequest.UriTemplateMatch.QueryParameters, context.IncomingRequest.Method);
-            AuthenticationContext.Current = new AuthenticationContext(authToken);
-        }
-
-        /// <summary>
         /// 方法调用
         /// </summary>
         /// <param name="format"></param>
@@ -119,17 +77,6 @@ namespace MySoft.RESTful.Business
         public object Invoke(ParameterFormat format, string kind, string method, string parameters)
         {
             WebOperationContext context = WebOperationContext.Current;
-
-            if (HttpContext.Current != null)
-            {
-                AuthenticationContext.Current.Token.Cookies = HttpContext.Current.Request.Cookies;
-            }
-            else
-            {
-                string cookie = context.IncomingRequest.Headers[HttpRequestHeader.Cookie];
-                SaveCookie(cookie);
-            }
-
             JObject obj = new JObject();
             BusinessMetadata metadata = pool.Find(kind, method)[0];
 
@@ -225,7 +172,7 @@ namespace MySoft.RESTful.Business
                     {
                         var s = String.Format("<{0}:{1}>", p.Name, p.ParameterType.FullName);
                         buider.AppendLine(HttpUtility.HtmlEncode(s)).AppendLine("<br/>");
-                        plist.Add(string.Format("{0}=[{0}]", p.Name));
+                        plist.Add(string.Format("{0}=[{0}]", p.Name).Replace('[', '{').Replace(']', '}'));
                     }
 
                     if (string.IsNullOrEmpty(buider.ToString()))
@@ -273,9 +220,9 @@ namespace MySoft.RESTful.Business
             if (format == "jsonp")
             {
                 if (url.IndexOf('?') >= 0)
-                    url += "&callback=[callback]";
+                    url += "&callback={callback}";
                 else
-                    url += "?callback=[callback]";
+                    url += "?callback={callback}";
             }
 
             url = string.Format("<a rel=\"operation\" target=\"_blank\" title=\"{0}\" href=\"{0}\">{1}</a> 处的服务", url, url.Replace(uri, "/"));

@@ -12,11 +12,6 @@ namespace MySoft.RESTful
     public interface IRESTfulContext
     {
         /// <summary>
-        /// 初始化
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
         /// 生成API文档
         /// </summary>
         /// <returns></returns>

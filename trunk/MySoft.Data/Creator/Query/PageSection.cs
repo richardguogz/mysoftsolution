@@ -1,4 +1,5 @@
 ﻿using System;
+using MySoft.Data.Design;
 
 namespace MySoft.Data
 {

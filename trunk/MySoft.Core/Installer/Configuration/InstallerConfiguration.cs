@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace MySoft.Installer.Configuration
 {
     /// <summary>
-    /// Specifies the configuration settings in the Web.config for the StaticPageRule.
+    /// Specifies the configuration settings in the Web.config for the Installer.
     /// </summary>
     [Serializable]
     [XmlRoot("installer")]

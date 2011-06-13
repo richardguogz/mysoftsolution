@@ -15,11 +15,6 @@ namespace MySoft.RESTful
     public interface IRESTfulService
     {
         /// <summary>
-        /// 认证对象
-        /// </summary>
-        IAuthentication Auth { get; set; }
-
-        /// <summary>
         /// 内容对象
         /// </summary>
         IRESTfulContext Context { get; set; }

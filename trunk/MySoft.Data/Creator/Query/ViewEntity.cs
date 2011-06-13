@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace MySoft.Data
+namespace MySoft.Data.Design
 {
     /// <summary>
     /// 只用于显示的实体
     /// </summary>
     [Serializable]
-    internal class ViewEntity : Entity
+    public class ViewEntity : Entity
     {
         /// <summary>
         /// 重载GetFields

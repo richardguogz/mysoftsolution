@@ -22,11 +22,6 @@ namespace MySoft.RESTful
     public class DefaultRESTfulService : IRESTfulService
     {
         /// <summary>
-        /// 认证接口
-        /// </summary>
-        public IAuthentication Auth { get; set; }
-
-        /// <summary>
         /// 上下文处理
         /// </summary>
         public IRESTfulContext Context { get; set; }
@@ -36,17 +31,6 @@ namespace MySoft.RESTful
         /// </summary>
         public DefaultRESTfulService()
         {
-            //创建认证
-            string value = ConfigurationManager.AppSettings["AuthType"];
-            if (!string.IsNullOrEmpty(value))
-            {
-                Type type = Type.GetType(value);
-                if (type != null)
-                {
-                    this.Auth = (IAuthentication)Activator.CreateInstance(type);
-                }
-            }
-
             //创建上下文
             this.Context = new BusinessRESTfulContext();
         }
@@ -227,44 +211,14 @@ namespace MySoft.RESTful
             else if (format == ParameterFormat.Xml)
                 response.ContentType = "text/xml;charset=utf-8";
 
-            //初始化上下文
-            Context.Initialize();
-
             object result = null;
 
-            //如果认证为null
-            if (Auth == null)
-            {
-                result = new RESTfulResult { Code = (int)RESTfulCode.AUTH_ERROR_CODE, Message = "No any authentication!" };
-                //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.Forbidden);
-                response.StatusCode = HttpStatusCode.NonAuthoritativeInformation;
-
-                goto serializerLabel;
-            }
-
-            //认证
-            var authResult = Auth.Authorize();
+            //进行认证处理
+            RESTfulResult authResult = AuthenticationUtils.Authorize();
 
             //认证成功
-            if (authResult.Status == HttpStatusCode.OK)
+            if (authResult.Code == (int)RESTfulCode.OK)
             {
-                //处理认证用户信息
-                if (AuthenticationContext.Current.User == null)
-                {
-                    if (null != authResult.Result)
-                    {
-                        AuthenticationContext.Current.User = authResult.Result;
-                    }
-                    else
-                    {
-                        result = new RESTfulResult { Code = (int)RESTfulCode.AUTH_FAULT_CODE, Message = "Not set authentication context user!" };
-                        //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.Forbidden);
-                        response.StatusCode = HttpStatusCode.NonAuthoritativeInformation;
-
-                        goto serializerLabel;
-                    }
-                }
-
                 try
                 {
                     result = Context.Invoke(format, kind, method, parameters);
@@ -277,36 +231,24 @@ namespace MySoft.RESTful
 
                         return result as string;
                     }
-
-                    goto serializerLabel;
                 }
                 catch (RESTfulException e)
                 {
                     result = new RESTfulResult { Code = (int)e.Code, Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.BadRequest);
                     response.StatusCode = HttpStatusCode.BadRequest;
-
-                    goto serializerLabel;
                 }
                 catch (Exception e)
                 {
                     result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR_CODE, Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.ExpectationFailed);
                     response.StatusCode = HttpStatusCode.ExpectationFailed;
-
-                    goto serializerLabel;
                 }
             }
             else
             {
-                result = new RESTfulResult { Code = authResult.Code, Message = authResult.Message };
-                //result = new WebFaultException<RESTfulResult>(ret, authResult.Status);
-                response.StatusCode = authResult.Status;
-
-                goto serializerLabel;
+                result = authResult;
             }
-
-        serializerLabel:
 
             ISerializer serializer = SerializerFactory.Create(format);
             try

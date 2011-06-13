@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
 namespace MySoft.RESTful
 {
@@ -21,6 +22,16 @@ namespace MySoft.RESTful
             set { code = value; }
         }
 
+        private HttpStatusCode statusCode;
+        /// <summary>
+        /// Http状态码
+        /// </summary>
+        public HttpStatusCode StatusCode
+        {
+            get { return statusCode; }
+            set { statusCode = value; }
+        }
+
         /// <summary>
         /// 实例化AuthenticationException
         /// </summary>
@@ -31,7 +42,7 @@ namespace MySoft.RESTful
         {
             this.code = code;
         }
-        
+
         /// <summary>
         /// 实例化AuthenticationException
         /// </summary>

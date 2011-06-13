@@ -8,15 +8,18 @@ namespace MySoft.RESTful.OAuth
     /// <summary>
     /// 实现RESTful的OAuth认证
     /// </summary>
-    public class RESTfulOAuth : DefaultAuthentication
+    public class RESTfulOAuth : IAuthentication
     {
+        #region IAuthentication 成员
+
         /// <summary>
         /// 实现OAuth认证
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        protected override bool AuthorizeForOAuth(AuthenticationToken token)
+        public bool Authorize()
         {
+            AuthenticationToken token = AuthenticationContext.Current.Token;
             if (!string.IsNullOrEmpty(token.Parameters["username"]))
             {
                 AuthenticationContext.Current.User = new AuthenticationUser
@@ -24,8 +27,9 @@ namespace MySoft.RESTful.OAuth
                     AuthName = token.Parameters["username"]
                 };
             }
-
-            return base.AuthorizeForOAuth(token);
+            return true;
         }
+
+        #endregion
     }
 }

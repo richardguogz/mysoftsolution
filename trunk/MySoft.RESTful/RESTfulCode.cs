@@ -35,11 +35,11 @@ namespace MySoft.RESTful
         /// <summary>
         /// 认证失败
         /// </summary>
-        AUTH_FAULT_CODE = 20350,
+        AUTH_FAULT_CODE = 40150,
         /// <summary>
         /// 验证错误
         /// </summary>
-        AUTH_ERROR_CODE = 20351,
+        AUTH_ERROR_CODE = 40151,
         /// <summary>
         /// 业务错误
         /// </summary>

@@ -298,10 +298,12 @@
     <Compile Include="Mail\SendResult.cs" />
     <Compile Include="RESTful\Auth\AuthenticationContext.cs" />
     <Compile Include="RESTful\Auth\AuthenticationException.cs" />
-    <Compile Include="RESTful\Auth\AuthenticationResult.cs" />
     <Compile Include="RESTful\Auth\AuthenticationToken.cs" />
     <Compile Include="RESTful\Auth\AuthenticationUser.cs" />
-    <Compile Include="RESTful\Auth\DefaultAuthentication.cs" />
+    <Compile Include="RESTful\Configuration\Authentication.cs" />
+    <Compile Include="RESTful\Configuration\AuthenticationCollection.cs" />
+    <Compile Include="RESTful\Configuration\RESTfulConfiguration.cs" />
+    <Compile Include="RESTful\Configuration\RESTfulConfigurationHandler.cs" />
     <Compile Include="RESTful\Auth\IAuthentication.cs" />
     <Compile Include="RESTful\MethodType.cs" />
     <Compile Include="RESTful\PublishKind.cs" />

@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\AuthenticationUtils.cs" />
     <Compile Include="RESTfulException.cs" />
     <Compile Include="Business\BusinessKindModel.cs" />
     <Compile Include="Business\BusinessMetadata.cs" />
