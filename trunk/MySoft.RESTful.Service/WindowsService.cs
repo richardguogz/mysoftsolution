@@ -5,8 +5,9 @@ using System.Text;
 using MySoft.Installer;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
+using MySoft.RESTful;
 
-namespace MySoft.RESTful.Service
+namespace MySoft.PlatformService.RESTful
 {
     class Program
     {

@@ -8,9 +8,9 @@
     <ProjectGuid>{85511B76-9BEB-495A-971F-3856EE05BC8E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MySoft.RESTful.Service</RootNamespace>
-    <AssemblyName>MySoft.RESTful.Service</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>MySoft.PlatformService.RESTful</RootNamespace>
+    <AssemblyName>MySoft.PlatformService.RESTful</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
