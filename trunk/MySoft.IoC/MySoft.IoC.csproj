@@ -108,10 +108,6 @@
       <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
       <Name>MySoft.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MySoft.Net\MySoft.Net.csproj">
-      <Project>{0EAA6720-5CD3-46CD-B68C-6F0C41B8A17A}</Project>
-      <Name>MySoft.Net</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

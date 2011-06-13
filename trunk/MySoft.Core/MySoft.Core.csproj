@@ -296,6 +296,17 @@
     <Compile Include="Json\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
     <Compile Include="Logger\ILog.cs" />
     <Compile Include="Mail\SendResult.cs" />
+    <Compile Include="Net\Client\SocketClient.cs" />
+    <Compile Include="Net\Client\SocketClientManager.cs" />
+    <Compile Include="Net\Server\BufferManager.cs" />
+    <Compile Include="Net\Server\SocketAsyncEventArgsPool.cs" />
+    <Compile Include="Net\Server\SocketServer.cs" />
+    <Compile Include="Net\Server\SocketServerManager.cs" />
+    <Compile Include="Net\Sockets\BufferFormat.cs" />
+    <Compile Include="Net\Sockets\BufferList.cs" />
+    <Compile Include="Net\Sockets\BufferReader.cs" />
+    <Compile Include="Net\Sockets\BufferTypeAttribute.cs" />
+    <Compile Include="Net\Sockets\SocketConfig.cs" />
     <Compile Include="RESTful\Auth\AuthenticationContext.cs" />
     <Compile Include="RESTful\Auth\AuthenticationException.cs" />
     <Compile Include="RESTful\Auth\AuthenticationToken.cs" />
@@ -449,7 +460,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Net\App.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -106,10 +106,6 @@
       <Project>{075BD20E-ABD5-4754-8C40-58E3EC025E42}</Project>
       <Name>MySoft.IoC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MySoft.Net\MySoft.Net.csproj">
-      <Project>{0EAA6720-5CD3-46CD-B68C-6F0C41B8A17A}</Project>
-      <Name>MySoft.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MySoft.PlatformService.UserService\MySoft.PlatformService.UserService.csproj">
       <Project>{4955AB17-A062-4399-8795-3D40F6FDB869}</Project>
       <Name>MySoft.PlatformService.UserService</Name>
