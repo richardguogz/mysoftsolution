@@ -117,7 +117,7 @@ namespace MySoft
         /// <returns></returns>
         public static T CreateInstance<T>()
         {
-            return (T)GetFastInstanceCreator(typeof(T))();
+            return CreateInstance<T>(typeof(T));
         }
 
         /// <summary>
