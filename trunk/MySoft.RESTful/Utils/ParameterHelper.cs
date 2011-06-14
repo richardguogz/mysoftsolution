@@ -51,6 +51,12 @@ namespace MySoft.RESTful
             }
         }
 
+        /// <summary>
+        /// 参数解析
+        /// </summary>
+        /// <param name="paramters"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static object[] Convert(ParameterInfo[] paramters, JObject obj)
         {
             try
@@ -58,9 +64,20 @@ namespace MySoft.RESTful
                 List<object> args = new List<object>();
                 foreach (ParameterInfo info in paramters)
                 {
+                    if (info.ParameterType == typeof(AuthenticationUser))
+                    {
+                        if (AuthenticationContext.Current != null)
+                            args.Add(AuthenticationContext.Current.User);
+                        else
+                            args.Add(null);
+
+                        continue;
+                    }
+
                     var property = obj.Properties().SingleOrDefault(p => string.Compare(p.Name, info.Name, true) == 0);
                     if (property == null)
                         throw new NullReferenceException(info.Name + " is not found in parameters!");
+
                     string value = property.Value.ToString(Newtonsoft.Json.Formatting.None);
                     var jsonValue = SerializationManager.DeserializeJson(info.ParameterType, value);
                     args.Add(jsonValue);

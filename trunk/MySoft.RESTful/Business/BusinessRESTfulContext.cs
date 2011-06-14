@@ -170,6 +170,8 @@ namespace MySoft.RESTful.Business
                     List<string> plist = new List<string>();
                     foreach (var p in metadata.Parameters)
                     {
+                        if (p.ParameterType == typeof(AuthenticationUser)) continue;
+
                         var s = String.Format("<{0}:{1}>", p.Name, p.ParameterType.FullName);
                         buider.AppendLine(HttpUtility.HtmlEncode(s)).AppendLine("<br/>");
                         if (metadata.Mode == MethodMode.Get)

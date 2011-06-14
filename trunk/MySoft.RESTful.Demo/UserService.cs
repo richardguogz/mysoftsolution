@@ -26,8 +26,8 @@ namespace MySoft.RESTful.Demo
         /// 获取登录用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("getloginuser", Description = "获取登录用户", Method = MethodMode.Delete)]
-        User GetLoginUser();
+        [PublishMethod("getloginuser", Description = "获取登录用户")]
+        User GetLoginUser(AuthenticationUser user);
 
         /// <summary>
         /// 获取一个用户
@@ -56,10 +56,9 @@ namespace MySoft.RESTful.Demo
         /// 获取用户
         /// </summary>
         /// <returns></returns>
-        public User GetLoginUser()
+        public User GetLoginUser(AuthenticationUser user)
         {
-            string username = AuthenticationContext.Current.User.AuthName;
-            return new User { Id = username.Length, Name = username };
+            return new User { Id = user.AuthName.Length, Name = user.AuthName };
         }
 
         /// <summary>
