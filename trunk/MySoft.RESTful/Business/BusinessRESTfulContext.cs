@@ -191,8 +191,11 @@ namespace MySoft.RESTful.Business
                     anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "xml"));
                     anchor.AppendLine("<br/>");
                     anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "json"));
-                    anchor.AppendLine("<br/>");
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "jsonp"));
+                    if (metadata.Mode == MethodMode.Get)
+                    {
+                        anchor.AppendLine("<br/>");
+                        anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "jsonp"));
+                    }
 
                     template = template.Replace("${uri}", anchor.ToString());
                     items.AppendLine(template);
