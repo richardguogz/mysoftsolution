@@ -35,15 +35,15 @@ namespace MySoft.RESTful
         /// <summary>
         /// 认证失败
         /// </summary>
-        AUTH_FAULT_CODE = 40150,
+        AUTH_FAULT = 40150,
         /// <summary>
         /// 验证错误
         /// </summary>
-        AUTH_ERROR_CODE = 40151,
+        AUTH_ERROR = 40151,
         /// <summary>
         /// 业务错误
         /// </summary>
-        BUSINESS_ERROR_CODE = 41750,
+        BUSINESS_ERROR = 41750,
         /// <summary>
         /// 业务类型没找到
         /// </summary>
