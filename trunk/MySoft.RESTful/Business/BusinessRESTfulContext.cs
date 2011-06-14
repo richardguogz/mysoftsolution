@@ -100,14 +100,14 @@ namespace MySoft.RESTful.Business
             {
                 if (!string.IsNullOrEmpty(parameters))
                 {
-                    obj = ParametersUtility.Resolve(parameters, format);
+                    obj = ParameterHelper.Resolve(parameters, format);
                 }
 
                 //解析QueryString
                 var nvs = context.IncomingRequest.UriTemplateMatch.QueryParameters;
                 if (nvs.Count > 0)
                 {
-                    var jo = ParametersUtility.Resolve(nvs);
+                    var jo = ParameterHelper.Resolve(nvs);
                     foreach (var o in jo) obj[o.Key] = o.Value;
                 }
             }
@@ -116,7 +116,7 @@ namespace MySoft.RESTful.Business
                 throw new RESTfulException(String.Format("Fault parameters: {0}!", e.Message)) { Code = RESTfulCode.BUSINESS_METHOD_PARAMS_TYPE_NOT_MATCH };
             }
 
-            object[] arguments = ParametersUtility.Convert(metadata.Parameters, obj);
+            object[] arguments = ParameterHelper.Convert(metadata.Parameters, obj);
             return DynamicCalls.GetMethodInvoker(metadata.Method)(metadata.Instance, arguments);
         }
 

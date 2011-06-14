@@ -212,7 +212,7 @@ namespace MySoft.RESTful
             object result = null;
 
             //进行认证处理
-            RESTfulResult authResult = AuthenticationUtils.Authorize();
+            RESTfulResult authResult = AuthenticationManager.Authorize();
 
             //认证成功
             if (authResult.Code == (int)RESTfulCode.OK)

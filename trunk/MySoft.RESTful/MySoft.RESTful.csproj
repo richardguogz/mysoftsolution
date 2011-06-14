@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\AuthenticationUtils.cs" />
+    <Compile Include="Utils\AuthenticationManager.cs" />
     <Compile Include="RESTfulException.cs" />
     <Compile Include="Business\BusinessKindModel.cs" />
     <Compile Include="Business\BusinessMetadata.cs" />
@@ -63,7 +63,7 @@
     <Compile Include="Business\BusinessRESTfulContext.cs" />
     <Compile Include="Utils\JsonSerializer.cs" />
     <Compile Include="Utils\ParameterFormat.cs" />
-    <Compile Include="Utils\ParametersUtility.cs" />
+    <Compile Include="Utils\ParameterHelper.cs" />
     <Compile Include="Utils\XmlSerializer.cs" />
   </ItemGroup>
   <ItemGroup>

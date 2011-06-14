@@ -13,14 +13,14 @@ namespace MySoft.RESTful
     /// <summary>
     /// 认证工厂
     /// </summary>
-    public static class AuthenticationUtils
+    public static class AuthenticationManager
     {
         /// <summary>
         /// RESTful配置文件
         /// </summary>
         private static IList<IAuthentication> auths = new List<IAuthentication>();
 
-        static AuthenticationUtils()
+        static AuthenticationManager()
         {
             //读取配置文件
             var config = RESTfulConfiguration.GetConfig();

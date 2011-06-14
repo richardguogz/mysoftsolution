@@ -13,7 +13,7 @@ namespace MySoft.RESTful
     /// <summary>
     /// 参数处理
     /// </summary>
-    public class ParametersUtility
+    public class ParameterHelper
     {
         /// <summary>
         /// 解析参数
