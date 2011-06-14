@@ -229,11 +229,7 @@ namespace MySoft.RESTful.Business
                     url += "?callback={callback}";
             }
 
-            if (mode == MethodMode.Get)
-                url = string.Format("<a rel=\"operation\" target=\"_blank\" title=\"{0}\" href=\"{0}\">{1}</a> 处的服务", url, url.Replace(uri, "/"));
-            else
-                url = string.Format("<span title=\"{0}\">{1}</span> 处的服务", url, url.Replace(uri, "/"));
-
+            url = string.Format("<a rel=\"operation\" target=\"_blank\" title=\"{0}\" href=\"{0}\">{1}</a> 处的服务", url, url.Replace(uri, "/"));
             return url;
         }
     }
