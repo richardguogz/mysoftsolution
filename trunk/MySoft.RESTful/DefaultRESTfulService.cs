@@ -56,7 +56,7 @@ namespace MySoft.RESTful
         /// <returns></returns>
         public Stream DeleteJsonEntry(string kind, string method, Stream parameters)
         {
-            return GetResponseStream(ParameterFormat.Json, kind, method, parameters);
+            return PostJsonEntry(kind, method, parameters);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace MySoft.RESTful
         /// <returns></returns>
         public Stream PutJsonEntry(string kind, string method, Stream parameters)
         {
-            return GetResponseStream(ParameterFormat.Json, kind, method, parameters);
+            return PostJsonEntry(kind, method, parameters);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace MySoft.RESTful
         /// <returns></returns>
         public Stream GetJsonEntry(string kind, string method)
         {
-            return GetResponseStream(ParameterFormat.Json, kind, method);
+            return PostJsonEntry(kind, method, null);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace MySoft.RESTful
         /// <returns></returns>
         public Stream DeleteXmlEntry(string kind, string method, Stream parameters)
         {
-            return GetResponseStream(ParameterFormat.Xml, kind, method, parameters);
+            return PostXmlEntry(kind, method, parameters);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace MySoft.RESTful
         /// <returns></returns>
         public Stream PutXmlEntry(string kind, string method, Stream parameters)
         {
-            return GetResponseStream(ParameterFormat.Xml, kind, method, parameters);
+            return PostXmlEntry(kind, method, parameters);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace MySoft.RESTful
         /// <returns></returns>
         public Stream GetXmlEntry(string kind, string method)
         {
-            return GetResponseStream(ParameterFormat.Xml, kind, method);
+            return PostXmlEntry(kind, method, null);
         }
 
         /// <summary>
@@ -179,24 +179,20 @@ namespace MySoft.RESTful
 
         #endregion
 
-        private Stream GetResponseStream(ParameterFormat format, string kind, string method, Stream parameters)
+        private Stream GetResponseStream(ParameterFormat format, string kind, string method, Stream stream)
         {
-            StreamReader sr = new StreamReader(parameters);
-            string data = sr.ReadToEnd();
-            sr.Close();
+            string data = null;
+            if (stream != null)
+            {
+                StreamReader sr = new StreamReader(stream);
+                data = sr.ReadToEnd();
+                sr.Close();
+            }
 
             string result = GetResponseString(format, kind, method, data) as string;
             if (string.IsNullOrEmpty(result)) return new MemoryStream();
-            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(result)); ;
-            return stream;
-        }
-
-        private Stream GetResponseStream(ParameterFormat format, string kind, string method)
-        {
-            string result = GetResponseString(format, kind, method, null) as string;
-            if (string.IsNullOrEmpty(result)) return new MemoryStream();
-            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(result)); ;
-            return stream;
+            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(result)); ;
+            return ms;
         }
 
         private string GetResponseString(ParameterFormat format, string kind, string method, string parameters)
@@ -238,7 +234,7 @@ namespace MySoft.RESTful
                 }
                 catch (Exception e)
                 {
-                    result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR_CODE, Message = e.Message };
+                    result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR, Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.ExpectationFailed);
                     response.StatusCode = HttpStatusCode.ExpectationFailed;
                 }
@@ -257,7 +253,7 @@ namespace MySoft.RESTful
             catch (Exception ex)
             {
                 //如果系列化失败
-                result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR_CODE, Message = ex.Message };
+                result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR, Message = ex.Message };
                 result = serializer.Serialize(result);
                 return result.ToString();
             }

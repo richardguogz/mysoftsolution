@@ -10,7 +10,7 @@ namespace MySoft.RESTful
     /// </summary>
     public class RESTfulException : MySoftException
     {
-        private RESTfulCode code = RESTfulCode.BUSINESS_ERROR_CODE;
+        private RESTfulCode code = RESTfulCode.BUSINESS_ERROR;
         /// <summary>
         /// 状态码
         /// </summary>

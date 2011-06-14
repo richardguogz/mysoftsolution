@@ -110,7 +110,7 @@ namespace MySoft.RESTful
             //进行认证处理
             var result = new RESTfulResult
             {
-                Code = (int)RESTfulCode.AUTH_FAULT_CODE,
+                Code = (int)RESTfulCode.AUTH_FAULT,
                 Message = "Authentication fault!"
             };
             response.StatusCode = HttpStatusCode.Unauthorized;
@@ -119,7 +119,7 @@ namespace MySoft.RESTful
             {
                 if (auths.Count == 0)
                 {
-                    result.Code = (int)RESTfulCode.AUTH_ERROR_CODE;
+                    result.Code = (int)RESTfulCode.AUTH_ERROR;
                     result.Message = "No any authentication!";
                     return result;
                 }
@@ -132,7 +132,7 @@ namespace MySoft.RESTful
                         //检测是否设置了Current.User
                         if (AuthenticationContext.Current.User == null)
                         {
-                            result.Code = (int)RESTfulCode.AUTH_FAULT_CODE;
+                            result.Code = (int)RESTfulCode.AUTH_FAULT;
                             result.Message = "Not set authentication user!";
                         }
                         else
@@ -153,7 +153,7 @@ namespace MySoft.RESTful
             }
             catch (Exception ex)
             {
-                result.Code = (int)RESTfulCode.AUTH_ERROR_CODE;
+                result.Code = (int)RESTfulCode.AUTH_ERROR;
                 result.Message = ErrorHelper.GetInnerException(ex).Message;
             }
 
