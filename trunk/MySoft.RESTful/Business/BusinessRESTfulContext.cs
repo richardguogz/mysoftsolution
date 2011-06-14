@@ -172,7 +172,10 @@ namespace MySoft.RESTful.Business
                     {
                         var s = String.Format("<{0}:{1}>", p.Name, p.ParameterType.FullName);
                         buider.AppendLine(HttpUtility.HtmlEncode(s)).AppendLine("<br/>");
-                        plist.Add(string.Format("{0}=[{0}]", p.Name).Replace('[', '{').Replace(']', '}'));
+                        if (metadata.Mode == MethodMode.Get)
+                        {
+                            plist.Add(string.Format("{0}=[{0}]", p.Name).Replace('[', '{').Replace(']', '}'));
+                        }
                     }
 
                     if (string.IsNullOrEmpty(buider.ToString()))
@@ -183,11 +186,11 @@ namespace MySoft.RESTful.Business
                     template = template.Replace("${type}", metadata.Mode.ToString().ToUpper());
 
                     StringBuilder anchor = new StringBuilder();
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, "get", "xml"));
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "xml"));
                     anchor.AppendLine("<br/>");
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, "get", "json"));
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "json"));
                     anchor.AppendLine("<br/>");
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, "get", "jsonp"));
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Mode, "jsonp"));
 
                     template = template.Replace("${uri}", anchor.ToString());
                     items.AppendLine(template);
@@ -201,9 +204,10 @@ namespace MySoft.RESTful.Business
             return html.Replace("${body}", table.ToString());
         }
 
-        private string CreateAnchorHtml(Uri requestUri, string uri, BusinessKindModel e, BusinessModel model, List<string> plist, string method, string format)
+        private string CreateAnchorHtml(Uri requestUri, string uri, BusinessKindModel e, BusinessModel model, List<string> plist, MethodMode mode, string format)
         {
             string url = string.Empty;
+            string method = mode.ToString().ToLower();
             if (plist.Count > 0)
                 url = string.Format("{0}{1}.{2}/{3}.{4}?{5}", uri, method, format, e.Name, model.Name, string.Join("&", plist.ToArray()));
             else
@@ -225,7 +229,11 @@ namespace MySoft.RESTful.Business
                     url += "?callback={callback}";
             }
 
-            url = string.Format("<a rel=\"operation\" target=\"_blank\" title=\"{0}\" href=\"{0}\">{1}</a> 处的服务", url, url.Replace(uri, "/"));
+            if (mode == MethodMode.Get)
+                url = string.Format("<a rel=\"operation\" target=\"_blank\" title=\"{0}\" href=\"{0}\">{1}</a> 处的服务", url, url.Replace(uri, "/"));
+            else
+                url = string.Format("<span title=\"{0}\">{1}</span> 处的服务", url, url.Replace(uri, "/"));
+
             return url;
         }
     }
