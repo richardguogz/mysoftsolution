@@ -22,18 +22,33 @@ namespace MySoft.Web.UI.Controls
         }
 
         /// <summary>
-        /// 分页的HtmlPager(DataSource不用再次赋值)
+        /// DataSource为HtmlPager时支持分页
         /// </summary>
-        public HtmlPager DataPager
+        public override object DataSource
         {
-            get { return _htmlPager; }
+            get
+            {
+                if (_htmlPager != null)
+                    return _htmlPager;
+                else
+                    return base.DataSource;
+            }
             set
             {
-                _htmlPager = value;
+                if (value is HtmlPager)
+                {
+                    _htmlPager = value as HtmlPager;
 
-                //给当前控件设置数据源
-                if (_htmlPager.DataPage != null)
-                    this.DataSource = _htmlPager.DataPage.DataSource;
+                    //给当前控件设置数据源
+                    if (_htmlPager.DataPage != null)
+                    {
+                        base.DataSource = _htmlPager.DataPage.DataSource;
+                    }
+                }
+                else
+                {
+                    base.DataSource = value;
+                }
             }
         }
     }
