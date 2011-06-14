@@ -99,7 +99,7 @@ namespace MySoft.Data
             {
                 return null;
             }
-            return new WhereClip(" not " + where.ToString(), where.Parameters);
+            return new WhereClip(" not (" + where.ToString() + ")", where.Parameters);
         }
 
         /// <summary>
