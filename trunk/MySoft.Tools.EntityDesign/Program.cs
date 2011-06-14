@@ -44,7 +44,6 @@ namespace MySoft.Tools.EntityDesign
                         if (!string.IsNullOrEmpty(config.EntityCodePath))
                         {
                             AdvOptForm adv = new AdvOptForm();
-                            adv.EnabledPropertyValueChange = config.EnabledPropertyValueChange;
 
                             bool isDirectory;
                             string entityCodePath = config.EntityCodePath;

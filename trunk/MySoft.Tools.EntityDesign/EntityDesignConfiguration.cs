@@ -3,7 +3,6 @@ namespace MySoft.Tools.EntityDesign
 {
     public class EntityDesignConfiguration
     {
-        public bool EnabledPropertyValueChange = true;
         public string CompileMode = "Debug";
         public string InputDllName = string.Empty;
         public string OutputNamespace = string.Empty;

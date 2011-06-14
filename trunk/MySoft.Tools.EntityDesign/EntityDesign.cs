@@ -854,7 +854,6 @@ namespace MySoft.Tools.EntityDesign
                 output.Text = string.Empty;
                 Application.DoEvents();
 
-                advForm.EnabledPropertyValueChange = chkEnabledPropertyValueChange.Checked;
                 output.Text = new CodeGenHelper(txtOutputNamespace.Text, advForm).GenEntitiesEx(ass, outputLanguage.SelectedIndex);
                 dictFiles.Clear();
 
@@ -1235,7 +1234,6 @@ namespace MySoft.Tools.EntityDesign
             Assembly ass = Assembly.LoadFrom(txtFileName.Text);
             output.Text = string.Empty;
             Application.DoEvents();
-            advForm.EnabledPropertyValueChange = chkEnabledPropertyValueChange.Checked;
             output.Text = new CodeGenHelper(txtOutputNamespace.Text, advForm).GenEntitiesEx(ass, outputLanguage.SelectedIndex);
 
             dictFiles.Clear();
@@ -1465,7 +1463,6 @@ namespace MySoft.Tools.EntityDesign
     public interface IAdvOpt
     {
         bool EnableAdvOpt { get; }
-        bool EnabledPropertyValueChange { get; }
         bool IsEntityEnabled(string name);
         void RefreshEntities(Type[] types);
     }

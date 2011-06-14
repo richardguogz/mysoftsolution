@@ -78,7 +78,6 @@
             this.txtExceptPrefix = new System.Windows.Forms.TextBox();
             this.chkNoMapping = new System.Windows.Forms.CheckBox();
             this.chkCreateAssembly = new System.Windows.Forms.CheckBox();
-            this.chkEnabledPropertyValueChange = new System.Windows.Forms.CheckBox();
             this.chkCreateEntity = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -498,7 +497,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(585, 7);
+            this.label8.Location = new System.Drawing.Point(252, 127);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 12);
             this.label8.TabIndex = 46;
@@ -506,26 +505,26 @@
             // 
             // txtExceptPrefix
             // 
-            this.txtExceptPrefix.Location = new System.Drawing.Point(652, 3);
+            this.txtExceptPrefix.Location = new System.Drawing.Point(319, 123);
             this.txtExceptPrefix.Name = "txtExceptPrefix";
-            this.txtExceptPrefix.Size = new System.Drawing.Size(64, 21);
+            this.txtExceptPrefix.Size = new System.Drawing.Size(61, 21);
             this.txtExceptPrefix.TabIndex = 45;
             // 
             // chkNoMapping
             // 
             this.chkNoMapping.AutoSize = true;
-            this.chkNoMapping.Location = new System.Drawing.Point(727, 6);
+            this.chkNoMapping.Location = new System.Drawing.Point(391, 126);
             this.chkNoMapping.Name = "chkNoMapping";
-            this.chkNoMapping.Size = new System.Drawing.Size(150, 16);
+            this.chkNoMapping.Size = new System.Drawing.Size(168, 16);
             this.chkNoMapping.TabIndex = 47;
-            this.chkNoMapping.Text = "不生成Mapping映射属性";
+            this.chkNoMapping.Text = "通过配置文件配置映射关系";
             this.chkNoMapping.UseVisualStyleBackColor = true;
             // 
             // chkCreateAssembly
             // 
             this.chkCreateAssembly.AutoSize = true;
             this.chkCreateAssembly.Enabled = false;
-            this.chkCreateAssembly.Location = new System.Drawing.Point(254, 126);
+            this.chkCreateAssembly.Location = new System.Drawing.Point(625, 126);
             this.chkCreateAssembly.Name = "chkCreateAssembly";
             this.chkCreateAssembly.Size = new System.Drawing.Size(144, 16);
             this.chkCreateAssembly.TabIndex = 48;
@@ -533,22 +532,10 @@
             this.chkCreateAssembly.UseVisualStyleBackColor = true;
             this.chkCreateAssembly.CheckedChanged += new System.EventHandler(this.chkCreateAssembly_CheckedChanged);
             // 
-            // chkEnabledPropertyValueChange
-            // 
-            this.chkEnabledPropertyValueChange.AutoSize = true;
-            this.chkEnabledPropertyValueChange.Checked = true;
-            this.chkEnabledPropertyValueChange.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEnabledPropertyValueChange.Location = new System.Drawing.Point(570, 126);
-            this.chkEnabledPropertyValueChange.Name = "chkEnabledPropertyValueChange";
-            this.chkEnabledPropertyValueChange.Size = new System.Drawing.Size(258, 16);
-            this.chkEnabledPropertyValueChange.TabIndex = 50;
-            this.chkEnabledPropertyValueChange.Text = "生成实体时加入OnPropertyValueChange方法";
-            this.chkEnabledPropertyValueChange.UseVisualStyleBackColor = true;
-            // 
             // chkCreateEntity
             // 
             this.chkCreateEntity.AutoSize = true;
-            this.chkCreateEntity.Location = new System.Drawing.Point(415, 126);
+            this.chkCreateEntity.Location = new System.Drawing.Point(775, 126);
             this.chkCreateEntity.Name = "chkCreateEntity";
             this.chkCreateEntity.Size = new System.Drawing.Size(96, 16);
             this.chkCreateEntity.TabIndex = 51;
@@ -563,11 +550,10 @@
             this.ClientSize = new System.Drawing.Size(891, 623);
             this.Controls.Add(this.chkCreateEntity);
             this.Controls.Add(this.chkCreateAssembly);
-            this.Controls.Add(this.chkEnabledPropertyValueChange);
             this.Controls.Add(this.txtExceptPrefix);
             this.Controls.Add(this.chkNoMapping);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.button2);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.txtFolder);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkUpperTableChar);
@@ -661,7 +647,6 @@
         private System.Windows.Forms.TextBox txtExceptPrefix;
         private System.Windows.Forms.CheckBox chkNoMapping;
         private System.Windows.Forms.CheckBox chkCreateAssembly;
-        private System.Windows.Forms.CheckBox chkEnabledPropertyValueChange;
         private System.Windows.Forms.RadioButton radioOracle;
         private System.Windows.Forms.RadioButton radioMySQL;
         private System.Windows.Forms.CheckBox chkCreateEntity;

@@ -994,15 +994,12 @@ namespace MySoft.Tools.EntityDesign
 
             if (!isReadOnly)
             {
-                if (advOpt.EnabledPropertyValueChange)
-                {
-                    property.SetStatements.Add(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "OnPropertyValueChange",
-                        new CodeSnippetExpression[]{
+                property.SetStatements.Add(new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), "OnPropertyValueChange",
+                    new CodeSnippetExpression[]{
                             new CodeSnippetExpression((outLang == 0 ? "_." : "__.") + item.Name),
                             new CodeSnippetExpression("_" + item.Name),
                             new CodeSnippetExpression("value")
                         }));
-                }
             }
 
             property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_" + item.Name), new CodePropertySetValueReferenceExpression()));

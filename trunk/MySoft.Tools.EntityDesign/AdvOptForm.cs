@@ -51,19 +51,6 @@ namespace MySoft.Tools.EntityDesign
             }
         }
 
-        private bool isEnabledPropertyValueChange;
-        public bool EnabledPropertyValueChange
-        {
-            get
-            {
-                return isEnabledPropertyValueChange;
-            }
-            set
-            {
-                isEnabledPropertyValueChange = value;
-            }
-        }
-
         public bool IsEntityEnabled(string name)
         {
             if (!EnableAdvOpt)
