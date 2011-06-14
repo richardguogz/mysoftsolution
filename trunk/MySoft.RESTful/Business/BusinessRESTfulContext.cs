@@ -82,9 +82,9 @@ namespace MySoft.RESTful.Business
 
             try
             {
-                if (metadata.Type != (MethodType)Enum.Parse(typeof(MethodType), context.IncomingRequest.Method, true))
+                if (metadata.Mode != (MethodMode)Enum.Parse(typeof(MethodMode), context.IncomingRequest.Method, true))
                 {
-                    throw new RESTfulException("Resources can only by the [" + metadata.Type.ToString().ToUpper() + "] way to acquire!") { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
+                    throw new RESTfulException("Resources can only by the [" + metadata.Mode.ToString().ToUpper() + "] way to acquire!") { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
                 }
             }
             catch (RESTfulException ex)
@@ -180,7 +180,7 @@ namespace MySoft.RESTful.Business
                     else
                         template = template.Replace("${parameter}", buider.ToString());
 
-                    template = template.Replace("${type}", metadata.Type.ToString().ToUpper());
+                    template = template.Replace("${type}", metadata.Mode.ToString().ToUpper());
 
                     StringBuilder anchor = new StringBuilder();
                     anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, "get", "xml"));

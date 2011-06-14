@@ -8,7 +8,7 @@ namespace MySoft.RESTful
     /// <summary>
     /// 方法类型
     /// </summary>
-    public enum MethodType
+    public enum MethodMode
     {
         /// <summary>
         /// Get方式

@@ -54,7 +54,7 @@ namespace MySoft.RESTful.Business.Register
                         {
                             CreateBusinessModel(method, ref kindModel, ref model);
                             CreateBusinessMetadata(info, ref model, ref metadata);
-                            metadata.Type = method.Method;
+                            metadata.Mode = method.Method;
                             metadata.Instance = instance;
                         }
                     }

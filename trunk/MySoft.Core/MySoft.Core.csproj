@@ -316,7 +316,7 @@
     <Compile Include="RESTful\Configuration\RESTfulConfiguration.cs" />
     <Compile Include="RESTful\Configuration\RESTfulConfigurationHandler.cs" />
     <Compile Include="RESTful\Auth\IAuthentication.cs" />
-    <Compile Include="RESTful\MethodType.cs" />
+    <Compile Include="RESTful\MethodMode.cs" />
     <Compile Include="RESTful\PublishKind.cs" />
     <Compile Include="RESTful\PublishMethod.cs" />
     <Compile Include="Security\MD5.cs" />

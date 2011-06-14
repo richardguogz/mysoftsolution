@@ -26,7 +26,7 @@ namespace MySoft.RESTful.Demo
         /// 获取登录用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("getloginuser", Description = "获取登录用户", Method = MethodType.Get)]
+        [PublishMethod("getloginuser", Description = "获取登录用户", Method = MethodMode.Delete)]
         User GetLoginUser();
 
         /// <summary>

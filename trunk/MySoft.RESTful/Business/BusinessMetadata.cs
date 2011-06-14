@@ -12,7 +12,7 @@ namespace MySoft.RESTful.Business
         /// <summary>
         /// 方法调用类型
         /// </summary>
-        public MethodType Type { get; set; }
+        public MethodMode Mode { get; set; }
         /// <summary>
         /// 业务执行对象
         /// </summary>
