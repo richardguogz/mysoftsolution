@@ -174,7 +174,7 @@ namespace MySoft.RESTful.Business
 
                         var s = String.Format("<{0}:{1}>", p.Name, p.ParameterType.FullName);
                         buider.AppendLine(HttpUtility.HtmlEncode(s)).AppendLine("<br/>");
-                        if (metadata.Mode == MethodMode.Get)
+                        if (p.ParameterType.IsValueType)
                         {
                             plist.Add(string.Format("{0}=[{0}]", p.Name).Replace('[', '{').Replace(']', '}'));
                         }
