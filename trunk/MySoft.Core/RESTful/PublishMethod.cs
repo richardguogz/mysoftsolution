@@ -28,7 +28,7 @@ namespace MySoft.RESTful
         /// </summary>
         public PublishMethod()
         {
-            this.Submit = SubmitType.Get;
+            this.Submit = SubmitType.GET;
         }
 
         /// <summary>

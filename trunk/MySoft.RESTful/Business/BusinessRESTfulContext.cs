@@ -194,7 +194,7 @@ namespace MySoft.RESTful.Business
                     anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Submit, "xml"));
                     anchor.AppendLine("<br/>");
                     anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Submit, "json"));
-                    if (metadata.Submit == SubmitType.Get)
+                    if (metadata.Submit == SubmitType.GET)
                     {
                         anchor.AppendLine("<br/>");
                         anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Submit, "jsonp"));
