@@ -21,14 +21,14 @@ namespace MySoft.RESTful
         /// <summary>
         /// 调用方式
         /// </summary>
-        public MethodMode Mode { get; set; }
+        public SubmitType Submit { get; set; }
 
         /// <summary>
         /// 实例化PublishMethod
         /// </summary>
         public PublishMethod()
         {
-            this.Mode = MethodMode.Get;
+            this.Submit = SubmitType.Get;
         }
 
         /// <summary>

@@ -204,7 +204,7 @@ namespace MySoft.Data
             }
             else if (type.IsValueType)
             {
-                if (CoreHelper.CheckTypeStruct(type))
+                if (CoreHelper.CheckStructType(type))
                 {
                     //如果属性是值类型，则进行系列化存储
                     return SerializationManager.SerializeJson(val);

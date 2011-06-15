@@ -8,23 +8,23 @@ namespace MySoft.RESTful
     /// <summary>
     /// 方法类型
     /// </summary>
-    public enum MethodMode
+    public enum SubmitType
     {
         /// <summary>
         /// Get方式
         /// </summary>
-        Get,
+        GET,
         /// <summary>
         /// Post方式
         /// </summary>
-        Post,
+        POST,
         /// <summary>
         /// Delete方式
         /// </summary>
-        Delete,
+        DELETE,
         /// <summary>
         /// Put方式
         /// </summary>
-        Put
+        PUT
     }
 }

@@ -74,14 +74,23 @@ namespace MySoft
         }
 
         /// <summary>
-        /// 检测是否为结构类型
+        /// 检测是否结构类型
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool CheckStructType(object value)
+        {
+            return CheckStructType(value.GetType());
+        }
+
+        /// <summary>
+        /// 检测是否结构类型
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool CheckTypeStruct(Type type)
+        public static bool CheckStructType(Type type)
         {
-            //当属性为结构时进行系列化
-            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && string.Compare(type.Namespace, "System", true) != 0)
+            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && string.Compare(type.Namespace, "system", true) != 0)
             {
                 return true;
             }
@@ -278,7 +287,7 @@ namespace MySoft
             if (value == DBNull.Value || value == null)
                 return null;
 
-            if (CheckStruct(type))
+            if (CoreHelper.CheckStructType(type))
             {
                 //如果字段为结构，则进行系列化操作
                 return SerializationManager.DeserializeJson(type, value.ToString());
@@ -522,21 +531,6 @@ namespace MySoft
             }
 
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// 检测是否为结构数据
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private static bool CheckStruct(Type type)
-        {
-            //当属性为结构时进行系列化
-            if (type.IsValueType && !type.IsEnum && !type.IsPrimitive && !type.IsSerializable)
-            {
-                return true;
-            }
-            return false;
         }
 
         /// <summary>

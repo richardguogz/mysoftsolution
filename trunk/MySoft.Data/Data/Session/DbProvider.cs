@@ -595,7 +595,7 @@ namespace MySoft.Data
                 else
                 {
                     SQLParameter p = null;
-                    if (CheckStruct(fv.Value))
+                    if (CoreHelper.CheckStructType(fv.Value))
                         p = CreateOrmParameter(DataHelper.FormatValue(fv.Value));
                     else
                         p = CreateOrmParameter(fv.Value);
@@ -712,7 +712,7 @@ namespace MySoft.Data
                     else
                     {
                         SQLParameter p = null;
-                        if (CheckStruct(fv.Value))
+                        if (CoreHelper.CheckStructType(fv.Value))
                             p = CreateOrmParameter(DataHelper.FormatValue(fv.Value));
                         else
                             p = CreateOrmParameter(fv.Value);
@@ -1009,18 +1009,6 @@ namespace MySoft.Data
                 return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// 检测是否为结构数据
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private bool CheckStruct(object value)
-        {
-            //当属性为结构时进行系列化
-            Type type = value.GetType();
-            return CoreHelper.CheckTypeStruct(type);
         }
     }
 }

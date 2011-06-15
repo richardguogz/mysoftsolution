@@ -42,6 +42,13 @@ namespace MySoft.RESTful.Demo
         /// <returns></returns>
         [PublishMethod("getusers", Description = "获取一组用户")]
         IList<User> GetUsers();
+
+        /// <summary>
+        /// 保存用户
+        /// </summary>
+        /// <returns></returns>
+        [PublishMethod("saveuser", Description = "保存一个用户", Submit = SubmitType.POST)]
+        void SaveUser(User user);
     }
 
     /// <summary>
@@ -78,6 +85,15 @@ namespace MySoft.RESTful.Demo
         public IList<User> GetUsers()
         {
             return new List<User> { new User { Id = 1, Name = "test1" }, new User { Id = 2, Name = "test2" } };
+        }
+
+        /// <summary>
+        /// 保存用户
+        /// </summary>
+        /// <returns></returns>
+        public void SaveUser(User user)
+        {
+            //未实现
         }
 
         #endregion
