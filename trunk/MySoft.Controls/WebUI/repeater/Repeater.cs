@@ -47,6 +47,7 @@ namespace MySoft.Web.UI.Controls
                 }
                 else
                 {
+                    _htmlPager = null;
                     base.DataSource = value;
                 }
             }
