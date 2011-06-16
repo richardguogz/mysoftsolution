@@ -165,25 +165,30 @@ namespace MySoft.Web
         /// 定义一个IDataPage属性
         /// </summary>
         private DataPage dataPage;
+
+        private string firstUrl;
         /// <summary>
-        /// 翻页时连接字符串
+        /// 首页链接字符串
         /// </summary>
-        private string linkFormat;
-        /// <summary>
-        /// 翻页时连接字符串
-        /// </summary>
-        public string LinkFormat
+        public string FirstUrl
         {
-            get { return linkFormat; }
-            set { linkFormat = value; }
+            get { return firstUrl; }
+            set { firstUrl = value; }
         }
 
+        private string linkUrl;
         /// <summary>
-        /// 每屏连接条数
+        /// 翻页时链接字符串
         /// </summary>
+        public string LinkUrl
+        {
+            get { return linkUrl; }
+            set { linkUrl = value; }
+        }
+
         private int linkSize;
         /// <summary>
-        /// 每屏连接条数
+        /// 每屏链接条数
         /// </summary>
         public int LinkSize
         {
@@ -201,6 +206,15 @@ namespace MySoft.Web
             set { lstyle = value; }
         }
 
+        private string linkCss;
+        /// <summary>
+        /// 分页样式
+        /// </summary>
+        public string LinkCss
+        {
+            set { linkCss = value; }
+        }
+
         private ButtonStyle bstyle;
         /// <summary>
         /// 按钮样式
@@ -211,50 +225,54 @@ namespace MySoft.Web
             set { bstyle = value; }
         }
 
-        private string pageID = "$Page";
+        private string pagerID = "$Pager";
         /// <summary>
         /// 页面参数ID
         /// </summary>
-        public string PageID
+        public string PagerID
         {
-            get { return pageID; }
-            set { pageID = value; }
+            get { return pagerID; }
+            set { pagerID = value; }
         }
 
-        private string prevPageTitle = "上一页";
+        private string prevTitle = "上一页";
         /// <summary>
         /// 上一页标题
         /// </summary>
-        public string PrevPageTitle
+        public string PrevTitle
         {
-            set { prevPageTitle = value; }
+            get { return prevTitle; }
+            set { prevTitle = value; }
         }
 
-        private string nextPageTitle = "下一页";
+        private string nextTitle = "下一页";
         /// <summary>
         /// 下一页标题
         /// </summary>
-        public string NextPageTitle
+        public string NextTitle
         {
-            set { nextPageTitle = value; }
+            get { return nextTitle; }
+            set { nextTitle = value; }
         }
 
-        private bool showBracket = true;
+        private bool showBracket = false;
         /// <summary>
-        /// 是否显示链接中的括号
+        /// 是否显示链接中的中括号
         /// </summary>
         public bool ShowBracket
         {
+            get { return showBracket; }
             set { showBracket = value; }
         }
 
-        private bool showGotoPage = true;
+        private bool showGoto = true;
         /// <summary>
         /// 显示转到某页
         /// </summary>
-        public bool ShowGotoPage
+        public bool ShowGoto
         {
-            set { showGotoPage = value; }
+            get { return showGoto; }
+            set { showGoto = value; }
         }
 
         private bool showRecord = true;
@@ -263,16 +281,8 @@ namespace MySoft.Web
         /// </summary>
         public bool ShowRecord
         {
+            get { return showRecord; }
             set { showRecord = value; }
-        }
-
-        private string pagerCss;
-        /// <summary>
-        /// 分页样式
-        /// </summary>
-        public string PagerCss
-        {
-            set { pagerCss = value; }
         }
 
         /// <summary>
@@ -300,21 +310,21 @@ namespace MySoft.Web
         /// 初始化HtmlPager对象
         /// </summary>
         /// <param name="page">对应的数据源</param>
-        /// <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
-        public HtmlPager(DataPage dataPage, string linkFormat)
+        /// <param name="linkUrl">对应的翻页格式必须设置，对应当前页</param>
+        public HtmlPager(DataPage dataPage, string linkUrl)
             : this(dataPage)
         {
-            this.linkFormat = linkFormat;
+            this.linkUrl = linkUrl;
         }
 
         /// <summary>
         /// 初始化HtmlPager对象
         /// </summary>
         /// <param name="page">对应的数据源</param>
-        /// <param name="linkFormat">对应的翻页格式{0}必须设置，对应当前页</param>
-        /// <param name="linkSize">每屏连接条数</param>
-        public HtmlPager(DataPage dataPage, string linkFormat, int linkSize)
-            : this(dataPage, linkFormat)
+        /// <param name="linkUrl">对应的翻页格式必须设置，对应当前页</param>
+        /// <param name="linkSize">每屏链接条数</param>
+        public HtmlPager(DataPage dataPage, string linkUrl, int linkSize)
+            : this(dataPage, linkUrl)
         {
             this.linkSize = linkSize;
         }
@@ -334,7 +344,7 @@ namespace MySoft.Web
             //生成分页的html
             if (lstyle == LinkStyle.Custom)
             {
-                sb.Append("<div id='htmlPager' class=\"" + (pagerCss ?? EnumDescriptionAttribute.GetDescription(lstyle)) + "\">\n");
+                sb.Append("<div id='htmlPager' class=\"" + (linkCss ?? EnumDescriptionAttribute.GetDescription(lstyle)) + "\">\n");
             }
             else
             {
@@ -345,15 +355,15 @@ namespace MySoft.Web
             {
                 if (bstyle == ButtonStyle.Button)
                 {
-                    sb.Append("<input title=\"上一页\" type=\"button\" value=\"" + prevPageTitle + "\" disabled=\"disabled\" />\n");
+                    sb.Append("<input title=\"上一页\" type=\"button\" value=\"" + prevTitle + "\" disabled=\"disabled\" />\n");
                     sb.Append("<span class=\"current\">1</span>\n");
-                    sb.Append("<input title=\"下一页\" type=\"button\" value=\"" + nextPageTitle + "\" disabled=\"disabled\" />\n");
+                    sb.Append("<input title=\"下一页\" type=\"button\" value=\"" + nextTitle + "\" disabled=\"disabled\" />\n");
                 }
                 else
                 {
-                    sb.Append("<span class=\"disabled\" title=\"上一页\">" + prevPageTitle + "</span>\n");
+                    sb.Append("<span class=\"disabled\" title=\"上一页\">" + prevTitle + "</span>\n");
                     sb.Append("<span class=\"current\">1</span>\n");
-                    sb.Append("<span class=\"disabled\" title=\"下一页\">" + nextPageTitle + "</span>\n");
+                    sb.Append("<span class=\"disabled\" title=\"下一页\">" + nextTitle + "</span>\n");
                 }
             }
             else
@@ -362,22 +372,22 @@ namespace MySoft.Web
                 {
                     if (!dataPage.IsFirstPage)
                     {
-                        sb.Append("<input title=\"上一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex - 1) + "\" value=\"" + prevPageTitle + "\" />\n");
+                        sb.Append("<input title=\"上一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex - 1) + "\" value=\"" + prevTitle + "\" />\n");
                     }
                     else
                     {
-                        sb.Append("<input title=\"上一页\" type=\"button\" value=\"" + prevPageTitle + "\" disabled=\"disabled\" />\n");
+                        sb.Append("<input title=\"上一页\" type=\"button\" value=\"" + prevTitle + "\" disabled=\"disabled\" />\n");
                     }
                 }
                 else
                 {
                     if (!dataPage.IsFirstPage)
                     {
-                        sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex - 1) + "\" title=\"上一页\">" + prevPageTitle + "</a>\n");
+                        sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex - 1) + "\" title=\"上一页\">" + prevTitle + "</a>\n");
                     }
                     else
                     {
-                        sb.Append("<span class=\"disabled\" title=\"上一页\">" + prevPageTitle + "</span>\n");
+                        sb.Append("<span class=\"disabled\" title=\"上一页\">" + prevTitle + "</span>\n");
                     }
                 }
 
@@ -437,27 +447,27 @@ namespace MySoft.Web
                 {
                     if (!dataPage.IsLastPage)
                     {
-                        sb.Append("<input title=\"下一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex + 1) + "\" value=\"" + nextPageTitle + "\" />\n");
+                        sb.Append("<input title=\"下一页\" type=\"button\" onclick=\"" + GetButtonLink(dataPage.CurrentPageIndex + 1) + "\" value=\"" + nextTitle + "\" />\n");
                     }
                     else
                     {
-                        sb.Append("<input title=\"下一页\" type=\"button\" value=\"" + nextPageTitle + "\" disabled=\"disabled\" />\n");
+                        sb.Append("<input title=\"下一页\" type=\"button\" value=\"" + nextTitle + "\" disabled=\"disabled\" />\n");
                     }
                 }
                 else
                 {
                     if (!dataPage.IsLastPage)
                     {
-                        sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex + 1) + "\" title=\"下一页\">" + nextPageTitle + "</a>\n");
+                        sb.Append("<a href=\"" + GetHtmlLink(dataPage.CurrentPageIndex + 1) + "\" title=\"下一页\">" + nextTitle + "</a>\n");
                     }
                     else
                     {
-                        sb.Append("<span class=\"disabled\" title=\"下一页\">" + nextPageTitle + "</span>\n");
+                        sb.Append("<span class=\"disabled\" title=\"下一页\">" + nextTitle + "</span>\n");
                     }
                 }
             }
 
-            if (showGotoPage)
+            if (showGoto)
             {
                 sb.Append("&nbsp;/&nbsp;第&nbsp;<select id=\"pageSelect\" onchange=\"" + GetHtmlLink("this.value") + "\">\n");
                 if (dataPage.PageCount == 0)
@@ -505,20 +515,23 @@ namespace MySoft.Web
 
         private string GetHtmlLink(int value)
         {
-            return linkFormat.Replace(pageID, value.ToString());
+            if (value == 1 && !string.IsNullOrEmpty(firstUrl))
+                return firstUrl;
+            else
+                return linkUrl.Replace(pagerID, value.ToString());
         }
 
         private string GetHtmlLink(string value)
         {
-            if (linkFormat.Contains("javascript:"))
+            if (linkUrl.Contains("javascript:"))
             {
-                string format = linkFormat.Replace("javascript:", string.Format("javascript:var selectValue={0};", value));
+                string format = linkUrl.Replace("javascript:", string.Format("javascript:var selectValue={0};", value));
                 value = "selectValue";
-                return format.Replace(pageID, value);
+                return format.Replace(pagerID, value);
             }
             else
             {
-                return string.Concat("javascript:location.href='", linkFormat.Replace(pageID, ("'+" + value + "+'")), "';");
+                return string.Concat("javascript:location.href='", linkUrl.Replace(pagerID, ("'+" + value + "+'")), "';");
             }
         }
 
@@ -529,13 +542,13 @@ namespace MySoft.Web
         /// <returns></returns>
         private string GetButtonLink(int value)
         {
-            if (linkFormat.Contains("javascript:"))
+            if (linkUrl.Contains("javascript:"))
             {
-                return linkFormat.Replace(pageID, value.ToString());
+                return linkUrl.Replace(pagerID, value.ToString());
             }
             else
             {
-                return string.Concat("javascript:location.href='", linkFormat.Replace(pageID, value.ToString()), "';");
+                return string.Concat("javascript:location.href='", linkUrl.Replace(pagerID, value.ToString()), "';");
             }
         }
     }
