@@ -225,7 +225,7 @@ namespace MySoft.Web
             set { bstyle = value; }
         }
 
-        private string pagerID = "$Pager";
+        private string pagerID = "$PageIndex";
         /// <summary>
         /// 页面参数ID
         /// </summary>

@@ -28,10 +28,7 @@ namespace MySoft.Web.UI.Controls
         {
             get
             {
-                if (_htmlPager != null)
-                    return _htmlPager;
-                else
-                    return base.DataSource;
+                return base.DataSource;
             }
             set
             {
