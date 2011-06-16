@@ -54,16 +54,8 @@ namespace MySoft.Data
     /// <summary>
     /// The db provider factory.
     /// </summary>
-    public sealed class DbProviderFactory
+    public static class DbProviderFactory
     {
-        #region Private Members
-
-        private static IDictionary<string, DbProvider> providerCache = new Dictionary<string, DbProvider>();
-
-        private DbProviderFactory() { }
-
-        #endregion
-
         #region Public Members
 
         /// <summary>
@@ -144,17 +136,18 @@ namespace MySoft.Data
             else
                 ass = System.Reflection.Assembly.Load(assemblyName);
 
-            string cacheKey = string.Format("{0}_{1}_{2}", assemblyName, className, connectionString);
-            if (providerCache.ContainsKey(cacheKey))
+            string cacheKey = string.Format("Provider_{0}_{1}_{2}", assemblyName, className, connectionString);
+            DbProvider dbProvider = CacheHelper.Get<DbProvider>(cacheKey);
+            if (dbProvider == null)
             {
-                return providerCache[cacheKey];
+                dbProvider = ass.CreateInstance(className, false, System.Reflection.BindingFlags.Default, null, new object[] { connectionString }, null, null) as DbProvider;
+                if (dbProvider != null)
+                {
+                    CacheHelper.Insert(cacheKey, dbProvider, 60);
+                }
             }
-            else
-            {
-                DbProvider retProvider = ass.CreateInstance(className, false, System.Reflection.BindingFlags.Default, null, new object[] { connectionString }, null, null) as DbProvider;
-                if (retProvider != null) providerCache[cacheKey] = retProvider;
-                return retProvider;
-            }
+
+            return dbProvider;
         }
 
         /// <summary>
