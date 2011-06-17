@@ -47,7 +47,7 @@ namespace MySoft.RESTful.Demo
         /// 保存用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("saveuser", Description = "保存一个用户", Submit = SubmitType.POST)]
+        [PublishMethod("saveuser", Description = "保存一个用户", Method = SubmitType.POST)]
         void SaveUser(User user);
     }
 
@@ -56,7 +56,6 @@ namespace MySoft.RESTful.Demo
     /// </summary>
     public class UserService : IUserService
     {
-
         #region IUserService 成员
 
         /// <summary>

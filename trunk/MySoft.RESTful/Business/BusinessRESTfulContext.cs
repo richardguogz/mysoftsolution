@@ -82,9 +82,9 @@ namespace MySoft.RESTful.Business
 
             try
             {
-                if (metadata.Submit != (SubmitType)Enum.Parse(typeof(SubmitType), context.IncomingRequest.Method, true))
+                if (metadata.SubmitType != (SubmitType)Enum.Parse(typeof(SubmitType), context.IncomingRequest.Method, true))
                 {
-                    throw new RESTfulException("Resources can only by the [" + metadata.Submit.ToString().ToUpper() + "] way to acquire!") { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
+                    throw new RESTfulException("Resources can only by the [" + metadata.SubmitType.ToString().ToUpper() + "] way to acquire!") { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
                 }
             }
             catch (RESTfulException ex)
@@ -188,16 +188,16 @@ namespace MySoft.RESTful.Business
                     else
                         template = template.Replace("${parameter}", buider.ToString());
 
-                    template = template.Replace("${type}", metadata.Submit.ToString().ToUpper());
+                    template = template.Replace("${type}", metadata.SubmitType.ToString().ToUpper());
 
                     StringBuilder anchor = new StringBuilder();
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Submit, "xml"));
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.SubmitType, "xml"));
                     anchor.AppendLine("<br/>");
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Submit, "json"));
-                    if (metadata.Submit == SubmitType.GET)
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.SubmitType, "json"));
+                    if (metadata.SubmitType == SubmitType.GET)
                     {
                         anchor.AppendLine("<br/>");
-                        anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.Submit, "jsonp"));
+                        anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.SubmitType, "jsonp"));
                     }
 
                     template = template.Replace("${uri}", anchor.ToString());
