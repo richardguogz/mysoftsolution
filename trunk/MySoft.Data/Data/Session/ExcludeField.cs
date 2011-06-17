@@ -32,23 +32,6 @@ namespace MySoft.Data
                 return CoreHelper.CreateInstance<T>().As<IEntityBase>().GetField(propertyName);
             }
         }
-
-        /// <summary>
-        /// 通过属性返回字段
-        /// </summary>
-        /// <param name="propertyNames"></param>
-        /// <returns></returns>
-        public override Field[] Get(params string[] propertyNames)
-        {
-            var entity = CoreHelper.CreateInstance<T>().As<IEntityBase>();
-            List<Field> list = new List<Field>();
-            foreach (var propertyName in propertyNames)
-            {
-                var field = entity.GetField(propertyName);
-                if (field != null) list.Add(field);
-            }
-            return list.ToArray();
-        }
     }
 
     /// <summary>
@@ -81,25 +64,8 @@ namespace MySoft.Data
         {
             get
             {
-                //throw new Exception("请通过Entity中的All字段进行操作！");
                 return new Field(propertyName);
             }
-        }
-
-        /// <summary>
-        /// 通过属性返回字段
-        /// </summary>
-        /// <param name="propertyNames"></param>
-        /// <returns></returns>
-        public virtual Field[] Get(params string[] propertyNames)
-        {
-            List<Field> list = new List<Field>();
-            foreach (var propertyName in propertyNames)
-            {
-                var field = this[propertyName];
-                if (field != null) list.Add(field);
-            }
-            return list.ToArray();
         }
     }
 
