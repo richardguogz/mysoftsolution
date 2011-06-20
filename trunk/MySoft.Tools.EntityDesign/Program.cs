@@ -57,42 +57,41 @@ namespace MySoft.Tools.EntityDesign
                             else
                             {
                                 DirectoryInfo info = new DirectoryInfo(filePath);
-                                if (info.Exists)
+                                if (!info.Exists) info.Create(); //不存在，则创建目录
+
+                                FileAttributes attribute = info.Attributes;
+                                if ((attribute & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                                 {
-                                    FileAttributes attribute = info.Attributes;
-                                    if ((attribute & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                                    info.Attributes = attribute ^ FileAttributes.ReadOnly;
+                                }
+                                Type[] types = ass.GetTypes();
+                                if (types != null)
+                                {
+                                    List<Type> typelist = new List<Type>(types);
+                                    typelist.RemoveAll(type =>
                                     {
-                                        info.Attributes = attribute ^ FileAttributes.ReadOnly;
+                                        return !type.IsInterface;
+                                    });
+
+                                    string[] files = fileBody.Split(new string[] { "namespace", "Namespace" }, StringSplitOptions.RemoveEmptyEntries);
+                                    IList<string> filelist = new List<string>(files);
+                                    filelist.RemoveAt(0);
+
+                                    Dictionary<string, string> dictTypeFiles = new Dictionary<string, string>();
+                                    for (int index = 0; index < typelist.Count; index++)
+                                    {
+                                        if (config.OutputLanguage.ToLower() == "c#")
+                                            dictTypeFiles[typelist[index].Name] = "namespace" + filelist[index];
+                                        else
+                                            dictTypeFiles[typelist[index].Name] = "Namespace" + filelist[index];
                                     }
-                                    Type[] types = ass.GetTypes();
-                                    if (types != null)
+
+                                    if (dictTypeFiles.Count > 0)
                                     {
-                                        List<Type> typelist = new List<Type>(types);
-                                        typelist.RemoveAll(type =>
+                                        foreach (string txtKey in dictTypeFiles.Keys)
                                         {
-                                            return !type.IsInterface;
-                                        });
-
-                                        string[] files = fileBody.Split(new string[] { "namespace", "Namespace" }, StringSplitOptions.RemoveEmptyEntries);
-                                        IList<string> filelist = new List<string>(files);
-                                        filelist.RemoveAt(0);
-
-                                        Dictionary<string, string> dictTypeFiles = new Dictionary<string, string>();
-                                        for (int index = 0; index < typelist.Count; index++)
-                                        {
-                                            if (config.OutputLanguage.ToLower() == "c#")
-                                                dictTypeFiles[typelist[index].Name] = "namespace" + filelist[index];
-                                            else
-                                                dictTypeFiles[typelist[index].Name] = "Namespace" + filelist[index];
-                                        }
-
-                                        if (dictTypeFiles.Count > 0)
-                                        {
-                                            foreach (string txtKey in dictTypeFiles.Keys)
-                                            {
-                                                string path = string.Format("{0}\\{1}.cs", filePath.TrimEnd('\\'), txtKey);
-                                                WriteFile(path, dictTypeFiles[txtKey], encoding);
-                                            }
+                                            string path = string.Format("{0}\\{1}.cs", filePath.TrimEnd('\\'), txtKey);
+                                            WriteFile(path, dictTypeFiles[txtKey], encoding);
                                         }
                                     }
                                 }

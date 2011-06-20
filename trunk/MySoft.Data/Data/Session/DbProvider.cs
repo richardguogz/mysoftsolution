@@ -667,7 +667,8 @@ namespace MySoft.Data
             //如果没有设置更新的字段，抛出异常
             if (fvlist.FindAll(fv => { return fv.IsChanged; }).Count == 0)
             {
-                throw new DataException("更新数据异常，没有需要更新的数据！");
+                //throw new DataException("更新数据异常，没有需要更新的数据！");
+                return -1; //-1表示没有需要更新的列
             }
 
             DbCommand cmd = CreateUpdate<T>(table, fvlist, where);
