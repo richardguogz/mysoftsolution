@@ -11,12 +11,6 @@ namespace MySoft.Web
 {
     public class StaticPageHandler : IHttpHandler, IRequiresSessionState
     {
-        private static readonly SimpleLog logger;
-        static StaticPageHandler()
-        {
-            logger = new SimpleLog(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StaticLog"));
-        }
-
         // 摘要:
         //     获取一个值，该值指示其他请求是否可以使用 System.Web.IHttpHandler 实例。
         //
@@ -70,53 +64,36 @@ namespace MySoft.Web
                             string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rule.WriteTo));
                             staticFile = context.Server.MapPath(staticUrl);
 
-                            try
+                            //需要生成静态页面
+                            if (!File.Exists(staticFile))  //静态页面不存在
                             {
-                                //需要生成静态页面
-                                if (!File.Exists(staticFile))  //静态页面不存在
+                                context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString);
+                                break;
+                            }
+                            else
+                            {
+                                //静态页面存在
+                                FileInfo file = new FileInfo(staticFile);
+                                htmlExists = file.Exists;
+                                fileExtension = file.Extension;
+
+                                //按秒检测页面重新生成
+                                int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
+                                if (rule.Timeout > 0 && span >= rule.Timeout) //静态页面过期
                                 {
                                     context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString);
                                     break;
                                 }
                                 else
                                 {
-                                    //静态页面存在
-                                    FileInfo file = new FileInfo(staticFile);
-                                    htmlExists = file.Exists;
-                                    fileExtension = file.Extension;
-
-                                    //按秒检测页面重新生成
-                                    int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
-                                    if (rule.Timeout > 0 && span >= rule.Timeout) //静态页面过期
+                                    //判断是否为xml格式
+                                    if (fileExtension.ToLower().Contains("xml"))
                                     {
-                                        context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString);
-                                        break;
+                                        context.Response.ContentType = "text/xml";
                                     }
-                                    else
-                                    {
-                                        //判断是否为xml格式
-                                        if (fileExtension.ToLower().Contains("xml"))
-                                        {
-                                            context.Response.ContentType = "text/xml";
-                                        }
 
-                                        context.Response.WriteFile(staticFile);
-                                        return;
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                string logFile = string.Format("ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd"));
-                                string logText = string.Format("{0}\r\n请求路径：{1}\r\n生成路径：{2}", ex.Message, context.Request.Url, staticFile);
-
-                                //将日志写入文件
-                                logger.WriteLog(logFile, logText);
-
-                                //如果不是IO错误，继续抛出错误
-                                if (!(ex is IOException))
-                                {
-                                    throw ex;
+                                    context.Response.WriteFile(staticFile);
+                                    return;
                                 }
                             }
                         }

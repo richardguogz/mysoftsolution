@@ -68,14 +68,5 @@ namespace MySoft.IoC
                     return base.Message;
             }
         }
-
-        /// <summary>
-        /// 对象名称
-        /// </summary>
-        public override string Source
-        {
-            get { return base.Source; }
-            set { base.Source = value; }
-        }
     }
 }

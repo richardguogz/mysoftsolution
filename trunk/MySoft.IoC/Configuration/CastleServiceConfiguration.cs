@@ -15,7 +15,7 @@ namespace MySoft.IoC.Configuration
         private string host = "any";
         private int port = 8888;
         private double logtime = ServiceConfig.DEFAULT_LOGTIME_NUMBER;             //超时多长输出日志，默认为1秒
-        private int records = ServiceConfig.DEFAULT_RECORD_NUMBER;                 //默认记录3600次                                                         //记录条数，默认为3600条，1小时记录
+        private int records = ServiceConfig.DEFAULT_RECORD_NUMBER;                 //记录条数，默认为3600条，1小时记录
         private int maxconnect = ServiceConfig.DEFAULT_MAXCONNECT_NUMBER;
         private int maxbuffer = ServiceConfig.DEFAULT_MAXBUFFER_NUMBER;
 

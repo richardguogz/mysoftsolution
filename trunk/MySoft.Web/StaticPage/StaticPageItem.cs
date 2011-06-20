@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Linq;
 
 namespace MySoft.Web
 {
@@ -765,7 +766,8 @@ namespace MySoft.Web
                 //未全部更新成功
                 if (!allUpdateSuccess)
                 {
-                    throw new Exception("静态页未能全部生成成功，需要延迟重新生成！");
+                    string html = string.Join("\r\n", updateErrorList.ToArray());
+                    throw new Exception("静态页未能全部生成成功，需要延迟重新生成！" + "\r\n" + html);
                 }
 
                 //全部生成成功才设置最后更新时间

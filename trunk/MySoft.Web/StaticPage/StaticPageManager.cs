@@ -25,6 +25,9 @@ namespace MySoft.Web
         //静态页生成项
         private static List<IStaticPageItem> staticPageItems = new List<IStaticPageItem>();
 
+        //写日志
+        private static readonly SimpleLog logger = new SimpleLog(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StaticLog"));
+
         #region 启动静态页生成
 
         /// <summary>
@@ -367,6 +370,14 @@ namespace MySoft.Web
                     //生成文件成功写日志
                     SaveLog(string.Format("生成文件【{0}】成功！", savePath), LogType.Information);
                 }
+            }
+            catch (IOException ex)
+            {
+                string logFile = string.Format("ERROR_{0}.log", DateTime.Today.ToString("yyyyMMdd"));
+                string logText = string.Format("{0}\r\n生成文件【{1}】失败！", ex.Message, savePath);
+
+                //将日志写入文件
+                logger.WriteLog(logFile, logText);
             }
             finally
             {
