@@ -357,14 +357,16 @@ namespace MySoft.Web
                 {
                     writer = new StreamWriter(savePath, false, outEncoding);
                 }
-                writer.Write(result);
 
-                //生成文件成功写日志
-                SaveLog(string.Format("生成文件【{0}】成功！", savePath), LogType.Information);
-            }
-            catch (Exception ex)
-            {
-                throw new IOException("文件保存出错！", ex);
+                //如果基础流可写
+                if (writer.BaseStream.CanWrite)
+                {
+                    writer.Write(result);
+                    writer.Flush();
+
+                    //生成文件成功写日志
+                    SaveLog(string.Format("生成文件【{0}】成功！", savePath), LogType.Information);
+                }
             }
             finally
             {

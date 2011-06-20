@@ -82,12 +82,6 @@ namespace MySoft.Web
             //如果页面内容中包含指定的验证字符串则生成
             if (string.IsNullOrEmpty(validateString) || content.Contains(validateString))
             {
-                //如果文件夹不存在，则创建
-                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                }
-
                 //内容进行编码处理
                 string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
                 string staticurl = filePath;
@@ -107,7 +101,7 @@ namespace MySoft.Web
                 }
 
                 //将内容写入文件
-                File.WriteAllText(filePath, content, enc);
+                StaticPageManager.SaveFile(content, filePath, enc);
             }
         }
 

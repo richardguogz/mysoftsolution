@@ -148,7 +148,7 @@ namespace MySoft.Mail
         {
             lock (lockObject)
             {
-                if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
+                if (isSystemMail) body += string.Format("<br/><br/>系统邮件，请勿直接回复！<span style=\"font-size:12px;\">({0})</span>", DateTime.Now);
                 SMTP smtp = new SMTP(this.mailFrom, to, title, body, this.smtpServer, userName, password);
                 smtp.SMTPPort = this.smtpPort;
                 smtp.MailDisplyName = this.displayName;
@@ -169,7 +169,7 @@ namespace MySoft.Mail
         {
             lock (lockObject)
             {
-                if (isSystemMail) body += "<br><br>系统邮件，请勿直接回复！";
+                if (isSystemMail) body += string.Format("<br/><br/>系统邮件，请勿直接回复！<span style=\"font-size:12px;\">({0})</span>", DateTime.Now);
                 SMTP smtp = new SMTP(this.mailFrom, to, title, body, this.smtpServer, userName, password);
                 smtp.SMTPPort = this.smtpPort;
                 smtp.MailDisplyName = this.displayName;
