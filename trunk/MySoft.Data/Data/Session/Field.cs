@@ -84,7 +84,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="fieldName"></param>
         /// <returns></returns>
-        public Field Create(string fieldName)
+        public static Field Create(string fieldName)
         {
             return new Field(fieldName);
         }
@@ -95,7 +95,7 @@ namespace MySoft.Data
         /// <param name="fieldName"></param>
         /// <param name="creator"></param>
         /// <returns></returns>
-        public Field Create(string fieldName, QueryCreator creator)
+        public static Field Create(string fieldName, QueryCreator creator)
         {
             return new SysField(fieldName, creator);
         }
@@ -107,7 +107,7 @@ namespace MySoft.Data
         /// <param name="fieldName"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public Field Create<T>(string fieldName, QuerySection<T> query)
+        public static Field Create<T>(string fieldName, QuerySection<T> query)
             where T : Entity
         {
             return new SysField<T>(fieldName, query);
@@ -118,22 +118,9 @@ namespace MySoft.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="fieldName"></param>
-        /// <param name="top"></param>
-        /// <returns></returns>
-        public Field Create<T>(string fieldName, TopSection<T> top)
-            where T : Entity
-        {
-            return new SysField<T>(fieldName, top);
-        }
-
-        /// <summary>
-        /// 创建一个内联字段
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fieldName"></param>
         /// <param name="relation"></param>
         /// <returns></returns>
-        public Field Create<T>(string fieldName, TableRelation<T> relation)
+        public static Field Create<T>(string fieldName, TableRelation<T> relation)
             where T : Entity
         {
             return new SysField<T>(fieldName, relation);
