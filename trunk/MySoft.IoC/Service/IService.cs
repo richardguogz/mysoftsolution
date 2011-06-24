@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MySoft.IoC.Message;
 
 namespace MySoft.IoC
 {

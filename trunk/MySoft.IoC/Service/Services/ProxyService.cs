@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using MySoft.IoC.Configuration;
+using MySoft.IoC.Message;
+using MySoft.IoC.Services;
 using MySoft.Logger;
 using MySoft.Threading;
-using System.Linq;
-using MySoft.IoC.Services;
 
 namespace MySoft.IoC
 {
@@ -128,25 +129,21 @@ namespace MySoft.IoC
                     // Call EndInvoke to retrieve the results.
                     var resMsg = caller.EndInvoke(result);
 
-                    //如果数据不为空
-                    if (resMsg.Data != null)
-                    {
-                        watch.Stop();
+                    watch.Stop();
 
-                        //如果时间超过预定，则输出日志
-                        if (watch.ElapsedMilliseconds > logTimeout * 1000)
+                    //如果时间超过预定，则输出日志
+                    if (watch.ElapsedMilliseconds > logTimeout * 1000)
+                    {
+                        //SerializationManager.Serialize(retMsg)
+                        string log = string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). {5}\r\nMessage ==> {6}\r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
+                        string title = string.Format("Elapsed time ({0}) ms more than ({1}) ms.", watch.ElapsedMilliseconds, logTimeout * 1000);
+                        string body = string.Format("{0} {1}", title, log);
+                        var exception = new WarningException(body)
                         {
-                            //SerializationManager.Serialize(retMsg)
-                            string log = string.Format("【{7}】Call ({0}:{1}) remote service ({2},{3}). {5}\r\nMessage ==> {6}\r\nParameters ==> {4}", node.IP, node.Port, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
-                            string title = string.Format("Elapsed time ({0}) ms more than ({1}) ms.", watch.ElapsedMilliseconds, logTimeout * 1000);
-                            string body = string.Format("{0} {1}", title, log);
-                            var exception = new WarningException(body)
-                            {
-                                ApplicationName = reqMsg.AppName,
-                                ExceptionHeader = string.Format("Application【{0}】occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
-                            };
-                            logger.WriteError(exception);
-                        }
+                            ApplicationName = reqMsg.AppName,
+                            ExceptionHeader = string.Format("Application【{0}】occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                        };
+                        logger.WriteError(exception);
                     }
 
                     return resMsg;

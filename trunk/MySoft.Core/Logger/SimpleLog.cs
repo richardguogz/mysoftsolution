@@ -44,7 +44,7 @@ namespace MySoft.Logger
         public void WriteLogForDir(string dir, Exception ex)
         {
             string filePath = Path.Combine(basedir, dir);
-            filePath = Path.Combine(filePath, ex.GetType().Name);
+            filePath = Path.Combine(filePath, ErrorHelper.GetInnerException(ex).GetType().Name);
             filePath = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
 
             WriteFileLog(filePath, ex);
@@ -212,7 +212,7 @@ namespace MySoft.Logger
                 throw new ArgumentException("请传入收件人地址信息参数！");
             }
 
-            string title = string.Format("({2})【{3}】 - 异常邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ex.GetType().Name, ex.Source);
+            string title = string.Format("({2})【{3}】 - 异常邮件由【{0}({1})】发出", DnsHelper.GetHostName(), DnsHelper.GetIPAddress(), ErrorHelper.GetInnerException(ex).GetType().Name, ex.Source);
             SmtpMail.Instance.SendExceptionAsync(ex, title, to);
         }
 

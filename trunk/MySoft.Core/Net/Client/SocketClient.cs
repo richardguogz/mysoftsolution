@@ -209,7 +209,6 @@ namespace MySoft.Net.Client
 
                         if (OnReceived != null)
                             OnReceived(data, socket);
-
                     }
                     else
                     {

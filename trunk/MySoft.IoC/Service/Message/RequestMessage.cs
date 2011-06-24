@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySoft.Net.Sockets;
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Message
 {
     /// <summary>
     /// request base
@@ -15,11 +15,10 @@ namespace MySoft.IoC
         private string subServiceName;
         private Guid transactionId;
         private ParameterCollection parameters = new ParameterCollection();
-        private bool compress = false;
-        private bool encrypt = false;
-        private int keylength = 128;
         private DateTime expiration;
         private Type returnType;
+        private bool compress = false;
+        private bool encrypt = false;
 
         /// <summary>
         /// Gets or sets the returnType.
@@ -102,6 +101,22 @@ namespace MySoft.IoC
         }
 
         /// <summary>
+        /// Gets or sets the expiration.
+        /// </summary>
+        /// <value>The expiration.</value>
+        public DateTime Expiration
+        {
+            get
+            {
+                return expiration;
+            }
+            set
+            {
+                expiration = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the compress of the service.
         /// </summary>
         public bool Compress
@@ -132,37 +147,6 @@ namespace MySoft.IoC
         }
 
         /// <summary>
-        /// Gets or sets the keylength of the service.
-        /// </summary>
-        public int KeyLength
-        {
-            get
-            {
-                return keylength;
-            }
-            set
-            {
-                keylength = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the expiration.
-        /// </summary>
-        /// <value>The expiration.</value>
-        public DateTime Expiration
-        {
-            get
-            {
-                return expiration;
-            }
-            set
-            {
-                expiration = value;
-            }
-        }
-
-        /// <summary>
         /// 响应的消息
         /// </summary>
         public abstract string Message { get; }
@@ -181,6 +165,7 @@ namespace MySoft.IoC
         private string hostName;
         private string requestAddress;
         private double timeout = -1;
+        private int keylength = 128;
 
         #endregion
 

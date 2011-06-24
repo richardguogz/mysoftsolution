@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using Castle.Core;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel;
 using Castle.Windsor;
 using MySoft.Cache;
+using MySoft.IoC.Message;
 using MySoft.IoC.Services;
 using MySoft.Logger;
-using System.Configuration;
 
 namespace MySoft.IoC
 {

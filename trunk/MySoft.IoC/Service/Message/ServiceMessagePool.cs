@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using MySoft.Net.Client;
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Message
 {
     /// <summary>
     /// 服务消息池

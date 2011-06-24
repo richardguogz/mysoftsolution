@@ -7,6 +7,7 @@ using Castle.MicroKernel;
 using MySoft.Logger;
 using MySoft.Cache;
 using System.Reflection;
+using MySoft.IoC.Message;
 
 namespace MySoft.IoC
 {

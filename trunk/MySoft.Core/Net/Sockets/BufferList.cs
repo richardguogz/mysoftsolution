@@ -162,8 +162,6 @@ namespace MySoft.Net.Sockets
                     return false;
                 }
             }
-
         }
-
     }
 }

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using MySoft.IoC.Configuration;
+using MySoft.IoC.Message;
+using MySoft.IoC.Services;
 using MySoft.Logger;
 using MySoft.Net.Server;
 using MySoft.Net.Sockets;
-using System.Threading;
-using System.Linq;
-using System.Diagnostics;
-using MySoft.IoC.Services;
-using System.Text;
-using System.IO;
 
 namespace MySoft.IoC
 {
@@ -401,14 +401,11 @@ namespace MySoft.IoC
 
                 response = new ResponseMessage();
                 response.TransactionId = reqMsg.TransactionId;
-                //resMsg.RequestAddress = reqMsg.RequestAddress;
-                response.Encrypt = reqMsg.Encrypt;
-                response.Compress = reqMsg.Compress;
-                response.Encrypt = reqMsg.Encrypt;
-                //resMsg.Timeout = reqMsg.Timeout;
                 response.ServiceName = reqMsg.ServiceName;
                 response.SubServiceName = reqMsg.SubServiceName;
                 response.Parameters = reqMsg.Parameters;
+                response.Compress = reqMsg.Compress;
+                response.Encrypt = reqMsg.Encrypt;
                 response.Expiration = reqMsg.Expiration;
                 response.Exception = ex;
             }

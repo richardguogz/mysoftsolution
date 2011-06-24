@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using MySoft.Logger;
+using MySoft.IoC.Message;
 
 namespace MySoft.IoC.Services
 {
@@ -67,12 +68,11 @@ namespace MySoft.IoC.Services
                 watch.Stop();
 
                 var ex = resMsg.Exception;
-                string body = string.Format("¡¾{5}¡¿Dynamic ({0}) service ({1},{2}) error. {4}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.TransactionId);
+                string body = string.Format("¡¾{6}¡¿Dynamic ({0}) service ({1},{2}) error. {4}\r\nMessage ==> {5}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
                 var exception = new IoCException(body, ex)
                 {
                     ApplicationName = reqMsg.AppName,
                     ExceptionHeader = string.Format("Application¡¾{0}¡¿occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
-
                 };
                 logger.WriteError(exception);
             }

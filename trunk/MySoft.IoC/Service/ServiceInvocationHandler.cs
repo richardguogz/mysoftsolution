@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
-using System.Linq;
-using System.Reflection.Emit;
-using System.IO;
 using MySoft.IoC.Configuration;
-using MySoft.Cache;
-using MySoft.Security;
+using MySoft.IoC.Message;
 
 namespace MySoft.IoC
 {
@@ -58,8 +52,8 @@ namespace MySoft.IoC
             reqMsg.SubServiceName = methodInfo.ToString();                  //方法名称
             reqMsg.ReturnType = methodInfo.ReturnType;                      //返回类型
             reqMsg.TransactionId = Guid.NewGuid();                          //传输ID号
-            reqMsg.Encrypt = config.Encrypt;                                //传递传输与压缩格式
-            reqMsg.Compress = config.Compress;                              //设置压缩格式
+            //reqMsg.Encrypt = config.Encrypt;                                                              //传递传输与压缩格式
+            //reqMsg.Compress = config.Compress;                                                       //设置压缩格式
             reqMsg.Timeout = config.Timeout;                                //设置超时时间
             reqMsg.Expiration = DateTime.Now.AddSeconds(config.Timeout);    //设置过期时间
 
@@ -132,6 +126,10 @@ namespace MySoft.IoC
                 if (isAllowCache) isAllowCache = operationContract.AllowCache;
                 if (operationContract.CacheTime > 0) cacheTime = operationContract.CacheTime;
                 if (operationContract.Timeout > 0) reqMsg.Timeout = operationContract.Timeout;
+
+                //压缩处理
+                reqMsg.Compress = config.Compress && operationContract.Compress;
+                reqMsg.Encrypt = config.Encrypt && operationContract.Encrypt;
             }
             else
             {
@@ -190,7 +188,7 @@ namespace MySoft.IoC
                 parameters = resMsg.Parameters;
 
                 //如果数据为null,则返回null
-                if (resMsg == null || resMsg.Data == null)
+                if (resMsg == null || resMsg.Data == null || resMsg.Data.Value == null)
                 {
                     //给引用的参数赋值
                     for (int i = 0; i < pis.Length; i++)
@@ -205,21 +203,8 @@ namespace MySoft.IoC
                     return CoreHelper.GetTypeDefaultValue(reqMsg.ReturnType);
                 }
 
-                #region 处理返回的数据
-
-                //将base64转换为byte[]
-                byte[] buffer = resMsg.Data;
-
-                //处理是否解密
-                if (resMsg.Encrypt) buffer = XXTEA.Decrypt(buffer, resMsg.Keys);
-
-                //处理是否压缩
-                if (resMsg.Compress) buffer = CompressionManager.DecompressSharpZip(buffer);
-
-                //将byte数组反系列化成对象
-                returnValue = SerializationManager.DeserializeBin(buffer);
-
-                #endregion
+                //从返回结果中取值
+                returnValue = resMsg.Data.Value;
 
                 if (returnValue != null)
                 {

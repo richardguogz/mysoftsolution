@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Message
 {
     /// <summary>
     /// 服务响应事件参数

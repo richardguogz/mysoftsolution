@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Message
 {
     /// <summary>
     /// 服务消息委托

@@ -4,7 +4,7 @@ using System.Text;
 using System.Data;
 using MySoft.Net.Sockets;
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Message
 {
     /// <summary>
     /// The response msg.
@@ -13,30 +13,13 @@ namespace MySoft.IoC
     [BufferType(10000)]
     public class ResponseMessage : RequestBase
     {
-        private byte[] keys;
-
-        /// <summary>
-        /// Gets or sets the keys of the service.
-        /// </summary>
-        public byte[] Keys
-        {
-            get
-            {
-                return keys;
-            }
-            set
-            {
-                keys = value;
-            }
-        }
-
-        private byte[] data;
+        private ResponseData data;
 
         /// <summary>
         /// Gets or sets the data.
         /// </summary>
         /// <value>The data.</value>
-        public byte[] Data
+        public ResponseData Data
         {
             get
             {
@@ -45,6 +28,7 @@ namespace MySoft.IoC
             set
             {
                 data = value;
+                exception = null;
             }
         }
 
@@ -63,6 +47,7 @@ namespace MySoft.IoC
             set
             {
                 exception = value;
+                data = null;
             }
         }
 
@@ -74,8 +59,14 @@ namespace MySoft.IoC
         {
             get
             {
-                int dataLength = (data == null) ? 0 : data.Length;
-                return string.Format("Packet size {0} bytes (Type:{1} Compress:{2} Encrypt:{3}).", dataLength, base.ReturnType, base.Compress, base.Encrypt);
+                if (exception != null)
+                {
+                    return string.Format("Error: {0} (Type:{1} Compress:{2} Encrypt:{3}).", ErrorHelper.GetInnerException(exception).Message, base.ReturnType, base.Compress, base.Encrypt);
+                }
+                else
+                {
+                    return string.Format("RowCount: {0} (Type:{1} Compress:{2} Encrypt:{3}).", (data == null ? 0 : data.Count), base.ReturnType, base.Compress, base.Encrypt);
+                }
             }
         }
     }

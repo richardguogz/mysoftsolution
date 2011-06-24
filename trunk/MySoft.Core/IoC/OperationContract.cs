@@ -11,6 +11,26 @@ namespace MySoft.IoC
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class OperationContractAttribute : ContractAttribute
     {
+        private bool compress;
+        /// <summary>
+        /// 是否压缩
+        /// </summary>
+        public bool Compress
+        {
+            get { return compress; }
+            set { compress = value; }
+        }
+
+        private bool encrypt;
+        /// <summary>
+        /// 是否加密
+        /// </summary>
+        public bool Encrypt
+        {
+            get { return encrypt; }
+            set { encrypt = value; }
+        }
+
         /// <summary>
         /// 实例化OperationContractAttribute
         /// </summary>

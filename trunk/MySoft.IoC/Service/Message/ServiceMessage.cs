@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using MySoft.Net.Sockets;
 using MySoft.IoC.Configuration;
 
-namespace MySoft.IoC
+namespace MySoft.IoC.Message
 {
     /// <summary>
     /// 服务消息

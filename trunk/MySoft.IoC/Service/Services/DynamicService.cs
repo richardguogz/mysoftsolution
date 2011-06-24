@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Data;
 using System.Reflection;
-using System.Linq;
-using Castle.Core.Interceptor;
-using System.IO;
+using System.Text;
+using MySoft.IoC.Message;
 using MySoft.Security;
 
 namespace MySoft.IoC.Services
@@ -56,14 +53,11 @@ namespace MySoft.IoC.Services
 
             ResponseMessage resMsg = new ResponseMessage();
             resMsg.TransactionId = reqMsg.TransactionId;
-            //resMsg.RequestAddress = reqMsg.RequestAddress;
-            resMsg.Encrypt = reqMsg.Encrypt;
-            resMsg.Compress = reqMsg.Compress;
-            resMsg.Encrypt = reqMsg.Encrypt;
-            //resMsg.Timeout = reqMsg.Timeout;
             resMsg.ServiceName = serviceInterfaceType.FullName;
             resMsg.SubServiceName = reqMsg.SubServiceName;
             resMsg.Parameters = reqMsg.Parameters;
+            resMsg.Compress = reqMsg.Compress;
+            resMsg.Encrypt = reqMsg.Encrypt;
             resMsg.Expiration = reqMsg.Expiration;
 
             #region 获取相应的方法
@@ -90,7 +84,10 @@ namespace MySoft.IoC.Services
                 }
                 else
                 {
-                    dictMethods[reqMsg.SubServiceName] = method;
+                    lock (dictMethods)
+                    {
+                        dictMethods[reqMsg.SubServiceName] = method;
+                    }
                 }
             }
 
@@ -140,39 +137,20 @@ namespace MySoft.IoC.Services
 
                 if (returnValue != null)
                 {
-                    #region 处理数据
-
-                    //将对象系列化成byte数组
-                    byte[] buffer = SerializationManager.SerializeBin(returnValue);
-
-                    //判断是否压缩
-                    if (resMsg.Compress) buffer = CompressionManager.CompressSharpZip(buffer);
+                    byte[] keys = null;
 
                     //判断是否加密
-                    if (resMsg.Encrypt)
+                    if (reqMsg.Encrypt)
                     {
-                        //长度能被16除，表示为有效的key
-                        if (reqMsg.KeyLength != 0 && reqMsg.KeyLength % 16 == 0)
-                        {
-                            resMsg.KeyLength = reqMsg.KeyLength;
-                        }
-                        else
-                        {
-                            resMsg.KeyLength = 128;
-                        }
+                        int keyLength = 128;
 
                         //获取加密的字符串
-                        var encrypt = BigInteger.GenerateRandom(resMsg.KeyLength).ToString();
-                        resMsg.Keys = MD5.Hash(Encoding.UTF8.GetBytes(encrypt));
-
-                        //加密处理
-                        buffer = XXTEA.Encrypt(buffer, resMsg.Keys);
+                        var encrypt = BigInteger.GenerateRandom(keyLength).ToString();
+                        keys = MD5.Hash(Encoding.UTF8.GetBytes(encrypt));
                     }
 
-                    //返回base64字符串
-                    resMsg.Data = buffer;
-
-                    #endregion
+                    //返回结果数据
+                    resMsg.Data = new ResponseData(reqMsg, keys, returnValue);
                 }
             }
             catch (Exception ex)
