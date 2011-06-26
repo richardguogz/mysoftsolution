@@ -54,7 +54,7 @@ namespace MySoft.Common
         /// <returns>WebResponse</returns>
         public static WebResponse Send(string PostUri, PostUserInfo pui, bool IsEncryptoSend, bool enableKeyIV)
         {
-            byte[] bufferContent = FormatterHelper.Serialize(pui);
+            byte[] bufferContent = SerializationManager.SerializeBin(pui);
             string str = Convert.ToBase64String(bufferContent);
 
             if (IsEncryptoSend)

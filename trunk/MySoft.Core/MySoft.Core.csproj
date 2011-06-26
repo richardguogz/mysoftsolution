@@ -393,6 +393,7 @@
     <Compile Include="Utils\CoreHelper.cs" />
     <Compile Include="Converter\ConverterFactory.cs" />
     <Compile Include="Converter\IStringConverter.cs" />
+    <Compile Include="Utils\ImageHelper.cs" />
     <Compile Include="Utils\ObjectBuilder.cs" />
     <Compile Include="Converter\PropertyHandler.cs" />
     <Compile Include="Converter\ToArray.cs" />
