@@ -195,7 +195,7 @@ namespace MySoft
         /// 创建随机码图片
         /// </summary>
         /// <param name="randomcode">随机码</param>
-        public static byte[] CreateImage(string randomcode)
+        public static Image CreateImage(string randomcode)
         {
             int randAngle = 45; //随机转动角度
             int mapwidth = (int)(randomcode.Length * 16);
@@ -261,7 +261,7 @@ namespace MySoft
             //Response.ContentType = "image/gif";
             //Response.BinaryWrite(ms.ToArray());
 
-            return ms.ToArray();
+            return Image.FromStream(ms);
         }
     }
 }
