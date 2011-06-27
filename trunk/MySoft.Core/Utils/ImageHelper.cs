@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 
 namespace MySoft
 {
@@ -234,10 +235,11 @@ namespace MySoft
         }
 
         /// <summary>
-        /// 创建随机码图片
+        /// 创建字节的图像，一般用于传输
         /// </summary>
-        /// <param name="randomcode">随机码</param>
-        public static Bitmap CreateImage(string randomcode)
+        /// <param name="randomcode"></param>
+        /// <returns></returns>
+        public static Stream CreateImageStream(string randomcode)
         {
             int randAngle = 45; //随机转动角度
             int mapwidth = (int)(randomcode.Length * 14) + (18 - randomcode.Length * 2);
@@ -295,15 +297,21 @@ namespace MySoft
             //生成图片
             System.IO.MemoryStream ms = new System.IO.MemoryStream();
             map.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            ms.Position = 0;
 
             graph.Dispose();
             map.Dispose();
 
-            //Response.ClearContent();
-            //Response.ContentType = "image/gif";
-            //Response.BinaryWrite(ms.ToArray());
+            return ms;
+        }
 
-            return Image.FromStream(ms) as Bitmap;
+        /// <summary>
+        /// 创建随机码图片
+        /// </summary>
+        /// <param name="randomcode">随机码</param>
+        public static Bitmap CreateImage(string randomcode)
+        {
+            return Image.FromStream(CreateImageStream(randomcode)) as Bitmap;
         }
     }
 }
