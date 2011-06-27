@@ -195,10 +195,10 @@ namespace MySoft
         /// 创建随机码图片
         /// </summary>
         /// <param name="randomcode">随机码</param>
-        public static Image CreateImage(string randomcode)
+        public static Bitmap CreateImage(string randomcode)
         {
             int randAngle = 45; //随机转动角度
-            int mapwidth = (int)(randomcode.Length * 16);
+            int mapwidth = (int)(randomcode.Length * 14) + (18 - randomcode.Length * 2);
             Bitmap map = new Bitmap(mapwidth, 22);//创建图片背景
             Graphics graph = Graphics.FromImage(map);
             graph.Clear(Color.AliceBlue);//清除画面，填充背景
@@ -209,13 +209,12 @@ namespace MySoft
 
             //背景噪点生成
             Pen blackPen = new Pen(Color.LightGray, 0);
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < randomcode.Length * 15; i++)
             {
-                int x = rand.Next(0, map.Width);
-                int y = rand.Next(0, map.Height);
+                int x = rand.Next(1, map.Width - 2);
+                int y = rand.Next(1, map.Height - 2);
                 graph.DrawRectangle(blackPen, x, y, 1, 1);
             }
-
 
             //验证码旋转，防止机器识别
             char[] chars = randomcode.ToCharArray();//拆散字符串成单字符数组
@@ -228,14 +227,15 @@ namespace MySoft
             //定义颜色
             Color[] c = { Color.Black, Color.Red, Color.DarkBlue, Color.Green, Color.Orange, Color.Brown, Color.DarkCyan, Color.Purple };
             //定义字体
-            string[] font = { "Verdana", "Microsoft Sans Serif", "Comic Sans MS", "Arial", "宋体" };
-            int cindex = rand.Next(7);
+            string[] font = { "Verdana", "Microsoft Sans Serif", "Comic Sans MS", "Arial", "宋体", "微软雅黑" };
 
             for (int i = 0; i < chars.Length; i++)
             {
                 int findex = rand.Next(5);
 
                 Font f = new System.Drawing.Font(font[findex], 14, System.Drawing.FontStyle.Bold);//字体样式(参数2为字体大小)
+
+                int cindex = rand.Next(7);
                 Brush b = new System.Drawing.SolidBrush(c[cindex]);
 
                 Point dot = new Point(14, 14);
@@ -261,7 +261,7 @@ namespace MySoft
             //Response.ContentType = "image/gif";
             //Response.BinaryWrite(ms.ToArray());
 
-            return Image.FromStream(ms);
+            return Image.FromStream(ms) as Bitmap;
         }
     }
 }
