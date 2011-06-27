@@ -286,7 +286,7 @@ namespace MySoft
 
                 graph.TranslateTransform(dot.X, dot.Y);//移动光标到指定位置
                 graph.RotateTransform(angle);
-                graph.DrawString(chars[i].ToString(), f, b, 1, 1, format);
+                graph.DrawString(chars[i].ToString(), f, b, 1, -2, format);
                 //graph.DrawString(chars[i].ToString(),fontstyle,new SolidBrush(Color.Blue),1,1,format);
                 graph.RotateTransform(-angle);//转回去
                 graph.TranslateTransform(-2, -dot.Y);//移动光标到指定位置，每个字符紧凑显示，避免被软件识别
