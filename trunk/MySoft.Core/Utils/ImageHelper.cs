@@ -4,33 +4,52 @@ using System.Drawing;
 namespace MySoft
 {
     /// <summary>
+    /// 缩放格式
+    /// </summary>
+    public enum ZoomMode
+    {
+        /// <summary>
+        /// 指定高宽缩放（可能变形）
+        /// </summary>
+        HW,
+        /// <summary>
+        /// 指定宽，高按比例
+        /// </summary>
+        W,
+        /// <summary>
+        /// 指定高，宽按比例
+        /// </summary>
+        H,
+        /// <summary>
+        /// 指定高宽裁减（不变形） 
+        /// </summary>
+        CUT
+    }
+
+    /// <summary>
+    /// 验证码类型
+    /// </summary>
+    public enum CodeType
+    {
+        /// <summary>
+        /// 数字
+        /// </summary>
+        Number,
+        /// <summary>
+        /// 字符
+        /// </summary>
+        Char,
+        /// <summary>
+        /// 数字和字符
+        /// </summary>
+        NumberChar
+    }
+
+    /// <summary>
     /// ImageHelper 的摘要说明
     /// </summary>
     public static class ImageHelper
     {
-        /// <summary>
-        /// 缩放格式
-        /// </summary>
-        public enum ZoomMode
-        {
-            /// <summary>
-            /// 指定高宽缩放（可能变形）
-            /// </summary>
-            HW,
-            /// <summary>
-            /// 指定宽，高按比例
-            /// </summary>
-            W,
-            /// <summary>
-            /// 指定高，宽按比例
-            /// </summary>
-            H,
-            /// <summary>
-            /// 指定高宽裁减（不变形） 
-            /// </summary>
-            CUT
-        }
-
         /// <summary>
         /// 生成缩略图
         /// </summary>
@@ -167,6 +186,17 @@ namespace MySoft
         /// <returns></returns>
         public static string CreateRandomCode(int length)
         {
+            return CreateRandomCode(length, CodeType.NumberChar);
+        }
+
+        /// <summary>
+        /// 生成随机码
+        /// </summary>
+        /// <param name="length">随机码个数</param>
+        /// <param name="number">是否为全数字</param>
+        /// <returns></returns>
+        public static string CreateRandomCode(int length, CodeType type)
+        {
             int rand;
             char code;
             string randomcode = String.Empty;
@@ -177,17 +207,29 @@ namespace MySoft
             {
                 rand = random.Next();
 
-                if (rand % 3 == 0)
+                if (type == CodeType.Char)
                 {
                     code = (char)('A' + (char)(rand % 26));
                 }
-                else
+                else if (type == CodeType.Number)
                 {
                     code = (char)('0' + (char)(rand % 10));
+                }
+                else
+                {
+                    if (rand % 3 == 0)
+                    {
+                        code = (char)('A' + (char)(rand % 26));
+                    }
+                    else
+                    {
+                        code = (char)('0' + (char)(rand % 10));
+                    }
                 }
 
                 randomcode += code.ToString();
             }
+
             return randomcode;
         }
 

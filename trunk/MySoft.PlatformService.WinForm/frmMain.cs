@@ -101,7 +101,7 @@ namespace MySoft.PlatformService.WinForm
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            var code = ImageHelper.CreateRandomCode(new Random().Next(1, 15), ImageHelper.CodeType.Char);
+            var code = ImageHelper.CreateRandomCode(new Random().Next(1, 15), CodeType.Char);
             //var code = "1234";
             //code = "15924186386";
             var image = ImageHelper.CreateImage(code);
