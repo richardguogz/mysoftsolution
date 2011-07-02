@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
-using System.Threading;
+using System.Linq;
+using MySoft.Web.Configuration;
 
 namespace MySoft.Web
 {
@@ -14,15 +17,17 @@ namespace MySoft.Web
         private Stream m_sink;
         private long m_position;
         private string filePath = string.Empty;
-        private string validateString = string.Empty;
+        private StaticPageRule rule;
+        private UpdateRuleCollection updates;
         private StringBuilder pageContent = new StringBuilder();
         private Encoding enc;
 
-        public ResponseFilter(Stream sink, string filePath, string validateString)
+        public ResponseFilter(Stream sink, string filePath, StaticPageRule rule, UpdateRuleCollection updates)
         {
             this.m_sink = sink;
             this.filePath = filePath;
-            this.validateString = validateString;
+            this.rule = rule;
+            this.updates = updates;
 
             //获取当前流的编码
             enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
@@ -80,8 +85,11 @@ namespace MySoft.Web
         private void WriteFile(string content)
         {
             //如果页面内容中包含指定的验证字符串则生成
-            if (string.IsNullOrEmpty(validateString) || content.Contains(validateString))
+            if (string.IsNullOrEmpty(rule.ValidateString) || content.Contains(rule.ValidateString))
             {
+                //替换内容
+                content = ReplaceContext(content);
+
                 //内容进行编码处理
                 string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
                 string staticurl = filePath;
@@ -100,9 +108,53 @@ namespace MySoft.Web
                                         DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dynamicurl, RemoveRootPath(staticurl), content.Trim());
                 }
 
+                //生成临时文件
+                string tempFile = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath) + ".tmpfile");
+
                 //将内容写入文件
-                StaticPageManager.SaveFile(content, filePath, enc);
+                StaticPageManager.SaveFile(content, tempFile, enc);
+
+                try
+                {
+                    //删除之前的文件
+                    if (File.Exists(filePath)) File.Delete(filePath);
+
+                    //将文件移动到新位置
+                    File.Move(tempFile, filePath);
+                }
+                catch { }
             }
+        }
+
+        private string ReplaceContext(string content)
+        {
+            List<UpdateRule> list = new List<UpdateRule>();
+            if (updates != null && updates.Count > 0)
+            {
+                foreach (UpdateRule r in updates) list.Add(r);
+            }
+
+            if (rule.Updates != null && rule.Updates.Length > 0)
+            {
+                //将生成的内容进行替换
+                foreach (UpdateRule r in rule.Updates)
+                {
+                    //以当前页的配置为准
+                    var item = list.Find(p => string.Compare(p.SearchFor, r.SearchFor) == 0);
+                    if (item != null) list.Remove(item);
+                    list.Add(r);
+                }
+            }
+
+            //将生成的内容进行替换
+            foreach (UpdateRule r in list)
+            {
+                string searchFor = RewriterUtils.ResolveUrl(HttpContext.Current.Request.ApplicationPath, r.SearchFor);
+                Regex reg = new Regex(searchFor, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                content = reg.Replace(content, r.ReplaceTo);
+            }
+
+            return content;
         }
 
         public override void Flush()

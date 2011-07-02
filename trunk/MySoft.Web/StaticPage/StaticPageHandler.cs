@@ -9,6 +9,9 @@ using MySoft.Logger;
 
 namespace MySoft.Web
 {
+    /// <summary>
+    /// 静态页生成Handler
+    /// </summary>
     public class StaticPageHandler : IHttpHandler, IRequiresSessionState
     {
         // 摘要:
@@ -55,19 +58,19 @@ namespace MySoft.Web
                         string lookFor = "^" + RewriterUtils.ResolveUrl(context.Request.ApplicationPath, rule.LookFor) + "$";
 
                         // Create a regex (note that IgnoreCase is set...)
-                        Regex re = new Regex(lookFor, RegexOptions.IgnoreCase);
+                        Regex reg = new Regex(lookFor, RegexOptions.IgnoreCase);
 
-                        if (re.IsMatch(url))
+                        if (reg.IsMatch(url))
                         {
                             // match found - do any replacement needed
 
-                            string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, re.Replace(url, rule.WriteTo));
+                            string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, reg.Replace(url, rule.WriteTo));
                             staticFile = context.Server.MapPath(staticUrl);
 
                             //需要生成静态页面
                             if (!File.Exists(staticFile))  //静态页面不存在
                             {
-                                context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString);
+                                context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule, config.Updates);
                                 break;
                             }
                             else
@@ -81,7 +84,7 @@ namespace MySoft.Web
                                 int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
                                 if (rule.Timeout > 0 && span >= rule.Timeout) //静态页面过期
                                 {
-                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString);
+                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule, config.Updates);
                                     break;
                                 }
                                 else

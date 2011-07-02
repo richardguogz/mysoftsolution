@@ -14,6 +14,7 @@ namespace MySoft.Web.Configuration
         // private member variables...
         private string lookFor, writeTo, validateString;
         private int timeout;
+        private UpdateRule[] updates = new UpdateRule[0];
 
         #region Public Properties
         /// <summary>
@@ -85,6 +86,22 @@ namespace MySoft.Web.Configuration
             set
             {
                 validateString = value;
+            }
+        }
+
+        /// <summary>
+        /// 更新规则
+        /// </summary>
+        [XmlElement("update", typeof(UpdateRule))]
+        public UpdateRule[] Updates
+        {
+            get
+            {
+                return updates;
+            }
+            set
+            {
+                updates = value;
             }
         }
 
