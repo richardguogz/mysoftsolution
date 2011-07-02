@@ -67,14 +67,18 @@ namespace MySoft.IoC.Services
             {
                 watch.Stop();
 
-                var ex = resMsg.Exception;
-                string body = string.Format("【{6}】Dynamic ({0}) service ({1},{2}) error. {4}\r\nMessage ==> {5}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
-                var exception = new IoCException(body, ex)
+                //如果是业务异常，则不抛出错误
+                if (!(resMsg.Exception is BusinessException))
                 {
-                    ApplicationName = reqMsg.AppName,
-                    ExceptionHeader = string.Format("Application【{0}】occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
-                };
-                logger.WriteError(exception);
+                    var ex = resMsg.Exception;
+                    string body = string.Format("【{6}】Dynamic ({0}) service ({1},{2}) error. {4}\r\nMessage ==> {5}\r\nParameters ==> {3}", reqMsg.Message, resMsg.ServiceName, resMsg.SubServiceName, resMsg.Parameters.SerializedData, "Spent time: (" + watch.ElapsedMilliseconds + ") ms.", resMsg.Message, resMsg.TransactionId);
+                    var exception = new IoCException(body, ex)
+                    {
+                        ApplicationName = reqMsg.AppName,
+                        ExceptionHeader = string.Format("Application【{0}】occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
+                    };
+                    logger.WriteError(exception);
+                }
             }
             else
             {

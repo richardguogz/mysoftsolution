@@ -40,7 +40,7 @@ namespace MySoft
     }
 
     /// <summary>
-    /// IoC异常类
+    /// MySoft异常类
     /// </summary>
     [Serializable]
     public class MySoftException : Exception

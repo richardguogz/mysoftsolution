@@ -124,6 +124,24 @@ namespace MySoft.IoC
         #region Get Service
 
         /// <summary>
+        /// Gets local the service.
+        /// </summary>
+        /// <returns>The service implemetation instance.</returns>
+        public IServiceInterfaceType GetLocalService<IServiceInterfaceType>()
+        {
+            //本地服务
+            if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
+            {
+                var service = container[typeof(IServiceInterfaceType)];
+
+                //返回拦截服务
+                return AspectManager.GetService<IServiceInterfaceType>(service);
+            }
+
+            return default(IServiceInterfaceType);
+        }
+
+        /// <summary>
         /// Gets the service.
         /// </summary>
         /// <returns>The service implemetation instance.</returns>

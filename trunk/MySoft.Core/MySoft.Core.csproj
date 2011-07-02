@@ -70,6 +70,7 @@
     <Compile Include="Aop\AopSwitcherAttribute.cs" />
     <Compile Include="Aop\IAopOperator.cs" />
     <Compile Include="Aop\IAopProxyFactory.cs" />
+    <Compile Include="Common\BusinessException.cs" />
     <Compile Include="Compression\SharpZip\BZip2\BZip2.cs" />
     <Compile Include="Compression\SharpZip\BZip2\BZip2Constants.cs" />
     <Compile Include="Compression\SharpZip\BZip2\BZip2Exception.cs" />

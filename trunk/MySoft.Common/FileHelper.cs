@@ -10,7 +10,6 @@ namespace MySoft.Common
     /// </summary>
     public abstract class FileHelper
     {
-
         /// <summary>
         /// 文件系统的处理对象
         /// </summary>

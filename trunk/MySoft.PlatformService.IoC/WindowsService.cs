@@ -131,7 +131,7 @@ namespace MySoft.PlatformService.IoC
                 string message = string.Format("[{0}] => {1}", DateTime.Now, exception.Message);
                 if (exception.InnerException != null)
                 {
-                    message += string.Format("\r\n错误信息 => {0}", ErrorHelper.GetInnerException(exception.InnerException).Message);
+                    message += string.Format("\r\n错误信息 => {0}", ErrorHelper.GetInnerException(exception.InnerException));
                 }
                 lock (syncobj)
                 {

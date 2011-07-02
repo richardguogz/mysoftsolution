@@ -235,11 +235,29 @@ namespace MySoft
         }
 
         /// <summary>
+        /// 创建随机码图片
+        /// </summary>
+        /// <param name="randomcode">随机码</param>
+        public static Bitmap CreateImage(string randomcode)
+        {
+            return Image.FromStream(CreateImageStream(randomcode)) as Bitmap;
+        }
+
+        /// <summary>
+        /// 创建随机码图片
+        /// </summary>
+        /// <param name="randomcode">随机码</param>
+        public static byte[] CreateImageBytes(string randomcode)
+        {
+            return CreateImageStream(randomcode).ToArray();
+        }
+
+        /// <summary>
         /// 创建字节的图像，一般用于传输
         /// </summary>
-        /// <param name="randomcode"></param>
+        /// <param name="randomcode">随机码</param>
         /// <returns></returns>
-        public static Stream CreateImageStream(string randomcode)
+        private static MemoryStream CreateImageStream(string randomcode)
         {
             int randAngle = 45; //随机转动角度
             int mapwidth = (int)(randomcode.Length * 14) + (18 - randomcode.Length * 2);
@@ -303,15 +321,6 @@ namespace MySoft
             map.Dispose();
 
             return ms;
-        }
-
-        /// <summary>
-        /// 创建随机码图片
-        /// </summary>
-        /// <param name="randomcode">随机码</param>
-        public static Bitmap CreateImage(string randomcode)
-        {
-            return Image.FromStream(CreateImageStream(randomcode)) as Bitmap;
         }
     }
 }
