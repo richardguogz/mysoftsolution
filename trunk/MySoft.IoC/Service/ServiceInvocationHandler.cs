@@ -91,6 +91,11 @@ namespace MySoft.IoC
                             reqMsg.Parameters[pis[i].Name] = paramValues[i];
                         }
                     }
+                    else
+                    {
+                        //传递参数值为null
+                        reqMsg.Parameters[pis[i].Name] = null;
+                    }
                 }
             }
 
