@@ -93,6 +93,8 @@ namespace MySoft.PlatformService.Client
             //IList<ServiceInfo> list = castle.GetService<IStatusService>().GetServiceInfoList();
             //var str = service.GetUserID();
 
+            service.GetUsers();
+            service.GetDictUsers();
 
             try
             {

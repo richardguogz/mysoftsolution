@@ -51,7 +51,7 @@ namespace MySoft.PlatformService.Console
             string message = "[" + DateTime.Now.ToString() + "] " + exception.Message;
             if (exception.InnerException != null)
             {
-                message += "\r\n错误信息 => " + exception.InnerException.Message;
+                message += "\r\n错误信息 => " + ErrorHelper.GetInnerException(exception).ToString();
             }
 
             lock (syncobj)

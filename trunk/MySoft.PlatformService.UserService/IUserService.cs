@@ -14,6 +14,10 @@ namespace MySoft.PlatformService.UserService
         [OperationContract(CacheTime = 30000)]
         UserInfo GetUserInfo(string username, out int userid);
 
+        IList<UserInfo> GetUsers();
+
+        IDictionary<string, UserInfo> GetDictUsers();
+
         DataTable GetDataTable();
 
         void SetUser(UserInfo user, ref int userid);

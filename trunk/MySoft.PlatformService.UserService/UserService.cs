@@ -62,5 +62,24 @@ namespace MySoft.PlatformService.UserService
         }
 
         #endregion
+
+        #region IUserService 成员
+
+
+        public IList<UserInfo> GetUsers()
+        {
+            return new List<UserInfo>
+            {
+                new UserInfo(),
+                new UserInfo()
+            };
+        }
+
+        public IDictionary<string, UserInfo> GetDictUsers()
+        {
+            return new Dictionary<string, UserInfo>();
+        }
+
+        #endregion
     }
 }
