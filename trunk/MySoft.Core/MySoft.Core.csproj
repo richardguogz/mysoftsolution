@@ -70,7 +70,7 @@
     <Compile Include="Aop\AopSwitcherAttribute.cs" />
     <Compile Include="Aop\IAopOperator.cs" />
     <Compile Include="Aop\IAopProxyFactory.cs" />
-    <Compile Include="Common\BusinessException.cs" />
+    <Compile Include="Exception\BusinessException.cs" />
     <Compile Include="Compression\SharpZip\BZip2\BZip2.cs" />
     <Compile Include="Compression\SharpZip\BZip2\BZip2Constants.cs" />
     <Compile Include="Compression\SharpZip\BZip2\BZip2Exception.cs" />
@@ -138,7 +138,7 @@
     <Compile Include="Common\DynamicProxy.cs" />
     <Compile Include="Installer\IServiceRun.cs" />
     <Compile Include="Common\ResponseResult.cs" />
-    <Compile Include="Common\MySoftException.cs" />
+    <Compile Include="Exception\MySoftException.cs" />
     <Compile Include="Common\ResponseFormat.cs" />
     <Compile Include="Installer\Configuration\InstallerConfiguration.cs" />
     <Compile Include="Installer\Configuration\InstallerConfigurationHandler.cs" />

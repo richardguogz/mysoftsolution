@@ -15,7 +15,7 @@ namespace MySoft
         /// <summary>
         /// 异常代码
         /// </summary>
-        public string Code { get; set; }
+        public int Code { get; set; }
 
         /// <summary>
         /// 实例化BusinessException
@@ -39,7 +39,7 @@ namespace MySoft
         /// </summary>
         /// <param name="code">业务代码</param>
         /// <param name="message">异常消息</param>
-        public BusinessException(string code, string message)
+        public BusinessException(int code, string message)
             : base(message)
         {
             this.Code = code;
@@ -51,7 +51,7 @@ namespace MySoft
         /// <param name="code">业务代码</param>
         /// <param name="message">异常消息</param>
         /// <param name="inner">内部异常</param>
-        public BusinessException(string code, string message, Exception inner)
+        public BusinessException(int code, string message, Exception inner)
             : base(message, inner)
         {
             this.Code = code;
@@ -65,7 +65,7 @@ namespace MySoft
         protected BusinessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            this.Code = (string)info.GetValue("Code", typeof(string));
+            this.Code = (int)info.GetValue("Code", typeof(string));
         }
 
         /// <summary>
