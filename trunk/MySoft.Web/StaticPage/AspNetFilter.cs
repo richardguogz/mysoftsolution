@@ -143,7 +143,7 @@ namespace MySoft.Web
             if (replace && !string.IsNullOrEmpty(extension))
             {
                 string[,] pattern = { 
-                                        { RewriterUtils.ResolveUrl(HttpContext.Current.Request.ApplicationPath, "(\\w+).aspx"), "$1" + extension},
+                                        { "(\\w+).aspx", "$1" + extension},
                                         { string.Format("action=\"(.*?){0}(.*?)\"", extension),"action=\"$1.aspx$2\"" }
                                     };
 
