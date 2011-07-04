@@ -115,7 +115,8 @@ namespace MySoft.Web
                         //处理updates
                         if (config.Replace && !string.IsNullOrEmpty(config.Extension))
                         {
-                            context.Response.Filter = new AspNetFilter(context.Response.Filter, config.Replace, config.Extension);
+                            var filter = new AspNetFilter(context.Response.Filter, config.Replace, config.Extension);
+                            context.Response.Filter = filter;
                         }
                     }
                 }
