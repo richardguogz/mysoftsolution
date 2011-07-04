@@ -13,9 +13,10 @@ namespace MySoft.Web.Configuration
     public class StaticPageConfiguration
     {
         private bool enabled = true;
+        private bool replace = false;
+        private string extension = null;
         // private member variables
         private StaticPageRuleCollection rules;			// an instance of the StaticPageRuleCollection class...
-        private UpdateRuleCollection updates;
 
         /// <summary>
         /// GetConfig() returns an instance of the <b>StaticPageConfiguration</b> class with the values populated from
@@ -56,6 +57,38 @@ namespace MySoft.Web.Configuration
         }
 
         /// <summary>
+        /// ÊÇ·ñÌæ»»
+        /// </summary>
+        [XmlAttribute("replace")]
+        public bool Replace
+        {
+            get
+            {
+                return replace;
+            }
+            set
+            {
+                replace = value;
+            }
+        }
+
+        /// <summary>
+        /// Ìæ»»À©Õ¹Ãû
+        /// </summary>
+        [XmlAttribute("extension")]
+        public string Extension
+        {
+            get
+            {
+                return extension;
+            }
+            set
+            {
+                extension = value;
+            }
+        }
+
+        /// <summary>
         /// A <see cref="StaticPageRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
         /// </summary>
         [XmlArray("rules")]
@@ -69,23 +102,6 @@ namespace MySoft.Web.Configuration
             set
             {
                 rules = value;
-            }
-        }
-
-        /// <summary>
-        /// A <see cref="UpdateRuleCollection"/> instance that provides access to a set of <see cref="StaticPageRule"/>s.
-        /// </summary>
-        [XmlArray("updates")]
-        [XmlArrayItem("update", typeof(UpdateRule))]
-        public UpdateRuleCollection Updates
-        {
-            get
-            {
-                return updates;
-            }
-            set
-            {
-                updates = value;
             }
         }
 

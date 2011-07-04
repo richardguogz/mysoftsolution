@@ -63,7 +63,7 @@ namespace MySoft.Data.SqlServer
             }
             else
             {
-                if (val.GetType().IsEnum)
+                if (val is Enum)
                 {
                     p.Value = Convert.ToInt32(val);
                 }

@@ -73,9 +73,8 @@
     <Compile Include="CacheControl\Configuration\CacheControlConfiguration.cs" />
     <Compile Include="CacheControl\Configuration\CacheControlRule.cs" />
     <Compile Include="CacheControl\Configuration\CacheControlRuleCollection.cs" />
-    <Compile Include="StaticPage\Configuration\UpdateRule.cs" />
-    <Compile Include="StaticPage\Configuration\UpdateRuleCollection.cs" />
     <Compile Include="StaticPage\StaticPageException.cs" />
+    <Compile Include="StaticPage\AspNetFilter.cs" />
     <Compile Include="URLRewriter\BaseModuleRewriter.cs" />
     <Compile Include="URLRewriter\Configuration\RewriterConfiguration.cs" />
     <Compile Include="URLRewriter\Configuration\RewriterConfigurationHandler.cs" />

@@ -6,6 +6,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using MySoft.Web.Configuration;
 using MySoft.Logger;
+using System.IO.Compression;
 
 namespace MySoft.Web
 {
@@ -51,6 +52,8 @@ namespace MySoft.Web
                 //判断config配置信息
                 if (config != null && config.Enabled)
                 {
+                    bool isMatch = false;
+
                     // iterate through the rules
                     foreach (StaticPageRule rule in config.Rules)
                     {
@@ -62,15 +65,20 @@ namespace MySoft.Web
 
                         if (reg.IsMatch(url))
                         {
-                            // match found - do any replacement needed
+                            isMatch = true;
 
+                            // match found - do any replacement needed
                             string staticUrl = RewriterUtils.ResolveUrl(context.Request.ApplicationPath, reg.Replace(url, rule.WriteTo));
                             staticFile = context.Server.MapPath(staticUrl);
+
+                            //将域名进行替换
+                            staticFile = staticFile.Replace("{domain}", context.Request.Url.Authority);
 
                             //需要生成静态页面
                             if (!File.Exists(staticFile))  //静态页面不存在
                             {
-                                context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule, config.Updates);
+                                var filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString, config.Replace, config.Extension);
+                                context.Response.Filter = filter;
                                 break;
                             }
                             else
@@ -84,21 +92,30 @@ namespace MySoft.Web
                                 int span = (int)DateTime.Now.Subtract(file.LastWriteTime).TotalSeconds;
                                 if (rule.Timeout > 0 && span >= rule.Timeout) //静态页面过期
                                 {
-                                    context.Response.Filter = new ResponseFilter(context.Response.Filter, staticFile, rule, config.Updates);
+                                    var filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString, config.Replace, config.Extension);
+                                    context.Response.Filter = filter;
                                     break;
                                 }
                                 else
                                 {
-                                    //判断是否为xml格式
-                                    if (fileExtension.ToLower().Contains("xml"))
-                                    {
-                                        context.Response.ContentType = "text/xml";
-                                    }
+                                    //设置格式
+                                    SetContentType(context, fileExtension);
 
+                                    //将文件写入流中
                                     context.Response.WriteFile(staticFile);
                                     return;
                                 }
                             }
+                        }
+                    }
+
+                    //如果没有匹配上
+                    if (!isMatch)
+                    {
+                        //处理updates
+                        if (config.Replace && !string.IsNullOrEmpty(config.Extension))
+                        {
+                            context.Response.Filter = new AspNetFilter(context.Response.Filter, config.Replace, config.Extension);
                         }
                     }
                 }
@@ -116,18 +133,29 @@ namespace MySoft.Web
             {
                 if (htmlExists && !string.IsNullOrEmpty(staticFile))
                 {
-                    //判断是否为xml格式
-                    if (fileExtension.ToLower().Contains("xml"))
-                    {
-                        context.Response.ContentType = "text/xml";
-                    }
+                    //设置格式
+                    SetContentType(context, fileExtension);
 
+                    //将文件写入流中
                     context.Response.WriteFile(staticFile);
-                    return;
                 }
                 else
                     throw ex;
             }
+        }
+
+        /// <summary>
+        /// 设置内容格式
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="fileExtension"></param>
+        private static void SetContentType(HttpContext context, string fileExtension)
+        {
+            //判断是否为xml格式
+            if (fileExtension.ToLower() == ".xml")
+                context.Response.ContentType = "text/xml";
+            else if (fileExtension.ToLower() == ".js")
+                context.Response.ContentType = "application/javascript";
         }
     }
 }

@@ -81,8 +81,7 @@ namespace MySoft
         {
             if (obj == null) return "null";
 
-            Type type = obj.GetType();
-            if (type.IsEnum)
+            if (obj is Enum)
             {
                 return JsonConvert.ToString((Enum)obj);
             }
@@ -141,7 +140,14 @@ namespace MySoft
 
             if (returnType.IsEnum)
             {
-                return Enum.Parse(returnType, data, true);
+                try
+                {
+                    return Enum.Parse(returnType, data, true);
+                }
+                catch
+                {
+                    return Enum.ToObject(returnType, data);
+                }
             }
 
             if (returnType.IsArray && data != null && !data.StartsWith("["))

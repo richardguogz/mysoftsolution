@@ -6,92 +6,60 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Linq;
 using MySoft.Web.Configuration;
+using System.Threading;
+using System.Collections;
 
 namespace MySoft.Web
 {
     /// <summary>
     /// 生成htm静态页面
     /// </summary>
-    internal class ResponseFilter : Stream
+    public class ResponseFilter : AspNetFilter
     {
-        private Stream m_sink;
-        private long m_position;
         private string filePath = string.Empty;
-        private StaticPageRule rule;
-        private UpdateRuleCollection updates;
+        private string validateString = string.Empty;
         private StringBuilder pageContent = new StringBuilder();
-        private Encoding enc;
+        private Encoding encoding;
 
-        public ResponseFilter(Stream sink, string filePath, StaticPageRule rule, UpdateRuleCollection updates)
+        public ResponseFilter(Stream sink, string filePath, string validateString, bool replace, string extension)
+            : base(sink, replace, extension)
         {
-            this.m_sink = sink;
             this.filePath = filePath;
-            this.rule = rule;
-            this.updates = updates;
+            this.validateString = validateString;
 
             //获取当前流的编码
-            enc = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
+            this.encoding = Encoding.GetEncoding(HttpContext.Current.Response.Charset);
         }
 
-        // The following members of Stream must be overriden.
-        public override bool CanRead
+        public override void WriteContent(string content)
         {
-            get { return true; }
+            pageContent.Append(content);
         }
 
-        public override bool CanSeek
+        public override void WriteComplete()
         {
-            get { return false; }
-        }
+            //替换内容
+            string content = ReplaceContext(pageContent.ToString());
+            string path = HttpContext.Current.Request.Url.PathAndQuery;
 
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
-
-        public override long Length
-        {
-            get { return 0; }
-        }
-
-        public override long Position
-        {
-            get { return m_position; }
-            set { m_position = value; }
-        }
-
-        public override long Seek(long offset, System.IO.SeekOrigin direction)
-        {
-            return 0;
-        }
-
-        public override void SetLength(long length)
-        {
-            this.m_sink.SetLength(length);
-        }
-
-        public override void Close()
-        {
-            this.m_sink.Close();
-
-            //写文件
-            WriteFile(pageContent.ToString());
+            //启动生成线程
+            ThreadPool.QueueUserWorkItem(WriteFile, new ArrayList { content, path });
         }
 
         /// <summary>
         /// 写文件
         /// </summary>
-        /// <param name="content"></param>
-        private void WriteFile(string content)
+        /// <param name="state"></param>
+        private void WriteFile(object state)
         {
-            //如果页面内容中包含指定的验证字符串则生成
-            if (string.IsNullOrEmpty(rule.ValidateString) || content.Contains(rule.ValidateString))
-            {
-                //替换内容
-                content = ReplaceContext(content);
+            ArrayList arr = state as ArrayList;
+            string content = arr[0].ToString();
 
+            //如果页面内容中包含指定的验证字符串则生成
+            if (string.IsNullOrEmpty(validateString) || content.Contains(validateString))
+            {
                 //内容进行编码处理
-                string dynamicurl = HttpContext.Current.Request.Url.PathAndQuery;
+                string dynamicurl = arr[1].ToString();
                 string staticurl = filePath;
 
                 string extension = Path.GetExtension(staticurl);
@@ -109,78 +77,32 @@ namespace MySoft.Web
                 }
 
                 //生成临时文件
-                string tempFile = Path.Combine(Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath) + ".tmpfile");
-
-                //将内容写入文件
-                StaticPageManager.SaveFile(content, tempFile, enc);
+                string fileName = Path.GetFileNameWithoutExtension(filePath) + new Random().Next(1000).ToString("000") + ".tmpfile";
+                string tempFile = Path.Combine(Path.GetDirectoryName(filePath), fileName);
 
                 try
                 {
+                    //如果存在临时文件，则返回
+                    if (File.Exists(tempFile)) return;
+
+                    //将内容写入文件
+                    StaticPageManager.SaveFile(content, tempFile, encoding);
+
                     //删除之前的文件
                     if (File.Exists(filePath)) File.Delete(filePath);
 
                     //将文件移动到新位置
                     File.Move(tempFile, filePath);
                 }
-                catch { }
-            }
-        }
-
-        private string ReplaceContext(string content)
-        {
-            List<UpdateRule> list = new List<UpdateRule>();
-            if (updates != null && updates.Count > 0)
-            {
-                foreach (UpdateRule r in updates) list.Add(r);
-            }
-
-            if (rule.Updates != null && rule.Updates.Length > 0)
-            {
-                //将生成的内容进行替换
-                foreach (UpdateRule r in rule.Updates)
+                catch
                 {
-                    //以当前页的配置为准
-                    var item = list.Find(p => string.Compare(p.SearchFor, r.SearchFor) == 0);
-                    if (item != null) list.Remove(item);
-                    list.Add(r);
+                    //如果存在临时文件，则返回
+                    if (File.Exists(tempFile))
+                    {
+                        File.Delete(tempFile);
+                    }
                 }
             }
-
-            //将生成的内容进行替换
-            foreach (UpdateRule r in list)
-            {
-                string searchFor = RewriterUtils.ResolveUrl(HttpContext.Current.Request.ApplicationPath, r.SearchFor);
-                Regex reg = new Regex(searchFor, RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                content = reg.Replace(content, r.ReplaceTo);
-            }
-
-            return content;
-        }
-
-        public override void Flush()
-        {
-            this.m_sink.Flush();
-        }
-
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            return m_sink.Read(buffer, offset, count);
-        }
-
-        // Override the Write method to filter Response to a file.
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            //首先判断有没有系统错误
-            if (HttpContext.Current.Error == null)
-            {
-                //内容进行编码处理
-                string content = enc.GetString(buffer, offset, count);
-
-                pageContent.Append(content);
-            }
-
-            //Write out the response to the browser.
-            this.m_sink.Write(buffer, offset, count);
         }
 
         /// <summary>

@@ -71,7 +71,7 @@ namespace MySoft.Data
             foreach (DbParameter p in parameters)
             {
                 if (p.Value == null) p.Value = DBNull.Value;
-                else if (p.Value.GetType().IsEnum)
+                else if (p.Value is Enum)
                 {
                     //对枚举进行特殊处理
                     p.Value = Convert.ToInt32(p.Value);
