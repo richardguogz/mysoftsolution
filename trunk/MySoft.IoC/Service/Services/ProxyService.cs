@@ -21,7 +21,6 @@ namespace MySoft.IoC
         private ILog logger;
         private RemoteNode node;
         private ServiceMessagePool reqPool;
-        private SmartThreadPool pool;
 
         public ProxyService(ILog logger, RemoteNode node)
         {
@@ -50,9 +49,6 @@ namespace MySoft.IoC
                     }
                 }
             });
-
-            //实例化线程池
-            pool = new SmartThreadPool(30 * 1000, 500, 10);
 
             //实例化服务池
             reqPool = new ServiceMessagePool(node.MaxPool);
