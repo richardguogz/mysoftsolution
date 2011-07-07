@@ -358,41 +358,70 @@ namespace MySoft.IoC
             //如果是状态请求，则直接返回数据
             if (!IsServiceCounter(reqMsg))
             {
-                try
-                {
-                    ResponseMessage resMsg = container.CallService(reqMsg, config.LogTime);
+                //调用请求方法
+                var resMsg = CallMethod(reqMsg);
 
-                    //发送数据到服务端
+                if (resMsg != null)
+                {                    //发送数据到服务端
                     manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(resMsg));
                 }
-                catch (Exception ex)
+            }
+            else
+            {
+                //获取或创建一个对象
+                TimeStatus status = statuslist.GetOrCreate(DateTime.Now);
+
+                //开始计时
+                Stopwatch watch = Stopwatch.StartNew();
+
+                //调用请求方法
+                var resMsg = CallMethod(reqMsg);
+
+                watch.Stop();
+
+                //处理时间
+                status.ElapsedTime += watch.ElapsedMilliseconds;
+
+                if (resMsg != null)
                 {
+                    //请求数累计
+                    status.RequestCount++;
+
+                    //错误及成功计数
+                    if (resMsg.Exception == null)
+                        status.SuccessCount++;
+                    else
+                        status.ErrorCount++;
+
+                    byte[] data = BufferFormat.FormatFCA(resMsg);
+
+                    //计算流量
+                    status.DataFlow += data.Length;
+
+                    //发送数据到服务端
+                    manager.Server.SendData(socketAsync.AcceptSocket, data);
+                }
+                else
+                {
+                    var ex = new NullReferenceException(string.Format("Call service ({0}, {1}) response is null！", reqMsg.ServiceName, reqMsg.SubServiceName));
                     container_OnError(ex);
                 }
-
-                return;
             }
+        }
 
-            Stopwatch watch = Stopwatch.StartNew();
-
-            //获取或创建一个对象
-            TimeStatus status = statuslist.GetOrCreate(DateTime.Now);
-
+        /// <summary>
+        /// 调用 方法
+        /// </summary>
+        /// <param name="reqMsg"></param>
+        /// <returns></returns>
+        private ResponseMessage CallMethod(RequestMessage reqMsg)
+        {
             //获取返回的消息
             ResponseMessage response = null;
+
             try
             {
-                //生成一个异步调用委托
-                AsyncMethodCaller caller = new AsyncMethodCaller(CallMethod);
-
-                //开始异步调用
-                IAsyncResult result = caller.BeginInvoke(reqMsg, null, null);
-
-                //等待信号
-                if (result.AsyncWaitHandle.WaitOne())
-                    response = caller.EndInvoke(result);
-                else
-                    throw new NullReferenceException("调用返回的结果为null！");
+                response = container.CallService(reqMsg, config.LogTime);
             }
             catch (Exception ex)
             {
@@ -404,48 +433,13 @@ namespace MySoft.IoC
                 response.ServiceName = reqMsg.ServiceName;
                 response.SubServiceName = reqMsg.SubServiceName;
                 response.Parameters = reqMsg.Parameters;
+                response.Expiration = reqMsg.Expiration;
                 response.Compress = reqMsg.Compress;
                 response.Encrypt = reqMsg.Encrypt;
-                response.Expiration = reqMsg.Expiration;
                 response.Exception = ex;
             }
-            finally
-            {
-                watch.Stop();
 
-                //处理时间
-                status.ElapsedTime += watch.ElapsedMilliseconds;
-            }
-
-            if (response != null)
-            {
-                //请求数累计
-                status.RequestCount++;
-
-                //错误及成功计数
-                if (response.Exception == null)
-                    status.SuccessCount++;
-                else
-                    status.ErrorCount++;
-
-                byte[] data = BufferFormat.FormatFCA(response);
-
-                //计算流量
-                status.DataFlow += data.Length;
-
-                //发送数据到服务端
-                manager.Server.SendData(socketAsync.AcceptSocket, data);
-            }
-        }
-
-        /// <summary>
-        /// 调用 方法
-        /// </summary>
-        /// <param name="reqMsg"></param>
-        /// <returns></returns>
-        private ResponseMessage CallMethod(RequestMessage reqMsg)
-        {
-            return container.CallService(reqMsg, config.LogTime);
+            return response;
         }
 
         /// <summary>

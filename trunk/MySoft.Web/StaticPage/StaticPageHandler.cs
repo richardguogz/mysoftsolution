@@ -7,6 +7,8 @@ using System.Web.UI;
 using MySoft.Web.Configuration;
 using MySoft.Logger;
 using System.IO.Compression;
+using System.Net;
+using System.Text;
 
 namespace MySoft.Web
 {
@@ -96,6 +98,13 @@ namespace MySoft.Web
                                     context.Response.Filter = filter;
                                     break;
                                 }
+                                //检测是否需要更新
+                                else if (!string.IsNullOrEmpty(rule.UpdateFor) && CheckUpdate(context, rule.UpdateFor))
+                                {
+                                    var filter = new ResponseFilter(context.Response.Filter, staticFile, rule.ValidateString, config.Replace, config.Extension);
+                                    context.Response.Filter = filter;
+                                    break;
+                                }
                                 else
                                 {
                                     //设置格式
@@ -157,6 +166,43 @@ namespace MySoft.Web
                 context.Response.ContentType = "text/xml";
             else if (fileExtension.ToLower() == ".js")
                 context.Response.ContentType = "application/javascript";
+        }
+
+        /// <summary>
+        /// 检测是否需要更新
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private bool CheckUpdate(HttpContext context, string url)
+        {
+            try
+            {
+                if (!url.ToLower().Contains("http://"))
+                {
+                    url = string.Format("http://{0}/{1}", context.Request.Url.Authority, url.TrimStart('~', '/'));
+                }
+
+                WebClient client = new WebClient();
+                client.Encoding = Encoding.UTF8;
+                string value = client.DownloadString(url);
+
+                //转换值
+                bool ret = false;
+                if (!bool.TryParse(value, out ret))
+                {
+                    int r = 0;
+                    if (int.TryParse(value, out r))
+                    {
+                        ret = r == 1 ? true : false;
+                    }
+                }
+                return ret;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

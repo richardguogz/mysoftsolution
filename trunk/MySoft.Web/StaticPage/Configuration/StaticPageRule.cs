@@ -12,7 +12,7 @@ namespace MySoft.Web.Configuration
     public class StaticPageRule
     {
         // private member variables...
-        private string lookFor, writeTo, validateString;
+        private string lookFor, updateFor, writeTo, validateString;
         private int timeout;
 
         #region Public Properties
@@ -34,6 +34,22 @@ namespace MySoft.Web.Configuration
             set
             {
                 lookFor = value;
+            }
+        }
+
+        /// <summary>
+        /// ¥”ƒƒ¿ÔºÏ≤‚
+        /// </summary>
+        [XmlAttribute("updateFor")]
+        public string UpdateFor
+        {
+            get
+            {
+                return updateFor;
+            }
+            set
+            {
+                updateFor = value;
             }
         }
 

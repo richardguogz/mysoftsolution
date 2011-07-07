@@ -142,16 +142,25 @@ namespace MySoft.Web
         {
             if (replace && !string.IsNullOrEmpty(extension))
             {
-                string[,] pattern = { 
-                                        { "(\\w+).aspx", "$1" + extension},
-                                        { string.Format("action=\"(.*?){0}(.*?)\"", extension),"action=\"$1.aspx$2\"" }
+                string p0 = "(<a\\s*href\\s*=\\s*[\'|\"]+)(?:\\s*(?<url>(?!=(?<http>http.\\/\\/)|(?<www>www\\.))([\\w+-\\/]*).aspx)(.*?[\'|\"]))";
+                string p1 = "(<option\\s*value\\s*=\\s*[\'|\"]+)(?:\\s*(?<url>(?!=(?<http>http.\\/\\/)|(?<www>www\\.))([\\w+-\\/]*).aspx)(.*?[\'|\"]))";
+                string p2 = "(action\\s*=\\s*[\'|\"]+)(?:\\s*(?<url>(?!=(?<http>http.\\/\\/)|(?<www>www\\.))([\\w+-\\/]*)" + extension + ")(.*?[\'|\"]))";
+                string p = "$1$2{0}$3";
+
+                string[,] pattern = {
+                                        { p0, string.Format(p, extension) },
+                                        { p1, string.Format(p, extension) },
+                                        { p2, string.Format(p, ".aspx") }
                                     };
 
                 //将生成的内容进行替换
                 for (int i = 0; i < pattern.GetLength(0); i++)
                 {
                     Regex reg = new Regex(pattern[i, 0], RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                    if (reg.IsMatch(content)) content = reg.Replace(content, pattern[i, 1]);
+                    if (reg.IsMatch(content))
+                    {
+                        content = reg.Replace(content, pattern[i, 1]);
+                    }
                 }
             }
 
