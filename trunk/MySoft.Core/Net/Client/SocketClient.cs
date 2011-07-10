@@ -7,6 +7,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using MySoft.Net.Sockets;
 
 namespace MySoft.Net.Client
 {
@@ -49,6 +50,36 @@ namespace MySoft.Net.Client
         public Socket Socket
         {
             get { return socket; }
+        }
+
+        /// <summary>
+        /// SOCKET 的  ReceiveTimeout属性
+        /// </summary>
+        public int ReceiveTimeout
+        {
+            get
+            {
+                return socket.ReceiveTimeout;
+            }
+            set
+            {
+                socket.ReceiveTimeout = value;
+            }
+        }
+
+        /// <summary>
+        /// SOCKET 的 SendTimeout
+        /// </summary>
+        public int SendTimeout
+        {
+            get
+            {
+                return socket.SendTimeout;
+            }
+            set
+            {
+                socket.SendTimeout = value;
+            }
         }
 
         /// <summary>
@@ -179,43 +210,56 @@ namespace MySoft.Net.Client
                         wait.Set();
 
                         if (OnConnected != null)
+                        {
                             OnConnected("连接服务器成功！", true, socket);
+                        }
 
                         byte[] data = new byte[4096];
                         e.SetBuffer(data, 0, data.Length);  //设置数据包
 
                         if (!socket.ReceiveAsync(e)) //开始读取数据包
+                        {
                             eCompleted(e);
+                        }
                     }
                     else
                     {
                         connected = false;
                         wait.Set();
                         if (OnConnected != null)
+                        {
                             OnConnected("连接服务器失败！", false, socket);
+                        }
                     }
                     break;
                 case SocketAsyncOperation.Receive:
-                    if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)
-                    {
-                        byte[] data = new byte[e.BytesTransferred];
-                        Array.Copy(e.Buffer, 0, data, 0, data.Length);
-
-                        byte[] dataLast = new byte[4096];
-                        e.SetBuffer(dataLast, 0, dataLast.Length);
-
-                        if (!socket.ReceiveAsync(e))
-                            eCompleted(e);
-
-                        if (OnReceived != null)
-                            OnReceived(data, socket);
-                    }
-                    else
-                    {
-                        if (OnDisconnected != null)
-                            OnDisconnected("与服务器断开连接！", socket);
-                    }
+                    BeginReceive(e);
                     break;
+            }
+        }
+
+        void BeginReceive(SocketAsyncEventArgs e)
+        {
+            if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)
+            {
+                byte[] buffer = e.Buffer.CloneRange(e.Offset, e.BytesTransferred);
+
+                if (this.OnReceived != null)
+                {
+                    this.OnReceived(buffer, socket);
+                }
+
+                if (!socket.ReceiveAsync(e))
+                {
+                    BeginReceive(e);
+                }
+            }
+            else
+            {
+                if (OnDisconnected != null)
+                {
+                    OnDisconnected("与服务器断开连接！", socket);
+                }
             }
         }
     }

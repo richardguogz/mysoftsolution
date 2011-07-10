@@ -7,62 +7,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MySoft.Net.Sockets
 {
-    /// <summary>
-    /// 数据包在格式化完毕后回调方法。（例如加密，压缩等）
-    /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public delegate byte[] FDataExtraHandle(byte[] data);
-
     /// <summary>
     /// 数据包格式化类
     /// (此类功能是讲.NET数据转换成通讯数据包）
     /// </summary>
     public class BufferFormat
     {
-        List<byte> buffList;
-
-        /// <summary>
-        /// 字符串格式化字符编码
-        /// </summary>
-        public Encoding Encode { get; set; }
-
-        private FDataExtraHandle dataextra;
-
-        /// <summary>
-        /// 数据委托处理
-        /// </summary>
-        public event FDataExtraHandle FDataExtra
-        {
-            add
-            {
-                dataextra = value;
-            }
-            remove
-            {
-                dataextra = null;
-            }
-        }
-
+        private List<byte> buffList;
         private bool finish;
-        /// <summary>
-        /// 数据包格式化类
-        /// </summary>
-        /// <param name="buffType">包类型</param>
-        /// <param name="dataExtra">数据包在格式化完毕后回调方法。（例如加密，压缩等）</param>
-        public BufferFormat(int buffType, FDataExtraHandle dataExtra)
-        {
-            buffList = new List<byte>();
-            buffList.AddRange(GetSocketBytes(buffType));
-            Encode = Encoding.Unicode;
-            finish = false;
-            this.dataextra = dataExtra;
-        }
-
 
         /// <summary>
         /// 数据包格式化类
@@ -72,7 +27,6 @@ namespace MySoft.Net.Sockets
         {
             buffList = new List<byte>();
             buffList.AddRange(GetSocketBytes(buffType));
-            Encode = Encoding.Unicode;
             finish = false;
         }
 
@@ -195,7 +149,7 @@ namespace MySoft.Net.Sockets
             if (finish)
                 throw new ObjectDisposedException("BufferFormat", "无法使用已经调用了 Finish 方法的BufferFormat对象");
 
-            Byte[] bytes = Encode.GetBytes(data);
+            Byte[] bytes = Encoding.Unicode.GetBytes(data);
             buffList.AddRange(GetSocketBytes(bytes.Length));
             buffList.AddRange(bytes);
 
@@ -230,7 +184,7 @@ namespace MySoft.Net.Sockets
             if (finish)
                 throw new ObjectDisposedException("BufferFormat", "无法使用已经调用了 Finish 方法的BufferFormat对象");
 
-            byte[] data = SerializationManager.SerializeBin(obj);
+            byte[] data = SerializeObject(obj);
             buffList.AddRange(GetSocketBytes(data.Length));
             buffList.AddRange(data);
         }
@@ -245,13 +199,6 @@ namespace MySoft.Net.Sockets
         {
             if (finish)
                 throw new ObjectDisposedException("BufferFormat", "无法使用已经调用了 Finish 方法的BufferFormat对象");
-
-            if (dataextra != null)
-            {
-                byte[] fdata = dataextra(buffList.ToArray());
-                buffList.Clear();
-                buffList.AddRange(fdata);
-            }
 
             int l = buffList.Count + 4;
             byte[] data = GetSocketBytes(l);
@@ -271,38 +218,22 @@ namespace MySoft.Net.Sockets
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        public static byte[] FormatFCA(object o)
+        public static byte[] FormatFCA(DataPacket o)
         {
-            return FormatFCA(o, null);
-        }
+            if (o == null || o.PacketObject == null) return new byte[0];
 
-        /// <summary>
-        /// 直接格式化一个带FormatClassAttibutes 标签的类，返回BYTE[]数组，此数组可以直接发送不需要组合所数据包。所以也称为类抽象数据包
-        /// </summary>
-        /// <param name="o"></param>
-        /// <param name="dataExtra">数据加密回调</param>
-        /// <returns></returns>
-        public static byte[] FormatFCA(object o, FDataExtraHandle dataExtra)
-        {
-            if (o == null) return new byte[0];
-
-            BufferTypeAttribute fca = CoreHelper.GetTypeAttribute<BufferTypeAttribute>(o.GetType());
+            BufferTypeAttribute fca = CoreHelper.GetTypeAttribute<BufferTypeAttribute>(o.PacketObject.GetType());
             if (fca != null)
             {
                 List<byte> bufflist = new List<byte>();
-
                 bufflist.AddRange(GetSocketBytes(fca.BufferCmdType));
 
-                byte[] classdata = SerializationManager.SerializeBin(o);
+                //将包ID加入到数据包中
+                bufflist.AddRange(o.PacketID.ToByteArray());
+
+                byte[] classdata = SerializeObject(o.PacketObject);
                 bufflist.AddRange(GetSocketBytes(classdata.Length));
                 bufflist.AddRange(classdata);
-
-                if (dataExtra != null)
-                {
-                    byte[] fdata = dataExtra(bufflist.ToArray());
-                    bufflist.Clear();
-                    bufflist.AddRange(fdata);
-                }
 
                 int l = bufflist.Count + 4;
                 byte[] data = GetSocketBytes(l);
@@ -400,6 +331,16 @@ namespace MySoft.Net.Sockets
         }
 
         #endregion
-    }
 
+
+        /// <summary>
+        /// 把对象序列化并返回相应的字节
+        /// </summary>
+        /// <param name="pObj">需要序列化的对象</param>
+        /// <returns>byte[]</returns>
+        public static byte[] SerializeObject(object pObj)
+        {
+            return SerializationManager.SerializeBin(pObj);
+        }
+    }
 }

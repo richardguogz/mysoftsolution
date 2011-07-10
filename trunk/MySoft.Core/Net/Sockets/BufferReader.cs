@@ -11,34 +11,29 @@ using System.Threading;
 namespace MySoft.Net.Sockets
 {
     /// <summary>
-    /// 数据包在读取前需要额外的处理回调方法。（例如解密，解压缩等）
-    /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public delegate byte[] RDataExtraHandle(byte[] data);
-
-    /// <summary>
     /// 数据包读取类
     /// （此类的功能是讲通讯数据包重新转换成.NET 数据类型）
     /// </summary>
     public class BufferReader
     {
         private int current;
-
-        public byte[] Data { get; set; }
-
         private int startIndex;
-        private int endlengt;
+        private int endlength;
 
         /// <summary>
-        /// 额外处理是否调用成功，可以判断是否解密成功
+        /// 数据信息
         /// </summary>
-        public bool IsDataExtraSuccess { get; set; }
+        public byte[] Data { get; set; }
 
         /// <summary>
         /// 数据包长度
         /// </summary>
         public int Length { get; set; }
+
+        /// <summary>
+        /// 额外处理是否调用成功
+        /// </summary>
+        public bool IsDataExtraSuccess { get; set; }
 
         /// <summary>
         /// 当前其位置
@@ -67,17 +62,15 @@ namespace MySoft.Net.Sockets
             Data = data;
             this.Length = Data.Length;
             current = 0;
-            IsDataExtraSuccess = true;
         }
 
         /// <summary>
-        /// 
+        /// 数据读取
         /// </summary>
         /// <param name="data"></param>
         /// <param name="startIndex">需要载入数据额外处理的开始位置</param>
         /// <param name="length">需要载入数据额外处理的数据长度 -1为，开始INDEX到结束位置,-2就是保留最后1位</param>
-        ///  <param name="dataExtraCallBack"> 数据包在读取前需要额外的处理回调方法。（例如加密，解压缩等）</param>
-        public BufferReader(Byte[] data, int startIndex, int length, RDataExtraHandle dataExtraCallBack)
+        public BufferReader(Byte[] data, int startIndex, int length)
         {
             try
             {
@@ -85,27 +78,24 @@ namespace MySoft.Net.Sockets
                 this.Length = data.Length;
                 if (length < 0)
                 {
-                    endlengt = (data.Length + length + 1) - startIndex;
+                    endlength = (data.Length + length + 1) - startIndex;
                 }
                 else
                 {
-                    endlengt = length;
+                    endlength = length;
                 }
 
                 byte[] handBytes = new byte[this.startIndex];
 
                 Array.Copy(data, 0, handBytes, 0, handBytes.Length); //首先保存不需要解密的数组
 
-                byte[] endBytes = new byte[data.Length - (startIndex + endlengt)];
+                byte[] endBytes = new byte[data.Length - (startIndex + endlength)];
 
-                Array.Copy(data, (startIndex + endlengt), endBytes, 0, endBytes.Length); //首先保存不需要解密的数组
+                Array.Copy(data, (startIndex + endlength), endBytes, 0, endBytes.Length); //首先保存不需要解密的数组
 
-                byte[] NeedExByte = new byte[endlengt];
+                byte[] NeedExByte = new byte[endlength];
 
                 Array.Copy(data, startIndex, NeedExByte, 0, NeedExByte.Length);
-
-                if (dataExtraCallBack != null)
-                    NeedExByte = dataExtraCallBack(NeedExByte);
 
                 Data = new byte[handBytes.Length + NeedExByte.Length + endBytes.Length]; //重新整合解密完毕后的数据包
 
@@ -113,6 +103,7 @@ namespace MySoft.Net.Sockets
                 Array.Copy(NeedExByte, 0, Data, handBytes.Length, NeedExByte.Length);
                 Array.Copy(endBytes, 0, Data, (handBytes.Length + NeedExByte.Length), endBytes.Length);
                 current = 0;
+
                 IsDataExtraSuccess = true;
             }
             catch
@@ -321,24 +312,50 @@ namespace MySoft.Net.Sockets
         }
         #endregion
 
+        #region Guid
+
+        /// <summary>
+        /// 读取内存流中的头36位并转换成Guid
+        /// </summary>
+        /// <param name="ms">内存流</param>
+        /// <returns></returns>
+        public bool ReadGuid(out Guid value)
+        {
+            try
+            {
+                byte[] buffer = new Byte[16];
+                Array.Copy(Data, current, buffer, 0, buffer.Length);
+                value = new Guid(buffer);
+                current = Interlocked.Add(ref current, buffer.Length);
+                return true;
+            }
+            catch
+            {
+                value = Guid.Empty;
+                return false;
+            }
+        }
+
+        #endregion
+
         #region 数据
+
         /// <summary>
         /// 读取内存流中一段数据
         /// </summary>
-        /// <param name="ms"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         public bool ReadByteArray(out byte[] value)
         {
-            int lengt;
+            int length;
             try
             {
-                if (ReadInt32(out lengt))
+                if (ReadInt32(out length))
                 {
-                    value = new Byte[lengt];
+                    value = new Byte[length];
                     Array.Copy(Data, current, value, 0, value.Length);
-                    current = Interlocked.Add(ref current, lengt);
+                    current = Interlocked.Add(ref current, length);
                     return true;
-
                 }
                 else
                 {
@@ -353,6 +370,7 @@ namespace MySoft.Net.Sockets
             }
 
         }
+
         #endregion
 
         #region 对象
@@ -362,17 +380,17 @@ namespace MySoft.Net.Sockets
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public bool ReadObject(out object obj)
+        public bool ReadObject<T>(out T obj)
         {
             byte[] data;
             if (this.ReadByteArray(out data))
             {
-                obj = SerializationManager.DeserializeBin(data);
+                obj = (T)SerializationManager.DeserializeBin(data);
                 return true;
             }
             else
             {
-                obj = null;
+                obj = default(T);
                 return false;
             }
         }

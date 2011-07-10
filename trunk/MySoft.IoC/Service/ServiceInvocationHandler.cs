@@ -181,6 +181,10 @@ namespace MySoft.IoC
                         throw resMsg.Exception;
                     }
                 }
+                catch (BusinessException ex)
+                {
+                    throw ex;
+                }
                 catch (Exception ex)
                 {
                     if (config.ThrowError)

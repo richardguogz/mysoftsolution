@@ -20,7 +20,7 @@ namespace MySoft.Net.Sockets
     /// </summary>
     public class BufferList
     {
-        private readonly object lockObject = new object();
+        public object locklist = new object();
 
         /// <summary>
         /// 数据包列表
@@ -48,7 +48,6 @@ namespace MySoft.Net.Sockets
             lengt = -1;
             Vlent = 0;
             ByteList = new List<byte>();
-
         }
 
         public void Reset()
@@ -60,15 +59,15 @@ namespace MySoft.Net.Sockets
 
         }
 
-        public bool InsertByteArray(byte[] buffer, int ml, out List<byte[]> datax)
+        public bool InsertByteArray(byte[] Data, int ml, out List<byte[]> datax)
         {
-            lock (lockObject)
+            lock (locklist)
             {
                 datax = new List<byte[]>();
 
-                ByteList.AddRange(buffer);
+                ByteList.AddRange(Data);
 
-                Interlocked.Add(ref Vlent, buffer.Length);
+                Interlocked.Add(ref Vlent, Data.Length);
 
 
                 if (lengt == -1 && Vlent > ml)

@@ -47,6 +47,8 @@ namespace MySoft.PlatformService
                 SimpleLog.Instance.WriteLog(ex);
                 throw ex;
             }
+
+            base.OnStart(args);
         }
 
         protected override void OnStop()
@@ -68,6 +70,14 @@ namespace MySoft.PlatformService
                 SimpleLog.Instance.WriteLog(ex);
                 throw ex;
             }
+
+            base.OnStop();
+        }
+
+        protected override void OnShutdown()
+        {
+            this.OnStop(); //调用停止命令
+            base.OnShutdown();
         }
     }
 }

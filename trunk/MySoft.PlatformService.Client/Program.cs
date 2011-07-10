@@ -93,24 +93,24 @@ namespace MySoft.PlatformService.Client
             //IList<ServiceInfo> list = castle.GetService<IStatusService>().GetServiceInfoList();
             //var str = service.GetUserID();
 
-            service.GetUsers();
-            service.GetDictUsers();
+            //service.GetUsers();
+            //service.GetDictUsers();
 
-            try
-            {
-                int userid;
-                var user = service.GetUserInfo("maoyong", out userid);
-                user = service.GetUserInfo("maoyong", out userid);
-                user = service.GetUserInfo("maoyong", out userid);
-                user = service.GetUserInfo("maoyong", out userid);
-                user = service.GetUserInfo("maoyong", out userid);
+            //try
+            //{
+            //    int userid;
+            //    var user = service.GetUserInfo("maoyong", out userid);
+            //    user = service.GetUserInfo("maoyong", out userid);
+            //    user = service.GetUserInfo("maoyong", out userid);
+            //    user = service.GetUserInfo("maoyong", out userid);
+            //    user = service.GetUserInfo("maoyong", out userid);
 
-                service.SetUser(null, ref userid);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            //    service.SetUser(null, ref userid);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
 
             for (int i = 0; i < count; i++)
             {
@@ -171,11 +171,14 @@ namespace MySoft.PlatformService.Client
                 Stopwatch watch = Stopwatch.StartNew();
                 try
                 {
-                    int userid = service.GetUserID();
+                    //int userid = service.GetUserID();
                     //UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
                     //UserInfo info = service.GetUserInfo("maoyong", out userid);
 
-                    if (userid == 0)
+
+                    var users = service.GetUsers();
+
+                    if (users == null)
                     {
                         string msg = string.Format("线程：{0} 耗时：{1} ms 数据为null", Thread.CurrentThread.Name, watch.ElapsedMilliseconds);
                         //WriteMessage(msg);
@@ -183,7 +186,7 @@ namespace MySoft.PlatformService.Client
                     }
                     else
                     {
-                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, userid); //info.Description
+                        string msg = string.Format("线程：{0} 耗时：{1} ms 数据：{2}", Thread.CurrentThread.Name, watch.ElapsedMilliseconds, users.Count); //info.Description
                         //WriteMessage(msg);
                         castle_OnLog(msg, LogType.Information);
                     }

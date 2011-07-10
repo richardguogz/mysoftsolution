@@ -7,6 +7,14 @@ using System.Threading;
 
 namespace MySoft.PlatformService.UserService
 {
+    [Serializable]
+    public class UserException : BusinessException
+    {
+        public UserException(string message)
+            : base(message)
+        { }
+    }
+
     public class UserService : IUserService, Castle.Core.IStartable
     {
         public int GetUserID()
@@ -65,14 +73,19 @@ namespace MySoft.PlatformService.UserService
 
         #region IUserService 成员
 
-
         public IList<UserInfo> GetUsers()
         {
-            return new List<UserInfo>
+            throw new UserException("asdfds");
+
+
+            var list = new List<UserInfo>();
+
+            for (int i = 0; i < 100000; i++)
             {
-                new UserInfo(),
-                new UserInfo()
-            };
+                list.Add(new UserInfo { Name = "test" + i, Description = "testtest" + i });
+            }
+
+            return list;
         }
 
         public IDictionary<string, UserInfo> GetDictUsers()

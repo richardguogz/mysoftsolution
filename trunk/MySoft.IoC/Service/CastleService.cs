@@ -297,12 +297,12 @@ namespace MySoft.IoC
 
         void SocketServerManager_OnMessageOutput(object sender, LogOutEventArgs e)
         {
-            if (OnLog != null) OnLog(e.Message, e.MessageType);
+            container_OnLog(e.Message, e.Type);
         }
 
         void SocketServerManager_OnDisconnected(int error, SocketAsyncEventArgs socketAsync)
         {
-            if (OnError != null) OnLog(string.Format("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint), LogType.Error);
+            container_OnLog(string.Format("User Disconnect {0}！", socketAsync.AcceptSocket.RemoteEndPoint), LogType.Error);
             socketAsync.UserToken = null;
 
             //将地址从列表中移除
@@ -320,21 +320,48 @@ namespace MySoft.IoC
 
             int length;
             int cmd;
+            Guid pid;
 
-            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && length == read.Length)
+            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && read.ReadGuid(out pid) && length == read.Length)
             {
                 if (cmd == -10000)//请求结果信息
                 {
-                    object requestObject;
-                    if (read.ReadObject(out requestObject))
+                    try
                     {
-                        if (requestObject != null)
+                        RequestMessage reqMsg;
+                        if (read.ReadObject(out reqMsg))
                         {
-                            RequestMessage request = requestObject as RequestMessage;
-
-                            //发送响应信息
-                            GetSendResponse(socketAsync, request);
+                            if (reqMsg != null)
+                            {
+                                //发送响应信息
+                                GetSendResponse(socketAsync, reqMsg);
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        container_OnError(ex);
+
+                        var resMsg = new ResponseMessage
+                        {
+                            TransactionId = pid,
+                            Expiration = DateTime.Now.AddMinutes(1),
+                            Compress = false,
+                            Encrypt = false,
+                            ReturnType = ex.GetType(),
+                            Exception = ex
+                        };
+
+                        DataPacket packet = new DataPacket
+                        {
+                            PacketID = resMsg.TransactionId,
+                            PacketObject = resMsg
+                        };
+
+                        byte[] data = BufferFormat.FormatFCA(packet);
+
+                        //发送数据到服务端
+                        manager.Server.SendData(socketAsync.AcceptSocket, data);
                     }
                 }
                 else //现在还没登入 如果有其他命令的请求那么 断开连接
@@ -362,8 +389,15 @@ namespace MySoft.IoC
                 var resMsg = CallMethod(reqMsg);
 
                 if (resMsg != null)
-                {                    //发送数据到服务端
-                    manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(resMsg));
+                {
+                    DataPacket packet = new DataPacket
+                    {
+                        PacketID = resMsg.TransactionId,
+                        PacketObject = resMsg
+                    };
+
+                    //发送数据到服务端
+                    manager.Server.SendData(socketAsync.AcceptSocket, BufferFormat.FormatFCA(packet));
                 }
             }
             else
@@ -393,7 +427,13 @@ namespace MySoft.IoC
                     else
                         status.ErrorCount++;
 
-                    byte[] data = BufferFormat.FormatFCA(resMsg);
+                    DataPacket packet = new DataPacket
+                    {
+                        PacketID = resMsg.TransactionId,
+                        PacketObject = resMsg
+                    };
+
+                    byte[] data = BufferFormat.FormatFCA(packet);
 
                     //计算流量
                     status.DataFlow += data.Length;
@@ -421,7 +461,20 @@ namespace MySoft.IoC
 
             try
             {
-                response = container.CallService(reqMsg, config.LogTime);
+                //生成一个异步调用委托
+                AsyncMethodCaller caller = new AsyncMethodCaller(p =>
+                {
+                    return container.CallService(p, config.LogTime);
+                });
+
+                //开始异步调用
+                IAsyncResult result = caller.BeginInvoke(reqMsg, null, null);
+
+                //等待信号
+                if (result.AsyncWaitHandle.WaitOne())
+                    response = caller.EndInvoke(result);
+                else
+                    throw new NullReferenceException("Call service response is null！");
             }
             catch (Exception ex)
             {

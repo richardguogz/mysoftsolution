@@ -9,6 +9,7 @@ using MySoft.IoC.Message;
 using MySoft.IoC.Services;
 using MySoft.Logger;
 using MySoft.Threading;
+using MySoft.Net.Sockets;
 
 namespace MySoft.IoC
 {
@@ -54,7 +55,7 @@ namespace MySoft.IoC
             reqPool = new ServiceMessagePool(node.MaxPool);
             for (int i = 0; i < node.MaxPool; i++)
             {
-                var request = new ServiceMessage(node);
+                var request = new ServiceMessage(node, logger);
                 request.SendCallback += new ServiceMessageEventHandler(client_SendMessage);
 
                 //请求端入栈
@@ -93,8 +94,14 @@ namespace MySoft.IoC
 
             try
             {
+                DataPacket packet = new DataPacket
+                {
+                    PacketID = reqMsg.TransactionId,
+                    PacketObject = reqMsg
+                };
+
                 //发送数据包到服务端
-                bool isSend = request.Send(reqMsg, TimeSpan.FromSeconds(reqMsg.Timeout));
+                bool isSend = request.Send(packet, TimeSpan.FromSeconds(reqMsg.Timeout));
 
                 if (isSend)
                 {

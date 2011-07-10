@@ -41,18 +41,15 @@ namespace MySoft.Net.Server
     /// </summary>
     public class SocketServer : IDisposable
     {
-
         #region 释放
         /// <summary>
         /// 用来确定是否以释放
         /// </summary>
         private bool isDisposed;
 
-
         ~SocketServer()
         {
             this.Dispose(false);
-
         }
 
         public void Dispose()
@@ -77,7 +74,10 @@ namespace MySoft.Net.Server
                         BuffManagers.FreeBuffer(args);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    SimpleLog.Instance.WriteLogForDir("SocketError", ex);
+                }
 
                 isDisposed = true;
             }
@@ -165,12 +165,10 @@ namespace MySoft.Net.Server
             {
                 return sock.SendTimeout;
             }
-
             set
             {
                 sock.SendTimeout = value;
             }
-
         }
 
         /// <summary>
@@ -201,7 +199,6 @@ namespace MySoft.Net.Server
                 return MaxConnectCount;
             }
         }
-
 
         /// <summary>
         /// IP端点
@@ -234,8 +231,11 @@ namespace MySoft.Net.Server
         {
             EventHandler<LogOutEventArgs> onMessageOutput = ar.AsyncState as EventHandler<LogOutEventArgs>;
             if (onMessageOutput != null)
+            {
                 onMessageOutput.EndInvoke(ar);
+            }
         }
+
         #endregion
 
         /// <summary>
@@ -250,7 +250,6 @@ namespace MySoft.Net.Server
             this.IPEndPoint = new IPEndPoint(ipaddress, port);
             this.MaxBufferSize = maxbuffersize;
             this.MaxConnectCount = maxconnectcount;
-
 
             this.reset = new System.Threading.AutoResetEvent[1];
             reset[0] = new System.Threading.AutoResetEvent(false);
@@ -269,7 +268,6 @@ namespace MySoft.Net.Server
             this.IPEndPoint = ipendpoint;
             this.MaxBufferSize = maxbuffersize;
             this.MaxConnectCount = maxconnectcount;
-
 
             this.reset = new System.Threading.AutoResetEvent[1];
             reset[0] = new System.Threading.AutoResetEvent(false);
@@ -296,21 +294,6 @@ namespace MySoft.Net.Server
             Run();
         }
 
-        public SocketServer()
-        {
-            int port = SocketConfig.ReadInt32("Port");
-            string host = SocketConfig.ReadString("Host");
-
-            this.IPEndPoint = GetIPEndPoint(host, port);
-            this.MaxBufferSize = SocketConfig.ReadInt32("MaxBufferSize");
-            this.MaxConnectCount = SocketConfig.ReadInt32("MaxConnectCount");
-
-            this.reset = new System.Threading.AutoResetEvent[1];
-            reset[0] = new System.Threading.AutoResetEvent(false);
-
-            Run();
-        }
-
         private IPEndPoint GetIPEndPoint(string host, int port)
         {
             IPEndPoint myEnd = new IPEndPoint(IPAddress.Any, port);
@@ -329,7 +312,6 @@ namespace MySoft.Net.Server
                             break;
                         }
                     }
-
                 }
                 else
                 {
@@ -350,7 +332,6 @@ namespace MySoft.Net.Server
                             }
                         }
                     }
-
                 }
             }
 
@@ -376,20 +357,15 @@ namespace MySoft.Net.Server
             SendTimeout = 1000;
             ReceiveTimeout = 1000;
 
-            int maxValue = int.MaxValue;
-            if (MaxConnectCount * MaxBufferSize < int.MaxValue)
-            {
-                maxValue = MaxConnectCount * MaxBufferSize;
-            }
-
-            BuffManagers = new BufferManager(maxValue, MaxBufferSize);
-            BuffManagers.Init();
+            BuffManagers = new BufferManager(MaxConnectCount * MaxBufferSize, MaxBufferSize);
+            BuffManagers.InitBuffer();
 
             SocketAsynPool = new SocketAsyncEventArgsPool(MaxConnectCount);
 
             for (int i = 0; i < MaxConnectCount; i++)
             {
                 SocketAsyncEventArgs socketasyn = new SocketAsyncEventArgs();
+                //socketasyn.SendPacketsSendSize = 1024;
                 socketasyn.Completed += new EventHandler<SocketAsyncEventArgs>(Asyn_Completed);
                 SocketAsynPool.Push(socketasyn);
             }
@@ -463,16 +439,26 @@ namespace MySoft.Net.Server
                         {
                             BeginReceive(e);
                         }
-
                     }
-
                 }
                 else
                 {
                     e.AcceptSocket = null;
                     SocketAsynPool.Push(e);
-                    LogOutEvent(null, LogType.Warning, "Not Accep！");
+                    LogOutEvent(null, LogType.Warning, "Not Accept！");
                 }
+            }
+            catch (ObjectDisposedException)//listener has been stopped
+            {
+                //不处理
+            }
+            catch (NullReferenceException)
+            {
+                //不处理
+            }
+            catch (Exception ex)
+            {
+                SimpleLog.Instance.WriteLogForDir("SocketError", ex);
             }
             finally
             {
@@ -484,12 +470,12 @@ namespace MySoft.Net.Server
         {
             if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)
             {
-                byte[] buffer = new byte[e.BytesTransferred];
-
-                Array.Copy(e.Buffer, e.Offset, buffer, 0, buffer.Length);
+                byte[] buffer = e.Buffer.CloneRange(e.Offset, e.BytesTransferred);
 
                 if (this.OnBinaryInput != null)
+                {
                     this.OnBinaryInput(buffer, e);
+                }
 
                 if (!e.AcceptSocket.ReceiveAsync(e))
                 {
@@ -514,7 +500,6 @@ namespace MySoft.Net.Server
                     Accept();
                 }
             }
-
         }
 
         void Asyn_Completed(object sender, SocketAsyncEventArgs e)
@@ -543,54 +528,64 @@ namespace MySoft.Net.Server
                 {
                     sock.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, sock);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    SimpleLog.Instance.WriteLogForDir("SocketError", ex);
+                }
             }
         }
 
-        void AsynCallBack(IAsyncResult result)
+        void AsynCallBack(IAsyncResult ar)
         {
             try
             {
-                Socket sock = result.AsyncState as Socket;
+                Socket sock = ar.AsyncState as Socket;
 
                 if (sock != null)
                 {
-                    sock.EndSend(result);
+                    sock.EndSend(ar);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                SimpleLog.Instance.WriteLogForDir("SocketError", ex);
+            }
         }
 
         /// <summary>
         /// 断开此SOCKET
         /// </summary>
-        /// <param name="sock"></param>
-        public void Disconnect(Socket socks)
+        /// <param name="socket"></param>
+        public void Disconnect(Socket socket)
         {
             try
             {
                 if (sock != null)
-                    socks.BeginDisconnect(false, AsynCallBackDisconnect, socks);
+                    socket.BeginDisconnect(false, AsynCallBackDisconnect, socket);
             }
-            catch (ObjectDisposedException) { }
-
+            catch (Exception ex)
+            {
+                SimpleLog.Instance.WriteLogForDir("SocketError", ex);
+            }
         }
 
-        void AsynCallBackDisconnect(IAsyncResult result)
+        void AsynCallBackDisconnect(IAsyncResult ar)
         {
-            Socket sock = result.AsyncState as Socket;
+            Socket sock = ar.AsyncState as Socket;
 
             if (sock != null)
             {
                 try
                 {
                     sock.Shutdown(SocketShutdown.Both);
-                    sock.EndDisconnect(result);
+                    sock.EndDisconnect(ar);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    SimpleLog.Instance.WriteLogForDir("SocketError", ex);
+                }
             }
         }
-
     }
 
     /// <summary>
@@ -601,14 +596,15 @@ namespace MySoft.Net.Server
         /// <summary>
         /// 消息类型
         /// </summary>     
-        private LogType messageType;
+        private LogType type;
 
         /// <summary>
         /// 消息类型
         /// </summary>  
-        public LogType MessageType
+        public LogType Type
         {
-            get { return messageType; }
+            get { return type; }
+            set { type = value; }
         }
 
         /// <summary>
@@ -616,14 +612,23 @@ namespace MySoft.Net.Server
         /// </summary>
         private string message;
 
+        /// <summary>
+        /// 消息
+        /// </summary>
         public string Message
         {
             get { return message; }
+            set { message = value; }
         }
 
-        public LogOutEventArgs(LogType messagetype, string message)
+        /// <summary>
+        /// 实例化LogOutEventArgs
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="message"></param>
+        public LogOutEventArgs(LogType type, string message)
         {
-            this.messageType = messagetype;
+            this.type = type;
             this.message = message;
         }
     }

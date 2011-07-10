@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using MySoft.Mail;
+using System.Threading;
 
 namespace MySoft.Logger
 {
@@ -17,6 +18,8 @@ namespace MySoft.Logger
         public static readonly SimpleLog Instance = new SimpleLog(AppDomain.CurrentDomain.BaseDirectory);
 
         private string basedir;
+        private Queue<LogInfo> logqueue;
+
         /// <summary>
         /// 实例化简单日志组件
         /// </summary>
@@ -24,6 +27,30 @@ namespace MySoft.Logger
         public SimpleLog(string basedir)
         {
             this.basedir = basedir;
+            this.logqueue = new Queue<LogInfo>();
+
+            //启动生成文件线程
+            ThreadPool.QueueUserWorkItem((state) =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        var loginfo = logqueue.Dequeue();
+                        if (loginfo != null)
+                        {
+                            if (!Directory.Exists(Path.GetDirectoryName(loginfo.FilePath)))
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(loginfo.FilePath));
+                            }
+                            File.AppendAllText(loginfo.FilePath, loginfo.Log);
+                        }
+                    }
+                    catch { }
+
+                    Thread.Sleep(10);
+                }
+            });
         }
 
         #region 自动创建文件
@@ -234,21 +261,23 @@ namespace MySoft.Logger
         /// <param name="log"></param>
         private void WriteFileLog(string filePath, string log)
         {
-            try
+            lock (logqueue)
             {
-                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                }
-
                 log = string.Format("【{0}】 ==> {1}{2}{2}========================================================================================================================{2}{2}",
-                   DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
+                                    DateTime.Now.ToLongTimeString(), log, Environment.NewLine);
+                var loginfo = new LogInfo { FilePath = filePath, Log = log };
 
-                File.AppendAllText(filePath, log);
+                //将信息入队列
+                logqueue.Enqueue(loginfo);
             }
-            catch { }
         }
 
         #endregion
+
+        private class LogInfo
+        {
+            public string FilePath { get; set; }
+            public string Log { get; set; }
+        }
     }
 }

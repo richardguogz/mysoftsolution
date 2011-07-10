@@ -62,7 +62,9 @@ namespace MySoft.PlatformService.Console
                     System.Console.ForegroundColor = ConsoleColor.Red;
                 System.Console.WriteLine(message);
 
-                SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
+                //SimpleLog.Instance.WriteLogWithSendMail(exception, "maoyong@fund123.cn");
+
+                //SimpleLog.Instance.WriteLog(message);
             }
         }
     }

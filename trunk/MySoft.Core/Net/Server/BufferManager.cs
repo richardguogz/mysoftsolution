@@ -12,7 +12,6 @@ using System.Net.Sockets;
 
 namespace MySoft.Net.Server
 {
-
     /// <summary>
     /// 数据包缓冲池
     /// </summary>
@@ -31,10 +30,7 @@ namespace MySoft.Net.Server
 
         }
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Init()
+        public void InitBuffer()
         {
             buffer = new byte[numSize];
             freeIndexPool = new Stack<int>(numSize / bufferSize);
@@ -61,7 +57,6 @@ namespace MySoft.Net.Server
                 args.SetBuffer(this.buffer, this.currentIndex, this.bufferSize);
                 this.currentIndex += this.bufferSize;
             }
-
             return true;
         }
     }

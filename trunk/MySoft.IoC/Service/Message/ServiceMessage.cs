@@ -7,6 +7,7 @@ using MySoft.Net.Client;
 using System.Net.Sockets;
 using MySoft.Net.Sockets;
 using MySoft.IoC.Configuration;
+using MySoft.Logger;
 
 namespace MySoft.IoC.Message
 {
@@ -18,13 +19,15 @@ namespace MySoft.IoC.Message
         public event ServiceMessageEventHandler SendCallback;
 
         private SocketClientManager manager;
+        private ILog logger;
         private bool isConnected = false;
         private string node;
         private string ip;
         private int port;
 
-        public ServiceMessage(RemoteNode node)
+        public ServiceMessage(RemoteNode node, ILog logger)
         {
+            this.logger = logger;
             this.node = node.Key;
             this.ip = node.IP;
             this.port = node.Port;
@@ -49,7 +52,7 @@ namespace MySoft.IoC.Message
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public bool Send(object data, TimeSpan timeout)
+        public bool Send(DataPacket data, TimeSpan timeout)
         {
             //如果连接断开，直接抛出异常
             if (!isConnected)
@@ -62,7 +65,8 @@ namespace MySoft.IoC.Message
                 }
             }
 
-            if (data == null) return false;
+            if (data == null || data.PacketObject == null) return false;
+
             byte[] buffer = BufferFormat.FormatFCA(data);
             return manager.Client.SendData(buffer);
         }
@@ -75,27 +79,55 @@ namespace MySoft.IoC.Message
 
             int length;
             int cmd;
+            Guid pid;
 
-            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && length == read.Length)
+            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && read.ReadGuid(out pid) && length == read.Length)
             {
                 if (cmd == 10000) //返回数据包
                 {
-                    object responseObject;
-                    if (read.ReadObject(out responseObject))
+                    try
                     {
-                        var result = responseObject as ResponseMessage;
-                        if (SendCallback != null)
+                        ResponseMessage resMsg;
+                        if (read.ReadObject(out resMsg))
                         {
-                            var args = new ServiceMessageEventArgs
-                            {
-                                Result = result,
-                                Socket = manager.Client.Socket
-                            };
-
-                            SendCallback(this, args);
+                            SendMessage(resMsg);
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        logger.WriteError(ex);
+
+                        var resMsg = new ResponseMessage
+                        {
+                            TransactionId = pid,
+                            Expiration = DateTime.Now.AddMinutes(1),
+                            Compress = false,
+                            Encrypt = false,
+                            ReturnType = ex.GetType(),
+                            Exception = ex
+                        };
+
+                        SendMessage(resMsg);
+                    }
                 }
+            }
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="resMsg"></param>
+        private void SendMessage(ResponseMessage resMsg)
+        {
+            if (SendCallback != null)
+            {
+                var args = new ServiceMessageEventArgs
+                {
+                    Result = resMsg,
+                    Socket = manager.Client.Socket
+                };
+
+                SendCallback(this, args);
             }
         }
 

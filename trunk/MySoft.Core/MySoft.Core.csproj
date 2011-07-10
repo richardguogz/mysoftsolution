@@ -303,10 +303,12 @@
     <Compile Include="Net\Server\SocketAsyncEventArgsPool.cs" />
     <Compile Include="Net\Server\SocketServer.cs" />
     <Compile Include="Net\Server\SocketServerManager.cs" />
+    <Compile Include="Net\Sockets\BinaryUtil.cs" />
     <Compile Include="Net\Sockets\BufferFormat.cs" />
     <Compile Include="Net\Sockets\BufferList.cs" />
     <Compile Include="Net\Sockets\BufferReader.cs" />
     <Compile Include="Net\Sockets\BufferTypeAttribute.cs" />
+    <Compile Include="Net\Sockets\DataPacket.cs" />
     <Compile Include="Net\Sockets\SocketConfig.cs" />
     <Compile Include="RESTful\Auth\AuthenticationContext.cs" />
     <Compile Include="RESTful\Auth\AuthenticationException.cs" />
@@ -461,9 +463,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Net\App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
