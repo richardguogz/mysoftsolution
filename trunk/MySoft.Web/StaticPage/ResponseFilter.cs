@@ -80,11 +80,10 @@ namespace MySoft.Web
                 string fileName = Path.GetFileNameWithoutExtension(filePath) + new Random().Next(1000).ToString("000") + ".tmpfile";
                 string tempFile = Path.Combine(Path.GetDirectoryName(filePath), fileName);
 
+                if (IsFileOpen(tempFile)) return;
+
                 try
                 {
-                    //如果存在临时文件，则返回
-                    if (File.Exists(tempFile)) return;
-
                     //将内容写入文件
                     StaticPageManager.SaveFile(content, tempFile, encoding);
 
@@ -97,11 +96,27 @@ namespace MySoft.Web
                 catch
                 {
                     //如果存在临时文件，则返回
-                    if (File.Exists(tempFile))
-                    {
-                        File.Delete(tempFile);
-                    }
+                    if (File.Exists(tempFile)) File.Delete(tempFile);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 判断文件是否打开
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private bool IsFileOpen(string filePath)
+        {
+            try
+            {
+                var fs = File.OpenWrite(filePath);
+                fs.Close();
+                return false;
+            }
+            catch
+            {
+                return true;
             }
         }
 
