@@ -153,6 +153,13 @@ namespace MySoft.IoC.Services
                     resMsg.Data = new ResponseData(reqMsg, keys, returnValue);
                 }
             }
+            catch (BusinessException ex)
+            {
+                if (ex.InnerException == null)
+                    resMsg.Exception = new BusinessException(ex.Code, ex.Message);
+                else
+                    resMsg.Exception = new BusinessException(ex.Code, ex.Message, ex.InnerException);
+            }
             catch (Exception ex)
             {
                 //²¶»ñÈ«¾Ö´íÎó

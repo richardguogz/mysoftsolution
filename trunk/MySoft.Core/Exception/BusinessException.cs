@@ -12,6 +12,8 @@ namespace MySoft
     [Serializable]
     public class BusinessException : SystemException
     {
+        const int BUSINESS_EXCEPTION = 503;
+
         /// <summary>
         /// 异常代码
         /// </summary>
@@ -23,7 +25,9 @@ namespace MySoft
         /// <param name="message">异常消息</param>
         public BusinessException(string message)
             : base(message)
-        { }
+        {
+            this.Code = BUSINESS_EXCEPTION;
+        }
 
         /// <summary>
         /// 实例化BusinessException
@@ -32,7 +36,9 @@ namespace MySoft
         /// <param name="inner">内部异常</param>
         public BusinessException(string message, Exception inner)
             : base(message, inner)
-        { }
+        {
+            this.Code = BUSINESS_EXCEPTION;
+        }
 
         /// <summary>
         /// 实例化BusinessException
@@ -65,7 +71,7 @@ namespace MySoft
         protected BusinessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            this.Code = (int)info.GetValue("Code", typeof(string));
+            this.Code = (int)info.GetValue("Code", typeof(int));
         }
 
         /// <summary>
