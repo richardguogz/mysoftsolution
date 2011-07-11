@@ -101,7 +101,7 @@ namespace MySoft.PlatformService
             Console.WriteLine("----------------------------------------------");
             Console.WriteLine(@"/? | /help : 显示帮助信息");
             Console.WriteLine(@"/list | /l [服务名称] [-status] ：模糊查询服务");
-            Console.WriteLine("(status取值为running、stopped、paused)");
+            Console.WriteLine("            (status取值为running、stopped、paused)");
             Console.WriteLine(@"/start [服务名称] : 启动指定服务");
             Console.WriteLine(@"/stop [服务名称] : 停止指定服务");
             Console.WriteLine(@"/restart [服务名称] : 重启指定服务");
