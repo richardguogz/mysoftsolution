@@ -100,19 +100,16 @@ namespace MySoft.PlatformService
         /// </summary>
         public void ListService(string contains, string status)
         {
-            if (string.IsNullOrEmpty(contains))
+            if (string.IsNullOrEmpty(contains) && string.IsNullOrEmpty(status))
             {
                 contains = "(Paltform Service)";
             }
-            else
+
+            //判断第二个参数，看是否为状态
+            if (!string.IsNullOrEmpty(contains) && contains.Substring(0, 1) == "-")
             {
-                var prefix = contains.Substring(0, 1);
-                contains = contains.Substring(1);
-                if (prefix != "-" || string.IsNullOrEmpty(contains))
-                {
-                    Console.WriteLine("输入的参数无效！");
-                    return;
-                }
+                status = contains;
+                contains = null;
             }
 
             IList<ServiceInformation> list = new List<ServiceInformation>();
@@ -210,17 +207,14 @@ namespace MySoft.PlatformService
                     Console.WriteLine("无效的服务配置项！");
                     return;
                 }
+
                 serviceName = InstallerConfig.ServiceName;
             }
-            else
+
+            if (string.IsNullOrEmpty(serviceName))
             {
-                var prefix = serviceName.Substring(0, 1);
-                serviceName = serviceName.Substring(1);
-                if (prefix != "-" || string.IsNullOrEmpty(serviceName))
-                {
-                    Console.WriteLine("输入的参数无效！");
-                    return;
-                }
+                Console.WriteLine("无效的服务名称！");
+                return;
             }
 
             ServiceController controller = InstallerUtils.LookupService(serviceName);
@@ -268,17 +262,14 @@ namespace MySoft.PlatformService
                     Console.WriteLine("无效的服务配置项！");
                     return;
                 }
+
                 serviceName = InstallerConfig.ServiceName;
             }
-            else
+
+            if (string.IsNullOrEmpty(serviceName))
             {
-                var prefix = serviceName.Substring(0, 1);
-                serviceName = serviceName.Substring(1);
-                if (prefix != "-" || string.IsNullOrEmpty(serviceName))
-                {
-                    Console.WriteLine("输入的参数无效！");
-                    return;
-                }
+                Console.WriteLine("无效的服务名称！");
+                return;
             }
 
             ServiceController controller = InstallerUtils.LookupService(serviceName);

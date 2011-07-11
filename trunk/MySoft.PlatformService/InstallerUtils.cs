@@ -33,14 +33,20 @@ namespace MySoft.PlatformService
             foreach (ServiceController s in services)
             {
                 if (s.Status != status) continue;
-
-                if (s.ServiceName != null && s.ServiceName.ToLower().Contains(contains.ToLower()))
+                if (string.IsNullOrEmpty(contains))
                 {
                     servicelist.Add(new ServiceInformation(s.ServiceName));
                 }
-                else if (s.DisplayName != null && s.DisplayName.ToLower().Contains(contains.ToLower()))
+                else
                 {
-                    servicelist.Add(new ServiceInformation(s.ServiceName));
+                    if (s.ServiceName != null && s.ServiceName.ToLower().Contains(contains.ToLower()))
+                    {
+                        servicelist.Add(new ServiceInformation(s.ServiceName));
+                    }
+                    else if (s.DisplayName != null && s.DisplayName.ToLower().Contains(contains.ToLower()))
+                    {
+                        servicelist.Add(new ServiceInformation(s.ServiceName));
+                    }
                 }
             }
 
@@ -57,13 +63,20 @@ namespace MySoft.PlatformService
             ServiceController[] services = ServiceController.GetServices();
             foreach (ServiceController s in services)
             {
-                if (s.ServiceName != null && s.ServiceName.ToLower().Contains(contains.ToLower()))
+                if (string.IsNullOrEmpty(contains))
                 {
                     servicelist.Add(new ServiceInformation(s.ServiceName));
                 }
-                else if (s.DisplayName != null && s.DisplayName.ToLower().Contains(contains.ToLower()))
+                else
                 {
-                    servicelist.Add(new ServiceInformation(s.ServiceName));
+                    if (s.ServiceName != null && s.ServiceName.ToLower().Contains(contains.ToLower()))
+                    {
+                        servicelist.Add(new ServiceInformation(s.ServiceName));
+                    }
+                    else if (s.DisplayName != null && s.DisplayName.ToLower().Contains(contains.ToLower()))
+                    {
+                        servicelist.Add(new ServiceInformation(s.ServiceName));
+                    }
                 }
             }
 
