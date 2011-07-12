@@ -165,7 +165,6 @@ namespace MySoft.IoC.Message
         private string hostName;
         private string requestAddress;
         private double timeout = -1;
-        private int keylength = 128;
 
         #endregion
 

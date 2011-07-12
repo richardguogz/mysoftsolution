@@ -41,19 +41,16 @@ namespace MySoft.IoC
         /// <returns></returns>
         public TimeStatus GetOrCreate(DateTime value)
         {
-            string key = value.ToString("yyyyMMddHHmmss");
-            if (!base.ContainsKey(key))
+            lock (this)
             {
-                lock (this)
+                string key = value.ToString("yyyyMMddHHmmss");
+                if (!base.ContainsKey(key))
                 {
-                    if (!base.ContainsKey(key))
-                    {
-                        base[key] = new TimeStatus { CounterTime = value };
-                    }
+                    base[key] = new TimeStatus { CounterTime = value };
                 }
-            }
 
-            return base[key];
+                return base[key];
+            }
         }
 
         /// <summary>
@@ -66,10 +63,17 @@ namespace MySoft.IoC
             {
                 lock (this)
                 {
-                    var key = base.Keys.FirstOrDefault();
-                    if (key != null && base.ContainsKey(key))
+                    if (base.Count > 10)
                     {
-                        base.Remove(key);
+                        var keys = base.Keys.Take(10).ToList();
+                        foreach (var key in keys)
+                        {
+                            base.Remove(key);
+                        }
+                    }
+                    else
+                    {
+                        base.Clear();
                     }
                 }
             }
