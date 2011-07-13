@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Xml;
+using System.Linq;
 using MySoft.IoC;
 
 namespace MySoft.IoC.Configuration
@@ -95,14 +96,14 @@ namespace MySoft.IoC.Configuration
                     if (childnode["maxpool"] != null && childnode["maxpool"].Value.Trim() != string.Empty)
                         remoteNode.MaxPool = Convert.ToInt32(childnode["maxpool"].Value);
 
-                    //处理默认的服务
-                    if (string.IsNullOrEmpty(defaultKey))
-                    {
-                        defaultKey = remoteNode.Key;
-                    }
-
                     nodes.Add(remoteNode.Key, remoteNode);
                 }
+            }
+
+            //处理默认的服务
+            if (string.IsNullOrEmpty(defaultKey))
+            {
+                if (nodes.Count > 0) defaultKey = nodes.Keys.LastOrDefault();
             }
 
             if (type == CastleFactoryType.Remote)
