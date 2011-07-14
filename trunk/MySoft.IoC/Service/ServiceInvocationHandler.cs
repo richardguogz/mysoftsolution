@@ -40,7 +40,7 @@ namespace MySoft.IoC
         /// <param name="methodInfo">Name of the sub service.</param>
         /// <param name="paramValues">The param values.</param>
         /// <returns>The result.</returns>
-        private object CallService(MethodInfo methodInfo, params object[] paramValues)
+        private object CallService(MethodInfo methodInfo, object[] paramValues)
         {
             #region 设置请求信息
 
@@ -255,7 +255,7 @@ namespace MySoft.IoC
         /// <returns></returns>
         public object Invoke(object proxy, MethodInfo method, object[] args)
         {
-            return this.CallService(method, args);
+            return CallService(method, args);
         }
 
         #endregion
