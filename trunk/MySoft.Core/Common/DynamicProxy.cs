@@ -139,10 +139,10 @@ namespace MySoft
                     String dynamicAssemblyName;
                     String dynamicModuleName;
                     String dynamicProxyTypeName;
-                    String strNumber = Guid.NewGuid().ToString();
-                    dynamicAssemblyName = "$DynamicAssembly" + strNumber;
-                    dynamicModuleName = "$DynamicModule" + strNumber;
-                    dynamicProxyTypeName = "$Proxy" + strNumber;
+                    String strNumber = Guid.NewGuid().ToString().Replace("-", "");
+                    dynamicAssemblyName = "$DynamicAssembly_" + strNumber;
+                    dynamicModuleName = "$DynamicModule_" + strNumber;
+                    dynamicProxyTypeName = "$Proxy_" + strNumber;
 
                     AssemblyBuilder assemblyBuilder;
                     AssemblyName assemblyName = new AssemblyName();
