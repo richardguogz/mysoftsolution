@@ -221,7 +221,7 @@ namespace MySoft.IoC
             else
             {
                 Type serviceType = typeof(IServiceInterfaceType);
-                if (instances.ContainsKey(serviceType))
+                if (DynamicProxy.IsProxyType(serviceType) && instances.ContainsKey(serviceType))
                 {
                     return (IServiceInterfaceType)instances[serviceType];
                 }
@@ -260,10 +260,15 @@ namespace MySoft.IoC
                         }
 
                         var handler = new ServiceInvocationHandler(this.config, this.container, service, serviceType);
-                        var dynamicProxy = (IServiceInterfaceType)DynamicProxy.NewInstance(AppDomain.CurrentDomain, new Type[] { serviceType }, handler);
-                        instances[serviceType] = dynamicProxy;
+                        var dynamicProxy = DynamicProxy.NewInstance(AppDomain.CurrentDomain, new Type[] { serviceType }, handler);
 
-                        return dynamicProxy;
+                        //判断一下是否代理
+                        if (DynamicProxy.IsProxyType(serviceType))
+                        {
+                            instances[serviceType] = dynamicProxy;
+                        }
+
+                        return (IServiceInterfaceType)dynamicProxy;
                     }
                 }
             }
