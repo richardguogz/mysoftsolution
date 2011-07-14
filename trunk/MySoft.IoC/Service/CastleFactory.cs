@@ -7,6 +7,7 @@ using System.Threading;
 using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using MySoft.Cache;
+using MySoft.DynamicProxy;
 
 namespace MySoft.IoC
 {
@@ -221,7 +222,7 @@ namespace MySoft.IoC
             else
             {
                 Type serviceType = typeof(IServiceInterfaceType);
-                if (DynamicProxy.IsProxyType(serviceType) && instances.ContainsKey(serviceType))
+                if (instances.ContainsKey(serviceType))
                 {
                     return (IServiceInterfaceType)instances[serviceType];
                 }
@@ -260,13 +261,8 @@ namespace MySoft.IoC
                         }
 
                         var handler = new ServiceInvocationHandler(this.config, this.container, service, serviceType);
-                        var dynamicProxy = DynamicProxy.NewInstance(AppDomain.CurrentDomain, new Type[] { serviceType }, handler);
-
-                        //判断一下是否代理
-                        if (DynamicProxy.IsProxyType(serviceType))
-                        {
-                            instances[serviceType] = dynamicProxy;
-                        }
+                        var dynamicProxy = ProxyFactory.GetInstance().Create(handler, serviceType, true);
+                        instances[serviceType] = dynamicProxy;
 
                         return (IServiceInterfaceType)dynamicProxy;
                     }

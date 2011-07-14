@@ -2,13 +2,14 @@ using System;
 using System.Reflection;
 using MySoft.IoC.Configuration;
 using MySoft.IoC.Message;
+using MySoft.DynamicProxy;
 
 namespace MySoft.IoC
 {
     /// <summary>
     /// The base impl class of the service interface, this class is used by service factory to emit service interface impl automatically at runtime.
     /// </summary>
-    public class ServiceInvocationHandler : IInvocationHandler
+    public class ServiceInvocationHandler : IProxyInvocationHandler
     {
         private CastleFactoryConfiguration config;
         private IServiceContainer container;

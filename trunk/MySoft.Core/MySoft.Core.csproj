@@ -135,7 +135,6 @@
     <Compile Include="Common\CompressType.cs" />
     <Compile Include="Cache\ICacheDependent.cs" />
     <Compile Include="Common\ContentPager.cs" />
-    <Compile Include="Common\DynamicProxy.cs" />
     <Compile Include="Installer\IServiceRun.cs" />
     <Compile Include="Common\ResponseResult.cs" />
     <Compile Include="Exception\MySoftException.cs" />
@@ -310,6 +309,11 @@
     <Compile Include="Net\Sockets\BufferTypeAttribute.cs" />
     <Compile Include="Net\Sockets\DataPacket.cs" />
     <Compile Include="Net\Sockets\SocketConfig.cs" />
+    <Compile Include="Proxy\IProxyInvocationHandler.cs" />
+    <Compile Include="Proxy\MetaDataFactory.cs" />
+    <Compile Include="Proxy\ProxyFactory.cs" />
+    <Compile Include="Proxy\SecurityManager.cs" />
+    <Compile Include="Proxy\SecurityProxy.cs" />
     <Compile Include="RESTful\Auth\AuthenticationContext.cs" />
     <Compile Include="RESTful\Auth\AuthenticationException.cs" />
     <Compile Include="RESTful\Auth\AuthenticationToken.cs" />
