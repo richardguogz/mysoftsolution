@@ -57,7 +57,7 @@ namespace MySoft.IoC
         /// 清除数据
         /// </summary>
         /// <param name="maxCount"></param>
-        public void Clean(int maxCount)
+        public void Clear(int maxCount)
         {
             if (base.Count >= maxCount)
             {

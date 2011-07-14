@@ -80,7 +80,7 @@ namespace MySoft.IoC
                     try
                     {
                         //清除记录，每秒清除一条
-                        statuslist.Clean(config.Records);
+                        statuslist.Clear(config.Records);
 
                         //获取最后一秒状态
                         var status = statuslist.GetLast();

@@ -15,7 +15,7 @@ namespace MySoft.IoC
     /// </summary>
     public class CastleFactory : ILogable, IErrorLogable
     {
-        private static object syncObj = new object();
+        private static object lockObject = new object();
         private static CastleFactory singleton = null;
         private static IDictionary<Type, object> instances = new Dictionary<Type, object>();
 
@@ -58,8 +58,14 @@ namespace MySoft.IoC
         {
             if (singleton == null)
             {
-                var config = CastleFactoryConfiguration.GetConfig();
-                singleton = CreateNew(config);
+                lock (lockObject)
+                {
+                    if (singleton == null)
+                    {
+                        var config = CastleFactoryConfiguration.GetConfig();
+                        singleton = CreateNew(config);
+                    }
+                }
             }
 
             return singleton;
@@ -132,10 +138,13 @@ namespace MySoft.IoC
             //本地服务
             if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
             {
-                var service = container[typeof(IServiceInterfaceType)];
+                lock (lockObject)
+                {
+                    var service = container[typeof(IServiceInterfaceType)];
 
-                //返回拦截服务
-                return AspectManager.GetService<IServiceInterfaceType>(service);
+                    //返回拦截服务
+                    return AspectManager.GetService<IServiceInterfaceType>(service);
+                }
             }
 
             return default(IServiceInterfaceType);
@@ -198,10 +207,13 @@ namespace MySoft.IoC
                 //本地服务
                 if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
                 {
-                    var service = container[typeof(IServiceInterfaceType)];
+                    lock (lockObject)
+                    {
+                        var service = container[typeof(IServiceInterfaceType)];
 
-                    //返回拦截服务
-                    return AspectManager.GetService<IServiceInterfaceType>(service);
+                        //返回拦截服务
+                        return AspectManager.GetService<IServiceInterfaceType>(service);
+                    }
                 }
 
                 throw new WarningException(string.Format("Local not find service ({0}).", typeof(IServiceInterfaceType).FullName));
@@ -215,7 +227,7 @@ namespace MySoft.IoC
                 }
                 else
                 {
-                    lock (syncObj)
+                    lock (lockObject)
                     {
                         IService service = container.GetLocalService(typeof(IServiceInterfaceType).FullName);
                         if (service == null)
