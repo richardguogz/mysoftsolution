@@ -65,9 +65,6 @@ namespace MySoft
         private static readonly Type typeofSingle = typeof(float);
         private static readonly Type typeofDouble = typeof(double);
 
-
-        private static Int32 countDymamicAssembly = 0;
-
         private static Hashtable proxyCache = new Hashtable();
 
         protected DynamicProxy(IInvocationHandler handler)
@@ -142,11 +139,10 @@ namespace MySoft
                     String dynamicAssemblyName;
                     String dynamicModuleName;
                     String dynamicProxyTypeName;
-                    String strNumber = countDymamicAssembly.ToString(NumberFormatInfo.InvariantInfo);
+                    String strNumber = Guid.NewGuid().ToString();
                     dynamicAssemblyName = "$DynamicAssembly" + strNumber;
                     dynamicModuleName = "$DynamicModule" + strNumber;
                     dynamicProxyTypeName = "$Proxy" + strNumber;
-                    countDymamicAssembly++;
 
                     AssemblyBuilder assemblyBuilder;
                     AssemblyName assemblyName = new AssemblyName();
