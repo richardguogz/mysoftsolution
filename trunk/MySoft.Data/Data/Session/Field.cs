@@ -86,7 +86,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public static Field Create(string fieldName)
         {
-            return new Field(fieldName);
+            return new SysField(string.Format("__${0}$__", fieldName));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace MySoft.Data
         /// <returns></returns>
         public static Field Create(string fieldName, QueryCreator creator)
         {
-            return new SysField(fieldName, creator);
+            return new CustomField(fieldName, creator);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace MySoft.Data
         public static Field Create<T>(string fieldName, QuerySection<T> query)
             where T : Entity
         {
-            return new SysField<T>(fieldName, query);
+            return new CustomField<T>(fieldName, query);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace MySoft.Data
         public static Field Create<T>(string fieldName, TableRelation<T> relation)
             where T : Entity
         {
-            return new SysField<T>(fieldName, relation);
+            return new CustomField<T>(fieldName, relation);
         }
 
         #endregion
@@ -168,7 +168,15 @@ namespace MySoft.Data
                 {
                     return aliasName;
                 }
-                return fieldName;
+
+                if (fieldName.Contains("__$") || fieldName.Contains("$__"))
+                {
+                    return fieldName.Replace("__$", "").Replace("$__", "");
+                }
+                else
+                {
+                    return fieldName;
+                }
             }
         }
 
@@ -202,7 +210,11 @@ namespace MySoft.Data
         {
             get
             {
-                if (fieldName == "*" || fieldName.Contains("'") || fieldName.Contains("(") || fieldName.Contains(")") || fieldName.Contains("__[") || fieldName.Contains("]__"))
+                if (fieldName.Contains("__$") || fieldName.Contains("$__"))
+                {
+                    return fieldName.Replace("__$", "").Replace("$__", "");
+                }
+                else if (fieldName == "*" || fieldName.Contains("'") || fieldName.Contains("(") || fieldName.Contains(")") || fieldName.Contains("__[") || fieldName.Contains("]__"))
                 {
                     return fieldName;
                 }
@@ -222,7 +234,7 @@ namespace MySoft.Data
         public Field(string fieldName)
         {
             this.fieldName = fieldName;
-            this.propertyName = this.fieldName;
+            this.propertyName = this.OriginalName;
         }
 
         /// <summary>

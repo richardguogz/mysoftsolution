@@ -2,7 +2,7 @@
 
 namespace MySoft.Data
 {
-    interface ISysField
+    interface ICustomField
     {
         /// <summary>
         /// 设置驱动
@@ -16,11 +16,32 @@ namespace MySoft.Data
     /// 系统字段
     /// </summary>
     [Serializable]
-    internal class SysField : Field, ISysField
+    internal class SysField : Field
+    {
+        public SysField(string fieldName)
+            : base(fieldName) { }
+
+        /// <summary>
+        /// 返回原始字段名称
+        /// </summary>
+        internal override string Name
+        {
+            get
+            {
+                return base.OriginalName;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 系统字段
+    /// </summary>
+    [Serializable]
+    internal class CustomField : Field, ICustomField
     {
         private QueryCreator creator;
         private string qString;
-        public SysField(string fieldName, QueryCreator creator)
+        public CustomField(string fieldName, QueryCreator creator)
             : base(fieldName)
         {
             this.creator = creator;
@@ -61,18 +82,18 @@ namespace MySoft.Data
     /// 系统字段
     /// </summary>
     [Serializable]
-    internal class SysField<T> : Field, ISysField
+    internal class CustomField<T> : Field, ICustomField
         where T : Entity
     {
         private TableRelation<T> relation;
         private string qString;
-        public SysField(string fieldName, QuerySection<T> query)
+        public CustomField(string fieldName, QuerySection<T> query)
             : base(fieldName)
         {
             this.qString = query.GetTop(1).QueryString;
         }
 
-        public SysField(string fieldName, TableRelation<T> relation)
+        public CustomField(string fieldName, TableRelation<T> relation)
             : base(fieldName)
         {
             this.relation = relation;
