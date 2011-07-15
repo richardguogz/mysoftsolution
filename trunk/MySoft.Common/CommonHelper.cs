@@ -390,7 +390,7 @@ namespace MySoft.Common
                 string fileName = "";												// 上传文件名（不包括后缀符）
                 if (autoName)
                 {
-                    fileName = "_" + FunctionHelper.Text.MakeName();
+                    fileName = "_" + StringHelper.MakeName();
                 }
                 else
                 {

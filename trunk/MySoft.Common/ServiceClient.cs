@@ -25,7 +25,7 @@ namespace MySoft.Common
             {
                 string publicKey = FileHelper.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
 
-                string desKey = FunctionHelper.Text.RandomSTR(8);
+                string desKey = StringHelper.RandomSTR(8);
                 string desIV = desKey;
 
                 string rsaDes = "";
@@ -61,7 +61,7 @@ namespace MySoft.Common
             {
                 string publicKey = FileHelper.ReadFile(FunctionHelper.GetRealFile(FunctionHelper.GetAppSettings("publicKey")));
 
-                string desKey = FunctionHelper.Text.RandomSTR(8);
+                string desKey = StringHelper.RandomSTR(8);
                 string desIV = desKey;
 
                 string rsaDes = "";
