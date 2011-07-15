@@ -309,8 +309,8 @@
     <Compile Include="Net\Sockets\BufferTypeAttribute.cs" />
     <Compile Include="Net\Sockets\DataPacket.cs" />
     <Compile Include="Net\Sockets\SocketConfig.cs" />
+    <Compile Include="Proxy\DynamicProxy.cs" />
     <Compile Include="Proxy\IProxyInvocationHandler.cs" />
-    <Compile Include="Proxy\MetaDataFactory.cs" />
     <Compile Include="Proxy\ProxyFactory.cs" />
     <Compile Include="Proxy\SecurityManager.cs" />
     <Compile Include="Proxy\SecurityProxy.cs" />

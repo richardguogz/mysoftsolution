@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using MySoft.IoC.Configuration;
 using MySoft.IoC.Message;
-using MySoft.DynamicProxy;
 
 namespace MySoft.IoC
 {

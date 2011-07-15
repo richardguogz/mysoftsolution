@@ -1,6 +1,6 @@
 using System;
 
-namespace MySoft.DynamicProxy
+namespace MySoft
 {
     /// <summary>
     /// Test proxy invocation handler which is used to check a methods security

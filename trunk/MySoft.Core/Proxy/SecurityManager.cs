@@ -1,6 +1,6 @@
 using System;
 
-namespace MySoft.DynamicProxy
+namespace MySoft
 {
     /// <summary>
     /// Test class.
@@ -10,9 +10,7 @@ namespace MySoft.DynamicProxy
         ///<summary>
         /// Class constructor
         ///</summary>
-        public SecurityManager()
-        {
-        }
+        public SecurityManager() { }
 
         ///<summary>
         /// Test method which can be implemented to check if a given method can

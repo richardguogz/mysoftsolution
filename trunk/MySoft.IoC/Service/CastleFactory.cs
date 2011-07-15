@@ -7,7 +7,6 @@ using System.Threading;
 using MySoft.IoC.Configuration;
 using MySoft.Logger;
 using MySoft.Cache;
-using MySoft.DynamicProxy;
 
 namespace MySoft.IoC
 {
