@@ -63,9 +63,11 @@ namespace MySoft.IoC.Services
             #region 获取相应的方法
 
             MethodInfo method = null;
-            if (dictMethods.ContainsKey(reqMsg.SubServiceName))
+
+            string serviceKey = string.Format("{0}|{1}", reqMsg.ServiceName, reqMsg.SubServiceName);
+            if (dictMethods.ContainsKey(serviceKey))
             {
-                method = dictMethods[reqMsg.SubServiceName];
+                method = dictMethods[serviceKey];
             }
             else
             {
@@ -86,7 +88,7 @@ namespace MySoft.IoC.Services
                 {
                     lock (dictMethods)
                     {
-                        dictMethods[reqMsg.SubServiceName] = method;
+                        dictMethods[serviceKey] = method;
                     }
                 }
             }
