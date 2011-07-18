@@ -8,9 +8,40 @@ using System.Linq;
 namespace MySoft.Web
 {
     /// <summary>
+    /// 更新项
+    /// </summary>
+    public interface IUpdateItem
+    {
+        /// <summary>
+        /// 重试间隔(单位:分钟)
+        /// </summary>
+        int RetryInterval { get; set; }
+
+        /// <summary>
+        /// 立即更新页面
+        /// </summary>
+        void Update();
+
+        /// <summary>
+        /// 对页面进行更新
+        /// </summary>
+        void Update(DateTime updateTime);
+
+        /// <summary>
+        /// 异步更新，TimeSpan表示延迟更新的时间，所有依赖失效
+        /// </summary>
+        void Update(TimeSpan timeSpan);
+
+        /// <summary>
+        /// 当前是否可以更新
+        /// </summary>
+        bool NeedUpdate(DateTime updateTime);
+    }
+
+    /// <summary>
     /// 静态页子项接口
     /// </summary>
-    public interface IStaticPageItem
+    public interface IStaticPageItem : IUpdateItem
     {
         /// <summary>
         /// 开始处理
@@ -46,31 +77,6 @@ namespace MySoft.Web
         /// 是否为远程页面
         /// </summary>
         bool IsRemote { get; set; }
-
-        /// <summary>
-        /// 重试间隔(单位:分钟)
-        /// </summary>
-        int RetryInterval { get; set; }
-
-        /// <summary>
-        /// 立即更新页面
-        /// </summary>
-        void Update();
-
-        /// <summary>
-        /// 对页面进行更新
-        /// </summary>
-        void Update(DateTime updateTime);
-
-        /// <summary>
-        /// 异步更新，TimeSpan表示延迟更新的时间，所有依赖失效
-        /// </summary>
-        void Update(TimeSpan timeSpan);
-
-        /// <summary>
-        /// 当前是否可以更新
-        /// </summary>
-        bool NeedUpdate(DateTime updateTime);
     }
 
     /// <summary>
@@ -181,7 +187,7 @@ namespace MySoft.Web
         /// <summary>
         /// 当前是否可以更新
         /// </summary>
-        public bool NeedUpdate(DateTime updateTime)
+        bool IUpdateItem.NeedUpdate(DateTime updateTime)
         {
             //如果没更新完成，则返回
             if (!updateComplete) return false;
@@ -268,13 +274,13 @@ namespace MySoft.Web
         /// </summary>
         public void Update()
         {
-            Update(DateTime.MaxValue);
+            (this as IUpdateItem).Update(DateTime.MaxValue);
         }
 
         /// <summary>
         /// 对页面进行更新
         /// </summary>
-        public void Update(DateTime updateTime)
+        void IUpdateItem.Update(DateTime updateTime)
         {
             updateComplete = false;
 
@@ -374,7 +380,7 @@ namespace MySoft.Web
                 TimeSpan span = (TimeSpan)obj;
                 Thread.Sleep(span);
 
-                Update(DateTime.MaxValue);
+                (this as IUpdateItem).Update(DateTime.MaxValue);
             }, timeSpan);
         }
 
@@ -536,7 +542,7 @@ namespace MySoft.Web
             set { isRemote = value; }
         }
 
-        private int retryInterval = 10;
+        private int retryInterval = 5;
         /// <summary>
         /// 重试间隔(单位:分钟)
         /// </summary>
@@ -549,7 +555,7 @@ namespace MySoft.Web
         /// <summary>
         /// 当前是否可以更新
         /// </summary>
-        public bool NeedUpdate(DateTime updateTime)
+        bool IUpdateItem.NeedUpdate(DateTime updateTime)
         {
             //如果没更新完成，则返回
             if (!updateComplete) return false;
@@ -619,13 +625,13 @@ namespace MySoft.Web
         /// </summary>
         public void Update()
         {
-            Update(DateTime.MaxValue);
+            (this as IUpdateItem).Update(DateTime.MaxValue);
         }
 
         /// <summary>
         /// 对页面进行更新
         /// </summary>
-        public void Update(DateTime updateTime)
+        void IUpdateItem.Update(DateTime updateTime)
         {
             updateComplete = false;
             if (updateTime == DateTime.MaxValue)
@@ -810,7 +816,7 @@ namespace MySoft.Web
                 TimeSpan span = (TimeSpan)obj;
                 Thread.Sleep(span);
 
-                Update(DateTime.MaxValue);
+                (this as IUpdateItem).Update(DateTime.MaxValue);
             }, timeSpan);
         }
 

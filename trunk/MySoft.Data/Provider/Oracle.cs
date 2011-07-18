@@ -127,9 +127,13 @@ namespace MySoft.Data.Oracle
                 }
                 else if (p.DbType == DbType.Binary)
                 {
-                    if (p.Size > 8000)
+                    if (p.Size > 2000)
                     {
-                        p.OracleType = OracleType.BFile;
+                        p.OracleType = OracleType.LongRaw;
+                    }
+                    else
+                    {
+                        p.OracleType = OracleType.Raw;
                     }
                 }
                 else if (p.DbType == DbType.Boolean)
