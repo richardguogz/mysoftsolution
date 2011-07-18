@@ -28,7 +28,7 @@ namespace MySoft
             HttpRequest request = HttpContext.Current.Request;
 
             //获取客户端真实IP
-            string clientIp = request.Headers["CDN-SRC-IP"];
+            string clientIp = request.ServerVariables["HTTP_CDN_SRC_IP"];
 
             if (string.IsNullOrEmpty(clientIp))
             {
