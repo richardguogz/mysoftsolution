@@ -416,6 +416,8 @@ namespace MySoft.Common
         /// <returns></returns>
         public static string ConvertSpellFirst(string text)
         {
+            if (string.IsNullOrEmpty(text)) return text;
+
             char pinyin;
             byte[] array;
             StringBuilder sb = new StringBuilder(text.Length);
@@ -547,6 +549,8 @@ namespace MySoft.Common
         /// <returns>string</returns>
         public static string ConvertSpellFull(string text)
         {
+            if (string.IsNullOrEmpty(text)) return text;
+
             byte[] array = new byte[2];
             string returnstr = "";
             int chrasc = 0;
