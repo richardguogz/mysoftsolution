@@ -50,7 +50,8 @@ namespace MySoft.IoC
                 try { serviceInstance = this[type]; }
                 catch { }
 
-                if (serviceInstance != null)
+                //判断实例是否从接口分配
+                if (serviceInstance != null && type.IsAssignableFrom(serviceInstance.GetType()))
                 {
                     IService service = new DynamicService(this, type, serviceInstance);
                     RegisterComponent("Service_" + service.ServiceName, service);
