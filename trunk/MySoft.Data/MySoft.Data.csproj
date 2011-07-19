@@ -92,7 +92,7 @@
     <Compile Include="Data\Relation\ITableRelation.cs" />
     <Compile Include="Data\Relation\RelationQuery.cs" />
     <Compile Include="Data\Relation\RelationEntity.cs" />
-    <Compile Include="Data\Session\SysField.cs" />
+    <Compile Include="Data\Session\DbField.cs" />
     <Compile Include="Data\Session\DbValue.cs" />
     <Compile Include="Data\Relation\TableRelation.cs" />
     <Compile Include="Data\Source\IListConvert.cs" />

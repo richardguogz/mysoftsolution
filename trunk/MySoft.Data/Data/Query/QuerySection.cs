@@ -132,9 +132,9 @@ namespace MySoft.Data
                 foreach (Field field in fieldList)
                 {
                     index++;
-                    if (field is ICustomField)
+                    if (field is IProvider)
                     {
-                        (field as ICustomField).SetProvider(dbProvider, dbTran);
+                        (field as IProvider).SetDbProvider(dbProvider, dbTran);
                     }
                     sb.Append(field.FullName);
                     if (index < fieldList.Count)

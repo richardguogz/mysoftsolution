@@ -80,16 +80,6 @@ namespace MySoft.Data
         #region 创建内联字段
 
         /// <summary>
-        /// 创建一个自定义字段
-        /// </summary>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        public static Field Create(string fieldName)
-        {
-            return new SysField(string.Format("__${0}$__", fieldName));
-        }
-
-        /// <summary>
         /// 创建一个内联字段
         /// </summary>
         /// <param name="fieldName"></param>

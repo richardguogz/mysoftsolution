@@ -2,24 +2,14 @@
 
 namespace MySoft.Data
 {
-    interface ICustomField
-    {
-        /// <summary>
-        /// 设置驱动
-        /// </summary>
-        /// <param name="dbProvider"></param>
-        /// <param name="dbTran"></param>
-        void SetProvider(DbProvider dbProvider, DbTrans dbTran);
-    }
-
     /// <summary>
-    /// 系统字段
+    /// 数据库字段
     /// </summary>
     [Serializable]
-    internal class SysField : Field
+    public class DbField : Field
     {
-        public SysField(string fieldName)
-            : base(fieldName) { }
+        public DbField(string fieldName)
+            : base(string.Format("__${0}$__", fieldName)) { }
 
         /// <summary>
         /// 返回原始字段名称
@@ -33,11 +23,21 @@ namespace MySoft.Data
         }
     }
 
+    interface IProvider
+    {
+        /// <summary>
+        /// 设置驱动
+        /// </summary>
+        /// <param name="dbProvider"></param>
+        /// <param name="dbTran"></param>
+        void SetDbProvider(DbProvider dbProvider, DbTrans dbTran);
+    }
+
     /// <summary>
     /// 系统字段
     /// </summary>
     [Serializable]
-    internal class CustomField : Field, ICustomField
+    internal class CustomField : Field, IProvider
     {
         private QueryCreator creator;
         private string qString;
@@ -52,7 +52,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="dbProvider"></param>
         /// <param name="dbTran"></param>
-        public void SetProvider(DbProvider dbProvider, DbTrans dbTran)
+        void IProvider.SetDbProvider(DbProvider dbProvider, DbTrans dbTran)
         {
             if (creator != null)
             {
@@ -82,7 +82,7 @@ namespace MySoft.Data
     /// 系统字段
     /// </summary>
     [Serializable]
-    internal class CustomField<T> : Field, ICustomField
+    internal class CustomField<T> : Field, IProvider
         where T : Entity
     {
         private TableRelation<T> relation;
@@ -104,7 +104,7 @@ namespace MySoft.Data
         /// </summary>
         /// <param name="dbProvider"></param>
         /// <param name="dbTran"></param>
-        public void SetProvider(DbProvider dbProvider, DbTrans dbTran)
+        void IProvider.SetDbProvider(DbProvider dbProvider, DbTrans dbTran)
         {
             if (string.IsNullOrEmpty(qString) && relation != null)
             {
