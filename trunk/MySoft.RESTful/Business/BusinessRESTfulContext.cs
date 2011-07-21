@@ -97,18 +97,12 @@ namespace MySoft.RESTful.Business
                 {
                     throw new RESTfulException("Resources can only by the [" + metadata.SubmitType.ToString().ToUpper() + "] way to acquire!") { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
                 }
-            }
-            catch (RESTfulException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new RESTfulException("The type of access resource is not correct!") { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
-            }
 
-            try
-            {
+                if (!metadata.IsPassCheck)
+                {
+                    throw new RESTfulException(metadata.CheckMessage) { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
+                }
+
                 if (!string.IsNullOrEmpty(parameters))
                 {
                     obj = ParameterHelper.Resolve(parameters, format);
@@ -121,6 +115,10 @@ namespace MySoft.RESTful.Business
                     var jo = ParameterHelper.Resolve(nvs);
                     foreach (var o in jo) obj[o.Key] = o.Value;
                 }
+            }
+            catch (RESTfulException e)
+            {
+                throw e;
             }
             catch (Exception e)
             {
