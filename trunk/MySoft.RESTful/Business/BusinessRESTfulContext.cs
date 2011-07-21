@@ -67,6 +67,17 @@ namespace MySoft.RESTful.Business
         }
 
         /// <summary>
+        /// 是否需要认证
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public bool IsAuthorized(string kind, string method)
+        {
+            return pool.CheckAuthorized(kind, method);
+        }
+
+        /// <summary>
         /// 方法调用
         /// </summary>
         /// <param name="format"></param>
@@ -78,7 +89,7 @@ namespace MySoft.RESTful.Business
         {
             WebOperationContext context = WebOperationContext.Current;
             JObject obj = new JObject();
-            BusinessMetadata metadata = pool.Find(kind, method)[0];
+            BusinessMethodModel metadata = pool.FindMethod(kind, method);
 
             try
             {
@@ -146,16 +157,16 @@ namespace MySoft.RESTful.Business
             html = html.Replace("${uri}", uri);
 
             StringBuilder table = new StringBuilder();
-            foreach (BusinessKindModel e in pool.BusinessPool.Values)
+            foreach (BusinessKindModel e in pool.KindMethods.Values)
             {
                 StringBuilder items = new StringBuilder();
                 int index = 0;
-                foreach (BusinessModel model in e.Models.Values)
+                foreach (BusinessMethodModel model in e.MethodModels.Values)
                 {
                     string template = item;
                     if (index == 0)
                     {
-                        template = template.Replace("${count}", e.Models.Count.ToString());
+                        template = template.Replace("${count}", e.MethodModels.Count.ToString());
                         template = template.Replace("${kind}", e.Name + "<br/>" + e.Description);
                     }
                     else
@@ -163,15 +174,16 @@ namespace MySoft.RESTful.Business
                         template = item.Substring(item.IndexOf("</td>") + 5);
                     }
 
-                    template = template.Replace("${method}", model.Name + "<br/>" + model.Description);
+                    var tempStr = model.Name + "<br/>" + model.Description;
+                    if (!model.IsPassCheck)
+                    {
+                        tempStr = string.Format("<font color=\"red\" title=\"{0}\">{1}</font>", model.CheckMessage, tempStr);
+                    }
+                    template = template.Replace("${method}", tempStr);
 
                     StringBuilder buider = new StringBuilder();
-                    BusinessMetadata metadata = model.Metadatas[0];
-
-                    //template = template.Replace("${return}", metadata.Method.ReturnType.FullName);
-
                     List<string> plist = new List<string>();
-                    foreach (var p in metadata.Parameters)
+                    foreach (var p in model.Parameters)
                     {
                         if (p.ParameterType == typeof(AuthenticationUser)) continue;
 
@@ -188,16 +200,16 @@ namespace MySoft.RESTful.Business
                     else
                         template = template.Replace("${parameter}", buider.ToString());
 
-                    template = template.Replace("${type}", metadata.SubmitType.ToString().ToUpper());
+                    template = template.Replace("${type}", model.SubmitType.ToString().ToUpper());
 
                     StringBuilder anchor = new StringBuilder();
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.SubmitType, "xml"));
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, model.SubmitType, "xml"));
                     anchor.AppendLine("<br/>");
-                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.SubmitType, "json"));
-                    if (metadata.SubmitType == SubmitType.GET)
+                    anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, model.SubmitType, "json"));
+                    if (model.SubmitType == SubmitType.GET)
                     {
                         anchor.AppendLine("<br/>");
-                        anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, metadata.SubmitType, "jsonp"));
+                        anchor.AppendLine(CreateAnchorHtml(requestUri, uri, e, model, plist, model.SubmitType, "jsonp"));
                     }
 
                     template = template.Replace("${uri}", anchor.ToString());
@@ -212,7 +224,7 @@ namespace MySoft.RESTful.Business
             return html.Replace("${body}", table.ToString());
         }
 
-        private string CreateAnchorHtml(Uri requestUri, string uri, BusinessKindModel e, BusinessModel model, List<string> plist, SubmitType mode, string format)
+        private string CreateAnchorHtml(Uri requestUri, string uri, BusinessKindModel e, BusinessMethodModel model, List<string> plist, SubmitType mode, string format)
         {
             string url = string.Empty;
             string method = mode.ToString().ToLower();

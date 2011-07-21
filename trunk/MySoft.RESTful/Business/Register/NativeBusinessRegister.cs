@@ -5,6 +5,7 @@ using System.Reflection;
 using MySoft.RESTful.Business.Pool;
 using MySoft.IoC;
 using MySoft.Logger;
+using System.Text;
 
 namespace MySoft.RESTful.Business.Register
 {
@@ -22,40 +23,63 @@ namespace MySoft.RESTful.Business.Register
             try
             {
                 BusinessKindModel kindModel = null;
-                BusinessModel model = null;
-                BusinessMetadata metadata = null;
+                BusinessMethodModel methodModel = null;
                 object instance = null;
                 var container = CastleFactory.Create().ServiceContainer;
                 foreach (Type serviceType in container.GetInterfaces<PublishKind>())
                 {
                     //获取业务对象
-                    instance = container[serviceType];
+                    try { instance = container[serviceType]; }
+                    catch { }
+
+                    if (instance == null) continue;
 
                     //获取类特性
                     var kind = CoreHelper.GetTypeAttribute<PublishKind>(serviceType);
                     if (kind != null)
                     {
+                        //如果包含了相同的类别，则继续
+                        if (pool.KindMethods.ContainsKey(kind.Name)) continue;
+
                         kindModel = new BusinessKindModel();
                         kindModel.Name = kind.Name;
                         kindModel.Description = kind.Description;
-                        pool.AddKindModel(kind.Name, kindModel);
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                        kindModel.State = kind.Enabled ? BusinessState.ACTIVATED : BusinessState.SHUTDOWN;
 
-                    //获取方法特性
-                    MethodInfo[] methods = CoreHelper.GetMethodsFromType(serviceType);
-                    foreach (MethodInfo info in methods)
-                    {
-                        var method = CoreHelper.GetMemberAttribute<PublishMethod>(info);
-                        if (method != null)
+                        pool.AddKindModel(kind.Name, kindModel);
+
+                        //获取方法特性
+                        foreach (MethodInfo info in CoreHelper.GetMethodsFromType(serviceType))
                         {
-                            CreateBusinessModel(method, ref kindModel, ref model);
-                            CreateBusinessMetadata(info, ref model, ref metadata);
-                            metadata.SubmitType = method.Method;
-                            metadata.Instance = instance;
+                            var method = CoreHelper.GetMemberAttribute<PublishMethod>(info);
+                            if (method != null)
+                            {
+                                //如果包含了相同的方法，则继续
+                                if (kindModel.MethodModels.ContainsKey(method.Name)) continue;
+
+                                methodModel = new BusinessMethodModel();
+                                methodModel.Name = method.Name;
+                                methodModel.Description = method.Description;
+                                methodModel.SubmitType = method.Method;
+                                methodModel.Authorized = method.Authorized;
+                                methodModel.State = method.Enabled ? BusinessState.ACTIVATED : BusinessState.SHUTDOWN;
+                                methodModel.Method = info;
+                                methodModel.Parameters = info.GetParameters();
+                                methodModel.ParametersCount = info.GetParameters().Length;
+                                methodModel.Instance = instance;
+
+                                if (method.Method == SubmitType.GET && !CheckGetSubmitType(info.GetParameters()))
+                                {
+                                    methodModel.IsPassCheck = false;
+                                    methodModel.CheckMessage = string.Format("{0} business is not pass check, because the SubmitType of 'GET' only suport primitive type.\r\n{1}", kindModel.Name + "." + methodModel.Name, message);
+                                }
+                                else
+                                {
+                                    methodModel.IsPassCheck = true;
+                                }
+
+                                kindModel.MethodModels.Add(method.Name, methodModel);
+                            }
                         }
                     }
                 }
@@ -67,55 +91,27 @@ namespace MySoft.RESTful.Business.Register
         }
 
         /// <summary>
-        /// 创建业务元数据
+        /// 检查Get类型的参数
         /// </summary>
-        /// <param name="info"></param>
-        /// <param name="model"></param>
-        /// <param name="metadata"></param>
-        private void CreateBusinessMetadata(MethodInfo info, ref BusinessModel model, ref BusinessMetadata metadata)
+        /// <param name="paramsInfo"></param>
+        /// <returns></returns>
+        private bool CheckGetSubmitType(ParameterInfo[] paramsInfo)
         {
-            IList<BusinessMetadata> metadatas = model.Metadatas;
-            if (metadatas == null)
-            {
-                metadatas = new List<BusinessMetadata>();
-            }
-            ParameterInfo[] parameters = info.GetParameters();
-            int parametersCount = parameters.Length;
-            metadata = metadatas.Where(e => e.ParametersCount == parametersCount).SingleOrDefault();
-            if (metadata == null)
-            {
-                metadata = new BusinessMetadata();
-                metadata.Method = info;
-                metadata.Parameters = parameters;
-                metadata.ParametersCount = parametersCount;
-                metadatas.Add(metadata);
-            }
-            model.Metadatas = metadatas;
-        }
+            //如果参数为0
+            if (paramsInfo.Length == 0) return true;
 
-        /// <summary>
-        /// 创建业务模型
-        /// </summary>
-        /// <param name="publishMethod"></param>
-        /// <param name="kindModel"></param>
-        /// <param name="model"></param>
-        private void CreateBusinessModel(PublishMethod publishMethod, ref BusinessKindModel kindModel, ref BusinessModel model)
-        {
-            string name = publishMethod.Name;
-            IDictionary<string, BusinessModel> models = kindModel.Models;
-            if (models == null)
+            bool result = true;
+            StringBuilder sb = new StringBuilder();
+            foreach (ParameterInfo p in paramsInfo)
             {
-                models = new Dictionary<string, BusinessModel>();
+                if (!(p.ParameterType.IsPrimitive || p.ParameterType == typeof(string) || p.ParameterType == typeof(AuthenticationUser)))
+                {
+                    result = false;
+                    break;
+                }
             }
-            model = models.Where(e => e.Key.Equals(name, StringComparison.InvariantCultureIgnoreCase)).Select(v => v.Value).SingleOrDefault();
-            if (model == null)
-            {
-                model = new BusinessModel();
-                model.Name = name;
-                model.Description = publishMethod.Description;
-                models.Add(name, model);
-            }
-            kindModel.Models = models;
+
+            return result;
         }
     }
 }

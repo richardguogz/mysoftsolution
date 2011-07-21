@@ -24,10 +24,22 @@ namespace MySoft.RESTful
         public SubmitType Method { get; set; }
 
         /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
+        /// 是否认证
+        /// </summary>
+        public bool Authorized { get; set; }
+
+        /// <summary>
         /// 实例化PublishMethod
         /// </summary>
         public PublishMethod()
         {
+            this.Enabled = true;
+            this.Authorized = true;
             this.Method = SubmitType.GET;
         }
 

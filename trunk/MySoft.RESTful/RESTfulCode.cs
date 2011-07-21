@@ -26,7 +26,7 @@ namespace MySoft.RESTful
     /// <summary>
     /// RESTfulCode
     /// </summary>
-    public enum RESTfulCode
+    public enum RESTfulCode : int
     {
         /// <summary>
         /// 正确返回数据

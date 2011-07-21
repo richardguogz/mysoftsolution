@@ -16,11 +16,6 @@ namespace MySoft.RESTful.Business
         ACTIVATED,
 
         /// <summary>
-        /// 挂起状态
-        /// </summary>
-        SUSPENDED,
-
-        /// <summary>
         /// 关闭状态
         /// </summary>
         SHUTDOWN

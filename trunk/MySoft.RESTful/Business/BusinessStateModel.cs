@@ -20,15 +20,14 @@ namespace MySoft.RESTful.Business
         /// </summary>
         public string Description { get; set; }
 
-        private BusinessState state = BusinessState.ACTIVATED;
-
         /// <summary>
         /// 业务接口状态
         /// </summary>
-        public BusinessState State
+        public BusinessState State { get; set; }
+
+        public BusinessStateModel()
         {
-            get { return state; }
-            set { state = value; }
+            this.State = BusinessState.ACTIVATED;
         }
     }
 }

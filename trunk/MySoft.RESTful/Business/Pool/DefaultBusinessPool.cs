@@ -14,7 +14,7 @@ namespace MySoft.RESTful.Business.Pool
         /// <summary>
         /// 获取业务池对象
         /// </summary>
-        public IDictionary<string, BusinessKindModel> BusinessPool
+        public IDictionary<string, BusinessKindModel> KindMethods
         {
             get { return businessPool; }
         }
@@ -44,15 +44,13 @@ namespace MySoft.RESTful.Business.Pool
         /// <param name="businessKindName"></param>
         /// <param name="businessKindModel"></param>
         /// <returns></returns>
-        public IDictionary<string, BusinessModel> AddKindModel(string businessKindName, BusinessKindModel businessKindModel)
+        public void AddKindModel(string businessKindName, BusinessKindModel businessKindModel)
         {
             BusinessKindModel model = businessPool.Where(e => e.Key.Equals(businessKindName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
             if (model == null)
             {
                 businessPool.Add(businessKindName, businessKindModel);
-                return businessKindModel.Models;
             }
-            return model.Models;
         }
 
         /// <summary>
@@ -76,15 +74,34 @@ namespace MySoft.RESTful.Business.Pool
         /// <param name="businessKindName"></param>
         /// <param name="businessMethodName"></param>
         /// <returns></returns>
-        public IDictionary<string, BusinessModel> RemoveBusinessModel(string businessKindName, string businessMethodName)
+        public void RemoveMethodModel(string businessKindName, string businessMethodName)
         {
             BusinessKindModel model = businessPool.Where(e => e.Key.Equals(businessKindName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
             if (model != null)
             {
-                model.Models.Remove(businessMethodName);
-                return model.Models;
+                model.MethodModels.Remove(businessMethodName);
             }
-            return null;
+        }
+
+        /// <summary>
+        /// 检查方法
+        /// </summary>
+        /// <param name="businessKindName"></param>
+        /// <param name="businessMethodName"></param>
+        /// <returns></returns>
+        public bool CheckAuthorized(string businessKindName, string businessMethodName)
+        {
+            BusinessKindModel kind = businessPool.Where(e => e.Key.Equals(businessKindName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
+            if (kind != null)
+            {
+                BusinessMethodModel method = kind.MethodModels.Where(e => e.Key.Equals(businessMethodName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
+                if (method != null)
+                {
+                    return method.Authorized;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -93,14 +110,14 @@ namespace MySoft.RESTful.Business.Pool
         /// <param name="businessKindName"></param>
         /// <param name="businessMethodName"></param>
         /// <returns></returns>
-        public IList<BusinessMetadata> Find(string businessKindName, string businessMethodName)
+        public BusinessMethodModel FindMethod(string businessKindName, string businessMethodName)
         {
             bool hasException = false;
             string msg = string.Empty;
             RESTfulCode code = RESTfulCode.OK;
-            IList<BusinessMetadata> metadatas = null;
-            BusinessKindModel model = businessPool.Where(e => e.Key.Equals(businessKindName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
-            if (model == null)
+            BusinessKindModel kind = businessPool.Where(e => e.Key.Equals(businessKindName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
+            BusinessMethodModel method = null;
+            if (kind == null)
             {
                 hasException = true;
                 msg = businessKindName + ", did not found!";
@@ -108,10 +125,10 @@ namespace MySoft.RESTful.Business.Pool
             }
             else
             {
-                if (model.State == BusinessState.ACTIVATED)
+                if (kind.State == BusinessState.ACTIVATED)
                 {
-                    BusinessModel bm = model.Models.Where(e => e.Key.Equals(businessMethodName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
-                    if (bm == null)
+                    method = kind.MethodModels.Where(e => e.Key.Equals(businessMethodName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
+                    if (method == null)
                     {
                         hasException = true;
                         msg = businessMethodName + ", did not found!";
@@ -119,15 +136,11 @@ namespace MySoft.RESTful.Business.Pool
                     }
                     else
                     {
-                        if (bm.State != BusinessState.ACTIVATED)
+                        if (method.State != BusinessState.ACTIVATED)
                         {
                             hasException = true;
                             msg = businessMethodName + ", did not Activeted!";
                             code = RESTfulCode.BUSINESS_KIND_NO_ACTIVATED;
-                        }
-                        else
-                        {
-                            metadatas = bm.Metadatas;
                         }
                     }
                 }
@@ -142,47 +155,8 @@ namespace MySoft.RESTful.Business.Pool
             {
                 throw new RESTfulException(msg) { Code = code };
             }
-            else
-            {
-                return metadatas;
-            }
-        }
 
-        /// <summary>
-        /// 查找业务元素
-        /// </summary>
-        /// <param name="businessKindName"></param>
-        /// <param name="businessMethodName"></param>
-        /// <param name="paramsCount"></param>
-        /// <returns></returns>
-        public BusinessMetadata Find(string businessKindName, string businessMethodName, int paramsCount)
-        {
-            bool hasException = false;
-            string msg = string.Empty;
-            RESTfulCode code = RESTfulCode.OK;
-            IList<BusinessMetadata> metadatas = Find(businessKindName, businessMethodName);
-            BusinessMetadata metadata = metadatas.Where(e => e.ParametersCount == paramsCount).SingleOrDefault();
-            if (metadata == null)
-            {
-                hasException = true;
-                msg = businessMethodName + " and parameter count is " + paramsCount + ", did not match!";
-                code = RESTfulCode.BUSINESS_METHOD_PARAMS_COUNT_NOT_MATCH;
-            }
-            else if (metadata.State != BusinessState.ACTIVATED)
-            {
-                hasException = true;
-                msg = businessMethodName + " and parameter count is " + paramsCount + ", did not Activeted!";
-                code = RESTfulCode.BUSINESS_METHOD_NO_ACTIVATED;
-            }
-
-            if (hasException)
-            {
-                throw new RESTfulException(msg) { Code = code };
-            }
-            else
-            {
-                return metadata;
-            }
+            return method;
         }
     }
 }

@@ -47,8 +47,7 @@
     <Compile Include="Utils\AuthenticationManager.cs" />
     <Compile Include="RESTfulException.cs" />
     <Compile Include="Business\BusinessKindModel.cs" />
-    <Compile Include="Business\BusinessMetadata.cs" />
-    <Compile Include="Business\BusinessModel.cs" />
+    <Compile Include="Business\BusinessMethodModel.cs" />
     <Compile Include="Business\BusinessState.cs" />
     <Compile Include="Business\BusinessStateModel.cs" />
     <Compile Include="Business\Pool\DefaultBusinessPool.cs" />

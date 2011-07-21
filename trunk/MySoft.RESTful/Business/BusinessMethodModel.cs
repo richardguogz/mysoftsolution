@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Reflection;
 
 namespace MySoft.RESTful.Business
 {
     /// <summary>
-    /// 方法元数据定义
+    /// 业务方法模型
     /// </summary>
-    [Serializable]
-    public class BusinessMetadata : BusinessStateModel
+    public class BusinessMethodModel : BusinessStateModel
     {
+        /// <summary>
+        /// 是否认证
+        /// </summary>
+        public bool Authorized { get; set; }
         /// <summary>
         /// 方法调用类型
         /// </summary>
@@ -29,5 +35,20 @@ namespace MySoft.RESTful.Business
         /// 业务实例方法参数个数
         /// </summary>
         public int ParametersCount { get; set; }
+        /// <summary>
+        /// 是否通过检查
+        /// </summary>
+        public bool IsPassCheck { get; set; }
+        /// <summary>
+        /// 异常消息
+        /// </summary>
+        public string CheckMessage { get; set; }
+
+        public BusinessMethodModel()
+        {
+            this.Authorized = true;
+            this.IsPassCheck = true;
+            this.SubmitType = SubmitType.GET;
+        }
     }
 }

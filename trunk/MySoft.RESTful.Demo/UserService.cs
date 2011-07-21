@@ -47,7 +47,7 @@ namespace MySoft.RESTful.Demo
         /// 保存用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("saveuser", Description = "保存一个用户", Method = SubmitType.POST)]
+        [PublishMethod("saveuser", Description = "保存一个用户", Method = SubmitType.GET)]
         void SaveUser(User user);
     }
 

@@ -70,11 +70,12 @@ namespace MySoft.Data.UnitTest
         [TestMethod()]
         public void NameTest()
         {
-            string fieldName = string.Empty; // TODO: 初始化为适当的值
+            string fieldName = "userid"; // TODO: 初始化为适当的值
             DbField target = new DbField(fieldName); // TODO: 初始化为适当的值
             string actual;
             actual = target.Name;
-            Assert.Inconclusive("验证此测试方法的正确性。");
+            Assert.AreEqual(actual, fieldName);
+            //Assert.Inconclusive("验证此测试方法的正确性。");
         }
     }
 }

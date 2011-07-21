@@ -19,15 +19,24 @@ namespace MySoft.RESTful
         public string Description { get; set; }
 
         /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// 实例化PublishKind
         /// </summary>
-        public PublishKind() { }
+        public PublishKind()
+        {
+            this.Enabled = true;
+        }
 
         /// <summary>
         /// 实例化PublishKind
         /// </summary>
         /// <param name="name"></param>
         public PublishKind(string name)
+            : this()
         {
             this.Name = name;
         }

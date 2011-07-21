@@ -18,6 +18,14 @@ namespace MySoft.RESTful
         string MakeApiDocument(Uri requestUri);
 
         /// <summary>
+        /// 是否需要认证
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        bool IsAuthorized(string kind, string method);
+
+        /// <summary>
         /// 方法调用
         /// </summary>
         /// <param name="format"></param>
