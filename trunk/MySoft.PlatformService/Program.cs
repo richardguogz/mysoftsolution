@@ -109,8 +109,8 @@ namespace MySoft.PlatformService
             Console.WriteLine(@"/p | /stop [服务名称] : 停止指定服务");
             Console.WriteLine(@"/r | /restart [服务名称] : 重启指定服务");
             Console.WriteLine(@"/c | /console : 启动控制台 (仅当前配置有效)");
-            Console.WriteLine(@"/i | /install : 安装为window服务 (仅当前配置有效)");
-            Console.WriteLine(@"/u | /uninstall : 卸载window服务 (仅当前配置有效)");
+            Console.WriteLine(@"/i | /install : 安装为windows服务 (仅当前配置有效)");
+            Console.WriteLine(@"/u | /uninstall : 卸载windows服务 (仅当前配置有效)");
             Console.WriteLine("----------------------------------------------");
         }
 
