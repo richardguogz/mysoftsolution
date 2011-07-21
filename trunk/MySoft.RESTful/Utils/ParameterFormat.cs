@@ -11,6 +11,10 @@ namespace MySoft.RESTful
     public enum ParameterFormat
     {
         /// <summary>
+        /// Jsonp
+        /// </summary>
+        Jsonp,
+        /// <summary>
         /// Json
         /// </summary>
         Json,

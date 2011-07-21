@@ -33,21 +33,21 @@ namespace MySoft.RESTful.Demo
         /// 获取一个用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("getuser", Description = "获取一个用户")]
+        [PublishMethod("getuser", Description = "获取一个用户", Authorized = false)]
         User GetUser(int id, string name);
 
         /// <summary>
         /// 获取一组用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("getusers", Description = "获取一组用户")]
+        [PublishMethod("getusers", Description = "获取一组用户", Authorized = false)]
         IList<User> GetUsers();
 
         /// <summary>
         /// 保存用户
         /// </summary>
         /// <returns></returns>
-        [PublishMethod("saveuser", Description = "保存一个用户", Method = SubmitType.GET)]
+        [PublishMethod("saveuser", Description = "保存一个用户", Method = SubmitType.POST)]
         void SaveUser(User user);
     }
 

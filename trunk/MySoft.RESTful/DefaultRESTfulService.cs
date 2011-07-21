@@ -154,7 +154,7 @@ namespace MySoft.RESTful
             }
             else
             {
-                result = GetResponseString(ParameterFormat.Json, kind, method, null) as string;
+                result = GetResponseString(ParameterFormat.Jsonp, kind, method, null) as string;
                 response.ContentType = "application/javascript;charset=utf-8";
                 result = string.Format("{0}({1});", callback, result ?? "{}");
             }
@@ -200,7 +200,7 @@ namespace MySoft.RESTful
             var request = WebOperationContext.Current.IncomingRequest;
             var response = WebOperationContext.Current.OutgoingResponse;
 
-            if (format == ParameterFormat.Json)
+            if (format == ParameterFormat.Json || format == ParameterFormat.Jsonp)
                 response.ContentType = "application/json;charset=utf-8";
             else if (format == ParameterFormat.Xml)
                 response.ContentType = "text/xml;charset=utf-8";
@@ -211,7 +211,7 @@ namespace MySoft.RESTful
             RESTfulResult authResult = new RESTfulResult { Code = (int)RESTfulCode.OK };
 
             //进行认证处理
-            if (Context != null && Context.IsAuthorized(kind, method))
+            if (Context != null && Context.IsAuthorized(format, kind, method))
             {
                 authResult = AuthenticationManager.Authorize();
             }
@@ -224,7 +224,7 @@ namespace MySoft.RESTful
                     result = Context.Invoke(format, kind, method, parameters);
                     if (result == null)
                     {
-                        if (format == ParameterFormat.Json)
+                        if (format == ParameterFormat.Json || format == ParameterFormat.Jsonp)
                             result = "{}";
                         else
                             response.ContentType = "text/plain";

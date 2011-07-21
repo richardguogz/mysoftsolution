@@ -69,12 +69,13 @@ namespace MySoft.RESTful.Business
         /// <summary>
         /// 是否需要认证
         /// </summary>
+        /// <param name="format"></param>
         /// <param name="kind"></param>
         /// <param name="method"></param>
         /// <returns></returns>
-        public bool IsAuthorized(string kind, string method)
+        public bool IsAuthorized(ParameterFormat format, string kind, string method)
         {
-            return pool.CheckAuthorized(kind, method);
+            return pool.CheckAuthorized(format, kind, method);
         }
 
         /// <summary>

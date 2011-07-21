@@ -86,18 +86,24 @@ namespace MySoft.RESTful.Business.Pool
         /// <summary>
         /// 检查方法
         /// </summary>
+        /// <param name="parameterFormat"></param>
         /// <param name="businessKindName"></param>
         /// <param name="businessMethodName"></param>
         /// <returns></returns>
-        public bool CheckAuthorized(string businessKindName, string businessMethodName)
+        public bool CheckAuthorized(ParameterFormat parameterFormat, string businessKindName, string businessMethodName)
         {
+            if (parameterFormat != ParameterFormat.Jsonp) return true;
+
             BusinessKindModel kind = businessPool.Where(e => e.Key.Equals(businessKindName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
             if (kind != null)
             {
                 BusinessMethodModel method = kind.MethodModels.Where(e => e.Key.Equals(businessMethodName, StringComparison.OrdinalIgnoreCase)).Select(v => v.Value).SingleOrDefault();
                 if (method != null)
                 {
-                    return method.Authorized;
+                    if (method.SubmitType == SubmitType.GET)
+                        return method.Authorized;
+                    else
+                        return true;
                 }
             }
 
