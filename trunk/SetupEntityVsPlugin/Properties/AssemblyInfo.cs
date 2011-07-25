@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过下列属性集
 // 控制。更改这些属性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("SetupEntityVsPlugin")]
+[assembly: AssemblyTitle("MySoft.Tools.SetupEntityVsPlugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MySoft开发组")]
-[assembly: AssemblyProduct("SetupEntityVsPlugin")]
+[assembly: AssemblyProduct("MySoft.Tools.SetupEntityVsPlugin")]
 [assembly: AssemblyCopyright("版权所有 © MySoft 2011")]
 [assembly: AssemblyTrademark("MySoft")]
 [assembly: AssemblyCulture("")]
@@ -29,4 +29,4 @@ using System.Runtime.InteropServices;
 //      修订号
 //
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.2010.0314")]
+[assembly: AssemblyFileVersion("1.0.2011.0618")]

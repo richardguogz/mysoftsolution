@@ -8,8 +8,8 @@
     <ProjectGuid>{95FA9821-A21B-4EA9-BABC-0C4ABFBBF45A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SetupEntityVsPlugin</RootNamespace>
-    <AssemblyName>SetupEntityVsPlugin</AssemblyName>
+    <RootNamespace>MySoft.Tools.SetupEntityVsPlugin</RootNamespace>
+    <AssemblyName>MySoft.Tools.SetupEntityVsPlugin</AssemblyName>
     <SccProjectName>Svn</SccProjectName>
     <SccLocalPath>Svn</SccLocalPath>
     <SccAuxPath>Svn</SccAuxPath>
