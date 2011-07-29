@@ -9,6 +9,7 @@ using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text;
 using MySoft.RESTful.Business;
+using MySoft.Logger;
 
 namespace MySoft.RESTful
 {
@@ -25,12 +26,19 @@ namespace MySoft.RESTful
         public IRESTfulContext Context { get; set; }
 
         /// <summary>
+        /// 是否记录错误日志
+        /// </summary>
+        public bool IsRecordErrorLog { get; set; }
+
+        /// <summary>
         /// 实例化DefaultRESTfulService
         /// </summary>
         public DefaultRESTfulService()
         {
             //创建上下文
             this.Context = new BusinessRESTfulContext();
+
+            this.IsRecordErrorLog = true;
         }
 
         #region IRESTfulService 成员
@@ -237,12 +245,24 @@ namespace MySoft.RESTful
                     result = new RESTfulResult { Code = (int)e.Code, Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.BadRequest);
                     response.StatusCode = HttpStatusCode.BadRequest;
+
+                    //记录错误日志
+                    if (IsRecordErrorLog)
+                    {
+                        SimpleLog.Instance.WriteLogForDir("RESTfulError", e);
+                    }
                 }
                 catch (Exception e)
                 {
                     result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR, Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.ExpectationFailed);
                     response.StatusCode = HttpStatusCode.ExpectationFailed;
+
+                    //记录错误日志
+                    if (IsRecordErrorLog && !(e is BusinessException))
+                    {
+                        SimpleLog.Instance.WriteLogForDir("RESTfulError", e);
+                    }
                 }
             }
             else
