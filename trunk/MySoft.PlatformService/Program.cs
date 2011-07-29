@@ -1,7 +1,5 @@
-﻿using System.ServiceProcess;
-using System;
-using MySoft.Logger;
-using MySoft.Installer.Configuration;
+﻿using System;
+using System.ServiceProcess;
 
 namespace MySoft.PlatformService
 {

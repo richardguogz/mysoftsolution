@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Web.Caching;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Caching;
 
 namespace MySoft
 {

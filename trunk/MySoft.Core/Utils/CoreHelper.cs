@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
-using MySoft.Converter;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json.Utilities;
 using System.Web;
+using MySoft.Converter;
+using Newtonsoft.Json.Utilities;
 
 namespace MySoft
 {
@@ -168,7 +168,10 @@ namespace MySoft
         /// <returns></returns>
         public static T CreateInstance<T>(Type type)
         {
-            return (T)GetFastInstanceCreator(type)();
+            if (!type.IsPublic)
+                return (T)Activator.CreateInstance(type);
+            else
+                return (T)GetFastInstanceCreator(type)();
         }
 
         /// <summary>

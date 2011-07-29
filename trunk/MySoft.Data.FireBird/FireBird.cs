@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Data.Common;
-using System.Text;
 using FirebirdSql.Data.FirebirdClient;
 
 namespace MySoft.Data.FireBird

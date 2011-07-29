@@ -122,7 +122,10 @@ namespace MySoft.Tools.EntityDesign
             StringWriter stringWriter = new StringWriter(codeBuilder);
             IndentedTextWriter indentedWriter = new IndentedTextWriter(stringWriter, "  ");
             indentedWriter.Indent = 2;
-            provider.GenerateCodeFromCompileUnit(unit, indentedWriter, new CodeGeneratorOptions());
+            CodeGeneratorOptions options = new CodeGeneratorOptions();
+            options.BlankLinesBetweenMembers = true;
+            options.IndentString = "\t";
+            provider.GenerateCodeFromCompileUnit(unit, indentedWriter, options);
             return codeBuilder.ToString();
         }
 

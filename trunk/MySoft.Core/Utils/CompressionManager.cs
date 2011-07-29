@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Text;
 using SharpZip.Zip.Compression;
 using SharpZip.Zip.Compression.Streams;
 

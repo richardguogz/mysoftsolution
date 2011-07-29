@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Configuration.Install;
-using System.ServiceProcess;
-using MySoft.Installer.Configuration;
-using System;
-using System.IO;
-using System.Threading;
-using MySoft.Installer;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration.Install;
+using System.IO;
+using System.ServiceProcess;
+using MySoft.Installer;
+using MySoft.Installer.Configuration;
 using MySoft.Logger;
 
 namespace MySoft.PlatformService

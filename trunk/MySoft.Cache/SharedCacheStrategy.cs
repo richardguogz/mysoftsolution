@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using System.Web.Caching;
-using SharedCache.WinServiceCommon.Provider.Cache;
 using System.Text.RegularExpressions;
 using SharedCache.WinServiceCommon.Formatters;
+using SharedCache.WinServiceCommon.Provider.Cache;
 
 namespace MySoft.Cache
 {

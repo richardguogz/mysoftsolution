@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using MySoft.IoC;
-using MySoft.Logger;
-using System.Configuration;
-using System.Threading;
 using MySoft.Installer;
+using MySoft.Logger;
 
 namespace MySoft.PlatformService
 {
