@@ -101,7 +101,7 @@ namespace MySoft.RESTful.Business
 
                 if (!metadata.IsPassCheck)
                 {
-                    throw new RESTfulException(metadata.CheckMessage) { Code = RESTfulCode.BUSINESS_METHOD_CALL_TYPE_NOT_MATCH };
+                    throw new RESTfulException(metadata.CheckMessage) { Code = RESTfulCode.BUSINESS_METHOD_NOT_PASS_CHECK };
                 }
 
                 if (!string.IsNullOrEmpty(parameters))

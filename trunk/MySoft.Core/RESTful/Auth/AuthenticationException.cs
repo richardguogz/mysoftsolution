@@ -12,11 +12,11 @@ namespace MySoft.RESTful
     [Serializable]
     public class AuthenticationException : MySoftException
     {
-        private int code;
+        private string code;
         /// <summary>
         /// 错误Code
         /// </summary>
-        public int Code
+        public string Code
         {
             get { return code; }
             set { code = value; }
@@ -37,7 +37,7 @@ namespace MySoft.RESTful
         /// </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
-        public AuthenticationException(int code, string message)
+        public AuthenticationException(string code, string message)
             : base(message)
         {
             this.code = code;

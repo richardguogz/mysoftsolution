@@ -154,7 +154,7 @@ namespace MySoft.RESTful
 
             if (string.IsNullOrEmpty(callback))
             {
-                var ret = new RESTfulResult { Code = (int)RESTfulCode.OK, Message = "Not found [callback] parameter!" };
+                var ret = new RESTfulResult { Code = RESTfulCode.OK.ToString(), Message = "Not found [callback] parameter!" };
                 //throw new WebFaultException<RESTfulResult>(ret, HttpStatusCode.Forbidden);
                 response.StatusCode = HttpStatusCode.Forbidden;
                 response.ContentType = "application/json;charset=utf-8";
@@ -216,7 +216,7 @@ namespace MySoft.RESTful
             object result = null;
 
             //进行认证处理
-            RESTfulResult authResult = new RESTfulResult { Code = (int)RESTfulCode.OK };
+            RESTfulResult authResult = new RESTfulResult { Code = RESTfulCode.OK.ToString() };
 
             //进行认证处理
             if (Context != null && Context.IsAuthorized(format, kind, method))
@@ -225,7 +225,7 @@ namespace MySoft.RESTful
             }
 
             //认证成功
-            if (authResult.Code == (int)RESTfulCode.OK)
+            if (authResult.Code == RESTfulCode.OK.ToString())
             {
                 try
                 {
@@ -242,7 +242,7 @@ namespace MySoft.RESTful
                 }
                 catch (RESTfulException e)
                 {
-                    result = new RESTfulResult { Code = (int)e.Code, Message = e.Message };
+                    result = new RESTfulResult { Code = e.Code.ToString(), Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.BadRequest);
                     response.StatusCode = HttpStatusCode.BadRequest;
 
@@ -254,7 +254,7 @@ namespace MySoft.RESTful
                 }
                 catch (Exception e)
                 {
-                    result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR, Message = e.Message };
+                    result = new RESTfulResult { Code = RESTfulCode.BUSINESS_ERROR.ToString(), Message = e.Message };
                     //result = new WebFaultException<RESTfulResult>(ret, HttpStatusCode.ExpectationFailed);
                     response.StatusCode = HttpStatusCode.ExpectationFailed;
 
@@ -279,7 +279,7 @@ namespace MySoft.RESTful
             catch (Exception ex)
             {
                 //如果系列化失败
-                result = new RESTfulResult { Code = (int)RESTfulCode.BUSINESS_ERROR, Message = ex.Message };
+                result = new RESTfulResult { Code = RESTfulCode.BUSINESS_ERROR.ToString(), Message = ex.Message };
                 result = serializer.Serialize(result);
                 return result.ToString();
             }
