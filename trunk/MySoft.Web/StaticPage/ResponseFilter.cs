@@ -77,7 +77,7 @@ namespace MySoft.Web
                 }
 
                 //生成临时文件
-                string fileName = Path.GetFileNameWithoutExtension(filePath) + new Random().Next(1000).ToString("000") + ".tmpfile";
+                string fileName = string.Format("{0}.staticfile", CoreHelper.MakeUniqueKey(20, "tmp_"));
                 string tempFile = Path.Combine(Path.GetDirectoryName(filePath), fileName);
 
                 if (IsFileOpen(tempFile)) return;
@@ -108,6 +108,8 @@ namespace MySoft.Web
         /// <returns></returns>
         private bool IsFileOpen(string filePath)
         {
+            if (!File.Exists(filePath)) return false;
+
             try
             {
                 var fs = File.OpenWrite(filePath);
