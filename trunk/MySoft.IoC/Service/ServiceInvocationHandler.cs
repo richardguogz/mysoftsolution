@@ -155,7 +155,7 @@ namespace MySoft.IoC
             ServiceCache cacheValue = null;
 
             //缓存的处理
-            if (isAllowCache && container.Cache != null)
+            if (isAllowCache && cacheTime > 0 && container.Cache != null)
             {
                 //从缓存获取数据
                 cacheValue = container.Cache.GetCache(serviceType, cacheKey) as ServiceCache;
@@ -218,7 +218,7 @@ namespace MySoft.IoC
                 if (returnValue != null)
                 {
                     //缓存的处理
-                    if (isAllowCache && container.Cache != null)
+                    if (isAllowCache && cacheTime > 0 && container.Cache != null)
                     {
                         cacheValue = new ServiceCache { CacheObject = returnValue, Parameters = resMsg.Parameters };
 

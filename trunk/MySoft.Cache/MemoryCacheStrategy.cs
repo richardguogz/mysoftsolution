@@ -114,7 +114,7 @@ namespace MySoft.Cache
 
                 if (Timeout <= 0)
                 {
-                    webCache.Insert(GetInputKey(objId), o, null, DateTime.MaxValue, TimeSpan.Zero, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.Zero, System.Web.Caching.CacheItemPriority.High, callBack);
                 }
                 else
                 {
@@ -174,7 +174,7 @@ namespace MySoft.Cache
 
                 if (Timeout <= 0)
                 {
-                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.MaxValue, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace MySoft.Cache
 
                 if (Timeout <= 0)
                 {
-                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.MaxValue, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
                 }
                 else
                 {

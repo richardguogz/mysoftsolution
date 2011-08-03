@@ -140,7 +140,7 @@ namespace MySoft
 
         /// <summary>
         /// 把对象加载到Cache,附加缓存依赖和过期时间(多少秒后过期)
-        /// (默认优先级为Normal)
+        /// (默认优先级为High)
         /// </summary>
         /// <param name="key"></param>
         /// <param name="obj"></param>
@@ -148,7 +148,7 @@ namespace MySoft
         /// <param name="seconds"></param>
         public static void Insert(string key, object obj, CacheDependency dep, int seconds)
         {
-            Insert(key, obj, dep, seconds, CacheItemPriority.Normal);
+            Insert(key, obj, dep, seconds, CacheItemPriority.High);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace MySoft
         {
             if (obj != null)
             {
-                _cache.Insert(key, obj, dep, DateTime.Now.AddSeconds(Factor * seconds), TimeSpan.Zero, priority, null);
+                _cache.Insert(key, obj, dep, DateTime.Now.AddSeconds(Factor * seconds), System.Web.Caching.Cache.NoSlidingExpiration, priority, null);
             }
 
         }
@@ -173,12 +173,12 @@ namespace MySoft
         /// </summary>
         /// <param name="key"></param>
         /// <param name="obj"></param>
-        /// <param name="secondFactor"></param>
-        public static void MicroInsert(string key, object obj, int secondFactor)
+        /// <param name="seconds"></param>
+        public static void MicroInsert(string key, object obj, int seconds)
         {
             if (obj != null)
             {
-                _cache.Insert(key, obj, null, DateTime.Now.AddSeconds(Factor * secondFactor), TimeSpan.Zero);
+                _cache.Insert(key, obj, null, DateTime.Now.AddSeconds(Factor * seconds), System.Web.Caching.Cache.NoSlidingExpiration);
             }
         }
 
@@ -202,7 +202,7 @@ namespace MySoft
         {
             if (obj != null)
             {
-                _cache.Insert(key, obj, dep, DateTime.MaxValue, TimeSpan.Zero, CacheItemPriority.AboveNormal, null);
+                _cache.Insert(key, obj, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.High, null);
             }
         }
 
@@ -226,7 +226,7 @@ namespace MySoft
         {
             if (obj != null)
             {
-                _cache.Insert(key, obj, dep, DateTime.MaxValue, TimeSpan.Zero, CacheItemPriority.NotRemovable, null);
+                _cache.Insert(key, obj, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
             }
         }
 
