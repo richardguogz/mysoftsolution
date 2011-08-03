@@ -43,6 +43,16 @@ namespace MySoft.Data
         FieldValue[] FieldValues { get; }
 
         /// <summary>
+        /// 更新字段
+        /// </summary>
+        Field[] UpdateFields { get; }
+
+        /// <summary>
+        /// 更新字段及值信息
+        /// </summary>
+        FieldValue[] UpdateFieldValues { get; }
+
+        /// <summary>
         /// 是否只读 (只读时为视图或自定义实例)
         /// </summary>
         bool ReadOnly { get; }
@@ -436,6 +446,28 @@ namespace MySoft.Data
             get
             {
                 return this.GetFieldValues().ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 更新字段
+        /// </summary>
+        Field[] IEntityInfo.UpdateFields
+        {
+            get
+            {
+                return this.GetFieldValues().FindAll(p => p.IsChanged).ConvertAll<Field>(p => p.Field).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 更新字段及值信息
+        /// </summary>
+        FieldValue[] IEntityInfo.UpdateFieldValues
+        {
+            get
+            {
+                return this.GetFieldValues().FindAll(p => p.IsChanged).ToArray();
             }
         }
 

@@ -1101,7 +1101,7 @@ namespace MySoft.Data
             List<FieldValue> list = new List<FieldValue>(fvs);
             list.ForEach(p =>
             {
-                if (p.Field is Field) p.IsIdentity = true;
+                if (p.Value is Field) p.IsIdentity = true;
             });
 
             object retVal;
@@ -1123,7 +1123,7 @@ namespace MySoft.Data
             List<FieldValue> list = new List<FieldValue>(fvs);
             list.ForEach(p =>
             {
-                if (p.Field is Field) p.IsIdentity = true;
+                if (p.Value is Field) p.IsIdentity = true;
             });
 
             object retValue;
