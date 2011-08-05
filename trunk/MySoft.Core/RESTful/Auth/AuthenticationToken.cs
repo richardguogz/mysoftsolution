@@ -40,6 +40,7 @@ namespace MySoft.RESTful
         /// <param name="requestUri"></param>
         public AuthenticationToken(Uri requestUri)
         {
+            this.RequestUri = requestUri;
             this.Cookies = new HttpCookieCollection();
             this.Parameters = new NameValueCollection();
             this.Method = "POST";

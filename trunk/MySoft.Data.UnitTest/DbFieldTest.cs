@@ -4,8 +4,8 @@ using System;
 
 namespace MySoft.Data.UnitTest
 {
-    
-    
+
+
     /// <summary>
     ///这是 DbFieldTest 的测试类，旨在
     ///包含所有 DbFieldTest 单元测试
@@ -70,6 +70,10 @@ namespace MySoft.Data.UnitTest
         [TestMethod()]
         public void NameTest()
         {
+            //Field field = new Field("userid").Func(1, "datediff", "day", "getdate()");
+
+            Field field = new Field("userid").Func("upper");
+
             string fieldName = "userid"; // TODO: 初始化为适当的值
             DbField target = new DbField(fieldName); // TODO: 初始化为适当的值
             string actual;

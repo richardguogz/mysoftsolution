@@ -674,7 +674,10 @@ namespace MySoft.Data
         /// <returns></returns>
         public Field At(string tableName)
         {
-            return new Field(this.propertyName, tableName, this.fieldName);
+            if (fieldName.Contains("(") || fieldName.Contains(")"))
+                return this;
+            else
+                return new Field(this.propertyName, tableName, this.fieldName);
         }
 
         /// <summary>
@@ -685,8 +688,70 @@ namespace MySoft.Data
         public Field At(Table table)
         {
             if (table == null) return this;
-            return new Field(this.propertyName, table.Name, this.fieldName);
+            if (fieldName.Contains("(") || fieldName.Contains(")"))
+                return this;
+            else
+                return new Field(this.propertyName, table.Name, this.fieldName);
         }
+
+        #region 函数处理
+
+        /// <summary>
+        /// 函数处理
+        /// </summary>
+        /// <param name="funName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public Field Func(string funName, params string[] args)
+        {
+            return Func(0, funName, args);
+        }
+
+        /// <summary>
+        /// 函数处理
+        /// </summary>
+        /// <param name="findex"></param>
+        /// <param name="funName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public Field Func(int findex, string funName, params string[] args)
+        {
+            if (string.IsNullOrEmpty(funName))
+            {
+                throw new DataException("函数名不能为空！");
+            }
+
+            if (args != null && args.Length >= 0)
+            {
+                if (findex < 0) findex = 0;
+                if (findex > args.Length + 1) findex = args.Length + 1;
+
+                StringBuilder sb = new StringBuilder(funName);
+                sb.Append("(");
+
+                int currIndex = 0;
+                for (int i = 0; i <= args.Length; i++)
+                {
+                    if (i == findex)
+                        sb.AppendFormat("{0}", this.Name);
+                    else
+                    {
+                        sb.Append("{" + currIndex + "}");
+                        currIndex++;
+                    }
+
+                    if (i < args.Length) sb.Append(",");
+                }
+                sb.Append(")");
+
+                string fieldName = string.Format(sb.ToString(), args);
+                return new Field(fieldName);
+            }
+
+            return this;
+        }
+
+        #endregion
 
         #endregion
 
