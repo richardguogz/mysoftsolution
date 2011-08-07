@@ -1,6 +1,7 @@
 ﻿using MySoft.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace MySoft.Data.UnitTest
 {
@@ -74,12 +75,26 @@ namespace MySoft.Data.UnitTest
 
             Field field = new Field("userid").Func("upper");
 
+            WhereClip where = new Field("userid").Between(1, 10);
+
             string fieldName = "userid"; // TODO: 初始化为适当的值
             DbField target = new DbField(fieldName); // TODO: 初始化为适当的值
             string actual;
             actual = target.Name;
             Assert.AreEqual(actual, fieldName);
             //Assert.Inconclusive("验证此测试方法的正确性。");
+        }
+
+        [TestMethod]
+        public void TaskTest()
+        {
+            var dict = new System.Collections.Generic.Dictionary<int, object>();
+            for (int i = 0; i < 100; i++)
+            {
+                dict[i] = "test" + i;
+            }
+
+            var keys = dict.Keys.Take(10).ToList();
         }
     }
 }

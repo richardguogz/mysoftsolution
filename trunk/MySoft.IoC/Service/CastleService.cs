@@ -53,7 +53,7 @@ namespace MySoft.IoC
             this.container.OnError += new ErrorLogEventHandler(container_OnError);
             this.container.OnLog += new LogEventHandler(container_OnLog);
             this.clients = new List<EndPoint>();
-            this.statuslist = new TimeStatusCollection();
+            this.statuslist = new TimeStatusCollection(config.Records);
             this.highest = new HighestStatus();
             this.startTime = DateTime.Now;
 
@@ -73,75 +73,69 @@ namespace MySoft.IoC
             manager.OnBinaryInput += new BinaryInputEventHandler(SocketServerManager_OnBinaryInput);
             manager.OnMessageOutput += new EventHandler<LogOutEventArgs>(SocketServerManager_OnMessageOutput);
 
-            Thread thread = new Thread(() =>
-            {
-                while (true)
-                {
-                    try
-                    {
-                        //清除记录，每秒清除一条
-                        statuslist.Clear(config.Records);
+            ThreadPool.QueueUserWorkItem(state =>
+             {
+                 while (true)
+                 {
+                     try
+                     {
+                         //获取最后一秒状态
+                         var status = statuslist.GetLast();
 
-                        //获取最后一秒状态
-                        var status = statuslist.GetLast();
+                         //计算时间
+                         if (status.RequestCount > 0)
+                         {
+                             //处理最高值 
+                             #region 处理最高值
 
-                        //计算时间
-                        if (status.RequestCount > 0)
-                        {
-                            //处理最高值 
-                            #region 处理最高值
+                             //流量
+                             if (status.DataFlow > highest.DataFlow)
+                             {
+                                 highest.DataFlow = status.DataFlow;
+                                 highest.DataFlowCounterTime = status.CounterTime;
+                             }
 
-                            //流量
-                            if (status.DataFlow > highest.DataFlow)
-                            {
-                                highest.DataFlow = status.DataFlow;
-                                highest.DataFlowCounterTime = status.CounterTime;
-                            }
+                             //成功
+                             if (status.SuccessCount > highest.SuccessCount)
+                             {
+                                 highest.SuccessCount = status.SuccessCount;
+                                 highest.SuccessCountCounterTime = status.CounterTime;
+                             }
 
-                            //成功
-                            if (status.SuccessCount > highest.SuccessCount)
-                            {
-                                highest.SuccessCount = status.SuccessCount;
-                                highest.SuccessCountCounterTime = status.CounterTime;
-                            }
+                             //失败
+                             if (status.ErrorCount > highest.ErrorCount)
+                             {
+                                 highest.ErrorCount = status.ErrorCount;
+                                 highest.ErrorCountCounterTime = status.CounterTime;
+                             }
 
-                            //失败
-                            if (status.ErrorCount > highest.ErrorCount)
-                            {
-                                highest.ErrorCount = status.ErrorCount;
-                                highest.ErrorCountCounterTime = status.CounterTime;
-                            }
+                             //请求总数
+                             if (status.RequestCount > highest.RequestCount)
+                             {
+                                 highest.RequestCount = status.RequestCount;
+                                 highest.RequestCountCounterTime = status.CounterTime;
+                             }
 
-                            //请求总数
-                            if (status.RequestCount > highest.RequestCount)
-                            {
-                                highest.RequestCount = status.RequestCount;
-                                highest.RequestCountCounterTime = status.CounterTime;
-                            }
+                             //耗时
+                             if (status.ElapsedTime > highest.ElapsedTime)
+                             {
+                                 highest.ElapsedTime = status.ElapsedTime;
+                                 highest.ElapsedTimeCounterTime = status.CounterTime;
+                             }
 
-                            //耗时
-                            if (status.ElapsedTime > highest.ElapsedTime)
-                            {
-                                highest.ElapsedTime = status.ElapsedTime;
-                                highest.ElapsedTimeCounterTime = status.CounterTime;
-                            }
+                             #endregion
+                         }
+                     }
+                     catch (Exception ex)
+                     {
+                         //写错误日志
+                         SimpleLog.Instance.WriteLog(ex);
+                     }
 
-                            #endregion
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //写错误日志
-                        SimpleLog.Instance.WriteLog(ex);
-                    }
-
-                    //每1秒处理一次
-                    Thread.Sleep(1000);
-                }
-            });
-
-            thread.IsBackground = true;
-            thread.Start();
+                     //每1秒处理一次
+                     Thread.Sleep(1000);
+                 }
+             });
         }
 
         /// <summary>

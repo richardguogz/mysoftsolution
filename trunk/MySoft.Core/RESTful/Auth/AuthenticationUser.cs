@@ -22,6 +22,11 @@ namespace MySoft.RESTful
         public string AuthName { get; set; }
 
         /// <summary>
+        /// 认证用户的手机
+        /// </summary>
+        public string AuthMobile { get; set; }
+
+        /// <summary>
         /// 认证用户邮箱
         /// </summary>
         public string AuthEmail { get; set; }

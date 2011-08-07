@@ -34,6 +34,12 @@ namespace MySoft.IoC
     [Serializable]
     public class TimeStatusCollection : Dictionary<string, TimeStatus>
     {
+        private int maxCount;
+        public TimeStatusCollection(int maxCount)
+        {
+            this.maxCount = maxCount;
+        }
+
         /// <summary>
         /// 获取或创建
         /// </summary>
@@ -46,36 +52,17 @@ namespace MySoft.IoC
                 string key = value.ToString("yyyyMMddHHmmss");
                 if (!base.ContainsKey(key))
                 {
+                    //如果总数大于传入的总数
+                    if (base.Count >= maxCount)
+                    {
+                        var firstKey = base.Keys.FirstOrDefault();
+                        if (firstKey != null) base.Remove(firstKey);
+                    }
+
                     base[key] = new TimeStatus { CounterTime = value };
                 }
 
                 return base[key];
-            }
-        }
-
-        /// <summary>
-        /// 清除数据
-        /// </summary>
-        /// <param name="maxCount"></param>
-        public void Clear(int maxCount)
-        {
-            if (base.Count >= maxCount)
-            {
-                lock (this)
-                {
-                    if (base.Count > 10)
-                    {
-                        var keys = base.Keys.Take(10).ToList();
-                        foreach (var key in keys)
-                        {
-                            base.Remove(key);
-                        }
-                    }
-                    else
-                    {
-                        base.Clear();
-                    }
-                }
             }
         }
 
