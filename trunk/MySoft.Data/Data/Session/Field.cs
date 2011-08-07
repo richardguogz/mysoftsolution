@@ -740,7 +740,7 @@ namespace MySoft.Data
                         currIndex++;
                     }
 
-                    if (i < args.Length) sb.Append(",");
+                    if (i < args.Length) sb.Append(", ");
                 }
                 sb.Append(")");
 
@@ -766,6 +766,8 @@ namespace MySoft.Data
             return this == (object)null;
         }
 
+        #region Like查询
+
         /// <summary>
         /// 指定value进行模糊查询
         /// </summary>
@@ -787,6 +789,28 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 指定value进行Like查询
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public WhereClip StartsWith(string value)
+        {
+            return Like(value + "%");
+        }
+
+        /// <summary>
+        /// 指定value进行Like查询
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public WhereClip EndsWith(string value)
+        {
+            return Like("%" + value);
+        }
+
+        #endregion
+
+        /// <summary>
         /// 进行Between操作
         /// </summary>
         /// <param name="leftValue"></param>
@@ -794,7 +818,18 @@ namespace MySoft.Data
         /// <returns></returns>
         public WhereClip Between(object leftValue, object rightValue)
         {
-            return this >= leftValue && this <= rightValue;
+            string p0Name = CoreHelper.MakeUniqueKey(100, "$");
+            SQLParameter p0 = new SQLParameter(p0Name);
+            p0.Value = leftValue;
+
+            string p1Name = CoreHelper.MakeUniqueKey(100, "$");
+            SQLParameter p1 = new SQLParameter(p1Name);
+            p1.Value = rightValue;
+
+            string where = string.Format("{0} between {1} and {2}", this.Name, p0Name, p1Name);
+
+            return new WhereClip(where, p0, p1);
+            //return this >= leftValue && this <= rightValue;
         }
 
         /// <summary>

@@ -23,42 +23,6 @@ namespace MySoft.Data
     }
 
     /// <summary>
-    /// 实体相关信息
-    /// </summary>
-    public interface IEntityInfo
-    {
-        /// <summary>
-        /// 表信息
-        /// </summary>
-        Table Table { get; }
-
-        /// <summary>
-        /// 字段信息
-        /// </summary>
-        Field[] Fields { get; }
-
-        /// <summary>
-        /// 字段及值信息
-        /// </summary>
-        FieldValue[] FieldValues { get; }
-
-        /// <summary>
-        /// 更新字段
-        /// </summary>
-        Field[] UpdateFields { get; }
-
-        /// <summary>
-        /// 更新字段及值信息
-        /// </summary>
-        FieldValue[] UpdateFieldValues { get; }
-
-        /// <summary>
-        /// 是否只读 (只读时为视图或自定义实例)
-        /// </summary>
-        bool ReadOnly { get; }
-    }
-
-    /// <summary>
     /// Entity基类
     /// </summary>
     [Serializable]
@@ -472,9 +436,20 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 是否修改
+        /// </summary>
+        bool IEntityInfo.IsUpdate
+        {
+            get
+            {
+                return this.GetFieldValues().FindAll(p => p.IsChanged).Count > 0;
+            }
+        }
+
+        /// <summary>
         /// 是否只读
         /// </summary>
-        bool IEntityInfo.ReadOnly
+        bool IEntityInfo.IsReadOnly
         {
             get
             {
