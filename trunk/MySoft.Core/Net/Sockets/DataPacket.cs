@@ -9,7 +9,7 @@ namespace MySoft.Net.Sockets
     /// 数据包信息
     /// </summary>
     [Serializable]
-    public class DataPacket
+    public class DataPacket : IDisposable
     {
         private Guid packetID;
         /// <summary>
@@ -29,6 +29,14 @@ namespace MySoft.Net.Sockets
         {
             get { return packetObject; }
             set { packetObject = value; }
+        }
+
+        /// <summary>
+        /// 翻译资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.packetObject = null;
         }
     }
 }

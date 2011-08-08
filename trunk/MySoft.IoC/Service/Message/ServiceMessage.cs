@@ -75,39 +75,40 @@ namespace MySoft.IoC.Message
 
         void SocketClientManager_OnReceived(byte[] buffer, Socket socket)
         {
-            BufferReader read = new BufferReader(buffer);
-
-            int length;
-            int cmd;
-            Guid pid;
-
-            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && read.ReadGuid(out pid) && length == read.Length)
+            using (BufferReader read = new BufferReader(buffer))
             {
-                if (cmd == 10000) //返回数据包
+                int length;
+                int cmd;
+                Guid pid;
+
+                if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && read.ReadGuid(out pid) && length == read.Length)
                 {
-                    try
+                    if (cmd == 10000) //返回数据包
                     {
-                        ResponseMessage resMsg;
-                        if (read.ReadObject(out resMsg))
+                        try
                         {
+                            ResponseMessage resMsg;
+                            if (read.ReadObject(out resMsg))
+                            {
+                                SendMessage(resMsg);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.WriteError(ex);
+
+                            var resMsg = new ResponseMessage
+                            {
+                                TransactionId = pid,
+                                Expiration = DateTime.Now.AddMinutes(1),
+                                Compress = false,
+                                Encrypt = false,
+                                ReturnType = ex.GetType(),
+                                Exception = ex
+                            };
+
                             SendMessage(resMsg);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.WriteError(ex);
-
-                        var resMsg = new ResponseMessage
-                        {
-                            TransactionId = pid,
-                            Expiration = DateTime.Now.AddMinutes(1),
-                            Compress = false,
-                            Encrypt = false,
-                            ReturnType = ex.GetType(),
-                            Exception = ex
-                        };
-
-                        SendMessage(resMsg);
                     }
                 }
             }

@@ -241,6 +241,8 @@ namespace MySoft.Net.Sockets
                 {
                     bufflist.Insert(0, data[i]);
                 }
+
+                o.Dispose();
                 return bufflist.ToArray();
             }
 

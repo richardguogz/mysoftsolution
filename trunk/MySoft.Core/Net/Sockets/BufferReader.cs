@@ -14,7 +14,7 @@ namespace MySoft.Net.Sockets
     /// 数据包读取类
     /// （此类的功能是讲通讯数据包重新转换成.NET 数据类型）
     /// </summary>
-    public class BufferReader
+    public class BufferReader : IDisposable
     {
         private int current;
         private int startIndex;
@@ -396,5 +396,13 @@ namespace MySoft.Net.Sockets
         }
 
         #endregion
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.Data = null;
+        }
     }
 }

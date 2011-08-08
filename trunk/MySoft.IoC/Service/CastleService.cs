@@ -310,62 +310,66 @@ namespace MySoft.IoC
 
         void SocketServerManager_OnBinaryInput(byte[] buffer, SocketAsyncEventArgs socketAsync)
         {
-            BufferReader read = new BufferReader(buffer);
-
-            int length;
-            int cmd;
-            Guid pid;
-
-            if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && read.ReadGuid(out pid) && length == read.Length)
+            using (BufferReader read = new BufferReader(buffer))
             {
-                if (cmd == -10000)//请求结果信息
+                int length;
+                int cmd;
+                Guid pid;
+
+                if (read.ReadInt32(out length) && read.ReadInt32(out cmd) && read.ReadGuid(out pid) && length == read.Length)
                 {
-                    try
+                    if (cmd == -10000)//请求结果信息
                     {
-                        RequestMessage reqMsg;
-                        if (read.ReadObject(out reqMsg))
+                        try
                         {
-                            if (reqMsg != null)
+                            RequestMessage reqMsg;
+                            if (read.ReadObject(out reqMsg))
                             {
-                                //发送响应信息
-                                GetSendResponse(socketAsync, reqMsg);
+                                if (reqMsg != null)
+                                {
+                                    //发送响应信息
+                                    GetSendResponse(socketAsync, reqMsg);
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            container_OnError(ex);
+
+                            var resMsg = new ResponseMessage
+                            {
+                                TransactionId = pid,
+                                Expiration = DateTime.Now.AddMinutes(1),
+                                Compress = false,
+                                Encrypt = false,
+                                ReturnType = ex.GetType(),
+                                Exception = ex
+                            };
+
+                            DataPacket packet = new DataPacket
+                            {
+                                PacketID = resMsg.TransactionId,
+                                PacketObject = resMsg
+                            };
+
+                            byte[] data = BufferFormat.FormatFCA(packet);
+
+                            //发送数据到服务端
+                            manager.Server.SendData(socketAsync.AcceptSocket, data);
+
+                            //发送完后将数据置null
+                            data = null;
+                        }
                     }
-                    catch (Exception ex)
+                    else //现在还没登入 如果有其他命令的请求那么 断开连接
                     {
-                        container_OnError(ex);
-
-                        var resMsg = new ResponseMessage
-                        {
-                            TransactionId = pid,
-                            Expiration = DateTime.Now.AddMinutes(1),
-                            Compress = false,
-                            Encrypt = false,
-                            ReturnType = ex.GetType(),
-                            Exception = ex
-                        };
-
-                        DataPacket packet = new DataPacket
-                        {
-                            PacketID = resMsg.TransactionId,
-                            PacketObject = resMsg
-                        };
-
-                        byte[] data = BufferFormat.FormatFCA(packet);
-
-                        //发送数据到服务端
-                        manager.Server.SendData(socketAsync.AcceptSocket, data);
+                        manager.Server.Disconnect(socketAsync.AcceptSocket);
                     }
                 }
-                else //现在还没登入 如果有其他命令的请求那么 断开连接
+                else //无法读取数据包 断开连接
                 {
                     manager.Server.Disconnect(socketAsync.AcceptSocket);
                 }
-            }
-            else //无法读取数据包 断开连接
-            {
-                manager.Server.Disconnect(socketAsync.AcceptSocket);
             }
         }
 
