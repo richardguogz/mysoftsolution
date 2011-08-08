@@ -32,12 +32,14 @@ namespace MySoft.IoC
     /// 时间状态集合
     /// </summary>
     [Serializable]
-    public class TimeStatusCollection : Dictionary<string, TimeStatus>
+    public class TimeStatusCollection
     {
         private int maxCount;
+        private IDictionary<string, TimeStatus> dictStatus;
         public TimeStatusCollection(int maxCount)
         {
             this.maxCount = maxCount;
+            this.dictStatus = new Dictionary<string, TimeStatus>();
         }
 
         /// <summary>
@@ -47,22 +49,22 @@ namespace MySoft.IoC
         /// <returns></returns>
         public TimeStatus GetOrCreate(DateTime value)
         {
-            lock (this)
+            lock (dictStatus)
             {
                 string key = value.ToString("yyyyMMddHHmmss");
-                if (!base.ContainsKey(key))
+                if (!dictStatus.ContainsKey(key))
                 {
                     //如果总数大于传入的总数
-                    if (base.Count >= maxCount)
+                    if (dictStatus.Count >= maxCount)
                     {
-                        var firstKey = base.Keys.FirstOrDefault();
-                        if (firstKey != null) base.Remove(firstKey);
+                        var firstKey = dictStatus.Keys.FirstOrDefault();
+                        if (firstKey != null) dictStatus.Remove(firstKey);
                     }
 
-                    base[key] = new TimeStatus { CounterTime = value };
+                    dictStatus[key] = new TimeStatus { CounterTime = value };
                 }
 
-                return base[key];
+                return dictStatus[key];
             }
         }
 
@@ -72,9 +74,9 @@ namespace MySoft.IoC
         /// <returns></returns>
         public IList<TimeStatus> ToList()
         {
-            lock (this)
+            lock (dictStatus)
             {
-                return base.Values.ToList();
+                return dictStatus.Values.ToList();
             }
         }
 
@@ -84,13 +86,24 @@ namespace MySoft.IoC
         /// <returns></returns>
         public TimeStatus GetLast()
         {
-            lock (this)
+            lock (dictStatus)
             {
-                var status = base.Values.LastOrDefault();
+                var status = dictStatus.Values.LastOrDefault();
                 if (status == null)
                     return new TimeStatus { CounterTime = DateTime.Now };
                 else
                     return status;
+            }
+        }
+
+        /// <summary>
+        /// 清除字典中的数据
+        /// </summary>
+        public void Clear()
+        {
+            lock (dictStatus)
+            {
+                dictStatus.Clear();
             }
         }
     }
