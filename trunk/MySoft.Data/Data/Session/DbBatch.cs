@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
+using System.Linq;
 using System.Threading;
 
 namespace MySoft.Data
@@ -302,12 +303,31 @@ namespace MySoft.Data
         public int InsertOrUpdate<T>(Table table, T entity)
             where T : Entity
         {
-            if (Exists(table, entity))
+            if (Exists<T>(table, entity))
                 entity.Attach();
             else
                 entity.Detach();
 
             return Save<T>(table, entity);
+        }
+
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int InsertOrUpdate<T>(Table table, FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            if (Exists<T>(table, where))
+                return Update<T>(table, fvs.ToList(), where);
+            else
+            {
+                object retVal;
+                return Insert<T>(table, fvs.ToList(), out retVal);
+            }
         }
 
         #endregion
@@ -362,6 +382,19 @@ namespace MySoft.Data
             return InsertOrUpdate(null, entity);
         }
 
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int InsertOrUpdate<T>(FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return InsertOrUpdate<T>(null, fvs, where);
+        }
+
         #endregion
 
         #endregion
@@ -377,6 +410,19 @@ namespace MySoft.Data
             where T : Entity
         {
             WhereClip where = DataHelper.GetPkWhere<T>(table, entity);
+            return Exists<T>(table, where);
+        }
+
+        /// <summary>
+        /// 判断记录是否存在
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        private bool Exists<T>(Table table, WhereClip where)
+            where T : Entity
+        {
             FromSection<T> fs = new FromSection<T>(dbProvider, dbTrans, table);
             return fs.Where(where).Count() > 0;
         }

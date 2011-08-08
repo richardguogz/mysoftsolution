@@ -815,6 +815,19 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int InsertOrUpdate<T>(Table table, FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return dbTrans.InsertOrUpdate<T>(table, fvs, where);
+        }
+
+        /// <summary>
         /// 更新指定条件的记录
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -932,6 +945,19 @@ namespace MySoft.Data
             where T : Entity
         {
             return dbTrans.InsertOrUpdate<T>(entity);
+        }
+
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int InsertOrUpdate<T>(FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return dbTrans.InsertOrUpdate<T>(fvs, where);
         }
 
         /// <summary>

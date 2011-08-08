@@ -18,6 +18,15 @@ namespace MySoft.Data
         /// <returns></returns>
         int InsertOrUpdate<T>(T entity) where T : Entity;
 
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        int InsertOrUpdate<T>(FieldValue[] fvs, WhereClip where) where T : Entity;
+
         #endregion
 
         #region 增删改操作(分表处理)
@@ -33,6 +42,15 @@ namespace MySoft.Data
         /// <param name="entity"></param>
         /// <returns></returns>
         int InsertOrUpdate<T>(Table table, T entity) where T : Entity;
+
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        int InsertOrUpdate<T>(Table table, FieldValue[] fvs, WhereClip where) where T : Entity;
 
         #endregion
     }

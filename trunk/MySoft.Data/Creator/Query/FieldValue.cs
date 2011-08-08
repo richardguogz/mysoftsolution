@@ -1,7 +1,55 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace MySoft.Data
 {
+    /// <summary>
+    /// FieldValue集合
+    /// </summary>
+    public class FieldValueCollection<T>
+        where T : Entity
+    {
+        private IDictionary<Field, object> fvValues;
+        /// <summary>
+        /// 实例化FieldValueCollection
+        /// </summary>
+        /// <param name="dictValues"></param>
+        public FieldValueCollection(IDictionary<string, object> dictValues)
+        {
+            fvValues = new Dictionary<Field, object>();
+            T entity = CoreHelper.CreateInstance<T>();
+            foreach (var kv in dictValues)
+            {
+                var field = entity.As<IEntityBase>().GetField(kv.Key);
+                if (field != null) fvValues[field] = kv.Value;
+            }
+        }
+
+        /// <summary>
+        /// 实例化FieldValueCollection
+        /// </summary>
+        /// <param name="dictValues"></param>
+        public FieldValueCollection(IDictionary<Field, object> dictValues)
+        {
+            this.fvValues = dictValues;
+        }
+
+        /// <summary>
+        /// 返回列表
+        /// </summary>
+        /// <returns></returns>
+        public FieldValue[] ToList()
+        {
+            List<FieldValue> list = new List<FieldValue>();
+            foreach (var kv in fvValues)
+            {
+                list.Add(new FieldValue(kv.Key, kv.Value));
+            }
+            return list.ToArray();
+        }
+    }
+
     /// <summary>
     /// 字段及值
     /// </summary>

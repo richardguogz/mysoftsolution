@@ -95,6 +95,8 @@ namespace MySoft.Data.UnitTest
             }
 
             var keys = dict.Keys.Take(10).ToList();
+
+            //DbSession.Default.InsertOrUpdate()
         }
     }
 }

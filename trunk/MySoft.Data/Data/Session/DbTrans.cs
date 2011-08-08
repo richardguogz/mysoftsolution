@@ -255,6 +255,19 @@ namespace MySoft.Data
             return dbBatch.InsertOrUpdate<T>(entity);
         }
 
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int InsertOrUpdate<T>(FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return dbBatch.InsertOrUpdate<T>(fvs, where);
+        }
+
         #endregion
 
         #region 事务操作
@@ -1001,6 +1014,19 @@ namespace MySoft.Data
             where T : Entity
         {
             return dbBatch.InsertOrUpdate<T>(table, entity);
+        }
+
+        /// <summary>
+        /// 插入或更新
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fvs"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public int InsertOrUpdate<T>(Table table, FieldValue[] fvs, WhereClip where)
+            where T : Entity
+        {
+            return dbBatch.InsertOrUpdate<T>(table, fvs, where);
         }
 
         /// <summary>
