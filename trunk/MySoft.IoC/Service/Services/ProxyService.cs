@@ -30,27 +30,6 @@ namespace MySoft.IoC
 
             #region socket通讯
 
-            //启动线程来清除过期的数据
-            ThreadPool.QueueUserWorkItem((state) =>
-            {
-                //一分钟清除一次
-                Thread.Sleep(TimeSpan.FromMinutes(1));
-
-                //如果结果多于0个
-                if (responses.Count > 0)
-                {
-                    lock (responses)
-                    {
-                        //将过期的数据移除掉
-                        var keys = responses.Where(p => p.Value.Expiration < DateTime.Now).Select(p => p.Key).ToArray();
-                        foreach (var key in keys)
-                        {
-                            responses.Remove(key);
-                        }
-                    }
-                }
-            });
-
             //实例化服务池
             reqPool = new ServiceMessagePool(node.MaxPool);
             for (int i = 0; i < node.MaxPool; i++)
@@ -71,7 +50,11 @@ namespace MySoft.IoC
             lock (responses)
             {
                 //数据结果加入到集合中
-                responses[response.TransactionId] = response;
+                if (response.Expiration > DateTime.Now)
+                {
+                    responses[response.TransactionId] = response;
+                    message.Dispose();
+                }
             }
         }
 

@@ -170,7 +170,7 @@ namespace MySoft.Net.Sockets
         {
             lock (locklist)
             {
-                ByteList.Clear();
+                Reset();
             }
         }
     }

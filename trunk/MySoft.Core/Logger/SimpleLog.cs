@@ -13,9 +13,9 @@ namespace MySoft.Logger
     public class SimpleLog
     {
         /// <summary>
-        /// 简单日志的单例
+        /// 简单日志的单例 (默认路径为根目录下的Logs目录)
         /// </summary>
-        public static readonly SimpleLog Instance = new SimpleLog(AppDomain.CurrentDomain.BaseDirectory);
+        public static readonly SimpleLog Instance = new SimpleLog(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs"));
 
         private string basedir;
         private Queue<LogInfo> logqueue;
@@ -61,7 +61,7 @@ namespace MySoft.Logger
         /// <param name="ex"></param>
         public void WriteLog(Exception ex)
         {
-            WriteLogForDir("ErrorLog", ex);
+            WriteLogForDir("Error", ex);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace MySoft.Logger
         /// </summary>
         public void WriteLog(string log)
         {
-            WriteLogForDir("Log", log);
+            WriteLogForDir(string.Empty, log);
         }
 
         /// <summary>

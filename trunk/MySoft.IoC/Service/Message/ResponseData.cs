@@ -10,7 +10,7 @@ namespace MySoft.IoC.Message
     /// 返回的数据
     /// </summary>
     [Serializable]
-    public sealed class ResponseData
+    public sealed class ResponseData : IDisposable
     {
         private bool compress = false;
         private bool encrypt = false;
@@ -131,6 +131,15 @@ namespace MySoft.IoC.Message
             }
 
             return 1;
+        }
+
+        /// <summary>
+        /// 清理资源
+        /// </summary>
+        public void Dispose()
+        {
+            value = null;
+            buffer = null;
         }
     }
 }
