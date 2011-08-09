@@ -808,10 +808,10 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public int InsertOrUpdate<T>(Table table, T entity)
+        public int InsertOrUpdate<T>(Table table, T entity, params Field[] fields)
             where T : Entity
         {
-            return dbTrans.InsertOrUpdate<T>(table, entity);
+            return dbTrans.InsertOrUpdate<T>(table, entity, fields);
         }
 
         /// <summary>
@@ -941,10 +941,10 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public int InsertOrUpdate<T>(T entity)
+        public int InsertOrUpdate<T>(T entity, params Field[] fields)
             where T : Entity
         {
-            return dbTrans.InsertOrUpdate<T>(entity);
+            return dbTrans.InsertOrUpdate<T>(entity, fields);
         }
 
         /// <summary>

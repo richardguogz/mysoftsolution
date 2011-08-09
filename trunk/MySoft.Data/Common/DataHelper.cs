@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Reflection;
+using System.Linq;
 
 namespace MySoft.Data
 {
@@ -306,6 +307,24 @@ namespace MySoft.Data
             list.ForEach(fv =>
             {
                 if (fv.IsPrimaryKey)
+                {
+                    where &= fv.Field.At(table) == fv.Value;
+                }
+            });
+
+            return where;
+        }
+
+
+        internal static WhereClip GetAllWhere<T>(Table table, T entity, Field[] fields)
+            where T : Entity
+        {
+            WhereClip where = null;
+            List<FieldValue> list = entity.GetFieldValues();
+
+            list.ForEach(fv =>
+            {
+                if (fields.Where(p => fv.Field.Name == p.Name).Count() > 0)
                 {
                     where &= fv.Field.At(table) == fv.Value;
                 }

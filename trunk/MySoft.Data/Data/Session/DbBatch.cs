@@ -300,10 +300,10 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public int InsertOrUpdate<T>(Table table, T entity)
+        public int InsertOrUpdate<T>(Table table, T entity, params Field[] fields)
             where T : Entity
         {
-            if (Exists<T>(table, entity))
+            if (Exists<T>(table, entity, fields))
                 entity.Attach();
             else
                 entity.Detach();
@@ -376,10 +376,10 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public int InsertOrUpdate<T>(T entity)
+        public int InsertOrUpdate<T>(T entity, params Field[] fields)
             where T : Entity
         {
-            return InsertOrUpdate(null, entity);
+            return InsertOrUpdate(null, entity, fields);
         }
 
         /// <summary>
@@ -406,10 +406,14 @@ namespace MySoft.Data
         /// <param name="table"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        private bool Exists<T>(Table table, T entity)
+        private bool Exists<T>(Table table, T entity, Field[] fields)
             where T : Entity
         {
-            WhereClip where = DataHelper.GetPkWhere<T>(table, entity);
+            WhereClip where = WhereClip.None;
+            if (fields != null && fields.Length > 0)
+                where = DataHelper.GetAllWhere<T>(table, entity, fields);
+            else
+                where = DataHelper.GetPkWhere<T>(table, entity);
             return Exists<T>(table, where);
         }
 
@@ -423,6 +427,11 @@ namespace MySoft.Data
         private bool Exists<T>(Table table, WhereClip where)
             where T : Entity
         {
+            if (where == null || where == WhereClip.None)
+            {
+                throw new DataException("在判断记录是否存在时出现异常，条件为null或WhereClip.None！");
+            }
+
             FromSection<T> fs = new FromSection<T>(dbProvider, dbTrans, table);
             return fs.Where(where).Count() > 0;
         }

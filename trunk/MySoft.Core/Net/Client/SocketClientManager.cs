@@ -43,7 +43,7 @@ namespace MySoft.Net.Client
         public SocketClientManager()
         {
             //初始化数据包缓冲区,并设置了最大数据包尽可能的大 
-            BuffListManger = new BufferList(1024 * 1024 * 128); //最大为1G数据
+            BuffListManger = new BufferList(1024 * 1024 * 4); //最大为1G数据
 
             Client = new SocketClient();
             Client.ReceiveTimeout = 60 * 1000;
@@ -81,6 +81,8 @@ namespace MySoft.Net.Client
                             OnReceived(mdata, socket);
                         }
                     }
+
+                    BuffListManger.Dispose();
                 }
             }
             catch (Exception ex)

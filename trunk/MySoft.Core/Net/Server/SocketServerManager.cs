@@ -108,7 +108,7 @@ namespace MySoft.Net.Server
                 //注意这里为了 简单 所以就绑定了个 BuffList 类，本来这里应该绑定用户类对象，
                 //并在用户类里面建立 初始化 一个 BuffList 类，这样就能通过用户类保存更多的信息了。
                 //比如用户名，权限等等
-                socketAsync.UserToken = new BufferList(1024 * 1024 * 128); //最大为1G数据
+                socketAsync.UserToken = new BufferList(1024 * 1024 * 16); //最大为1G数据
             }
 
             //BuffList 数据包组合类 如果不想丢数据就用这个类吧
@@ -128,6 +128,8 @@ namespace MySoft.Net.Server
                             OnBinaryInput(mdata, socketAsync);
                         }
                     }
+
+                    BuffListManger.Dispose();
                 }
             }
             catch (Exception ex)

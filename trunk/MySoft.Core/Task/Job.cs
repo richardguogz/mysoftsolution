@@ -162,17 +162,6 @@ namespace MySoft.Task
             set { _ExceptionCount = value; }
         }
 
-        private object _Param;
-        /// <summary>
-        /// 参数
-        /// </summary>
-        public object Param
-        {
-            get { return _Param; }
-            set { _Param = value; }
-        }
-
-
         /// <summary>
         /// 根据当前时间判断任务是否需要执行
         /// </summary>
@@ -224,19 +213,10 @@ namespace MySoft.Task
                         WriteLog(string.Format("正在执行任务[{0}]......", this.Name), LogType.Information);
 
                         //执行任务
-                        Assembly assembly = Assembly.Load(_AssemblyName);
-                        Type type = assembly.GetType(_ClassName);
+                        Type type = Type.GetType(string.Format("{0}, {1}", _ClassName, _AssemblyName));
                         object obj = Activator.CreateInstance(type);
-                        MethodInfo mi = type.GetMethod("Run");
-
-                        if (_Param != null)
-                        {
-                            DynamicCalls.GetMethodInvoker(mi).Invoke(obj, new object[] { _Param });
-                        }
-                        else
-                        {
-                            DynamicCalls.GetMethodInvoker(mi).Invoke(obj, null);
-                        }
+                        ITask task = obj as ITask;
+                        task.Run();
 
                         WriteLog(string.Format("执行任务[{0}]成功！", this.Name), LogType.Information);
                     }

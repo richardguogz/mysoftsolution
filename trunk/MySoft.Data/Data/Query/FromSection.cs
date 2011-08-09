@@ -450,6 +450,16 @@ namespace MySoft.Data
             return query.Count();
         }
 
+        /// <summary>
+        /// 获取总页数
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public int GetPageCount(int pageSize)
+        {
+            return query.GetPageCount(pageSize);
+        }
+
         #endregion
 
         #region 返回分页信息

@@ -119,7 +119,7 @@ namespace MySoft.Data
             //by default, using sqlserver db provider
             if (string.IsNullOrEmpty(className))
             {
-                className = typeof(SqlServer.SqlServerProvider).ToString();
+                className = typeof(SqlServer9.SqlServer9Provider).ToString();
             }
             else if (className.ToLower().IndexOf("System.Data.SqlClient".ToLower()) >= 0 || className.ToLower().Trim() == "sql" || className.ToLower().Trim() == "sqlserver")
             {

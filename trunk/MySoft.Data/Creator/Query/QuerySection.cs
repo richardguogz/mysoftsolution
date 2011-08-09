@@ -75,6 +75,16 @@ namespace MySoft.Data
         }
 
         /// <summary>
+        /// 获取总页数
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public int GetPageCount(int pageSize)
+        {
+            return query.GetPageCount(pageSize);
+        }
+
+        /// <summary>
         /// 记录是否存在
         /// </summary>
         /// <returns></returns>

@@ -10,7 +10,7 @@ namespace MySoft.Data
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class ArrayList<T> : List<T>, IArrayList<T>
+    public class ArrayList<T> : List<T>, IArrayList<T>, IDisposable
     {
         public ArrayList() { }
 
@@ -94,6 +94,14 @@ namespace MySoft.Data
         }
 
         #endregion
+
+        /// <summary>
+        /// 清理资源
+        /// </summary>
+        public void Dispose()
+        {
+            this.Clear();
+        }
     }
 
     /// <summary>

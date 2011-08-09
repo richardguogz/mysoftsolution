@@ -67,7 +67,7 @@ namespace MySoft.Task
                     {
                         job.State = JobState.Running;
                         Thread thread = new Thread(new ThreadStart(job.Execute));
-                        //thread.IsBackground = true;
+                        thread.IsBackground = true;
                         threads.Add(job.Name, thread);
                         thread.Start();
 

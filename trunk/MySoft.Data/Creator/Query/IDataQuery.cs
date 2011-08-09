@@ -14,6 +14,8 @@ namespace MySoft.Data
         int Count();
         bool Exists();
 
+        int GetPageCount(int pageSize);
+
         T ToSingle<T>() where T : class;
 
         SourceReader ToReader();

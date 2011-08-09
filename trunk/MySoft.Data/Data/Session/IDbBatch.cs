@@ -16,7 +16,7 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        int InsertOrUpdate<T>(T entity) where T : Entity;
+        int InsertOrUpdate<T>(T entity, params Field[] fields) where T : Entity;
 
         /// <summary>
         /// 插入或更新
@@ -41,7 +41,7 @@ namespace MySoft.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        int InsertOrUpdate<T>(Table table, T entity) where T : Entity;
+        int InsertOrUpdate<T>(Table table, T entity, params Field[] fields) where T : Entity;
 
         /// <summary>
         /// 插入或更新

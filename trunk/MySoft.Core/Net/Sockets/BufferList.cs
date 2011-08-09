@@ -18,7 +18,7 @@ namespace MySoft.Net.Sockets
     /// （通过互联网发送数据包，实际上是将一个较大的包拆分成诺干小包，此类的功能就是讲诺干小包重新组合成完整的数据包）
     /// 此类是线程安全的
     /// </summary>
-    public class BufferList
+    public class BufferList : IDisposable
     {
         public object locklist = new object();
 
@@ -160,6 +160,17 @@ namespace MySoft.Net.Sockets
                 {
                     return false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 清除资源
+        /// </summary>
+        public void Dispose()
+        {
+            lock (locklist)
+            {
+                ByteList.Clear();
             }
         }
     }

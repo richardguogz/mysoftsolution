@@ -82,6 +82,8 @@ namespace MySoft.Data
         object ToScalar();
         int Count();
 
+        int GetPageCount(int pageSize);
+
         #endregion
 
         DataPage<IList<T>> ToListPage(int pageSize, int pageIndex);
