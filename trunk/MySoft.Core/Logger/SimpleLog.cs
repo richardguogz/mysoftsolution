@@ -15,7 +15,7 @@ namespace MySoft.Logger
         /// <summary>
         /// 简单日志的单例 (默认路径为根目录下的Logs目录)
         /// </summary>
-        public static readonly SimpleLog Instance = new SimpleLog(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs"));
+        public static readonly SimpleLog Instance = new SimpleLog(AppDomain.CurrentDomain.BaseDirectory);
 
         private string basedir;
         private Queue<LogInfo> logqueue;
@@ -34,10 +34,16 @@ namespace MySoft.Logger
             {
                 while (true)
                 {
-                    try
+                    var list = new List<LogInfo>();
+                    lock (logqueue)
                     {
-                        var loginfo = logqueue.Dequeue();
-                        if (loginfo != null)
+                        list.AddRange(logqueue.ToArray());
+                        logqueue.Clear();
+                    }
+
+                    list.ForEach(loginfo =>
+                    {
+                        try
                         {
                             if (!Directory.Exists(Path.GetDirectoryName(loginfo.FilePath)))
                             {
@@ -45,10 +51,10 @@ namespace MySoft.Logger
                             }
                             File.AppendAllText(loginfo.FilePath, loginfo.Log);
                         }
-                    }
-                    catch { }
+                        catch { }
+                    });
 
-                    Thread.Sleep(10);
+                    Thread.Sleep(1000);
                 }
             });
         }
@@ -61,7 +67,7 @@ namespace MySoft.Logger
         /// <param name="ex"></param>
         public void WriteLog(Exception ex)
         {
-            WriteLogForDir("Error", ex);
+            WriteLogForDir(string.Empty, ex);
         }
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace MySoft.Logger
         /// <param name="ex"></param>
         public void WriteLogForDir(string dir, Exception ex)
         {
-            string filePath = Path.Combine(basedir, dir);
+            string filePath = Path.Combine(Path.Combine(basedir, "ErrorLogs"), dir);
             filePath = Path.Combine(filePath, ErrorHelper.GetInnerException(ex).GetType().Name);
             filePath = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
 
@@ -90,7 +96,7 @@ namespace MySoft.Logger
         /// </summary>
         public void WriteLogForDir(string dir, string log)
         {
-            string filePath = Path.Combine(basedir, dir);
+            string filePath = Path.Combine(Path.Combine(basedir, "Logs"), dir);
             filePath = Path.Combine(filePath, string.Format("{0}.log", DateTime.Now.ToString("yyyy-MM-dd")));
 
             WriteFileLog(filePath, log);

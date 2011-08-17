@@ -60,6 +60,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -402,6 +403,7 @@
     <Compile Include="Converter\ConverterFactory.cs" />
     <Compile Include="Converter\IStringConverter.cs" />
     <Compile Include="Utils\ImageHelper.cs" />
+    <Compile Include="Utils\MemoryManager.cs" />
     <Compile Include="Utils\ObjectBuilder.cs" />
     <Compile Include="Converter\PropertyHandler.cs" />
     <Compile Include="Converter\ToArray.cs" />
@@ -469,6 +471,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

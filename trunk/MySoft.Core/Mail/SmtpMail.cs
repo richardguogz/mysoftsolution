@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Web;
 
 namespace MySoft.Mail
@@ -177,8 +176,14 @@ namespace MySoft.Mail
 
                 //启用线程池来实现异步发送
                 AsyncMailSender sender = new AsyncMailSender(mail => mail.SendAsync());
-                IAsyncResult result = sender.BeginInvoke(smtp, null, null);
-                sender.EndInvoke(result);
+                IAsyncResult result = sender.BeginInvoke(smtp, ar =>
+                {
+                    AsyncMailSender handler = ar.AsyncState as AsyncMailSender;
+                    if (handler != null)
+                    {
+                        handler.EndInvoke(ar);
+                    }
+                }, sender);
             }
         }
 

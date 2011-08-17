@@ -7,7 +7,7 @@ namespace MySoft
     /// <summary>
     /// 缩放格式
     /// </summary>
-    public enum ZoomMode
+    public enum ImageZoomMode
     {
         /// <summary>
         /// 指定高宽缩放（可能变形）
@@ -24,7 +24,11 @@ namespace MySoft
         /// <summary>
         /// 指定高宽裁减（不变形） 
         /// </summary>
-        CUT
+        Cut,
+        /// <summary>
+        /// 自动模式
+        /// </summary>
+        Auto
     }
 
     /// <summary>
@@ -59,7 +63,7 @@ namespace MySoft
         /// <param name="width">缩略图宽度</param>
         /// <param name="height">缩略图高度</param>
         /// <param name="mode">生成缩略图的方式</param>    
-        public static void MakeThumbnail(string originalImagePath, string thumbnailPath, int width, int height, ZoomMode mode)
+        public static void MakeThumbnail(string originalImagePath, string thumbnailPath, int width, int height, ImageZoomMode mode)
         {
             System.Drawing.Image originalImage = System.Drawing.Image.FromFile(originalImagePath);
 
@@ -71,17 +75,23 @@ namespace MySoft
             int ow = originalImage.Width;
             int oh = originalImage.Height;
 
+            if (mode == ImageZoomMode.Auto)
+            {
+                if (ow > oh) mode = ImageZoomMode.H;
+                else if (oh > ow) mode = ImageZoomMode.W;
+            }
+
             switch (mode)
             {
-                case ZoomMode.HW://指定高宽缩放（可能变形）                
+                case ImageZoomMode.HW://指定高宽缩放（可能变形）                
                     break;
-                case ZoomMode.W://指定宽，高按比例                    
+                case ImageZoomMode.W://指定宽，高按比例                    
                     toheight = originalImage.Height * width / originalImage.Width;
                     break;
-                case ZoomMode.H://指定高，宽按比例
+                case ImageZoomMode.H://指定高，宽按比例
                     towidth = originalImage.Width * height / originalImage.Height;
                     break;
-                case ZoomMode.CUT://指定高宽裁减（不变形）                
+                case ImageZoomMode.Cut://指定高宽裁减（不变形）                
                     if ((double)originalImage.Width / (double)originalImage.Height > (double)towidth / (double)toheight)
                     {
                         oh = originalImage.Height;
@@ -124,7 +134,7 @@ namespace MySoft
             try
             {
                 //以jpg格式保存缩略图
-                bitmap.Save(thumbnailPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                bitmap.Save(thumbnailPath);
             }
             catch (System.Exception e)
             {
@@ -143,8 +153,8 @@ namespace MySoft
         /// 在图片上增加文字水印
         /// </summary>
         /// <param name="Path">原服务器图片路径</param>
-        /// <param name="Path_syp">生成的带文字水印的图片路径</param>
-        public static void AddShuiYinWord(string Path, string Path_syp, string syText)
+        /// <param name="WatermarkPath">生成的带文字水印的图片路径</param>
+        public static void AddWordWatermark(string Path, string WatermarkPath, string WatermarkText)
         {
             System.Drawing.Image image = System.Drawing.Image.FromFile(Path);
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(image);
@@ -152,10 +162,10 @@ namespace MySoft
             System.Drawing.Font f = new System.Drawing.Font("Verdana", 16);
             System.Drawing.Brush b = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
 
-            g.DrawString(syText, f, b, 15, 15);
+            g.DrawString(WatermarkText, f, b, 15, 15);
             g.Dispose();
 
-            image.Save(Path_syp);
+            image.Save(WatermarkPath);
             image.Dispose();
         }
 
@@ -164,20 +174,19 @@ namespace MySoft
         /// 在图片上生成图片水印
         /// </summary>
         /// <param name="Path">原服务器图片路径</param>
-        /// <param name="Path_syp">生成的带图片水印的图片路径</param>
-        /// <param name="Path_sypf">水印图片路径</param>
-        public static void AddShuiYinPic(string Path, string Path_syp, string Path_sypf)
+        /// <param name="WatermarkPath">生成的带图片水印的图片路径</param>
+        /// <param name="WatermarkImage">水印图片路径</param>
+        public static void AddImageWatermark(string Path, string WatermarkPath, Image WatermarkImage)
         {
             System.Drawing.Image image = System.Drawing.Image.FromFile(Path);
-            System.Drawing.Image copyImage = System.Drawing.Image.FromFile(Path_sypf);
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(image);
 
-            g.DrawImage(copyImage, new System.Drawing.Rectangle(image.Width - copyImage.Width - 10, image.Height - copyImage.Height - 10, copyImage.Width, copyImage.Height), 0, 0, copyImage.Width, copyImage.Height, System.Drawing.GraphicsUnit.Pixel);
+            g.DrawImage(WatermarkImage, new System.Drawing.Rectangle(image.Width - WatermarkImage.Width - 10, image.Height - WatermarkImage.Height - 10, WatermarkImage.Width, WatermarkImage.Height), 0, 0, WatermarkImage.Width, WatermarkImage.Height, System.Drawing.GraphicsUnit.Pixel);
             g.Dispose();
 
-            image.Save(Path_syp);
+            image.Save(WatermarkPath);
             image.Dispose();
-            copyImage.Dispose();
+            WatermarkImage.Dispose();
         }
 
         /// <summary>

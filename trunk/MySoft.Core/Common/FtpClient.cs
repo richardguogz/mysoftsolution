@@ -22,8 +22,6 @@ namespace MySoft.FTP
     /// </remarks>
     public class FTPclient
     {
-
-
         #region "CONSTRUCTORS"
         /// <summary>
         /// Blank constructor
@@ -216,10 +214,7 @@ namespace MySoft.FTP
 
             }
 
-
-            ftp = null;
             return true;
-
         }
         #endregion
 

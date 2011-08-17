@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Runtime.Remoting.Messaging;
 
 namespace MySoft.RESTful
 {
@@ -55,13 +56,11 @@ namespace MySoft.RESTful
         {
             get
             {
-                var slot = Thread.GetNamedDataSlot("Authentication_" + Thread.CurrentThread.ManagedThreadId.ToString());
-                return (AuthenticationContext)Thread.GetData(slot);
+                return CallContext.HostContext as AuthenticationContext;
             }
             set
             {
-                var slot = Thread.GetNamedDataSlot("Authentication_" + Thread.CurrentThread.ManagedThreadId.ToString());
-                Thread.SetData(slot, value);
+                CallContext.HostContext = value;
             }
         }
     }
