@@ -14,7 +14,7 @@ namespace MySoft.IoC.Message
     /// <summary>
     /// 服务消息
     /// </summary>
-    public class ServiceMessage
+    public class ServiceMessage : IDisposable
     {
         public event ServiceMessageEventHandler SendCallback;
 
@@ -52,23 +52,27 @@ namespace MySoft.IoC.Message
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public bool Send(DataPacket data, TimeSpan timeout)
+        public void Send(DataPacket data, TimeSpan timeout)
         {
             //如果连接断开，直接抛出异常
             if (!isConnected)
             {
                 //尝试连接到服务器
                 isConnected = manager.Client.ConnectTo(ip, port, timeout);
+
                 if (!isConnected)
                 {
                     throw new WarningException(string.Format("Can't connect to server ({0}:{1})！Remote node : {2}", ip, port, node));
                 }
             }
 
-            if (data == null || data.PacketObject == null) return false;
+            if (data == null || data.PacketObject == null)
+            {
+                return;
+            }
 
             byte[] buffer = BufferFormat.FormatFCA(data);
-            return manager.Client.SendData(buffer);
+            manager.Client.SendData(buffer);
         }
 
         #region Socket消息委托
@@ -148,5 +152,25 @@ namespace MySoft.IoC.Message
         }
 
         #endregion
+
+        /// <summary>
+        /// 清理资源
+        /// </summary>
+        public void Dispose()
+        {
+            try
+            {
+                Socket sock = manager.Client.Socket;
+                sock.Shutdown(SocketShutdown.Both);
+                sock.Close();
+
+                manager = null;
+            }
+            catch (Exception)
+            {
+            }
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

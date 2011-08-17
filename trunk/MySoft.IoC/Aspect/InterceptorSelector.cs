@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Castle.Core.Interceptor;
+using Castle.DynamicProxy;
 
 namespace MySoft.IoC
 {

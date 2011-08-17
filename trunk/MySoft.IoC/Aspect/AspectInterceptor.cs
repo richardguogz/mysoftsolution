@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Interceptor;
+using Castle.DynamicProxy;
 
 namespace MySoft.IoC
 {

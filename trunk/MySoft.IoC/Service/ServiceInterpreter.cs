@@ -5,6 +5,7 @@ using System.Reflection;
 using Castle.Core.Resource;
 using Castle.MicroKernel;
 using Castle.Windsor.Configuration.Interpreters;
+using Castle.MicroKernel.SubSystems.Configuration;
 
 namespace MySoft.IoC
 {

@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using Castle.Core;
+using Castle.Core.Internal;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MySoft.Cache;
 using MySoft.IoC.Message;
 using MySoft.IoC.Services;
 using MySoft.Logger;
+using System.Linq;
 
 namespace MySoft.IoC
 {
@@ -46,20 +49,19 @@ namespace MySoft.IoC
         {
             foreach (Type type in GetInterfaces<ServiceContractAttribute>())
             {
-                object serviceInstance = null;
-                try { serviceInstance = this[type]; }
+                object instance = null;
+                try { instance = this[type]; }
                 catch { }
 
                 //判断实例是否从接口分配
-                if (serviceInstance != null && type.IsAssignableFrom(serviceInstance.GetType()))
+                if (instance != null && type.IsAssignableFrom(instance.GetType()))
                 {
-                    IService service = new DynamicService(this, type, serviceInstance);
-                    RegisterComponent("Service_" + service.ServiceName, service);
-
-                    if (serviceInstance is IStartable)
+                    IService service = new DynamicService(this, type, instance);
+                    if (instance is IStartable)
                     {
-                        RegisterComponent("Startable_" + service.ServiceName, serviceInstance.GetType());
+                        RegisterComponent("Startable_" + service.ServiceName, type, instance.GetType());
                     }
+                    RegisterComponent("Service_" + service.ServiceName, service);
                 }
             }
         }
@@ -119,21 +121,11 @@ namespace MySoft.IoC
         /// Registers the component.
         /// </summary>
         /// <param name="key">The key.</param>
+        /// <param name="classType">Type of the service.</param>
         /// <param name="serviceType">Type of the service.</param>
-        /// <param name="classType">Type of the class.</param>
-        public void RegisterComponent(string key, Type serviceType, Type classType)
+        public void RegisterComponent(string key, Type classType, Type serviceType)
         {
-            container.AddComponent(key, serviceType, classType);
-        }
-
-        /// <summary>
-        /// Registers the component.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="classType">Type of the class.</param>
-        public void RegisterComponent(string key, Type classType)
-        {
-            container.AddComponent(key, typeof(IService), classType);
+            container.Register(Component.For(classType).Named(key).ImplementedBy(serviceType).LifeStyle.Transient);
         }
 
         /// <summary>
@@ -143,7 +135,7 @@ namespace MySoft.IoC
         /// <param name="instance">Type of the class.</param>
         public void RegisterComponent(string key, object instance)
         {
-            container.Kernel.AddComponentInstance(key, instance);
+            container.Register(Component.For(instance.GetType()).Named(key).Instance(instance).LifeStyle.Transient);
         }
 
         /// <summary>
@@ -158,12 +150,11 @@ namespace MySoft.IoC
                 if (en.Value != null)
                 {
                     IService service = new DynamicService(this, (Type)en.Key, en.Value);
-                    RegisterComponent("Service_" + service.ServiceName, service);
-
                     if (en.Value is IStartable)
                     {
-                        RegisterComponent("Startable_" + service.ServiceName, en.Value.GetType());
+                        RegisterComponent("Startable_" + service.ServiceName, (Type)en.Key, en.Value.GetType());
                     }
+                    RegisterComponent("Service_" + service.ServiceName, service);
                 }
             }
         }
@@ -183,7 +174,7 @@ namespace MySoft.IoC
         /// <value></value>
         public object this[string key]
         {
-            get { return container[key]; }
+            get { return container.Resolve<object>(key); }
         }
 
         /// <summary>
@@ -192,19 +183,21 @@ namespace MySoft.IoC
         /// <value></value>
         public object this[Type serviceType]
         {
-            get { return container[serviceType]; }
+            get { return container.Resolve(serviceType); }
         }
 
         /// <summary>
         /// Calls the service.
         /// </summary>
         /// <param name="reqMsg"></param>
+        /// <param name="logTimeout"></param>
         /// <returns></returns>
         public ResponseMessage CallService(RequestMessage reqMsg, double logTimeout)
         {
-            //check local service first
-            IService localService = GetLocalService(reqMsg.ServiceName);
-            if (localService == null)
+            IService service = container.ResolveAll<IService>()
+                .SingleOrDefault(model => model.ServiceName == reqMsg.ServiceName);
+
+            if (service == null)
             {
                 string title = string.Format("The server not find matching service ({0}).", reqMsg.ServiceName);
                 throw new WarningException(title)
@@ -213,7 +206,8 @@ namespace MySoft.IoC
                     ExceptionHeader = string.Format("Application【{0}】occurs error. ==> Comes from {1}({2}).", reqMsg.AppName, reqMsg.HostName, reqMsg.IPAddress)
                 };
             }
-            return localService.CallService(reqMsg, logTimeout);
+
+            return service.CallService(reqMsg, logTimeout);
         }
 
         /// <summary>
@@ -224,7 +218,7 @@ namespace MySoft.IoC
         {
             List<Type> typelist = new List<Type>();
             GraphNode[] nodes = this.Kernel.GraphNodes;
-            foreach (ComponentModel model in nodes)
+            nodes.Cast<ComponentModel>().ForEach(model =>
             {
                 bool markedWithServiceContract = false;
                 var attr = CoreHelper.GetTypeAttribute<ContractType>(model.Service);
@@ -237,56 +231,20 @@ namespace MySoft.IoC
                 {
                     typelist.Add(model.Service);
                 }
-            }
+            });
+
             return typelist.ToArray();
         }
 
-        /// <summary>
-        /// get local service
-        /// </summary>
-        /// <param name="serviceName"></param>
-        /// <returns></returns>
-        public IService GetLocalService(string serviceName)
-        {
-            ServiceNodeInfo[] serviceNodes = ParseServiceNodes(Kernel.GraphNodes);
-            foreach (ServiceNodeInfo serviceNode in serviceNodes)
-            {
-                var obj = container[serviceNode.Key];
-                if (obj is IService)
-                {
-                    IService service = (IService)obj;
-                    if (service.ServiceName == serviceName)
-                    {
-                        return service;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private ServiceNodeInfo[] ParseServiceNodes(GraphNode[] nodes)
-        {
-            List<ServiceNodeInfo> serviceNodes = new List<ServiceNodeInfo>();
-            if (nodes == null) return serviceNodes.ToArray();
-
-            for (int i = 0; i < nodes.Length; i++)
-            {
-                ComponentModel node = (ComponentModel)nodes[i];
-                if (typeof(IService).IsAssignableFrom(node.Service))
-                {
-                    ServiceNodeInfo serviceNode = new ServiceNodeInfo();
-                    serviceNode.Key = node.Name;
-                    serviceNode.Sevice = node.Service.FullName;
-                    serviceNode.Implementation = node.Implementation.FullName;
-                    serviceNodes.Add(serviceNode);
-                }
-            }
-
-            return serviceNodes.ToArray();
-        }
-
         #endregion
+
+        /// <summary>
+        /// 服务名称
+        /// </summary>
+        public string ServiceName
+        {
+            get { return typeof(SimpleServiceContainer).FullName; }
+        }
 
         #region IDisposable Members
 
@@ -296,6 +254,7 @@ namespace MySoft.IoC
         public void Dispose()
         {
             container.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         #endregion
@@ -326,8 +285,13 @@ namespace MySoft.IoC
         /// <param name="log"></param>
         public void WriteLog(string log, LogType type)
         {
-            try { if (OnLog != null) OnLog(log, type); }
-            catch { }
+            try
+            {
+                if (OnLog != null) OnLog(log, type);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
@@ -336,8 +300,13 @@ namespace MySoft.IoC
         /// <param name="exception"></param>
         public void WriteError(Exception exception)
         {
-            try { if (OnError != null) OnError(exception); }
-            catch { }
+            try
+            {
+                if (OnError != null) OnError(exception);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         #endregion

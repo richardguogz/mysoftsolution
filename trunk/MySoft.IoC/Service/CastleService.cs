@@ -73,69 +73,72 @@ namespace MySoft.IoC
             manager.OnBinaryInput += new BinaryInputEventHandler(SocketServerManager_OnBinaryInput);
             manager.OnMessageOutput += new EventHandler<LogOutEventArgs>(SocketServerManager_OnMessageOutput);
 
-            ThreadPool.QueueUserWorkItem(state =>
-             {
-                 while (true)
-                 {
-                     try
-                     {
-                         //获取最后一秒状态
-                         var status = statuslist.GetLast();
+            Thread thread = new Thread(() =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        //获取最后一秒状态
+                        var status = statuslist.GetLast();
 
-                         //计算时间
-                         if (status.RequestCount > 0)
-                         {
-                             //处理最高值 
-                             #region 处理最高值
+                        //计算时间
+                        if (status.RequestCount > 0)
+                        {
+                            //处理最高值 
+                            #region 处理最高值
 
-                             //流量
-                             if (status.DataFlow > highest.DataFlow)
-                             {
-                                 highest.DataFlow = status.DataFlow;
-                                 highest.DataFlowCounterTime = status.CounterTime;
-                             }
+                            //流量
+                            if (status.DataFlow > highest.DataFlow)
+                            {
+                                highest.DataFlow = status.DataFlow;
+                                highest.DataFlowCounterTime = status.CounterTime;
+                            }
 
-                             //成功
-                             if (status.SuccessCount > highest.SuccessCount)
-                             {
-                                 highest.SuccessCount = status.SuccessCount;
-                                 highest.SuccessCountCounterTime = status.CounterTime;
-                             }
+                            //成功
+                            if (status.SuccessCount > highest.SuccessCount)
+                            {
+                                highest.SuccessCount = status.SuccessCount;
+                                highest.SuccessCountCounterTime = status.CounterTime;
+                            }
 
-                             //失败
-                             if (status.ErrorCount > highest.ErrorCount)
-                             {
-                                 highest.ErrorCount = status.ErrorCount;
-                                 highest.ErrorCountCounterTime = status.CounterTime;
-                             }
+                            //失败
+                            if (status.ErrorCount > highest.ErrorCount)
+                            {
+                                highest.ErrorCount = status.ErrorCount;
+                                highest.ErrorCountCounterTime = status.CounterTime;
+                            }
 
-                             //请求总数
-                             if (status.RequestCount > highest.RequestCount)
-                             {
-                                 highest.RequestCount = status.RequestCount;
-                                 highest.RequestCountCounterTime = status.CounterTime;
-                             }
+                            //请求总数
+                            if (status.RequestCount > highest.RequestCount)
+                            {
+                                highest.RequestCount = status.RequestCount;
+                                highest.RequestCountCounterTime = status.CounterTime;
+                            }
 
-                             //耗时
-                             if (status.ElapsedTime > highest.ElapsedTime)
-                             {
-                                 highest.ElapsedTime = status.ElapsedTime;
-                                 highest.ElapsedTimeCounterTime = status.CounterTime;
-                             }
+                            //耗时
+                            if (status.ElapsedTime > highest.ElapsedTime)
+                            {
+                                highest.ElapsedTime = status.ElapsedTime;
+                                highest.ElapsedTimeCounterTime = status.CounterTime;
+                            }
 
-                             #endregion
-                         }
-                     }
-                     catch (Exception ex)
-                     {
-                         //写错误日志
-                         SimpleLog.Instance.WriteLog(ex);
-                     }
+                            #endregion
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //写错误日志
+                        SimpleLog.Instance.WriteLog(ex);
+                    }
 
-                     //每1秒处理一次
-                     Thread.Sleep(1000);
-                 }
-             });
+                    //每1秒处理一次
+                    Thread.Sleep(1000);
+                }
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         /// <summary>
@@ -144,6 +147,12 @@ namespace MySoft.IoC
         public void Dispose()
         {
             this.Stop();
+            manager = null;
+            clients = null;
+            statuslist = null;
+            highest = null;
+
+            GC.SuppressFinalize(this);
         }
 
         #region 启动停止服务
@@ -246,14 +255,24 @@ namespace MySoft.IoC
 
         void container_OnLog(string log, LogType type)
         {
-            try { if (OnLog != null) OnLog(log, type); }
-            catch { }
+            try
+            {
+                if (OnLog != null) OnLog(log, type);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         void container_OnError(Exception exception)
         {
-            try { if (OnError != null) OnError(exception); }
-            catch { }
+            try
+            {
+                if (OnError != null) OnError(exception);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         #region ILogable Members
@@ -356,9 +375,6 @@ namespace MySoft.IoC
 
                             //发送数据到服务端
                             manager.Server.SendData(socketAsync.AcceptSocket, data);
-
-                            //发送完后将数据置null
-                            data = null;
                         }
                     }
                     else //现在还没登入 如果有其他命令的请求那么 断开连接
@@ -470,9 +486,14 @@ namespace MySoft.IoC
 
                 //等待信号
                 if (result.AsyncWaitHandle.WaitOne())
+                {
                     response = caller.EndInvoke(result);
+                }
                 else
+                {
+                    result.AsyncWaitHandle.Close();
                     throw new NullReferenceException("Call service response is null！");
+                }
             }
             catch (Exception ex)
             {

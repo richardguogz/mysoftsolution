@@ -17,7 +17,6 @@ namespace MySoft.IoC
     {
         private static object lockObject = new object();
         private static CastleFactory singleton = null;
-        private static IDictionary<Type, object> instances = new Dictionary<Type, object>();
 
         #region Create Service Factory
 
@@ -133,7 +132,7 @@ namespace MySoft.IoC
         /// Gets local the service.
         /// </summary>
         /// <returns>The service implemetation instance.</returns>
-        public IServiceInterfaceType GetLocalService<IServiceInterfaceType>()
+        public IServiceInterfaceType ResolveService<IServiceInterfaceType>()
         {
             //本地服务
             if (container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
@@ -195,6 +194,8 @@ namespace MySoft.IoC
                     markedWithServiceContract = true;
                 }
 
+                attr = null;
+
                 if (!markedWithServiceContract)
                 {
                     throw ex;
@@ -221,16 +222,14 @@ namespace MySoft.IoC
             else
             {
                 Type serviceType = typeof(IServiceInterfaceType);
-                if (instances.ContainsKey(serviceType))
-                {
-                    return (IServiceInterfaceType)instances[serviceType];
-                }
-                else
+                string serviceKey = string.Format("CastleFactory_{0}", serviceType);
+                IServiceInterfaceType iocService = CacheHelper.Get<IServiceInterfaceType>(serviceKey);
+                if (iocService == null)
                 {
                     lock (lockObject)
                     {
-                        IService service = container.GetLocalService(typeof(IServiceInterfaceType).FullName);
-                        if (service == null)
+                        IService service = container;
+                        if (!container.Kernel.HasComponent(typeof(IServiceInterfaceType)))
                         {
                             if (singleton.proxies.Count == 0)
                             {
@@ -261,11 +260,16 @@ namespace MySoft.IoC
 
                         var handler = new ServiceInvocationHandler(this.config, this.container, service, serviceType);
                         var dynamicProxy = ProxyFactory.GetInstance().Create(handler, serviceType, true);
-                        instances[serviceType] = dynamicProxy;
 
-                        return (IServiceInterfaceType)dynamicProxy;
+                        iocService = (IServiceInterfaceType)dynamicProxy;
+                        CacheHelper.Insert(serviceKey, iocService, 60);
+
+                        handler = null;
+                        dynamicProxy = null;
                     }
                 }
+
+                return iocService;
             }
         }
 

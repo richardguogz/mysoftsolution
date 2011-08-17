@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using MySoft.IoC.Message;
 using MySoft.Security;
+using MySoft.Logger;
 
 namespace MySoft.IoC.Services
 {
@@ -19,26 +20,20 @@ namespace MySoft.IoC.Services
     /// </summary>
     public class DynamicService : BaseService
     {
-        /// <summary>
-        /// 保存方法
-        /// </summary>
-        private static readonly Dictionary<string, MethodInfo> dictMethods = new Dictionary<string, MethodInfo>();
-
-        private IServiceContainer container;
-        private Type serviceInterfaceType;
-        private object serviceInstance;
+        private ILog logger;
+        private Type classType;
+        private object instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicService"/> class.
         /// </summary>
-        /// <param name="serviceInterfaceType">Type of the service interface.</param>
-        /// <param name="serviceInstance">Type of the service interface.</param>
-        public DynamicService(IServiceContainer container, Type serviceInterfaceType, object serviceInstance)
-            : base(container, serviceInterfaceType.FullName)
+        /// <param name="classType">Type of the service interface.</param>
+        public DynamicService(ILog logger, Type classType, object instance)
+            : base(logger, classType.FullName)
         {
-            this.container = container;
-            this.serviceInterfaceType = serviceInterfaceType;
-            this.serviceInstance = serviceInstance;
+            this.logger = logger;
+            this.instance = instance;
+            this.classType = classType;
         }
 
         /// <summary>
@@ -48,12 +43,9 @@ namespace MySoft.IoC.Services
         /// <returns>The msg.</returns>
         protected override ResponseMessage Run(RequestMessage reqMsg)
         {
-            //如果服务与请求为null
-            if (reqMsg == null) return null;
-
             ResponseMessage resMsg = new ResponseMessage();
             resMsg.TransactionId = reqMsg.TransactionId;
-            resMsg.ServiceName = serviceInterfaceType.FullName;
+            resMsg.ServiceName = reqMsg.ServiceName;
             resMsg.SubServiceName = reqMsg.SubServiceName;
             resMsg.Parameters = reqMsg.Parameters;
             resMsg.Compress = reqMsg.Compress;
@@ -62,16 +54,11 @@ namespace MySoft.IoC.Services
 
             #region 获取相应的方法
 
-            MethodInfo method = null;
-
-            string serviceKey = string.Format("{0}|{1}", reqMsg.ServiceName, reqMsg.SubServiceName);
-            if (dictMethods.ContainsKey(serviceKey))
+            string methodKey = string.Format("Method_{0}_{1}", reqMsg.ServiceName, reqMsg.SubServiceName);
+            MethodInfo method = CacheHelper.Get<MethodInfo>(methodKey);
+            if (method == null)
             {
-                method = dictMethods[serviceKey];
-            }
-            else
-            {
-                method = CoreHelper.GetMethodFromType(serviceInterfaceType, reqMsg.SubServiceName);
+                method = CoreHelper.GetMethodFromType(classType, reqMsg.SubServiceName);
                 if (method == null)
                 {
                     string title = string.Format("The server not find called method ({0},{1}).", reqMsg.ServiceName, reqMsg.SubServiceName);
@@ -86,12 +73,13 @@ namespace MySoft.IoC.Services
                 }
                 else
                 {
-                    lock (dictMethods)
-                    {
-                        dictMethods[serviceKey] = method;
-                    }
+                    CacheHelper.Insert(methodKey, method, 60);
                 }
             }
+
+            //设置服务及方法名称
+            resMsg.ServiceName = instance.GetType().FullName;
+            resMsg.SubServiceName = method.ToString();
 
             ParameterInfo[] pis = method.GetParameters();
             object[] paramValues = new object[pis.Length];
@@ -115,12 +103,12 @@ namespace MySoft.IoC.Services
             #endregion
 
             //获取服务及方法名称
-            resMsg.ServiceName = serviceInstance.GetType().FullName;
+            resMsg.ServiceName = instance.GetType().FullName;
             resMsg.SubServiceName = method.ToString();
             resMsg.ReturnType = method.ReturnType;
 
             //返回拦截服务
-            var service = AspectManager.GetService(serviceInstance);
+            var service = AspectManager.GetService(instance);
 
             try
             {

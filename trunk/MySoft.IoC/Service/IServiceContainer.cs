@@ -14,7 +14,7 @@ namespace MySoft.IoC
     /// <summary>
     /// The service container interface.
     /// </summary>
-    public interface IServiceContainer : IDisposable, ILog, ILogable, IErrorLogable
+    public interface IServiceContainer : IService, IDisposable, ILog, ILogable, IErrorLogable
     {
         /// <summary>
         /// Gets the kernel.
@@ -27,12 +27,6 @@ namespace MySoft.IoC
         /// <param name="key">The key.</param>
         /// <param name="instance">Type of the class.</param>
         void RegisterComponent(string key, object instance);
-        /// <summary>
-        /// Registers the component.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="classType">Type of the class.</param>
-        void RegisterComponent(string key, Type classType);
         /// <summary>
         /// Registers the component.
         /// </summary>
@@ -61,22 +55,10 @@ namespace MySoft.IoC
         /// <value></value>
         object this[Type serviceType] { get; }
         /// <summary>
-        /// Calls the service.
-        /// </summary>
-        /// <param name="reqMsg">The MSG.</param>
-        /// <returns>The response msg.</returns>
-        ResponseMessage CallService(RequestMessage reqMsg, double logTimeout);
-        /// <summary>
         /// 获取约束的接口
         /// </summary>
         /// <returns></returns>
         Type[] GetInterfaces<ContractType>();
-        /// <summary>
-        /// get local service
-        /// </summary>
-        /// <param name="serviceName"></param>
-        /// <returns></returns>
-        IService GetLocalService(string serviceName);
         /// <summary>
         /// 缓存依赖
         /// </summary>

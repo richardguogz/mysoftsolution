@@ -27,8 +27,8 @@ namespace MySoft.IoC
         {
             this.config = config;
             this.container = container;
-            this.service = service;
             this.serviceType = serviceType;
+            this.service = service;
 
             this.hostName = DnsHelper.GetHostName();
             this.ipAddress = DnsHelper.GetIPAddress();
@@ -142,6 +142,9 @@ namespace MySoft.IoC
                 isAllowCache = false;
             }
 
+            serviceContract = null;
+            operationContract = null;
+
             //设置过期时间
             reqMsg.Expiration = DateTime.Now.AddSeconds(reqMsg.Timeout);
 
@@ -155,7 +158,7 @@ namespace MySoft.IoC
             ServiceCache cacheValue = null;
 
             //缓存的处理
-            if (isAllowCache && cacheTime > 0 && container.Cache != null)
+            if (isAllowCache && container.Cache != null)
             {
                 //从缓存获取数据
                 cacheValue = container.Cache.GetCache(serviceType, cacheKey) as ServiceCache;
@@ -196,6 +199,7 @@ namespace MySoft.IoC
                 //参数
                 parameters = resMsg.Parameters;
 
+
                 //如果数据为null,则返回null
                 if (resMsg == null || resMsg.Data == null || resMsg.Data.Value == null)
                 {
@@ -209,7 +213,7 @@ namespace MySoft.IoC
                         }
                     }
 
-                    return CoreHelper.GetTypeDefaultValue(reqMsg.ReturnType);
+                    return CoreHelper.GetTypeDefaultValue(methodInfo.ReturnType);
                 }
 
                 //从返回结果中取值
@@ -218,7 +222,7 @@ namespace MySoft.IoC
                 if (returnValue != null)
                 {
                     //缓存的处理
-                    if (isAllowCache && cacheTime > 0 && container.Cache != null)
+                    if (isAllowCache && container.Cache != null)
                     {
                         cacheValue = new ServiceCache { CacheObject = returnValue, Parameters = resMsg.Parameters };
 

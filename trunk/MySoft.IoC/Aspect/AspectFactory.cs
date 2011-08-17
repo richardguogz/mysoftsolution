@@ -10,11 +10,6 @@ namespace MySoft.IoC
     public static class AspectFactory
     {
         /// <summary>
-        /// 代理对象列表
-        /// </summary>
-        private readonly static IDictionary<Type, object> services = new Dictionary<Type, object>();
-
-        /// <summary>
         /// 创建一个实例方式的拦截器
         /// </summary>
         /// <param name="instance"></param>
@@ -22,22 +17,21 @@ namespace MySoft.IoC
         /// <returns></returns>
         public static object CreateProxy(Type serviceType, params AspectInterceptor[] interceptors)
         {
-            if (services.ContainsKey(serviceType))
-            {
-                return services[serviceType];
-            }
-            else
+            string aspectKey = string.Format("AspectFactory_{0}", serviceType);
+            var service = CacheHelper.Get(aspectKey);
+            if (service == null)
             {
                 ProxyGenerator proxy = new ProxyGenerator();
                 ProxyGenerationOptions options = new ProxyGenerationOptions(new ProxyGenerationHook())
                 {
                     Selector = new InterceptorSelector()
                 };
-                var service = proxy.CreateClassProxy(serviceType, options, interceptors);
-                services.Add(serviceType, service);
 
-                return service;
+                service = proxy.CreateClassProxy(serviceType, options, interceptors);
+                CacheHelper.Insert(aspectKey, service, 60);
             }
+
+            return service;
         }
 
         /// <summary>

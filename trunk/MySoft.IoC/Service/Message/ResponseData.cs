@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MySoft.Security;
 using System.Collections;
 using System.Data;
-using System.Linq;
-using MySoft.Security;
 
 namespace MySoft.IoC.Message
 {
@@ -10,7 +12,7 @@ namespace MySoft.IoC.Message
     /// 返回的数据
     /// </summary>
     [Serializable]
-    public sealed class ResponseData : IDisposable
+    public sealed class ResponseData
     {
         private bool compress = false;
         private bool encrypt = false;
@@ -131,15 +133,6 @@ namespace MySoft.IoC.Message
             }
 
             return 1;
-        }
-
-        /// <summary>
-        /// 清理资源
-        /// </summary>
-        public void Dispose()
-        {
-            value = null;
-            buffer = null;
         }
     }
 }

@@ -9,8 +9,6 @@ namespace MySoft.IoC
     /// </summary>
     public static class AspectManager
     {
-        private readonly static IDictionary<Type, object> aspectServices = new Dictionary<Type, object>();
-
         /// <summary>
         /// 获取Aspect服务
         /// </summary>
@@ -50,11 +48,9 @@ namespace MySoft.IoC
         /// <returns></returns>
         public static object CreateService(Type serviceType)
         {
-            if (aspectServices.ContainsKey(serviceType))
-            {
-                return aspectServices[serviceType];
-            }
-            else
+            string aspectKey = string.Format("AspectManager_{0}", serviceType);
+            var service = CacheHelper.Get(aspectKey);
+            if (service == null)
             {
                 var attributes = CoreHelper.GetTypeAttributes<AspectProxyAttribute>(serviceType);
                 if (attributes != null && attributes.Length > 0)
@@ -82,19 +78,13 @@ namespace MySoft.IoC
                         }
                     }
 
-                    lock (aspectServices)
-                    {
-                        var interceptors = list.Cast<AspectInterceptor>();
-                        var service = AspectFactory.CreateProxy(serviceType, interceptors.ToArray());
-
-                        aspectServices[serviceType] = service;
-
-                        return service;
-                    }
+                    var interceptors = list.Cast<AspectInterceptor>();
+                    service = AspectFactory.CreateProxy(serviceType, interceptors.ToArray());
+                    CacheHelper.Insert(aspectKey, service, 60);
                 }
             }
 
-            return null;
+            return service;
         }
     }
 }
