@@ -1156,7 +1156,7 @@ namespace MySoft.Data
         private object GetCache<CacheType>(string prefix, string cacheKey)
             where CacheType : Entity
         {
-            string key = "IoC_Cache_" + string.Concat(prefix, "_", cacheKey);
+            string key = string.Concat(prefix, "_", cacheKey);
             if (dbProvider.Cache != null)
             {
                 return dbProvider.Cache.GetCache(typeof(CacheType), key);
@@ -1178,7 +1178,7 @@ namespace MySoft.Data
         private void SetCache<CacheType>(string prefix, string cacheKey, object obj)
             where CacheType : Entity
         {
-            string key = "IoC_Cache_" + string.Concat(prefix, "_", cacheKey);
+            string key = string.Concat(prefix, "_", cacheKey);
             if (dbProvider.Cache != null)
             {
                 dbProvider.Cache.AddCache(typeof(CacheType), key, obj, dbProvider.Timeout);

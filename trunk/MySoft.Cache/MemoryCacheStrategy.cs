@@ -287,7 +287,7 @@ namespace MySoft.Cache
             //如需要使用缓存日志,则需要使用下面代码
             //myLogVisitor.WriteLog(this,objId,val,reason);
 
-            SimpleLog.Instance.WriteLogForDir("Cache", reason.ToString() + "：" + objId);
+            //SimpleLog.Instance.WriteLogForDir("Cache", reason.ToString() + "：" + objId);
             //MemoryManager.FlushMemory();
         }
 
