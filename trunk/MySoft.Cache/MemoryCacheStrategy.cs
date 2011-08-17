@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
+using MySoft.Logger;
 
 namespace MySoft.Cache
 {
@@ -114,11 +115,11 @@ namespace MySoft.Cache
 
                 if (Timeout <= 0)
                 {
-                    webCache.Insert(GetInputKey(objId), o, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.Zero, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, null, System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.Zero, System.Web.Caching.CacheItemPriority.Normal, callBack);
                 }
                 else
                 {
-                    webCache.Insert(GetInputKey(objId), o, null, DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, null, DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
                 }
             }
         }
@@ -149,7 +150,7 @@ namespace MySoft.Cache
             {
                 CacheItemRemovedCallback callBack = new CacheItemRemovedCallback(onRemove);
 
-                webCache.Insert(GetInputKey(objId), o, null, datetime, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                webCache.Insert(GetInputKey(objId), o, null, datetime, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
             }
         }
 
@@ -174,11 +175,11 @@ namespace MySoft.Cache
 
                 if (Timeout <= 0)
                 {
-                    webCache.Insert(GetInputKey(objId), o, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
                 }
                 else
                 {
-                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
                 }
             }
         }
@@ -205,11 +206,11 @@ namespace MySoft.Cache
 
                 if (Timeout <= 0)
                 {
-                    webCache.Insert(GetInputKey(objId), o, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, dep, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
                 }
                 else
                 {
-                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                    webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.AddSeconds(Timeout), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
                 }
             }
         }
@@ -233,7 +234,7 @@ namespace MySoft.Cache
 
                 CacheDependency dep = new CacheDependency(files, DateTime.Now);
 
-                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.Add(expires), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.Add(expires), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
             }
         }
 
@@ -257,7 +258,7 @@ namespace MySoft.Cache
 
                 CacheDependency dep = new CacheDependency(null, dependKey, DateTime.Now);
 
-                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.Add(expires), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.High, callBack);
+                webCache.Insert(GetInputKey(objId), o, dep, System.DateTime.Now.Add(expires), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Normal, callBack);
             }
         }
 
@@ -285,6 +286,9 @@ namespace MySoft.Cache
 
             //如需要使用缓存日志,则需要使用下面代码
             //myLogVisitor.WriteLog(this,objId,val,reason);
+
+            SimpleLog.Instance.WriteLogForDir("Cache", reason.ToString() + "：" + objId);
+            //MemoryManager.FlushMemory();
         }
 
         /// <summary>

@@ -45,9 +45,9 @@ namespace MySoft.Cache
                 cacheKey = string.Format("{0}_{1}", serviceType.FullName, cacheKey);
 
                 if (cacheTime > 0)
+                {
                     strategy.AddObject(cacheKey, cacheValue, TimeSpan.FromSeconds(cacheTime));
-                else
-                    strategy.AddObject(cacheKey, cacheValue);
+                }
             }
         }
 

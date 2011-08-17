@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using MySoft.Data;
 using System.Threading;
+using Castle.Core;
 
 namespace MySoft.PlatformService.UserService
 {
@@ -15,7 +16,7 @@ namespace MySoft.PlatformService.UserService
         { }
     }
 
-    public class UserService : IUserService, Castle.Core.IStartable
+    public class UserService : IUserService, IStartable
     {
         public int GetUserID()
         {
@@ -75,12 +76,9 @@ namespace MySoft.PlatformService.UserService
 
         public IList<UserInfo> GetUsers()
         {
-            throw new UserException("asdfds");
-
-
             var list = new List<UserInfo>();
 
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 10; i++)
             {
                 list.Add(new UserInfo { Name = "test" + i, Description = "testtest" + i });
             }

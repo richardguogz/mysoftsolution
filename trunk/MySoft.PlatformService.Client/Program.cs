@@ -82,7 +82,7 @@ namespace MySoft.PlatformService.Client
             //CastleFactory.Create().OnLog += new LogEventHandler(mq_OnLog);
             //Console.ReadKey();
 
-            int count = 1;
+            int count = 100;
 
             var castle = CastleFactory.Create();
             //castle.RegisterCacheDependent(DefaultCacheDependent.Create());
@@ -174,7 +174,6 @@ namespace MySoft.PlatformService.Client
                     //int userid = service.GetUserID();
                     //UserInfo info = service.GetUserInfo("maoyong_" + new Random().Next(10000000), out userid);
                     //UserInfo info = service.GetUserInfo("maoyong", out userid);
-
 
                     var users = service.GetUsers();
 
