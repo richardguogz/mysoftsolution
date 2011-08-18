@@ -141,6 +141,7 @@ namespace MySoft.Net.Client
             SocketAsyncEventArgs e = new SocketAsyncEventArgs();
             e.RemoteEndPoint = myEnd;
             e.Completed += new EventHandler<SocketAsyncEventArgs>(e_Completed);
+
             if (!socket.ConnectAsync(e))
             {
                 eCompleted(e);
@@ -191,29 +192,16 @@ namespace MySoft.Net.Client
         {
             if (socket != null && socket.Connected)
             {
-                try
-                {
-                    socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, socket);
-                }
-                catch (Exception)
-                {
-                }
+                socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, socket);
             }
         }
 
         void AsynCallBack(IAsyncResult ar)
         {
-            try
+            Socket socket = ar.AsyncState as Socket;
+            if (socket != null)
             {
-                Socket socket = ar.AsyncState as Socket;
-
-                if (socket != null)
-                {
-                    socket.EndSend(ar);
-                }
-            }
-            catch (Exception)
-            {
+                socket.EndSend(ar);
             }
         }
 

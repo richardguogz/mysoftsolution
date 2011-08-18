@@ -217,7 +217,7 @@ namespace MySoft.IoC
         {
             get
             {
-                return string.Format("{0}://{1}/", manager.Server.Sock.ProtocolType, manager.Server.Sock.LocalEndPoint).ToLower();
+                return string.Format("{0}://{1}/", manager.Server.Socket.ProtocolType, manager.Server.Socket.LocalEndPoint).ToLower();
             }
         }
 

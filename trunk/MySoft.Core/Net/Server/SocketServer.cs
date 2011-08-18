@@ -62,8 +62,8 @@ namespace MySoft.Net.Server
             {
                 try
                 {
-                    sock.Shutdown(SocketShutdown.Both);
-                    sock.Close();
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.Close();
 
                     for (int i = 0; i < SocketAsynPool.Count; i++)
                     {
@@ -94,14 +94,14 @@ namespace MySoft.Net.Server
         /// <summary>
         /// SOCK对象
         /// </summary>
-        private Socket sock;
+        private Socket socket;
 
         /// <summary>
         /// Socket对象
         /// </summary>
-        public Socket Sock
+        public Socket Socket
         {
-            get { return sock; }
+            get { return socket; }
         }
 
         /// <summary>
@@ -128,12 +128,12 @@ namespace MySoft.Net.Server
         {
             get
             {
-                return sock.NoDelay;
+                return socket.NoDelay;
             }
 
             set
             {
-                sock.NoDelay = value;
+                socket.NoDelay = value;
             }
         }
 
@@ -144,11 +144,11 @@ namespace MySoft.Net.Server
         {
             get
             {
-                return sock.ReceiveTimeout;
+                return socket.ReceiveTimeout;
             }
             set
             {
-                sock.ReceiveTimeout = value;
+                socket.ReceiveTimeout = value;
 
             }
         }
@@ -160,11 +160,11 @@ namespace MySoft.Net.Server
         {
             get
             {
-                return sock.SendTimeout;
+                return socket.SendTimeout;
             }
             set
             {
-                sock.SendTimeout = value;
+                socket.SendTimeout = value;
             }
         }
 
@@ -347,11 +347,11 @@ namespace MySoft.Net.Server
                 throw new ObjectDisposedException("SocketServer is Disposed！");
             }
 
-            sock = new Socket(IPEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            sock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
+            socket = new Socket(IPEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
 
-            sock.Bind(IPEndPoint);
-            sock.Listen(100);
+            socket.Bind(IPEndPoint);
+            socket.Listen(100);
 
             BuffManagers = new BufferManager(MaxConnectCount * MaxBufferSize, MaxBufferSize);
             BuffManagers.InitBuffer();
@@ -391,7 +391,7 @@ namespace MySoft.Net.Server
             if (SocketAsynPool.Count > 0)
             {
                 SocketAsyncEventArgs sockasyn = SocketAsynPool.Pop();
-                if (!Sock.AcceptAsync(sockasyn))
+                if (!Socket.AcceptAsync(sockasyn))
                 {
                     BeginAccep(sockasyn);
                 }
@@ -445,10 +445,6 @@ namespace MySoft.Net.Server
                 }
             }
             catch (ObjectDisposedException)//listener has been stopped
-            {
-                //不处理
-            }
-            catch (NullReferenceException)
             {
                 //不处理
             }
@@ -519,29 +515,16 @@ namespace MySoft.Net.Server
         {
             if (socket != null && socket.Connected)
             {
-                try
-                {
-                    socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, socket);
-                }
-                catch (Exception)
-                {
-                }
+                socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, AsynCallBack, socket);
             }
         }
 
         void AsynCallBack(IAsyncResult ar)
         {
-            try
+            Socket socket = ar.AsyncState as Socket;
+            if (socket != null)
             {
-                Socket socket = ar.AsyncState as Socket;
-
-                if (socket != null)
-                {
-                    socket.EndSend(ar);
-                }
-            }
-            catch (Exception)
-            {
+                socket.EndSend(ar);
             }
         }
 
@@ -551,26 +534,21 @@ namespace MySoft.Net.Server
         /// <param name="socket"></param>
         public void Disconnect(Socket socket)
         {
-            try
+            if (socket != null && socket.Connected)
             {
-                if (sock != null)
-                    socket.BeginDisconnect(false, AsynCallBackDisconnect, socket);
-            }
-            catch (Exception)
-            {
+                socket.BeginDisconnect(false, AsynCallBackDisconnect, socket);
             }
         }
 
         void AsynCallBackDisconnect(IAsyncResult ar)
         {
-            Socket sock = ar.AsyncState as Socket;
-
-            if (sock != null)
+            Socket socket = ar.AsyncState as Socket;
+            if (socket != null)
             {
                 try
                 {
-                    sock.Shutdown(SocketShutdown.Both);
-                    sock.EndDisconnect(ar);
+                    socket.Shutdown(SocketShutdown.Both);
+                    socket.EndDisconnect(ar);
                 }
                 catch (Exception)
                 {
