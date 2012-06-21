@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B603EE2-B9F0-445E-817F-F058F43E5F48}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySoft.Data</RootNamespace>
+    <AssemblyName>MySoft.Data</AssemblyName>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MySoft.Data.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\DataCacheDependent.cs" />
+    <Compile Include="Cache\ICacheDependent.cs" />
+    <Compile Include="Common\EntityConfig.cs" />
+    <Compile Include="Common\EntityMapping.cs" />
+    <Compile Include="Common\IValidator.cs" />
+    <Compile Include="Common\ReturnValue.cs" />
+    <Compile Include="Common\Validator.cs" />
+    <Compile Include="Creator\IDeleteCreator.cs" />
+    <Compile Include="Creator\BaseCreator.cs" />
+    <Compile Include="Creator\DeleteCreator.cs" />
+    <Compile Include="Creator\IBaseCreator.cs" />
+    <Compile Include="Creator\IInsertCreator.cs" />
+    <Compile Include="Creator\IQueryCreator.cs" />
+    <Compile Include="Creator\IUpdateCreator.cs" />
+    <Compile Include="Creator\Query\FieldValue.cs" />
+    <Compile Include="Creator\Query\IDataQuery.cs" />
+    <Compile Include="Creator\InsertCreator.cs" />
+    <Compile Include="Creator\Query\PageSection.cs" />
+    <Compile Include="Creator\QueryCreator.cs" />
+    <Compile Include="Creator\Query\QuerySection.cs" />
+    <Compile Include="Creator\Query\ViewEntity.cs" />
+    <Compile Include="Creator\UpdateCreator.cs" />
+    <Compile Include="Data\Expression\SQLParameter.cs" />
+    <Compile Include="Data\Query\TableEntity.cs" />
+    <Compile Include="Data\Query\TopQuery.cs" />
+    <Compile Include="Data\Query\UnionQuery.cs" />
+    <Compile Include="Data\Relation\ITableRelation.cs" />
+    <Compile Include="Data\Session\AllField.cs" />
+    <Compile Include="Data\Session\EntityBase.cs" />
+    <Compile Include="Data\Session\DbField.cs" />
+    <Compile Include="Data\Session\DbValue.cs" />
+    <Compile Include="Data\Relation\TableRelation.cs" />
+    <Compile Include="Data\Session\IncludeField.cs" />
+    <Compile Include="Data\Source\IListConvert.cs" />
+    <Compile Include="Data\Source\SourceList.cs" />
+    <Compile Include="Data\Source\SourceRow.cs" />
+    <Compile Include="Data\Source\SourceTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Data\Source\ISourceList.cs" />
+    <Compile Include="Data\Source\IRowReader.cs" />
+    <Compile Include="Data\Source\ISourceTable.cs" />
+    <Compile Include="Data\Source\SourceReader.cs" />
+    <Compile Include="Data\Session\ExcludeField.cs" />
+    <Compile Include="Data\Session\DbBatch.cs" />
+    <Compile Include="Data\Session\IDbBatch.cs" />
+    <Compile Include="Data\Session\ITable.cs" />
+    <Compile Include="Data\Session\DbProviderFactory.cs" />
+    <Compile Include="Data\Session\IDbTrans.cs" />
+    <Compile Include="Data\Session\Table.cs" />
+    <Compile Include="Data\Query\ISection.cs" />
+    <Compile Include="Data\Source\ISourceReader.cs" />
+    <Compile Include="Design\Sequence.cs" />
+    <Compile Include="Design\Mapping.cs" />
+    <Compile Include="Design\PrimaryKey.cs" />
+    <Compile Include="Design\ReadOnly.cs" />
+    <Compile Include="Data\Query\IPageSection.cs" />
+    <Compile Include="Design\Description.cs" />
+    <Compile Include="Data\Session\DbProvider.cs" />
+    <Compile Include="DataException.cs" />
+    <Compile Include="NoRM\Attributes\MongoDiscriminatedAttribute.cs" />
+    <Compile Include="NoRM\Attributes\MongoIdentifierAttribute.cs" />
+    <Compile Include="NoRM\Attributes\MongoIgnoreAttribute.cs" />
+    <Compile Include="NoRM\Attributes\MongoIgnoreIfNullAttribute.cs" />
+    <Compile Include="NoRM\BSON\BsonDeserializer.cs" />
+    <Compile Include="NoRM\BSON\BsonHelper.cs" />
+    <Compile Include="NoRM\BSON\BSONSerializer.cs" />
+    <Compile Include="NoRM\BSON\BsonSerializerBase.cs" />
+    <Compile Include="NoRM\BSON\BSONTypes.cs" />
+    <Compile Include="NoRM\BSON\Command.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\DBReference.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\GridFile.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\ObjectId.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\ObjectIdGenerator.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\ObjectIdTypeConverter.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\ScopedCode.cs" />
+    <Compile Include="NoRM\BSON\DbTypes\ScopedCodeGeneric.cs" />
+    <Compile Include="NoRM\BSON\Document.cs" />
+    <Compile Include="NoRM\BSON\DocumentExceedsSizeLimitsException.cs" />
+    <Compile Include="NoRM\BSON\Expando.cs" />
+    <Compile Include="NoRM\BSON\ExpandoProperty.cs" />
+    <Compile Include="NoRM\BSON\IBsonTypeConverter.cs" />
+    <Compile Include="NoRM\BSON\IdPropertyFinder.cs" />
+    <Compile Include="NoRM\BSON\IExpando.cs" />
+    <Compile Include="NoRM\BSON\Lists\ArrayWrapper.cs" />
+    <Compile Include="NoRM\BSON\Lists\BaseWrapper.cs" />
+    <Compile Include="NoRM\BSON\Lists\CollectionWrapper.cs" />
+    <Compile Include="NoRM\BSON\Lists\ListHelper.cs" />
+    <Compile Include="NoRM\BSON\Lists\ListWrapper.cs" />
+    <Compile Include="NoRM\BSON\MagicProperty.cs" />
+    <Compile Include="NoRM\BSON\ModifierCommand.cs" />
+    <Compile Include="NoRM\BSON\ObjectParser.cs" />
+    <Compile Include="NoRM\BSON\QualifierCommand.cs" />
+    <Compile Include="NoRM\BSON\ReflectionHelper.cs" />
+    <Compile Include="NoRM\BSON\TypeConverters\CultureInfoTypeConverter.cs" />
+    <Compile Include="NoRM\Collections\CollectionHiLoIdGenerator.cs" />
+    <Compile Include="NoRM\Collections\CreateCollectionOptions.cs" />
+    <Compile Include="NoRM\Collections\HiLoIdGenerator.cs" />
+    <Compile Include="NoRM\Collections\IMongoCollectionGeneric.cs" />
+    <Compile Include="NoRM\Collections\MongoCollection.cs" />
+    <Compile Include="NoRM\Collections\MongoCollectionCompoundIndex.cs" />
+    <Compile Include="NoRM\Collections\MongoCollectionExtensions.cs" />
+    <Compile Include="NoRM\Collections\MongoCollectionGeneric.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\AddToSetOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\IModifierExpression.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\IncrementOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\M.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\ModifierExpression.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\PopOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\PullAllOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\PullOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\PushAllOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\PushOperation.cs" />
+    <Compile Include="NoRM\Commands\Modifiers\SetOperation.cs" />
+    <Compile Include="NoRM\Commands\OrderBy.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\AllQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\ElementMatch.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\ExistsQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\GreaterOrEqualQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\GreaterThanQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\InQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\LessOrEqualQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\LessThanQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\NotEqualQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\NotInQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\OrQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\Q.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\SizeQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\SliceQualifier.cs" />
+    <Compile Include="NoRM\Commands\Qualifiers\WhereQualifier.cs" />
+    <Compile Include="NoRM\Configuration\ConfigurationContainer.cs" />
+    <Compile Include="NoRM\Configuration\IConfigurationContainer.cs" />
+    <Compile Include="NoRM\Configuration\IMongoConfigurationMap.cs" />
+    <Compile Include="NoRM\Configuration\IPropertyMappingExpression.cs" />
+    <Compile Include="NoRM\Configuration\ITypeConfiguration.cs" />
+    <Compile Include="NoRM\Configuration\ITypedConfigurationGeneric.cs" />
+    <Compile Include="NoRM\Configuration\MongoConfiguration.cs" />
+    <Compile Include="NoRM\Configuration\MongoConfigurationMap.cs" />
+    <Compile Include="NoRM\Configuration\MongoConfigurationMapException.cs" />
+    <Compile Include="NoRM\Configuration\MongoConfigurationTypeMap.cs" />
+    <Compile Include="NoRM\Configuration\MongoTypeConfiguration.cs" />
+    <Compile Include="NoRM\Configuration\MongoTypeConfigurationGeneric.cs" />
+    <Compile Include="NoRM\Configuration\PropertyMappingExpression.cs" />
+    <Compile Include="NoRM\Connections\Connection.cs" />
+    <Compile Include="NoRM\Connections\ConnectionProvider.cs" />
+    <Compile Include="NoRM\Connections\ConnectionProviderFactory.cs" />
+    <Compile Include="NoRM\Connections\ConnectionStringBuilder.cs" />
+    <Compile Include="NoRM\Connections\IConnection.cs" />
+    <Compile Include="NoRM\Connections\IConnectionProvider.cs" />
+    <Compile Include="NoRM\Connections\IOptionsContainer.cs" />
+    <Compile Include="NoRM\Connections\NormalConnectionProvider.cs" />
+    <Compile Include="NoRM\Connections\PooledConnectionProvider.cs" />
+    <Compile Include="NoRM\Connections\QueuedConnectionProviders.cs" />
+    <Compile Include="NoRM\Connections\Server.cs" />
+    <Compile Include="NoRM\Connections\TimedLock.cs" />
+    <Compile Include="NoRM\GridFS\FileChunk.cs" />
+    <Compile Include="NoRM\GridFS\GridFile.cs" />
+    <Compile Include="NoRM\GridFS\GridFileCollection.cs" />
+    <Compile Include="NoRM\GridFS\Helpers.cs" />
+    <Compile Include="NoRM\IHideSystemTypes.cs" />
+    <Compile Include="NoRM\IMongo.cs" />
+    <Compile Include="NoRM\IMongoAdmin.cs" />
+    <Compile Include="NoRM\IMongoDatabase.cs" />
+    <Compile Include="NoRM\IMongoGrouping.cs" />
+    <Compile Include="NoRM\Linq\ExpressionVisitor.cs" />
+    <Compile Include="NoRM\Linq\IMongoQuery.cs" />
+    <Compile Include="NoRM\Linq\IMongoQueryResults.cs" />
+    <Compile Include="NoRM\Linq\LinqExtensions.cs" />
+    <Compile Include="NoRM\Linq\LinqTypeHelper.cs" />
+    <Compile Include="NoRM\Linq\MapReduceParameters.cs" />
+    <Compile Include="NoRM\Linq\MapReduceResult.cs" />
+    <Compile Include="NoRM\Linq\MongoQuery.cs" />
+    <Compile Include="NoRM\Linq\MongoQueryExecutor.cs" />
+    <Compile Include="NoRM\Linq\MongoQueryProvider.cs" />
+    <Compile Include="NoRM\Linq\MongoQueryTranslator.cs" />
+    <Compile Include="NoRM\Linq\PartialEvaluator.cs" />
+    <Compile Include="NoRM\Linq\QueryTranslationResults.cs" />
+    <Compile Include="NoRM\MapReduce\MapReduce.cs" />
+    <Compile Include="NoRM\MapReduce\MapReduceOptions.cs" />
+    <Compile Include="NoRM\MapReduce\MapReduceOptionsGeneric.cs" />
+    <Compile Include="NoRM\MapReduce\MapReduceResult.cs" />
+    <Compile Include="NoRM\Mongo.cs" />
+    <Compile Include="NoRM\MongoAdmin.cs" />
+    <Compile Include="NoRM\MongoDatabase.cs" />
+    <Compile Include="NoRM\MongoException.cs" />
+    <Compile Include="NoRM\MongoQueryExecutor.cs" />
+    <Compile Include="NoRM\Protocol\IUpdateWithoutId.cs" />
+    <Compile Include="NoRM\Protocol\MessageHeader.cs" />
+    <Compile Include="NoRM\Protocol\Messages\DeleteMessage.cs" />
+    <Compile Include="NoRM\Protocol\Messages\FindAndModifyResult.cs" />
+    <Compile Include="NoRM\Protocol\Messages\GetMoreMessage.cs" />
+    <Compile Include="NoRM\Protocol\Messages\IndexOption.cs" />
+    <Compile Include="NoRM\Protocol\Messages\InsertMessage.cs" />
+    <Compile Include="NoRM\Protocol\Messages\MapReduceMessage.cs" />
+    <Compile Include="NoRM\Protocol\Messages\Message.cs" />
+    <Compile Include="NoRM\Protocol\Messages\QueryMessageGeneric.cs" />
+    <Compile Include="NoRM\Protocol\Messages\ReplyMessage.cs" />
+    <Compile Include="NoRM\Protocol\Messages\UpdateMessage.cs" />
+    <Compile Include="NoRM\Protocol\Messages\UpdateOption.cs" />
+    <Compile Include="NoRM\Protocol\MongoOp.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\ISystemQuery.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\ProfileLevel.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\AuthenticationRequest.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\CollectionStatisticsRequest.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\CreateCollectionRequest.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\DropDatabaseRequest.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\ExplainRequest.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\ListDatabasesRequest.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Requests\MongoIndex.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\AssertInfoResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\BaseStatusMessage.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\BuildInfoResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\CollectionInfo.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\CollectionStatistics.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\CurrentOperationResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\DatabaseInfo.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\DeleteIndicesResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\DistinctValuesResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\DroppedCollectionResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\DroppedDatabaseResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ExplainPlan.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ExplainResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ForceSyncResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\GenericCommandResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\GetNonceResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\LastErrorResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ListDatabasesResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\MapReduceResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\PreviousErrorResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ProfileLevelResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ProfilingInformationResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ServerStatusResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\SetProfileResponse.cs" />
+    <Compile Include="NoRM\Protocol\SystemMessages\Responses\ValidateCollectionResponse.cs" />
+    <Compile Include="Provider\Oracle.cs" />
+    <Compile Include="Provider\SqlServer.cs" />
+    <Compile Include="Provider\MsAccess.cs" />
+    <Compile Include="Data\Session\DbSession.cs" />
+    <Compile Include="Data\Session\DbHelper.cs" />
+    <Compile Include="Data\Session\Entity.cs" />
+    <Compile Include="Design\IField.cs" />
+    <Compile Include="Logger\IExecuteLog.cs" />
+    <Compile Include="Data\Session\IDbProvider.cs" />
+    <Compile Include="Data\Query\SqlSection.cs" />
+    <Compile Include="Data\Query\PageSection.cs" />
+    <Compile Include="Provider\SqlServer9.cs" />
+    <Compile Include="Data\Expression\WhereClip.cs" />
+    <Compile Include="Data\Session\Field.cs" />
+    <Compile Include="Data\Query\FromSection.cs" />
+    <Compile Include="Data\Expression\GroupByClip.cs" />
+    <Compile Include="Data\Query\IQuery.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\Query\QuerySection.cs" />
+    <Compile Include="Data\Expression\OrderByClip.cs" />
+    <Compile Include="Data\Query\ProcSection.cs" />
+    <Compile Include="Design\IEntity.cs" />
+    <Compile Include="Data\Session\IDbSession.cs" />
+    <Compile Include="Common\DataHelper.cs" />
+    <Compile Include="Data\Session\DbTrans.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="update.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySoft.Core\MySoft.Core.csproj">
+      <Project>{1DF7ED40-1747-4114-A8E4-6B3B85034883}</Project>
+      <Name>MySoft.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
